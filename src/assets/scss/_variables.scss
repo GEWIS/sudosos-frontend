@@ -1,0 +1,25 @@
+$transition-duration: 200ms;
+
+$transition-duration-fast: 100ms;
+
+// breakpoints
+$screen-xs-min: 576px;
+$screen-sm-min: 768px;
+$screen-md-min: 992px;
+$screen-lg-min: 1200px;
+$screen-xs-max: $screen-sm-min - 1;
+$screen-sm-max: $screen-md-min - 1;
+$screen-md-max: $screen-lg-min - 1;
+
+
+$panel-color: #414141;
+
+// Grid
+$grid-gap: 1rem;
+
+// Card
+$card-border-color: #f2f2f2;
+$card-active-color: #f8f8f8;
+
+// FontAwesome
+$fa-font-path: "../fonts/fontawesome";
