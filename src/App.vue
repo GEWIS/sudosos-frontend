@@ -1,10 +1,6 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <CurrentSaldo></CurrentSaldo>
   </div>
 </template>
 
@@ -30,3 +26,10 @@
   }
 }
 </style>
+<script>
+import CurrentSaldo from '@/components/CurrentSaldo.vue';
+
+export default {
+  components: { CurrentSaldo },
+};
+</script>
