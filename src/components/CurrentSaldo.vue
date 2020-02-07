@@ -1,15 +1,15 @@
 <template>
   <div class="card text-left saldoCard" style="width: 18rem;">
     <div class="card-header">
-      <h1>Your balance</h1>
+      <h2>Your balance</h2>
     </div>
     <div class="card-body">
       <div class="card-text">
-        <h3>&euro;{{ currentBalance.toString().replace('.', ',') }}</h3>
+        <h4>&euro;{{ currentBalance.toString().replace('.', ',') }}</h4>
       </div>
     </div>
     <div class="card-footer footer">
-      <p>Some links or something</p>
+      <p><a href="#">Increase balance online</a></p>
     </div>
   </div>
 </template>
