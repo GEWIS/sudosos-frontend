@@ -41,12 +41,21 @@
       <font-awesome-icon :icon="['fas', 'archive']"/>
       <font-awesome-layers-text value="SECRET" />
     </font-awesome-layers>
+    <HelloWorld :usr="users"  msg= "Welcome to Your Vue.js App"/>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue';
+import { User } from '@/entities/User';
+
+const usar : User = {
+  id: '8549',
+  firstName: 'Pieter',
+  lastName: 'Ebbers',
+  saldo: 12,
+};
 
 export default {
   name: 'home',
@@ -64,6 +73,11 @@ export default {
     showAlert() {
       this.dismissCountDown = this.dismissSecs;
     },
+  },
+  data() {
+    return {
+      users: usar,
+    };
   },
 };
 </script>

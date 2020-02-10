@@ -37,16 +37,22 @@
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank"
              rel="noopener">awesome-vue</a></li>
     </ul>
+    <h1>{{ usr.firstName + " - " + usr.lastName + "! " }}</h1>
+    <h2>{{ msg }}</h2>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { User } from '@/entities/User';
 
 @Component
 export default class HelloWorld extends Vue {
   @Prop() private msg!: string;
+
+  @Prop({ type: Object as () => User }) private usr!: User;
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
