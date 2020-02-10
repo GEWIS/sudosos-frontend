@@ -1,16 +1,21 @@
 <template>
-  <div class="card text-left saldoCard" style="width: 18rem;">
-    <div class="card-header">
-      <h2>Your balance</h2>
-    </div>
-    <div class="card-body">
-      <div class="card-text">
-        <h4>&euro;{{ currentBalance.toString().replace('.', ',') }}</h4>
-      </div>
-    </div>
-    <div class="card-footer footer">
-      <p><a href="#">Increase balance online</a></p>
-    </div>
+  <div>
+    <!--TODO: change colors to GEWIS-color, which is now set to warning-->
+    <b-card
+      style="width: 18rem;"
+      class="text-left"
+      border-variant="warning"
+      >
+      <b-card-title style="color:#D40026;">
+        Your Balance
+      </b-card-title>
+      <b-card-text>
+        <h5>&euro;{{ currentBalance.toString().replace('.', ',') }}</h5>
+      </b-card-text>
+      <b-button href="#" class="card-link" variant="warning">
+        Increase balance online
+      </b-button>
+    </b-card>
   </div>
 </template>
 
