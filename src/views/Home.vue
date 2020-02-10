@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <HelloWorld :usr="users"  msg= "Welcome to Your Vue.js App"/>
   </div>
 </template>
 
@@ -11,8 +11,16 @@ import HelloWorld from '@/components/HelloWorld.vue';
 
 export default {
   name: 'home',
-  components: {
-    HelloWorld,
+  data() {
+    return {
+      dismissSecs: 10,
+      dismissCountDown: 0,
+      showDismissibleAlert: false,
+      user: usar,
+    };
+  },
+  methods: {
+
   },
 };
 </script>
