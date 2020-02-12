@@ -8,26 +8,18 @@ import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fort
 import App from './App.vue';
 import router from './router';
 import store from './store';
-
-import 'bootstrap';
-import '@/assets/scss/main.scss';
-
-
 // Import the BootstrapVue style
 import './styles/global/main.scss';
 
 library.add(faCoffee, faChild, faCircle, faArchive);
-
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.component('font-awesome-layers', FontAwesomeLayers);
 Vue.component('font-awesome-layers-text', FontAwesomeLayersText);
-
 Vue.use(BootstrapVue);
-
 Vue.config.productionTip = false;
-
 new Vue({
   router,
   store,
   render: h => h(App),
 }).$mount('#app');
+// # sourceMappingURL=main.js.map
