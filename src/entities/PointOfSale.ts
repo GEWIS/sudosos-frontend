@@ -1,5 +1,5 @@
 export interface PointOfSale {
-    name: String; 
+    name: String;
     id: String;
     ownerId: String;
     createdAt: Date;

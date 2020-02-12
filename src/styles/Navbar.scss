@@ -1,9 +1,12 @@
+$navbar-height: 80px;
 nav.navbar{
     background-color: $gewis-red;
-    max-height: 80px;
+    max-height: $navbar-height;
     .navbar-brand > {
         img {
-            height: 100%;
+            height: $navbar-height;
+            padding-top: 8px;
+            padding-bottom: 8px;
         }
     }
 
@@ -15,5 +18,10 @@ nav.navbar{
 
     .nav-item > a, .navbar-brand {
         color: white;
+    }
+    ul.user-information > li {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 }

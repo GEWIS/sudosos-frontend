@@ -9,9 +9,8 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 
+// Import bootstrap js
 import 'bootstrap';
-import '@/assets/scss/main.scss';
-
 
 // Import the BootstrapVue style
 import './styles/global/main.scss';

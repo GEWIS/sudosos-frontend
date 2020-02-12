@@ -10,15 +10,15 @@
           class="navbar-toggler collapsed"
           type="button"
           data-toggle="collapse"
-          data-target="#navbarsExample04"
-          aria-controls="navbarsExample04"
+          data-target="mainNavBar"
+          aria-controls="mainNavBar"
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="navbar-collapse collapse" id="navbarsExample04" style>
+        <div class="navbar-collapse collapse" id="mainNavBar" style>
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
               <router-link class="nav-link" to="/">Home</router-link>
@@ -47,7 +47,7 @@
               </div>
             </li>
           </ul>
-          <ul class="navbar-nav ml-auto">
+          <ul class="navbar-nav ml-auto user-information">
             <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
@@ -83,6 +83,9 @@
 </template>
 
 <script>
+import './styles/Navbar.scss';
+import './styles/Footer.scss';
+
 export default {
   data() {
     return {
