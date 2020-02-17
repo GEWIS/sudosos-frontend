@@ -1,34 +1,30 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld :usr="users"  msg= "Welcome to Your Vue.js App"/>
+    <h1>SudoSOS Homepage</h1>
   </div>
 </template>
 
 <script lang="ts">
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
+import { Component, Vue } from 'vue-property-decorator';
 import { User } from '@/entities/User';
 
-const usar : User = {
-  id: '8549',
-  firstName: 'Pieter',
-  lastName: 'Ebbers',
-  saldo: 12,
-};
+@Component({
+  components: {},
+})
 
-export default {
-  name: 'home',
-  data() {
-    return {
-      dismissSecs: 10,
-      dismissCountDown: 0,
-      showDismissibleAlert: false,
-      user: usar,
-    };
-  },
-  methods: {
+export default class Home extends Vue {
+  public dismissSecs: number = 10;
 
-  },
-};
+  public dismissCountDown: number = 0;
+
+  public showDismissibleAlert: boolean = false;
+
+  public user: User = {
+    id: '8549',
+    firstName: 'Pieter',
+    lastName: 'Ebbers',
+    saldo: 12,
+  };
+}
 </script>
