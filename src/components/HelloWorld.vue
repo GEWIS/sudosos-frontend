@@ -48,7 +48,7 @@ import { User } from '@/entities/User';
 
 @Component
 export default class HelloWorld extends Vue {
-  @Prop() private msg!: string;
+  @Prop() private msg!: String;
 
   @Prop({ type: Object as () => User }) private usr!: User;
 }
