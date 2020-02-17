@@ -1,6 +1,6 @@
 export interface User {
     id: String; // User id
-    firstName: String; 
+    firstName: String;
     lastName: String;
     saldo: Number;
 }
