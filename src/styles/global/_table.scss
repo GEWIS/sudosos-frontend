@@ -15,6 +15,7 @@ thead {
 .table > tbody > tr > td {
   padding: 0.6em 0.8em;
   border: none;
+  vertical-align: middle;
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) {
