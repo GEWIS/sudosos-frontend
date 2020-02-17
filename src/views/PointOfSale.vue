@@ -1,14 +1,16 @@
 <template>
     <div class="pointOfSale">
       <h1>Point of sale page</h1>
+      <POSOverview/>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import POSOverview from '@/components/POSOverview.vue';
 
 @Component({
-  components: {},
+  components: { POSOverview },
 })
 
 export default class PointOfSale extends Vue {
