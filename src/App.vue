@@ -27,7 +27,26 @@
               <router-link class="nav-link" to="/transactions">Transacties</router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/point-of-sale">Point of sale</router-link>
+              <router-link class="nav-link" to="/saldo">Saldo</router-link>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="pos-dropdown"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false">
+                Point of sale
+              </a>
+              <div class="dropdown-menu" aria-labelledby="pos-dropdown">
+                <router-link class="dropdown-item" to="/point-of-sale">
+                  Point of sale overview
+                </router-link>
+                <router-link class="dropdown-item" to="/point-of-sale-request">
+                  Point of sale request
+                </router-link>
+              </div>
             </li>
             <li class="nav-item dropdown">
               <a
@@ -37,13 +56,31 @@
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false">
-                Beheer
+                Admin
               </a>
               <div class="dropdown-menu" aria-labelledby="management-dropdown">
-                <router-link class="dropdown-item" to="/messages-pos">Berichten POS</router-link>
-                <router-link class="dropdown-item" to="/screens">Schermen</router-link>
-                <router-link class="dropdown-item" to="/advertisements">Advertenties</router-link>
-                <router-link class="dropdown-item" to="/points-of-sale">Points of Sale</router-link>
+                <router-link class="dropdown-item" to="/manage-pos">POS Requests</router-link>
+                <router-link class="dropdown-item" to="/screens">TV Screens</router-link>
+                <router-link class="dropdown-item" to="/advertisements">Advertisements</router-link>
+              </div>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="bac-dropdown"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false">
+                BAC
+              </a>
+              <div class="dropdown-menu" aria-labelledby="bac-dropdown">
+                <router-link class="dropdown-item" to="/flagged-transactions">
+                  Flagged transactions
+                </router-link>
+                <router-link class="dropdown-item" to="/manage-products">
+                  Manage products
+                </router-link>
               </div>
             </li>
           </ul>
