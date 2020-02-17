@@ -1,13 +1,20 @@
 <template>
-    $END$
+    <div class="pointOfSale">
+      <h1>Point of sale page</h1>
+    </div>
 </template>
 
-<script>
-  export default {
-    name: 'PointOfSale'
-  };
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+
+@Component({
+  components: {},
+})
+
+export default class PointOfSale extends Vue {
+}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 </style>

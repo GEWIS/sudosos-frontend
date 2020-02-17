@@ -4,7 +4,7 @@
       <div class="container">
         <a class="navbar-brand" href="#">
           <span>SudoSOS</span>
-          <img src="./assets/img/gewis-branding.svg" />
+          <img src="./assets/img/gewis-branding.svg"  alt="GEWIS Logo"/>
         </a>
         <button
           class="navbar-toggler collapsed"
@@ -73,7 +73,9 @@
         </div>
       </div>
     </nav>
-    <router-view />
+    <main>
+      <router-view />
+    </main>
     <footer class="footer">
       <div class="container">
         <b>&copy; {{ new Date().getFullYear() }} GEWIS</b>
@@ -82,20 +84,18 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+
 import './styles/Navbar.scss';
 import './styles/Footer.scss';
 
-export default {
-  data() {
-    return {
-      currentUser: {
-        balance: 15.00,
-        firstName: 'Rick',
-      },
-    };
-  },
-};
+export default class App extends Vue {
+  public currentUser: Object = {
+    balance: 15.00,
+    firstName: 'Rick',
+  };
+}
 </script>
 
 <style lang="scss">

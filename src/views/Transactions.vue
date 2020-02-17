@@ -1,13 +1,20 @@
 <template>
-    $END$
+    <div class="transactions">
+      <h1>Transactions page</h1>
+    </div>
 </template>
 
-<script>
-  export default {
-    name: 'Transactions'
-  };
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+
+  @Component({
+    components: {},
+  })
+
+export default class Transactions extends Vue {
+}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 </style>
