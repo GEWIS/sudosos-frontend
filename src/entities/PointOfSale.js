@@ -1,1 +1,1 @@
-//# sourceMappingURL=PointOfSale.js.map
+// # sourceMappingURL=PointOfSale.js.map
