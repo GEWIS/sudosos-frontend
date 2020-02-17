@@ -1,6 +1,9 @@
 <template>
-  <div class="home">
-    <h1>SudoSOS Homepage</h1>
+  <div id="Home">
+    <div id="HomePageContainer">
+      <CurrentSaldo :user="user"/>
+      <RecentTransactions :user="user"/>
+    </div>
   </div>
 </template>
 
@@ -8,9 +11,13 @@
 // @ is an alias to /src
 import { Component, Vue } from 'vue-property-decorator';
 import { User } from '@/entities/User';
+import RecentTransactions from '@/components/RecentTransactions.vue';
+import CurrentSaldo from '@/components/CurrentSaldo.vue';
 
 @Component({
-  components: {},
+  components: {
+    RecentTransactions, CurrentSaldo,
+  },
 })
 
 export default class Home extends Vue {
@@ -28,3 +35,11 @@ export default class Home extends Vue {
   };
 }
 </script>
+
+<style scoped lang="scss">
+#HomePageContainer {
+  display: flex;
+  justify-content: center;
+  padding-top: 5rem;
+}
+</style>
