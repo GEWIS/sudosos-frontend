@@ -2,7 +2,7 @@ import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  faCoffee, faChild, faCircle, faArchive,
+  faCoffee, faChild, faCircle, faArchive, faCaretDown, faCaretUp,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome';
 import App from './App.vue';
@@ -15,7 +15,7 @@ import 'bootstrap';
 // Import the BootstrapVue style
 import './styles/global/main.scss';
 
-library.add(faCoffee, faChild, faCircle, faArchive);
+library.add(faCoffee, faChild, faCircle, faArchive, faCaretDown, faCaretUp);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.component('font-awesome-layers', FontAwesomeLayers);
