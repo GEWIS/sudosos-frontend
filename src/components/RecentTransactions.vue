@@ -1,31 +1,18 @@
 <template>
-  <div id="RecentTransactions">
-    <div id="RecentTransactionsContainer">
-      <h1 id="RecentTransactionsOverzicht">Overzicht</h1>
-      <div id="TransactionBox"> <!-- to be replaced by card component -->
-        <b-card title="RECENTE TRANSACTIES">
-          <b-card-body>
-            <table id="RecentTransactionList">
-              <thead>
-                <td> Wanneer </td>
-                <td> Wat </td>
-              </thead>
-              <tr v-for="(transaction) in transactionList" v-bind:key="transaction.id">
-                <td>{{ transaction.createdAt.getDate() + "-"
-                  + (transaction.createdAt.getMonth() + 1)
-                  + "-" + transaction.createdAt.getYear()
-                  + " - " + transaction.createdAt.getHours()
-                  + ":" + transaction.createdAt.getMinutes() }}</td>
-                <td>{{ transaction.comment }}</td>
-              </tr>
-            </table>
-          </b-card-body>
-        </b-card>
-        <b-card-footer>
-          ALLE TRANSACTIES
-        </b-card-footer>
-      </div>
-    </div>
+  <div id="TransactionBox"> <!-- to be replaced by card component -->
+    <b-card>
+      <b-card-title>
+        recente transacties
+      </b-card-title>
+      <b-card-body>
+        <b-table small borderless fixed thead-class="TableHeader"
+        :items="transactionList" :fields="fields">
+        </b-table>
+      </b-card-body>
+    </b-card>
+    <b-card-footer>
+      <a id="TransactionLink" href="#">alle transacties</a>
+    </b-card-footer>
   </div>
 </template>
 
@@ -36,7 +23,6 @@ import { Transaction } from '../entities/Transaction';
 
 function fetchTransactions(user: User) : Transaction[] {
   // something like return client.fetchTransactions(user.id);
-
 
   const transactions = [{
     id: 'testID',
@@ -99,6 +85,17 @@ export default class RecentTransactions extends Vue {
 
   transactionList: Transaction[] = [];
 
+  getTimeString = (value: Date) => `${value.getDate()}-${value.getMonth()}-${value.getFullYear()} - ${value.getHours()}:${value.getMinutes()}`;
+
+  fields: Object[] = [
+    {
+      key: 'createdAt',
+      label: 'Wanneer',
+      formatter: (value: Date) => this.getTimeString(value),
+    },
+    { key: 'comment', label: 'Wat' },
+  ];
+
   beforeMount() {
     this.transactionList = fetchTransactions(this.user);
   }
@@ -106,6 +103,60 @@ export default class RecentTransactions extends Vue {
 
 </script>
 
+<style lang="scss">
+// thead-class doesn't load css in scoped style tag
+.TableHeader {
+  border-bottom: 1px solid gray;
+}
+</style>
+
 <style scoped lang="scss">
-  @import '@/styles/RecentTransactionsComponent.scss';
+@import '@/styles/Card.scss';
+
+.TableHeader {
+  border-bottom: 1px solid gray;
+}
+
+#TransactionBox {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 5px;
+  width: 55rem;
+}
+
+#RecentTransactionsOverzicht {
+  padding: 5px;
+  text-align:left;
+}
+
+#RecentTransactionList {
+  list-style: none;
+  padding: 0;
+}
+
+#RecentTransactionList {
+  width: 100%;
+}
+
+#RecentTransactionList > thead {
+  border-bottom: 1px solid grey;
+  text-transform: uppercase;
+}
+
+#RecentTransactionList > tr > td {
+  padding-bottom: 5px;
+}
+
+#RecentTransactionList > thead > td {
+  padding-bottom: 5px;
+}
+
+#RecentTransactions {
+  padding-top: 5rem;
+}
+
+#RecentTransactionsContainer {
+  display: table;
+  margin: 0 auto;
+}
 </style>
