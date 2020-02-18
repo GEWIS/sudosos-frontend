@@ -1,17 +1,17 @@
 <template>
-  <div id="TransactionBox"> <!-- to be replaced by card component -->
+  <div id="transaction-box"> <!-- to be replaced by card component -->
     <b-card>
       <b-card-title>
         recente transacties
       </b-card-title>
       <b-card-body>
-        <b-table small borderless fixed thead-class="TableHeader"
+        <b-table small borderless fixed thead-class="table-header"
         :items="transactionList" :fields="fields">
         </b-table>
       </b-card-body>
     </b-card>
     <b-card-footer>
-      <a id="TransactionLink" href="#">alle transacties</a>
+      <router-link id="TransactionLink" to="/transactions">alle transacties</router-link>
     </b-card-footer>
   </div>
 </template>
@@ -104,59 +104,13 @@ export default class RecentTransactions extends Vue {
 </script>
 
 <style lang="scss">
-// thead-class doesn't load css in scoped style tag
-.TableHeader {
-  border-bottom: 1px solid gray;
-}
+
 </style>
 
 <style scoped lang="scss">
-@import '@/styles/Card.scss';
+@import './src/styles/Card.scss';
 
-.TableHeader {
-  border-bottom: 1px solid gray;
-}
-
-#TransactionBox {
-  display: inline-block;
-  margin-left: 10px;
-  padding: 5px;
-  width: 55rem;
-}
-
-#RecentTransactionsOverzicht {
-  padding: 5px;
-  text-align:left;
-}
-
-#RecentTransactionList {
-  list-style: none;
-  padding: 0;
-}
-
-#RecentTransactionList {
+#transaction-box {
   width: 100%;
-}
-
-#RecentTransactionList > thead {
-  border-bottom: 1px solid grey;
-  text-transform: uppercase;
-}
-
-#RecentTransactionList > tr > td {
-  padding-bottom: 5px;
-}
-
-#RecentTransactionList > thead > td {
-  padding-bottom: 5px;
-}
-
-#RecentTransactions {
-  padding-top: 5rem;
-}
-
-#RecentTransactionsContainer {
-  display: table;
-  margin: 0 auto;
 }
 </style>

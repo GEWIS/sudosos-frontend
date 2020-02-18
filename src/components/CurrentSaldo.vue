@@ -1,17 +1,17 @@
 <template>
-  <div id="SaldoBox"> <!-- to be replaced by card component -->
+  <div id="saldo-box"> <!-- to be replaced by card component -->
     <b-card>
       <b-card-title>
         saldo
       </b-card-title>
       <b-card-body>
-        <p id="SaldoText">
+        <p id="saldo-text" class="lead">
           €{{ user.saldo.toFixed(2).toString().replace(".", ",") }}
         </p>
       </b-card-body>
     </b-card>
-    <b-card-footer href="#">
-      <a href="#">online opwaarderen</a>
+    <b-card-footer>
+      <router-link to="/saldo">online opwaarderen</router-link>
     </b-card-footer>
   </div>
 </template>
@@ -27,19 +27,14 @@ export default class CurrentSaldo extends Vue {
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/Card.scss';
-#SaldoBox {
-  padding: 5px;
-  width: 15rem;
+@import './src/styles/Card.scss';
+
+#saldo-box {
+  width: 100%;
 }
 
-#SaldoText {
-  font-weight: bolder;
+#saldo-text {
   font-size: 50px;
   text-align: center;
-}
-
-#SaldoBox > .card {
-  padding-left: 2rem;
 }
 </style>
