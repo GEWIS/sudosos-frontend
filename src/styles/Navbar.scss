@@ -1,13 +1,24 @@
-$navbar-height: 80px;
 nav.navbar{
     background-color: $gewis-red;
     max-height: $navbar-height;
+
     .navbar-brand > {
+        span {
+            font-size: 1rem;
+            font-weight: 700;
+            padding-right: 5px;
+        }
+
         img {
-            height: $navbar-height;
+            height: #{$navbar-height - 15};
             padding-top: 8px;
             padding-bottom: 8px;
         }
+    }
+
+    .container {
+        padding: 0;
+        max-width: 1180px;
     }
 
     .dropdown-menu{

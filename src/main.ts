@@ -13,7 +13,7 @@ import store from './store';
 import 'bootstrap';
 
 // Import the BootstrapVue style
-import './styles/global/main.scss';
+import './styles/global/_main.scss';
 
 library.add(faCoffee, faChild, faCircle, faArchive);
 
