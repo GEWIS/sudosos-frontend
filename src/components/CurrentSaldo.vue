@@ -6,7 +6,7 @@
       </b-card-title>
       <b-card-body>
         <p id="SaldoText">
-          {{ user.saldo.toFixed(2).toString().replace(".", ",") }}
+          €{{ user.saldo.toFixed(2).toString().replace(".", ",") }}
         </p>
       </b-card-body>
     </b-card>
