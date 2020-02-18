@@ -11,7 +11,7 @@
       </b-card-body>
     </b-card>
     <b-card-footer href="#">
-      online opwaarderen
+      <a href="#">online opwaarderen</a>
     </b-card-footer>
   </div>
 </template>

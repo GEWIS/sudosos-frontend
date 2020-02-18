@@ -5,14 +5,13 @@
         recente transacties
       </b-card-title>
       <b-card-body>
-        <b-table thClass="TableHeader" small borderless fixed
+        <b-table small borderless fixed thead-class="TableHeader"
         :items="transactionList" :fields="fields">
-
         </b-table>
       </b-card-body>
     </b-card>
-    <b-card-footer href="#">
-      alle transacties
+    <b-card-footer>
+      <a id="TransactionLink" href="#">alle transacties</a>
     </b-card-footer>
   </div>
 </template>
@@ -104,12 +103,18 @@ export default class RecentTransactions extends Vue {
 
 </script>
 
+<style lang="scss">
+// thead-class doesn't load css in scoped style tag
+.TableHeader {
+  border-bottom: 1px solid gray;
+}
+</style>
+
 <style scoped lang="scss">
 @import '@/styles/Card.scss';
-@import '@/styles/Table.scss';
 
-.TabheHeader {
-  border-bottom: 1px solid grey!important;
+.TableHeader {
+  border-bottom: 1px solid gray;
 }
 
 #TransactionBox {

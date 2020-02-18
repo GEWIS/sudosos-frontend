@@ -1,8 +1,11 @@
 <template>
   <div id="Home">
     <div id="HomePageContainer">
-      <CurrentSaldo :user="user"/>
-      <RecentTransactions :user="user"/>
+      <h1 id="Overzicht">Overzicht</h1>
+      <div id="ContentContainer">
+        <CurrentSaldo :user="user"/>
+        <RecentTransactions :user="user"/>
+      </div>
     </div>
   </div>
 </template>
@@ -37,8 +40,17 @@ export default class Home extends Vue {
 </script>
 
 <style scoped lang="scss">
-#HomePageContainer {
+#ContentContainer {
   display: flex;
+}
+
+#Overzicht {
+  font-weight: bold;
+  padding: 10px;
+}
+
+#HomePageContainer {
+  display: grid;
   justify-content: center;
   padding-top: 5rem;
 }
