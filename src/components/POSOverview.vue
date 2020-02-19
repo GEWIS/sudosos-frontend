@@ -1,114 +1,175 @@
 <template>
-    <div>
-        <h1>Overview</h1>
-        <div id="component-box">
-            <div id="own-pos">
-                <b-card class="pos-card">
-                    <b-card-title class="box-title">
-                        my points of sale
-                    </b-card-title>
-                    <b-card-body>
-                        <div id="pos-lable">
-                            <b-card>
-                                <div class="pos-display">
-                                    Bar POS
-                                </div>
-                                <div class="pos-display">
-                                    POS 1
-                                </div>
-                                <div class="pos-display">
-                                    POS 2
-                                </div>
-                            </b-card>
-                        </div>
-                    </b-card-body>
-                </b-card>
-                <b-card class="page-selecter">
-                    <b-card-body>
-                        <div class="page-display">
-                            PAGE 1/1
-                        </div>
-                    </b-card-body>
-                </b-card>
+  <div>
+    <div id="component-box">
+      <h1>Overview</h1>
+      <div id="own-pos">
+        <b-card class="pos-card">
+          <b-card-title class="box-title">
+            my points of sale
+          </b-card-title>
+          <b-card-body>
+            <div class="pos-lable">
+
+              <!-- Display points of sale in myPoints -->
+              <b-card>
+                <div class="pos-display"
+                      v-for="point in myPoints"
+                      v-bind:key="point.name">
+                  {{ point.name }} info
+                </div>
+              </b-card>
             </div>
-            <div id="request-pos">
-                <b-card class="pos-card">
-                    <b-card-title class="box-title">
-                        requested points of sale
-                    </b-card-title>
-                    <b-card-body>
-                        <div id="pos-lable">
-                            <b-card>
-                                <div class="pos-display">
-                                    POS Request 1
-                                </div>
-                                <div class="pos-display">
-                                    POS Request 2
-                                </div>
-                                <div class="pos-display">
-                                    POS Request 3
-                                </div>
-                            </b-card>
-                        </div>
-                    </b-card-body>
-                </b-card>
-                <b-card class="page-selecter">
-                    <b-card-body>
-                        <div class="page-display">
-                            PAGE 1/1
-                        </div>
-                    </b-card-body>
-                </b-card>
+          </b-card-body>
+          <b-card-footer>
+            PAGE 1/1
+          </b-card-footer>
+        </b-card>
+      </div>
+      <div id="request-pos">
+        <b-card class="pos-card">
+          <b-card-title class="box-title">
+            requested points of sale
+          </b-card-title>
+          <b-card-body>
+            <div class="pos-lable">
+
+              <!-- Display points of sale in requestedPoints -->
+              <b-card>
+                <div class="pos-display"
+                      v-for="point in requestedPoints"
+                      v-bind:key="point">
+                  {{ point.name }} {{ point.id }} requestStatus info
+                </div>
+              </b-card>
             </div>
-        </div>
+          </b-card-body>
+          <b-card-footer>
+            PAGE 1/1
+          </b-card-footer>
+        </b-card>
+        <!-- Different custom footer, closer resemblance to idea
+        b-card class="page-selecter">
+          <b-card-body>
+          <div class="page-display">
+            PAGE 1/1
+          </div>
+          </b-card-body>
+        </b-card-->
+      </div>
     </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { User } from '@/entities/User';
+import { PointOfSale } from '@/entities/PointOfSale';
+
+// Points of sale to display in My points of sale
+function fetchMyPoints(user: User) : PointOfSale[] {
+  // testing points
+  const points = [{
+    name: 'myName',
+    id: 'myID',
+    ownerId: 'myOwnerID',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  } as PointOfSale,
+  {
+    name: 'myName2',
+    id: 'myID',
+    ownerId: 'myOwnerID',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  } as PointOfSale,
+  {
+    name: 'myName3',
+    id: 'myID',
+    ownerId: 'myOwnerID',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  } as PointOfSale,
+  ] as PointOfSale[];
+
+  return points;
+}
+
+// Points of sale to display in Requested points of sale
+function fetchRequestedPoints(user: User) : PointOfSale[] {
+  // testing points
+  const points = [{
+    name: 'requestedName',
+    id: 'requestedID',
+    ownerId: 'requestedOwnerID',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  } as PointOfSale,
+  {
+    name: 'requestedName2',
+    id: 'requestedID',
+    ownerId: 'requestedOwnerID',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  } as PointOfSale,
+  ] as PointOfSale[];
+
+  return points;
+}
 
 @Component
 export default class POSOverview extends Vue {
-    @Prop() private msg!: string;
+  // passed user prop
+  @Prop({ type: Object as () => User }) private user!: User;
+
+  // used to display points of sale
+  myPoints: PointOfSale[] = [];
+
+  // used to display point of sale requests
+  requestedPoints: PointOfSale[] = [];
+
+  beforeMount() {
+    this.myPoints = fetchMyPoints(this.user);
+    this.requestedPoints = fetchRequestedPoints(this.user);
+  }
 }
 </script>
 
 <style scoped lang="scss">
-    @import './src/styles/Card.scss';
+  @import './src/styles/Card.scss';
 
-    #component-box {
-        display: flex;
-        justify-content: center;
-    }
+  #component-box {
+    display: flex;
+    justify-content: center;
+  }
 
-    #own-pos {
-        padding-right: 15px;
-    }
+  #own-pos {
+    padding-right: 15px;
+  }
 
-    .pos-card {
-        width: 35rem;
-        height: 35rem;
-    }
+  .pos-card {
+    width: 35rem;
+    height: 35rem;
+  }
 
-    .pos-display {
-        background-color: #f0f0f0;
-        font-weight: bold;
+  .pos-display {
+    background-color: #f0f0f0;
+    font-weight: bold;
 
-        margin-bottom: .5rem;
-        padding-top: 1rem;
-        padding-left: 1rem;
-        padding-bottom: 1rem;
-    }
+    margin-bottom: .5rem;
+    padding-top: 1rem;
+    padding-left: 1rem;
+    padding-bottom: 1rem;
+  }
 
-    .page-selecter {
-        background-color: #f0f0f0;
-    }
+  .page-selecter {
+    background-color: #f0f0f0;
+  }
 
-    .page-display {
-        font-weight: bold;
-    }
+  .page-display {
+    font-weight: bold;
+  }
 
-    .box-title {
-        font-weight: bold;
-    }
+  .box-title {
+    font-weight: bold;
+  }
 </style>
