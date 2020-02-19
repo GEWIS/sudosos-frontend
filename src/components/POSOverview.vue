@@ -1,11 +1,11 @@
 <template>
     <div>
         <h1>Overview</h1>
-        <div class="component_box">
-            <div class="own_pos">
+        <div class="componentBox">
+            <div class="ownPos">
                 <h2>My Points of Sale</h2>
             </div>
-            <div class="request_pos">
+            <div class="requestPos">
                 <h2>Requested Points of Sale</h2>
             </div>
         </div>
