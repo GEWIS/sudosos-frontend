@@ -1,19 +1,34 @@
-$navbar-height: 80px;
 nav.navbar{
     background-color: $gewis-red;
     max-height: $navbar-height;
+
     .navbar-brand > {
+        span {
+            font-size: 1rem;
+            font-weight: 700;
+            padding-right: 5px;
+        }
+
         img {
-            height: $navbar-height;
+            height: #{$navbar-height - 15};
             padding-top: 8px;
             padding-bottom: 8px;
         }
     }
 
+    .container {
+        padding: 0;
+        max-width: 1180px;
+    }
+
     .dropdown-menu{
         border: none;
-        border-radius: 0px;
-        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.1)
+        border-radius: 0;
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .dropdown > .dropdown-toggle::after {
+        vertical-align: 0.17em;
     }
 
     .nav-item > a, .navbar-brand {

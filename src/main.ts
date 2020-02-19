@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome';
 import {
   faCoffee, faChild, faCircle, faArchive,
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -13,7 +13,7 @@ import store from './store';
 import 'bootstrap';
 
 // Import the BootstrapVue style
-import './styles/global/main.scss';
+import './styles/global/_main.scss';
 
 library.add(faCoffee, faChild, faCircle, faArchive);
 

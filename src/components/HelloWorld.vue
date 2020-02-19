@@ -48,7 +48,7 @@ import { User } from '@/entities/User';
 
 @Component
 export default class HelloWorld extends Vue {
-  @Prop() private msg!: string;
+  @Prop() private msg!: String;
 
   @Prop({ type: Object as () => User }) private usr!: User;
 }
@@ -57,11 +57,9 @@ export default class HelloWorld extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  @import './src/styles/HomeComponent.scss';
-
   h3 {
     margin: 40px 0 0;
-    color: $text_primary;
+    color: $text-primary;
   }
 
   ul {
