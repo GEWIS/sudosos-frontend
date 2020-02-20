@@ -28,7 +28,12 @@
       <div id="request-pos">
         <b-card class="pos-card">
           <b-card-title class="box-title">
-            requested points of sale
+            <div id="request-pos-title">
+              requested points of sale
+            </div>
+            <div id="pos-processed">
+              PROCESSED
+            </div>
           </b-card-title>
           <b-card-body>
             <div class="pos-lable">
@@ -38,7 +43,10 @@
                 <div class="pos-display"
                       v-for="point in requestedPoints"
                       v-bind:key="point">
-                  {{ point.name }} {{ point.id }} requestStatus info
+                  <div class="pos-name"> {{ point.name }} </div>
+                  <div id="pos-person-id"> {{ point.id }} </div>
+                  <div id="pos-status"> requestStatus </div>
+                  <div class="pos-info"> info </div>
                 </div>
               </b-card>
             </div>
@@ -146,11 +154,22 @@ export default class POSOverview extends Vue {
     padding-right: 15px;
   }
 
+  // title of request section
+  #request-pos-title {
+    float: left;
+  }
+  #pos-processed {
+    float: right;
+    color: black;
+  }
+
+  // card dimensions
   .pos-card {
     width: 35rem;
     height: 35rem;
   }
 
+  // pos display settings
   .pos-display {
     background-color: #f0f0f0;
     font-weight: bold;
@@ -171,5 +190,26 @@ export default class POSOverview extends Vue {
 
   .box-title {
     font-weight: bold;
+  }
+
+  .pos-name {
+    width: 9rem;
+    float: left;
+    padding-right: 1rem;
+  }
+
+  #pos-person-id {
+    width: 9rem;
+    float: left;
+    padding-right: 2rem;
+
+    color: gray;
+    font-size: .9em;
+  }
+
+  #pos-status {
+    width: 8rem;
+    float: left;
+    padding-right: 1em;
   }
 </style>
