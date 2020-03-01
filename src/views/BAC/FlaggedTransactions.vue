@@ -1,7 +1,7 @@
 <template>
-  <div class="flaggedTransactions">
+  <b-container fluid="md">
     <h1>Flagged transactions page</h1>
-  </div>
+  </b-container>
 </template>
 
 <script lang="ts">

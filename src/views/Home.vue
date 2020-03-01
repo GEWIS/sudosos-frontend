@@ -1,16 +1,16 @@
 <template>
-  <b-container>
-    <b-row>
+  <b-container fluid="md">
+    <b-row class="mb-lg-3 mb-md-2 mb-1">
       <b-col>
-        <h1 id="overzicht">Overzicht</h1>
+        <h1>Overzicht</h1>
       </b-col>
     </b-row>
 
     <b-row>
-      <b-col cols="3">
+      <b-col lg="3" class="d-none d-lg-block">
         <CurrentSaldo :user="user"/>
       </b-col>
-      <b-col cols="9">
+      <b-col cols="12" lg="9">
         <RecentTransactions :user="user"/>
       </b-col>
     </b-row>
@@ -47,7 +47,5 @@ export default class Home extends Vue {
 </script>
 
 <style scoped lang="scss">
-  #overzicht {
-    padding: 5rem 0 1rem 0;
-  }
+
 </style>

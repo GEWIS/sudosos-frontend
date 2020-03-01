@@ -1,20 +1,20 @@
 <template>
   <b-container fluid="md">
-    <h1>Screens page</h1>
+    <h1>Profile page</h1>
   </b-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-  @Component({
-    components: {},
-  })
+@Component({
+  components: {},
+})
 
-export default class Screens extends Vue {
+export default class Profile extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 
 </style>

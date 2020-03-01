@@ -1,7 +1,7 @@
 <template>
-    <div class="pointOfSale">
+  <b-container fluid="md">
       <h1>Point of sale page</h1>
-    </div>
+    </b-container>
 </template>
 
 <script lang="ts">
