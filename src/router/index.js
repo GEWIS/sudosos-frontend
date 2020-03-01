@@ -10,6 +10,7 @@ import Screens from '@/views/Admin/Screens.vue';
 import Advertisements from '@/views/Admin/Advertisements.vue';
 import FlaggedTransactions from '@/views/BAC/FlaggedTransactions.vue';
 import ManageProducts from '@/views/BAC/ManageProducts.vue';
+import Profile from '@/views/User/Profile.vue';
 
 Vue.use(VueRouter);
 const routes = [
@@ -62,6 +63,11 @@ const routes = [
     path: '/manage-products',
     name: 'manageProducts',
     component: ManageProducts,
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: Profile,
   },
 ];
 const router = new VueRouter({

@@ -1,11 +1,11 @@
 <template>
-  <div id="transaction-box"> <!-- to be replaced by card component -->
+  <div>
     <b-card>
       <b-card-title>
         recente transacties
       </b-card-title>
       <b-card-body>
-        <b-table small borderless fixed thead-class="table-header"
+        <b-table stacked="sm" small borderless thead-class="table-header"
         :items="transactionList" :fields="fields">
         </b-table>
       </b-card-body>
@@ -109,14 +109,6 @@ export default class RecentTransactions extends Vue {
 
 </script>
 
-<style lang="scss">
-
-</style>
-
 <style scoped lang="scss">
 @import './src/styles/Card.scss';
-
-#transaction-box {
-  width: 100%;
-}
 </style>
