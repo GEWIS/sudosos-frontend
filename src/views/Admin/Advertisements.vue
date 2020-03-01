@@ -1,7 +1,7 @@
 <template>
-  <div class="advertisements">
+  <b-container fluid="md">
     <h1>Advertisements page</h1>
-  </div>
+  </b-container>
 </template>
 
 <script lang="ts">

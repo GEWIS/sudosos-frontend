@@ -19,7 +19,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { User } from '@/entities/User';
-import { Transaction } from '../entities/Transaction';
+import { Transaction } from '@/entities/Transaction';
 
 function fetchTransactions(user: User) : Transaction[] {
   // something like return client.fetchTransactions(user.id);
@@ -51,7 +51,7 @@ function fetchTransactions(user: User) : Transaction[] {
     totalPrice: 1.25,
     activityId: 'BAKwiekent',
     comment: 'Fustje bij ontbijt',
-    createdAt: new Date(),
+    createdAt: new Date('January 1, 1997 01:07:00'),
     updatedAt: new Date(),
   } as Transaction,
   {
@@ -61,7 +61,7 @@ function fetchTransactions(user: User) : Transaction[] {
     totalPrice: 1.25,
     activityId: 'BAKwiekent',
     comment: 'Fustje bij ontbijt',
-    createdAt: new Date(),
+    createdAt: new Date('December 12, 1997 01:07:00'),
     updatedAt: new Date(),
   } as Transaction,
   {
@@ -71,7 +71,7 @@ function fetchTransactions(user: User) : Transaction[] {
     totalPrice: 1.25,
     activityId: 'BAKwiekent',
     comment: 'Fustje bij ontbijt',
-    createdAt: new Date(),
+    createdAt: new Date('July 1, 1997 01:07:00'),
     updatedAt: new Date(),
   } as Transaction,
   ] as Transaction[];
@@ -85,7 +85,9 @@ export default class RecentTransactions extends Vue {
 
   transactionList: Transaction[] = [];
 
-  getTimeString = (value: Date) => `${value.getDate()}-${value.getMonth()}-${value.getFullYear()} - ${value.getHours()}:${value.getMinutes()}`;
+  // getTimeString = (value: Date) => value.
+
+  getTimeString = (value: Date) => `${this.parseTime(value.getDate())}-${this.parseTime(value.getMonth() + 1)}-${value.getFullYear()} - ${this.parseTime(value.getHours())}:${this.parseTime(value.getMinutes())}`;
 
   fields: Object[] = [
     {
@@ -98,6 +100,10 @@ export default class RecentTransactions extends Vue {
 
   beforeMount() {
     this.transactionList = fetchTransactions(this.user);
+  }
+
+  parseTime = function parseTime(value: number): string {
+    return (value < 10 ? '0' : '') + value;
   }
 }
 
