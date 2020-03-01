@@ -1,7 +1,6 @@
-nav.navbar{
-    background-color: $gewis-red;
-    max-height: $navbar-height;
+@import "~bootstrap/scss/bootstrap";
 
+nav.navbar{
     .navbar-brand > {
         span {
             font-size: 1rem;
@@ -21,22 +20,20 @@ nav.navbar{
         max-width: 1180px;
     }
 
-    .dropdown-menu{
+    .nav-link {
+        color: white !important;
+    }
+
+    .nav-link:hover {
+        color: rgba(255, 255, 255, 0.75) !important;
+    }
+
+    .navbar-toggler {
         border: none;
-        border-radius: 0;
-        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .dropdown > .dropdown-toggle::after {
-        vertical-align: 0.17em;
-    }
-
-    .nav-item > a, .navbar-brand {
         color: white;
     }
-    ul.user-information > li {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgb(255, 255, 255)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
     }
 }
