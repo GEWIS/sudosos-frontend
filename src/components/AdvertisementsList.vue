@@ -8,10 +8,20 @@
         <b-table stacked="sm" small borderless thead-class="table-header"
                  :items="advertisementList" :fields="fields">
           <template v-slot:cell(active)="data">
-            <font-awesome-icon :icon="data.value"></font-awesome-icon>
+            <font-awesome-icon v-if="data.value" icon="check-circle"></font-awesome-icon>
           </template>
           <template v-slot:cell(thumbnail)="data">
             <img class="thumbnail" :src="data.value" alt="Thumbnail">
+          </template>
+          <template v-slot:cell(id)="data">
+            <router-link :to="data.value">
+              <font-awesome-icon icon="pencil-alt" style="margin-left: 0.5rem;
+              color: black;"></font-awesome-icon>
+            </router-link>
+            <router-link :to="data.value">
+              <font-awesome-icon icon="times" style="margin-left: 0.5rem;
+              color: black;"></font-awesome-icon>
+            </router-link>
           </template>
         </b-table>
       </b-card-body>
@@ -75,12 +85,17 @@ export default class RecentAdvertisements extends Vue {
       {
         key: 'active',
         label: 'Actief',
-        formatter: (value: Boolean) => this.getCheckmark(value),
+        // formatter: (value: Boolean) => this.getCheckmark(value),
       },
       {
         key: 'added',
         label: 'Toegevoegd op',
         formatter: (value: Date) => this.getTimeString(value),
+      },
+      {
+        key: 'id',
+        label: '',
+        formatter: (value: String) => `/advertisements/${value}`,
       },
     ];
 
