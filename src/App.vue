@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <b-navbar toggleable="md" type="dark" variant="primary">
-      <div class="container">
+      <b-container fluid="md">
       <b-navbar-brand to="/">
         <span>SudoSOS</span>
         <img src="./assets/img/gewis-branding.svg"  alt="GEWIS Logo"/>
@@ -41,15 +41,15 @@
           <b-nav-item to="/saldo">€ {{ currentUser.balance }}</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
-      </div>
+      </b-container>
     </b-navbar>
     <main>
       <router-view />
     </main>
     <footer class="footer">
-      <div class="container">
+      <b-container fluid="md">
         <b>&copy; {{ new Date().getFullYear() }} GEWIS</b>
-      </div>
+      </b-container>
     </footer>
   </div>
 </template>

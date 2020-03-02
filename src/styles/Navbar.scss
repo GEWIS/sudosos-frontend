@@ -1,5 +1,3 @@
-@import "~bootstrap/scss/bootstrap";
-
 nav.navbar{
     .navbar-brand > {
         span {
@@ -15,7 +13,11 @@ nav.navbar{
         }
     }
 
-    .container {
+    .dropdown-menu {
+        border-radius: 0;
+    }
+
+    .container-md {
         padding: 0;
         max-width: 1180px;
     }
