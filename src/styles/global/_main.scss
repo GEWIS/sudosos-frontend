@@ -1,0 +1,61 @@
+$text-primary: hsl(0, 0%, 100%);
+$gewis-red: #D40000;
+
+$primary: $gewis-red;
+
+$stacked-table-width: 35%;
+
+// Imports
+@import "~bootstrap/scss/bootstrap";
+@import "~bootstrap-vue";
+@import url('https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Raleway:500,500i,700,700i&display=swap');
+
+// Global GEWIS font
+body {
+    font-family: "Lato", "Arial", sans-serif !important;
+    font-weight: 400;
+}
+
+// Global GEWIS font for headers and lead text pieces
+h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
+    font-family: 'Raleway', sans-serif !important;
+    font-weight: 500;
+}
+
+// Class you need to use to make sure tables have correct headers for custom style
+.table-header {
+    border-bottom: 1px solid gray;
+}
+
+// To make sure that the view always has a certain height and the footer stays away from the content
+main {
+    margin: 1.5rem 0 #{60 + 1.5 * 16}px 0;
+}
+
+// Responsive font-size for the headers. Making sure everything stays nice and readable
+h1 {
+    font-size: 1.5rem;
+}
+
+@include media-breakpoint-up(sm) {
+    h1 {
+        font-size: 2rem;
+    }
+}
+
+@include media-breakpoint-up(md) {
+    main {
+        margin-top: 3rem;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+}
+
+@include media-breakpoint-up(lg) {
+    main {
+        margin-top: 4rem;
+    }
+}

@@ -1,122 +1,55 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-md">
-      <div class="container">
-        <a class="navbar-brand" href="#">
-          <span>SudoSOS</span>
-          <img src="./assets/img/gewis-branding.svg"  alt="GEWIS Logo"/>
-        </a>
-        <button
-          class="navbar-toggler collapsed"
-          type="button"
-          data-toggle="collapse"
-          data-target="mainNavBar"
-          aria-controls="mainNavBar"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
+    <b-navbar toggleable="md" type="dark" variant="primary">
+      <b-container fluid="md">
+      <b-navbar-brand to="/">
+        <span>SudoSOS</span>
+        <img src="./assets/img/gewis-branding.svg"  alt="GEWIS Logo"/>
+      </b-navbar-brand>
 
-        <div class="navbar-collapse collapse" id="mainNavBar" style>
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <router-link class="nav-link" to="/">Home</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/transactions">Transacties</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/saldo">Saldo</router-link>
-            </li>
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="pos-dropdown"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false">
-                Point of sale
-              </a>
-              <div class="dropdown-menu" aria-labelledby="pos-dropdown">
-                <router-link class="dropdown-item" to="/point-of-sale">
-                  Point of sale overview
-                </router-link>
-                <router-link class="dropdown-item" to="/point-of-sale-request">
-                  Point of sale request
-                </router-link>
-              </div>
-            </li>
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="management-dropdown"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false">
-                Admin
-              </a>
-              <div class="dropdown-menu" aria-labelledby="management-dropdown">
-                <router-link class="dropdown-item" to="/manage-pos">POS Requests</router-link>
-                <router-link class="dropdown-item" to="/screens">TV Screens</router-link>
-                <router-link class="dropdown-item" to="/advertisements">Advertisements</router-link>
-              </div>
-            </li>
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="bac-dropdown"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false">
-                BAC
-              </a>
-              <div class="dropdown-menu" aria-labelledby="bac-dropdown">
-                <router-link class="dropdown-item" to="/flagged-transactions">
-                  Flagged transactions
-                </router-link>
-                <router-link class="dropdown-item" to="/manage-products">
-                  Manage products
-                </router-link>
-              </div>
-            </li>
-          </ul>
-          <ul class="navbar-nav ml-auto user-information">
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="user-dropdown"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false">
-                {{ currentUser.firstName }}
-              </a>
-              <div class="dropdown-menu" aria-labelledby="user-dropdown">
-                <router-link class="dropdown-item" to="/messages-pos">Berichten POS</router-link>
-                <router-link class="dropdown-item" to="/screens">Schermen</router-link>
-                <router-link class="dropdown-item" to="/advertisements">Advertenties</router-link>
-                <router-link class="dropdown-item" to="/points-of-sale">Points of Sale</router-link>
-              </div>
-            </li>
-            <li class="nav-item">
-              <!-- TODO: Formatter voor currency gebruiken -->
-              <a>€ {{ currentUser.balance }}</a>
-              </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav>
+          <b-nav-item to="/transactions">Transactions</b-nav-item>
+          <b-nav-item to="/saldo">Saldo</b-nav-item>
+          <b-nav-item-dropdown text="Point of Sale">
+            <b-dropdown-item to="/point-of-sale">Overview</b-dropdown-item>
+            <b-dropdown-item to="/point-of-sale-request">Request</b-dropdown-item>
+          </b-nav-item-dropdown>
+          <b-nav-item-dropdown text="Admin">
+            <b-dropdown-item to="/manage-pos">Overview</b-dropdown-item>
+            <b-dropdown-item to="/screens">Screens</b-dropdown-item>
+            <b-dropdown-item to="/advertisements">Advertisements</b-dropdown-item>
+          </b-nav-item-dropdown>
+          <b-nav-item-dropdown text="BAC">
+            <b-dropdown-item to="/flagged-transactions">Flagged transactions</b-dropdown-item>
+            <b-dropdown-item to="/manage-products">Manage products</b-dropdown-item>
+          </b-nav-item-dropdown>
+        </b-navbar-nav>
+
+        <!-- Right aligned nav items -->
+        <b-navbar-nav class="ml-auto">
+
+          <b-nav-item-dropdown right>
+            <template v-slot:button-content>
+              {{ currentUser.firstName }}
+            </template>
+            <b-dropdown-item href="/profile">Profile</b-dropdown-item>
+            <b-dropdown-item to="/sign-out">Sign out</b-dropdown-item>
+          </b-nav-item-dropdown>
+          <b-nav-item to="/saldo">€ {{ currentUser.balance }}</b-nav-item>
+        </b-navbar-nav>
+      </b-collapse>
+      </b-container>
+    </b-navbar>
     <main>
       <router-view />
     </main>
     <footer class="footer">
-      <div class="container">
+      <b-container fluid="md">
         <b>&copy; {{ new Date().getFullYear() }} GEWIS</b>
-      </div>
+      </b-container>
     </footer>
   </div>
 </template>
