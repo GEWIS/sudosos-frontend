@@ -2,7 +2,9 @@
   <div>
     <b-card>
       <b-card-title>
-        Advertenties
+        <b-button variant="primary">
+          <font-awesome-icon icon="plus"></font-awesome-icon> Toevoegen
+        </b-button>
       </b-card-title>
       <b-card-body>
         <b-table stacked="sm" small borderless thead-class="table-header"
