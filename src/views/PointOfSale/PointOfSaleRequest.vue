@@ -1,7 +1,7 @@
 <template>
-<div class="pointOfSaleRequest">
+  <b-container fluid="md">
   <h1>Point of Sale request page</h1>
-</div>
+  </b-container>
 </template>
 
 <script lang="ts">

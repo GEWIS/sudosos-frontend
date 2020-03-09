@@ -1,15 +1,16 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '@/views/Home.vue';
+import Saldo from '@/views/Saldo.vue';
 import Transactions from '@/views/Transactions.vue';
 import PointOfSale from '@/views/PointOfSale/PointOfSale.vue';
 import PointOfSaleRequest from '@/views/PointOfSale/PointOfSaleRequest.vue';
-import Saldo from '@/views/Saldo.vue';
 import ManagePointOfSale from '@/views/Admin/ManagePointOfSale.vue';
 import Screens from '@/views/Admin/Screens.vue';
 import Advertisements from '@/views/Admin/Advertisements.vue';
 import FlaggedTransactions from '@/views/BAC/FlaggedTransactions.vue';
 import ManageProducts from '@/views/BAC/ManageProducts.vue';
+import Profile from '@/views/User/Profile.vue';
 
 Vue.use(VueRouter);
 
@@ -63,6 +64,11 @@ const routes = [
     path: '/manage-products',
     name: 'manageProducts',
     component: ManageProducts,
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: Profile,
   },
   // {
   //   path: '/about',
