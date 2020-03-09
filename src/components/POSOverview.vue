@@ -15,14 +15,22 @@
                     v-bind:key="point">
                 <div class="pos-name"> {{ point.name }} </div>
                 <div class="pos-info">
-                  <a href="" class="info-link"><font-awesome-icon icon="info-circle"/></a>
+                  <router-link :to="'pos/' + point.id" class="info-link">
+                    <font-awesome-icon icon="info-circle"/>
+                  </router-link>
                 </div>
               </div>
             </div>
           </b-card-body>
         </b-card>
         <b-card-footer>
-          PAGE 1/1
+          PAGE {{ myPageNum }}/{{ numOfMyPages }}
+          <b-button v-on:click="myPageNum -= 1">
+            <font-awesome-icon icon="chevron-left"/>
+          </b-button>
+          <b-button v-on:click="myPageNum += 1">
+            <font-awesome-icon icon="chevron-right"/>
+          </b-button>
         </b-card-footer>
       </div>
       <div id="request-pos">
@@ -31,9 +39,8 @@
               requested points of sale
             <div id="pos-processed">
 
-              <!-- icon next to PROCESSED -->
-              <input type="checkbox" id="checkbox" v-model="checked">
-              PROCESSED
+              <!-- PROCESSED checkbox -->
+              <b-form-checkbox id="checkbox" v-model="checked">PROCESSED</b-form-checkbox>
             </div>
           </b-card-title>
           <b-card-body>
@@ -46,15 +53,21 @@
                 <div class="pos-name"> {{ point.name }} </div>
                 <div id="pos-person-id"> {{ point.id }} </div>
                 <div id="pos-status"> requestStatus </div>
-                <div class="pos-info">
-                  <a href="" class="info-link"><font-awesome-icon icon="info-circle"/></a>
-                </div>
+                <router-link :to="'pos/' + point.id" class="info-link">
+                  <font-awesome-icon icon="info-circle"/>
+                </router-link>
               </div>
             </div>
           </b-card-body>
         </b-card>
         <b-card-footer>
-          PAGE 1/1
+          PAGE {{ reqPageNum }}/{{ numOfReqPages }}
+          <b-button v-on:click="reqPageNum -= 1">
+            <font-awesome-icon icon="chevron-left"/>
+          </b-button>
+          <b-button v-on:click="reqPageNum += 1">
+            <font-awesome-icon icon="chevron-right"/>
+          </b-button>
         </b-card-footer>
       </div>
     </div>
@@ -67,7 +80,7 @@ import { User } from '@/entities/User';
 import { PointOfSale } from '@/entities/PointOfSale';
 
 // display at most displayLim po sales
-const displayLim = 7;
+const displayLim = 5;
 
 // Points of sale to display in My points of sale
 function fetchMyPoints(user: User) : PointOfSale[] {
@@ -172,6 +185,16 @@ function fetchRequestedPoints(user: User) : PointOfSale[] {
   );
 }
 
+// return number of my pos pages
+function fetchNumOfMyPages() {
+  return 0;
+}
+
+// return number of requested pos pages
+function fetchNumOfReqPages() {
+  return 0;
+}
+
 @Component
 export default class POSOverview extends Vue {
   // passed user prop
@@ -183,9 +206,23 @@ export default class POSOverview extends Vue {
   // used to display users point of sale requests
   requestedPoints: PointOfSale[] = [];
 
+  // my page number
+  myPageNum: Number = 0;
+
+  // requested page number
+  reqPageNum: Number = 0;
+
+  // number of my pages
+  numOfMyPages: Number = 0;
+
+  // number of req pages
+  numOfReqPages: Number = 0;
+
   beforeMount() {
     this.myPoints = fetchMyPoints(this.user);
     this.requestedPoints = fetchRequestedPoints(this.user);
+    this.numOfMyPages = fetchNumOfMyPages();
+    this.numOfReqPages = fetchNumOfReqPages();
   }
 }
 </script>

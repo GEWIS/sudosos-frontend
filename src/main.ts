@@ -13,6 +13,8 @@ import {
   faPlus,
   faCheck,
   faInfoCircle,
+  faChevronLeft,
+  faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 import App from './App.vue';
 import router from './router';
@@ -35,6 +37,8 @@ library.add(
   faPlus,
   faCheck,
   faInfoCircle,
+  faChevronLeft,
+  faChevronRight,
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
