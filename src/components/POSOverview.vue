@@ -1,7 +1,6 @@
 <template>
   <div>
     <div id="component-box">
-      <h1>Overview</h1>
       <div id="own-pos">
         <b-card class="pos-card">
           <b-card-title class="box-title">
