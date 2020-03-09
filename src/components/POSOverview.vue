@@ -5,32 +5,31 @@
       <div id="own-pos">
         <b-card class="pos-card">
           <b-card-title class="box-title">
-            my points of sale
+            <!-- <div id="my-pos-title"> -->
+              my points of sale
+            <!-- </div> -->
           </b-card-title>
           <b-card-body>
             <div class="pos-lable">
 
               <!-- Display points of sale in myPoints -->
-              <b-card>
-                <div class="pos-display"
-                      v-for="point in myPoints"
-                      v-bind:key="point.name">
-                  {{ point.name }} info
-                </div>
-              </b-card>
+              <div class="pos-display"
+                    v-for="point in myPoints"
+                    v-bind:key="point.name">
+                <div class="pos-name"> {{ point.name }} </div>
+                <div class="pos-info"> info </div>
+              </div>
             </div>
           </b-card-body>
-          <b-card-footer>
-            PAGE 1/1
-          </b-card-footer>
         </b-card>
+        <b-card-footer>
+          PAGE 1/1
+        </b-card-footer>
       </div>
       <div id="request-pos">
         <b-card class="pos-card">
           <b-card-title class="box-title">
-            <div id="request-pos-title">
               requested points of sale
-            </div>
             <div id="pos-processed">
               PROCESSED
             </div>
@@ -39,22 +38,22 @@
             <div class="pos-lable">
 
               <!-- Display points of sale in requestedPoints -->
-              <b-card>
-                <div class="pos-display"
-                      v-for="point in requestedPoints"
-                      v-bind:key="point">
-                  <div class="pos-name"> {{ point.name }} </div>
-                  <div id="pos-person-id"> {{ point.id }} </div>
-                  <div id="pos-status"> requestStatus </div>
-                  <div class="pos-info"> info </div>
+              <div class="pos-display"
+                    v-for="point in requestedPoints"
+                    v-bind:key="point">
+                <div class="pos-name"> {{ point.name }} </div>
+                <div id="pos-person-id"> {{ point.id }} </div>
+                <div id="pos-status"> requestStatus </div>
+                <div class="pos-info">
+                  <font-awesome-icon icon="info-circle" />
                 </div>
-              </b-card>
+              </div>
             </div>
           </b-card-body>
+        </b-card>
           <b-card-footer>
             PAGE 1/1
           </b-card-footer>
-        </b-card>
         <!-- Different custom footer, closer resemblance to idea
         b-card class="page-selecter">
           <b-card-body>
@@ -154,6 +153,10 @@ export default class POSOverview extends Vue {
     padding-right: 15px;
   }
 
+  #my-pos-title {
+    float: left;
+  }
+
   // title of request section
   #request-pos-title {
     float: left;
@@ -171,7 +174,7 @@ export default class POSOverview extends Vue {
 
   // pos display settings
   .pos-display {
-    background-color: #f0f0f0;
+    background-color: #f2f2f2;
     font-weight: bold;
 
     margin-bottom: .5rem;
@@ -181,35 +184,39 @@ export default class POSOverview extends Vue {
   }
 
   .page-selecter {
-    background-color: #f0f0f0;
+    background-color: #f2f2f2;
   }
 
   .page-display {
     font-weight: bold;
   }
 
-  .box-title {
+  /* .box-title {
     font-weight: bold;
-  }
+    margin-bottom: 2rem;
+  } */
 
+  // requested POS display
   .pos-name {
     width: 9rem;
-    float: left;
+    display: inline-block;
     padding-right: 1rem;
   }
-
   #pos-person-id {
     width: 9rem;
-    float: left;
+    display: inline-block;
     padding-right: 2rem;
 
     color: gray;
     font-size: .9em;
   }
-
   #pos-status {
     width: 8rem;
-    float: left;
+    display: inline-block;
     padding-right: 1em;
+  }
+  .pos-info {
+    padding-right: 1rem;
+    float: right;
   }
 </style>
