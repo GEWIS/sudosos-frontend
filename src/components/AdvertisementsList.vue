@@ -27,10 +27,10 @@
           </template>
         </b-table>
       </b-card-body>
-      <b-card-footer>
-        YEET
-      </b-card-footer>
     </b-card>
+    <b-card-footer>
+      YEET
+    </b-card-footer>
   </div>
 </template>
 
