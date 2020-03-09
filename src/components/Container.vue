@@ -3,9 +3,9 @@
     <div class="container-head container d-inline-flex">
       <b-input-group>
         <b-form-checkbox inline id="cb_container1" class="cb_space"></b-form-checkbox>
-        <div v-b-toggle.container1>
+        <div v-b-toggle>
           <div class="d-inline">
-            <span>{{ this.name }}</span>
+            <span>{{ containerId }}</span>
           </div>
           <div class="d-inline text-right">
             <font-awesome-icon
@@ -16,7 +16,7 @@
         </div>
       </b-input-group>
     </div>
-    <b-collapse id="container1" class="mt-1">
+    <b-collapse :id="containerId" class="mt-1">
       <p>Some content</p>
     </b-collapse>
   </div>
@@ -24,12 +24,15 @@
 
 <script>
 export default {
-  name: 'Container',
   data() {
     return {
-      name: 'TestContainer',
+      containerId: this.value,
     };
   },
+  mounted() {
+    console.log(this.value);
+  },
+  props: ['value'],
 };
 </script>
 

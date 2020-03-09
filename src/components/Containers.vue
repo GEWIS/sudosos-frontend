@@ -2,9 +2,10 @@
   <div class="container-box">
     <h4>Containers</h4>
     <b-form-group>
-    <container con_id="1"></container>
-
-    <container con_id="2"></container>
+      <div v-for="containerObject in containers" :key="containerObject.con_id">
+        <container :value="containerObject.con_id"></container>
+        <b>{{containerObject.con_id}}</b>
+    </div>
     </b-form-group>
   </div>
 
@@ -16,6 +17,14 @@ import Container from '@/components/Container.vue';
 export default {
   name: 'Containers',
   components: { Container },
+  data() {
+    return {
+      containers: [
+        { con_id: 'a1' },
+        { con_id: 'b2' },
+      ],
+    };
+  },
 };
 </script>
 
