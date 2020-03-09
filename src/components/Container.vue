@@ -3,7 +3,7 @@
     <div class="container-head container d-inline-flex">
       <b-input-group>
         <b-form-checkbox inline id="cb_container1" class="cb_space"></b-form-checkbox>
-        <div v-b-toggle>
+        <div v-b-toggle="containerId">
           <div class="d-inline">
             <span>{{ containerId }}</span>
           </div>

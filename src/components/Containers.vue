@@ -2,10 +2,9 @@
   <div class="container-box">
     <h4>Containers</h4>
     <b-form-group>
-      <div v-for="containerObject in containers" :key="containerObject.con_id">
-        <container :value="containerObject.con_id"></container>
-        <b>{{containerObject.con_id}}</b>
-    </div>
+      <div v-for="container in containers" :key="container.con_id">
+        <container :value="container.con_id"></container>
+      </div>
     </b-form-group>
   </div>
 
@@ -16,6 +15,7 @@ import Container from '@/components/Container.vue';
 
 export default {
   name: 'Containers',
+  // eslint-disable-next-line vue/no-unused-components
   components: { Container },
   data() {
     return {
@@ -34,5 +34,12 @@ export default {
     border-style: solid;
     border-color: #D40000;
     width: 350px;
+  }
+  .container-head {
+    margin-bottom: 10px;
+    background-color: silver;
+  }
+  .cb_space {
+    margin-right: 0.1rem;
   }
 </style>
