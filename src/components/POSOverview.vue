@@ -9,14 +9,14 @@
             <!-- </div> -->
           </b-card-title>
           <b-card-body>
-            <div class="pos-lable">
+            <div class="pos-label">
 
               <!-- Display points of sale in myPoints -->
               <div class="pos-display"
                     v-for="point in myPoints"
                     v-bind:key="point.name">
                 <div class="pos-name"> {{ point.name }} </div>
-                <div class="pos-info"> info </div>
+                <div class="pos-info"> <font-awesome-icon icon="info-circle"/> </div>
               </div>
             </div>
           </b-card-body>
@@ -30,11 +30,14 @@
           <b-card-title class="box-title">
               requested points of sale
             <div id="pos-processed">
+
+              <!-- icon next to PROCESSED -->
+              <input type="checkbox" id="checkbox" v-model="checked">
               PROCESSED
             </div>
           </b-card-title>
           <b-card-body>
-            <div class="pos-lable">
+            <div class="pos-label">
 
               <!-- Display points of sale in requestedPoints -->
               <div class="pos-display"
@@ -43,24 +46,14 @@
                 <div class="pos-name"> {{ point.name }} </div>
                 <div id="pos-person-id"> {{ point.id }} </div>
                 <div id="pos-status"> requestStatus </div>
-                <div class="pos-info">
-                  <font-awesome-icon icon="info-circle" />
-                </div>
+                <div class="pos-info"> <font-awesome-icon icon="info-circle"/> </div>
               </div>
             </div>
           </b-card-body>
         </b-card>
-          <b-card-footer>
-            PAGE 1/1
-          </b-card-footer>
-        <!-- Different custom footer, closer resemblance to idea
-        b-card class="page-selecter">
-          <b-card-body>
-          <div class="page-display">
-            PAGE 1/1
-          </div>
-          </b-card-body>
-        </b-card-->
+        <b-card-footer>
+          PAGE 1/1
+        </b-card-footer>
       </div>
     </div>
   </div>
@@ -181,19 +174,6 @@ export default class POSOverview extends Vue {
     padding-left: 1rem;
     padding-bottom: 1rem;
   }
-
-  .page-selecter {
-    background-color: #f2f2f2;
-  }
-
-  .page-display {
-    font-weight: bold;
-  }
-
-  /* .box-title {
-    font-weight: bold;
-    margin-bottom: 2rem;
-  } */
 
   // requested POS display
   .pos-name {
