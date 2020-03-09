@@ -4,9 +4,7 @@
       <div id="own-pos">
         <b-card class="pos-card">
           <b-card-title class="box-title">
-            <!-- <div id="my-pos-title"> -->
               my points of sale
-            <!-- </div> -->
           </b-card-title>
           <b-card-body>
             <div class="pos-label">
@@ -14,9 +12,11 @@
               <!-- Display points of sale in myPoints -->
               <div class="pos-display"
                     v-for="point in myPoints"
-                    v-bind:key="point.name">
+                    v-bind:key="point">
                 <div class="pos-name"> {{ point.name }} </div>
-                <div class="pos-info"> <font-awesome-icon icon="info-circle"/> </div>
+                <div class="pos-info">
+                  <a href="" class="info-link"><font-awesome-icon icon="info-circle"/></a>
+                </div>
               </div>
             </div>
           </b-card-body>
@@ -46,7 +46,9 @@
                 <div class="pos-name"> {{ point.name }} </div>
                 <div id="pos-person-id"> {{ point.id }} </div>
                 <div id="pos-status"> requestStatus </div>
-                <div class="pos-info"> <font-awesome-icon icon="info-circle"/> </div>
+                <div class="pos-info">
+                  <a href="" class="info-link"><font-awesome-icon icon="info-circle"/></a>
+                </div>
               </div>
             </div>
           </b-card-body>
@@ -63,6 +65,9 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { User } from '@/entities/User';
 import { PointOfSale } from '@/entities/PointOfSale';
+
+// display at most displayLim po sales
+const displayLim = 7;
 
 // Points of sale to display in My points of sale
 function fetchMyPoints(user: User) : PointOfSale[] {
@@ -88,9 +93,56 @@ function fetchMyPoints(user: User) : PointOfSale[] {
     createdAt: new Date(),
     updatedAt: new Date(),
   } as PointOfSale,
+  {
+    name: 'myName4',
+    id: 'myID',
+    ownerId: 'myOwnerID',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  } as PointOfSale,
+  {
+    name: 'myName5',
+    id: 'myID',
+    ownerId: 'myOwnerID',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  } as PointOfSale,
+  {
+    name: 'myName6',
+    id: 'myID',
+    ownerId: 'myOwnerID',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  } as PointOfSale,
+  {
+    name: 'myName7',
+    id: 'myID',
+    ownerId: 'myOwnerID',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  } as PointOfSale,
+  {
+    name: 'myName8',
+    id: 'myID',
+    ownerId: 'myOwnerID',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  } as PointOfSale,
+  {
+    name: 'myName9',
+    id: 'myID',
+    ownerId: 'myOwnerID',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  } as PointOfSale,
   ] as PointOfSale[];
 
-  return points;
+  // return effective slice
+  const myPageNum = 0; // my pagenum placeholder
+  return points.slice(
+    Math.min(myPageNum * displayLim, points.length - (points.length % displayLim)),
+    Math.min((myPageNum + 1) * displayLim, points.length),
+  );
 }
 
 // Points of sale to display in Requested points of sale
@@ -112,7 +164,12 @@ function fetchRequestedPoints(user: User) : PointOfSale[] {
   } as PointOfSale,
   ] as PointOfSale[];
 
-  return points;
+  // return effective slice
+  const reqPageNum = 0; // req pagenum placeholder
+  return points.slice(
+    Math.min(reqPageNum * displayLim, points.length - (points.length % displayLim)),
+    Math.min((reqPageNum + 1) * displayLim, points.length),
+  );
 }
 
 @Component
@@ -120,10 +177,10 @@ export default class POSOverview extends Vue {
   // passed user prop
   @Prop({ type: Object as () => User }) private user!: User;
 
-  // used to display points of sale
+  // used to display users points of sale
   myPoints: PointOfSale[] = [];
 
-  // used to display point of sale requests
+  // used to display users point of sale requests
   requestedPoints: PointOfSale[] = [];
 
   beforeMount() {
@@ -143,10 +200,6 @@ export default class POSOverview extends Vue {
 
   #own-pos {
     padding-right: 15px;
-  }
-
-  #my-pos-title {
-    float: left;
   }
 
   // title of request section
@@ -197,5 +250,13 @@ export default class POSOverview extends Vue {
   .pos-info {
     padding-right: 1rem;
     float: right;
+  }
+
+  // info links
+  .info-link {
+    color: black;
+  }
+  .info-link:hover {
+    color: gray;
   }
 </style>
