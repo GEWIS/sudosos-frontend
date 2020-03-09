@@ -3,14 +3,20 @@
     <div class="container-head container d-inline-flex">
       <b-input-group>
         <b-form-checkbox inline id="cb_container1" class="cb_space"></b-form-checkbox>
-        <div v-b-toggle="containerId">
+        <div v-b-toggle="containerId" v-on:click="isOpen = !isOpen">
           <div class="d-inline">
             <span>{{ containerId }}</span>
           </div>
           <div class="d-inline text-right">
             <font-awesome-icon
               pull="right"
-              icon="caret-down">
+              icon="caret-down"
+              v-show="!isOpen">
+            </font-awesome-icon>
+            <font-awesome-icon
+              pull="right"
+              icon="caret-up"
+              v-show="isOpen">
             </font-awesome-icon>
           </div>
         </div>
@@ -27,6 +33,7 @@ export default {
   data() {
     return {
       containerId: this.value,
+      isOpen: false,
     };
   },
   mounted() {
