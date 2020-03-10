@@ -1,18 +1,18 @@
 <template>
   <b-container fluid="md">
       <h1>Point of sale page</h1>
-      <Containers></Containers>
+      <Container></Container>
     </b-container>
 
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Containers from '@/components/Containers.vue';
+import Container from '@/components/Container.vue';
 
 @Component({
   components: {
-    Containers,
+    Container,
   },
 })
 
