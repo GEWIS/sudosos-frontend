@@ -1,6 +1,6 @@
 <template>
   <b-container fluid="md">
-      <h1>Transactions page</h1>
+  <h1>Point of Sale request page</h1>
   </b-container>
 </template>
 
@@ -11,7 +11,7 @@ import { Component, Vue } from 'vue-property-decorator';
     components: {},
   })
 
-export default class Transactions extends Vue {
+export default class PointOfSaleRequest extends Vue {
 }
 </script>
 

@@ -1,17 +1,17 @@
 <template>
   <b-container fluid="md">
-      <h1>Transactions page</h1>
+    <h1>Manage products page</h1>
   </b-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-  @Component({
-    components: {},
-  })
+@Component({
+  components: {},
+})
 
-export default class Transactions extends Vue {
+export default class ManageProducts extends Vue {
 }
 </script>
 
