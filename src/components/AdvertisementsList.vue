@@ -17,12 +17,10 @@
           </template>
           <template v-slot:cell(id)="data">
             <router-link :to="data.value">
-              <font-awesome-icon icon="pencil-alt" style="margin-left: 0.5rem;
-              color: black;"></font-awesome-icon>
+              <font-awesome-icon icon="pencil-alt" class="ml-2 icon"></font-awesome-icon>
             </router-link>
             <router-link :to="data.value">
-              <font-awesome-icon icon="times" style="margin-left: 0.5rem;
-              color: black;"></font-awesome-icon>
+              <font-awesome-icon icon="times" class="ml-2 icon"></font-awesome-icon>
             </router-link>
           </template>
         </b-table>
@@ -121,5 +119,9 @@ export default class RecentAdvertisements extends Vue {
   .thumbnail {
     width: 4rem;
     height: 2.25rem;
+  }
+
+  .icon {
+    color: black;
   }
 </style>
