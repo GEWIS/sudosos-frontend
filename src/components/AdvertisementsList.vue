@@ -2,7 +2,7 @@
   <div>
     <b-card>
       <b-card-title>
-        <b-button variant="primary">
+        <b-button variant="primary" id="add">
           <font-awesome-icon icon="plus"></font-awesome-icon> Toevoegen
         </b-button>
       </b-card-title>
@@ -114,6 +114,7 @@ export default class RecentAdvertisements extends Vue {
 </script>
 
 <style scoped lang="scss">
+  @import "~bootstrap/scss/bootstrap";
   @import './src/styles/Card.scss';
 
   .thumbnail {
@@ -123,5 +124,11 @@ export default class RecentAdvertisements extends Vue {
 
   .icon {
     color: black;
+  }
+
+  @include media-breakpoint-down(xs) {
+    .card-title {
+      margin-bottom: 3.5rem;
+    }
   }
 </style>
