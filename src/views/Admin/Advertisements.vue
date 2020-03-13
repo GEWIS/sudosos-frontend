@@ -1,14 +1,18 @@
 <template>
-  <div class="advertisements">
+  <b-container fluid="lg">
     <h1>Advertisements page</h1>
-  </div>
+    <AdvertisementsList></AdvertisementsList>
+  </b-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import AdvertisementsList from '@/components/AdvertisementsList.vue';
 
   @Component({
-    components: {},
+    components: {
+      AdvertisementsList,
+    },
   })
 
 export default class Advertisements extends Vue {
@@ -16,5 +20,4 @@ export default class Advertisements extends Vue {
 </script>
 
 <style lang="scss" scoped>
-
 </style>

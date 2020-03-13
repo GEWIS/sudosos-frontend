@@ -1,0 +1,40 @@
+.card-title {
+  color: $gewis-red;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+}
+
+.card-title > .btn.btn-primary {
+  background-color: $gewis-red;
+  font-family: 'Raleway', sans-serif;
+  float: right;
+}
+
+.card {
+  border: none;
+  background-color: #f8f8f8;
+  padding: 1.25rem;
+}
+
+.card-body {
+  padding: 0;
+  border: none;
+}
+
+.card-footer {
+  background-color: #f2f2f2;
+  border: none;
+  color: gray;
+  text-transform: uppercase;
+}
+
+.card-footer > a {
+  background-color: #f2f2f2;
+  border: none;
+  color: gray;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #f2f2f2;
+}

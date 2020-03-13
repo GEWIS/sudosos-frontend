@@ -1,7 +1,7 @@
 <template>
-    <div class="transactions">
+  <b-container fluid="lg">
       <h1>Transactions page</h1>
-    </div>
+  </b-container>
 </template>
 
 <script lang="ts">

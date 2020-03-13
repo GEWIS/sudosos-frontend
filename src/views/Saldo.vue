@@ -1,7 +1,7 @@
 <template>
-<div class="saldo">
+  <b-container fluid="lg">
   <h1>Saldo page</h1>
-</div>
+  </b-container>
 </template>
 
 <script lang="ts">

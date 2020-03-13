@@ -1,7 +1,7 @@
 <template>
   <b-container fluid="lg">
-      <h1>Point of sale page</h1>
-    </b-container>
+    <h1>Profile page</h1>
+  </b-container>
 </template>
 
 <script lang="ts">
@@ -11,10 +11,10 @@ import { Component, Vue } from 'vue-property-decorator';
   components: {},
 })
 
-export default class PointOfSale extends Vue {
+export default class Profile extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 
 </style>

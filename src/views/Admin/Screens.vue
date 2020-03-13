@@ -1,7 +1,7 @@
 <template>
-  <div class="screens">
+  <b-container fluid="lg">
     <h1>Screens page</h1>
-  </div>
+  </b-container>
 </template>
 
 <script lang="ts">
