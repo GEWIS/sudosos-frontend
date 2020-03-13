@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid="md">
+  <b-container fluid="lg">
     <b-row class="mb-lg-3 mb-md-2 mb-1">
       <b-col>
         <h1>Overzicht</h1>

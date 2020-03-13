@@ -5,6 +5,12 @@
   text-transform: uppercase;
 }
 
+.card-title > .btn.btn-primary {
+  background-color: $gewis-red;
+  font-family: 'Raleway', sans-serif;
+  float: right;
+}
+
 .card {
   border: none;
   background-color: #f8f8f8;
@@ -27,4 +33,8 @@
   background-color: #f2f2f2;
   border: none;
   color: gray;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #f2f2f2;
 }

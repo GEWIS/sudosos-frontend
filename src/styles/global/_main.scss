@@ -28,6 +28,90 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
     border-bottom: 1px solid gray;
 }
 
+.b-table {
+    td {
+        vertical-align: middle;
+    }
+
+    tr {
+        padding: 0.375rem 0;
+    }
+}
+
+/*
+ Global styles to change models
+ */
+
+.modal {
+    .modal-content {
+        border-radius: 0;
+        border: none;
+        min-height: 300px;
+
+        > *,
+        > div {
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        > * {
+            margin-bottom: 0;
+        }
+    }
+
+    .modal-header {
+        border-bottom: none;
+    }
+
+    .modal-title {
+        font-size: 1rem;
+        color: $gewis-red;
+        text-transform: uppercase;
+    }
+
+    .modal-body {
+        padding: 0 1rem;
+    }
+
+    .modal-footer {
+        border-top: none;
+    }
+
+    button {
+        background-color: white !important;
+        color: $gewis-grey !important;
+        border: none !important;
+        padding: .375rem 0.5rem !important;
+        text-transform: uppercase;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    label {
+        font-weight: 700;
+    }
+
+    .form-group {
+        margin-bottom: 0;
+
+        > div {
+            margin: auto 0;
+        }
+
+        .custom-file-label::after {
+            height: 100%;
+        }
+    }
+}
+
 // To make sure that the view always has a certain height and the footer stays away from the content
 main {
     margin: 1.5rem 0 #{60 + 1.5 * 16}px 0;
@@ -57,5 +141,17 @@ h1 {
 @include media-breakpoint-up(lg) {
     main {
         margin-top: 4rem;
+    }
+
+    .modal {
+        input {
+            width: 75% !important;
+        }
+
+        .form-group {
+            .custom-file {
+                width: 75%;
+            }
+        }
     }
 }
