@@ -20,5 +20,4 @@ export default class Advertisements extends Vue {
 </script>
 
 <style lang="scss" scoped>
-
 </style>
