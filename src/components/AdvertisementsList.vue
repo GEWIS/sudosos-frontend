@@ -16,12 +16,12 @@
             <img class="thumbnail" :src="data.value" alt="Thumbnail">
           </template>
           <template v-slot:cell(id)="data">
-            <router-link :to="data.value">
+            <a v-b-modal.modal-add v-on:click="setAdvertisement('put', data.value)">
               <font-awesome-icon icon="pencil-alt" class="ml-2 icon"></font-awesome-icon>
-            </router-link>
-            <router-link :to="data.value">
+            </a>
+            <a :to="data.value">
               <font-awesome-icon icon="times" class="ml-2 icon"></font-awesome-icon>
-            </router-link>
+            </a>
           </template>
         </b-table>
       </b-card-body>
@@ -132,11 +132,15 @@ export default class RecentAdvertisements extends Vue {
 
     advertisementList: Advertisement[] = [];
 
-    active: boolean = false;
+    active: Boolean = false;
 
     file: File = new File([], '');
 
     duration: Number = 0;
+
+    method: string = '';
+
+    currentActive: string = '';
 
     getTimeString = (value: Date) => `${this.parseTime(value.getDate())}-${this.parseTime(value.getMonth() + 1)}-${value.getFullYear()} - ${this.parseTime(value.getHours())}:${this.parseTime(value.getMinutes())}`;
 
@@ -160,10 +164,20 @@ export default class RecentAdvertisements extends Vue {
       },
       {
         key: 'id',
-        label: '',
-        formatter: (value: String) => `/advertisements/${value}`,
+        label: 'Edit',
       },
     ];
+
+    setAdvertisement : Function = (method : string, id : string) => {
+      this.method = method;
+      this.currentActive = id;
+
+      this.advertisementList = fetchAdvertisements();
+
+      const a = this.advertisementList.filter(s => s.id === id)[0];
+      this.duration = a.duration;
+      this.active = a.active;
+    };
 
     beforeMount() {
       this.advertisementList = fetchAdvertisements();
@@ -217,8 +231,8 @@ export default class RecentAdvertisements extends Vue {
   }
 
   @include media-breakpoint-down(md) {
-    tr {
-      padding: 0.375rem 0 !important;
+    .headless-cell {
+      padding-left: 40%;
     }
   }
 </style>

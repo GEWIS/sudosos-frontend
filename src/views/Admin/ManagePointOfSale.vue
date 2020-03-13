@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid="md">
+  <b-container fluid="lg">
     <h1>Manage point of sales page</h1>
   </b-container>
 </template>
