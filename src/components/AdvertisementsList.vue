@@ -186,13 +186,14 @@ export default class RecentAdvertisements extends Vue {
     @Watch('file')
     fileChanged : Function = (value: File, old: File) => {
       if (document.activeElement !== null) {
-        let element = document.getElementById(document.activeElement.id) as HTMLElement;
+        let element = document.getElementById('ad-file') as HTMLElement;
         const img = document.createElement('img');
         img.setAttribute('src', URL.createObjectURL(value));
         img.style.maxHeight = '100%';
-        img.style.maxWidth = `${element.offsetWidth}px`;
+        img.style.maxWidth = `${element.offsetWidth - 48}px`;
 
         if (element.nextElementSibling !== null) {
+          console.log(element);
           element = element.nextElementSibling as HTMLElement;
           element.style.height = '150px';
           element.style.padding = '0.75rem';
