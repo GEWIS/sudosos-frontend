@@ -30,6 +30,7 @@ function fetchTransactions(user: User) : Transaction[] {
     authorized: 'Koenk',
     totalPrice: 50.2,
     activityId: 'BorrelId',
+    subTransactions: [],
     comment: 'Borrel metertjes heftig bakweekend, je kent het wel',
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -40,6 +41,7 @@ function fetchTransactions(user: User) : Transaction[] {
     authorized: 'BAK!',
     totalPrice: 1.25,
     activityId: 'BAKwiekent',
+    subTransactions: [],
     comment: 'Fustje bij ontbijt',
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -50,6 +52,7 @@ function fetchTransactions(user: User) : Transaction[] {
     authorized: 'BAK!',
     totalPrice: 1.25,
     activityId: 'BAKwiekent',
+    subTransactions: [],
     comment: 'Fustje bij ontbijt',
     createdAt: new Date('January 1, 1997 01:07:00'),
     updatedAt: new Date(),
@@ -60,6 +63,7 @@ function fetchTransactions(user: User) : Transaction[] {
     authorized: 'BAK!',
     totalPrice: 1.25,
     activityId: 'BAKwiekent',
+    subTransactions: [],
     comment: 'Fustje bij ontbijt',
     createdAt: new Date('December 12, 1997 01:07:00'),
     updatedAt: new Date(),
@@ -70,6 +74,7 @@ function fetchTransactions(user: User) : Transaction[] {
     authorized: 'BAK!',
     totalPrice: 1.25,
     activityId: 'BAKwiekent',
+    subTransactions: [],
     comment: 'Fustje bij ontbijt',
     createdAt: new Date('July 1, 1997 01:07:00'),
     updatedAt: new Date(),
@@ -87,7 +92,11 @@ export default class RecentTransactions extends Vue {
 
   // getTimeString = (value: Date) => value.
 
-  getTimeString = (value: Date) => `${this.parseTime(value.getDate())}-${this.parseTime(value.getMonth() + 1)}-${value.getFullYear()} - ${this.parseTime(value.getHours())}:${this.parseTime(value.getMinutes())}`;
+  getTimeString = (value: Date) => `${RecentTransactions.parseTime(value.getDate())}-`
+                                    + `${RecentTransactions.parseTime(value.getMonth() + 1)}-`
+                                    + `${value.getFullYear()} - `
+                                    + `${RecentTransactions.parseTime(value.getHours())}:`
+                                    + `${RecentTransactions.parseTime(value.getMinutes())}`;
 
   fields: Object[] = [
     {
@@ -102,7 +111,7 @@ export default class RecentTransactions extends Vue {
     this.transactionList = fetchTransactions(this.user);
   }
 
-  parseTime = function parseTime(value: number): string {
+  static parseTime(value: number): string {
     return (value < 10 ? '0' : '') + value;
   }
 }
