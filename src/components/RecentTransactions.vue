@@ -104,7 +104,10 @@ export default class RecentTransactions extends Vue {
       label: 'Wanneer',
       formatter: (value: Date) => this.getTimeString(value),
     },
-    { key: 'comment', label: 'Wat' },
+    {
+      key: 'comment',
+      label: 'Wat',
+    },
   ];
 
   beforeMount() {

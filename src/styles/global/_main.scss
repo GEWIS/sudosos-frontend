@@ -23,18 +23,49 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
     font-weight: 500;
 }
 
-// Class you need to use to make sure tables have correct headers for custom style
-.table-header {
-    border-bottom: 1px solid gray;
-}
-
+/*
+    Some General styles for tables, some classes here need to be specifically added (will be listed)
+ */
 .b-table {
+
+    // Use this as table header style to make sure table has the correctly styled headers
+    .table-header {
+        border-bottom: 1px solid #cccccc;
+        text-transform: uppercase;
+
+        tr > th {
+            font-weight: 400;
+        }
+    }
+
     td {
         vertical-align: middle;
     }
 
     tr {
         padding: 0.375rem 0;
+    }
+
+    // Style for transaction table that will make sure specific rows have different colors
+    .date-row {
+        background-color: #f2f2f2;
+        font-weight: 700;
+
+        td {
+            text-align: center;
+        }
+
+        > td:not(:first-child) {
+            display: none !important;
+        }
+
+        > td::before {
+            content: none !important;
+        }
+    }
+
+    .transaction-row+.transaction-row {
+        border-top: 1px solid #cccccc;
     }
 }
 
@@ -125,6 +156,49 @@ h1 {
 @include media-breakpoint-up(sm) {
     h1 {
         font-size: 2rem;
+    }
+
+    .b-table {
+
+        .table-header-3 {
+            th:nth-of-type(3) {
+                display: none;
+            }
+        }
+
+        .table-header-5 {
+            th:nth-of-type(5) {
+                display: none;
+            }
+        }
+
+        // Style for transaction table that will make sure specific rows have different colors
+        .date-row {
+            td {
+                text-align: initial;
+            }
+
+            > td:first-child {
+                min-width: 200px;
+            }
+
+            > td:not(:first-child) {
+                display: table-cell !important;
+            }
+        }
+
+        .transaction-row {
+            border-top: none;
+
+            > td:first-child {
+                padding-left: 1rem;
+                min-width: 200px;
+            }
+        }
+
+        .transaction-row+.transaction-row {
+            border-top: none;
+        }
     }
 }
 

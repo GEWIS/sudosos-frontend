@@ -11,7 +11,7 @@
         </b-button>
       </b-card-title>
       <b-card-body>
-        <b-table stacked="sm" small borderless thead-class="table-header"
+        <b-table stacked="sm" small borderless thead-class="table-header table-header-5"
                  :items="advertisementList" :fields="fields" class="table-striped">
           <template v-slot:cell(active)="data">
             <font-awesome-icon v-if="data.value" icon="check-circle"></font-awesome-icon>
