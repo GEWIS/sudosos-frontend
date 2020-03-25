@@ -21,15 +21,82 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
     font-weight: 500;
 }
 
+/*
+    General button styles
+ */
+.btn.btn-primary {
+    background-color: $gewis-red;
+    float: right;
+    border-color: $gewis-red;
+    border-radius: $border-radius;
+}
 
-.b-form-datepicker {
-    > button {
-        display: none !important;
+.btn.btn-primary:hover {
+    border-color: $gewis-red;
+    color: $gewis-red;
+    background-color: $text-primary;
+}
+
+.btn.btn-primary:focus {
+    background-color: $gewis-red;
+    border-color: $gewis-red;
+    box-shadow: 0 0 0 0.2rem $gewis-red-shadow;
+}
+
+.btn.btn-secondary {
+    background-color: $gewis-grey;
+    float: right;
+    border-color: $gewis-grey;
+    border-radius: $border-radius;
+}
+
+.btn.btn-secondary:hover {
+    border-color: $gewis-grey;
+    color: $gewis-grey;
+    background-color: $text-primary;
+}
+
+.btn.btn-secondary:focus {
+    background-color: $gewis-grey;
+    border-color: $gewis-grey;
+    box-shadow: 0 0 0 0.2rem $gewis-grey-shadow;
+}
+
+.title-form {
+
+    .b-form-datepicker {
+        > button {
+            display: none !important;
+        }
+
+        > label {
+            padding-left: 0.75rem !important;
+            text-transform: initial;
+            color: black;
+        }
+
+        > label::after {
+            color: $gewis-grey;
+            position: absolute;
+            right: 0.4em;
+            top: 45%;
+            vertical-align: 0.1em;
+            content: "";
+            border-top: 0.35em solid;
+            border-right: 0.35em solid transparent;
+            border-bottom: 0;
+            border-left: 0.35em solid transparent;
+        }
     }
 
-    > label {
-        padding-left: 0.75rem !important;
-        text-transform: initial;
+    .row > div > :first-child {
+        margin: auto 0;
+    }
+
+    .custom-checkbox {
+        > label {
+            line-height: 1.5;
+        }
     }
 }
 

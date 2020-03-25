@@ -1,9 +1,9 @@
 <template>
   <div>
     <b-card>
-      <b-card-title>
+      <b-card-title class="title-form">
         <b-row>
-          <b-col md="3">
+          <b-col xl="3" sm="6" cols="12" class="mb-2 mb-xl-0">
             <b-form-group
               id="from"
               label="FROM"
@@ -17,11 +17,12 @@
               ></b-form-datepicker>
             </b-form-group>
           </b-col>
-          <b-col md="3">
+          <b-col  xl="3" sm="6" cols="12" class="mb-2 mb-xl-0">
             <b-form-group
               id="to"
               label="TO"
-              label-cols="2"
+              label-cols-sm="2"
+              label-cols="3"
             >
               <b-form-datepicker
                 id="to-date"
@@ -31,7 +32,7 @@
               ></b-form-datepicker>
             </b-form-group>
           </b-col>
-          <b-col md="2">
+          <b-col xl="2" lg="3" sm="4" cols="12" class="my-lg-auto mb-2">
             <b-form-group
               id="self-bought"
               label-cols="0"
@@ -44,7 +45,7 @@
               </b-form-checkbox>
             </b-form-group>
           </b-col>
-          <b-col md="2">
+          <b-col xl="2" lg="3" sm="4" cols="12" class="my-lg-auto mb-2">
             <b-form-group
               id="put-in-you"
               label-cols="0"
@@ -57,7 +58,7 @@
               </b-form-checkbox>
             </b-form-group>
           </b-col>
-          <b-col md="2">
+          <b-col xl="2" lg="6" sm="4" cols="12" class="mb-2 mb-lg-0">
             <b-button
               variant="secondary"
               id="add"
@@ -322,9 +323,17 @@ export default class TransactionsComponent extends Vue {
     margin-left: 1rem;
   }
 
-  @include media-breakpoint-down(xs) {
-    .icon {
-      margin-left: 0;
+  .card-title {
+    margin-bottom: 1rem;
+
+    > .row {
+      color: black;
     }
   }
+
+    @include media-breakpoint-down(xs) {
+      .icon {
+        margin-left: 0;
+      }
+    }
 </style>
