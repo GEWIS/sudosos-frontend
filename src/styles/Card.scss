@@ -3,12 +3,28 @@
   font-size: 1rem;
   margin-bottom: 2rem;
   text-transform: uppercase;
-}
 
-.card-title > .btn.btn-primary {
-  background-color: $gewis-red;
-  font-family: 'Raleway', sans-serif;
-  float: right;
+  > .btn.btn-primary {
+    background-color: $gewis-red;
+    font-family: 'Raleway', sans-serif;
+    float: right;
+    border-color: $gewis-red;
+    border-radius: 3px;
+  }
+
+  > .btn.btn-primary:hover {
+    border-color: $gewis-red;
+    color: $gewis-red;
+    background-color: $text-primary;
+  }
+
+  > .btn.btn-primary:focus {
+    box-shadow: 0 0 0 0.2rem $gewis-red-shadow;
+  }
+
+  > .form-control {
+    border: 3px solid red !important;
+  }
 }
 
 .card {

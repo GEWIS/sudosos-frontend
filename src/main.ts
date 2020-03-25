@@ -3,7 +3,16 @@ import BootstrapVue from 'bootstrap-vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome';
 import {
-  faCoffee, faChild, faCircle, faArchive, faCheckCircle, faPencilAlt, faTimes, faPlus, faInfoCircle,
+  faCoffee,
+  faChild,
+  faCircle,
+  faArchive,
+  faCheckCircle,
+  faPencilAlt,
+  faTimes,
+  faPlus,
+  faInfoCircle,
+  faFileExport,
 } from '@fortawesome/free-solid-svg-icons';
 import App from './App.vue';
 import router from './router';
@@ -25,6 +34,7 @@ library.add(
   faTimes,
   faPlus,
   faInfoCircle,
+  faFileExport,
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);

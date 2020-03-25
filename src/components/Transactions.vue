@@ -2,13 +2,71 @@
   <div>
     <b-card>
       <b-card-title>
-        <b-form-group
-          id="from"
-          label="VAN"
-          label-cols="3"
-        >
-          <b-form-datepicker id="from-date" v-model="fromDate"></b-form-datepicker>
-        </b-form-group>
+        <b-row>
+          <b-col md="3">
+            <b-form-group
+              id="from"
+              label="FROM"
+              label-cols="3"
+            >
+              <b-form-datepicker
+                id="from-date"
+                v-model="fromDate"
+                locale="en-NL"
+                :date-format-options="{year: 'numeric', month: 'long', day: 'numeric'}"
+              ></b-form-datepicker>
+            </b-form-group>
+          </b-col>
+          <b-col md="3">
+            <b-form-group
+              id="to"
+              label="TO"
+              label-cols="2"
+            >
+              <b-form-datepicker
+                id="to-date"
+                v-model="toDate"
+                locale="en-NL"
+                :date-format-options="{year: 'numeric', month: 'long', day: 'numeric'}"
+              ></b-form-datepicker>
+            </b-form-group>
+          </b-col>
+          <b-col md="2">
+            <b-form-group
+              id="self-bought"
+              label-cols="0"
+              v-model="selfBought"
+            >
+              <b-form-checkbox
+                id="self-bought-input"
+              >
+                Self Bought
+              </b-form-checkbox>
+            </b-form-group>
+          </b-col>
+          <b-col md="2">
+            <b-form-group
+              id="put-in-you"
+              label-cols="0"
+              v-model="putInByYou"
+            >
+              <b-form-checkbox
+                id="put-in-by-you"
+              >
+                Self Bought
+              </b-form-checkbox>
+            </b-form-group>
+          </b-col>
+          <b-col md="2">
+            <b-button
+              variant="secondary"
+              id="add"
+              >
+              <font-awesome-icon icon="file-export"></font-awesome-icon> Export to CSV
+            </b-button>
+          </b-col>
+        </b-row>
+
       </b-card-title>
       <b-card-body>
         <b-table stacked="sm" small borderless thead-class="table-header table-header-3"
@@ -133,6 +191,8 @@ export default class TransactionsComponent extends Vue {
   transactionList : Transaction[] = [];
 
   fromDate: Date = new Date();
+
+  toDate: Date = new Date();
 
   /*
     Fields that should be shown from the transactionList
@@ -260,10 +320,6 @@ export default class TransactionsComponent extends Vue {
   .icon {
     color: $gewis-grey;
     margin-left: 1rem;
-  }
-
-  th:nth-of-type(2) {
-    display: none;
   }
 
   @include media-breakpoint-down(xs) {
