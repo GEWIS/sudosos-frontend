@@ -49,13 +49,15 @@
           label="Duration"
           label-align="left"
           label-for="duration"
+          :state="durationState"
+          :invalid-feedback="durationInvalid"
         >
           <b-form-input
             id="duration"
             name="duration"
             type="number"
             v-model="duration"
-            v-bind:state="Boolean(duration) && duration > 0"
+            :state="durationState"
           ></b-form-input>
         </b-form-group>
 
@@ -203,6 +205,17 @@ export default class AdvertisementsList extends Vue {
      */
     static parseTime(value: number):String {
       return (value < 10 ? '0' : '') + value;
+    }
+
+    get durationState(): boolean {
+      return this.duration > 0 && !Number.isNaN(this.duration.valueOf());
+    }
+
+    get durationInvalid(): string {
+      if (!this.durationState) {
+        return 'Please enter a valid number larger than 0';
+      }
+      return '';
     }
 
     beforeMount() {

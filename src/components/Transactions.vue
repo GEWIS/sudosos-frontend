@@ -1,6 +1,15 @@
 <template>
   <div>
     <b-card>
+      <b-card-title>
+        <b-form-group
+          id="from"
+          label="VAN"
+          label-cols="3"
+        >
+          <b-form-datepicker id="from-date" v-model="fromDate"></b-form-datepicker>
+        </b-form-group>
+      </b-card-title>
       <b-card-body>
         <b-table stacked="sm" small borderless thead-class="table-header table-header-3"
                  :items="transactionList" :fields="fields" :tbody-tr-class="setRowClass">
@@ -122,6 +131,8 @@ export default class TransactionsComponent extends Vue {
   @Prop({ type: Object as () => User }) private user!: User;
 
   transactionList : Transaction[] = [];
+
+  fromDate: Date = new Date();
 
   /*
     Fields that should be shown from the transactionList
