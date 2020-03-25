@@ -63,10 +63,13 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
 }
 
 .title-form {
-
     .b-form-datepicker {
         > button {
-            display: none !important;
+            padding: 0;
+
+            > svg {
+                display: none;
+            }
         }
 
         > label {
