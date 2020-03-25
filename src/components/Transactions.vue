@@ -71,7 +71,8 @@
       </b-card-title>
       <b-card-body>
         <b-table stacked="sm" small borderless thead-class="table-header table-header-3"
-                 :items="transactionList" :fields="fields" :tbody-tr-class="setRowClass">
+                 :items="transactionList" :fields="fields" :tbody-tr-class="setRowClass"
+                 :filter="filterWay" :filter-function="filterRows">
           <template v-slot:cell(formattedDate)="data">
             <!-- Check if this is a date row, if not make it clickable -->
             <div v-if="/\d{2}-\d{2}-\d{4}.\(\w*\)/.test(data.item.id)">
@@ -106,7 +107,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import {
+  Component, Prop, Vue, Watch,
+} from 'vue-property-decorator';
 import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
 import { SubTransaction } from '@/entities/SubTransaction';
@@ -144,7 +147,7 @@ function fetchTransactions(user: User) : Transaction[] {
       activityId: 'BAKwiekent',
       subTransactions: [],
       comment: 'Fustje bij ontbijt',
-      createdAt: new Date(),
+      createdAt: new Date('February 2, 2020 05:07:00'),
       updatedAt: new Date(),
     } as Transaction,
     {
@@ -193,7 +196,13 @@ export default class TransactionsComponent extends Vue {
 
   fromDate: Date = new Date();
 
+  filterWay: String | null = null;
+
   toDate: Date = new Date();
+
+  selfBought: Boolean = false;
+
+  putInByYou: Boolean = false;
 
   /*
     Fields that should be shown from the transactionList
@@ -242,6 +251,16 @@ export default class TransactionsComponent extends Vue {
   }
 
   /*
+    Filters the rows based time constraints and user selected options
+  */
+  filterRows(data: Transaction, prop: String) : boolean {
+    const dateFrom = new Date(`${this.fromDate} 00:00:00`);
+    const dateTo = new Date(`${this.toDate.toString()} 23:59:59`);
+
+    return data.createdAt >= dateFrom && data.createdAt <= dateTo;
+  }
+
+  /*
     formatTransactions add rows for each date and formats the dates into a nicer format that we
     want to use for displaying the dates
 
@@ -280,7 +299,7 @@ export default class TransactionsComponent extends Vue {
           activityId: '',
           subTransactions: [],
           comment: '',
-          createdAt: new Date(),
+          createdAt: date,
           updatedAt: new Date(),
           formattedDate: fDate,
         } as Transaction;
@@ -299,6 +318,16 @@ export default class TransactionsComponent extends Vue {
 
   static parseTime(value: number): string {
     return (value < 10 ? '0' : '') + value;
+  }
+
+  @Watch('fromDate')
+  onFromDateChanged(value: Date, old: Date) : void {
+    this.filterWay = value.toString();
+  }
+
+  @Watch('toDate')
+  onToDateChanged(value: Date, old: Date) : void {
+    this.filterWay = value.toString();
   }
 }
 </script>
