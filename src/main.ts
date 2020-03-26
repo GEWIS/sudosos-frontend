@@ -12,6 +12,7 @@ import {
   faTimes,
   faPlus,
   faInfoCircle,
+  faTimesCircle,
   faFileExport,
 } from '@fortawesome/free-solid-svg-icons';
 import App from './App.vue';
@@ -34,6 +35,7 @@ library.add(
   faTimes,
   faPlus,
   faInfoCircle,
+  faTimesCircle,
   faFileExport,
 );
 

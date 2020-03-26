@@ -40,7 +40,13 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
 .btn.btn-primary:focus {
     background-color: $gewis-red;
     border-color: $gewis-red;
+    color: $text-primary;
     box-shadow: 0 0 0 0.2rem $gewis-red-shadow;
+}
+
+.btn.btn-primary:active {
+    background-color: $gewis-red !important;
+    border-color: $gewis-red !important;
 }
 
 .btn.btn-secondary {
@@ -59,11 +65,19 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
 .btn.btn-secondary:focus {
     background-color: $gewis-grey;
     border-color: $gewis-grey;
+    color: $text-primary;
     box-shadow: 0 0 0 0.2rem $gewis-grey-shadow;
+}
+
+.btn.btn-secondary:active {
+    background-color: $gewis-grey !important;
+    border-color: $gewis-grey !important;
 }
 
 .title-form {
     .b-form-datepicker {
+        border: 1px solid $gewis-grey-shadow;
+
         > button {
             padding: 0;
 
@@ -76,6 +90,11 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
             padding-left: 0.75rem !important;
             text-transform: initial;
             color: black;
+        }
+
+        .form-control:focus {
+            border: 1px solid $gewis-grey;
+            box-shadow: 0 0 0 0.2rem $gewis-grey-shadow;
         }
 
         > label::after {
@@ -92,8 +111,9 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
         }
     }
 
-    .row > div > :first-child {
-        margin: auto 0;
+    .b-form-datepicker:focus-within {
+        box-shadow: none;
+        border: 1px solid $gewis-grey-shadow;
     }
 
     .custom-checkbox {
