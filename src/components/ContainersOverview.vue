@@ -1,12 +1,12 @@
 <template>
-  <div class="container-box">
-    <h4>Containers</h4>
+  <b-col class="container-box">
+    <h5 class="ml-lg-3 em-title">Containers</h5>
     <b-form-group>
       <div v-for="container in containers" :key="container.con_id">
         <container :value="container.con_id"></container>
       </div>
     </b-form-group>
-  </div>
+  </b-col>
 
 </template>
 

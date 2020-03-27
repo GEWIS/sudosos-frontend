@@ -4,31 +4,41 @@
   border-color: $gewis-red;
 }
 
+.em-title {
+  color: $gewis-red;
+  text-transform: uppercase;
+}
+
 .container-head {
-  background-color: $gewis-grey;
+  background-color: $gewis-grey-light;
   margin-top: 0.1em;
   width: available;
 }
 
 .container-title {
   width: 100%;
+  margin-left: 0.5rem;
 }
 
 .icon-space {
   margin-top: 0.3em;
-  margin-right: -0.8em;
+  margin-right: 1rem;
 }
 
 .product {
-  background-color: $gewis-grey-shadow;
+  background-color: $gewis-grey-light;
   border: 1px solid #1b4b72;
-  margin: 0.1em;
+  width: 8rem;
+  margin: 0.2rem;
 }
 
 .product-image {
+  margin-top: 0.1rem;
+  margin-bottom: 0.1rem;
 }
 
 .product-name {
-  color: $gewis-red;
+  width: available;
+  background: $gewis-grey-accent;
 }
 
