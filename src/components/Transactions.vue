@@ -273,6 +273,8 @@ export default class TransactionsComponent extends Vue {
 
     transactionList: Transaction[] = [];
 
+    filteredTransactions: Transaction[] = [];
+
     fromDate: String = '';
 
     toDate: String = '';
@@ -315,11 +317,7 @@ export default class TransactionsComponent extends Vue {
      */
     setRowClass(item: Transaction, type: string): String {
       if (type === 'row' && item.formattedDate !== undefined) {
-        // Regular expression that will match 00-00-0000 (word) to find transaction rows that are
-        // date rows.
-        const re = /\d{2}-\d{2}-\d{4}.\(\w*\)/;
-
-        if (re.test(item.formattedDate.toString())) {
+        if (TransactionsComponent.checkFormattedDate(item.formattedDate)) {
           return 'date-row';
         }
         return 'transaction-row';
@@ -404,6 +402,11 @@ export default class TransactionsComponent extends Vue {
         putInFor = matchFound && date;
       }
 
+      if ((self || putInBy || putInFor || date)
+        && !TransactionsComponent.checkFormattedDate(data.formattedDate || '')) {
+        this.filteredTransactions.push(data);
+      }
+
       // Check if either both selfBought or putInByYou are true or either one of them.
       if (this.selfBought || this.putInByYou || this.putInForYou) {
         return self || putInBy || putInFor;
@@ -415,7 +418,7 @@ export default class TransactionsComponent extends Vue {
         return self || putInFor;
       }
       if (this.putInByYou || this.putInByYou) {
-        return putInFor || putInBy;
+        return putInBy || putInFor;
       }
       if (this.selfBought) {
         return self;
@@ -502,6 +505,14 @@ export default class TransactionsComponent extends Vue {
       return transactions;
     };
 
+    static checkFormattedDate(date : String) : boolean {
+      // Regular expression that will match 00-00-0000 (word) to find transaction rows that are
+      // date rows.
+      const re = /\d{2}-\d{2}-\d{4}.\(\w*\)/;
+
+      return re.test(date.toString());
+    }
+
     static parseTime(value: number): string {
       return (value < 10 ? '0' : '') + value;
     }
@@ -529,6 +540,11 @@ export default class TransactionsComponent extends Vue {
     @Watch('putInForYou')
     onPutInForYouChanged(value: Boolean, old: Boolean) : void {
       this.filterWay = value.toString();
+    }
+
+    @Watch('filterWay')
+    onFilterWayChanged(value: String, old: String) : void {
+      this.filteredTransactions = [];
     }
 }
 </script>
