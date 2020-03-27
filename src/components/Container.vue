@@ -1,25 +1,28 @@
 <template>
   <div class="container-block">
     <div class="container-head container d-inline-flex">
-      <b-input-group>
+      <b-input-group style="width: 5%" class="cb_space">
         <!-- TODO: Implement selecting -->
-        <b-form-checkbox inline :id="'cb_' + containerId" class="cb_space"></b-form-checkbox>
-        <div v-b-toggle="containerId" v-on:click="isOpen = !isOpen">
+        <b-form-checkbox :id="'cb_' + containerId"></b-form-checkbox>
+      </b-input-group>
+        <div v-b-toggle="containerId"
+             v-on:click="isOpen = !isOpen"
+             class="d-inline container-title">
           <div class="d-inline">
             <span>{{ containerId }}</span>
           </div>
-          <div class="d-inline text-right">
-            <font-awesome-icon pull="right" icon="caret-down" v-show="!isOpen"></font-awesome-icon>
-            <font-awesome-icon pull="right" icon="caret-up" v-show="isOpen"></font-awesome-icon>
-          </div>
+            <font-awesome-icon pull="right" icon="angle-down"
+              v-show="!isOpen" class="icon-space"></font-awesome-icon>
+            <font-awesome-icon pull="right" icon="angle-up"
+              v-show="isOpen" class="icon-space"></font-awesome-icon>
         </div>
-      </b-input-group>
+
     </div>
     <b-collapse :id="containerId" class="mt-1">
       <b-container fluid="md">
         <!-- TODO: fix images -->
         <b-row>
-          <b-col v-for="item in items" :key="item.id" class="itemSpace">
+          <b-col v-for="item in items" :key="item.id" class="product">
             {{ item.name }}
             <img v-bind:src="item.img" />
           </b-col>
@@ -54,18 +57,6 @@ export default {
 };
 </script>
 
-<style scoped>
-  .container-head {
-    background-color: silver;
-    margin-top: 10px;
-  }
-  .cb_space {
-    margin-right: 0.1rem;
-  }
-
-  .itemSpace {
-    background-color: #DFDFDF;
-    border: 1px solid #1b4b72;
-    margin: 0.1em;
-  }
+<style scoped lang="scss">
+  @import "./src/styles/Containers.scss";
 </style>

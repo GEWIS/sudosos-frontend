@@ -14,6 +14,8 @@ import {
   faInfoCircle,
   faTimesCircle,
   faFileExport,
+  faAngleUp,
+  faAngleDown,
 } from '@fortawesome/free-solid-svg-icons';
 import App from './App.vue';
 import router from './router';
@@ -37,6 +39,8 @@ library.add(
   faInfoCircle,
   faTimesCircle,
   faFileExport,
+  faAngleUp,
+  faAngleDown,
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);

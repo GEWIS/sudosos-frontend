@@ -28,18 +28,6 @@ export default {
 };
 </script>
 
-<style scoped>
-  .container-box {
-    border: 1px;
-    border-style: solid;
-    border-color: #D40000;
-    width: 350px;
-  }
-  .container-head {
-    margin-bottom: 10px;
-    background-color: silver;
-  }
-  .cb_space {
-    margin-right: 0.1rem;
-  }
+<style scoped lang="scss">
+@import "./src/styles/Containers.scss";
 </style>

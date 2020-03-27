@@ -1,0 +1,30 @@
+.container-box {
+  border: 1px;
+  border-style: solid;
+  border-color: $gewis-red;
+  width: 350px;
+}
+
+.container-head {
+  background-color: $gewis-grey;
+  margin-top: 0.1em;
+}
+
+.cb_space {
+  margin-right: 0.1rem;
+}
+
+.container-title {
+  width: 100%;
+}
+
+.icon-space {
+  margin-top: 0.3em;
+  margin-right: -0.8em;
+}
+
+.product {
+  background-color: $gewis-grey-shadow;
+  border: 1px solid #1b4b72;
+  margin: 0.1em;
+}
