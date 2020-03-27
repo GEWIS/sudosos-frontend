@@ -209,11 +209,14 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
     }
 
     button {
-        background-color: white !important;
-        color: $gewis-grey !important;
-        border: none !important;
-        padding: .375rem 0.5rem !important;
         text-transform: uppercase;
+    }
+
+    button.btn-empty {
+        background-color: white;
+        color: $gewis-grey;
+        border: none;
+        padding: .375rem 0.5rem;
     }
 
     input::-webkit-outer-spin-button,

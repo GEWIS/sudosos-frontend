@@ -1,5 +1,10 @@
 <template>
   <div>
+    <ConfirmationModal
+      v-bind:method="method"
+      v-bind:url="confirmUrl"
+      v-bind:reason="reason">
+    </ConfirmationModal>
     <b-card>
       <b-card-title>
         <b-button
@@ -23,7 +28,7 @@
             <a v-b-modal.modal-add v-on:click="setAdvertisement('put', data.value)">
               <font-awesome-icon icon="pencil-alt" class="ml-2 icon click-icon"></font-awesome-icon>
             </a>
-            <a :to="data.value">
+            <a v-b-modal.confirmation v-on:click="setConfirmation(data.value)" >
               <font-awesome-icon icon="times" class="ml-2 icon click-icon"></font-awesome-icon>
             </a>
           </template>
@@ -31,7 +36,7 @@
       </b-card-body>
     </b-card>
     <b-card-footer>
-      YEET
+      Hier moet nog pagination in dus dat komt nog een keertje hier
     </b-card-footer>
 
     <b-modal
@@ -94,6 +99,21 @@
           ></b-form-file>
         </b-form-group>
       </div>
+
+      <template v-slot:modal-footer="{ ok, cancel }">
+        <b-button
+          variant="primary"
+          class="btn-empty"
+          @click="cancel()"
+        >cancel
+        </b-button>
+        <b-button
+          variant="primary"
+          class="btn-empty"
+          @click="ok()">
+          save
+        </b-button>
+      </template>
     </b-modal>
   </div>
 </template>
@@ -102,6 +122,7 @@
 import {
   Component, Prop, Vue, Watch,
 } from 'vue-property-decorator';
+import ConfirmationModal from '@/components/ConfirmationModal.vue';
 import { Advertisement } from '@/entities/Advertisement';
 import { User } from '@/entities/User';
 
@@ -131,8 +152,9 @@ function fetchAdvertisements() : Advertisement[] {
 
   return advertisements.slice(0, 3);
 }
-
-  @Component
+@Component({
+  components: { ConfirmationModal },
+})
 export default class AdvertisementsList extends Vue {
     @Prop({ type: Object as () => User }) private user!: User;
 
@@ -147,6 +169,10 @@ export default class AdvertisementsList extends Vue {
     method: string = '';
 
     currentActive: string = '';
+
+    confirmUrl: string = '';
+
+    reason: string = '';
 
     getTimeString = (value: Date) => `${AdvertisementsList.parseTime(value.getDate())}-`
                                       + `${AdvertisementsList.parseTime(value.getMonth() + 1)}-`
@@ -197,6 +223,14 @@ export default class AdvertisementsList extends Vue {
       } else {
         this.duration = 0;
         this.active = false;
+      }
+    }
+
+    async setConfirmation(id: string = '-1') {
+      if (id !== '-1') {
+        this.reason = 'Weet je zeker dat je deze advertentie wilt verwijderen?';
+        this.confirmUrl = `/${id}`;
+        this.method = 'del';
       }
     }
 
