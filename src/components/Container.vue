@@ -2,14 +2,14 @@
   <div class="container-block">
     <div class="container-head container d-inline-flex">
       <!-- Checkbox -->
-      <b-input-group style="width: 5%" class="cb_space">
+      <b-input-group style="width: 5%">
         <!-- TODO: Implement selecting -->
         <b-form-checkbox :id="'cb_' + containerId"></b-form-checkbox>
       </b-input-group>
         <!-- The clickable area -->
         <div v-b-toggle="containerId"
              v-on:click="isOpen = !isOpen"
-             class="d-inline container-title">
+             class="d-inline container-title ml-lg-n4 ml-md-n2">
           <div class="d-inline">
             <span>{{ containerId }}</span>
           </div>
