@@ -1,17 +1,17 @@
 <template>
   <b-container fluid="lg">
-  <h1>Saldo page</h1>
-  </b-container>
+      <h1>Point of sale page</h1>
+    </b-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-  @Component({
-    components: {},
-  })
+@Component({
+  components: {},
+})
 
-export default class Saldo extends Vue {
+export default class PointOfSale extends Vue {
 }
 </script>
 
