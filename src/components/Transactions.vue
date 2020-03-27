@@ -481,6 +481,11 @@ export default class TransactionsComponent extends Vue {
     onPutInByYouChanged(value: Boolean, old: Boolean): void {
       this.filterWay = value.toString();
     }
+
+    @Watch('putInForYou')
+    onPutInForYouChanged(value: Boolean, old: Boolean) : void {
+      this.filterWay = value.toString();
+    }
 }
 </script>
 
