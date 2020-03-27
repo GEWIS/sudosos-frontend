@@ -111,6 +111,7 @@
       <b-card-body>
         <b-table stacked="sm" small borderless thead-class="table-header table-header-3"
                  :items="transactionList" :fields="fields" :tbody-tr-class="setRowClass"
+                 details-td-class="test"
                  :filter="filterWay" :filter-function="filterRows">
           <template v-slot:cell(formattedDate)="data">
             <!-- Check if this is a date row, if not make it clickable -->
@@ -132,7 +133,9 @@
           </template>
           <template v-slot:cell(id)="data">
             <!-- Check if this is a date row, if not add clickable info icon -->
-            <a class="cell-link" href="#" v-if="!/\d{2}-\d{2}-\d{4}.\(\w*\)/.test(data.item.id)">
+            <a class="cell-link text-sm-right"
+               href="#"
+               v-if="!/\d{2}-\d{2}-\d{4}.\(\w*\)/.test(data.item.id)">
               <font-awesome-icon icon="info-circle" class="icon"></font-awesome-icon>
             </a>
           </template>
@@ -349,6 +352,9 @@ export default class TransactionsComponent extends Vue {
       let putInFor = false;
       let date: boolean;
 
+      const sold = data.soldToId.toString().split(' ').filter(item => item !== '');
+      const auth = data.authorized.toString().split(' ').filter(item => item !== '');
+
       // First check if there is a date constraint
       if (this.fromDate === '' || this.toDate === '') {
         date = true;
@@ -361,19 +367,41 @@ export default class TransactionsComponent extends Vue {
 
       // Check if there is a selfBought constraint and take date into account
       if (this.selfBought) {
-        self = data.authorized === data.soldToId && date;
+        let matchFound = false;
+
+        sold.forEach((person, i) => {
+          if (person === auth[i]) {
+            matchFound = true;
+          }
+        });
+
+        self = matchFound && date;
       }
 
       // Check if there is a putInByYou constraint and take date into account
       if (this.putInByYou) {
-        putInBy = data.authorized === this.userAccount.firstName
-          && data.authorized !== data.soldToId && date;
+        let matchFound = false;
+
+        auth.forEach((person, i) => {
+          if (person === this.userAccount.firstName && person !== sold[i]) {
+            matchFound = true;
+          }
+        });
+
+        putInBy = matchFound && date;
       }
 
       // Check if there is a putInForYou constraint and take date into account
       if (this.putInForYou) {
-        putInFor = data.authorized !== this.userAccount.firstName
-          && data.authorized !== data.soldToId && date;
+        let matchFound = false;
+
+        auth.forEach((person, i) => {
+          if (person !== this.userAccount.firstName && person !== sold[i]) {
+            matchFound = true;
+          }
+        });
+
+        putInFor = matchFound && date;
       }
 
       // Check if either both selfBought or putInByYou are true or either one of them.
@@ -420,7 +448,9 @@ export default class TransactionsComponent extends Vue {
         'Sunday',
       ];
 
-      const transactions: Transaction[] = [];
+      let transactions: Transaction[] = [];
+      let dateTransactions: Transaction[] = [];
+      let dateRowTransaction: Transaction = {} as Transaction;
       t.forEach((transaction) => {
         const date = transaction.createdAt;
         const fDate = `${TransactionsComponent.parseTime(date.getDate())}-`
@@ -433,12 +463,18 @@ export default class TransactionsComponent extends Vue {
         if (!result) {
           dates.push(fDate);
 
+          if (dates.length > 1) {
+            transactions.push(dateRowTransaction);
+            transactions = transactions.concat(dateTransactions);
+            dateTransactions = [];
+          }
+
           const trans: Transaction = {
             id: fDate,
-            soldToId: transaction.soldToId,
-            authorized: transaction.authorized,
+            soldToId: '',
+            authorized: '',
             totalPrice: 0,
-            activityId: transaction.activityId,
+            activityId: '',
             subTransactions: [],
             comment: '',
             createdAt: date,
@@ -446,14 +482,22 @@ export default class TransactionsComponent extends Vue {
             formattedDate: fDate,
           } as Transaction;
 
-          transactions.push(trans);
+          dateRowTransaction = trans;
         }
 
         const trans: Transaction = transaction;
         trans.formattedDate = time;
+        dateRowTransaction.soldToId = `${dateRowTransaction.soldToId} ${transaction.soldToId}`;
+        dateRowTransaction.authorized = `${dateRowTransaction.authorized} ${transaction.authorized}`;
+        dateRowTransaction.activityId = `${dateRowTransaction.activityId} ${transaction.activityId}`;
 
-        transactions.push(trans);
+        dateTransactions.push(trans);
       });
+
+      if (dateRowTransaction.activityId !== '') {
+        transactions.push(dateRowTransaction);
+        transactions = transactions.concat(dateTransactions);
+      }
 
       return transactions;
     };
@@ -506,7 +550,7 @@ export default class TransactionsComponent extends Vue {
 
   .icon {
     color: $gewis-grey;
-    margin-left: 1rem;
+    margin: 0 1rem;
   }
 
   .card-title {
@@ -525,7 +569,7 @@ export default class TransactionsComponent extends Vue {
 
   @include media-breakpoint-down(xs) {
     .icon {
-      margin-left: 0;
+      margin: 0;
     }
 
     .button {
