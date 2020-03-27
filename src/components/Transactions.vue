@@ -88,6 +88,7 @@
             <b-button
               variant="secondary"
               id="add"
+              v-on:click="downloadCSV"
             >
               <font-awesome-icon icon="file-export"></font-awesome-icon>
               Export to CSV
@@ -342,6 +343,38 @@ export default class TransactionsComponent extends Vue {
     }
 
     /*
+      Method that takes the current data rows and outputs a downloadable csv file
+    */
+    downloadCSV() : void {
+      let csv = '';
+      let keys = '';
+      let downloadSet : Transaction[];
+      if (this.filteredTransactions.length > 0) {
+        downloadSet = this.filteredTransactions;
+      } else {
+        downloadSet = this.transactionList.filter(t => !TransactionsComponent.checkFormattedDate(t.formattedDate || ''));
+      }
+
+      keys = Object.keys(downloadSet[0]).join(',');
+
+      csv += `${keys}\r\n`;
+
+      downloadSet.forEach((transaction) => {
+        csv += `${Object.values(transaction).join(',')}\r\n`;
+      });
+
+      const csvFile = new Blob([csv], { type: 'text/csv' });
+
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(csvFile);
+      link.style.display = 'none';
+      link.download = 'Transactions.csv';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    /*
       Filters the rows based time constraints and user selected options
     */
     filterRows(data: Transaction, prop: String): boolean {
@@ -402,32 +435,15 @@ export default class TransactionsComponent extends Vue {
         putInFor = matchFound && date;
       }
 
-      if ((self || putInBy || putInFor || date)
-        && !TransactionsComponent.checkFormattedDate(data.formattedDate || '')) {
-        this.filteredTransactions.push(data);
-      }
-
       // Check if either both selfBought or putInByYou are true or either one of them.
       if (this.selfBought || this.putInByYou || this.putInForYou) {
+        if ((self || putInBy || putInFor)
+          && !TransactionsComponent.checkFormattedDate(data.formattedDate || '')
+          && !this.filteredTransactions.includes(data)) {
+          this.filteredTransactions.push(data);
+        }
+
         return self || putInBy || putInFor;
-      }
-      if (this.selfBought || this.putInByYou) {
-        return self || putInBy;
-      }
-      if (this.selfBought || this.putInForYou) {
-        return self || putInFor;
-      }
-      if (this.putInByYou || this.putInByYou) {
-        return putInBy || putInFor;
-      }
-      if (this.selfBought) {
-        return self;
-      }
-      if (this.putInByYou) {
-        return putInBy;
-      }
-      if (this.putInForYou) {
-        return putInFor;
       }
 
       return date;
@@ -519,32 +535,32 @@ export default class TransactionsComponent extends Vue {
 
     @Watch('fromDate')
     onFromDateChanged(value: Date, old: Date): void {
+      this.filteredTransactions = [];
       this.filterWay = value.toString();
     }
 
     @Watch('toDate')
     onToDateChanged(value: Date, old: Date): void {
+      this.filteredTransactions = [];
       this.filterWay = value.toString();
     }
 
     @Watch('selfBought')
     onSelfBoughtChanged(value: Boolean, old: Boolean): void {
+      this.filteredTransactions = [];
       this.filterWay = value.toString();
     }
 
     @Watch('putInByYou')
     onPutInByYouChanged(value: Boolean, old: Boolean): void {
+      this.filteredTransactions = [];
       this.filterWay = value.toString();
     }
 
     @Watch('putInForYou')
     onPutInForYouChanged(value: Boolean, old: Boolean) : void {
-      this.filterWay = value.toString();
-    }
-
-    @Watch('filterWay')
-    onFilterWayChanged(value: String, old: String) : void {
       this.filteredTransactions = [];
+      this.filterWay = value.toString();
     }
 }
 </script>
