@@ -2,12 +2,12 @@
   border: 1px;
   border-style: solid;
   border-color: $gewis-red;
-  width: 350px;
 }
 
 .container-head {
   background-color: $gewis-grey;
   margin-top: 0.1em;
+  width: available;
 }
 
 .cb_space {
@@ -28,3 +28,11 @@
   border: 1px solid #1b4b72;
   margin: 0.1em;
 }
+
+.product-image {
+}
+
+.product-name {
+  color: $gewis-red;
+}
+

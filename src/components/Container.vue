@@ -1,30 +1,40 @@
 <template>
   <div class="container-block">
     <div class="container-head container d-inline-flex">
+      <!-- Checkbox -->
       <b-input-group style="width: 5%" class="cb_space">
         <!-- TODO: Implement selecting -->
         <b-form-checkbox :id="'cb_' + containerId"></b-form-checkbox>
       </b-input-group>
+        <!-- The clickable area -->
         <div v-b-toggle="containerId"
              v-on:click="isOpen = !isOpen"
              class="d-inline container-title">
           <div class="d-inline">
             <span>{{ containerId }}</span>
           </div>
-            <font-awesome-icon pull="right" icon="angle-down"
+          <font-awesome-icon pull="right" icon="angle-down"
               v-show="!isOpen" class="icon-space"></font-awesome-icon>
-            <font-awesome-icon pull="right" icon="angle-up"
+          <font-awesome-icon pull="right" icon="angle-up"
               v-show="isOpen" class="icon-space"></font-awesome-icon>
         </div>
-
     </div>
+
+    <!-- The container itself -->
     <b-collapse :id="containerId" class="mt-1">
       <b-container fluid="md">
         <!-- TODO: fix images -->
         <b-row>
           <b-col v-for="item in items" :key="item.id" class="product">
-            {{ item.name }}
-            <img v-bind:src="item.img" />
+            <b-col>
+              <b-row class="product-image">
+                  <img v-bind:src="item.img" />
+              </b-row>
+              <b-row class="product-name">
+                {{ item.name }}
+              </b-row>
+            </b-col>
+
           </b-col>
           <!--<b-col> (this is to test the compiling)
             <img src="../assets/img/beugel.png" height="15%"/>
