@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid="md">
+  <b-container fluid="lg">
     <h1>Advertisements page</h1>
     <AdvertisementsList></AdvertisementsList>
   </b-container>
@@ -20,5 +20,4 @@ export default class Advertisements extends Vue {
 </script>
 
 <style lang="scss" scoped>
-
 </style>
