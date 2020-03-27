@@ -411,13 +411,13 @@ export default class TransactionsComponent extends Vue {
     formatTransactions: Function = (t: Transaction[]) => {
       const dates: String[] = [];
       const weekDays: String[] = [
-        'monday',
-        'tuesday',
-        'wednesday',
-        'thursday',
-        'friday',
-        'saturday',
-        'sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday',
       ];
 
       const transactions: Transaction[] = [];
