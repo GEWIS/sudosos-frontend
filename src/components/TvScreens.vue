@@ -104,9 +104,7 @@ export default class TvScreens extends Vue {
   }
 
   stopBorrelMode() {
-    console.log(this.enabled);
     this.enabled = false;
-    console.log(this.enabled);
     this.endTimeString = '';
   }
 
@@ -123,6 +121,10 @@ export default class TvScreens extends Vue {
 <style scoped lang="scss">
   @import "~bootstrap/scss/bootstrap";
   @import './src/styles/Card.scss';
+
+  .card-title {
+    color: black;
+  }
 
   .body-mode-disabled {
     color: red;
