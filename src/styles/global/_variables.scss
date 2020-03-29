@@ -1,1 +1,11 @@
-$text_primary: hsl(0, 0%, 100%);
+// Colors
+$text-primary: hsl(0, 0%, 100%);
+$gewis-red: rgba(212, 0, 0, 1);
+$gewis-red-shadow: rgba(212, 0, 0, 0.5);
+$gewis-grey: rgba(150, 150, 150, 1);
+$gewis-grey-shadow: rgba(150, 150, 150, 0.5);
+
+// Measurements
+$navbar-height: 80px;
+$footer-height: 60px;
+$border-radius: .2rem;
