@@ -35,8 +35,9 @@
     <b-card-body>
       <p v-if="enabled">Borrel modus op de TV schermen staat momenteel
         <span class="body-mode-enabled">AAN</span>. Borrel modus wordt vanzelf uitgeschakeld om
-        {{ endTime.toLocaleString() }}. Je kunt de tijd bovenin veranderen of borrel modus
-        vroegtijdig beëindigen door op "Borrel modus uitschakelen" te klikken.
+        {{ endTime.toLocaleString('en-NL').replace(/\//g, '-') }}.
+        Je kunt de tijd bovenin veranderen of borrel modus vroegtijdig beëindigen door op
+        "Borrel modus uitschakelen" te klikken.
       </p>
       <p v-if="!enabled">Borrel modus op de TV schermen staat momenteel
         <span class="body-mode-disabled">UIT</span>. Je kunt borrel modus aanzetten door bovenin een
@@ -89,15 +90,16 @@ export default class TvScreens extends Vue {
   beforeMount() {
     this.endTime = fetchTvScreensBorrelModeEndTime();
     if (this.endTime !== null) {
-      this.endTimeString = `${this.endTime.getHours()}:${this.endTime.getMinutes()}:${this.endTime.getSeconds()}`;
+      this.endTimeString = `${this.endTime.getHours()}:`
+        + `${this.endTime.getMinutes()}:`
+        + `${this.endTime.getSeconds()}`;
       this.enabled = true;
     }
   }
 
   confirmBorrelModeTime() {
     this.endTime = parseTimeStringToFutureDate(this.endTimeString);
-    // eslint-disable-next-line no-restricted-globals
-    if (!isNaN(this.endTime.getTime())) {
+    if (!Number.isNaN(this.endTime.getTime())) {
       this.enabled = true;
       // Send data to server
     }
@@ -107,14 +109,6 @@ export default class TvScreens extends Vue {
     this.enabled = false;
     this.endTimeString = '';
   }
-
-  /* @Watch('endTimeString')
-  onEndTimeStringChanged(value: string, old: string): void {
-    if (value !== '') {
-      this.endTime = parseTimeStringToFutureDate(value);
-      this.enabled = true;
-    }
-  } */
 }
 </script>
 
