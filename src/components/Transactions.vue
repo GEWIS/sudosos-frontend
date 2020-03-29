@@ -13,6 +13,8 @@
                 id="from-date"
                 v-model="fromDate"
                 locale="en-NL"
+                :right="right"
+                no-flip
                 :date-format-options="{year: 'numeric', month: 'long', day: 'numeric'}"
               ></b-form-datepicker>
             </b-form-group>
@@ -28,6 +30,8 @@
                 id="to-date"
                 v-model="toDate"
                 locale="en-NL"
+                :right="right"
+                no-flip
                 :date-format-options="{year: 'numeric', month: 'long', day: 'numeric'}"
               ></b-form-datepicker>
             </b-form-group>
@@ -288,6 +292,8 @@ export default class TransactionsComponent extends Vue {
 
     putInForYou: Boolean = false;
 
+    right: boolean = false;
+
     /*
       Fields that should be shown from the transactionList
      */
@@ -308,6 +314,30 @@ export default class TransactionsComponent extends Vue {
 
     beforeMount() {
       this.transactionList = this.formatTransactions(fetchTransactions(this.user));
+    }
+
+    /*
+      Mounted currently makes sure that the date drowdowns are located correctly
+    */
+    mounted() {
+      this.checkRight();
+
+      window.addEventListener('resize', () => {
+        this.checkRight();
+      });
+
+      this.$root.$on('bv::dropdown::show', (bvEvent: any) => {
+        this.checkRight();
+      });
+    }
+
+    /*
+      Sets the dropdown location of date pickers according to screen width to make sure they fit
+    */
+    checkRight() : void {
+      const ms : boolean = window.innerWidth < 700 && window.innerWidth >= 576;
+      const sm : boolean = window.innerWidth < 440;
+      this.right = ms || sm;
     }
 
     /*
@@ -347,7 +377,6 @@ export default class TransactionsComponent extends Vue {
     */
     downloadCSV() : void {
       let csv = '';
-      let keys = '';
       let downloadSet : Transaction[];
       if (this.filteredTransactions.length > 0) {
         downloadSet = this.filteredTransactions;
@@ -355,9 +384,7 @@ export default class TransactionsComponent extends Vue {
         downloadSet = this.transactionList.filter(t => !TransactionsComponent.checkFormattedDate(t.formattedDate || ''));
       }
 
-      keys = Object.keys(downloadSet[0]).join(',');
-
-      csv += `${keys}\r\n`;
+      csv += `${Object.keys(downloadSet[0]).join(',')}\r\n`;
 
       downloadSet.forEach((transaction) => {
         csv += `${Object.values(transaction).join(',')}\r\n`;
@@ -488,7 +515,7 @@ export default class TransactionsComponent extends Vue {
             dateTransactions = [];
           }
 
-          const trans: Transaction = {
+          dateRowTransaction = {
             id: fDate,
             soldToId: '',
             authorized: '',
@@ -500,8 +527,6 @@ export default class TransactionsComponent extends Vue {
             updatedAt: transaction.updatedAt,
             formattedDate: fDate,
           } as Transaction;
-
-          dateRowTransaction = trans;
         }
 
         const trans: Transaction = transaction;
