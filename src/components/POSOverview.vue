@@ -16,7 +16,7 @@
                     v-for="point in myPoints"
                     v-bind:key="point">
                 <b-row class="pos-single-label mb-2 mx-1 py-2">
-                  <b-col class="point-name"
+                  <b-col class="pos-name"
                       cols="11">
                     {{ point.name }}
                   </b-col>
@@ -39,13 +39,12 @@
           <b-card class="pos-card">
             <b-card-title>
               <b-form-row class="justify-content-between">
-                <b-form-group class="section-title">
+                <b-form-group class="section-title mb-0">
                   requested points of sale
                 </b-form-group>
                 <b-form-group
-                  id="processed"
                   label-cols="0"
-                  class="mt-xl-0 mb-xl-3 my-lg-auto"
+                  id="pos-checkbox"
                 >
                   <b-form-checkbox
                     id="processed-input"
@@ -54,7 +53,7 @@
                     :value="true"
                     :unchecked-value="false"
                   >
-                    processed
+                    <div id="pos-checkbox-title"> processed </div>
                   </b-form-checkbox>
                 </b-form-group>
               </b-form-row>
@@ -66,15 +65,18 @@
                     v-for="point in requestedPoints"
                     v-bind:key="point">
                 <b-row class="pos-single-label mb-2 mx-1 py-2">
-                  <b-col class="point-name"
-                      cols="4">
+                  <b-col class="pos-name"
+                      cols="3">
                     {{ point.name }}
                   </b-col>
-                  <b-col cols="3">
+                  <b-col class="pl-0"
+                      cols="4">
                     {{ point.id }}
                   </b-col>
-                  <b-col cols="4">
-                    requestStatus
+                  <b-col class="pl-xl-5"
+                      style="color: green;"
+                      cols="4">
+                    ACCEPTED
                   </b-col>
                   <b-col cols="1">
                     <router-link :to="'pos/' + point.id" class="info-link">
@@ -103,21 +105,21 @@ import { PointOfSale } from '@/entities/PointOfSale';
 function fetchMyPoints(user: User) : PointOfSale[] {
   // testing points
   const points = [{
-    name: 'myName',
+    name: 'posName',
     id: 'myID',
     ownerId: 'myOwnerID',
     createdAt: new Date(),
     updatedAt: new Date(),
   } as PointOfSale,
   {
-    name: 'myName2',
+    name: 'posName2',
     id: 'myID',
     ownerId: 'myOwnerID',
     createdAt: new Date(),
     updatedAt: new Date(),
   } as PointOfSale,
   {
-    name: 'myName3',
+    name: 'posName3',
     id: 'myID',
     ownerId: 'myOwnerID',
     createdAt: new Date(),
@@ -132,21 +134,21 @@ function fetchMyPoints(user: User) : PointOfSale[] {
 function fetchRequestedPoints(user: User) : PointOfSale[] {
   // testing points
   const points = [{
-    name: 'requestedName',
+    name: 'posName',
     id: 'requestedID',
     ownerId: 'requestedOwnerID',
     createdAt: new Date(),
     updatedAt: new Date(),
   } as PointOfSale,
   {
-    name: 'requestedName2',
+    name: 'posName2',
     id: 'requestedID',
     ownerId: 'requestedOwnerID',
     createdAt: new Date(),
     updatedAt: new Date(),
   } as PointOfSale,
   {
-    name: 'requestedName3',
+    name: 'posName3',
     id: 'requestedID',
     ownerId: 'requestedOwnerID',
     createdAt: new Date(),
@@ -183,11 +185,6 @@ export default class POSOverview extends Vue {
     font-weight: bold;
   }
 
-  // processed text color
-  #processed {
-    color: black;
-  }
-
   .info-link {
     display: block;
     color: initial;
@@ -201,7 +198,27 @@ export default class POSOverview extends Vue {
     background-color: #f2f2f2;
   }
 
-  .point-name {
+  .pos-name {
     font-weight: bold;
+  }
+
+  // custom check box locations as it didn't want to listen to me
+  #pos-checkbox {
+    margin-top: -.2rem;
+    margin-bottom: -.2rem;
+  }
+  #pos-checkbox-title {
+    color: black;
+    margin-top: .18rem;
+  }
+
+  @include media-breakpoint-down(lg) {
+    .icon {
+      margin-left: -.5rem;
+    }
+
+    .pos-name {
+      font-size: .91rem;
+    }
   }
 </style>
