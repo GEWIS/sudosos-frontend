@@ -1,10 +1,10 @@
 export interface ContainerData {
-  id: Number;
+  id: String;
   added: Date;
   addedBy: String; // Or User-id
   name: String;
-  open: Date;
-  close: Date;
+  open: String;
+  close: String;
   lastEdit: Date;
   editable: boolean;
 }
