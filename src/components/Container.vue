@@ -4,14 +4,18 @@
       <!-- Checkbox -->
       <b-input-group style="width: 5%">
         <!-- TODO: Implement selecting -->
-        <b-form-checkbox :id="'cb_' + containerId" class="cb"></b-form-checkbox>
+        <b-form-checkbox :id="'cb_' + container.con_id" class="cb"></b-form-checkbox>
       </b-input-group>
         <!-- The clickable area -->
-        <div v-b-toggle="containerId"
+        <div v-b-toggle="container.con_id"
              v-on:click="isOpen = !isOpen"
              class="d-inline container-title">
           <div class="d-inline">
-            <span>{{ containerId }}</span>
+            <span>{{ container.con_id }}
+              <font-awesome-icon icon="pencil-alt" v-show="container.editable"
+              class="edit-icon" size="sm">
+              </font-awesome-icon>
+            </span>
           </div>
           <font-awesome-icon pull="right" icon="angle-down"
               v-show="!isOpen" class="icon-space"></font-awesome-icon>
@@ -21,7 +25,7 @@
     </div>
 
     <!-- The container itself -->
-    <b-collapse :id="containerId" class="mt-1">
+    <b-collapse :id="container.con_id" class="mt-1">
       <b-container>
         <!-- TODO: fix images -->
         <b-row style="width: 100%">
@@ -49,7 +53,6 @@
 export default {
   data() {
     return {
-      containerId: this.value,
       isOpen: false,
       items: [
         { id: 1, name: 'beugel', img: '../assets/img/beugel.png' },
@@ -63,7 +66,7 @@ export default {
       ],
     };
   },
-  props: ['value'],
+  props: ['container'],
 };
 </script>
 

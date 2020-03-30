@@ -3,7 +3,7 @@
     <h5 class="ml-lg-3 em-title">Containers</h5>
     <b-form-group>
       <div v-for="container in containers" :key="container.con_id">
-        <container :value="container.con_id"></container>
+        <container :container="container"></container>
       </div>
     </b-form-group>
   </b-col>
@@ -20,8 +20,8 @@ export default {
   data() {
     return {
       containers: [
-        { con_id: 'a1' },
-        { con_id: 'b2' },
+        { con_id: 'a1', editable: false },
+        { con_id: 'b2', editable: true },
       ],
     };
   },
