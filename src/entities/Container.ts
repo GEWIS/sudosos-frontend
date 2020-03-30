@@ -8,3 +8,4 @@ export interface ContainerData {
   lastEdit: Date;
   editable: boolean;
 }
+// TODO: add the list of products

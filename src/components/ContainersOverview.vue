@@ -4,6 +4,7 @@
     <b-form-group>
       <div v-for="container in containersList" :key="container.id">
         <container :container="container"></container>
+        <container-editor v-if="container.editable" :container="container"></container-editor>
       </div>
     </b-form-group>
   </div>
