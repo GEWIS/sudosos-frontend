@@ -1,7 +1,28 @@
 <template>
     <b-modal :id="'modal_' + container.id">
-      <h5 class="em-title">Container aanpassen</h5>
-      <p> {{ container.name }}</p>
+      <h5 class="em-title">Container {{ container.name }}aanpassen</h5>
+      <b-form-group>
+        <b-form-row>
+          <b-col><b-form-text>Toegevoegd op:</b-form-text></b-col>
+          <b-col><b-form-text>1970-01-01</b-form-text></b-col>
+        </b-form-row>
+        <b-form-row>
+          <b-col><b-form-text>Toegevoegd door:</b-form-text></b-col>
+          <b-col><b-form-text>{{container.addedBy}}</b-form-text></b-col>
+        </b-form-row>
+      </b-form-group>
+      <b-form-row>
+        <b-col><b-form-text>Naam:</b-form-text></b-col>
+        <b-col><b-form-text>{{container.name}}</b-form-text></b-col>
+      </b-form-row>
+      <b-form-row>
+        <b-col><b-form-text>Open van:</b-form-text></b-col>
+        <b-col><b-form-text>{{container.open}}</b-form-text></b-col>
+      </b-form-row>
+      <b-form-row>
+        <b-col><b-form-text>Sluit om:</b-form-text></b-col>
+        <b-col><b-form-text>{{container.close}}</b-form-text></b-col>
+      </b-form-row>
     </b-modal>
 </template>
 
