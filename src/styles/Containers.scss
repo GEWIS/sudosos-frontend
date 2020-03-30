@@ -1,0 +1,50 @@
+.container-box {
+  border: 1px;
+  border-style: solid;
+  border-color: $gewis-red;
+}
+
+.em-title {
+  color: $gewis-red;
+  text-transform: uppercase;
+}
+
+.container-block {
+  margin-bottom: 0.5rem;
+}
+
+.container-head {
+  background-color: $gewis-grey-light;
+  margin-top: 0.1em;
+  width: available;
+}
+
+.container-title {
+  width: 100%;
+  margin-left: 0.5rem;
+}
+
+.icon-space {
+  margin-top: 0.3em;
+  margin-right: 1rem;
+}
+
+.product {
+  background-color: $gewis-grey-light;
+  width: 8rem;
+  margin: 0.2rem;
+}
+
+.product-image {
+  margin-top: 0.1rem;
+  margin-bottom: 0.1rem;
+}
+
+.product-name {
+  width: available;
+  background: $gewis-grey-accent;
+}
+
+.edit-icon {
+  margin-left: 0.3em;
+}
