@@ -10,15 +10,15 @@
     <template v-slot:modal-footer="{ ok, cancel }">
       <b-button
         variant="primary"
-        class="btn-empty"
-        @click="ok()">
-        Confirm
+        id="confirm-cancel"
+        @click="cancel()"
+      >Cancel
       </b-button>
       <b-button
         variant="primary"
-        id="confirm-cancel"
-        @click="cancel()"
-        >Cancel
+        class="btn-empty"
+        @click="ok()">
+        Confirm
       </b-button>
     </template>
   </b-modal>

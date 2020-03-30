@@ -160,11 +160,10 @@
 
     <b-modal
       id="details-modal"
-      ok-title="FLAG TRANSACTION"
-      cancel-title="CANCEL"
-      title="TRANSACTION DETAILS"
+      title="transaction details"
       hide-header-close
       centered
+      size="lg"
       v-if="Object.entries(modalTrans).length !== 0"
     >
       <p>
@@ -172,71 +171,86 @@
       </p>
 
       <b-row>
-        <b-col cols="4">
+        <b-col cols="6" sm="4">
           <p>Totaal</p>
         </b-col>
-        <b-col cols="8">
-          <p>€{{ modalTrans.totalPrice.toPrecision(4) }}</p>
+        <b-col cols="6" sm="8" class="text-right text-sm-left">
+          <p>{{ dinero({amount: modalTrans.totalPrice}).toFormat() }}</p>
         </b-col>
       </b-row>
       <b-row>
-        <b-col cols="4">
+        <b-col cols="6" sm="4">
           <p>Point of sale</p>
         </b-col>
-        <b-col cols="8">
+        <b-col cols="6" sm="8" class="text-right text-sm-left">
           <p>{{ modalTrans.pointOfSale }}</p>
         </b-col>
       </b-row>
       <b-row>
-        <b-col cols="4">
+        <b-col cols="6" sm="4">
           <p>Afgestreept door</p>
         </b-col>
-        <b-col cols="8">
+        <b-col cols="6" sm="8" class="text-right text-sm-left">
           <p>{{ modalTrans.authorized }}</p>
         </b-col>
       </b-row>
       <b-row>
-        <b-col cols="4">
+        <b-col cols="6" sm="4">
           <p>Afgestreept bij</p>
         </b-col>
-        <b-col cols="8">
+        <b-col cols="6" sm="8" class="text-right text-sm-left">
           <p>{{ modalTrans.soldToId }}</p>
         </b-col>
       </b-row>
       <b-row>
-        <b-col cols="4">
+        <b-col cols="6" sm="4">
           <p>Activiteit</p>
         </b-col>
-        <b-col cols="8">
+        <b-col cols="6" sm="8" class="text-right text-sm-left">
           <p>{{ modalTrans.activityId }}</p>
         </b-col>
       </b-row>
       <b-row>
-        <b-col cols="4">
+        <b-col cols="12" sm="4">
           <p>Producten</p>
         </b-col>
-        <b-col cols="8">
+        <b-col cols="12" sm="8" class="total-price">
           <b-row v-for="trans in modalTrans.subTransactions"
                  v-bind:key="trans.productId"
-                 class="total-price">
-            <b-col col="6">
-              <p>{{ `${trans.amount} x ${trans.productId}` }}</p>
+                 >
+            <b-col cols="5" sm="6">
+              <p class="text-truncate">{{ `${trans.amount} x ${trans.productId}` }}</p>
             </b-col>
-            <b-col cols="6" class="text-right">
+            <b-col cols="7" sm="6" class="text-right">
               <p>
-                {{ `( € ${trans.pricePerProduct.toPrecision(3)} )` +
-                ` = € ${(trans.pricePerProduct * trans.amount).toPrecision(4)}` }}
+                {{ `( ${dinero({amount: trans.pricePerProduct}).toFormat()} ) ` +
+                `= ${ dinero({amount: trans.pricePerProduct}).multiply(trans.amount).toFormat()}` }}
               </p>
             </b-col>
           </b-row>
           <hr>
           <b-row>
             <b-col cols="12" class="text-right">
-              <p><i>Totaal</i> € {{ modalTrans.totalPrice }}</p>
+              <p><i>Totaal</i> {{ dinero({amount: modalTrans.totalPrice}).toFormat() }}</p>
             </b-col>
           </b-row>
         </b-col>
       </b-row>
+
+      <template v-slot:modal-footer="{ ok, cancel }">
+        <b-button
+          variant="primary"
+          id="confirm-cancel"
+          @click="cancel()"
+        >Cancel
+        </b-button>
+        <b-button
+          variant="primary"
+          class="btn-empty"
+          @click="ok()"
+        > FLAG TRANSACTION
+        </b-button>
+      </template>
 
     </b-modal>
   </div>
@@ -246,9 +260,11 @@
 import {
   Component, Prop, Vue, Watch,
 } from 'vue-property-decorator';
+import dinero, { Dinero } from 'dinero.js';
 import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
 import fakeTransactions from '@/assets/transactions';
+// import DineroTransformer from '@/entities/transformers/dinero-transformer';
 
 
   @Component
@@ -332,9 +348,16 @@ export default class TransactionsComponent extends Vue {
       Puts the currently selected transaction into the modal
     */
     selectTransaction(data: Transaction) : void {
-      console.log(data);
       this.modalTrans = data;
     }
+
+    dinero: Function = dinero;
+
+    // dinero(data: number) : String {
+    //   // TODO: Fix
+    //   this.user = this.user;
+    //   return dinero({ amount: data }).toFormat();
+    // }
 
     /*
       setRowClass gives a date row a date-row class and a transaction row a transaction-row class
@@ -609,6 +632,7 @@ export default class TransactionsComponent extends Vue {
     display: block;
     color: initial;
     width: 100%;
+    cursor: pointer;
   }
 
   .cell-link:hover {
@@ -628,10 +652,19 @@ export default class TransactionsComponent extends Vue {
       margin-bottom: 0.25rem;
     }
 
-    .total-price:last-of-type {
+    .total-price > div:nth-last-of-type(2) {
+      div:last-of-type > p {
+        margin-right: -11px;
+      }
+
       div:last-of-type > p::after {
         content: ' +'
       }
+    }
+
+    hr {
+      margin: .25rem 0;
+      border-color: black;
     }
   }
 
