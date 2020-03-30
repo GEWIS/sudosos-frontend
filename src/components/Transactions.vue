@@ -123,7 +123,10 @@
             <div v-if="/\d{2}-\d{2}-\d{4}.\(\w*\)/.test(data.item.id)">
               {{ data.item.formattedDate }}
             </div>
-            <a class="cell-link" href="#" v-else>
+            <a v-b-modal.details-modal
+               v-on:click="selectTransaction(data.item)"
+               class="cell-link"
+               v-else>
               {{ data.item.formattedDate }}
             </a>
           </template>
@@ -132,14 +135,18 @@
             <div v-if="/\d{2}-\d{2}-\d{4}.\(\w*\)/.test(data.item.id)">
               {{ data.item.comment }}
             </div>
-            <a class="cell-link" href="#" v-else>
+            <a v-b-modal.details-modal
+               v-on:click="selectTransaction(data.item)"
+               class="cell-link"
+               v-else>
               {{ data.item.comment }}
             </a>
           </template>
           <template v-slot:cell(id)="data">
             <!-- Check if this is a date row, if not add clickable info icon -->
-            <a class="cell-link text-sm-right"
-               href="#"
+            <a v-b-modal.details-modal
+               v-on:click="selectTransaction(data.item)"
+               class="cell-link text-sm-right"
                v-if="!/\d{2}-\d{2}-\d{4}.\(\w*\)/.test(data.item.id)">
               <font-awesome-icon icon="info-circle" class="icon"></font-awesome-icon>
             </a>
@@ -150,6 +157,88 @@
     <b-card-footer>
       Iets met pagination ofzo
     </b-card-footer>
+
+    <b-modal
+      id="details-modal"
+      ok-title="FLAG TRANSACTION"
+      cancel-title="CANCEL"
+      title="TRANSACTION DETAILS"
+      hide-header-close
+      centered
+      v-if="Object.entries(modalTrans).length !== 0"
+    >
+      <p>
+        {{ `${formatDateTime(modalTrans.createdAt, true)} - ${modalTrans.formattedDate}` }}
+      </p>
+
+      <b-row>
+        <b-col cols="4">
+          <p>Totaal</p>
+        </b-col>
+        <b-col cols="8">
+          <p>€{{ modalTrans.totalPrice.toPrecision(4) }}</p>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col cols="4">
+          <p>Point of sale</p>
+        </b-col>
+        <b-col cols="8">
+          <p>{{ modalTrans.pointOfSale }}</p>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col cols="4">
+          <p>Afgestreept door</p>
+        </b-col>
+        <b-col cols="8">
+          <p>{{ modalTrans.authorized }}</p>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col cols="4">
+          <p>Afgestreept bij</p>
+        </b-col>
+        <b-col cols="8">
+          <p>{{ modalTrans.soldToId }}</p>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col cols="4">
+          <p>Activiteit</p>
+        </b-col>
+        <b-col cols="8">
+          <p>{{ modalTrans.activityId }}</p>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col cols="4">
+          <p>Producten</p>
+        </b-col>
+        <b-col cols="8">
+          <b-row v-for="trans in modalTrans.subTransactions"
+                 v-bind:key="trans.productId"
+                 class="total-price">
+            <b-col col="6">
+              <p>{{ `${trans.amount} x ${trans.productId}` }}</p>
+            </b-col>
+            <b-col cols="6" class="text-right">
+              <p>
+                {{ `( € ${trans.pricePerProduct.toPrecision(3)} )` +
+                ` = € ${(trans.pricePerProduct * trans.amount).toPrecision(4)}` }}
+              </p>
+            </b-col>
+          </b-row>
+          <hr>
+          <b-row>
+            <b-col cols="12" class="text-right">
+              <p><i>Totaal</i> € {{ modalTrans.totalPrice }}</p>
+            </b-col>
+          </b-row>
+        </b-col>
+      </b-row>
+
+    </b-modal>
   </div>
 </template>
 
@@ -159,111 +248,8 @@ import {
 } from 'vue-property-decorator';
 import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
+import fakeTransactions from '@/assets/transactions';
 
-function fetchTransactions(user: User): Transaction[] {
-  // something like return client.fetchTransactions(user.id);
-
-  return [{
-    id: '001',
-    soldToId: 'Ruben',
-    authorized: 'Ruben',
-    totalPrice: 50.20,
-    activityId: '001',
-    subTransactions: [],
-    comment: 'You spent a total of €50.20',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  } as Transaction,
-      {
-        id: '002',
-        soldToId: 'Ruben',
-        authorized: 'Pieter',
-        totalPrice: 1.40,
-        activityId: '001',
-        subTransactions: [],
-        comment: 'You spent a total of €1.40',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      } as Transaction,
-      {
-        id: '003',
-        soldToId: 'Ruben',
-        authorized: 'BAC',
-        totalPrice: 30.00,
-        activityId: '002',
-        subTransactions: [],
-        comment: 'You put €30.00 on your account',
-        createdAt: new Date('February 2, 2020 05:07:00'),
-        updatedAt: new Date(),
-      } as Transaction,
-      {
-        id: '004',
-        soldToId: 'Pieter',
-        authorized: 'Ruben',
-        totalPrice: 8.40,
-        activityId: '003',
-        subTransactions: [],
-        comment: 'You spent a total of €8.40',
-        createdAt: new Date('January 1, 2020 01:07:00'),
-        updatedAt: new Date(),
-      } as Transaction,
-      {
-        id: '005',
-        soldToId: 'Pieter',
-        authorized: 'Ruben',
-        totalPrice: 8.40,
-        activityId: '004',
-        subTransactions: [],
-        comment: 'You spent a total of €8.40',
-        createdAt: new Date('December 12, 2019 00:00:00'),
-        updatedAt: new Date(),
-      } as Transaction,
-      {
-        id: '006',
-        soldToId: 'Ruben',
-        authorized: 'BAC',
-        totalPrice: 3.80,
-        activityId: '005',
-        subTransactions: [],
-        comment: 'You spent a total of €3.80',
-        createdAt: new Date('December 5, 2019 18:00:00'),
-        updatedAt: new Date(),
-      } as Transaction,
-      {
-        id: '007',
-        soldToId: 'Ruben',
-        authorized: 'BAC',
-        totalPrice: 38.00,
-        activityId: '005',
-        subTransactions: [],
-        comment: 'You put €38.00 on your account',
-        createdAt: new Date('December 5, 2019 17:00:00'),
-        updatedAt: new Date(),
-      } as Transaction,
-      {
-        id: '008',
-        soldToId: 'Ruben',
-        authorized: 'BAC',
-        totalPrice: 7.60,
-        activityId: '005',
-        subTransactions: [],
-        comment: 'You spent a total of €7.60',
-        createdAt: new Date('December 5, 2019 16:30:00'),
-        updatedAt: new Date(),
-      } as Transaction,
-      {
-        id: '009',
-        soldToId: 'Ruben',
-        authorized: 'BAC',
-        totalPrice: 8.40,
-        activityId: '005',
-        subTransactions: [],
-        comment: 'You spent a total of €8.40',
-        createdAt: new Date('December 5, 2019 16:00:00'),
-        updatedAt: new Date(),
-      } as Transaction,
-  ] as Transaction[];
-}
 
   @Component
 export default class TransactionsComponent extends Vue {
@@ -275,6 +261,8 @@ export default class TransactionsComponent extends Vue {
       lastName: 'Brinkman',
       saldo: 38.00,
     } as User;
+
+    modalTrans: Transaction = {} as Transaction;
 
     transactionList: Transaction[] = [];
 
@@ -313,7 +301,7 @@ export default class TransactionsComponent extends Vue {
     ];
 
     beforeMount() {
-      this.transactionList = this.formatTransactions(fetchTransactions(this.user));
+      this.transactionList = this.formatTransactions(fakeTransactions.fetchTransactions(this.user));
     }
 
     /*
@@ -338,6 +326,14 @@ export default class TransactionsComponent extends Vue {
       const ms : boolean = window.innerWidth < 700 && window.innerWidth >= 576;
       const sm : boolean = window.innerWidth < 440;
       this.right = ms || sm;
+    }
+
+    /*
+      Puts the currently selected transaction into the modal
+    */
+    selectTransaction(data: Transaction) : void {
+      console.log(data);
+      this.modalTrans = data;
     }
 
     /*
@@ -484,27 +480,14 @@ export default class TransactionsComponent extends Vue {
      */
     formatTransactions: Function = (t: Transaction[]) => {
       const dates: String[] = [];
-      const weekDays: String[] = [
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'Sunday',
-      ];
 
       let transactions: Transaction[] = [];
       let dateTransactions: Transaction[] = [];
       let dateRowTransaction: Transaction = {} as Transaction;
       t.forEach((transaction) => {
-        const date = transaction.createdAt;
-        const fDate = `${TransactionsComponent.parseTime(date.getDate())}-`
-          + `${TransactionsComponent.parseTime(date.getMonth() + 1)}-`
-          + `${date.getFullYear()} (${weekDays[date.getDay()]})`;
+        const fDate = this.formatDateTime(transaction.createdAt, true);
         const result: String = dates.find(d => d === fDate) || '';
-        const time = `${TransactionsComponent.parseTime(date.getHours())}:`
-          + `${TransactionsComponent.parseTime(date.getMinutes())}`;
+        const time = this.formatDateTime(transaction.createdAt, false);
 
         if (!result) {
           dates.push(fDate);
@@ -520,10 +503,11 @@ export default class TransactionsComponent extends Vue {
             soldToId: '',
             authorized: '',
             totalPrice: 0,
+            pointOfSale: 'Bar (GEWIS)',
             activityId: '',
             subTransactions: [],
             comment: '',
-            createdAt: date,
+            createdAt: transaction.createdAt,
             updatedAt: transaction.updatedAt,
             formattedDate: fDate,
           } as Transaction;
@@ -546,6 +530,30 @@ export default class TransactionsComponent extends Vue {
       return transactions;
     };
 
+    formatDateTime(date: Date, full: Boolean = true) : string {
+      // TODO Fix;
+      this.user = this.user;
+
+      const weekDays: String[] = [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday',
+      ];
+
+      if (full) {
+        return `${TransactionsComponent.parseTime(date.getDate())}-`
+          + `${TransactionsComponent.parseTime(date.getMonth() + 1)}-`
+          + `${date.getFullYear()} (${weekDays[date.getDay()]})`;
+      }
+
+      return `${TransactionsComponent.parseTime(date.getHours())}:`
+        + `${TransactionsComponent.parseTime(date.getMinutes())}`;
+    }
+
     static checkFormattedDate(date : String) : boolean {
       // Regular expression that will match 00-00-0000 (word) to find transaction rows that are
       // date rows.
@@ -554,6 +562,9 @@ export default class TransactionsComponent extends Vue {
       return re.test(date.toString());
     }
 
+    /*
+      Parses times such that each value has a padded 0 if < 10
+     */
     static parseTime(value: number): string {
       return (value < 10 ? '0' : '') + value;
     }
@@ -603,11 +614,25 @@ export default class TransactionsComponent extends Vue {
   .cell-link:hover {
     text-decoration: none;
     color: $black;
+    cursor: pointer;
   }
 
   .icon {
     color: $gewis-grey;
     margin: 0 1rem;
+  }
+
+  .modal-body {
+    .row p {
+      font-size: 0.80rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .total-price:last-of-type {
+      div:last-of-type > p::after {
+        content: ' +'
+      }
+    }
   }
 
   .card-title {

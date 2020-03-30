@@ -17,6 +17,7 @@
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.8.0",
     "core-js": "^3.4.4",
+    "dinero.js": "^1.8.1",
     "jquery": "^3.4.1",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
