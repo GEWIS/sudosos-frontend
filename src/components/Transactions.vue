@@ -116,7 +116,7 @@
       <b-card-body>
         <b-table stacked="sm" small borderless thead-class="table-header table-header-3"
                  :items="transactionList" :fields="fields" :tbody-tr-class="setRowClass"
-                 details-td-class="test"
+                 :per-page="perPage" :current-page="currentPage" id="transaction-table"
                  :filter="filterWay" :filter-function="filterRows">
           <template v-slot:cell(formattedDate)="data">
             <!-- Check if this is a date row, if not make it clickable -->
@@ -154,8 +154,22 @@
         </b-table>
       </b-card-body>
     </b-card>
-    <b-card-footer>
-      Iets met pagination ofzo
+    <b-card-footer class="d-flex">
+      <p v-if="totalRows > perPage" class="my-auto h-100">Page:</p>
+      <b-pagination
+        v-model="currentPage"
+        :total-rows="totalRows"
+        :per-page="perPage"
+        limit="1"
+        next-class="nextButton"
+        prev-class="prevButton"
+        page-class="pageButton"
+        hide-goto-end-buttons
+        last-number
+        v-if="totalRows > perPage"
+        aria-controls="transaction-table"
+        class="custom-pagination mb-0"
+      ></b-pagination>
     </b-card-footer>
 
     <b-modal
@@ -296,6 +310,10 @@ export default class TransactionsComponent extends Vue {
     putInForYou: Boolean = false;
 
     right: boolean = false;
+
+    perPage: number = 3;
+
+    currentPage: number = 1;
 
     /*
       Fields that should be shown from the transactionList
@@ -586,6 +604,16 @@ export default class TransactionsComponent extends Vue {
      */
     static parseTime(value: number): string {
       return (value < 10 ? '0' : '') + value;
+    }
+
+    /*
+      Returns the total number of transactions that are currently present
+     */
+    get totalRows() {
+      if (this.filteredTransactions.length > 0) {
+        return this.filteredTransactions.length;
+      }
+      return this.transactionList.length;
     }
 
     @Watch('fromDate')
