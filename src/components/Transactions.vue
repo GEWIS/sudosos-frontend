@@ -351,13 +351,10 @@ export default class TransactionsComponent extends Vue {
       this.modalTrans = data;
     }
 
+    /*
+      Function to make dinero usable in the template
+    */
     dinero: Function = dinero;
-
-    // dinero(data: number) : String {
-    //   // TODO: Fix
-    //   this.user = this.user;
-    //   return dinero({ amount: data }).toFormat();
-    // }
 
     /*
       setRowClass gives a date row a date-row class and a transaction row a transaction-row class
@@ -648,7 +645,7 @@ export default class TransactionsComponent extends Vue {
 
   .modal-body {
     .row p {
-      font-size: 0.80rem;
+      font-size: 0.85rem;
       margin-bottom: 0.25rem;
     }
 

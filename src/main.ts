@@ -46,6 +46,7 @@ library.add(
   faPenAlt,
 );
 
+// Default settings for Dinero
 dinero.defaultCurrency = 'EUR' as Currency;
 dinero.defaultPrecision = 2;
 
