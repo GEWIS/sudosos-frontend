@@ -9,6 +9,8 @@
             id="old-pincode-group"
             label="Old pin code"
             label-for="old-pincode"
+            :invalid-feedback="oldPincodeFeedback"
+            :state="validateOldPincode"
           >
             <b-form-input
               id="old-pincode"
@@ -19,6 +21,8 @@
             id="new-pincode-group"
             label="New pin code"
             label-for="new-pincode"
+            :invalid-feedback="newPincodeFeedback"
+            :state="validateNewPincode"
           >
             <b-form-input
               id="new-pincode"
@@ -29,6 +33,8 @@
             id="confirm-pincode-group"
             label="Confirm new pin code"
             label-for="confirm-pincode"
+            :invalid-feedback="confirmPincodeFeedback"
+            :state="validateConfirmPincode"
           >
             <b-form-input
               id="confirm-pincode"
@@ -41,7 +47,9 @@
       <b-col sm="12" md="4">
         <b>Manage nfc devices</b>
         <b-badge v-for="device in nfcDevices" v-bind:key="device.id" class="nfc-device-badge">
-          {{ device.name }} ({{ device.uid }}) <span @click="removeDevice(device)">✖</span>
+          {{ device.name }} ({{ device.uid }})
+          <span @click="removeDevice(device)">✖</span>
+          <span @click="editDevice(device)">🖉</span>
         </b-badge>
       </b-col>
     </b-row>
@@ -57,7 +65,9 @@ import { NFCDevice } from '@/entities/NFCDevice';
 })
 
 export default class Profile extends Vue {
-  pincode: object = {
+  formError: string = '';
+
+  pincode: any = {
     oldPincode: '',
     newPincode: '',
     confirmPincode: '',
@@ -89,6 +99,48 @@ export default class Profile extends Vue {
         this.nfcDevices.splice(i, 1);
       }
     }
+  }
+
+  editDevice(device: NFCDevice) {
+    console.log(this);
+  }
+
+  // Validators for the form
+  get validateOldPincode() {
+    return this.pincode.oldPincode.length <= 4;
+  }
+
+  get oldPincodeFeedback() {
+    if (this.pincode.oldPincode.length > 4) {
+      return 'Pin code must be 4 digits';
+    }
+    return '';
+  }
+
+  get validateNewPincode() {
+    return this.pincode.newPincode.length <= 4
+      && this.pincode.newPincode !== this.pincode.oldPincode;
+  }
+
+  get newPincodeFeedback() {
+    if (this.pincode.newPincode.length > 4) {
+      return 'New pin code length must be 4 digits';
+    }
+    if (this.pincode.newPincode === this.pincode.oldPincode && this.pincode.newPincode !== '') {
+      return 'New pin code must be unique from old pin code';
+    }
+    return '';
+  }
+
+  get validateConfirmPincode() {
+    return this.pincode.newPincode === this.pincode.confirmPincode;
+  }
+
+  get confirmPincodeFeedback() {
+    if (this.pincode.confirmPincode.length !== this.pincode.newPincode) {
+      return 'Confirmation does not match pin code';
+    }
+    return '';
   }
 }
 </script>
