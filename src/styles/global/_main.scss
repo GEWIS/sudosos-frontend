@@ -64,7 +64,7 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
 }
 
 .btn.btn-secondary:focus,
-.btn.btn-primary:active:focus {
+.btn.btn-secondary:active:focus {
     background-color: $gewis-grey;
     border-color: $gewis-grey;
     color: $text-primary;
@@ -168,6 +168,51 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
 
     .transaction-row+.transaction-row {
         border-top: 1px solid #cccccc;
+    }
+}
+
+/*
+ Global style for pagination
+ */
+.custom-pagination {
+    .nextButton,
+    .prevButton,
+    .pageButton{
+        > .page-link {
+            color: gray;
+            border: none;
+            background-color: #f2f2f2;
+        }
+    }
+
+    .page-item {
+        .page-link:focus {
+            box-shadow: none;
+        }
+    }
+
+    li:nth-of-type(2).page-item.pageButton:not(.active) {
+        display: none;
+    }
+
+    .pageButton {
+        button::after {
+            content: '/';
+            padding-left: 0.35rem;
+        }
+    }
+
+    li.pageButton:nth-last-of-type(2) {
+        button::after {
+            content: '';
+            padding-left: 0;
+        }
+    }
+
+    .pageButton {
+        .page-link {
+            padding: 0.5rem 0.20rem;
+        }
     }
 }
 

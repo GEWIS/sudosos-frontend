@@ -116,7 +116,7 @@
       <b-card-body>
         <b-table stacked="sm" small borderless thead-class="table-header table-header-3"
                  :items="transactionList" :fields="fields" :tbody-tr-class="setRowClass"
-                 details-td-class="test"
+                 :per-page="perPage" :current-page="currentPage" id="transaction-table"
                  :filter="filterWay" :filter-function="filterRows">
           <template v-slot:cell(formattedDate)="data">
             <!-- Check if this is a date row, if not make it clickable -->
@@ -154,8 +154,23 @@
         </b-table>
       </b-card-body>
     </b-card>
-    <b-card-footer>
-      Iets met pagination ofzo
+    <b-card-footer class="d-flex">
+      <p v-if="totalRows > perPage" class="my-auto h-100">Page:</p>
+      <b-pagination
+        v-model="currentPage"
+        :total-rows="totalRows"
+        :per-page="perPage"
+        limit="1"
+        next-class="nextButton"
+        prev-class="prevButton"
+        page-class="pageButton"
+        hide-goto-end-buttons
+        last-number
+        @change="pageClicked"
+        v-if="totalRows > perPage"
+        aria-controls="transaction-table"
+        class="custom-pagination mb-0"
+      ></b-pagination>
     </b-card-footer>
 
     <b-modal
@@ -264,7 +279,6 @@ import dinero, { Dinero } from 'dinero.js';
 import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
 import fakeTransactions from '@/assets/transactions';
-// import DineroTransformer from '@/entities/transformers/dinero-transformer';
 
 
   @Component
@@ -297,6 +311,12 @@ export default class TransactionsComponent extends Vue {
     putInForYou: Boolean = false;
 
     right: boolean = false;
+
+    perPage: number = 3;
+
+    currentPage: number = 1;
+
+    previousPage: number = 1;
 
     /*
       Fields that should be shown from the transactionList
@@ -574,6 +594,17 @@ export default class TransactionsComponent extends Vue {
         + `${TransactionsComponent.parseTime(date.getMinutes())}`;
     }
 
+    /*
+      Method that grabs extra transactions when 2 pages or less are left
+    */
+    pageClicked(page: number) : void {
+      if (this.previousPage < page && page >= (Math.ceil(this.totalRows / this.perPage) - 2)) {
+        // TODO: Grab new data
+      }
+
+      this.previousPage = page;
+    }
+
     static checkFormattedDate(date : String) : boolean {
       // Regular expression that will match 00-00-0000 (word) to find transaction rows that are
       // date rows.
@@ -587,6 +618,16 @@ export default class TransactionsComponent extends Vue {
      */
     static parseTime(value: number): string {
       return (value < 10 ? '0' : '') + value;
+    }
+
+    /*
+      Returns the total number of transactions that are currently present
+     */
+    get totalRows() {
+      if (this.filteredTransactions.length > 0) {
+        return this.filteredTransactions.length;
+      }
+      return this.transactionList.length;
     }
 
     @Watch('fromDate')
