@@ -166,6 +166,7 @@
         page-class="pageButton"
         hide-goto-end-buttons
         last-number
+        @change="pageClicked"
         v-if="totalRows > perPage"
         aria-controls="transaction-table"
         class="custom-pagination mb-0"
@@ -314,6 +315,8 @@ export default class TransactionsComponent extends Vue {
     perPage: number = 3;
 
     currentPage: number = 1;
+
+    previousPage: number = 1;
 
     /*
       Fields that should be shown from the transactionList
@@ -589,6 +592,17 @@ export default class TransactionsComponent extends Vue {
 
       return `${TransactionsComponent.parseTime(date.getHours())}:`
         + `${TransactionsComponent.parseTime(date.getMinutes())}`;
+    }
+
+    /*
+      Method that grabs extra transactions when 2 pages or less are left
+    */
+    pageClicked(page: number) : void {
+      if (this.previousPage < page && page >= (Math.ceil(this.totalRows / this.perPage) - 2)) {
+        // TODO: Grab new data
+      }
+
+      this.previousPage = page;
     }
 
     static checkFormattedDate(date : String) : boolean {
