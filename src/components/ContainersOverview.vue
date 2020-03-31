@@ -1,12 +1,12 @@
 <template>
-  <b-col class="container-box">
+  <div>
     <h5 class="ml-lg-3 em-title">Containers</h5>
     <b-form-group>
       <div v-for="container in containers" :key="container.con_id">
         <container :container="container"></container>
       </div>
     </b-form-group>
-  </b-col>
+  </div>
 
 </template>
 
@@ -15,7 +15,6 @@ import Container from '@/components/Container.vue';
 
 export default {
   name: 'Containers',
-  // eslint-disable-next-line vue/no-unused-components
   components: { Container },
   data() {
     return {

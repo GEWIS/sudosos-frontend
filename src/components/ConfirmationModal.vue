@@ -1,7 +1,7 @@
 <template>
   <b-modal
     id="confirmation"
-    title="bevestigen"
+    :title="title"
     size="sm"
     hide-header-close
     centered>
@@ -10,15 +10,15 @@
     <template v-slot:modal-footer="{ ok, cancel }">
       <b-button
         variant="primary"
-        class="btn-empty"
-        @click="ok()">
-        Confirm
+        id="confirm-cancel"
+        @click="cancel()"
+      >Cancel
       </b-button>
       <b-button
         variant="primary"
-        id="confirm-cancel"
-        @click="cancel()"
-        >Cancel
+        class="btn-empty"
+        @click="ok()">
+        Confirm
       </b-button>
     </template>
   </b-modal>
@@ -31,6 +31,9 @@ import {
 
 @Component
 export default class ConfirmationModel extends Vue {
+  // Title of the modal
+  @Prop({ type: String }) private title!: string;
+
   // URL that the "confirm" button should redirect to
   @Prop({ type: String }) private url!: string;
 

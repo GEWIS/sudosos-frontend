@@ -20,69 +20,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
-
-function fetchTransactions(user: User) : Transaction[] {
-  // something like return client.fetchTransactions(user.id);
-
-  const transactions = [{
-    id: 'testID',
-    soldToId: 'Pieter',
-    authorized: 'Koenk',
-    totalPrice: 50.2,
-    activityId: 'BorrelId',
-    subTransactions: [],
-    comment: 'Borrel metertjes heftig bakweekend, je kent het wel',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  } as Transaction,
-  {
-    id: '42069',
-    soldToId: 'Pieter',
-    authorized: 'BAK!',
-    totalPrice: 1.25,
-    activityId: 'BAKwiekent',
-    subTransactions: [],
-    comment: 'Fustje bij ontbijt',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  } as Transaction,
-  {
-    id: '42069',
-    soldToId: 'Pieter',
-    authorized: 'BAK!',
-    totalPrice: 1.25,
-    activityId: 'BAKwiekent',
-    subTransactions: [],
-    comment: 'Fustje bij ontbijt',
-    createdAt: new Date('January 1, 1997 01:07:00'),
-    updatedAt: new Date(),
-  } as Transaction,
-  {
-    id: '42069',
-    soldToId: 'Pieter',
-    authorized: 'BAK!',
-    totalPrice: 1.25,
-    activityId: 'BAKwiekent',
-    subTransactions: [],
-    comment: 'Fustje bij ontbijt',
-    createdAt: new Date('December 12, 1997 01:07:00'),
-    updatedAt: new Date(),
-  } as Transaction,
-  {
-    id: '42069',
-    soldToId: 'Pieter',
-    authorized: 'BAK!',
-    totalPrice: 1.25,
-    activityId: 'BAKwiekent',
-    subTransactions: [],
-    comment: 'Fustje bij ontbijt',
-    createdAt: new Date('July 1, 1997 01:07:00'),
-    updatedAt: new Date(),
-  } as Transaction,
-  ] as Transaction[];
-
-  return transactions.slice(0, 5);
-}
+import fakeTransactions from '@/assets/transactions';
 
 @Component
 export default class RecentTransactions extends Vue {
@@ -111,7 +49,7 @@ export default class RecentTransactions extends Vue {
   ];
 
   beforeMount() {
-    this.transactionList = fetchTransactions(this.user);
+    this.transactionList = fakeTransactions.fetchTransactions(this.user);
   }
 
   static parseTime(value: number): string {

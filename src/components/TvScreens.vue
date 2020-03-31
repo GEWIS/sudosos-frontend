@@ -54,9 +54,9 @@ import {
 } from 'vue-property-decorator';
 
 function fetchTvScreensBorrelModeEndTime(): Date | null {
-  if (false) {
-    return new Date();
-  }
+  // if (false) {
+  //   return new Date();
+  // }
   return null;
 }
 

@@ -13,6 +13,8 @@
                 id="from-date"
                 v-model="fromDate"
                 locale="en-NL"
+                :right="right"
+                no-flip
                 :date-format-options="{year: 'numeric', month: 'long', day: 'numeric'}"
               ></b-form-datepicker>
             </b-form-group>
@@ -28,6 +30,8 @@
                 id="to-date"
                 v-model="toDate"
                 locale="en-NL"
+                :right="right"
+                no-flip
                 :date-format-options="{year: 'numeric', month: 'long', day: 'numeric'}"
               ></b-form-datepicker>
             </b-form-group>
@@ -88,6 +92,7 @@
             <b-button
               variant="secondary"
               id="add"
+              v-on:click="downloadCSV"
             >
               <font-awesome-icon icon="file-export"></font-awesome-icon>
               Export to CSV
@@ -111,13 +116,17 @@
       <b-card-body>
         <b-table stacked="sm" small borderless thead-class="table-header table-header-3"
                  :items="transactionList" :fields="fields" :tbody-tr-class="setRowClass"
+                 details-td-class="test"
                  :filter="filterWay" :filter-function="filterRows">
           <template v-slot:cell(formattedDate)="data">
             <!-- Check if this is a date row, if not make it clickable -->
             <div v-if="/\d{2}-\d{2}-\d{4}.\(\w*\)/.test(data.item.id)">
               {{ data.item.formattedDate }}
             </div>
-            <a class="cell-link" href="#" v-else>
+            <a v-b-modal.details-modal
+               v-on:click="selectTransaction(data.item)"
+               class="cell-link"
+               v-else>
               {{ data.item.formattedDate }}
             </a>
           </template>
@@ -126,13 +135,19 @@
             <div v-if="/\d{2}-\d{2}-\d{4}.\(\w*\)/.test(data.item.id)">
               {{ data.item.comment }}
             </div>
-            <a class="cell-link" href="#" v-else>
+            <a v-b-modal.details-modal
+               v-on:click="selectTransaction(data.item)"
+               class="cell-link"
+               v-else>
               {{ data.item.comment }}
             </a>
           </template>
           <template v-slot:cell(id)="data">
             <!-- Check if this is a date row, if not add clickable info icon -->
-            <a class="cell-link" href="#" v-if="!/\d{2}-\d{2}-\d{4}.\(\w*\)/.test(data.item.id)">
+            <a v-b-modal.details-modal
+               v-on:click="selectTransaction(data.item)"
+               class="cell-link text-sm-right"
+               v-if="!/\d{2}-\d{2}-\d{4}.\(\w*\)/.test(data.item.id)">
               <font-awesome-icon icon="info-circle" class="icon"></font-awesome-icon>
             </a>
           </template>
@@ -142,6 +157,102 @@
     <b-card-footer>
       Iets met pagination ofzo
     </b-card-footer>
+
+    <b-modal
+      id="details-modal"
+      title="transaction details"
+      hide-header-close
+      centered
+      size="lg"
+      v-if="Object.entries(modalTrans).length !== 0"
+    >
+      <p>
+        {{ `${formatDateTime(modalTrans.createdAt, true)} - ${modalTrans.formattedDate}` }}
+      </p>
+
+      <b-row>
+        <b-col cols="6" sm="4">
+          <p>Totaal</p>
+        </b-col>
+        <b-col cols="6" sm="8" class="text-right text-sm-left">
+          <p>{{ dinero({amount: modalTrans.totalPrice}).toFormat() }}</p>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col cols="6" sm="4">
+          <p>Point of sale</p>
+        </b-col>
+        <b-col cols="6" sm="8" class="text-right text-sm-left">
+          <p>{{ modalTrans.pointOfSale }}</p>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col cols="6" sm="4">
+          <p>Afgestreept door</p>
+        </b-col>
+        <b-col cols="6" sm="8" class="text-right text-sm-left">
+          <p>{{ modalTrans.authorized }}</p>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col cols="6" sm="4">
+          <p>Afgestreept bij</p>
+        </b-col>
+        <b-col cols="6" sm="8" class="text-right text-sm-left">
+          <p>{{ modalTrans.soldToId }}</p>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col cols="6" sm="4">
+          <p>Activiteit</p>
+        </b-col>
+        <b-col cols="6" sm="8" class="text-right text-sm-left">
+          <p>{{ modalTrans.activityId }}</p>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col cols="12" sm="4">
+          <p>Producten</p>
+        </b-col>
+        <b-col cols="12" sm="8" class="total-price">
+          <b-row v-for="trans in modalTrans.subTransactions"
+                 v-bind:key="trans.productId"
+                 >
+            <b-col cols="5" sm="6">
+              <p class="text-truncate">{{ `${trans.amount} x ${trans.productId}` }}</p>
+            </b-col>
+            <b-col cols="7" sm="6" class="text-right">
+              <p>
+                {{ `( ${dinero({amount: trans.pricePerProduct}).toFormat()} ) ` +
+                `= ${ dinero({amount: trans.pricePerProduct}).multiply(trans.amount).toFormat()}` }}
+              </p>
+            </b-col>
+          </b-row>
+          <hr>
+          <b-row>
+            <b-col cols="12" class="text-right">
+              <p><i>Totaal</i> {{ dinero({amount: modalTrans.totalPrice}).toFormat() }}</p>
+            </b-col>
+          </b-row>
+        </b-col>
+      </b-row>
+
+      <template v-slot:modal-footer="{ ok, cancel }">
+        <b-button
+          variant="primary"
+          id="confirm-cancel"
+          @click="cancel()"
+        >Cancel
+        </b-button>
+        <b-button
+          variant="primary"
+          class="btn-empty"
+          @click="ok()"
+        > FLAG TRANSACTION
+        </b-button>
+      </template>
+
+    </b-modal>
   </div>
 </template>
 
@@ -149,113 +260,12 @@
 import {
   Component, Prop, Vue, Watch,
 } from 'vue-property-decorator';
+import dinero, { Dinero } from 'dinero.js';
 import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
+import fakeTransactions from '@/assets/transactions';
+// import DineroTransformer from '@/entities/transformers/dinero-transformer';
 
-function fetchTransactions(user: User): Transaction[] {
-  // something like return client.fetchTransactions(user.id);
-
-  return [{
-    id: '001',
-    soldToId: 'Ruben',
-    authorized: 'Ruben',
-    totalPrice: 50.20,
-    activityId: '001',
-    subTransactions: [],
-    comment: 'You spent a total of €50.20',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  } as Transaction,
-      {
-        id: '002',
-        soldToId: 'Ruben',
-        authorized: 'Pieter',
-        totalPrice: 1.40,
-        activityId: '001',
-        subTransactions: [],
-        comment: 'You spent a total of €1.40',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      } as Transaction,
-      {
-        id: '003',
-        soldToId: 'Ruben',
-        authorized: 'BAC',
-        totalPrice: 30.00,
-        activityId: '002',
-        subTransactions: [],
-        comment: 'You put €30.00 on your account',
-        createdAt: new Date('February 2, 2020 05:07:00'),
-        updatedAt: new Date(),
-      } as Transaction,
-      {
-        id: '004',
-        soldToId: 'Pieter',
-        authorized: 'Ruben',
-        totalPrice: 8.40,
-        activityId: '003',
-        subTransactions: [],
-        comment: 'You spent a total of €8.40',
-        createdAt: new Date('January 1, 2020 01:07:00'),
-        updatedAt: new Date(),
-      } as Transaction,
-      {
-        id: '005',
-        soldToId: 'Pieter',
-        authorized: 'Ruben',
-        totalPrice: 8.40,
-        activityId: '004',
-        subTransactions: [],
-        comment: 'You spent a total of €8.40',
-        createdAt: new Date('December 12, 2019 00:00:00'),
-        updatedAt: new Date(),
-      } as Transaction,
-      {
-        id: '006',
-        soldToId: 'Ruben',
-        authorized: 'BAC',
-        totalPrice: 3.80,
-        activityId: '005',
-        subTransactions: [],
-        comment: 'You spent a total of €3.80',
-        createdAt: new Date('December 5, 2019 18:00:00'),
-        updatedAt: new Date(),
-      } as Transaction,
-      {
-        id: '007',
-        soldToId: 'Ruben',
-        authorized: 'BAC',
-        totalPrice: 38.00,
-        activityId: '005',
-        subTransactions: [],
-        comment: 'You put €38.00 on your account',
-        createdAt: new Date('December 5, 2019 17:00:00'),
-        updatedAt: new Date(),
-      } as Transaction,
-      {
-        id: '008',
-        soldToId: 'Ruben',
-        authorized: 'BAC',
-        totalPrice: 7.60,
-        activityId: '005',
-        subTransactions: [],
-        comment: 'You spent a total of €7.60',
-        createdAt: new Date('December 5, 2019 16:30:00'),
-        updatedAt: new Date(),
-      } as Transaction,
-      {
-        id: '009',
-        soldToId: 'Ruben',
-        authorized: 'BAC',
-        totalPrice: 8.40,
-        activityId: '005',
-        subTransactions: [],
-        comment: 'You spent a total of €8.40',
-        createdAt: new Date('December 5, 2019 16:00:00'),
-        updatedAt: new Date(),
-      } as Transaction,
-  ] as Transaction[];
-}
 
   @Component
 export default class TransactionsComponent extends Vue {
@@ -268,7 +278,11 @@ export default class TransactionsComponent extends Vue {
       saldo: 38.00,
     } as User;
 
+    modalTrans: Transaction = {} as Transaction;
+
     transactionList: Transaction[] = [];
+
+    filteredTransactions: Transaction[] = [];
 
     fromDate: String = '';
 
@@ -281,6 +295,8 @@ export default class TransactionsComponent extends Vue {
     putInByYou: Boolean = false;
 
     putInForYou: Boolean = false;
+
+    right: boolean = false;
 
     /*
       Fields that should be shown from the transactionList
@@ -301,8 +317,44 @@ export default class TransactionsComponent extends Vue {
     ];
 
     beforeMount() {
-      this.transactionList = this.formatTransactions(fetchTransactions(this.user));
+      this.transactionList = this.formatTransactions(fakeTransactions.fetchTransactions(this.user));
     }
+
+    /*
+      Mounted currently makes sure that the date drowdowns are located correctly
+    */
+    mounted() {
+      this.checkRight();
+
+      window.addEventListener('resize', () => {
+        this.checkRight();
+      });
+
+      this.$root.$on('bv::dropdown::show', (bvEvent: any) => {
+        this.checkRight();
+      });
+    }
+
+    /*
+      Sets the dropdown location of date pickers according to screen width to make sure they fit
+    */
+    checkRight() : void {
+      const ms : boolean = window.innerWidth < 700 && window.innerWidth >= 576;
+      const sm : boolean = window.innerWidth < 440;
+      this.right = ms || sm;
+    }
+
+    /*
+      Puts the currently selected transaction into the modal
+    */
+    selectTransaction(data: Transaction) : void {
+      this.modalTrans = data;
+    }
+
+    /*
+      Function to make dinero usable in the template
+    */
+    dinero: Function = dinero;
 
     /*
       setRowClass gives a date row a date-row class and a transaction row a transaction-row class
@@ -312,11 +364,7 @@ export default class TransactionsComponent extends Vue {
      */
     setRowClass(item: Transaction, type: string): String {
       if (type === 'row' && item.formattedDate !== undefined) {
-        // Regular expression that will match 00-00-0000 (word) to find transaction rows that are
-        // date rows.
-        const re = /\d{2}-\d{2}-\d{4}.\(\w*\)/;
-
-        if (re.test(item.formattedDate.toString())) {
+        if (TransactionsComponent.checkFormattedDate(item.formattedDate)) {
           return 'date-row';
         }
         return 'transaction-row';
@@ -341,6 +389,35 @@ export default class TransactionsComponent extends Vue {
     }
 
     /*
+      Method that takes the current data rows and outputs a downloadable csv file
+    */
+    downloadCSV() : void {
+      let csv = '';
+      let downloadSet : Transaction[];
+      if (this.filteredTransactions.length > 0) {
+        downloadSet = this.filteredTransactions;
+      } else {
+        downloadSet = this.transactionList.filter(t => !TransactionsComponent.checkFormattedDate(t.formattedDate || ''));
+      }
+
+      csv += `${Object.keys(downloadSet[0]).join(',')}\r\n`;
+
+      downloadSet.forEach((transaction) => {
+        csv += `${Object.values(transaction).join(',')}\r\n`;
+      });
+
+      const csvFile = new Blob([csv], { type: 'text/csv' });
+
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(csvFile);
+      link.style.display = 'none';
+      link.download = 'Transactions.csv';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    /*
       Filters the rows based time constraints and user selected options
     */
     filterRows(data: Transaction, prop: String): boolean {
@@ -348,6 +425,9 @@ export default class TransactionsComponent extends Vue {
       let putInBy = false;
       let putInFor = false;
       let date: boolean;
+
+      const sold = data.soldToId.toString().split(' ').filter(item => item !== '');
+      const auth = data.authorized.toString().split(' ').filter(item => item !== '');
 
       // First check if there is a date constraint
       if (this.fromDate === '' || this.toDate === '') {
@@ -361,42 +441,52 @@ export default class TransactionsComponent extends Vue {
 
       // Check if there is a selfBought constraint and take date into account
       if (this.selfBought) {
-        self = data.authorized === data.soldToId && date;
+        let matchFound = false;
+
+        sold.forEach((person, i) => {
+          if (person === auth[i]) {
+            matchFound = true;
+          }
+        });
+
+        self = matchFound && date;
       }
 
       // Check if there is a putInByYou constraint and take date into account
       if (this.putInByYou) {
-        putInBy = data.authorized === this.userAccount.firstName
-          && data.authorized !== data.soldToId && date;
+        let matchFound = false;
+
+        auth.forEach((person, i) => {
+          if (person === this.userAccount.firstName && person !== sold[i]) {
+            matchFound = true;
+          }
+        });
+
+        putInBy = matchFound && date;
       }
 
       // Check if there is a putInForYou constraint and take date into account
       if (this.putInForYou) {
-        putInFor = data.authorized !== this.userAccount.firstName
-          && data.authorized !== data.soldToId && date;
+        let matchFound = false;
+
+        auth.forEach((person, i) => {
+          if (person !== this.userAccount.firstName && person !== sold[i]) {
+            matchFound = true;
+          }
+        });
+
+        putInFor = matchFound && date;
       }
 
       // Check if either both selfBought or putInByYou are true or either one of them.
       if (this.selfBought || this.putInByYou || this.putInForYou) {
+        if ((self || putInBy || putInFor)
+          && !TransactionsComponent.checkFormattedDate(data.formattedDate || '')
+          && !this.filteredTransactions.includes(data)) {
+          this.filteredTransactions.push(data);
+        }
+
         return self || putInBy || putInFor;
-      }
-      if (this.selfBought || this.putInByYou) {
-        return self || putInBy;
-      }
-      if (this.selfBought || this.putInForYou) {
-        return self || putInFor;
-      }
-      if (this.putInByYou || this.putInByYou) {
-        return putInFor || putInBy;
-      }
-      if (this.selfBought) {
-        return self;
-      }
-      if (this.putInByYou) {
-        return putInBy;
-      }
-      if (this.putInForYou) {
-        return putInFor;
       }
 
       return date;
@@ -410,75 +500,122 @@ export default class TransactionsComponent extends Vue {
      */
     formatTransactions: Function = (t: Transaction[]) => {
       const dates: String[] = [];
-      const weekDays: String[] = [
-        'monday',
-        'tuesday',
-        'wednesday',
-        'thursday',
-        'friday',
-        'saturday',
-        'sunday',
-      ];
 
-      const transactions: Transaction[] = [];
+      let transactions: Transaction[] = [];
+      let dateTransactions: Transaction[] = [];
+      let dateRowTransaction: Transaction = {} as Transaction;
       t.forEach((transaction) => {
-        const date = transaction.createdAt;
-        const fDate = `${TransactionsComponent.parseTime(date.getDate())}-`
-          + `${TransactionsComponent.parseTime(date.getMonth() + 1)}-`
-          + `${date.getFullYear()} (${weekDays[date.getDay()]})`;
+        const fDate = this.formatDateTime(transaction.createdAt, true);
         const result: String = dates.find(d => d === fDate) || '';
-        const time = `${TransactionsComponent.parseTime(date.getHours())}:`
-          + `${TransactionsComponent.parseTime(date.getMinutes())}`;
+        const time = this.formatDateTime(transaction.createdAt, false);
 
         if (!result) {
           dates.push(fDate);
 
-          const trans: Transaction = {
+          if (dates.length > 1) {
+            transactions.push(dateRowTransaction);
+            transactions = transactions.concat(dateTransactions);
+            dateTransactions = [];
+          }
+
+          dateRowTransaction = {
             id: fDate,
-            soldToId: transaction.soldToId,
-            authorized: transaction.authorized,
+            soldToId: '',
+            authorized: '',
             totalPrice: 0,
-            activityId: transaction.activityId,
+            pointOfSale: 'Bar (GEWIS)',
+            activityId: '',
             subTransactions: [],
             comment: '',
-            createdAt: date,
+            createdAt: transaction.createdAt,
             updatedAt: transaction.updatedAt,
             formattedDate: fDate,
           } as Transaction;
-
-          transactions.push(trans);
         }
 
         const trans: Transaction = transaction;
         trans.formattedDate = time;
+        dateRowTransaction.soldToId = `${dateRowTransaction.soldToId} ${transaction.soldToId}`;
+        dateRowTransaction.authorized = `${dateRowTransaction.authorized} ${transaction.authorized}`;
+        dateRowTransaction.activityId = `${dateRowTransaction.activityId} ${transaction.activityId}`;
 
-        transactions.push(trans);
+        dateTransactions.push(trans);
       });
+
+      if (dateRowTransaction.activityId !== '') {
+        transactions.push(dateRowTransaction);
+        transactions = transactions.concat(dateTransactions);
+      }
 
       return transactions;
     };
 
+    formatDateTime(date: Date, full: Boolean = true) : string {
+      // TODO Fix;
+      this.user = this.user;
+
+      const weekDays: String[] = [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday',
+      ];
+
+      if (full) {
+        return `${TransactionsComponent.parseTime(date.getDate())}-`
+          + `${TransactionsComponent.parseTime(date.getMonth() + 1)}-`
+          + `${date.getFullYear()} (${weekDays[date.getDay()]})`;
+      }
+
+      return `${TransactionsComponent.parseTime(date.getHours())}:`
+        + `${TransactionsComponent.parseTime(date.getMinutes())}`;
+    }
+
+    static checkFormattedDate(date : String) : boolean {
+      // Regular expression that will match 00-00-0000 (word) to find transaction rows that are
+      // date rows.
+      const re = /\d{2}-\d{2}-\d{4}.\(\w*\)/;
+
+      return re.test(date.toString());
+    }
+
+    /*
+      Parses times such that each value has a padded 0 if < 10
+     */
     static parseTime(value: number): string {
       return (value < 10 ? '0' : '') + value;
     }
 
     @Watch('fromDate')
     onFromDateChanged(value: Date, old: Date): void {
+      this.filteredTransactions = [];
       this.filterWay = value.toString();
     }
 
     @Watch('toDate')
     onToDateChanged(value: Date, old: Date): void {
+      this.filteredTransactions = [];
       this.filterWay = value.toString();
     }
 
     @Watch('selfBought')
     onSelfBoughtChanged(value: Boolean, old: Boolean): void {
+      this.filteredTransactions = [];
       this.filterWay = value.toString();
     }
 
     @Watch('putInByYou')
     onPutInByYouChanged(value: Boolean, old: Boolean): void {
+      this.filteredTransactions = [];
+      this.filterWay = value.toString();
+    }
+
+    @Watch('putInForYou')
+    onPutInForYouChanged(value: Boolean, old: Boolean) : void {
+      this.filteredTransactions = [];
       this.filterWay = value.toString();
     }
 }
@@ -492,16 +629,40 @@ export default class TransactionsComponent extends Vue {
     display: block;
     color: initial;
     width: 100%;
+    cursor: pointer;
   }
 
   .cell-link:hover {
     text-decoration: none;
     color: $black;
+    cursor: pointer;
   }
 
   .icon {
     color: $gewis-grey;
-    margin-left: 1rem;
+    margin: 0 1rem;
+  }
+
+  .modal-body {
+    .row p {
+      font-size: 0.85rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .total-price > div:nth-last-of-type(2) {
+      div:last-of-type > p {
+        margin-right: -11px;
+      }
+
+      div:last-of-type > p::after {
+        content: ' +'
+      }
+    }
+
+    hr {
+      margin: .25rem 0;
+      border-color: black;
+    }
   }
 
   .card-title {
@@ -520,7 +681,7 @@ export default class TransactionsComponent extends Vue {
 
   @include media-breakpoint-down(xs) {
     .icon {
-      margin-left: 0;
+      margin: 0;
     }
 
     .button {

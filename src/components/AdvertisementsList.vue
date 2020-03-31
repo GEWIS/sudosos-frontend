@@ -1,6 +1,7 @@
 <template>
   <div>
     <ConfirmationModal
+      v-bind:title="title"
       v-bind:method="method"
       v-bind:url="confirmUrl"
       v-bind:reason="reason">
@@ -165,6 +166,8 @@ export default class AdvertisementsList extends Vue {
     file: File = new File([], '');
 
     duration: Number = 10;
+
+    title: string = 'Confirm deletion';
 
     method: string = '';
 
