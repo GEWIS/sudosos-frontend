@@ -264,7 +264,6 @@ import dinero, { Dinero } from 'dinero.js';
 import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
 import fakeTransactions from '@/assets/transactions';
-// import DineroTransformer from '@/entities/transformers/dinero-transformer';
 
 
   @Component
