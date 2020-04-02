@@ -1,4 +1,17 @@
 {
-  "hello": "droplul",
-  "from": "Droplul"
+  "Transactions": "Transactions",
+  "Saldo": "Saldo",
+  "Point of Sale": "Point of Sale",
+  "Overview": "Overview",
+  "Request": "Request",
+  "Admin": "Admin",
+  "Screens": "Screens",
+  "Advertisements": "Advertisements",
+  "BAC": "BAC",
+  "Flagged transactions": "Flagged transactions",
+  "Manage products": "Manage products",
+  "Profile": "Profile",
+  "Sign out": "Sign out",
+  "Netherlands": "Netherlands",
+  "English": "English"
 }

@@ -11,20 +11,22 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item to="/transactions">Transactions</b-nav-item>
-          <b-nav-item to="/saldo">Saldo</b-nav-item>
-          <b-nav-item-dropdown text="Point of Sale">
-            <b-dropdown-item to="/point-of-sale">Overview</b-dropdown-item>
-            <b-dropdown-item to="/point-of-sale-request">Request</b-dropdown-item>
+          <b-nav-item to="/transactions">{{ $t('Transactions') }}</b-nav-item>
+          <b-nav-item to="/saldo">{{ $t('Saldo') }}</b-nav-item>
+          <b-nav-item-dropdown :text="$t('Point of Sale')">
+            <b-dropdown-item to="/point-of-sale">{{ $t('Overview') }}</b-dropdown-item>
+            <b-dropdown-item to="/point-of-sale-request">{{ $t('Request') }}</b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item-dropdown text="Admin">
-            <b-dropdown-item to="/manage-pos">Overview</b-dropdown-item>
-            <b-dropdown-item to="/screens">Screens</b-dropdown-item>
-            <b-dropdown-item to="/advertisements">Advertisements</b-dropdown-item>
+          <b-nav-item-dropdown :text="$t('Admin')">
+            <b-dropdown-item to="/manage-pos">{{ $t('Overview') }}</b-dropdown-item>
+            <b-dropdown-item to="/screens">{{ $t('Screens') }}</b-dropdown-item>
+            <b-dropdown-item to="/advertisements">{{ $t('Advertisements') }}</b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item-dropdown text="BAC">
-            <b-dropdown-item to="/flagged-transactions">Flagged transactions</b-dropdown-item>
-            <b-dropdown-item to="/manage-products">Manage products</b-dropdown-item>
+          <b-nav-item-dropdown :text="$t('BAC')">
+            <b-dropdown-item to="/flagged-transactions">
+              {{ $t('Flagged transactions') }}
+            </b-dropdown-item>
+            <b-dropdown-item to="/manage-products">{{ $t('Manage products') }}</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
 
@@ -35,19 +37,21 @@
             <template v-slot:button-content>
               {{ currentUser.firstName }}
             </template>
-            <b-dropdown-item href="/profile">Profile</b-dropdown-item>
+            <b-dropdown-item to="/profile">{{ $t('Profile') }}</b-dropdown-item>
             <b-dropdown-item to="/sign-out">Sign out</b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item to="/saldo">€ {{ currentUser.balance }}</b-nav-item>
-          <b-nav-item-dropdown v-model="$i18n.locale" right>
+          <b-nav-item to="/saldo" active-class="" exact-active-class="">
+            € {{ currentUser.balance }}
+          </b-nav-item>
+          <b-nav-item-dropdown right>
             <template v-slot:button-content>
               <font-awesome-icon icon="globe-europe"></font-awesome-icon>
             </template>
             <b-dropdown-item @click="$i18n.locale = 'nl'">
-              <span class="flag-icon" id="dutch"></span>Nederlands
+              <span class="flag-icon" id="dutch"></span>{{ $t('Netherlands') }}
             </b-dropdown-item>
             <b-dropdown-item @click="$i18n.locale = 'en'">
-              <span class="flag-icon" id="english"></span>Engels
+              <span class="flag-icon" id="english"></span>{{ $t('English') }}
             </b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>

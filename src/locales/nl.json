@@ -1,4 +1,17 @@
 {
-  "hello": "hallo",
-  "from": "van"
+  "Transactions": "Transacties",
+  "Saldo": "Saldo",
+  "Point of Sale": "Point of Sale",
+  "Overview": "Overzicht",
+  "Request": "Aanvraag",
+  "Admin": "Admin",
+  "Screens": "Schermen",
+  "Advertisements": "Advertenties",
+  "BAC": "BAC",
+  "Flagged transactions": "Gemarkeerde transacties",
+  "Manage products": "Beheer producten",
+  "Profile": "Profiel",
+  "Sign out": "Uitloggen",
+  "Netherlands": "Nederlands",
+  "English": "Engels"
 }
