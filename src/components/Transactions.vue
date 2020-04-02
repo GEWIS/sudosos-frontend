@@ -312,7 +312,7 @@ export default class TransactionsComponent extends Vue {
 
     right: boolean = false;
 
-    perPage: number = 3;
+    perPage: number = 12;
 
     currentPage: number = 1;
 
@@ -382,19 +382,16 @@ export default class TransactionsComponent extends Vue {
       @param item : The transaction that makes up this row
       @param type : The type of field this is (should be a row)
      */
-    setRowClass(item: Transaction, type: string): String {
+    setRowClass = (item: Transaction, type: string): String => {
       if (type === 'row' && item.formattedDate !== undefined) {
-        if (TransactionsComponent.checkFormattedDate(item.formattedDate)) {
+        if (this.checkFormattedDate(item.formattedDate)) {
           return 'date-row';
         }
         return 'transaction-row';
       }
 
-      // TODO: Fix
-      this.user = this.user;
-
       return '';
-    }
+    };
 
     /*
       Simple method that resets all filters to their base state
@@ -417,7 +414,7 @@ export default class TransactionsComponent extends Vue {
       if (this.filteredTransactions.length > 0) {
         downloadSet = this.filteredTransactions;
       } else {
-        downloadSet = this.transactionList.filter(t => !TransactionsComponent.checkFormattedDate(t.formattedDate || ''));
+        downloadSet = this.transactionList.filter(t => !this.checkFormattedDate(t.formattedDate || ''));
       }
 
       csv += `${Object.keys(downloadSet[0]).join(',')}\r\n`;
@@ -501,7 +498,7 @@ export default class TransactionsComponent extends Vue {
       // Check if either both selfBought or putInByYou are true or either one of them.
       if (this.selfBought || this.putInByYou || this.putInForYou) {
         if ((self || putInBy || putInFor)
-          && !TransactionsComponent.checkFormattedDate(data.formattedDate || '')
+          && !this.checkFormattedDate(data.formattedDate || '')
           && !this.filteredTransactions.includes(data)) {
           this.filteredTransactions.push(data);
         }
@@ -570,10 +567,7 @@ export default class TransactionsComponent extends Vue {
       return transactions;
     };
 
-    formatDateTime(date: Date, full: Boolean = true) : string {
-      // TODO Fix;
-      this.user = this.user;
-
+    formatDateTime = (date: Date, full: Boolean) : string => {
       const weekDays: String[] = [
         'Monday',
         'Tuesday',
@@ -585,14 +579,14 @@ export default class TransactionsComponent extends Vue {
       ];
 
       if (full) {
-        return `${TransactionsComponent.parseTime(date.getDate())}-`
-          + `${TransactionsComponent.parseTime(date.getMonth() + 1)}-`
+        return `${this.parseTime(date.getDate())}-`
+          + `${this.parseTime(date.getMonth() + 1)}-`
           + `${date.getFullYear()} (${weekDays[date.getDay()]})`;
       }
 
-      return `${TransactionsComponent.parseTime(date.getHours())}:`
-        + `${TransactionsComponent.parseTime(date.getMinutes())}`;
-    }
+      return `${this.parseTime(date.getHours())}:`
+        + `${this.parseTime(date.getMinutes())}`;
+    };
 
     /*
       Method that grabs extra transactions when 2 pages or less are left
@@ -605,19 +599,26 @@ export default class TransactionsComponent extends Vue {
       this.previousPage = page;
     }
 
-    static checkFormattedDate(date : String) : boolean {
+    checkFormattedDate = (date : String) : boolean => {
       // Regular expression that will match 00-00-0000 (word) to find transaction rows that are
       // date rows.
       const re = /\d{2}-\d{2}-\d{4}.\(\w*\)/;
 
       return re.test(date.toString());
-    }
+    };
 
     /*
       Parses times such that each value has a padded 0 if < 10
      */
-    static parseTime(value: number): string {
-      return (value < 10 ? '0' : '') + value;
+    parseTime = (value: number): string => (value < 10 ? '0' : '') + value;
+
+    /*
+      Does everything that needs to be done when the filter changes
+    */
+    filterChange(data: string) : void {
+      this.filteredTransactions = [];
+      this.filterWay = data;
+      this.currentPage = 1;
     }
 
     /*
@@ -632,32 +633,27 @@ export default class TransactionsComponent extends Vue {
 
     @Watch('fromDate')
     onFromDateChanged(value: Date, old: Date): void {
-      this.filteredTransactions = [];
-      this.filterWay = value.toString();
+      this.filterChange(value.toString());
     }
 
     @Watch('toDate')
     onToDateChanged(value: Date, old: Date): void {
-      this.filteredTransactions = [];
-      this.filterWay = value.toString();
+      this.filterChange(value.toString());
     }
 
     @Watch('selfBought')
     onSelfBoughtChanged(value: Boolean, old: Boolean): void {
-      this.filteredTransactions = [];
-      this.filterWay = value.toString();
+      this.filterChange(value.toString());
     }
 
     @Watch('putInByYou')
     onPutInByYouChanged(value: Boolean, old: Boolean): void {
-      this.filteredTransactions = [];
-      this.filterWay = value.toString();
+      this.filterChange(value.toString());
     }
 
     @Watch('putInForYou')
     onPutInForYouChanged(value: Boolean, old: Boolean) : void {
-      this.filteredTransactions = [];
-      this.filterWay = value.toString();
+      this.filterChange(value.toString());
     }
 }
 </script>
