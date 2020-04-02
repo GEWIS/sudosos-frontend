@@ -2,7 +2,7 @@
   <div id="app">
     <b-navbar toggleable="md" type="dark" variant="primary">
       <b-container fluid="md">
-      <b-navbar-brand to="/">
+      <b-navbar-brand to="/" active-class="" exact-active-class="">
         <span>SudoSOS</span>
         <img src="./assets/img/gewis-branding.svg"  alt="GEWIS Logo"/>
       </b-navbar-brand>
@@ -39,6 +39,17 @@
             <b-dropdown-item to="/sign-out">Sign out</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item to="/saldo">€ {{ currentUser.balance }}</b-nav-item>
+          <b-nav-item-dropdown v-model="$i18n.locale" right>
+            <template v-slot:button-content>
+              <font-awesome-icon icon="globe-europe"></font-awesome-icon>
+            </template>
+            <b-dropdown-item @click="$i18n.locale = 'nl'">
+              <span class="flag-icon" id="dutch"></span>Nederlands
+            </b-dropdown-item>
+            <b-dropdown-item @click="$i18n.locale = 'en'">
+              <span class="flag-icon" id="english"></span>Engels
+            </b-dropdown-item>
+          </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
       </b-container>
@@ -65,8 +76,36 @@ export default class App extends Vue {
     balance: 15.00,
     firstName: 'Rick',
   };
+
+  languages : string[] = ['en', 'nl']
 }
 </script>
 
 <style lang="scss">
+  .router-link-active {
+   opacity: 0.5;
+  }
+
+  .flag-icon {
+    background-size: contain;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    position: relative;
+    display: inline-block;
+    width: 1.33333333em;
+    line-height: 1em;
+    margin-right: 1em;
+  }
+
+  .flag-icon::before {
+    content: '\00a0';
+  }
+
+  #dutch {
+    background-image: url('./assets/img/nl.svg');
+  }
+
+  #english {
+    background-image: url('./assets/img/en.svg');
+  }
 </style>

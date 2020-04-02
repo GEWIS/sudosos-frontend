@@ -6,7 +6,7 @@
           <b-col xl="3" sm="6" cols="12" class="mb-2 mb-xl-0">
             <b-form-group
               id="from"
-              label="FROM"
+              :label="$t('hello')"
               label-cols="3"
             >
               <b-form-datepicker
