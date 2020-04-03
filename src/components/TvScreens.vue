@@ -6,7 +6,7 @@
         <b-col xl="6" sm="12" cols="12" class="mb-2 mb-xl-0">
           <b-form-group
             id="time"
-            label="Eindtijd"
+            :label="$t('tvScreens.Ending time')"
             label-cols="4">
             <b-form-timepicker
               id="end-time"
@@ -20,28 +20,30 @@
             variant="primary"
             id="confirmBorrelModeTime"
             v-on:click="confirmBorrelModeTime">
-            Bevestig eindtijd
+            {{ $t('tvScreens.Confirm end time') }}
           </b-button>
           <b-button
             variant="primary"
             id="stopBorrelMode"
             v-on:click="stopBorrelMode"
             v-if="enabled">
-            Borrel modus uitschakelen
+            {{ $t('tvScreens.Stop social drink mode') }}
           </b-button>
         </b-col>
       </b-form-row>
     </b-card-title>
     <b-card-body>
-      <p v-if="enabled">Borrel modus op de TV schermen staat momenteel
-        <span class="body-mode-enabled">AAN</span>. Borrel modus wordt vanzelf uitgeschakeld om
+      <p v-if="enabled">
+        {{ $t('tvScreens.currently')}}
+        <span class="body-mode-enabled">{{ $t('tvScreens.on') }}</span>.
+        {{ $t('tvScreens.turn off') }}
         {{ endTime.toLocaleString('en-NL').replace(/\//g, '-') }}.
-        Je kunt de tijd bovenin veranderen of borrel modus vroegtijdig beëindigen door op
-        "Borrel modus uitschakelen" te klikken.
+        {{ $t('tvScreens.early') }}
       </p>
-      <p v-if="!enabled">Borrel modus op de TV schermen staat momenteel
-        <span class="body-mode-disabled">UIT</span>. Je kunt borrel modus aanzetten door bovenin een
-        tijd te kiezen. Op deze tijd wordt borrel modus weer uitgeschakeld.
+      <p v-if="!enabled">
+        {{ $t('tvScreens.currently')}}
+        <span class="body-mode-disabled">{{ $t('tvScreens.off') }}</span>.
+        {{ $t('tvScreens.turn on') }}
       </p>
     </b-card-body>
   </b-card>
@@ -112,6 +114,13 @@ export default class TvScreens extends Vue {
 }
 </script>
 
+<style lang="scss">
+  .body-mode-enabled {
+    color: green;
+    font-weight: bold;
+  }
+</style>
+
 <style scoped lang="scss">
   @import "~bootstrap/scss/bootstrap";
   @import './src/styles/Card.scss';
@@ -123,11 +132,13 @@ export default class TvScreens extends Vue {
   .body-mode-disabled {
     color: red;
     font-weight: bold;
+    text-transform: uppercase;
   }
 
   .body-mode-enabled {
     color: green;
     font-weight: bold;
+    text-transform: uppercase;
   }
 
   button {

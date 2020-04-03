@@ -6,7 +6,7 @@
     "Overview": "Overzicht",
     "Request": "Aanvraag",
     "Admin": "Admin",
-    "Screens": "Schermen",
+    "Screens": "TV Schermen",
     "Advertisements": "Advertenties",
     "BAC": "BAC",
     "Flagged transactions": "Gemarkeerde transacties",
@@ -38,7 +38,7 @@
     "Manage products": "Productbeheer"
   },
   "screens": {
-    "Screens": "Schermen"
+    "Screens": "TV Schermen"
   },
   "managePOS": {
     "Manage points of sale": "Beheer verkooppunten"
@@ -110,5 +110,16 @@
     "Friday": "Vrijdag",
     "Saturday": "Zaterdag",
     "Sunday": "Zondag"
+  },
+  "tvScreens": {
+    "Ending time": "Eind tijd",
+    "Confirm end time": "Bevestig eind tijd",
+    "Stop social drink mode": "Stop borrel modus",
+    "currently": "Borrel modus staat op dit moment ",
+    "on": "aan",
+    "off": "uit",
+    "turn off": "Borrel modus wordt automagisch uitgezet op ",
+    "turn on": "Je kunt borrel modus aanzetten door bovenin een tijd te kiezen. Op deze tijd wordt borrel modus weer uitgeschakeld.",
+    "early": "Je kunt de tijd bovenin veranderen of borrel modus vroegtijdig beëindigen door op \"Borrel modus uitschakelen\" te klikken."
   }
 }

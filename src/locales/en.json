@@ -6,7 +6,7 @@
     "Overview": "Overview",
     "Request": "Request",
     "Admin": "Admin",
-    "Screens": "Screens",
+    "Screens": "TV Screens",
     "Advertisements": "Advertisements",
     "BAC": "BAC",
     "Flagged transactions": "Flagged transactions",
@@ -38,7 +38,7 @@
     "Manage products": "Manage products"
   },
   "screens": {
-    "Screens": "Screens"
+    "Screens": "TV Screens"
   },
   "managePOS": {
     "Manage points of sale": "Manage points of sale"
@@ -110,5 +110,16 @@
     "Friday": "Friday",
     "Saturday": "Saturday",
     "Sunday": "Sunday"
+  },
+  "tvScreens": {
+    "Ending time": "Ending time",
+    "Confirm end time": "Confirm end time",
+    "Stop social drink mode": "Stop social drink mode",
+    "currently": "Currently social drink mode is turned ",
+    "on": "on",
+    "off": "off",
+    "turn off": "Social drink mode will automatically be turned off at ",
+    "turn on": "You can turn on social drink mode by choosing a time above and clicking the button. The social drink mode will automatically be turned of at that time.",
+    "early": "You can either change the time above or turn off the social drink mode prematurely by clicking on \"Stop social drink mode\"."
   }
 }
