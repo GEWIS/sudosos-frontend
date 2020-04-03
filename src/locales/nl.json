@@ -80,5 +80,35 @@
   },
   "containersOverview": {
     "Containers": "Containers"
+  },
+  "transactionsComponent": {
+    "from": "van",
+    "to": "tot",
+    "Self Bought": "Zelf gekocht",
+    "Put in for others": "Voor anderen afgestreept",
+    "Put in for you": "Voor jou afgestreept",
+    "Export to CSV": "Exporteren naar CSV",
+    "Reset filter": "Herstel filter",
+    "When": "Wanneer",
+    "What": "Wat",
+    "Info": "Info",
+    "Page": "Pagina",
+    "transaction details": "transactie details",
+    "Total": "Totaal",
+    "Point of sale": "Verkooppunt",
+    "Put in by": "Afgestreept door",
+    "Put in for": "Afgestreept voor",
+    "Activity": "Activiteit",
+    "Products": "Producten",
+    "Cancel": "Cancel",
+    "Flag transaction": "Markeer transactie",
+    "Transactions": "Transacties",
+    "Monday": "Maandag",
+    "Tuesday": "Dinsdag",
+    "Wednesday": "Woensdag",
+    "Thursday": "Donderdag",
+    "Friday": "Vrijdag",
+    "Saturday": "Zaterdag",
+    "Sunday": "Zondag"
   }
 }

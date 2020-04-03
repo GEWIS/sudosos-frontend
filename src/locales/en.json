@@ -80,5 +80,35 @@
   },
   "containersOverview": {
     "Containers": "Containers"
+  },
+  "transactionsComponent": {
+    "from": "from",
+    "to": "to",
+    "Self Bought": "Self Bought",
+    "Put in for others": "Put in for others",
+    "Put in for you": "Put in for you",
+    "Export to CSV": "Export to CSV",
+    "Reset filter": "Reset filter",
+    "When": "When",
+    "What": "What",
+    "Info": "Info",
+    "Page": "Page",
+    "transaction details": "transaction details",
+    "Total": "Total",
+    "Point of sale": "Point of sale",
+    "Put in by": "Put in by",
+    "Put in for": "Put in for",
+    "Activity": "Activity",
+    "Products": "Products",
+    "Cancel": "Cancel",
+    "Flag transaction": "Flag transaction",
+    "Transactions": "Transactions",
+    "Monday": "Monday",
+    "Tuesday": "Tuesday",
+    "Wednesday": "Wednesday",
+    "Thursday": "Thursday",
+    "Friday": "Friday",
+    "Saturday": "Saturday",
+    "Sunday": "Sunday"
   }
 }
