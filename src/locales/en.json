@@ -55,5 +55,23 @@
     "all transactions": "all transactions",
     "when": "when",
     "what": "what"
+  },
+  "advertisementList" : {
+    "Add": "Add",
+    "save": "save",
+    "cancel": "cancel",
+    "new advertisement": "new advertisement",
+    "Duration": "Duration",
+    "Active": "Active",
+    "Advertisement": "Advertisement",
+    "Choose image drop": "Choose image or drop here...",
+    "Drop file here...": "Drop file here...",
+    "Confirm deletion": "Confirm deletion",
+    "Please enter": "Please enter a valid number larger than 0",
+    "Are you sure": "Are you sure you want to delete this advertisement?",
+    "Thumbnail": "Thumbnail",
+    "Duration (ms)": "Duration (ms)",
+    "Added on": "Added on",
+    "id": "Edit"
   }
 }

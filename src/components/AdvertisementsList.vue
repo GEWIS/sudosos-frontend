@@ -13,12 +13,32 @@
           id="add"
           v-b-modal.modal-add
           v-on:click="setAdvertisement('post')">
-          <font-awesome-icon icon="plus"></font-awesome-icon> Toevoegen
+          <font-awesome-icon icon="plus"></font-awesome-icon> {{ $t('advertisementList.Add') }}
         </b-button>
       </b-card-title>
       <b-card-body>
         <b-table stacked="sm" small borderless thead-class="table-header table-header-5"
                  :items="advertisementList" :fields="fields" class="table-striped">
+          <template v-slot:head(thumbnail)="data">
+            <span v-if="data">{{ $t(`advertisementList.${data.label}`) }}</span>
+          </template>
+
+          <template v-slot:head(duration)="data">
+            <span v-if="data">{{ $t(`advertisementList.${data.label}`) }}</span>
+          </template>
+
+          <template v-slot:head(active)="data">
+            <span v-if="data">{{ $t(`advertisementList.${data.label}`) }}</span>
+          </template>
+
+          <template v-slot:head(added)="data">
+            <span v-if="data">{{ $t(`advertisementList.${data.label}`) }}</span>
+          </template>
+
+          <template v-slot:head(id)="data">
+            <span v-if="data">{{ $t(`advertisementList.${data.label}`) }}</span>
+          </template>
+
           <template v-slot:cell(active)="data">
             <font-awesome-icon v-if="data.value" icon="check-circle"></font-awesome-icon>
           </template>
@@ -42,9 +62,9 @@
 
     <b-modal
       id="modal-add"
-      ok-title="save"
-      cancel-title="cancel"
-      title="new advertisement"
+      :ok-title="$t('advertisementList.save')"
+      :cancel-title="$t('advertisementList.cancel')"
+      :title="$t('advertisementList.new advertisement')"
       size="lg"
       hide-header-close
       centered>
@@ -52,7 +72,7 @@
         <b-form-group
           label-cols="12"
           label-cols-sm="3"
-          label="Duration"
+          :label="$t('advertisementList.Duration')"
           label-align="left"
           label-for="duration"
           :state="durationState"
@@ -70,7 +90,7 @@
         <b-form-group
           label-cols="12"
           label-cols-sm="3"
-          label="Active"
+          :label="$t('advertisementList.Active')"
           label-align="left"
           label-for="active"
         >
@@ -79,14 +99,14 @@
             name="active"
             v-model="active"
           >
-            Active
+            {{ $t('advertisementList.Active') }}
           </b-form-checkbox>
         </b-form-group>
 
         <b-form-group
           label-cols="12"
           label-cols-sm="3"
-          label="Advertisement"
+          :label="$t('advertisementList.Advertisement')"
           label-align="left"
           label-for="ad-file"
         >
@@ -95,8 +115,8 @@
             name="ad-file"
             v-model="file"
             accept="image/*"
-            placeholder="Choose image or drop here..."
-            drop-placeholder="Drop file here..."
+            :placeholder="$t('advertisementList.Choose image drop')"
+            :drop-placeholder="$t('advertisementList.Drop file here...')"
           ></b-form-file>
         </b-form-group>
       </div>
@@ -106,13 +126,13 @@
           variant="primary"
           class="btn-empty"
           @click="cancel()"
-        >cancel
+        >{{ $t('advertisementList.cancel') }}
         </b-button>
         <b-button
           variant="primary"
           class="btn-empty"
           @click="ok()">
-          save
+          {{ $t('advertisementList.save') }}
         </b-button>
       </template>
     </b-modal>
@@ -167,7 +187,7 @@ export default class AdvertisementsList extends Vue {
 
     duration: Number = 10;
 
-    title: string = 'Confirm deletion';
+    title: string = '';
 
     method: string = '';
 
@@ -190,15 +210,15 @@ export default class AdvertisementsList extends Vue {
       },
       {
         key: 'duration',
-        label: 'Duur (ms)',
+        label: 'Duration (ms)',
       },
       {
         key: 'active',
-        label: 'Actief',
+        label: 'Active',
       },
       {
         key: 'added',
-        label: 'Toegevoegd op',
+        label: 'Added on',
         formatter: (value: Date) => this.getTimeString(value),
       },
       {
@@ -231,7 +251,8 @@ export default class AdvertisementsList extends Vue {
 
     async setConfirmation(id: string = '-1') {
       if (id !== '-1') {
-        this.reason = 'Weet je zeker dat je deze advertentie wilt verwijderen?';
+        this.title = this.$t('advertisementList.Confirm deletion').toString();
+        this.reason = this.$t('advertisementList.Are you sure').toString();
         this.confirmUrl = `/${id}`;
         this.method = 'del';
       }
@@ -250,7 +271,7 @@ export default class AdvertisementsList extends Vue {
 
     get durationInvalid(): string {
       if (!this.durationState) {
-        return 'Please enter a valid number larger than 0';
+        return this.$t('advertisementList.Please enter').toString();
       }
       return '';
     }
