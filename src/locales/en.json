@@ -77,5 +77,8 @@
   "confirmationModal": {
     "Cancel": "Cancel",
     "Confirm": "Confirm"
+  },
+  "containersOverview": {
+    "Containers": "Containers"
   }
 }
