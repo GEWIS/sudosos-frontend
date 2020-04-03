@@ -73,5 +73,9 @@
     "Duration (ms)": "Duration (ms)",
     "Added on": "Added on",
     "id": "Edit"
+  },
+  "confirmationModal": {
+    "Cancel": "Cancel",
+    "Confirm": "Confirm"
   }
 }

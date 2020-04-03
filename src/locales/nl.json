@@ -73,5 +73,9 @@
     "Duration (ms)": "Duur (ms)",
     "Added on": "Toegevoegd op",
     "id": "Bewerk"
+  },
+  "confirmationModal": {
+    "Cancel": "Cancel",
+    "Confirm": "Bevestig"
   }
 }
