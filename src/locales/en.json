@@ -1,17 +1,32 @@
 {
-  "Transactions": "Transactions",
-  "Saldo": "Saldo",
-  "Point of Sale": "Point of Sale",
-  "Overview": "Overview",
-  "Request": "Request",
-  "Admin": "Admin",
-  "Screens": "Screens",
-  "Advertisements": "Advertisements",
-  "BAC": "BAC",
-  "Flagged transactions": "Flagged transactions",
-  "Manage products": "Manage products",
-  "Profile": "Profile",
-  "Sign out": "Sign out",
-  "Netherlands": "Netherlands",
-  "English": "English"
+  "app": {
+    "Transactions": "Transactions",
+    "Saldo": "Saldo",
+    "Points of Sale": "Points of Sale",
+    "Overview": "Overview",
+    "Request": "Request",
+    "Admin": "Admin",
+    "Screens": "Screens",
+    "Advertisements": "Advertisements",
+    "BAC": "BAC",
+    "Flagged transactions": "Flagged transactions",
+    "Manage products": "Manage products",
+    "Profile": "Profile",
+    "Sign out": "Sign out",
+    "Netherlands": "Nederlands",
+    "English": "English"
+  },
+  "saldoCom": {
+    "saldo": "saldo",
+    "upgrade online": "upgrade online"
+  },
+  "recentTrans": {
+    "recent transactions": "recent transactions",
+    "all transactions": "all transactions",
+    "when": "when",
+    "what": "what"
+  },
+  "home": {
+    "Overview": "Overview"
+  }
 }

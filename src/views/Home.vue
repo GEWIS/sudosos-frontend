@@ -2,7 +2,7 @@
   <b-container fluid="lg">
     <b-row class="mb-lg-3 mb-md-2 mb-1">
       <b-col>
-        <h1>Overzicht</h1>
+        <h1>{{ $t('home.Overview') }}</h1>
       </b-col>
     </b-row>
 

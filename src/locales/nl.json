@@ -1,17 +1,32 @@
 {
-  "Transactions": "Transacties",
-  "Saldo": "Saldo",
-  "Point of Sale": "Point of Sale",
-  "Overview": "Overzicht",
-  "Request": "Aanvraag",
-  "Admin": "Admin",
-  "Screens": "Schermen",
-  "Advertisements": "Advertenties",
-  "BAC": "BAC",
-  "Flagged transactions": "Gemarkeerde transacties",
-  "Manage products": "Beheer producten",
-  "Profile": "Profiel",
-  "Sign out": "Uitloggen",
-  "Netherlands": "Nederlands",
-  "English": "Engels"
+  "app": {
+    "Transactions": "Transacties",
+    "Saldo": "Saldo",
+    "Points of Sale": "Verkooppunten",
+    "Overview": "Overzicht",
+    "Request": "Aanvraag",
+    "Admin": "Admin",
+    "Screens": "Schermen",
+    "Advertisements": "Advertenties",
+    "BAC": "BAC",
+    "Flagged transactions": "Gemarkeerde transacties",
+    "Manage products": "Beheer producten",
+    "Profile": "Profiel",
+    "Sign out": "Uitloggen",
+    "Netherlands": "Nederlands",
+    "English": "English"
+  },
+  "saldoCom": {
+    "saldo": "saldo",
+    "upgrade online": "online opwaarderen"
+  },
+  "recentTrans": {
+    "recent transactions": "recente transacties",
+    "all transactions": "alle transacties",
+    "when": "wanneer",
+    "what": "wat"
+  },
+  "home": {
+    "Overview": "Overzicht"
+  }
 }

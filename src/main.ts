@@ -64,7 +64,7 @@ Vue.use(BootstrapVue);
 const messages = Object.assign(languages);
 
 const i18n = new VueI18n({
-  locale: 'en',
+  locale: 'nl',
   fallbackLocale: 'en',
   messages,
 });
