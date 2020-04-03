@@ -16,6 +16,36 @@
     "Netherlands": "Nederlands",
     "English": "English"
   },
+  "home": {
+    "Overview": "Overzicht"
+  },
+  "transactions": {
+    "Transactions": "Transacties"
+  },
+  "saldo": {
+    "Saldo": "Saldo"
+  },
+  "posOverview": {
+    "Point of sale overview": "Verkooppunt overzicht"
+  },
+  "posRequest": {
+    "Point of Sale request": "Aanvraag verkooppunt"
+  },
+  "flagged": {
+    "Flagged transactions": "Gemarkeerde transacties"
+  },
+  "manageProducts": {
+    "Manage products": "Productbeheer"
+  },
+  "screens": {
+    "Screens": "Schermen"
+  },
+  "managePOS": {
+    "Manage points of sale": "Beheer verkooppunten"
+  },
+  "advertisements": {
+    "Advertisements": "Advertenties"
+  },
   "saldoCom": {
     "saldo": "saldo",
     "upgrade online": "online opwaarderen"
@@ -25,8 +55,5 @@
     "all transactions": "alle transacties",
     "when": "wanneer",
     "what": "wat"
-  },
-  "home": {
-    "Overview": "Overzicht"
   }
 }

@@ -1,11 +1,6 @@
 <template>
   <b-container fluid="lg">
-    <b-row class="mb-lg-3 mb-md-2 mb-1">
-      <b-col>
-        <h1>{{ $t('home.Overview') }}</h1>
-      </b-col>
-    </b-row>
-
+    <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('home.Overview') }}</h1>
     <b-row>
       <b-col lg="3" class="d-none d-lg-block">
         <CurrentSaldo :user="user"/>
