@@ -6,7 +6,7 @@
           <b-col xl="3" sm="6" cols="12" class="mb-2 mb-xl-0">
             <b-form-group
               id="from"
-              label="FROM"
+              :label="$t('transactionsComponent.from')"
               label-cols="3"
             >
               <b-form-datepicker
@@ -22,7 +22,7 @@
           <b-col xl="3" sm="6" cols="12" class="mb-2 mb-xl-0">
             <b-form-group
               id="to"
-              label="TO"
+              :label="$t('transactionsComponent.to')"
               label-cols-sm="2"
               label-cols="3"
             >
@@ -51,7 +51,7 @@
                   :value="true"
                   :unchecked-value="false"
                 >
-                  Self Bought
+                  {{ $t('transactionsComponent.Self Bought') }}
                 </b-form-checkbox>
               </b-form-group>
               <b-form-group
@@ -66,7 +66,7 @@
                   :value="true"
                   :unchecked-value="false"
                 >
-                  Put in for others
+                  {{ $t('transactionsComponent.Put in for others') }}
                 </b-form-checkbox>
               </b-form-group>
               <b-form-group
@@ -81,7 +81,7 @@
                   :value="true"
                   :unchecked-value="false"
                 >
-                  Put in for you
+                  {{ $t('transactionsComponent.Put in for you') }}
                 </b-form-checkbox>
               </b-form-group>
             </b-form-row>
@@ -95,7 +95,7 @@
               v-on:click="downloadCSV"
             >
               <font-awesome-icon icon="file-export"></font-awesome-icon>
-              Export to CSV
+              {{ $t('transactionsComponent.Export to CSV') }}
             </b-button>
               </div>
               <div class="mr-0 mr-sm-2 mt-2 mt-sm-0 button">
@@ -105,7 +105,7 @@
               v-on:click="resetFilters"
             >
               <font-awesome-icon icon="times-circle"></font-awesome-icon>
-              Reset filter
+              {{ $t('transactionsComponent.Reset filter') }}
             </b-button>
               </div>
             </b-form-row>
@@ -118,6 +118,18 @@
                  :items="transactionList" :fields="fields" :tbody-tr-class="setRowClass"
                  :per-page="perPage" :current-page="currentPage" id="transaction-table"
                  :filter="filterWay" :filter-function="filterRows">
+          <template v-slot:head(formattedDate)="data">
+            <span v-if="data">{{ $t(`transactionsComponent.${data.label}`) }}</span>
+          </template>
+
+          <template v-slot:head(comment)="data">
+            <span v-if="data">{{ $t(`transactionsComponent.${data.label}`) }}</span>
+          </template>
+
+          <template v-slot:head(info)="data">
+            <span v-if="data">{{ $t(`transactionsComponent.${data.label}`) }}</span>
+          </template>
+
           <template v-slot:cell(formattedDate)="data">
             <!-- Check if this is a date row, if not make it clickable -->
             <div v-if="/\d{2}-\d{2}-\d{4}.\(\w*\)/.test(data.item.id)">
@@ -155,7 +167,9 @@
       </b-card-body>
     </b-card>
     <b-card-footer class="d-flex">
-      <p v-if="totalRows > perPage" class="my-auto h-100">Page:</p>
+      <p v-if="totalRows > perPage" class="my-auto h-100">
+        {{ $t('transactionsComponent.Page') }}:
+      </p>
       <b-pagination
         v-model="currentPage"
         :total-rows="totalRows"
@@ -175,7 +189,7 @@
 
     <b-modal
       id="details-modal"
-      title="transaction details"
+      :title="$t('transactionsComponent.transaction details')"
       hide-header-close
       centered
       size="lg"
@@ -187,7 +201,7 @@
 
       <b-row>
         <b-col cols="6" sm="4">
-          <p>Totaal</p>
+          <p>{{ $t('transactionsComponent.Total') }}</p>
         </b-col>
         <b-col cols="6" sm="8" class="text-right text-sm-left">
           <p>{{ dinero({amount: modalTrans.totalPrice}).toFormat() }}</p>
@@ -195,7 +209,7 @@
       </b-row>
       <b-row>
         <b-col cols="6" sm="4">
-          <p>Point of sale</p>
+          <p>{{ $t('transactionsComponent.Point of sale') }}</p>
         </b-col>
         <b-col cols="6" sm="8" class="text-right text-sm-left">
           <p>{{ modalTrans.pointOfSale }}</p>
@@ -203,7 +217,7 @@
       </b-row>
       <b-row>
         <b-col cols="6" sm="4">
-          <p>Afgestreept door</p>
+          <p>{{ $t('transactionsComponent.Put in by') }}</p>
         </b-col>
         <b-col cols="6" sm="8" class="text-right text-sm-left">
           <p>{{ modalTrans.authorized }}</p>
@@ -211,7 +225,7 @@
       </b-row>
       <b-row>
         <b-col cols="6" sm="4">
-          <p>Afgestreept bij</p>
+          <p>{{ $t('transactionsComponent.Put in for') }}</p>
         </b-col>
         <b-col cols="6" sm="8" class="text-right text-sm-left">
           <p>{{ modalTrans.soldToId }}</p>
@@ -219,7 +233,7 @@
       </b-row>
       <b-row>
         <b-col cols="6" sm="4">
-          <p>Activiteit</p>
+          <p>{{ $t('transactionsComponent.Activity') }}</p>
         </b-col>
         <b-col cols="6" sm="8" class="text-right text-sm-left">
           <p>{{ modalTrans.activityId }}</p>
@@ -227,7 +241,7 @@
       </b-row>
       <b-row>
         <b-col cols="12" sm="4">
-          <p>Producten</p>
+          <p>{{ $t('transactionsComponent.Products') }}</p>
         </b-col>
         <b-col cols="12" sm="8" class="total-price">
           <b-row v-for="trans in modalTrans.subTransactions"
@@ -246,7 +260,9 @@
           <hr>
           <b-row>
             <b-col cols="12" class="text-right">
-              <p><i>Totaal</i> {{ dinero({amount: modalTrans.totalPrice}).toFormat() }}</p>
+              <p>
+                <i class="mr-1">{{ $t('transactionsComponent.Total') }} </i>
+                {{ dinero({amount: modalTrans.totalPrice}).toFormat() }}</p>
             </b-col>
           </b-row>
         </b-col>
@@ -257,13 +273,13 @@
           variant="primary"
           id="confirm-cancel"
           @click="cancel()"
-        >Cancel
+        >{{ $t('transactionsComponent.Cancel') }}
         </b-button>
         <b-button
           variant="primary"
           class="btn-empty"
           @click="ok()"
-        > FLAG TRANSACTION
+        >{{ $t('transactionsComponent.Flag transaction') }}
         </b-button>
       </template>
 
@@ -318,17 +334,19 @@ export default class TransactionsComponent extends Vue {
 
     previousPage: number = 1;
 
+    weekDays : string[] = [];
+
     /*
       Fields that should be shown from the transactionList
      */
     fields: Object[] = [
       {
         key: 'formattedDate',
-        label: 'Wanneer',
+        label: 'When',
       },
       {
         key: 'comment',
-        label: 'Wat',
+        label: 'What',
       },
       {
         key: 'id',
@@ -428,7 +446,7 @@ export default class TransactionsComponent extends Vue {
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(csvFile);
       link.style.display = 'none';
-      link.download = 'Transactions.csv';
+      link.download = `${this.$t('transactionsComponent.Transactions')}.csv`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -540,7 +558,7 @@ export default class TransactionsComponent extends Vue {
             soldToId: '',
             authorized: '',
             totalPrice: 0,
-            pointOfSale: 'Bar (GEWIS)',
+            pointOfSale: '',
             activityId: '',
             subTransactions: [],
             comment: '',
@@ -567,15 +585,15 @@ export default class TransactionsComponent extends Vue {
       return transactions;
     };
 
-    formatDateTime = (date: Date, full: Boolean) : string => {
+    formatDateTime(date: Date, full: Boolean) : string {
       const weekDays: String[] = [
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'Sunday',
+        this.$t('transactionsComponent.Monday').toString(),
+        this.$t('transactionsComponent.Tuesday').toString(),
+        this.$t('transactionsComponent.Wednesday').toString(),
+        this.$t('transactionsComponent.Thursday').toString(),
+        this.$t('transactionsComponent.Friday').toString(),
+        this.$t('transactionsComponent.Saturday').toString(),
+        this.$t('transactionsComponent.Sunday').toString(),
       ];
 
       if (full) {
@@ -586,7 +604,7 @@ export default class TransactionsComponent extends Vue {
 
       return `${this.parseTime(date.getHours())}:`
         + `${this.parseTime(date.getMinutes())}`;
-    };
+    }
 
     /*
       Method that grabs extra transactions when 2 pages or less are left

@@ -12,13 +12,13 @@
         variant="primary"
         id="confirm-cancel"
         @click="cancel()"
-      >Cancel
+      >{{ $t('confirmationModal.Cancel') }}
       </b-button>
       <b-button
         variant="primary"
         class="btn-empty"
-        @click="ok()">
-        Confirm
+        @click="ok()"
+      >{{ $t('confirmationModal.Confirm') }}
       </b-button>
     </template>
   </b-modal>

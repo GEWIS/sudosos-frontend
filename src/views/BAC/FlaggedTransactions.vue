@@ -1,6 +1,6 @@
 <template>
   <b-container fluid="lg">
-    <h1>Flagged transactions page</h1>
+    <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('flagged.Flagged transactions') }}</h1>
   </b-container>
 </template>
 
