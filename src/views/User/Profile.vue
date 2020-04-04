@@ -93,8 +93,7 @@ export default class Profile extends Vue {
     console.log(this.pincode);
   }
 
-  updateDevice(device: any, event?: any) {
-    console.log(this);
+  updateDevice = (device: any, event?: any) => {
     // If there is an event, we are replying to a keypress
     // Otherwise, it is the blur event, and we just need to stop the editing
     if (event) {
