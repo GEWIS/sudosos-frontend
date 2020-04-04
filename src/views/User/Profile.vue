@@ -2,55 +2,55 @@
   <b-container fluid="lg">
     <h1>Profile page</h1>
     <b-row class="profile-items-container">
-      <b-col sm="12" md="4">
-        <b>Change pin code</b>
-        <b-form @submit="changePincode">
-          <b-form-group
-            id="old-pincode-group"
-            label="Old pin code"
-            label-for="old-pincode"
-            :invalid-feedback="oldPincodeFeedback"
-            :state="validateOldPincode"
-          >
-            <b-form-input
-              id="old-pincode"
-              v-model="pincode.oldPincode"
-              type="text" />
-          </b-form-group>
-          <b-form-group
-            id="new-pincode-group"
-            label="New pin code"
-            label-for="new-pincode"
-            :invalid-feedback="newPincodeFeedback"
-            :state="validateNewPincode"
-          >
-            <b-form-input
-              id="new-pincode"
-              v-model="pincode.newPincode"
-              type="text" />
-          </b-form-group>
-          <b-form-group
-            id="confirm-pincode-group"
-            label="Confirm new pin code"
-            label-for="confirm-pincode"
-            :invalid-feedback="confirmPincodeFeedback"
-            :state="validateConfirmPincode"
-          >
-            <b-form-input
-              id="confirm-pincode"
-              v-model="pincode.confirmPincode"
-              type="text" />
-          </b-form-group>
-          <b-button type="submit" variant="primary">Change pin code</b-button>
-        </b-form>
+      <b-col sm="12" md="6">
+        <div>
+          <b>Change pin code</b>
+          <b-form @submit="changePincode">
+            <b-form-group
+              id="old-pincode-group"
+              label="Old pin code"
+              label-for="old-pincode"
+              :invalid-feedback="oldPincodeFeedback"
+              :state="validateOldPincode"
+            >
+              <b-form-input id="old-pincode" v-model="pincode.oldPincode" type="text" />
+            </b-form-group>
+            <b-form-group
+              id="new-pincode-group"
+              label="New pin code"
+              label-for="new-pincode"
+              :invalid-feedback="newPincodeFeedback"
+              :state="validateNewPincode"
+            >
+              <b-form-input id="new-pincode" v-model="pincode.newPincode" type="text" />
+            </b-form-group>
+            <b-form-group
+              id="confirm-pincode-group"
+              label="Confirm new pin code"
+              label-for="confirm-pincode"
+              :invalid-feedback="confirmPincodeFeedback"
+              :state="validateConfirmPincode"
+            >
+              <b-form-input id="confirm-pincode" v-model="pincode.confirmPincode" type="text" />
+            </b-form-group>
+            <b-button type="submit" variant="primary">Change pin code</b-button>
+          </b-form>
+        </div>
       </b-col>
-      <b-col sm="12" md="4">
-        <b>Manage nfc devices</b>
-        <b-badge v-for="device in nfcDevices" v-bind:key="device.id" class="nfc-device-badge">
-          {{ device.name }} ({{ device.uid }})
-          <span @click="removeDevice(device)">✖</span>
-          <span @click="editDevice(device)">🖉</span>
-        </b-badge>
+      <b-col sm="12" md="6">
+        <div>
+          <b>Manage nfc devices</b><br>
+          <div v-for="device in nfcDevices" v-bind:key="device.id" class="nfc-device-badge">
+            <span v-show="!device.editing">{{ device.name }}</span >
+            <input type="text" class="edit-devicename"
+              v-on:keyup="updateDevice(device, $event)"
+              @blur="updateDevice(device)"
+              v-show="device.editing" v-model="device.name"/>
+            ({{ device.uid }})
+            <span @click="removeDevice(device)">✖</span>
+            <span class="edit-devicename" @click="device.editing = true">🖉</span>
+          </div>
+        </div>
       </b-col>
     </b-row>
   </b-container>
@@ -63,7 +63,6 @@ import { NFCDevice } from '@/entities/NFCDevice';
 @Component({
   components: {},
 })
-
 export default class Profile extends Vue {
   formError: string = '';
 
@@ -71,38 +70,60 @@ export default class Profile extends Vue {
     oldPincode: '',
     newPincode: '',
     confirmPincode: '',
-  }
+  };
 
-  nfcDevices: NFCDevice[] = [
+  nfcDevices: any[] = [
     {
       id: '1',
       uid: 'aa:aa:aa:aa:aa',
       name: 'Rolstoel Julie de Nooij 👩‍🦼',
       createdAt: new Date(),
+      editing: false,
     },
     {
       id: '2',
       uid: 'bb:ac:ab:ba:cc',
       name: 'Fontys-pas',
       createdAt: new Date(),
+      editing: false,
     },
-  ]
+  ];
 
   changePincode() {
     console.log(this.pincode);
   }
 
-  removeDevice(device: NFCDevice) {
-    for (let i = 0; i < this.nfcDevices.length; i += 1) {
-      if (device.id === this.nfcDevices[i].id) {
-        // TODO: communicate removal with the backend
-        this.nfcDevices.splice(i, 1);
+  updateDevice(device: any, event?: any) {
+    console.log(this);
+    // If there is an event, we are replying to a keypress
+    // Otherwise, it is the blur event, and we just need to stop the editing
+    if (event) {
+      if (event.key === 'Enter') {
+        device.editing = false;
+        // TODO: Send new data to backend
       }
+    } else {
+      device.editing = false;
+      // TODO: Send new data to backend
     }
   }
 
-  editDevice(device: NFCDevice) {
-    console.log(this);
+  removeDevice(device: NFCDevice) {
+    this.$bvModal
+      .msgBoxConfirm('Are you sure you want to remove this NFC device?')
+      .then((value) => {
+        if (value) {
+          for (let i = 0; i < this.nfcDevices.length; i += 1) {
+            if (device.id === this.nfcDevices[i].id) {
+              // TODO: communicate removal with the backend
+              this.nfcDevices.splice(i, 1);
+            }
+          }
+        }
+      })
+      .catch((err) => {
+        // An error occurred
+      });
   }
 
   // Validators for the form
@@ -118,15 +139,20 @@ export default class Profile extends Vue {
   }
 
   get validateNewPincode() {
-    return this.pincode.newPincode.length <= 4
-      && this.pincode.newPincode !== this.pincode.oldPincode;
+    return (
+      this.pincode.newPincode.length <= 4
+      && this.pincode.newPincode !== this.pincode.oldPincode
+    );
   }
 
   get newPincodeFeedback() {
     if (this.pincode.newPincode.length > 4) {
       return 'New pin code length must be 4 digits';
     }
-    if (this.pincode.newPincode === this.pincode.oldPincode && this.pincode.newPincode !== '') {
+    if (
+      this.pincode.newPincode === this.pincode.oldPincode
+      && this.pincode.newPincode !== ''
+    ) {
       return 'New pin code must be unique from old pin code';
     }
     return '';
@@ -146,24 +172,48 @@ export default class Profile extends Vue {
 </script>
 
 <style scoped lang="scss">
-  .profile-items-container {
+.profile-items-container {
+  > * {
+    padding: 16px;
     > * {
       background-color: #f8f8f8;
-      margin: 16px;
-      padding: 16px
-    }
-    input {
-      max-width: 10ch;
-    }
-
-    button {
-      float: left;
-    }
-
-    .nfc-device-badge {
-      span {
-        cursor: pointer;
-      }
+      padding: 16px;
+      // Ik wil graag even melden dat deze padding alleen maar nodig is door
+      // die kankerretarded zooi genaamd vue-bootstrap
+      // Alleen door deze ellende kunnen mijn butons niet meer fatsoenlijk gerenderd worden.
+      padding-bottom: 54px;
     }
   }
+  input {
+    max-width: 10ch;
+  }
+
+  button {
+    float: left;
+  }
+
+  .nfc-device-badge {
+    background-color: #e8e8e8;
+    padding: 4px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    span {
+      cursor: pointer;
+    }
+    .edit-devicename{
+      max-width: 30ch;
+    }
+  }
+}
+</style>
+<style lang="scss">
+
+.modal-open .modal-content[role=document]{
+  min-height: 200px;
+  .modal-body{
+    margin-top: 24px;
+    font-weight: 600;
+  }
+}
 </style>
