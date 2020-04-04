@@ -1,6 +1,6 @@
 <template>
   <b-container fluid="lg">
-    <h1>Profile page</h1>
+    <h1 class="mb-2 mb-sm-3 mb-lg-4">My profile</h1>
     <b-row>
       <b-col sm="12" md="6" class="mb-4 mb-md-0">
         <b-card>

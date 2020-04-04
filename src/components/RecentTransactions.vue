@@ -2,95 +2,41 @@
   <div>
     <b-card>
       <b-card-title>
-        recente transacties
+        {{ $t('recentTrans.recent transactions') }}
       </b-card-title>
       <b-card-body>
         <b-table stacked="sm" small borderless thead-class="table-header"
         :items="transactionList" :fields="fields">
+          <template v-slot:head(createdAt)="data">
+            <span v-if="data">{{ $t(`recentTrans.${data.label}`) }}</span>
+          </template>
+
+          <template v-slot:head(comment)="data">
+            <span v-if="data">{{ $t(`recentTrans.${data.label}`) }}</span>
+          </template>
         </b-table>
       </b-card-body>
     </b-card>
     <b-card-footer>
-      <router-link id="TransactionLink" to="/transactions">alle transacties</router-link>
+      <router-link id="TransactionLink" to="/transactions">
+        {{ $t('recentTrans.all transactions') }}
+      </router-link>
     </b-card-footer>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { TranslateResult } from 'vue-i18n';
 import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
-
-function fetchTransactions(user: User) : Transaction[] {
-  // something like return client.fetchTransactions(user.id);
-
-  const transactions = [{
-    id: 'testID',
-    soldToId: 'Pieter',
-    authorized: 'Koenk',
-    totalPrice: 50.2,
-    activityId: 'BorrelId',
-    subTransactions: [],
-    comment: 'Borrel metertjes heftig bakweekend, je kent het wel',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  } as Transaction,
-  {
-    id: '42069',
-    soldToId: 'Pieter',
-    authorized: 'BAK!',
-    totalPrice: 1.25,
-    activityId: 'BAKwiekent',
-    subTransactions: [],
-    comment: 'Fustje bij ontbijt',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  } as Transaction,
-  {
-    id: '42069',
-    soldToId: 'Pieter',
-    authorized: 'BAK!',
-    totalPrice: 1.25,
-    activityId: 'BAKwiekent',
-    subTransactions: [],
-    comment: 'Fustje bij ontbijt',
-    createdAt: new Date('January 1, 1997 01:07:00'),
-    updatedAt: new Date(),
-  } as Transaction,
-  {
-    id: '42069',
-    soldToId: 'Pieter',
-    authorized: 'BAK!',
-    totalPrice: 1.25,
-    activityId: 'BAKwiekent',
-    subTransactions: [],
-    comment: 'Fustje bij ontbijt',
-    createdAt: new Date('December 12, 1997 01:07:00'),
-    updatedAt: new Date(),
-  } as Transaction,
-  {
-    id: '42069',
-    soldToId: 'Pieter',
-    authorized: 'BAK!',
-    totalPrice: 1.25,
-    activityId: 'BAKwiekent',
-    subTransactions: [],
-    comment: 'Fustje bij ontbijt',
-    createdAt: new Date('July 1, 1997 01:07:00'),
-    updatedAt: new Date(),
-  } as Transaction,
-  ] as Transaction[];
-
-  return transactions.slice(0, 5);
-}
+import fakeTransactions from '@/assets/transactions';
 
 @Component
 export default class RecentTransactions extends Vue {
   @Prop({ type: Object as () => User }) private user!: User;
 
   transactionList: Transaction[] = [];
-
-  // getTimeString = (value: Date) => value.
 
   getTimeString = (value: Date) => `${RecentTransactions.parseTime(value.getDate())}-`
                                     + `${RecentTransactions.parseTime(value.getMonth() + 1)}-`
@@ -101,17 +47,17 @@ export default class RecentTransactions extends Vue {
   fields: Object[] = [
     {
       key: 'createdAt',
-      label: 'Wanneer',
+      label: 'when',
       formatter: (value: Date) => this.getTimeString(value),
     },
     {
       key: 'comment',
-      label: 'Wat',
+      label: 'what',
     },
   ];
 
   beforeMount() {
-    this.transactionList = fetchTransactions(this.user);
+    this.transactionList = fakeTransactions.fetchTransactions(this.user);
   }
 
   static parseTime(value: number): string {
