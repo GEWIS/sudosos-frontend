@@ -1,10 +1,13 @@
 <template>
   <b-container fluid="lg">
     <h1>Profile page</h1>
-    <b-row class="profile-items-container">
-      <b-col sm="12" md="6">
-        <div>
-          <b>Change pin code</b>
+    <b-row>
+      <b-col sm="12" md="6" class="mb-4 mb-md-0">
+        <b-card>
+          <b-card-title>
+            Change pin code
+          </b-card-title>
+          <b-card-body>
           <b-form @submit="changePincode">
             <b-form-group
               id="old-pincode-group"
@@ -35,22 +38,30 @@
             </b-form-group>
             <b-button type="submit" variant="primary">Change pin code</b-button>
           </b-form>
-        </div>
+          </b-card-body>
+        </b-card>
       </b-col>
       <b-col sm="12" md="6">
-        <div>
-          <b>Manage nfc devices</b><br>
-          <div v-for="device in nfcDevices" v-bind:key="device.id" class="nfc-device-badge">
-            <span v-show="!device.editing">{{ device.name }}</span >
-            <input type="text" class="edit-devicename"
-              v-on:keyup="updateDevice(device, $event)"
-              @blur="updateDevice(device)"
-              v-show="device.editing" v-model="device.name"/>
-            ({{ device.uid }})
-            <span @click="removeDevice(device)">✖</span>
-            <span class="edit-devicename" @click="device.editing = true">🖉</span>
-          </div>
-        </div>
+        <b-card>
+          <b-card-title>Manage nfc devices</b-card-title>
+          <b-card-body>
+          <b-row v-for="device in nfcDevices" v-bind:key="device.id" class="nfc-device-badge mb-2">
+            <span v-show="!device.editing" class="mx-2">{{ device.name }}</span >
+            <b-form-input type="text" class="edit-devicename mx-2"
+                          v-on:keyup="updateDevice(device, $event)"
+                          @blur="updateDevice(device)"
+                          v-show="device.editing"
+                          v-model="device.name"/>
+            <span>({{ device.uid }})</span>
+            <span @click="removeDevice(device)" class="ml-auto mr-2">
+              <font-awesome-icon icon="times-circle"></font-awesome-icon>
+            </span>
+            <span class="mr-2" @click="device.editing = true">
+              <font-awesome-icon icon="pencil-alt"></font-awesome-icon>
+            </span>
+          </b-row>
+          </b-card-body>
+        </b-card>
       </b-col>
     </b-row>
   </b-container>
@@ -76,7 +87,7 @@ export default class Profile extends Vue {
     {
       id: '1',
       uid: 'aa:aa:aa:aa:aa',
-      name: 'Rolstoel Julie de Nooij 👩‍🦼',
+      name: 'OV Chipkaart',
       createdAt: new Date(),
       editing: false,
     },
@@ -171,39 +182,37 @@ export default class Profile extends Vue {
 </script>
 
 <style scoped lang="scss">
-.profile-items-container {
-  > * {
-    padding: 16px;
-    > * {
-      background-color: #f8f8f8;
-      padding: 16px;
-      // Ik wil graag even melden dat deze padding alleen maar nodig is door
-      // die kankerretarded zooi genaamd vue-bootstrap
-      // Alleen door deze ellende kunnen mijn butons niet meer fatsoenlijk gerenderd worden.
-      padding-bottom: 54px;
-    }
-  }
+  @import './src/styles/Card.scss';
+
   input {
     max-width: 10ch;
   }
 
   button {
-    float: left;
+    float: left !important;
   }
 
   .nfc-device-badge {
     background-color: #e8e8e8;
-    padding: 4px;
+    padding: 8px;
+    margin: 0;
     border-radius: 4px;
-    margin-bottom: 8px;
     font-weight: 600;
+    display: flex;
+
+    > * {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+
     span {
       cursor: pointer;
     }
-    .edit-devicename{
-      max-width: 30ch;
+
+    .edit-devicename {
+      min-width: 15ch;
+      width: 100%;
     }
-  }
 }
 </style>
 <style lang="scss">
