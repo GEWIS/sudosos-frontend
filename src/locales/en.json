@@ -121,5 +121,13 @@
     "turn off": "Social drink mode will automatically be turned off at ",
     "turn on": "You can turn on social drink mode by choosing a time above and clicking the button. The social drink mode will automatically be turned of at that time.",
     "early": "You can either change the time above or turn off the social drink mode prematurely by clicking on \"Stop social drink mode\"."
+  },
+  "profile": {
+    "My profile": "My profile",
+    "Change pin code": "Change pin code",
+    "Old pin code": "Old pin code",
+    "New pin code": "New pin code",
+    "Confirm new pin code": "Confirm new pin code",
+    "Manage NFC devices": "Manage NFC devices"
   }
 }

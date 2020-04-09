@@ -1,17 +1,17 @@
 <template>
   <b-container fluid="lg">
-    <h1 class="mb-2 mb-sm-3 mb-lg-4">My profile</h1>
+    <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('profile.My profile')}}</h1>
     <b-row>
       <b-col sm="12" md="6" class="mb-4 mb-md-0">
         <b-card>
           <b-card-title>
-            Change pin code
+            {{ $t('Change pin code') }}
           </b-card-title>
           <b-card-body>
             <b-form @submit="changePincode">
               <b-form-group
                 id="old-pincode-group"
-                label="Old pin code"
+                :label="$t('profile.Old pin code')"
                 label-for="old-pincode"
                 :invalid-feedback="oldPincodeFeedback"
                 :state="validateOldPincode"
@@ -20,7 +20,7 @@
               </b-form-group>
               <b-form-group
                 id="new-pincode-group"
-                label="New pin code"
+                :label="$t('profile.New pin code')"
                 label-for="new-pincode"
                 :invalid-feedback="newPincodeFeedback"
                 :state="validateNewPincode"
@@ -29,21 +29,23 @@
               </b-form-group>
               <b-form-group
                 id="confirm-pincode-group"
-                label="Confirm new pin code"
+                :label="$t('Confirm new pin code')"
                 label-for="confirm-pincode"
                 :invalid-feedback="confirmPincodeFeedback"
                 :state="validateConfirmPincode"
               >
                 <b-form-input id="confirm-pincode" v-model="pincode.confirmPincode" type="text" />
               </b-form-group>
-              <b-button type="submit" variant="primary">Change pin code</b-button>
+              <b-button type="submit" variant="primary">
+                {{ $t('profile.Change pin code')}}
+              </b-button>
             </b-form>
           </b-card-body>
         </b-card>
       </b-col>
       <b-col sm="12" md="6">
         <b-card>
-          <b-card-title>Manage nfc devices</b-card-title>
+          <b-card-title>{{ $t('profile.Manage NFC devices')}}</b-card-title>
           <b-card-body>
             <b-row
               v-for="device in nfcDevices"
