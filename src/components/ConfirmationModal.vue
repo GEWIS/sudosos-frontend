@@ -47,6 +47,7 @@ export default class ConfirmationModal extends Vue {
   mounted() {
     this.$root.$on('bv::modal::hide', (bvEvent: any, modalId: string) => {
       if (Object.keys(bvEvent).indexOf('trigger') !== -1 && bvEvent.trigger === 'ok') {
+        // TODO Actually send update to somewhere with url and method
         this.$emit('modalConfirmed');
       }
     });

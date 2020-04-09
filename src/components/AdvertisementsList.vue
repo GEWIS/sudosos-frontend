@@ -240,7 +240,7 @@ export default class AdvertisementsList extends Vue {
       @param method : type of method that needs to be used when for the api request (e.g. post/put)
       @param id     : id of the advertisement currently being modified. -1 if not specified
      */
-    async setAdvertisement(method: string, id: string = '-1') {
+    async setAdvertisement(method: string, id: string) {
       this.method = method;
 
       if (id !== '-1') {
@@ -260,13 +260,10 @@ export default class AdvertisementsList extends Vue {
       this.user = this.user;
     }
 
-    async setConfirmation(id: string = '-1') {
-      if (id !== '-1') {
-        this.title = this.$t('advertisementList.Confirm deletion').toString();
-        this.reason = this.$t('advertisementList.Are you sure').toString();
-        this.confirmUrl = `/${id}`;
-        this.method = 'del';
-      }
+    async setConfirmation(id: string) {
+      this.title = this.$t('advertisementList.Confirm deletion').toString();
+      this.reason = this.$t('advertisementList.Are you sure').toString();
+      this.confirmUrl = `/${id}`;
     }
 
     /*

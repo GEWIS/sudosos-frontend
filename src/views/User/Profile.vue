@@ -5,7 +5,8 @@
       v-bind:title="modalTitle"
       v-bind:method="modalMethod"
       v-bind:url="modalConfirmUrl"
-      v-bind:reason="modalReason">
+      v-bind:reason="modalReason"
+      @confirmModal="confirmModal">
     </ConfirmationModal>
 
     <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('profile.My profile')}}</h1>
@@ -154,22 +155,11 @@ export default class Profile extends Vue {
       this.modalReason = this.$t('profile.Are you sure').toString();
       this.modalConfirmUrl = '/';
       this.modalMethod = 'del';
+    }
 
-      // this.$bvModal
-      //   .msgBoxConfirm('Are you sure you want to remove this NFC device?')
-      //   .then((value) => {
-      //     if (value) {
-      //       for (let i = 0; i < this.nfcDevices.length; i += 1) {
-      //         if (device.id === this.nfcDevices[i].id) {
-      //           // TODO: communicate removal with the backend
-      //           this.nfcDevices.splice(i, 1);
-      //         }
-      //       }
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     // An error occurred
-      //   });
+    confirmModal() : void {
+      // TODO make sure data is removed after confirmation
+      this.formError = this.formError;
     }
 
     // Validators for the form
