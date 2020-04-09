@@ -10,13 +10,13 @@
               label-cols="3"
             >
               <b-form-datepicker
-                id="from-date"
-                v-model="fromDate"
-                locale="en-NL"
-                :right="right"
-                no-flip
-                :date-format-options="{year: 'numeric', month: 'long', day: 'numeric'}"
-              ></b-form-datepicker>
+              id="from-date"
+              v-model="fromDate"
+              locale="en-NL"
+              :right="right"
+              no-flip
+              :date-format-options="{year: 'numeric', month: 'long', day: 'numeric'}"
+            ></b-form-datepicker>
             </b-form-group>
           </b-col>
           <b-col xl="3" sm="6" cols="12" class="mb-2 mb-xl-0">

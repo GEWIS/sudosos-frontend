@@ -2,10 +2,10 @@
   <b-container fluid="lg">
 
     <ConfirmationModal
-      v-bind:title="modalTitle"
-      v-bind:method="modalMethod"
-      v-bind:url="modalConfirmUrl"
-      v-bind:reason="modalReason"
+      :title="$t('profile.Confirm deletion')"
+      method="del"
+      url="URL"
+      :reason="$t('profile.Are you sure')"
       @confirmModal="confirmModal">
     </ConfirmationModal>
 
@@ -124,14 +124,6 @@ export default class Profile extends Vue {
       },
     ];
 
-    modalTitle : string = '';
-
-    modalReason : string = '';
-
-    modalConfirmUrl : string = '';
-
-    modalMethod : string = '';
-
     changePincode() {
       console.log(this.pincode);
     }
@@ -149,13 +141,6 @@ export default class Profile extends Vue {
         // TODO: Send new data to backend
       }
     };
-
-    removeDevice(device: NFCDevice) {
-      this.modalTitle = this.$t('profile.Confirm deletion').toString();
-      this.modalReason = this.$t('profile.Are you sure').toString();
-      this.modalConfirmUrl = '/';
-      this.modalMethod = 'del';
-    }
 
     confirmModal() : void {
       // TODO make sure data is removed after confirmation
