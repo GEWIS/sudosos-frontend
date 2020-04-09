@@ -63,6 +63,7 @@
           :items="transactionFlagList"
           :fields="fields"
           :tbody-tr-class="setRowClass"
+          :per-page="perPage" :current-page="currentPage"
           :filter="filterWay"
           :filter-function="filterRows"
         >
@@ -108,7 +109,8 @@
         </b-table>
       </b-card-body>
     </b-card>
-    <p v-if="totalRows > perPage" class="my-auto h-100">
+    <b-card-footer class="d-flex">
+      <p v-if="totalRows > perPage" class="my-auto h-100">
         {{ $t('flaggedComponent.Page') }}:
       </p>
       <b-pagination
@@ -126,6 +128,7 @@
         aria-controls="transaction-table"
         class="custom-pagination mb-0"
       ></b-pagination>
+    </b-card-footer>
   </div>
 </template>
 
@@ -137,76 +140,7 @@ import dinero, { Dinero } from 'dinero.js';
 import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
 import { TransactionFlag, FlagStatus } from '@/entities/TransactionFlag';
-
-function fetchTransactionFlags(user: User): TransactionFlag[] {
-  // something like return client.fetchTransactions(user.id);
-
-  return [
-    {
-      id: '001',
-      flaggedById: 'Ruben',
-      status: FlagStatus.TODO,
-      reason:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      transaction: {
-        id: '001',
-        pointOfSale: 'pos-1',
-        soldToId: 'Ruben',
-        authorized: 'Ruben',
-        totalPrice: 50.2,
-        activityId: '001',
-        subTransactions: [],
-        comment: 'You spent a total of €50.20',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    },
-    {
-      id: '002',
-      flaggedById: 'Ruben',
-      status: FlagStatus.REJECTED,
-      reason:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      transaction: {
-        id: '002',
-        pointOfSale: 'pos-1',
-        soldToId: 'Ruben',
-        authorized: 'Pieter',
-        totalPrice: 1.4,
-        activityId: '001',
-        subTransactions: [],
-        comment: 'You spent a total of €1.40',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    },
-    {
-      id: '003',
-      flaggedById: 'Pieter',
-      status: FlagStatus.ACCEPTED,
-      reason:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      createdAt: new Date('February 3, 2020 05:07:00'),
-      updatedAt: new Date(),
-      transaction: {
-        id: '003',
-        pointOfSale: 'pos-1',
-        soldToId: 'Ruben',
-        authorized: 'BAC',
-        totalPrice: 30.0,
-        activityId: '002',
-        subTransactions: [],
-        comment: 'You put €30.00 on your account',
-        createdAt: new Date('February 2, 2020 05:07:00'),
-        updatedAt: new Date(),
-      },
-    },
-  ];
-}
+import fakeTransactionFlags from '@/assets/transactionFlags';
 
 @Component
 export default class TransactionFlagsComponent extends Vue {
@@ -221,6 +155,8 @@ export default class TransactionFlagsComponent extends Vue {
 
   transactionFlagList: TransactionFlag[] = [];
 
+  filteredTransactionFlags: TransactionFlag[] = [];
+
   fromDate: String = '';
 
   toDate: String = '';
@@ -229,6 +165,16 @@ export default class TransactionFlagsComponent extends Vue {
 
   hideHandled: Boolean = false;
 
+  right: boolean = false;
+
+  perPage: number = 4;
+
+  currentPage: number = 1;
+
+  previousPage: number = 1;
+
+  weekDays : string[] = [];
+
   /*
     Fields that should be shown from the transactionFlagList
     */
@@ -236,29 +182,38 @@ export default class TransactionFlagsComponent extends Vue {
     {
       key: 'formattedDate',
       label: 'When',
+      tdClass: 'clickable',
+      tdAttr: this.tableCellAttr,
     },
     {
       key: 'flaggedById',
       label: 'Who',
+      tdClass: 'clickable',
+      tdAttr: this.tableCellAttr,
     },
     {
       key: 'status',
       label: 'Status',
+      tdClass: 'clickable',
+      tdAttr: this.tableCellAttr,
     },
     {
       key: 'reason',
       label: 'Reason',
-      tdClass: 'cell-reason',
+      tdClass: 'cell-reason clickable',
+      tdAttr: this.tableCellAttr,
     },
     {
       key: 'id',
       label: 'Info',
+      tdClass: 'clickable',
+      tdAttr: this.tableCellAttr,
     },
   ];
 
   beforeMount() {
     this.transactionFlagList = this.formatTransactionFlags(
-      fetchTransactionFlags(this.user),
+      fakeTransactionFlags.fetchTransactionFlags(this.user),
     );
   }
 
@@ -287,6 +242,16 @@ export default class TransactionFlagsComponent extends Vue {
     this.filterWay = null;
     this.fromDate = '';
     this.toDate = '';
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  tableCellAttr(value: any, key: string, item: TransactionFlag) {
+    if (key !== 'id') {
+      return {
+        onclick: `history.pushState({},'','/flagged-transactions/flag/${item.id}')`,
+      };
+    }
+    return {};
   }
 
   /*
@@ -331,8 +296,29 @@ export default class TransactionFlagsComponent extends Vue {
         + `${flag.createdAt.getFullYear()}`,
   }));
 
+  /*
+      Method that grabs extra transactions when 2 pages or less are left
+    */
+  pageClicked(page: number) : void {
+    if (this.previousPage < page && page >= (Math.ceil(this.totalRows / this.perPage) - 2)) {
+      // TODO: Grab new data
+    }
+
+    this.previousPage = page;
+  }
+
   static parseTime(value: number): string {
     return (value < 10 ? '0' : '') + value;
+  }
+
+  /*
+    Paging not correct yet!
+  */
+  get totalRows() {
+    if (this.filteredTransactionFlags.length > 0) {
+      return this.filteredTransactionFlags.length;
+    }
+    return this.transactionFlagList.length;
   }
 
   @Watch('fromDate')
@@ -353,6 +339,14 @@ export default class TransactionFlagsComponent extends Vue {
 </script>
 
 <style lang="scss">
+tr.transaction-flag-row:hover {
+  background-color: #efefef;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
 .cell-reason {
   max-width: 0;
   width: 50%;
