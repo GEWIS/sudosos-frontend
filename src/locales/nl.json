@@ -93,15 +93,6 @@
     "What": "Wat",
     "Info": "Info",
     "Page": "Pagina",
-    "transaction details": "transactie details",
-    "Total": "Totaal",
-    "Point of sale": "Verkooppunt",
-    "Put in by": "Afgestreept door",
-    "Put in for": "Afgestreept voor",
-    "Activity": "Activiteit",
-    "Products": "Producten",
-    "Cancel": "Cancel",
-    "Flag transaction": "Markeer transactie",
     "Transactions": "Transacties",
     "Monday": "Maandag",
     "Tuesday": "Dinsdag",
@@ -110,6 +101,17 @@
     "Friday": "Vrijdag",
     "Saturday": "Zaterdag",
     "Sunday": "Zondag"
+  },
+  "transactionDetailsModal": {
+    "transaction details": "transactie details",
+    "Total": "Totaal",
+    "Point of sale": "Verkooppunt",
+    "Put in by": "Afgestreept door",
+    "Put in for": "Afgestreept voor",
+    "Activity": "Activiteit",
+    "Products": "Producten",
+    "Cancel": "Cancel",
+    "Flag transaction": "Markeer transactie"
   },
   "tvScreens": {
     "Ending time": "Eind tijd",

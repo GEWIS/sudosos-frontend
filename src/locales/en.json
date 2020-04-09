@@ -93,15 +93,6 @@
     "What": "What",
     "Info": "Info",
     "Page": "Page",
-    "transaction details": "transaction details",
-    "Total": "Total",
-    "Point of sale": "Point of sale",
-    "Put in by": "Put in by",
-    "Put in for": "Put in for",
-    "Activity": "Activity",
-    "Products": "Products",
-    "Cancel": "Cancel",
-    "Flag transaction": "Flag transaction",
     "Transactions": "Transactions",
     "Monday": "Monday",
     "Tuesday": "Tuesday",
@@ -110,6 +101,17 @@
     "Friday": "Friday",
     "Saturday": "Saturday",
     "Sunday": "Sunday"
+  },
+  "transactionDetailsModal": {
+    "transaction details": "transaction details",
+    "Total": "Total",
+    "Point of sale": "Point of sale",
+    "Put in by": "Put in by",
+    "Put in for": "Put in for",
+    "Activity": "Activity",
+    "Products": "Products",
+    "Cancel": "Cancel",
+    "Flag transaction": "Flag transaction"
   },
   "tvScreens": {
     "Ending time": "Ending time",
