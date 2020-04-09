@@ -1,11 +1,19 @@
 <template>
   <b-container fluid="lg">
+
+    <ConfirmationModal
+      v-bind:title="modalTitle"
+      v-bind:method="modalMethod"
+      v-bind:url="modalConfirmUrl"
+      v-bind:reason="modalReason">
+    </ConfirmationModal>
+
     <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('profile.My profile')}}</h1>
     <b-row>
       <b-col sm="12" md="6" class="mb-4 mb-md-0">
         <b-card>
           <b-card-title>
-            {{ $t('Change pin code') }}
+            {{ $t('profile.Change pin code') }}
           </b-card-title>
           <b-card-body>
             <b-form @submit="changePincode">
@@ -29,7 +37,7 @@
               </b-form-group>
               <b-form-group
                 id="confirm-pincode-group"
-                :label="$t('Confirm new pin code')"
+                :label="$t('profile.Confirm new pin code')"
                 label-for="confirm-pincode"
                 :invalid-feedback="confirmPincodeFeedback"
                 :state="validateConfirmPincode"
@@ -53,15 +61,16 @@
               class="nfc-device-badge mb-2">
               <span v-show="!device.editing"
                     @click="device.editing = true"
-                    class="mx-2">{{ device.name }}
-              </span >
+                    class="mx-2 information">
+                {{ device.name }}
+              </span>
               <b-form-input type="text" class="edit-devicename mx-2"
                             v-on:keyup="updateDevice(device, $event)"
                             @blur="updateDevice(device)"
                             v-show="device.editing"
                             v-model="device.name"/>
-              <span>({{ device.uid }})</span>
-              <span @click="removeDevice(device)" class="ml-auto mr-2 icon">
+              <span class="information mx-2 mx-sm-0">({{ device.uid }})</span>
+              <span v-b-modal.confirmation @click="removeDevice(device)" class="ml-auto mr-2 icon">
               <font-awesome-icon icon="times-circle"></font-awesome-icon>
             </span>
               <span v-show="!device.editing" @click="device.editing = true" class="mr-2 icon">
@@ -81,9 +90,12 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { NFCDevice } from '@/entities/NFCDevice';
+import ConfirmationModal from '@/components/ConfirmationModal.vue';
 
   @Component({
-    components: {},
+    components: {
+      ConfirmationModal,
+    },
   })
 export default class Profile extends Vue {
     formError: string = '';
@@ -111,6 +123,14 @@ export default class Profile extends Vue {
       },
     ];
 
+    modalTitle : string = '';
+
+    modalReason : string = '';
+
+    modalConfirmUrl : string = '';
+
+    modalMethod : string = '';
+
     changePincode() {
       console.log(this.pincode);
     }
@@ -130,21 +150,26 @@ export default class Profile extends Vue {
     };
 
     removeDevice(device: NFCDevice) {
-      this.$bvModal
-        .msgBoxConfirm('Are you sure you want to remove this NFC device?')
-        .then((value) => {
-          if (value) {
-            for (let i = 0; i < this.nfcDevices.length; i += 1) {
-              if (device.id === this.nfcDevices[i].id) {
-                // TODO: communicate removal with the backend
-                this.nfcDevices.splice(i, 1);
-              }
-            }
-          }
-        })
-        .catch((err) => {
-          // An error occurred
-        });
+      this.modalTitle = this.$t('profile.Confirm deletion').toString();
+      this.modalReason = this.$t('profile.Are you sure').toString();
+      this.modalConfirmUrl = '/';
+      this.modalMethod = 'del';
+
+      // this.$bvModal
+      //   .msgBoxConfirm('Are you sure you want to remove this NFC device?')
+      //   .then((value) => {
+      //     if (value) {
+      //       for (let i = 0; i < this.nfcDevices.length; i += 1) {
+      //         if (device.id === this.nfcDevices[i].id) {
+      //           // TODO: communicate removal with the backend
+      //           this.nfcDevices.splice(i, 1);
+      //         }
+      //       }
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     // An error occurred
+      //   });
     }
 
     // Validators for the form
@@ -193,6 +218,7 @@ export default class Profile extends Vue {
 </script>
 
 <style scoped lang="scss">
+  @import '~bootstrap/scss/bootstrap';
   @import './src/styles/Card.scss';
 
   input {
@@ -224,6 +250,15 @@ export default class Profile extends Vue {
     .edit-devicename {
       min-width: 15ch;
       width: 100%;
+    }
+  }
+
+  @include media-breakpoint-down(xs) {
+    .nfc-device-badge {
+      span.information,
+      input {
+        width: 100%;
+      }
     }
   }
 </style>

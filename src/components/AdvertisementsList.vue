@@ -4,7 +4,8 @@
       v-bind:title="title"
       v-bind:method="method"
       v-bind:url="confirmUrl"
-      v-bind:reason="reason">
+      v-bind:reason="reason"
+      @modalConfirmed="modalConfirmed">
     </ConfirmationModal>
     <b-card>
       <b-card-title>
@@ -116,7 +117,7 @@
             v-model="file"
             accept="image/*"
             :placeholder="$t('advertisementList.Choose image drop')"
-            :drop-placeholder="$t('advertisementList.Drop file here...')"
+            :drop-placeholder="$t('advertisementList.Drop file')"
           ></b-form-file>
         </b-form-group>
       </div>
@@ -227,6 +228,11 @@ export default class AdvertisementsList extends Vue {
       },
     ];
 
+
+    beforeMount() {
+      this.advertisementList = fetchAdvertisements();
+    }
+
     /*
       setAdvertisement sets the values that are shown in the modal are either set to those of the
       advertisement being modified or reset for a fresh advertisement.
@@ -247,6 +253,11 @@ export default class AdvertisementsList extends Vue {
         this.duration = 0;
         this.active = false;
       }
+    }
+
+    modalConfirmed() : void {
+      // TODO do something when confirmed
+      this.user = this.user;
     }
 
     async setConfirmation(id: string = '-1') {
@@ -276,10 +287,6 @@ export default class AdvertisementsList extends Vue {
       return '';
     }
 
-    beforeMount() {
-      this.advertisementList = fetchAdvertisements();
-    }
-
     @Watch('file')
     onFileChanged = (value: File, old: File) => {
       if (document.activeElement !== null) {
@@ -305,7 +312,7 @@ export default class AdvertisementsList extends Vue {
 </script>
 
 <style scoped lang="scss">
-  @import "~bootstrap/scss/bootstrap";
+  @import '~bootstrap/scss/bootstrap';
   @import './src/styles/Card.scss';
 
   .thumbnail {
