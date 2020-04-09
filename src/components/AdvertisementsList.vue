@@ -1,10 +1,11 @@
 <template>
   <div>
     <ConfirmationModal
-      v-bind:title="title"
-      v-bind:method="method"
-      v-bind:url="confirmUrl"
-      v-bind:reason="reason">
+      :title="$t('advertisementList.Confirm deletion')"
+      method="del"
+      url=".."
+      :reason="$t('advertisementList.Are you sure')"
+      @modalConfirmed="modalConfirmed">
     </ConfirmationModal>
     <b-card>
       <b-card-title>
@@ -116,7 +117,7 @@
             v-model="file"
             accept="image/*"
             :placeholder="$t('advertisementList.Choose image drop')"
-            :drop-placeholder="$t('advertisementList.Drop file here...')"
+            :drop-placeholder="$t('advertisementList.Drop file')"
           ></b-form-file>
         </b-form-group>
       </div>
@@ -179,23 +180,18 @@ function fetchAdvertisements() : Advertisement[] {
 export default class AdvertisementsList extends Vue {
     @Prop({ type: Object as () => User }) private user!: User;
 
+    // List of advertisements
     advertisementList: Advertisement[] = [];
 
+    // Variables for add advertisement modal
     active: Boolean = false;
 
     file: File = new File([], '');
 
-    duration: Number = 10;
+    duration: Number = 0;
 
-    title: string = '';
-
-    method: string = '';
-
-    currentActive: string = '';
-
-    confirmUrl: string = '';
-
-    reason: string = '';
+    // ID of currently opened advertisement
+    currentActiveId: string = '';
 
     getTimeString = (value: Date) => `${AdvertisementsList.parseTime(value.getDate())}-`
                                       + `${AdvertisementsList.parseTime(value.getMonth() + 1)}-`
@@ -227,6 +223,10 @@ export default class AdvertisementsList extends Vue {
       },
     ];
 
+    beforeMount() {
+      this.advertisementList = fetchAdvertisements();
+    }
+
     /*
       setAdvertisement sets the values that are shown in the modal are either set to those of the
       advertisement being modified or reset for a fresh advertisement.
@@ -234,12 +234,10 @@ export default class AdvertisementsList extends Vue {
       @param method : type of method that needs to be used when for the api request (e.g. post/put)
       @param id     : id of the advertisement currently being modified. -1 if not specified
      */
-    async setAdvertisement(method: string, id: string = '-1') {
-      this.method = method;
-
+    async setAdvertisement(method: string, id: string) {
       if (id !== '-1') {
         const a = this.advertisementList.filter(s => s.id === id)[0];
-        this.currentActive = id;
+        this.currentActiveId = id;
         this.duration = a.duration;
         this.active = a.active;
         // TODO: Fix that img is also shown in image preview box e.g. convert img to file
@@ -249,13 +247,12 @@ export default class AdvertisementsList extends Vue {
       }
     }
 
-    async setConfirmation(id: string = '-1') {
-      if (id !== '-1') {
-        this.title = this.$t('advertisementList.Confirm deletion').toString();
-        this.reason = this.$t('advertisementList.Are you sure').toString();
-        this.confirmUrl = `/${id}`;
-        this.method = 'del';
-      }
+    /*
+      Method to handle data when the modal is confirmed
+    */
+    modalConfirmed() : void {
+      // TODO do something when confirmed
+      this.user = this.user;
     }
 
     /*
@@ -274,10 +271,6 @@ export default class AdvertisementsList extends Vue {
         return this.$t('advertisementList.Please enter').toString();
       }
       return '';
-    }
-
-    beforeMount() {
-      this.advertisementList = fetchAdvertisements();
     }
 
     @Watch('file')
@@ -305,7 +298,7 @@ export default class AdvertisementsList extends Vue {
 </script>
 
 <style scoped lang="scss">
-  @import "~bootstrap/scss/bootstrap";
+  @import '~bootstrap/scss/bootstrap';
   @import './src/styles/Card.scss';
 
   .thumbnail {
