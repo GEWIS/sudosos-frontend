@@ -65,14 +65,14 @@
     "Active": "Actief",
     "Advertisement": "Advertentie",
     "Choose image drop": "Kies een plaatje of zet neer...",
-    "Drop file here...": "Zet bestand neer...",
+    "Drop file": "Zet bestand neer...",
     "Confirm deletion": "Bevestig verwijderen",
     "Please enter": "Voer een nummer in dat groter dan 0 is",
     "Are you sure": "Weet je zeker dat je deze advertentie wil verwijderen?",
     "Thumbnail": "Thumbnail",
     "Duration (ms)": "Duur (ms)",
     "Added on": "Toegevoegd op",
-    "id": "Bewerk"
+    "Edit": "Bewerk"
   },
   "confirmationModal": {
     "Cancel": "Cancel",
@@ -121,5 +121,15 @@
     "turn off": "Borrel modus wordt automagisch uitgezet op ",
     "turn on": "Je kunt borrel modus aanzetten door bovenin een tijd te kiezen. Op deze tijd wordt borrel modus weer uitgeschakeld.",
     "early": "Je kunt de tijd bovenin veranderen of borrel modus vroegtijdig beëindigen door op \"Borrel modus uitschakelen\" te klikken."
+  },
+  "profile": {
+    "My profile": "Mijn profiel",
+    "Change pin code": "Verander pincode",
+    "Old pin code": "Oude pincode",
+    "New pin code": "Nieuwe pincode",
+    "Confirm new pin code": "Bevestig nieuwe pincode",
+    "Manage NFC devices": "Beheer NFC tokens",
+    "Confirm deletion": "Bevestig verwijderen",
+    "Are you sure": "Weet je zeker dat je deze NFC token wil verwijderen?"
   }
 }
