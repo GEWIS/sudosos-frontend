@@ -1,0 +1,37 @@
+.em-title {
+  color: $gewis-red;
+  text-transform: uppercase;
+}
+
+.container-block {
+  margin-bottom: 0.5rem;
+}
+
+.container-head {
+  background-color: $gewis-grey-light;
+  cursor: pointer;
+  height: 2.5rem;
+}
+
+.cb {
+  display: ruby;
+}
+
+.product-card {
+  margin: 0.5rem 0;
+
+  .product {
+    background-color: $gewis-grey-light;
+
+    > img {
+      width: auto;
+      height: auto;
+      max-height: 5rem;
+      background-color: $gewis-grey-light;
+    }
+  }
+}
+
+.product-name {
+  background: $gewis-grey-accent;
+}

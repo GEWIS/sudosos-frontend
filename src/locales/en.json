@@ -1,0 +1,136 @@
+{
+  "app": {
+    "Transactions": "Transactions",
+    "Saldo": "Saldo",
+    "Points of Sale": "Points of Sale",
+    "Overview": "Overview",
+    "Request": "Request",
+    "Admin": "Admin",
+    "Screens": "TV Screens",
+    "Advertisements": "Advertisements",
+    "BAC": "BAC",
+    "Flagged transactions": "Flagged transactions",
+    "Manage products": "Manage products",
+    "Profile": "Profile",
+    "Sign out": "Sign out",
+    "Netherlands": "Nederlands",
+    "English": "English"
+  },
+  "home": {
+    "Overview": "Overview"
+  },
+  "transactions": {
+    "Transactions": "Transactions"
+  },
+  "saldo": {
+    "Saldo": "Saldo"
+  },
+  "posOverview": {
+    "Point of sale overview": "Point of sale overview"
+  },
+  "posRequest": {
+    "Point of Sale request": "Point of Sale request"
+  },
+  "flagged": {
+    "Flagged transactions": "Flagged transactions"
+  },
+  "manageProducts": {
+    "Manage products": "Manage products"
+  },
+  "screens": {
+    "Screens": "TV Screens"
+  },
+  "managePOS": {
+    "Manage points of sale": "Manage points of sale"
+  },
+  "advertisements": {
+    "Advertisements": "Advertisements"
+  },
+  "saldoCom": {
+    "saldo": "saldo",
+    "upgrade online": "upgrade online"
+  },
+  "recentTrans": {
+    "recent transactions": "recent transactions",
+    "all transactions": "all transactions",
+    "when": "when",
+    "what": "what"
+  },
+  "advertisementList" : {
+    "Add": "Add",
+    "save": "save",
+    "cancel": "cancel",
+    "new advertisement": "new advertisement",
+    "Duration": "Duration",
+    "Active": "Active",
+    "Advertisement": "Advertisement",
+    "Choose image drop": "Choose image or drop here...",
+    "Drop file here...": "Drop file here...",
+    "Confirm deletion": "Confirm deletion",
+    "Please enter": "Please enter a valid number larger than 0",
+    "Are you sure": "Are you sure you want to delete this advertisement?",
+    "Thumbnail": "Thumbnail",
+    "Duration (ms)": "Duration (ms)",
+    "Added on": "Added on",
+    "id": "Edit"
+  },
+  "confirmationModal": {
+    "Cancel": "Cancel",
+    "Confirm": "Confirm"
+  },
+  "containersOverview": {
+    "Containers": "Containers"
+  },
+  "flaggedComponent": {
+    "When": "When",
+    "Who": "Who",
+    "Status": "Status",
+    "Reason": "Reason",
+    "from": "from",
+    "to": "to",
+    "Hide handled": "Hide handled",
+    "Reset filter": "Reset filter",
+    "Page": "Page"
+  },
+  "transactionsComponent": {
+    "from": "from",
+    "to": "to",
+    "Self Bought": "Self Bought",
+    "Put in for others": "Put in for others",
+    "Put in for you": "Put in for you",
+    "Export to CSV": "Export to CSV",
+    "Reset filter": "Reset filter",
+    "When": "When",
+    "What": "What",
+    "Info": "Info",
+    "Page": "Page",
+    "transaction details": "transaction details",
+    "Total": "Total",
+    "Point of sale": "Point of sale",
+    "Put in by": "Put in by",
+    "Put in for": "Put in for",
+    "Activity": "Activity",
+    "Products": "Products",
+    "Cancel": "Cancel",
+    "Flag transaction": "Flag transaction",
+    "Transactions": "Transactions",
+    "Monday": "Monday",
+    "Tuesday": "Tuesday",
+    "Wednesday": "Wednesday",
+    "Thursday": "Thursday",
+    "Friday": "Friday",
+    "Saturday": "Saturday",
+    "Sunday": "Sunday"
+  },
+  "tvScreens": {
+    "Ending time": "Ending time",
+    "Confirm end time": "Confirm end time",
+    "Stop social drink mode": "Stop social drink mode",
+    "currently": "Currently social drink mode is turned ",
+    "on": "on",
+    "off": "off",
+    "turn off": "Social drink mode will automatically be turned off at ",
+    "turn on": "You can turn on social drink mode by choosing a time above and clicking the button. The social drink mode will automatically be turned of at that time.",
+    "early": "You can either change the time above or turn off the social drink mode prematurely by clicking on \"Stop social drink mode\"."
+  }
+}

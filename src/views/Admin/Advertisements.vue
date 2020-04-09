@@ -1,6 +1,6 @@
 <template>
   <b-container fluid="lg">
-    <h1>Advertisements page</h1>
+    <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('advertisements.Advertisements') }}</h1>
     <AdvertisementsList></AdvertisementsList>
   </b-container>
 </template>

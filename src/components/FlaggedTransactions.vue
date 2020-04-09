@@ -4,21 +4,30 @@
       <b-card-title class="title-form">
         <b-form-row>
           <b-col xl="3" sm="6" cols="12" class="mb-2 mb-xl-0">
-            <b-form-group id="from" label="FROM" label-cols="3">
+            <b-form-group id="from" :label="$t('flaggedComponent.from')" label-cols="3">
               <b-form-datepicker
                 id="from-date"
                 v-model="fromDate"
                 locale="en-NL"
+                :right="right"
+                no-flip
                 :date-format-options="{year: 'numeric', month: 'long', day: 'numeric'}"
               ></b-form-datepicker>
             </b-form-group>
           </b-col>
           <b-col xl="3" sm="6" cols="12" class="mb-2 mb-xl-0">
-            <b-form-group id="to" label="TO" label-cols-sm="2" label-cols="3">
+            <b-form-group
+              id="to"
+              :label="$t('flaggedComponent.to')"
+              label-cols-sm="2"
+              label-cols="3"
+            >
               <b-form-datepicker
                 id="to-date"
                 v-model="toDate"
                 locale="en-NL"
+                :right="right"
+                no-flip
                 :date-format-options="{year: 'numeric', month: 'long', day: 'numeric'}"
               ></b-form-datepicker>
             </b-form-group>
@@ -33,11 +42,12 @@
                   v-model="hideHandled"
                   :value="true"
                   :unchecked-value="false"
-                >Hide handled</b-form-checkbox>
+                >{{ $t('flaggedComponent.Hide handled') }}</b-form-checkbox>
               </b-form-group>
               <div class="mr-0 mr-sm-2 mt-2 mt-sm-0 button">
                 <b-button variant="primary" id="reset" v-on:click="resetFilters">
-                  <font-awesome-icon icon="times-circle" class="mr-2" />Reset filter
+                  <font-awesome-icon icon="times-circle" class="mr-2" />
+                  {{ $t('flaggedComponent.Reset filter')}}
                 </b-button>
               </div>
             </b-form-row>
@@ -56,25 +66,35 @@
           :filter="filterWay"
           :filter-function="filterRows"
         >
-          <template v-slot:cell(formattedDate)="data">{{ data.item.formattedDate }}</template>
+          <template v-slot:head(formattedDate)="data">
+            <span v-if="data">{{ $t(`flaggedComponent.${data.label}`) }}</span>
+          </template>
+          <template v-slot:head(flaggedById)="data">
+            <span v-if="data">{{ $t(`flaggedComponent.${data.label}`) }}</span>
+          </template>
+          <template v-slot:head(status)="data">
+            <span v-if="data">{{ $t(`flaggedComponent.${data.label}`) }}</span>
+          </template>
+          <template v-slot:head(reason)="data">
+            <span v-if="data">{{ $t(`flaggedComponent.${data.label}`) }}</span>
+          </template>
+          <template v-slot:head(id)>
+            <span/>
+          </template>
+
+          <template v-slot:cell(formattedDate)="data">
+            {{ data.item.formattedDate }}
+          </template>
           <template v-slot:cell(flaggedById)="data">{{ data.item.flaggedById }}</template>
           <!--eslint-disable-next-line vue/no-unused-vars-->
           <template v-slot:cell(status)="data">
-              <font-awesome-icon
-                v-if="data.item.status === 'ACCEPTED'"
-                icon="check"
-                class="icon"
-              />
-              <font-awesome-icon
-                v-else-if="data.item.status === 'REJECTED'"
-                icon="times"
-                class="icon"
-              />
-              <font-awesome-icon
-                v-else
-                icon="question"
-                class="icon"
-              />
+            <font-awesome-icon v-if="data.item.status === 'ACCEPTED'" icon="check" class="icon" />
+            <font-awesome-icon
+              v-else-if="data.item.status === 'REJECTED'"
+              icon="times"
+              class="icon"
+            />
+            <font-awesome-icon v-else icon="question" class="icon" />
           </template>
           <template v-slot:cell(reason)="data">
             <div class="cell-reason" />
@@ -88,7 +108,24 @@
         </b-table>
       </b-card-body>
     </b-card>
-    <b-card-footer>Iets met pagination ofzo</b-card-footer>
+    <p v-if="totalRows > perPage" class="my-auto h-100">
+        {{ $t('flaggedComponent.Page') }}:
+      </p>
+      <b-pagination
+        v-model="currentPage"
+        :total-rows="totalRows"
+        :per-page="perPage"
+        limit="1"
+        next-class="nextButton"
+        prev-class="prevButton"
+        page-class="pageButton"
+        hide-goto-end-buttons
+        last-number
+        @change="pageClicked"
+        v-if="totalRows > perPage"
+        aria-controls="transaction-table"
+        class="custom-pagination mb-0"
+      ></b-pagination>
   </div>
 </template>
 
@@ -96,6 +133,7 @@
 import {
   Component, Prop, Vue, Watch,
 } from 'vue-property-decorator';
+import dinero, { Dinero } from 'dinero.js';
 import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
 import { TransactionFlag, FlagStatus } from '@/entities/TransactionFlag';
@@ -114,6 +152,7 @@ function fetchTransactionFlags(user: User): TransactionFlag[] {
       updatedAt: new Date(),
       transaction: {
         id: '001',
+        pointOfSale: 'pos-1',
         soldToId: 'Ruben',
         authorized: 'Ruben',
         totalPrice: 50.2,
@@ -134,6 +173,7 @@ function fetchTransactionFlags(user: User): TransactionFlag[] {
       updatedAt: new Date(),
       transaction: {
         id: '002',
+        pointOfSale: 'pos-1',
         soldToId: 'Ruben',
         authorized: 'Pieter',
         totalPrice: 1.4,
@@ -154,6 +194,7 @@ function fetchTransactionFlags(user: User): TransactionFlag[] {
       updatedAt: new Date(),
       transaction: {
         id: '003',
+        pointOfSale: 'pos-1',
         soldToId: 'Ruben',
         authorized: 'BAC',
         totalPrice: 30.0,
@@ -189,8 +230,8 @@ export default class TransactionFlagsComponent extends Vue {
   hideHandled: Boolean = false;
 
   /*
-      Fields that should be shown from the transactionFlagList
-     */
+    Fields that should be shown from the transactionFlagList
+    */
   fields: Object[] = [
     {
       key: 'formattedDate',
@@ -222,20 +263,25 @@ export default class TransactionFlagsComponent extends Vue {
   }
 
   /*
-      setRowClass gives a date row a date-row class and a transaction-flag
-      row a transaction-flag-row class
+    Function to make dinero usable in the template
+  */
+  dinero: Function = dinero;
 
-      @param item : The transaction that makes up this row
-      @param type : The type of field this is (should be a row)
-     */
+  /*
+    setRowClass gives a date row a date-row class and a transaction-flag
+    row a transaction-flag-row class
+
+    @param item : The transaction that makes up this row
+    @param type : The type of field this is (should be a row)
+    */
   // eslint-disable-next-line class-methods-use-this
   setRowClass(item: TransactionFlag, type: string): String {
     return 'transaction-flag-row';
   }
 
   /*
-      Simple method that resets all filters to their base state
-    */
+    Simple method that resets all filters to their base state
+  */
   resetFilters(): void {
     this.hideHandled = false;
     this.filterWay = null;
@@ -244,8 +290,8 @@ export default class TransactionFlagsComponent extends Vue {
   }
 
   /*
-      Filters the rows based time constraints and user selected options
-    */
+    Filters the rows based time constraints and user selected options
+  */
   filterRows(data: TransactionFlag, prop: String): boolean {
     let date: boolean;
 
@@ -268,16 +314,21 @@ export default class TransactionFlagsComponent extends Vue {
   }
 
   /*
-      formatTransactions add rows for each date and formats the dates into a nicer format that we
-      want to use for displaying the dates
+    formatTransactions add rows for each date and formats the dates into a nicer format that we
+    want to use for displaying the dates
 
-      @param t: List of transactions
-     */
-  formatTransactionFlags: Function = (t: TransactionFlag[]): TransactionFlag[] => t.map(flag => ({
+    @param t: List of transactions
+    */
+  formatTransactionFlags: Function = (
+    t: TransactionFlag[],
+  ): TransactionFlag[] => t.map(flag => ({
     ...flag,
-    formattedDate: `${TransactionFlagsComponent.parseTime(flag.createdAt.getDate())}-`
-          + `${TransactionFlagsComponent.parseTime(flag.createdAt.getMonth() + 1)}-`
-          + `${flag.createdAt.getFullYear()}`,
+    formattedDate:
+        `${TransactionFlagsComponent.parseTime(flag.createdAt.getDate())}-`
+        + `${TransactionFlagsComponent.parseTime(
+          flag.createdAt.getMonth() + 1,
+        )}-`
+        + `${flag.createdAt.getFullYear()}`,
   }));
 
   static parseTime(value: number): string {
@@ -331,7 +382,7 @@ export default class TransactionFlagsComponent extends Vue {
 }
 
 .icon-grey {
-    color: $gewis-grey;
+  color: $gewis-grey;
 }
 
 .icon {
