@@ -19,12 +19,14 @@
           <b-button
             variant="primary"
             id="confirmBorrelModeTime"
+            class="mx-1 my-1 my-sm-0"
             v-on:click="confirmBorrelModeTime">
             {{ $t('tvScreens.Confirm end time') }}
           </b-button>
           <b-button
             variant="primary"
             id="stopBorrelMode"
+            class="mx-1 my-1 my-sm-0"
             v-on:click="stopBorrelMode"
             v-if="enabled">
             {{ $t('tvScreens.Stop social drink mode') }}
@@ -131,26 +133,15 @@ export default class TvScreens extends Vue {
 
   .body-mode-disabled {
     color: red;
-    font-weight: bold;
-    text-transform: uppercase;
   }
 
   .body-mode-enabled {
     color: green;
+  }
+
+  .body-mode-disabled,
+  .body-mode-enabled {
     font-weight: bold;
     text-transform: uppercase;
   }
-
-  button {
-    margin-left: 0.25rem;
-    margin-right: 0.25rem;
-  }
-
-  @include media-breakpoint-down(sm) {
-    button {
-      margin-top: 0.25rem;
-      margin-bottom: 0.25rem;
-    }
-  }
-
 </style>
