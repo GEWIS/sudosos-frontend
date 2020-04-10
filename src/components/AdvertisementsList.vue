@@ -142,11 +142,12 @@
 
 <script lang="ts">
 import {
-  Component, Prop, Vue, Watch,
+  Component, Prop, Watch,
 } from 'vue-property-decorator';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
 import { Advertisement } from '@/entities/Advertisement';
 import { User } from '@/entities/User';
+import Formatters from '@/mixins/Formatters';
 
 function fetchAdvertisements() : Advertisement[] {
   const advertisements = [{
@@ -177,7 +178,7 @@ function fetchAdvertisements() : Advertisement[] {
 @Component({
   components: { ConfirmationModal },
 })
-export default class AdvertisementsList extends Vue {
+export default class AdvertisementsList extends Formatters {
     @Prop({ type: Object as () => User }) private user!: User;
 
     // List of advertisements
@@ -192,12 +193,6 @@ export default class AdvertisementsList extends Vue {
 
     // ID of currently opened advertisement
     currentActiveId: string = '';
-
-    getTimeString = (value: Date) => `${AdvertisementsList.parseTime(value.getDate())}-`
-                                      + `${AdvertisementsList.parseTime(value.getMonth() + 1)}-`
-                                      + `${value.getFullYear()} - `
-                                      + `${AdvertisementsList.parseTime(value.getHours())}:`
-                                      + `${AdvertisementsList.parseTime(value.getMinutes())}`;
 
     fields: Object[] = [
       {
@@ -215,7 +210,7 @@ export default class AdvertisementsList extends Vue {
       {
         key: 'added',
         label: 'Added on',
-        formatter: (value: Date) => this.getTimeString(value),
+        formatter: (value: Date) => this.formatDateTime(value, undefined, true),
       },
       {
         key: 'id',
@@ -253,13 +248,6 @@ export default class AdvertisementsList extends Vue {
     modalConfirmed() : void {
       // TODO do something when confirmed
       this.user = this.user;
-    }
-
-    /*
-      parseTime is a static method
-     */
-    static parseTime(value: number):String {
-      return (value < 10 ? '0' : '') + value;
     }
 
     get durationState(): boolean {

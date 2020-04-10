@@ -7,7 +7,7 @@
     size="lg"
   >
     <p>
-      {{ `${this.formatDateTime(transaction.createdAt, true)}` +
+      {{ `${this.formatDateTime(transaction.createdAt, full=true)}` +
       ` - ${transaction.formattedDate}` }}
     </p>
 

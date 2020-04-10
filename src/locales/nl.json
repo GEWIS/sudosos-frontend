@@ -47,7 +47,16 @@
     "Manage products": "Productbeheer"
   },
   "screens": {
-    "Screens": "TV Schermen"
+    "Screens": "TV Schermen",
+    "Ending time": "Eind tijd",
+    "Confirm end time": "Bevestig eind tijd",
+    "Stop social drink mode": "Stop borrel modus",
+    "currently": "Borrel modus staat op dit moment ",
+    "on": "aan",
+    "off": "uit",
+    "turn off": "Borrel modus wordt automagisch uitgezet op ",
+    "turn on": "Je kunt borrel modus aanzetten door bovenin een tijd te kiezen. Op deze tijd wordt borrel modus weer uitgeschakeld.",
+    "early": "Je kunt de tijd bovenin veranderen of borrel modus vroegtijdig beëindigen door op \"Borrel modus uitschakelen\" te klikken."
   },
   "managePOS": {
     "Manage points of sale": "Beheer verkooppunten"
@@ -92,6 +101,7 @@
   },
   "transactionTableFilter": {
     "from": "van",
+    "placeholder": "Selecteer een datum",
     "to": "tot",
     "Self Bought": "Zelf gekocht",
     "Put in for others": "Voor anderen afgestreept",
@@ -116,17 +126,6 @@
     "Products": "Producten",
     "Cancel": "Cancel",
     "Flag transaction": "Markeer transactie"
-  },
-  "tvScreens": {
-    "Ending time": "Eind tijd",
-    "Confirm end time": "Bevestig eind tijd",
-    "Stop social drink mode": "Stop borrel modus",
-    "currently": "Borrel modus staat op dit moment ",
-    "on": "aan",
-    "off": "uit",
-    "turn off": "Borrel modus wordt automagisch uitgezet op ",
-    "turn on": "Je kunt borrel modus aanzetten door bovenin een tijd te kiezen. Op deze tijd wordt borrel modus weer uitgeschakeld.",
-    "early": "Je kunt de tijd bovenin veranderen of borrel modus vroegtijdig beëindigen door op \"Borrel modus uitschakelen\" te klikken."
   },
   "profile": {
     "My profile": "Mijn profiel",

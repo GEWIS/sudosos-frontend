@@ -3,7 +3,9 @@ import Component from 'vue-class-component';
 
 @Component
 export default class Formatters extends Vue {
-  formatDateTime(date: Date, full: Boolean) : string {
+  formatDateTime(date: Date,
+    full?: Boolean,
+    partial?: Boolean) : string {
     const weekDays: String[] = [
       this.$t('formatters.Monday').toString(),
       this.$t('formatters.Tuesday').toString(),
@@ -18,6 +20,14 @@ export default class Formatters extends Vue {
       return `${this.parseTime(date.getDate())}-`
         + `${this.parseTime(date.getMonth() + 1)}-`
         + `${date.getFullYear()} (${weekDays[date.getDay()]})`;
+    }
+
+    if (partial) {
+      return `${this.parseTime(date.getDate())}-`
+        + `${this.parseTime(date.getMonth() + 1)}-`
+        + `${date.getFullYear()} - `
+        + `${this.parseTime(date.getHours())}:`
+        + `${this.parseTime(date.getMinutes())}`;
     }
 
     return `${this.parseTime(date.getHours())}:`

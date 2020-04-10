@@ -10,6 +10,7 @@
           id="from-date"
           v-model="filterValues.fromDate"
           locale="en-NL"
+          :placeholder="$t('transactionTableFilter.placeholder')"
           :right="right"
           no-flip
           :date-format-options="{year: 'numeric', month: 'long', day: 'numeric'}"
@@ -27,6 +28,7 @@
           id="to-date"
           v-model="filterValues.toDate"
           locale="en-NL"
+          :placeholder="$t('transactionTableFilter.placeholder')"
           :right="right"
           no-flip
           :date-format-options="{year: 'numeric', month: 'long', day: 'numeric'}"

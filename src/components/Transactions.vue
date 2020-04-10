@@ -321,7 +321,7 @@ export default class TransactionsComponent extends Formatters {
       t.forEach((transaction) => {
         // Create formatted date and time for each transaction
         const fDate = this.formatDateTime(transaction.createdAt, true);
-        const time = this.formatDateTime(transaction.createdAt, false);
+        const time = this.formatDateTime(transaction.createdAt);
 
         // If formatted date has not been used yet make a date row
         if (!dates.find(d => d === fDate) || '') {

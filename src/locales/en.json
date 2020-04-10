@@ -47,7 +47,16 @@
     "Manage products": "Manage products"
   },
   "screens": {
-    "Screens": "TV Screens"
+    "Screens": "TV Screens",
+    "Ending time": "Ending time",
+    "Confirm end time": "Confirm end time",
+    "Stop social drink mode": "Stop social drink mode",
+    "currently": "Currently social drink mode is turned ",
+    "on": "on",
+    "off": "off",
+    "turn off": "Social drink mode will automatically be turned off at ",
+    "turn on": "You can turn on social drink mode by choosing a time above and clicking the button. The social drink mode will automatically be turned of at that time.",
+    "early": "You can either change the time above or turn off the social drink mode prematurely by clicking on \"Stop social drink mode\"."
   },
   "managePOS": {
     "Manage points of sale": "Manage points of sale"
@@ -92,6 +101,7 @@
   },
   "transactionTableFilter" : {
     "from": "from",
+    "placeholder": "No date selected",
     "to": "to",
     "Self Bought": "Self Bought",
     "Put in for others": "Put in for others",
@@ -116,17 +126,6 @@
     "Products": "Products",
     "Cancel": "Cancel",
     "Flag transaction": "Flag transaction"
-  },
-  "tvScreens": {
-    "Ending time": "Ending time",
-    "Confirm end time": "Confirm end time",
-    "Stop social drink mode": "Stop social drink mode",
-    "currently": "Currently social drink mode is turned ",
-    "on": "on",
-    "off": "off",
-    "turn off": "Social drink mode will automatically be turned off at ",
-    "turn on": "You can turn on social drink mode by choosing a time above and clicking the button. The social drink mode will automatically be turned of at that time.",
-    "early": "You can either change the time above or turn off the social drink mode prematurely by clicking on \"Stop social drink mode\"."
   },
   "profile": {
     "My profile": "My profile",
