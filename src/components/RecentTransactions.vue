@@ -31,24 +31,19 @@ import { TranslateResult } from 'vue-i18n';
 import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
 import fakeTransactions from '@/assets/transactions';
+import Formatters from '@/mixins/Formatters';
 
 @Component
-export default class RecentTransactions extends Vue {
+export default class RecentTransactions extends Formatters {
   @Prop({ type: Object as () => User }) private user!: User;
 
   transactionList: Transaction[] = [];
-
-  getTimeString = (value: Date) => `${RecentTransactions.parseTime(value.getDate())}-`
-                                    + `${RecentTransactions.parseTime(value.getMonth() + 1)}-`
-                                    + `${value.getFullYear()} - `
-                                    + `${RecentTransactions.parseTime(value.getHours())}:`
-                                    + `${RecentTransactions.parseTime(value.getMinutes())}`;
 
   fields: Object[] = [
     {
       key: 'createdAt',
       label: 'when',
-      formatter: (value: Date) => this.getTimeString(value),
+      formatter: (value: Date) => this.formatDateTime(value, undefined, true),
     },
     {
       key: 'comment',
@@ -58,10 +53,6 @@ export default class RecentTransactions extends Vue {
 
   beforeMount() {
     this.transactionList = fakeTransactions.fetchTransactions(this.user);
-  }
-
-  static parseTime(value: number): string {
-    return (value < 10 ? '0' : '') + value;
   }
 }
 
