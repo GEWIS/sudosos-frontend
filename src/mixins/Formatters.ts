@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import dinero from 'dinero.js';
 
 @Component
 export default class Formatters extends Vue {
@@ -38,4 +39,9 @@ export default class Formatters extends Vue {
     Parses times such that each value has a padded 0 if < 10
    */
   public parseTime = (value: number): string => (value < 10 ? '0' : '') + value;
+
+  /*
+    Function to make dinero usable in the template
+  */
+  dinero: Function = dinero;
 }

@@ -114,13 +114,11 @@
 
 <script lang="ts">
 import {
-  Component, Prop, Vue, Watch,
+  Component, Vue, Watch,
 } from 'vue-property-decorator';
 
   @Component
 export default class TransactionTableFilter extends Vue {
-    @Prop() private value: any;
-
     right: boolean = true;
 
     filterValues: any = {
@@ -169,14 +167,9 @@ export default class TransactionTableFilter extends Vue {
     }
 
     filterUpdated(filterWay : string) : void {
-      this.$emit('input', {
-        selfBought: this.filterValues.selfBought,
-        putInByYou: this.filterValues.putInByYou,
-        putInForYou: this.filterValues.putInForYou,
-        filterWay,
-        fromDate: this.filterValues.fromDate,
-        toDate: this.filterValues.toDate,
-      });
+      this.filterValues.filterWay = filterWay;
+
+      this.$emit('input', this.filterValues);
     }
 
     @Watch('filterValues.fromDate')

@@ -82,8 +82,6 @@
     "Duration": "Duration",
     "Active": "Active",
     "Advertisement": "Advertisement",
-    "Choose image drop": "Choose image or drop here...",
-    "Drop file": "Drop file here...",
     "Confirm deletion": "Confirm deletion",
     "Please enter": "Please enter a valid number larger than 0",
     "Are you sure": "Are you sure you want to delete this advertisement?",
@@ -91,6 +89,10 @@
     "Duration (ms)": "Duration (ms)",
     "Added on": "Added on",
     "Edit": "Edit"
+  },
+  "fileFormPreview": {
+    "Choose image drop": "Choose image or drop here...",
+    "Drop file": "Drop file here..."
   },
   "confirmationModal": {
     "Cancel": "Cancel",

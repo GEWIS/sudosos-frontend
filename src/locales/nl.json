@@ -82,8 +82,6 @@
     "Duration": "Duur",
     "Active": "Actief",
     "Advertisement": "Advertentie",
-    "Choose image drop": "Kies een plaatje of zet neer...",
-    "Drop file": "Zet bestand neer...",
     "Confirm deletion": "Bevestig verwijderen",
     "Please enter": "Voer een nummer in dat groter dan 0 is",
     "Are you sure": "Weet je zeker dat je deze advertentie wil verwijderen?",
@@ -91,6 +89,10 @@
     "Duration (ms)": "Duur (ms)",
     "Added on": "Toegevoegd op",
     "Edit": "Bewerk"
+  },
+  "fileFormPreview": {
+    "Choose image drop": "Kies een plaatje of zet neer...",
+    "Drop file": "Zet bestand neer..."
   },
   "confirmationModal": {
     "Cancel": "Cancel",

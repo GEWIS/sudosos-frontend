@@ -102,18 +102,12 @@
 import {
   Component, Prop,
 } from 'vue-property-decorator';
-import dinero from 'dinero.js';
 import { Transaction } from '@/entities/Transaction';
 import Formatters from '@/mixins/Formatters';
 
   @Component
 export default class TransactionDetailsModal extends Formatters {
     @Prop() private transaction!: Transaction;
-
-    /*
-      Function to make dinero usable in the template
-    */
-    dinero: Function = dinero;
 }
 </script>
 
