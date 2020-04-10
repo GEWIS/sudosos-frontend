@@ -5,13 +5,13 @@ import Component from 'vue-class-component';
 export default class Formatters extends Vue {
   formatDateTime(date: Date, full: Boolean) : string {
     const weekDays: String[] = [
-      this.$t('transactionsComponent.Monday').toString(),
-      this.$t('transactionsComponent.Tuesday').toString(),
-      this.$t('transactionsComponent.Wednesday').toString(),
-      this.$t('transactionsComponent.Thursday').toString(),
-      this.$t('transactionsComponent.Friday').toString(),
-      this.$t('transactionsComponent.Saturday').toString(),
-      this.$t('transactionsComponent.Sunday').toString(),
+      this.$t('formatters.Monday').toString(),
+      this.$t('formatters.Tuesday').toString(),
+      this.$t('formatters.Wednesday').toString(),
+      this.$t('formatters.Thursday').toString(),
+      this.$t('formatters.Friday').toString(),
+      this.$t('formatters.Saturday').toString(),
+      this.$t('formatters.Sunday').toString(),
     ];
 
     if (full) {

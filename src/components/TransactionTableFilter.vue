@@ -3,7 +3,7 @@
     <b-col xl="3" sm="6" cols="12" class="mb-2 mb-xl-0">
       <b-form-group
         id="from"
-        :label="$t('transactionsComponent.from')"
+        :label="$t('transactionTableFilter.from')"
         label-cols="3"
       >
         <b-form-datepicker
@@ -19,7 +19,7 @@
     <b-col xl="3" sm="6" cols="12" class="mb-2 mb-xl-0">
       <b-form-group
         id="to"
-        :label="$t('transactionsComponent.to')"
+        :label="$t('transactionTableFilter.to')"
         label-cols-sm="2"
         label-cols="3"
       >
@@ -48,7 +48,7 @@
             :value="true"
             :unchecked-value="false"
           >
-            {{ $t('transactionsComponent.Self Bought') }}
+            {{ $t('transactionTableFilter.Self Bought') }}
           </b-form-checkbox>
         </b-form-group>
         <b-form-group
@@ -63,7 +63,7 @@
             :value="true"
             :unchecked-value="false"
           >
-            {{ $t('transactionsComponent.Put in for others') }}
+            {{ $t('transactionTableFilter.Put in for others') }}
           </b-form-checkbox>
         </b-form-group>
         <b-form-group
@@ -78,7 +78,7 @@
             :value="true"
             :unchecked-value="false"
           >
-            {{ $t('transactionsComponent.Put in for you') }}
+            {{ $t('transactionTableFilter.Put in for you') }}
           </b-form-checkbox>
         </b-form-group>
       </b-form-row>
@@ -92,7 +92,7 @@
             v-on:click="$emit('csv')"
           >
             <font-awesome-icon icon="file-export"></font-awesome-icon>
-            {{ $t('transactionsComponent.Export to CSV') }}
+            {{ $t('transactionTableFilter.Export to CSV') }}
           </b-button>
         </div>
         <div class="mr-0 mr-sm-2 mt-2 mt-sm-0 button">
@@ -102,7 +102,7 @@
             v-on:click="resetFilters"
           >
             <font-awesome-icon icon="times-circle"></font-awesome-icon>
-            {{ $t('transactionsComponent.Reset filter') }}
+            {{ $t('transactionTableFilter.Reset filter') }}
           </b-button>
         </div>
       </b-form-row>

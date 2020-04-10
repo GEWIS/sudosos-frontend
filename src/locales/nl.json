@@ -16,6 +16,15 @@
     "Netherlands": "Nederlands",
     "English": "English"
   },
+  "formatters": {
+    "Monday": "Maandag",
+    "Tuesday": "Dinsdag",
+    "Wednesday": "Woensdag",
+    "Thursday": "Donderdag",
+    "Friday": "Vrijdag",
+    "Saturday": "Zaterdag",
+    "Sunday": "Zondag"
+  },
   "home": {
     "Overview": "Overzicht"
   },
@@ -81,26 +90,21 @@
   "containersOverview": {
     "Containers": "Containers"
   },
-  "transactionsComponent": {
+  "transactionTableFilter": {
     "from": "van",
     "to": "tot",
     "Self Bought": "Zelf gekocht",
     "Put in for others": "Voor anderen afgestreept",
     "Put in for you": "Voor jou afgestreept",
     "Export to CSV": "Exporteren naar CSV",
-    "Reset filter": "Herstel filter",
+    "Reset filter": "Herstel filter"
+  },
+  "transactionsComponent": {
     "When": "Wanneer",
     "What": "Wat",
     "Info": "Info",
     "Page": "Pagina",
-    "Transactions": "Transacties",
-    "Monday": "Maandag",
-    "Tuesday": "Dinsdag",
-    "Wednesday": "Woensdag",
-    "Thursday": "Donderdag",
-    "Friday": "Vrijdag",
-    "Saturday": "Zaterdag",
-    "Sunday": "Zondag"
+    "Transactions": "Transacties"
   },
   "transactionDetailsModal": {
     "transaction details": "transactie details",
