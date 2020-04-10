@@ -19,7 +19,8 @@
       </b-card-title>
       <b-card-body>
         <b-table stacked="sm" small borderless thead-class="table-header table-header-5"
-                 :items="advertisementList" :fields="fields" class="table-striped">
+                 :items="advertisementList" :fields="fields" :per-page="perPage"
+                 :current-page="currentPage" class="table-striped">
           <template v-slot:head(thumbnail)="data">
             <span v-if="data">{{ $t(`advertisementList.${data.label}`) }}</span>
           </template>
@@ -50,15 +51,32 @@
             <a v-b-modal.modal-add v-on:click="setAdvertisement('put', data.value)">
               <font-awesome-icon icon="pencil-alt" class="ml-2 icon click-icon"></font-awesome-icon>
             </a>
-            <a v-b-modal.confirmation v-on:click="setConfirmation(data.value)" >
+            <a v-b-modal.confirmation>
               <font-awesome-icon icon="times" class="ml-2 icon click-icon"></font-awesome-icon>
             </a>
           </template>
         </b-table>
       </b-card-body>
     </b-card>
-    <b-card-footer>
-      Hier moet nog pagination in dus dat komt nog een keertje hier
+    <b-card-footer class="d-flex">
+      <p v-if="advertisementList.length > perPage" class="my-auto h-100">
+        {{ $t('transactionsComponent.Page') }}:
+      </p>
+      <b-pagination
+        v-model="currentPage"
+        :total-rows="advertisementList.length"
+        :per-page="perPage"
+        limit="1"
+        next-class="nextButton"
+        prev-class="prevButton"
+        page-class="pageButton"
+        hide-goto-end-buttons
+        last-number
+        @change="pageClicked"
+        v-if="advertisementList.length > perPage"
+        aria-controls="transaction-table"
+        class="custom-pagination mb-0"
+      ></b-pagination>
     </b-card-footer>
 
     <b-modal
@@ -184,12 +202,17 @@ export default class AdvertisementsList extends Formatters {
     // File that user uploads
     file: File = new File([], '');
 
-
     // Duration of the advertisement in seconds
     duration: Number = 0;
 
     // ID of currently opened advertisement
     currentActiveId: string = '';
+
+    perPage: number = 12;
+
+    currentPage: number = 1;
+
+    previousPage: number = 1;
 
     // Fields for the b-table
     fields: Object[] = [
@@ -259,6 +282,18 @@ export default class AdvertisementsList extends Formatters {
         return this.$t('advertisementList.Please enter').toString();
       }
       return '';
+    }
+
+    /*
+  Method that grabs extra transactions when 2 pages or less are left
+  */
+    pageClicked(page: number) : void {
+      if (this.previousPage < page
+        && page >= (Math.ceil(this.advertisementList.length / this.perPage) - 2)) {
+      // TODO: Grab new data
+      }
+
+      this.previousPage = page;
     }
 }
 </script>
