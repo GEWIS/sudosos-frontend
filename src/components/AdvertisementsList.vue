@@ -19,7 +19,8 @@
       </b-card-title>
       <b-card-body>
         <b-table stacked="sm" small borderless thead-class="table-header table-header-5"
-                 :items="advertisementList" :fields="fields" class="table-striped">
+                 :items="advertisementList" :fields="fields" :per-page="perPage"
+                 :current-page="currentPage" class="table-striped">
           <template v-slot:head(thumbnail)="data">
             <span v-if="data">{{ $t(`advertisementList.${data.label}`) }}</span>
           </template>
@@ -50,15 +51,31 @@
             <a v-b-modal.modal-add v-on:click="setAdvertisement('put', data.value)">
               <font-awesome-icon icon="pencil-alt" class="ml-2 icon click-icon"></font-awesome-icon>
             </a>
-            <a v-b-modal.confirmation v-on:click="setConfirmation(data.value)" >
+            <a v-b-modal.confirmation>
               <font-awesome-icon icon="times" class="ml-2 icon click-icon"></font-awesome-icon>
             </a>
           </template>
         </b-table>
       </b-card-body>
     </b-card>
-    <b-card-footer>
-      Hier moet nog pagination in dus dat komt nog een keertje hier
+    <b-card-footer v-if="advertisementList.length > perPage" class="d-flex">
+      <p class="my-auto h-100">
+        {{ $t('transactionsComponent.Page') }}:
+      </p>
+      <b-pagination
+        v-model="currentPage"
+        :total-rows="advertisementList.length"
+        :per-page="perPage"
+        limit="1"
+        next-class="nextButton"
+        prev-class="prevButton"
+        page-class="pageButton"
+        hide-goto-end-buttons
+        last-number
+        @change="pageClicked"
+        aria-controls="transaction-table"
+        class="custom-pagination mb-0"
+      ></b-pagination>
     </b-card-footer>
 
     <b-modal
@@ -111,14 +128,7 @@
           label-align="left"
           label-for="ad-file"
         >
-          <b-form-file
-            id="ad-file"
-            name="ad-file"
-            v-model="file"
-            accept="image/*"
-            :placeholder="$t('advertisementList.Choose image drop')"
-            :drop-placeholder="$t('advertisementList.Drop file')"
-          ></b-form-file>
+          <FileFormPreview v-model="file"></FileFormPreview>
         </b-form-group>
       </div>
 
@@ -142,11 +152,13 @@
 
 <script lang="ts">
 import {
-  Component, Prop, Vue, Watch,
+  Component, Prop,
 } from 'vue-property-decorator';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
 import { Advertisement } from '@/entities/Advertisement';
 import { User } from '@/entities/User';
+import Formatters from '@/mixins/Formatters';
+import FileFormPreview from '@/components/FileFormPreview.vue';
 
 function fetchAdvertisements() : Advertisement[] {
   const advertisements = [{
@@ -175,9 +187,9 @@ function fetchAdvertisements() : Advertisement[] {
   return advertisements.slice(0, 3);
 }
 @Component({
-  components: { ConfirmationModal },
+  components: { ConfirmationModal, FileFormPreview },
 })
-export default class AdvertisementsList extends Vue {
+export default class AdvertisementsList extends Formatters {
     @Prop({ type: Object as () => User }) private user!: User;
 
     // List of advertisements
@@ -186,19 +198,22 @@ export default class AdvertisementsList extends Vue {
     // Variables for add advertisement modal
     active: Boolean = false;
 
+    // File that user uploads
     file: File = new File([], '');
 
+    // Duration of the advertisement in seconds
     duration: Number = 0;
 
     // ID of currently opened advertisement
     currentActiveId: string = '';
 
-    getTimeString = (value: Date) => `${AdvertisementsList.parseTime(value.getDate())}-`
-                                      + `${AdvertisementsList.parseTime(value.getMonth() + 1)}-`
-                                      + `${value.getFullYear()} - `
-                                      + `${AdvertisementsList.parseTime(value.getHours())}:`
-                                      + `${AdvertisementsList.parseTime(value.getMinutes())}`;
+    perPage: number = 12;
 
+    currentPage: number = 1;
+
+    previousPage: number = 1;
+
+    // Fields for the b-table
     fields: Object[] = [
       {
         key: 'thumbnail',
@@ -215,7 +230,7 @@ export default class AdvertisementsList extends Vue {
       {
         key: 'added',
         label: 'Added on',
-        formatter: (value: Date) => this.getTimeString(value),
+        formatter: (value: Date) => this.formatDateTime(value, undefined, true),
       },
       {
         key: 'id',
@@ -234,8 +249,8 @@ export default class AdvertisementsList extends Vue {
       @param method : type of method that needs to be used when for the api request (e.g. post/put)
       @param id     : id of the advertisement currently being modified. -1 if not specified
      */
-    async setAdvertisement(method: string, id: string) {
-      if (id !== '-1') {
+    async setAdvertisement(method: string, id?: string) {
+      if (id) {
         const a = this.advertisementList.filter(s => s.id === id)[0];
         this.currentActiveId = id;
         this.duration = a.duration;
@@ -255,17 +270,12 @@ export default class AdvertisementsList extends Vue {
       this.user = this.user;
     }
 
-    /*
-      parseTime is a static method
-     */
-    static parseTime(value: number):String {
-      return (value < 10 ? '0' : '') + value;
-    }
-
+    // Check if the duration is a number and greater than 0
     get durationState(): boolean {
       return this.duration > 0 && !Number.isNaN(this.duration.valueOf());
     }
 
+    // String that shows if durationState is false
     get durationInvalid(): string {
       if (!this.durationState) {
         return this.$t('advertisementList.Please enter').toString();
@@ -273,28 +283,18 @@ export default class AdvertisementsList extends Vue {
       return '';
     }
 
-    @Watch('file')
-    onFileChanged = (value: File, old: File) => {
-      if (document.activeElement !== null) {
-        let element = document.getElementById('ad-file') as HTMLElement;
-        const img = document.createElement('img');
-        img.setAttribute('src', URL.createObjectURL(value));
-        img.style.maxHeight = '100%';
-        img.style.maxWidth = `${element.offsetWidth - 48}px`;
-
-        if (element.nextElementSibling !== null) {
-          element = element.nextElementSibling as HTMLElement;
-          element.style.height = '150px';
-          element.style.padding = '0.75rem';
-          element.innerHTML = '';
-          element.appendChild(img);
-          element = element.parentElement as HTMLElement;
-          element.style.height = '150px';
-        }
+    /*
+  Method that grabs extra transactions when 2 pages or less are left
+  */
+    pageClicked(page: number) : void {
+      if (this.previousPage < page
+        && page >= (Math.ceil(this.advertisementList.length / this.perPage) - 2)) {
+      // TODO: Grab new data
       }
-    };
-}
 
+      this.previousPage = page;
+    }
+}
 </script>
 
 <style scoped lang="scss">
