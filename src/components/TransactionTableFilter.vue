@@ -1,6 +1,10 @@
 <template>
   <b-form-row>
-    <b-col xl="3" sm="6" cols="12" class="mb-2 mb-xl-0">
+    <b-col v-if="dates"
+           :xl="selfBought || putInForYou || putInByYou ? 3 : 6"
+           sm="6"
+           cols="12"
+           class="mb-2 mb-xl-0">
       <b-form-group
         id="from"
         :label="$t('transactionTableFilter.from')"
@@ -17,7 +21,11 @@
         ></b-form-datepicker>
       </b-form-group>
     </b-col>
-    <b-col xl="3" sm="6" cols="12" class="mb-2 mb-xl-0">
+    <b-col v-if="dates"
+           :xl="selfBought || putInForYou || putInByYou ? 3 : 6"
+           sm="6"
+           cols="12"
+           class="mb-2 mb-xl-0">
       <b-form-group
         id="to"
         :label="$t('transactionTableFilter.to')"
@@ -36,12 +44,14 @@
       </b-form-group>
     </b-col>
 
-    <b-col xl="6" lg="7" md="6" cols="12" class="my-lg-auto mb-2">
+    <b-col :xl="dates ? 6 : 12" :lg="dates ? 7 : 12" :md="dates ? 6 : 12" cols="12"
+           class="my-lg-auto mb-2">
       <b-form-row class="justify-content-between px-2">
         <b-form-group
           id="self-bought"
           label-cols="0"
           class="mt-xl-0 mb-xl-3 my-lg-auto"
+          v-if="selfBought"
         >
           <b-form-checkbox
             id="self-bought-input"
@@ -57,6 +67,7 @@
           id="put-in-by-you"
           label-cols="0"
           class="mt-xl-0 mb-xl-3 my-lg-auto"
+          v-if="putInByYou"
         >
           <b-form-checkbox
             id="put-in-by-you-input"
@@ -72,6 +83,7 @@
           id="put-in-for-you"
           label-cols="0"
           class="mt-xl-0 mb-xl-3 my-lg-auto"
+          v-if="putInForYou"
         >
           <b-form-checkbox
             id="put-in-for-you-input"
@@ -85,9 +97,11 @@
         </b-form-group>
       </b-form-row>
     </b-col>
+
     <b-col xl="12" lg="5" md="6" cols="12" class="mb-2 mb-lg-0">
-      <b-form-row class="flex-row-reverse">
-        <div class="button">
+      <b-form-row class="flex-row-reverse button-row">
+        <div class="button"
+             v-if="csv">
           <b-button
             variant="secondary"
             id="add"
@@ -97,7 +111,8 @@
             {{ $t('transactionTableFilter.Export to CSV') }}
           </b-button>
         </div>
-        <div class="mr-0 mr-sm-2 mt-2 mt-sm-0 button">
+        <div class="mr-0 mr-sm-2 mt-2 mt-sm-0 button"
+             v-if="reset">
           <b-button
             variant="primary"
             id="reset"
@@ -114,11 +129,23 @@
 
 <script lang="ts">
 import {
-  Component, Vue, Watch,
+  Component, Prop, Vue, Watch,
 } from 'vue-property-decorator';
 
   @Component
 export default class TransactionTableFilter extends Vue {
+    @Prop({ default: true, type: Boolean }) selfBought!: boolean;
+
+    @Prop({ default: true, type: Boolean }) private putInByYou!: boolean;
+
+    @Prop({ default: true, type: Boolean }) private putInForYou!: boolean;
+
+    @Prop({ default: true, type: Boolean }) private dates!: boolean;
+
+    @Prop({ default: true, type: Boolean }) private reset!: boolean;
+
+    @Prop({ default: true, type: Boolean }) private csv!: boolean;
+
     right: boolean = true;
 
     filterValues: any = {
@@ -164,6 +191,13 @@ export default class TransactionTableFilter extends Vue {
       this.filterValues.filterWay = null;
       this.filterValues.fromDate = '';
       this.filterValues.toDate = '';
+
+      // $nextTick is here to make sure that the filterWay is null such that the filter will
+      // actually reset properly
+      this.$nextTick(() => {
+        this.filterValues.filterWay = null;
+        this.$emit('input', this.filterValues);
+      });
     }
 
     filterUpdated(filterWay : string) : void {
@@ -208,6 +242,10 @@ export default class TransactionTableFilter extends Vue {
     > .form-row {
       color: black;
     }
+  }
+
+  .button-row {
+    padding: 0 5px;
   }
 
   @include media-breakpoint-down(lg) {

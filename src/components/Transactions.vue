@@ -6,6 +6,7 @@
         <TransactionTableFilter
           v-model="filterValues"
           v-on:csv="downloadCSV"
+          :dates="false"
         ></TransactionTableFilter>
 
       </b-card-title>
@@ -135,6 +136,8 @@ export default class TransactionsComponent extends Formatters {
     currentPage: number = 1;
 
     previousPage: number = 1;
+
+    totalRows: number = 0;
 
     filterValues: any = {
       selfBought: false,
@@ -289,7 +292,7 @@ export default class TransactionsComponent extends Formatters {
         putInFor = matchFound && date;
       }
 
-      // Check if either both selfBought or putInByYou are true or either one of them.
+      // Check if either selfBought, putInByYou or putInForYou are true
       if (this.filterValues.selfBought
         || this.filterValues.putInByYou
         || this.filterValues.putInForYou) {
@@ -297,6 +300,9 @@ export default class TransactionsComponent extends Formatters {
           && !this.checkFormattedDate(data.formattedDate || '')
           && !this.filteredTransactions.includes(data)) {
           this.filteredTransactions.push(data);
+          this.totalRows += 1;
+        } else if (this.checkFormattedDate(data.formattedDate || '')) {
+          this.totalRows += 1;
         }
 
         return self || putInBy || putInFor;
@@ -381,15 +387,15 @@ export default class TransactionsComponent extends Formatters {
       this.previousPage = page;
     }
 
-    /*
-      Returns the total number of transactions that are currently present
-     */
-    get totalRows() {
-      if (this.filteredTransactions.length > 0) {
-        return this.filteredTransactions.length;
-      }
-      return this.transactionList.length;
-    }
+    // /*
+    //   Returns the total number of transactions that are currently present
+    //  */
+    // get totalRows() {
+    //   if (this.filteredTransactions.length > 0) {
+    //     return this.filteredTransactions.length;
+    //   }
+    //   return this.transactionList.length;
+    // }
 
     // Reports if string is 00-00-0000 (word) format
     checkFormattedDate = (date : String) : boolean => /\d{2}-\d{2}-\d{4}.\(\w*\)/.test(date.toString());
@@ -406,6 +412,19 @@ export default class TransactionsComponent extends Formatters {
     @Watch('filterValues', { deep: true })
     onFilterValuesChange(value: any, old: any) {
       this.filterChange(value.filterWay);
+
+      // To make sure that when the filter resets the pagination shows correctly
+      if (value.filterWay === null) {
+        this.totalRows = this.transactionList.length;
+      } else {
+        this.totalRows = 0;
+      }
+    }
+
+    // Watcher to update the amount or rows present when new transactions are added
+    @Watch('transactionList')
+    onTransactionListChange(value: Transaction[], old: Transaction[]) {
+      this.totalRows = value.length;
     }
 }
 </script>
