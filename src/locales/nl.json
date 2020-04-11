@@ -16,6 +16,15 @@
     "Netherlands": "Nederlands",
     "English": "English"
   },
+  "formatters": {
+    "Monday": "Maandag",
+    "Tuesday": "Dinsdag",
+    "Wednesday": "Woensdag",
+    "Thursday": "Donderdag",
+    "Friday": "Vrijdag",
+    "Saturday": "Zaterdag",
+    "Sunday": "Zondag"
+  },
   "home": {
     "Overview": "Overzicht"
   },
@@ -38,7 +47,16 @@
     "Manage products": "Productbeheer"
   },
   "screens": {
-    "Screens": "TV Schermen"
+    "Screens": "TV Schermen",
+    "Ending time": "Eind tijd",
+    "Confirm end time": "Bevestig eind tijd",
+    "Stop social drink mode": "Stop borrel modus",
+    "currently": "Borrel modus staat op dit moment ",
+    "on": "aan",
+    "off": "uit",
+    "turn off": "Borrel modus wordt automagisch uitgezet op ",
+    "turn on": "Je kunt borrel modus aanzetten door bovenin een tijd te kiezen. Op deze tijd wordt borrel modus weer uitgeschakeld.",
+    "early": "Je kunt de tijd bovenin veranderen of borrel modus vroegtijdig beëindigen door op \"Borrel modus uitschakelen\" te klikken."
   },
   "managePOS": {
     "Manage points of sale": "Beheer verkooppunten"
@@ -64,8 +82,6 @@
     "Duration": "Duur",
     "Active": "Actief",
     "Advertisement": "Advertentie",
-    "Choose image drop": "Kies een plaatje of zet neer...",
-    "Drop file": "Zet bestand neer...",
     "Confirm deletion": "Bevestig verwijderen",
     "Please enter": "Voer een nummer in dat groter dan 0 is",
     "Are you sure": "Weet je zeker dat je deze advertentie wil verwijderen?",
@@ -74,25 +90,35 @@
     "Added on": "Toegevoegd op",
     "Edit": "Bewerk"
   },
+  "fileFormPreview": {
+    "Choose image drop": "Kies een plaatje of zet neer...",
+    "Drop file": "Zet bestand neer..."
+  },
   "confirmationModal": {
     "Cancel": "Cancel",
     "Confirm": "Bevestig"
   },
   "containersOverview": {
-    "Containers": "Containers"
+    "Containers": "Opslag"
   },
-  "transactionsComponent": {
+  "transactionTableFilter": {
     "from": "van",
+    "placeholder": "Selecteer een datum",
     "to": "tot",
     "Self Bought": "Zelf gekocht",
     "Put in for others": "Voor anderen afgestreept",
     "Put in for you": "Voor jou afgestreept",
     "Export to CSV": "Exporteren naar CSV",
-    "Reset filter": "Herstel filter",
+    "Reset filter": "Herstel filter"
+  },
+  "transactionsComponent": {
     "When": "Wanneer",
     "What": "Wat",
     "Info": "Info",
     "Page": "Pagina",
+    "Transactions": "Transacties"
+  },
+  "transactionDetailsModal": {
     "transaction details": "transactie details",
     "Total": "Totaal",
     "Point of sale": "Verkooppunt",
@@ -101,26 +127,7 @@
     "Activity": "Activiteit",
     "Products": "Producten",
     "Cancel": "Cancel",
-    "Flag transaction": "Markeer transactie",
-    "Transactions": "Transacties",
-    "Monday": "Maandag",
-    "Tuesday": "Dinsdag",
-    "Wednesday": "Woensdag",
-    "Thursday": "Donderdag",
-    "Friday": "Vrijdag",
-    "Saturday": "Zaterdag",
-    "Sunday": "Zondag"
-  },
-  "tvScreens": {
-    "Ending time": "Eind tijd",
-    "Confirm end time": "Bevestig eind tijd",
-    "Stop social drink mode": "Stop borrel modus",
-    "currently": "Borrel modus staat op dit moment ",
-    "on": "aan",
-    "off": "uit",
-    "turn off": "Borrel modus wordt automagisch uitgezet op ",
-    "turn on": "Je kunt borrel modus aanzetten door bovenin een tijd te kiezen. Op deze tijd wordt borrel modus weer uitgeschakeld.",
-    "early": "Je kunt de tijd bovenin veranderen of borrel modus vroegtijdig beëindigen door op \"Borrel modus uitschakelen\" te klikken."
+    "Flag transaction": "Markeer transactie"
   },
   "profile": {
     "My profile": "Mijn profiel",

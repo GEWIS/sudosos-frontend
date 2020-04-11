@@ -125,7 +125,8 @@ export default class Profile extends Vue {
     ];
 
     changePincode() {
-      console.log(this.pincode);
+      // TODO: Change the pincode
+      this.formError = this.formError;
     }
 
     updateDevice = (device: any, event?: any) => {
