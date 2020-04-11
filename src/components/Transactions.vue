@@ -67,8 +67,8 @@
         </b-table>
       </b-card-body>
     </b-card>
-    <b-card-footer class="d-flex">
-      <p v-if="totalRows > perPage" class="my-auto h-100">
+    <b-card-footer v-if="totalRows > perPage" class="d-flex">
+      <p class="my-auto h-100">
         {{ $t('transactionsComponent.Page') }}:
       </p>
       <b-pagination
@@ -82,7 +82,6 @@
         hide-goto-end-buttons
         last-number
         @change="pageClicked"
-        v-if="totalRows > perPage"
         aria-controls="transaction-table"
         class="custom-pagination mb-0"
       ></b-pagination>
