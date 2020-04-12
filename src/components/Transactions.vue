@@ -6,7 +6,6 @@
         <TransactionTableFilter
           v-model="filterValues"
           v-on:csv="downloadCSV"
-          :dates="false"
         ></TransactionTableFilter>
 
       </b-card-title>

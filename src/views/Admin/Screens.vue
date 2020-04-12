@@ -54,10 +54,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import Formatters from '@/mixins/Formatters';
 
   @Component
-export default class Screens extends Vue {
+export default class Screens extends Formatters {
     endTime: Date | null = null;
 
     endTimeString: string = '';
@@ -74,27 +75,46 @@ export default class Screens extends Vue {
       }
     }
 
+    /*
+      Turn the borrelmode on with the currently selected time
+     */
     confirmBorrelModeTime() {
       this.endTime = this.parseTimeStringToFutureDate(this.endTimeString);
       if (!Number.isNaN(this.endTime.getTime())) {
         this.enabled = true;
-        // Send data to server
+        // TODO: Send data to server
       }
     }
 
+    /*
+      Stop the borrel mode
+     */
     stopBorrelMode() {
       this.enabled = false;
       this.endTimeString = '';
+
+      // TODO: Make sure stop is send to server
     }
 
-    fetchTvScreensBorrelModeEndTime = (): Date | null => null;
-    // {
-    //   if (false) {
-    //     return new Date();
-    //   }
-    //   return null;
-    // }
+    fetchTvScreensBorrelModeEndTime(): Date | null {
+      // TODO: Check if borrel mode is currently ongoing
+      if (this.enabled) {
+        return new Date();
+      }
 
+      const today = new Date();
+      today.setHours(today.getHours() + 4);
+
+      this.endTimeString = `${this.parseTime(today.getHours())}:`
+        + `${this.parseTime(today.getMinutes())}:`
+        + `${this.parseTime(today.getSeconds())}`;
+
+      return null;
+    }
+
+    /*
+      Takes timestring and parses it correctly so it can show futures times
+     */
     parseTimeStringToFutureDate = (value: string): Date => {
       // Parse the time string to integers and get the current date and time
       const hour = parseInt(value.substring(0, 2), 10);
@@ -117,4 +137,24 @@ export default class Screens extends Vue {
 </script>
 
 <style scoped lang="scss">
+  @import "~bootstrap/scss/bootstrap";
+  @import './src/styles/Card.scss';
+
+  .card-title {
+    color: black;
+  }
+
+  .body-mode-disabled {
+    color: red;
+  }
+
+  .body-mode-enabled {
+    color: green;
+  }
+
+  .body-mode-disabled,
+  .body-mode-enabled {
+    font-weight: bold;
+    text-transform: uppercase;
+  }
 </style>

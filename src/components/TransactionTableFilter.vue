@@ -134,6 +134,9 @@ import {
 
   @Component
 export default class TransactionTableFilter extends Vue {
+    /*
+      Props to set the filters, if any of these are false the filter will not be displayed
+    */
     @Prop({ default: true, type: Boolean }) selfBought!: boolean;
 
     @Prop({ default: true, type: Boolean }) private putInByYou!: boolean;
@@ -158,7 +161,7 @@ export default class TransactionTableFilter extends Vue {
     };
 
     /*
-      Mounted currently makes sure that the date drowdowns are located correctly
+      Mounted currently makes sure that the date dropdowns are located correctly
     */
     mounted() {
       this.checkRight();
@@ -201,9 +204,39 @@ export default class TransactionTableFilter extends Vue {
     }
 
     filterUpdated(filterWay : string) : void {
-      this.filterValues.filterWay = filterWay;
+      const filterResults: any = {};
 
-      this.$emit('input', this.filterValues);
+      // If none of the filters are selected make sure the filterWay is null this makes sure the
+      // bootstrap table resets the filter and displays all currently available rows
+      if (!this.filterValues.selfBought
+          && !this.filterValues.putInForYou
+          && !this.filterValues.putInByYou
+          && this.filterValues.fromDate === ''
+          && this.filterValues.toDate === '') {
+        filterResults.filterWay = null;
+      } else {
+        filterResults.filterWay = filterWay;
+      }
+
+      // Check which filters are applied are available and return only those values
+      if (this.selfBought) {
+        filterResults.selfBought = this.filterValues.selfBought;
+      }
+
+      if (this.putInForYou) {
+        filterResults.putInForYou = this.filterValues.putInForYou;
+      }
+
+      if (this.putInByYou) {
+        filterResults.putInByYou = this.filterValues.putInByYou;
+      }
+
+      if (this.dates) {
+        filterResults.toDate = this.filterValues.toDate;
+        filterResults.fromDate = this.filterValues.fromDate;
+      }
+
+      this.$emit('input', filterResults);
     }
 
     @Watch('filterValues.fromDate')
