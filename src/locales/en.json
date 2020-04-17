@@ -71,8 +71,8 @@
   "recentTrans": {
     "recent transactions": "recent transactions",
     "all transactions": "all transactions",
-    "when": "when",
-    "what": "what"
+    "when": "When",
+    "what": "What"
   },
   "advertisementList" : {
     "Add": "Add",
@@ -127,7 +127,10 @@
     "Activity": "Activity",
     "Products": "Products",
     "Cancel": "Cancel",
-    "Flag transaction": "Flag transaction"
+    "Flag transaction": "Flag transaction",
+    "flag reason": "Please provide a reason for flagging the transaction",
+    "reason placeholder": "Provide a reason",
+    "flag invalid": "Please provide a reason"
   },
   "profile": {
     "My profile": "My profile",

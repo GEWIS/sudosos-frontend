@@ -16,20 +16,6 @@
                  :items="transactionList" :fields="fields" :tbody-tr-class="setRowClass"
                  :per-page="perPage" :current-page="currentPage" id="transaction-table"
                  :filter="filterValues.filterWay" :filter-function="filterRows">
-
-          <!-- Template for header slots, makes sure localisation can work -->
-          <template v-slot:head(formattedDate)="data">
-            <span v-if="data">{{ $t(`transactionsComponent.${data.label}`) }}</span>
-          </template>
-
-          <template v-slot:head(comment)="data">
-            <span v-if="data">{{ $t(`transactionsComponent.${data.label}`) }}</span>
-          </template>
-
-          <template v-slot:head(info)="data">
-            <span v-if="data">{{ $t(`transactionsComponent.${data.label}`) }}</span>
-          </template>
-
           <!-- Templates for each row cell -->
           <template v-slot:cell(formattedDate)="data">
             <!-- Check if this is a date row, if not make it clickable -->
@@ -37,7 +23,7 @@
               {{ data.item.formattedDate }}
             </div>
             <a v-b-modal.details-modal
-               v-on:click="this.modalTrans = data.item"
+               v-on:click="selectTransaction(data.item)"
                class="cell-link"
                v-else>
               {{ data.item.formattedDate }}
@@ -153,15 +139,15 @@ export default class TransactionsComponent extends Formatters {
     fields: Object[] = [
       {
         key: 'formattedDate',
-        label: 'When',
+        label: this.getTranslation('transactionsComponent.When'),
       },
       {
         key: 'comment',
-        label: 'What',
+        label: this.getTranslation('transactionsComponent.What'),
       },
       {
         key: 'id',
-        label: 'Info',
+        label: this.getTranslation('transactionsComponent.Info'),
       },
     ];
 
