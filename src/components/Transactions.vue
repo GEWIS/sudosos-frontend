@@ -23,7 +23,7 @@
               {{ data.item.formattedDate }}
             </div>
             <a v-b-modal.details-modal
-               v-on:click="this.modalTrans = data.item"
+               v-on:click="selectTransaction(data.item)"
                class="cell-link"
                v-else>
               {{ data.item.formattedDate }}
