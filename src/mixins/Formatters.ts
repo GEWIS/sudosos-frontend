@@ -44,4 +44,14 @@ export default class Formatters extends Vue {
     Function to make dinero usable in the template
   */
   dinero: Function = dinero;
+
+  /*
+    Function that returns a translated value, this is needed for the table headers to function
+    correctly
+
+    Takes value where translation is located as input
+   */
+  public getTranslation(translation: string): string {
+    return this.$t(translation).toString();
+  }
 }

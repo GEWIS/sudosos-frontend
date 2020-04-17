@@ -21,26 +21,6 @@
         <b-table stacked="sm" small borderless thead-class="table-header table-header-5"
                  :items="advertisementList" :fields="fields" :per-page="perPage"
                  :current-page="currentPage" class="table-striped">
-          <template v-slot:head(thumbnail)="data">
-            <span v-if="data">{{ $t(`advertisementList.${data.label}`) }}</span>
-          </template>
-
-          <template v-slot:head(duration)="data">
-            <span v-if="data">{{ $t(`advertisementList.${data.label}`) }}</span>
-          </template>
-
-          <template v-slot:head(active)="data">
-            <span v-if="data">{{ $t(`advertisementList.${data.label}`) }}</span>
-          </template>
-
-          <template v-slot:head(added)="data">
-            <span v-if="data">{{ $t(`advertisementList.${data.label}`) }}</span>
-          </template>
-
-          <template v-slot:head(id)="data">
-            <span v-if="data">{{ $t(`advertisementList.${data.label}`) }}</span>
-          </template>
-
           <template v-slot:cell(active)="data">
             <font-awesome-icon v-if="data.value" icon="check-circle"></font-awesome-icon>
           </template>
@@ -217,24 +197,24 @@ export default class AdvertisementsList extends Formatters {
     fields: Object[] = [
       {
         key: 'thumbnail',
-        label: 'Thumbnail',
+        label: this.getTranslation('advertisementList.Thumbnail'),
       },
       {
         key: 'duration',
-        label: 'Duration (ms)',
+        label: this.getTranslation('advertisementList.Duration (ms)'),
       },
       {
         key: 'active',
-        label: 'Active',
+        label: this.getTranslation('advertisementList.Active'),
       },
       {
         key: 'added',
-        label: 'Added on',
+        label: this.getTranslation('advertisementList.Added on'),
         formatter: (value: Date) => this.formatDateTime(value, undefined, true),
       },
       {
         key: 'id',
-        label: 'Edit',
+        label: this.getTranslation('advertisementList.Edit'),
       },
     ];
 

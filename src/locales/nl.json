@@ -127,7 +127,10 @@
     "Activity": "Activiteit",
     "Products": "Producten",
     "Cancel": "Cancel",
-    "Flag transaction": "Markeer transactie"
+    "Flag transaction": "Markeer transactie",
+    "flag reason": "Geef een reden waarom de transactie gemarkeerd moet worden",
+    "reason placeholder": "Geef een reden",
+    "flag invalid": "Geef een reden op"
   },
   "profile": {
     "My profile": "Mijn profiel",
