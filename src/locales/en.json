@@ -43,6 +43,19 @@
   "flagged": {
     "Flagged transactions": "Flagged transactions"
   },
+  "flaggedDetails": {
+    "Flagged transaction": "Flagged transaction",
+    "Transaction details": "Transaction details",
+    "Flag details": "Flag details",
+    "status": "Status",
+    "flagged on": "Flagged on",
+    "flagged by": "Flagged by",
+    "reason": "Reason",
+    "comment placeholder": "Provide a comment if needed",
+    "reject": "Reject",
+    "accept auto": "Accept (fix automatically)",
+    "accept manual": "Accept (fix manual)"
+  },
   "manageProducts": {
     "Manage products": "Manage products"
   },
@@ -120,17 +133,19 @@
   },
   "transactionDetailsModal": {
     "transaction details": "transaction details",
-    "Total": "Total",
-    "Point of sale": "Point of sale",
-    "Put in by": "Put in by",
-    "Put in for": "Put in for",
-    "Activity": "Activity",
-    "Products": "Products",
     "Cancel": "Cancel",
     "Flag transaction": "Flag transaction",
     "flag reason": "Please provide a reason for flagging the transaction",
     "reason placeholder": "Provide a reason",
     "flag invalid": "Please provide a reason"
+  },
+  "transactionDetails": {
+    "Total": "Total",
+    "Point of sale": "Point of sale",
+    "Put in by": "Put in by",
+    "Put in for": "Put in for",
+    "Activity": "Activity",
+    "Products": "Products"
   },
   "profile": {
     "My profile": "My profile",
