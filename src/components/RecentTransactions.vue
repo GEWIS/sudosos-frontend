@@ -28,8 +28,6 @@ import Formatters from '@/mixins/Formatters';
 
 @Component
 export default class RecentTransactions extends Formatters {
-  @Prop({ type: Object as () => User }) private user!: User;
-
   transactionList: Transaction[] = [];
 
   fields: Object[] = [
@@ -45,7 +43,7 @@ export default class RecentTransactions extends Formatters {
   ];
 
   beforeMount() {
-    this.transactionList = fakeTransactions.fetchTransactions(this.user);
+    this.transactionList = fakeTransactions.fetchTransactions({} as User);
   }
 }
 

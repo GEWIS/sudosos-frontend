@@ -38,7 +38,15 @@
     "Point of sale overview": "Verkooppunt overzicht"
   },
   "posRequest": {
-    "Point of Sale request": "Aanvraag verkooppunt"
+    "Request:": "Aanvraag:",
+    "Approve": "Goedkeuren",
+    "Reject": "Afkeuren",
+    "General": "Algemeen",
+    "Title": "Titel",
+    "Management": "Beheer",
+    "Owner": "Eigenaar",
+    "Managers": "Beheerders",
+    "Containers": "Containers"
   },
   "flagged": {
     "Flagged transactions": "Gemarkeerde transacties"

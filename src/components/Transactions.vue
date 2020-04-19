@@ -103,12 +103,7 @@ import Formatters from '@/mixins/Formatters';
 export default class TransactionsComponent extends Formatters {
     @Prop({ type: Object as () => User }) private user!: User;
 
-    userAccount: User = {
-      id: '001',
-      firstName: 'Ruben',
-      lastName: 'Brinkman',
-      saldo: 38.00,
-    } as User;
+    userAccount = this.$root.$data.currentUser;
 
     modalTrans: Transaction = {} as Transaction;
 

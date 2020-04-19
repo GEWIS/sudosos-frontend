@@ -134,10 +134,12 @@ export default class Profile extends Vue {
       // Otherwise, it is the blur event, and we just need to stop the editing
       if (event) {
         if (event.key === 'Enter') {
+          // eslint-disable-next-line
           device.editing = false;
           // TODO: Send new data to backend
         }
       } else {
+        // eslint-disable-next-line
         device.editing = false;
         // TODO: Send new data to backend
       }
