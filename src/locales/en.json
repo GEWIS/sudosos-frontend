@@ -29,7 +29,9 @@
     "Point of sale overview": "Point of sale overview"
   },
   "posRequest": {
-    "Point of Sale request": "Point of Sale request"
+    "Request:": "Request:",
+    "Approve": "Approve",
+    "Reject": "Reject"
   },
   "flagged": {
     "Flagged transactions": "Flagged transactions"
