@@ -7,6 +7,7 @@ import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fort
 import {
   faCoffee,
   faChild,
+  faCheck,
   faCircle,
   faArchive,
   faCheckCircle,
@@ -37,6 +38,7 @@ library.add(
   faCoffee,
   faChild,
   faCircle,
+  faCheck,
   faArchive,
   faCheckCircle,
   faPencilAlt,

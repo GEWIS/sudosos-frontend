@@ -2,134 +2,21 @@
   <div>
     <b-card>
       <b-card-title class="title-form">
-        <b-form-row>
-          <b-col xl="3" sm="6" cols="12" class="mb-2 mb-xl-0">
-            <b-form-group
-              id="from"
-              :label="$t('transactionsComponent.from')"
-              label-cols="3"
-            >
-              <b-form-datepicker
-                id="from-date"
-                v-model="fromDate"
-                locale="en-NL"
-                :right="right"
-                no-flip
-                :date-format-options="{year: 'numeric', month: 'long', day: 'numeric'}"
-              ></b-form-datepicker>
-            </b-form-group>
-          </b-col>
-          <b-col xl="3" sm="6" cols="12" class="mb-2 mb-xl-0">
-            <b-form-group
-              id="to"
-              :label="$t('transactionsComponent.to')"
-              label-cols-sm="2"
-              label-cols="3"
-            >
-              <b-form-datepicker
-                id="to-date"
-                v-model="toDate"
-                locale="en-NL"
-                :right="right"
-                no-flip
-                :date-format-options="{year: 'numeric', month: 'long', day: 'numeric'}"
-              ></b-form-datepicker>
-            </b-form-group>
-          </b-col>
 
-          <b-col xl="6" lg="7" md="6" cols="12" class="my-lg-auto mb-2">
-            <b-form-row class="justify-content-between px-2">
-              <b-form-group
-                id="self-bought"
-                label-cols="0"
-                class="mt-xl-0 mb-xl-3 my-lg-auto"
-              >
-                <b-form-checkbox
-                  id="self-bought-input"
-                  name="self-bought-input"
-                  v-model="selfBought"
-                  :value="true"
-                  :unchecked-value="false"
-                >
-                  {{ $t('transactionsComponent.Self Bought') }}
-                </b-form-checkbox>
-              </b-form-group>
-              <b-form-group
-                id="put-in-by-you"
-                label-cols="0"
-                class="mt-xl-0 mb-xl-3 my-lg-auto"
-              >
-                <b-form-checkbox
-                  id="put-in-by-you-input"
-                  name="put-in-by-you-input"
-                  v-model="putInByYou"
-                  :value="true"
-                  :unchecked-value="false"
-                >
-                  {{ $t('transactionsComponent.Put in for others') }}
-                </b-form-checkbox>
-              </b-form-group>
-              <b-form-group
-                id="put-in-for-you"
-                label-cols="0"
-                class="mt-xl-0 mb-xl-3 my-lg-auto"
-              >
-                <b-form-checkbox
-                  id="put-in-for-you-input"
-                  name="put-in-for-you-input"
-                  v-model="putInForYou"
-                  :value="true"
-                  :unchecked-value="false"
-                >
-                  {{ $t('transactionsComponent.Put in for you') }}
-                </b-form-checkbox>
-              </b-form-group>
-            </b-form-row>
-          </b-col>
-          <b-col xl="12" lg="5" md="6" cols="12" class="mb-2 mb-lg-0">
-            <b-form-row class="flex-row-reverse">
-              <div class="button">
-            <b-button
-              variant="secondary"
-              id="add"
-              v-on:click="downloadCSV"
-            >
-              <font-awesome-icon icon="file-export"></font-awesome-icon>
-              {{ $t('transactionsComponent.Export to CSV') }}
-            </b-button>
-              </div>
-              <div class="mr-0 mr-sm-2 mt-2 mt-sm-0 button">
-            <b-button
-              variant="primary"
-              id="reset"
-              v-on:click="resetFilters"
-            >
-              <font-awesome-icon icon="times-circle"></font-awesome-icon>
-              {{ $t('transactionsComponent.Reset filter') }}
-            </b-button>
-              </div>
-            </b-form-row>
-          </b-col>
-        </b-form-row>
+        <TransactionTableFilter
+          v-model="filterValues"
+          v-on:csv="downloadCSV"
+        ></TransactionTableFilter>
 
       </b-card-title>
       <b-card-body>
+
+        <!-- Table that will display the transactions -->
         <b-table stacked="sm" small borderless thead-class="table-header table-header-3"
                  :items="transactionList" :fields="fields" :tbody-tr-class="setRowClass"
                  :per-page="perPage" :current-page="currentPage" id="transaction-table"
-                 :filter="filterWay" :filter-function="filterRows">
-          <template v-slot:head(formattedDate)="data">
-            <span v-if="data">{{ $t(`transactionsComponent.${data.label}`) }}</span>
-          </template>
-
-          <template v-slot:head(comment)="data">
-            <span v-if="data">{{ $t(`transactionsComponent.${data.label}`) }}</span>
-          </template>
-
-          <template v-slot:head(info)="data">
-            <span v-if="data">{{ $t(`transactionsComponent.${data.label}`) }}</span>
-          </template>
-
+                 :filter="filterValues.filterWay" :filter-function="filterRows">
+          <!-- Templates for each row cell -->
           <template v-slot:cell(formattedDate)="data">
             <!-- Check if this is a date row, if not make it clickable -->
             <div v-if="/\d{2}-\d{2}-\d{4}.\(\w*\)/.test(data.item.id)">
@@ -166,8 +53,8 @@
         </b-table>
       </b-card-body>
     </b-card>
-    <b-card-footer class="d-flex">
-      <p v-if="totalRows > perPage" class="my-auto h-100">
+    <b-card-footer v-if="totalRows > perPage" class="d-flex">
+      <p class="my-auto h-100">
         {{ $t('transactionsComponent.Page') }}:
       </p>
       <b-pagination
@@ -181,124 +68,39 @@
         hide-goto-end-buttons
         last-number
         @change="pageClicked"
-        v-if="totalRows > perPage"
         aria-controls="transaction-table"
         class="custom-pagination mb-0"
       ></b-pagination>
     </b-card-footer>
 
-    <b-modal
-      id="details-modal"
-      :title="$t('transactionsComponent.transaction details')"
-      hide-header-close
-      centered
-      size="lg"
-      v-if="Object.entries(modalTrans).length !== 0"
+    <TransactionDetailsModal
+      v-if="Object.keys(modalTrans).length > 0"
+      :transaction="modalTrans"
     >
-      <p>
-        {{ `${formatDateTime(modalTrans.createdAt, true)} - ${modalTrans.formattedDate}` }}
-      </p>
+    </TransactionDetailsModal>
 
-      <b-row>
-        <b-col cols="6" sm="4">
-          <p>{{ $t('transactionsComponent.Total') }}</p>
-        </b-col>
-        <b-col cols="6" sm="8" class="text-right text-sm-left">
-          <p>{{ dinero({amount: modalTrans.totalPrice}).toFormat() }}</p>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col cols="6" sm="4">
-          <p>{{ $t('transactionsComponent.Point of sale') }}</p>
-        </b-col>
-        <b-col cols="6" sm="8" class="text-right text-sm-left">
-          <p>{{ modalTrans.pointOfSale }}</p>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col cols="6" sm="4">
-          <p>{{ $t('transactionsComponent.Put in by') }}</p>
-        </b-col>
-        <b-col cols="6" sm="8" class="text-right text-sm-left">
-          <p>{{ modalTrans.authorized }}</p>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col cols="6" sm="4">
-          <p>{{ $t('transactionsComponent.Put in for') }}</p>
-        </b-col>
-        <b-col cols="6" sm="8" class="text-right text-sm-left">
-          <p>{{ modalTrans.soldToId }}</p>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col cols="6" sm="4">
-          <p>{{ $t('transactionsComponent.Activity') }}</p>
-        </b-col>
-        <b-col cols="6" sm="8" class="text-right text-sm-left">
-          <p>{{ modalTrans.activityId }}</p>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col cols="12" sm="4">
-          <p>{{ $t('transactionsComponent.Products') }}</p>
-        </b-col>
-        <b-col cols="12" sm="8" class="total-price">
-          <b-row v-for="trans in modalTrans.subTransactions"
-                 v-bind:key="trans.productId"
-                 >
-            <b-col cols="5" sm="6">
-              <p class="text-truncate">{{ `${trans.amount} x ${trans.productId}` }}</p>
-            </b-col>
-            <b-col cols="7" sm="6" class="text-right">
-              <p>
-                {{ `( ${dinero({amount: trans.pricePerProduct}).toFormat()} ) ` +
-                `= ${ dinero({amount: trans.pricePerProduct}).multiply(trans.amount).toFormat()}` }}
-              </p>
-            </b-col>
-          </b-row>
-          <hr>
-          <b-row>
-            <b-col cols="12" class="text-right">
-              <p>
-                <i class="mr-1">{{ $t('transactionsComponent.Total') }} </i>
-                {{ dinero({amount: modalTrans.totalPrice}).toFormat() }}</p>
-            </b-col>
-          </b-row>
-        </b-col>
-      </b-row>
-
-      <template v-slot:modal-footer="{ ok, cancel }">
-        <b-button
-          variant="primary"
-          id="confirm-cancel"
-          @click="cancel()"
-        >{{ $t('transactionsComponent.Cancel') }}
-        </b-button>
-        <b-button
-          variant="primary"
-          class="btn-empty"
-          @click="ok()"
-        >{{ $t('transactionsComponent.Flag transaction') }}
-        </b-button>
-      </template>
-
-    </b-modal>
   </div>
 </template>
 
 <script lang="ts">
 import {
-  Component, Prop, Vue, Watch,
+  Component, Prop, Watch,
 } from 'vue-property-decorator';
-import dinero, { Dinero } from 'dinero.js';
+import TransactionDetailsModal from '@/components/TransactionDetailsModal.vue';
+import TransactionTableFilter from '@/components/TransactionTableFilter.vue';
 import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
 import fakeTransactions from '@/assets/transactions';
+import Formatters from '@/mixins/Formatters';
 
 
-  @Component
-export default class TransactionsComponent extends Vue {
+  @Component({
+    components: {
+      TransactionDetailsModal,
+      TransactionTableFilter,
+    },
+  })
+export default class TransactionsComponent extends Formatters {
     @Prop({ type: Object as () => User }) private user!: User;
 
     userAccount = this.$root.$data.currentUser;
@@ -309,27 +111,22 @@ export default class TransactionsComponent extends Vue {
 
     filteredTransactions: Transaction[] = [];
 
-    fromDate: String = '';
-
-    toDate: String = '';
-
-    filterWay: String | null = null;
-
-    selfBought: Boolean = false;
-
-    putInByYou: Boolean = false;
-
-    putInForYou: Boolean = false;
-
-    right: boolean = false;
-
     perPage: number = 12;
 
     currentPage: number = 1;
 
     previousPage: number = 1;
 
-    weekDays : string[] = [];
+    totalRows: number = 0;
+
+    filterValues: any = {
+      selfBought: false,
+      putInByYou: false,
+      putInForYou: false,
+      filterWay: null,
+      fromDate: '',
+      toDate: '',
+    };
 
     /*
       Fields that should be shown from the transactionList
@@ -337,15 +134,15 @@ export default class TransactionsComponent extends Vue {
     fields: Object[] = [
       {
         key: 'formattedDate',
-        label: 'When',
+        label: this.getTranslation('transactionsComponent.When'),
       },
       {
         key: 'comment',
-        label: 'What',
+        label: this.getTranslation('transactionsComponent.What'),
       },
       {
         key: 'id',
-        label: 'Info',
+        label: this.getTranslation('transactionsComponent.Info'),
       },
     ];
 
@@ -354,40 +151,11 @@ export default class TransactionsComponent extends Vue {
     }
 
     /*
-      Mounted currently makes sure that the date drowdowns are located correctly
-    */
-    mounted() {
-      this.checkRight();
-
-      window.addEventListener('resize', () => {
-        this.checkRight();
-      });
-
-      this.$root.$on('bv::dropdown::show', (bvEvent: any) => {
-        this.checkRight();
-      });
-    }
-
-    /*
-      Sets the dropdown location of date pickers according to screen width to make sure they fit
-    */
-    checkRight() : void {
-      const ms : boolean = window.innerWidth < 700 && window.innerWidth >= 576;
-      const sm : boolean = window.innerWidth < 440;
-      this.right = ms || sm;
-    }
-
-    /*
       Puts the currently selected transaction into the modal
     */
     selectTransaction(data: Transaction) : void {
       this.modalTrans = data;
     }
-
-    /*
-      Function to make dinero usable in the template
-    */
-    dinero: Function = dinero;
 
     /*
       setRowClass gives a date row a date-row class and a transaction row a transaction-row class
@@ -407,37 +175,33 @@ export default class TransactionsComponent extends Vue {
     };
 
     /*
-      Simple method that resets all filters to their base state
-    */
-    resetFilters() : void {
-      this.selfBought = false;
-      this.putInByYou = false;
-      this.putInForYou = false;
-      this.filterWay = null;
-      this.fromDate = '';
-      this.toDate = '';
-    }
-
-    /*
       Method that takes the current data rows and outputs a downloadable csv file
     */
     downloadCSV() : void {
       let csv = '';
       let downloadSet : Transaction[];
+
+      // Check if a filter has been applied, if yes use the filtered set otherwise first take out
+      // all the dateRow rows since those are simply there to make things look pretty.
       if (this.filteredTransactions.length > 0) {
         downloadSet = this.filteredTransactions;
       } else {
         downloadSet = this.transactionList.filter(t => !this.checkFormattedDate(t.formattedDate || ''));
       }
 
+      // Put all the keys into the csv
       csv += `${Object.keys(downloadSet[0]).join(',')}\r\n`;
 
+      // Put all the transactions into the csv
       downloadSet.forEach((transaction) => {
         csv += `${Object.values(transaction).join(',')}\r\n`;
       });
 
+      // Create the actual csv file
       const csvFile = new Blob([csv], { type: 'text/csv' });
 
+      // Create a shadow element on the page that lets the user download the CSV, after delete
+      // the shadow element.
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(csvFile);
       link.style.display = 'none';
@@ -460,17 +224,17 @@ export default class TransactionsComponent extends Vue {
       const auth = data.authorized.toString().split(' ').filter(item => item !== '');
 
       // First check if there is a date constraint
-      if (this.fromDate === '' || this.toDate === '') {
+      if (this.filterValues.fromDate === '' || this.filterValues.toDate === '') {
         date = true;
       } else {
-        const dateFrom = new Date(`${this.fromDate} 00:00:00`);
-        const dateTo = new Date(`${this.toDate} 23:59:59`);
+        const dateFrom = new Date(`${this.filterValues.fromDate} 00:00:00`);
+        const dateTo = new Date(`${this.filterValues.toDate} 23:59:59`);
 
         date = data.createdAt >= dateFrom && data.createdAt <= dateTo;
       }
 
       // Check if there is a selfBought constraint and take date into account
-      if (this.selfBought) {
+      if (this.filterValues.selfBought) {
         let matchFound = false;
 
         sold.forEach((person, i) => {
@@ -483,7 +247,7 @@ export default class TransactionsComponent extends Vue {
       }
 
       // Check if there is a putInByYou constraint and take date into account
-      if (this.putInByYou) {
+      if (this.filterValues.putInByYou) {
         let matchFound = false;
 
         auth.forEach((person, i) => {
@@ -496,7 +260,7 @@ export default class TransactionsComponent extends Vue {
       }
 
       // Check if there is a putInForYou constraint and take date into account
-      if (this.putInForYou) {
+      if (this.filterValues.putInForYou) {
         let matchFound = false;
 
         auth.forEach((person, i) => {
@@ -508,12 +272,17 @@ export default class TransactionsComponent extends Vue {
         putInFor = matchFound && date;
       }
 
-      // Check if either both selfBought or putInByYou are true or either one of them.
-      if (this.selfBought || this.putInByYou || this.putInForYou) {
+      // Check if either selfBought, putInByYou or putInForYou are true
+      if (this.filterValues.selfBought
+        || this.filterValues.putInByYou
+        || this.filterValues.putInForYou) {
         if ((self || putInBy || putInFor)
           && !this.checkFormattedDate(data.formattedDate || '')
           && !this.filteredTransactions.includes(data)) {
           this.filteredTransactions.push(data);
+          this.totalRows += 1;
+        } else if (this.checkFormattedDate(data.formattedDate || '')) {
+          this.totalRows += 1;
         }
 
         return self || putInBy || putInFor;
@@ -535,13 +304,16 @@ export default class TransactionsComponent extends Vue {
       let dateTransactions: Transaction[] = [];
       let dateRowTransaction: Transaction = {} as Transaction;
       t.forEach((transaction) => {
+        // Create formatted date and time for each transaction
         const fDate = this.formatDateTime(transaction.createdAt, true);
-        const result: String = dates.find(d => d === fDate) || '';
-        const time = this.formatDateTime(transaction.createdAt, false);
+        const time = this.formatDateTime(transaction.createdAt);
 
-        if (!result) {
+        // If formatted date has not been used yet make a date row
+        if (!dates.find(d => d === fDate) || '') {
           dates.push(fDate);
 
+          // If this is the second date row we found push the first one and add the transactions
+          // that occured on that date
           if (dates.length > 1) {
             transactions.push(dateRowTransaction);
             transactions = transactions.concat(dateTransactions);
@@ -563,6 +335,9 @@ export default class TransactionsComponent extends Vue {
           } as Transaction;
         }
 
+        // Add all the needed information to the dateRow transaction from the transactions beneath
+        // it. This makes sure the filter function can correctly keep the dateRows in the
+        // transaction table
         const trans: Transaction = transaction;
         trans.formattedDate = time;
         dateRowTransaction.soldToId = `${dateRowTransaction.soldToId} ${transaction.soldToId}`;
@@ -572,6 +347,7 @@ export default class TransactionsComponent extends Vue {
         dateTransactions.push(trans);
       });
 
+      // Push the last dateRow transaction and transactions that accompany it
       if (dateRowTransaction.activityId !== '') {
         transactions.push(dateRowTransaction);
         transactions = transactions.concat(dateTransactions);
@@ -579,27 +355,6 @@ export default class TransactionsComponent extends Vue {
 
       return transactions;
     };
-
-    formatDateTime(date: Date, full: Boolean) : string {
-      const weekDays: String[] = [
-        this.$t('transactionsComponent.Monday').toString(),
-        this.$t('transactionsComponent.Tuesday').toString(),
-        this.$t('transactionsComponent.Wednesday').toString(),
-        this.$t('transactionsComponent.Thursday').toString(),
-        this.$t('transactionsComponent.Friday').toString(),
-        this.$t('transactionsComponent.Saturday').toString(),
-        this.$t('transactionsComponent.Sunday').toString(),
-      ];
-
-      if (full) {
-        return `${this.parseTime(date.getDate())}-`
-          + `${this.parseTime(date.getMonth() + 1)}-`
-          + `${date.getFullYear()} (${weekDays[date.getDay()]})`;
-      }
-
-      return `${this.parseTime(date.getHours())}:`
-        + `${this.parseTime(date.getMinutes())}`;
-    }
 
     /*
       Method that grabs extra transactions when 2 pages or less are left
@@ -612,61 +367,44 @@ export default class TransactionsComponent extends Vue {
       this.previousPage = page;
     }
 
-    checkFormattedDate = (date : String) : boolean => {
-      // Regular expression that will match 00-00-0000 (word) to find transaction rows that are
-      // date rows.
-      const re = /\d{2}-\d{2}-\d{4}.\(\w*\)/;
+    // /*
+    //   Returns the total number of transactions that are currently present
+    //  */
+    // get totalRows() {
+    //   if (this.filteredTransactions.length > 0) {
+    //     return this.filteredTransactions.length;
+    //   }
+    //   return this.transactionList.length;
+    // }
 
-      return re.test(date.toString());
-    };
-
-    /*
-      Parses times such that each value has a padded 0 if < 10
-     */
-    parseTime = (value: number): string => (value < 10 ? '0' : '') + value;
+    // Reports if string is 00-00-0000 (word) format
+    checkFormattedDate = (date : String) : boolean => /\d{2}-\d{2}-\d{4}.\(\w*\)/.test(date.toString());
 
     /*
       Does everything that needs to be done when the filter changes
     */
     filterChange(data: string) : void {
       this.filteredTransactions = [];
-      this.filterWay = data;
+      this.filterValues.filterWay = data;
       this.currentPage = 1;
     }
 
-    /*
-      Returns the total number of transactions that are currently present
-     */
-    get totalRows() {
-      if (this.filteredTransactions.length > 0) {
-        return this.filteredTransactions.length;
+    @Watch('filterValues', { deep: true })
+    onFilterValuesChange(value: any, old: any) {
+      this.filterChange(value.filterWay);
+
+      // To make sure that when the filter resets the pagination shows correctly
+      if (value.filterWay === null) {
+        this.totalRows = this.transactionList.length;
+      } else {
+        this.totalRows = 0;
       }
-      return this.transactionList.length;
     }
 
-    @Watch('fromDate')
-    onFromDateChanged(value: Date, old: Date): void {
-      this.filterChange(value.toString());
-    }
-
-    @Watch('toDate')
-    onToDateChanged(value: Date, old: Date): void {
-      this.filterChange(value.toString());
-    }
-
-    @Watch('selfBought')
-    onSelfBoughtChanged(value: Boolean, old: Boolean): void {
-      this.filterChange(value.toString());
-    }
-
-    @Watch('putInByYou')
-    onPutInByYouChanged(value: Boolean, old: Boolean): void {
-      this.filterChange(value.toString());
-    }
-
-    @Watch('putInForYou')
-    onPutInForYouChanged(value: Boolean, old: Boolean) : void {
-      this.filterChange(value.toString());
+    // Watcher to update the amount or rows present when new transactions are added
+    @Watch('transactionList')
+    onTransactionListChange(value: Transaction[], old: Transaction[]) {
+      this.totalRows = value.length;
     }
 }
 </script>
@@ -693,53 +431,9 @@ export default class TransactionsComponent extends Vue {
     margin: 0 1rem;
   }
 
-  .modal-body {
-    .row p {
-      font-size: 0.85rem;
-      margin-bottom: 0.25rem;
-    }
-
-    .total-price > div:nth-last-of-type(2) {
-      div:last-of-type > p {
-        margin-right: -11px;
-      }
-
-      div:last-of-type > p::after {
-        content: ' +'
-      }
-    }
-
-    hr {
-      margin: .25rem 0;
-      border-color: black;
-    }
-  }
-
-  .card-title {
-    margin-bottom: 1rem;
-
-    > .form-row {
-      color: black;
-    }
-  }
-
-  @include media-breakpoint-down(lg) {
-    .form-group {
-      margin-bottom: 0.5rem;
-    }
-  }
-
   @include media-breakpoint-down(xs) {
     .icon {
       margin: 0;
-    }
-
-    .button {
-      width: 100%;
-    }
-
-    .form-group {
-      margin-bottom: 0;
     }
   }
 </style>

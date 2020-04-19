@@ -13,7 +13,6 @@
 </template>
 
 <script lang="ts">
-// @ is an alias to /src
 import { Component, Vue } from 'vue-property-decorator';
 import { User } from '@/entities/User';
 import RecentTransactions from '@/components/RecentTransactions.vue';
@@ -26,12 +25,6 @@ import CurrentSaldo from '@/components/CurrentSaldo.vue';
   })
 
 export default class Home extends Vue {
-    public dismissSecs: number = 10;
-
-    public dismissCountDown: number = 0;
-
-    public showDismissibleAlert: boolean = false;
-
     public user: User = {
       id: '8549',
       firstName: 'Pieter',
