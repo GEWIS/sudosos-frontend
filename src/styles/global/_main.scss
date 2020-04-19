@@ -37,11 +37,12 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
     background-color: $text-primary;
 }
 
-.btn.btn-primary:focus {
+.btn.btn-primary:focus,
+.btn.btn-primary:active:focus {
     background-color: $gewis-red;
     border-color: $gewis-red;
     color: $text-primary;
-    box-shadow: 0 0 0 0.2rem $gewis-red-shadow;
+    box-shadow: 0 0 0 0.2rem $gewis-red-shadow !important;
 }
 
 .btn.btn-primary:active {
@@ -62,11 +63,12 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
     background-color: $text-primary;
 }
 
-.btn.btn-secondary:focus {
+.btn.btn-secondary:focus,
+.btn.btn-secondary:active:focus {
     background-color: $gewis-grey;
     border-color: $gewis-grey;
     color: $text-primary;
-    box-shadow: 0 0 0 0.2rem $gewis-grey-shadow;
+    box-shadow: 0 0 0 0.2rem $gewis-grey-shadow !important;
 }
 
 .btn.btn-secondary:active {
@@ -170,14 +172,58 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
 }
 
 /*
- Global styles to change models
+ Global style for pagination
+ */
+.custom-pagination {
+    .nextButton,
+    .prevButton,
+    .pageButton{
+        > .page-link {
+            color: gray;
+            border: none;
+            background-color: #f2f2f2;
+        }
+    }
+
+    .page-item {
+        .page-link:focus {
+            box-shadow: none;
+        }
+    }
+
+    li:nth-of-type(2).page-item.pageButton:not(.active) {
+        display: none;
+    }
+
+    .pageButton {
+        button::after {
+            content: '/';
+            padding-left: 0.35rem;
+        }
+    }
+
+    li.pageButton:nth-last-of-type(2) {
+        button::after {
+            content: '';
+            padding-left: 0;
+        }
+    }
+
+    .pageButton {
+        .page-link {
+            padding: 0.5rem 0.20rem;
+        }
+    }
+}
+
+/*
+ Global styles to change modals
  */
 
 .modal {
     .modal-content {
         border-radius: 0;
         border: none;
-        min-height: 300px;
 
         > *,
         > div {
@@ -209,11 +255,14 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
     }
 
     button {
-        background-color: white !important;
-        color: $gewis-grey !important;
-        border: none !important;
-        padding: .375rem 0.5rem !important;
         text-transform: uppercase;
+    }
+
+    button.btn-empty {
+        background-color: white;
+        color: $gewis-grey;
+        border: none;
+        padding: .375rem 0.5rem;
     }
 
     input::-webkit-outer-spin-button,

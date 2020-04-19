@@ -97,7 +97,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import { User } from '@/entities/User';
 import { PointOfSale } from '@/entities/PointOfSale';
 
@@ -108,6 +108,7 @@ function fetchMyPoints(user: User) : PointOfSale[] {
     name: 'posName',
     id: 'myID',
     ownerId: 'myOwnerID',
+    storages: [],
     createdAt: new Date(),
     updatedAt: new Date(),
   } as PointOfSale,
@@ -115,6 +116,7 @@ function fetchMyPoints(user: User) : PointOfSale[] {
     name: 'posName2',
     id: 'myID',
     ownerId: 'myOwnerID',
+    storages: [],
     createdAt: new Date(),
     updatedAt: new Date(),
   } as PointOfSale,
@@ -122,35 +124,7 @@ function fetchMyPoints(user: User) : PointOfSale[] {
     name: 'posName3',
     id: 'myID',
     ownerId: 'myOwnerID',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  } as PointOfSale,
-  ] as PointOfSale[];
-
-  return points;
-}
-
-// Points of sale to display in Requested points of sale
-function fetchRequestedPoints(user: User) : PointOfSale[] {
-  // testing points
-  const points = [{
-    name: 'posName',
-    id: 'requestedID',
-    ownerId: 'requestedOwnerID',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  } as PointOfSale,
-  {
-    name: 'posName2',
-    id: 'requestedID',
-    ownerId: 'requestedOwnerID',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  } as PointOfSale,
-  {
-    name: 'posName3',
-    id: 'requestedID',
-    ownerId: 'requestedOwnerID',
+    storages: [],
     createdAt: new Date(),
     updatedAt: new Date(),
   } as PointOfSale,
@@ -161,9 +135,6 @@ function fetchRequestedPoints(user: User) : PointOfSale[] {
 
 @Component
 export default class POSOverview extends Vue {
-  // passed user prop
-  @Prop({ type: Object as () => User }) private user!: User;
-
   // used to display users points of sale
   myPoints: PointOfSale[] = [];
 
@@ -171,8 +142,8 @@ export default class POSOverview extends Vue {
   requestedPoints: PointOfSale[] = [];
 
   beforeMount() {
-    this.myPoints = fetchMyPoints(this.user);
-    this.requestedPoints = fetchRequestedPoints(this.user);
+    this.myPoints = fetchMyPoints({} as User);
+    this.requestedPoints = fetchMyPoints({} as User);
   }
 }
 </script>

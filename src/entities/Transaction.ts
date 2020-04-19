@@ -5,6 +5,7 @@ export interface Transaction {
     soldToId: String;
     authorized: String;
     totalPrice: Number;
+    pointOfSale: String;
     activityId: String;
     subTransactions: SubTransaction[]
     comment: String;
