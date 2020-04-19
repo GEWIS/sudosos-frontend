@@ -204,7 +204,7 @@ export default class TransactionFlagsComponent extends Vue {
 
   beforeMount() {
     this.transactionFlagList = this.formatTransactionFlags(
-      fakeTransactionFlags.fetchTransactionFlags(this.user),
+      fakeTransactionFlags.fetchTransactionFlags({} as User),
     );
   }
 
