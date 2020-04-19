@@ -5,7 +5,7 @@ export interface Product {
     name: String;
     ownerId: String;
     price: Number;
-    picture: ImageBitmap;
+    picture: String;
     traySize: Number;
     category: String;
     isAlcoholic: Boolean;
