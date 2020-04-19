@@ -5,7 +5,9 @@
       <b-input-group class="my-auto" @click.stop="() => {}">
         <b-form-checkbox :id="'checkbox_' + container.id" class="checkbox"
           v-model="checkBoxValue" :disabled="!enabled"/>
-          <span>{{ container.name }} </span>
+          <span v-on:click="isOpen = !isOpen" v-b-toggle="'container_' + container.id">
+            {{ container.name }}
+          </span>
           <span class="edit-button" v-show="canEdit && enabled">Edit ✎</span>
       </b-input-group>
 
@@ -77,6 +79,11 @@ export default class Container extends Vue {
 .em-title {
   color: $gewis-red;
   text-transform: uppercase;
+}
+
+.input-group {
+  flex-wrap: nowrap;
+  width: auto;
 }
 
 .container-block {
