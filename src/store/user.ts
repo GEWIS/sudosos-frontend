@@ -7,11 +7,11 @@ import { User } from '@/entities/User';
 class CurrentUser extends VuexModule implements User {
   id: String = '1';
 
-  firstName: String = 'Kut';
+  firstName: String = 'Ruben';
 
-  lastName: String = 'Sjaars';
+  lastName: String = 'Brinkman';
 
-  saldo: Number = 42.69;
+  saldo: Number = 3838;
 
   organs: String[] = ['1', '4', '8'];
 

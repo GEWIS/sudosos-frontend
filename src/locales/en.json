@@ -40,7 +40,13 @@
   "posRequest": {
     "Request:": "Request:",
     "Approve": "Approve",
-    "Reject": "Reject"
+    "Reject": "Reject",
+    "General": "General",
+    "Title": "Title",
+    "Management": "Management",
+    "Owner": "Owner",
+    "Managers": "Owners",
+    "Containers": "Containers"
   },
   "flagged": {
     "Flagged transactions": "Flagged transactions"

@@ -1,18 +1,24 @@
 <template>
   <b-container fluid="lg">
     <b-row>
-      <b-col md="8" sm="12">
-        <h1 class="mb-2 mb-sm-2 mb-lg-2">
+      <b-col lg="8" cols="12">
+        <h1 class="mb-2 mb-sm-2 mb-lg-2 text-truncate">
           {{ $t('posRequest.Request:') }} {{ requestedPOS.name }}
         </h1>
       </b-col>
-      <b-col class="approve-reject-buttons" md="4" sm="12">
-        <b-button variant="success">✅ {{ $t('posRequest.Approve')}}</b-button>
-        <b-button variant="danger">❌ {{ $t('posRequest.Reject')}}</b-button>
+      <b-col class="approve-reject-buttons" lg="4" cols="12">
+        <b-button variant="success">
+          <font-awesome-icon icon="check"></font-awesome-icon>
+          {{ $t('posRequest.Approve')}}
+        </b-button>
+        <b-button variant="danger">
+          <font-awesome-icon icon="times"></font-awesome-icon>
+          {{ $t('posRequest.Reject')}}
+        </b-button>
       </b-col>
     </b-row>
     <hr>
-    <b-row>
+    <b-row class="m-0">
       <b-col md="3" sm="12">
         <h3>{{ $t('posRequest.General') }}</h3>
         <b>{{ $t('posRequest.Title') }}</b>
@@ -150,10 +156,18 @@ export default class PointOfSaleRequest extends Vue {
 </script>
 
 <style lang="scss" scoped>
-  .approve-reject-buttons{
-    button {
+  .approve-reject-buttons {
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: right;
+
+    button:first-of-type {
       margin-right: 8px;
+    }
+
+    button {
       min-width: 100px;
+      margin-bottom: 8px;
     }
   }
   .containers-container{
