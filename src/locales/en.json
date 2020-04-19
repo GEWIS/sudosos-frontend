@@ -82,6 +82,14 @@
   "managePOS": {
     "Manage points of sale": "Manage points of sale"
   },
+  "POSOverview": {
+    "my points of sale": "my points of sale",
+    "requested points of sale": "requested points of sale",
+    "processed": "Processed",
+    "ACCEPTED": "Accepted",
+    "OPEN": "Open",
+    "REJECTED": "Rejected"
+  },
   "advertisements": {
     "Advertisements": "Advertisements"
   },

@@ -47,7 +47,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import Container from '@/components/Container.vue';
 import { Storage } from '@/entities/Storage';
 import { Product } from '@/entities/Product';
-import { PointOfSale } from '@/entities/PointOfSale';
+import { PointOfSale, POSStatus } from '@/entities/PointOfSale';
 
   @Component({
     components: { Container },
@@ -137,6 +137,7 @@ export default class PointOfSaleRequest extends Vue {
     name: 'SudoSOS-tablet',
     id: '1',
     ownerId: '1',
+    status: POSStatus.ACCEPTED,
     storages: [this.bacFridge, this.outdoorCocktails],
     createdAt: new Date(),
     updatedAt: new Date(),
