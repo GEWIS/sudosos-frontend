@@ -144,15 +144,6 @@ import fakeTransactionFlags from '@/assets/transactionFlags';
 
 @Component
 export default class TransactionFlagsComponent extends Vue {
-  @Prop({ type: Object as () => User }) private user!: User;
-
-  userAccount: User = {
-    id: '001',
-    firstName: 'Ruben',
-    lastName: 'Brinkman',
-    saldo: 38.0,
-  } as User;
-
   transactionFlagList: TransactionFlag[] = [];
 
   filteredTransactionFlags: TransactionFlag[] = [];

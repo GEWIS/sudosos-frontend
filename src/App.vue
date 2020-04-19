@@ -41,7 +41,7 @@
             <b-dropdown-item to="/sign-out">{{ $t('app.Sign out') }}</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item to="/saldo" active-class="" exact-active-class="">
-            € {{ currentUser.balance }}
+            {{ dinero({amount: currentUser.saldo}).toFormat() }}
           </b-nav-item>
           <b-nav-item-dropdown right>
             <template v-slot:button-content>
@@ -76,16 +76,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-
+import { namespace } from 'vuex-class';
+import { User } from '@/entities/User';
 import './styles/Navbar.scss';
 import './styles/Footer.scss';
+import Formatters from '@/mixins/Formatters';
 
-export default class App extends Vue {
-  public currentUser: Object = {
-    balance: 15.00,
-    firstName: 'Rick',
-  };
+
+const user = namespace('user');
+
+export default class App extends Formatters {
+  public currentUser: User = this.$store.state.currentUser;
 }
 </script>
 

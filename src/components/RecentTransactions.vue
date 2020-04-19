@@ -7,13 +7,6 @@
       <b-card-body>
         <b-table stacked="sm" small borderless thead-class="table-header"
         :items="transactionList" :fields="fields">
-          <template v-slot:head(createdAt)="data">
-            <span v-if="data">{{ $t(`recentTrans.${data.label}`) }}</span>
-          </template>
-
-          <template v-slot:head(comment)="data">
-            <span v-if="data">{{ $t(`recentTrans.${data.label}`) }}</span>
-          </template>
         </b-table>
       </b-card-body>
     </b-card>
@@ -31,37 +24,26 @@ import { TranslateResult } from 'vue-i18n';
 import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
 import fakeTransactions from '@/assets/transactions';
+import Formatters from '@/mixins/Formatters';
 
 @Component
-export default class RecentTransactions extends Vue {
-  @Prop({ type: Object as () => User }) private user!: User;
-
+export default class RecentTransactions extends Formatters {
   transactionList: Transaction[] = [];
-
-  getTimeString = (value: Date) => `${RecentTransactions.parseTime(value.getDate())}-`
-                                    + `${RecentTransactions.parseTime(value.getMonth() + 1)}-`
-                                    + `${value.getFullYear()} - `
-                                    + `${RecentTransactions.parseTime(value.getHours())}:`
-                                    + `${RecentTransactions.parseTime(value.getMinutes())}`;
 
   fields: Object[] = [
     {
       key: 'createdAt',
-      label: 'when',
-      formatter: (value: Date) => this.getTimeString(value),
+      label: this.getTranslation('recentTrans.when'),
+      formatter: (value: Date) => this.formatDateTime(value, undefined, true),
     },
     {
       key: 'comment',
-      label: 'what',
+      label: this.getTranslation('recentTrans.what'),
     },
   ];
 
   beforeMount() {
-    this.transactionList = fakeTransactions.fetchTransactions(this.user);
-  }
-
-  static parseTime(value: number): string {
-    return (value < 10 ? '0' : '') + value;
+    this.transactionList = fakeTransactions.fetchTransactions({} as User);
   }
 }
 

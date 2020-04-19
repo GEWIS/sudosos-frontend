@@ -16,6 +16,15 @@
     "Netherlands": "Nederlands",
     "English": "English"
   },
+  "formatters": {
+    "Monday": "Monday",
+    "Tuesday": "Tuesday",
+    "Wednesday": "Wednesday",
+    "Thursday": "Thursday",
+    "Friday": "Friday",
+    "Saturday": "Saturday",
+    "Sunday": "Sunday"
+  },
   "home": {
     "Overview": "Overview"
   },
@@ -29,16 +38,46 @@
     "Point of sale overview": "Point of sale overview"
   },
   "posRequest": {
-    "Point of Sale request": "Point of Sale request"
+    "Request:": "Request:",
+    "Approve": "Approve",
+    "Reject": "Reject",
+    "General": "General",
+    "Title": "Title",
+    "Management": "Management",
+    "Owner": "Owner",
+    "Managers": "Owners",
+    "Containers": "Containers"
   },
   "flagged": {
     "Flagged transactions": "Flagged transactions"
+  },
+  "flaggedDetails": {
+    "Flagged transaction": "Flagged transaction",
+    "Transaction details": "Transaction details",
+    "Flag details": "Flag details",
+    "status": "Status",
+    "flagged on": "Flagged on",
+    "flagged by": "Flagged by",
+    "reason": "Reason",
+    "comment placeholder": "Provide a comment if needed",
+    "reject": "Reject",
+    "accept auto": "Accept (fix automatically)",
+    "accept manual": "Accept (fix manual)"
   },
   "manageProducts": {
     "Manage products": "Manage products"
   },
   "screens": {
-    "Screens": "TV Screens"
+    "Screens": "TV Screens",
+    "Ending time": "Ending time",
+    "Confirm end time": "Confirm end time",
+    "Stop social drink mode": "Stop social drink mode",
+    "currently": "Currently social drink mode is turned ",
+    "on": "on",
+    "off": "off",
+    "turn off": "Social drink mode will automatically be turned off at ",
+    "turn on": "You can turn on social drink mode by choosing a time above and clicking the button. The social drink mode will automatically be turned of at that time.",
+    "early": "You can either change the time above or turn off the social drink mode prematurely by clicking on \"Stop social drink mode\"."
   },
   "managePOS": {
     "Manage points of sale": "Manage points of sale"
@@ -53,8 +92,8 @@
   "recentTrans": {
     "recent transactions": "recent transactions",
     "all transactions": "all transactions",
-    "when": "when",
-    "what": "what"
+    "when": "When",
+    "what": "What"
   },
   "advertisementList" : {
     "Add": "Add",
@@ -64,15 +103,17 @@
     "Duration": "Duration",
     "Active": "Active",
     "Advertisement": "Advertisement",
-    "Choose image drop": "Choose image or drop here...",
-    "Drop file here...": "Drop file here...",
     "Confirm deletion": "Confirm deletion",
     "Please enter": "Please enter a valid number larger than 0",
     "Are you sure": "Are you sure you want to delete this advertisement?",
     "Thumbnail": "Thumbnail",
     "Duration (ms)": "Duration (ms)",
     "Added on": "Added on",
-    "id": "Edit"
+    "Edit": "Edit"
+  },
+  "fileFormPreview": {
+    "Choose image drop": "Choose image or drop here...",
+    "Drop file": "Drop file here..."
   },
   "confirmationModal": {
     "Cancel": "Cancel",
@@ -94,43 +135,45 @@
   },
   "transactionsComponent": {
     "from": "from",
+    "placeholder": "No date selected",
     "to": "to",
     "Self Bought": "Self Bought",
     "Put in for others": "Put in for others",
     "Put in for you": "Put in for you",
     "Export to CSV": "Export to CSV",
-    "Reset filter": "Reset filter",
+    "Reset filter": "Reset filter"
+  },
+  "transactionsComponent": {
     "When": "When",
     "What": "What",
     "Info": "Info",
     "Page": "Page",
+    "Transactions": "Transactions"
+  },
+  "transactionDetailsModal": {
     "transaction details": "transaction details",
+    "Cancel": "Cancel",
+    "Flag transaction": "Flag transaction",
+    "flag reason": "Please provide a reason for flagging the transaction",
+    "reason placeholder": "Provide a reason",
+    "flag invalid": "Please provide a reason"
+  },
+  "transactionDetails": {
     "Total": "Total",
     "Point of sale": "Point of sale",
     "Put in by": "Put in by",
     "Put in for": "Put in for",
     "Activity": "Activity",
-    "Products": "Products",
-    "Cancel": "Cancel",
-    "Flag transaction": "Flag transaction",
-    "Transactions": "Transactions",
-    "Monday": "Monday",
-    "Tuesday": "Tuesday",
-    "Wednesday": "Wednesday",
-    "Thursday": "Thursday",
-    "Friday": "Friday",
-    "Saturday": "Saturday",
-    "Sunday": "Sunday"
+    "Products": "Products"
   },
-  "tvScreens": {
-    "Ending time": "Ending time",
-    "Confirm end time": "Confirm end time",
-    "Stop social drink mode": "Stop social drink mode",
-    "currently": "Currently social drink mode is turned ",
-    "on": "on",
-    "off": "off",
-    "turn off": "Social drink mode will automatically be turned off at ",
-    "turn on": "You can turn on social drink mode by choosing a time above and clicking the button. The social drink mode will automatically be turned of at that time.",
-    "early": "You can either change the time above or turn off the social drink mode prematurely by clicking on \"Stop social drink mode\"."
+  "profile": {
+    "My profile": "My profile",
+    "Change pin": "Change pin code",
+    "Old pin code": "Old pin code",
+    "New pin code": "New pin code",
+    "Confirm new pin code": "Confirm new pin code",
+    "Manage NFC devices": "Manage NFC devices",
+    "Confirm deletion": "Confirm deletion",
+    "Are you sure": "Are you sure you want to remove this NFC device?"
   }
 }

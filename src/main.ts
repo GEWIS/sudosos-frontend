@@ -22,6 +22,7 @@ import {
   faGlobeEurope,
   faCheck,
   faQuestion,
+  faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import App from './App.vue';
 import router from './router';
@@ -50,6 +51,7 @@ library.add(
   faAngleUp,
   faAngleDown,
   faPenAlt,
+  faTrash,
   faGlobeEurope,
   faQuestion,
 );

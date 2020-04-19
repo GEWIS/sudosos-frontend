@@ -11,6 +11,7 @@ import Advertisements from '@/views/Admin/Advertisements.vue';
 import FlaggedTransactions from '@/views/BAC/FlaggedTransactions.vue';
 import ManageProducts from '@/views/BAC/ManageProducts.vue';
 import Profile from '@/views/User/Profile.vue';
+import FlaggedTransactionDetails from '@/views/BAC/FlaggedTransactionDetails.vue';
 
 Vue.use(VueRouter);
 
@@ -59,6 +60,12 @@ const routes = [
     path: '/flagged-transactions',
     name: 'flaggedTransactions',
     component: FlaggedTransactions,
+  },
+  {
+    path: '/flagged-transaction/:id',
+    name: 'flaggedTransactionDetails',
+    component: FlaggedTransactionDetails,
+    props: true,
   },
   {
     path: '/manage-products',

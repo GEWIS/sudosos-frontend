@@ -16,6 +16,15 @@
     "Netherlands": "Nederlands",
     "English": "English"
   },
+  "formatters": {
+    "Monday": "Maandag",
+    "Tuesday": "Dinsdag",
+    "Wednesday": "Woensdag",
+    "Thursday": "Donderdag",
+    "Friday": "Vrijdag",
+    "Saturday": "Zaterdag",
+    "Sunday": "Zondag"
+  },
   "home": {
     "Overview": "Overzicht"
   },
@@ -29,16 +38,46 @@
     "Point of sale overview": "Verkooppunt overzicht"
   },
   "posRequest": {
-    "Point of Sale request": "Aanvraag verkooppunt"
+    "Request:": "Aanvraag:",
+    "Approve": "Goedkeuren",
+    "Reject": "Afkeuren",
+    "General": "Algemeen",
+    "Title": "Titel",
+    "Management": "Beheer",
+    "Owner": "Eigenaar",
+    "Managers": "Beheerders",
+    "Containers": "Containers"
   },
   "flagged": {
     "Flagged transactions": "Gemarkeerde transacties"
+  },
+  "flaggedDetails": {
+    "Flagged transaction": "Germarkeerde transactie",
+    "Transaction details": "Transactie details",
+    "Flag details": "Details van markering",
+    "status": "Status",
+    "flagged on": "Gemarkeerd op",
+    "flagged by": "Gemarkeerd door",
+    "reason": "Reden",
+    "comment placeholder": "Geef een reden als nodig",
+    "reject": "Afwijzen",
+    "accept auto": "Accept (automagisch oplossen)",
+    "accept manual": "Accept (handmatig oplossen)"
   },
   "manageProducts": {
     "Manage products": "Productbeheer"
   },
   "screens": {
-    "Screens": "TV Schermen"
+    "Screens": "TV Schermen",
+    "Ending time": "Eind tijd",
+    "Confirm end time": "Bevestig eind tijd",
+    "Stop social drink mode": "Stop borrel modus",
+    "currently": "Borrel modus staat op dit moment ",
+    "on": "aan",
+    "off": "uit",
+    "turn off": "Borrel modus wordt automagisch uitgezet op ",
+    "turn on": "Je kunt borrel modus aanzetten door bovenin een tijd te kiezen. Op deze tijd wordt borrel modus weer uitgeschakeld.",
+    "early": "Je kunt de tijd bovenin veranderen of borrel modus vroegtijdig beëindigen door op \"Borrel modus uitschakelen\" te klikken."
   },
   "managePOS": {
     "Manage points of sale": "Beheer verkooppunten"
@@ -53,8 +92,8 @@
   "recentTrans": {
     "recent transactions": "recente transacties",
     "all transactions": "alle transacties",
-    "when": "wanneer",
-    "what": "wat"
+    "when": "Wanneer",
+    "what": "Wat"
   },
   "advertisementList" : {
     "Add": "Toevoegen",
@@ -64,22 +103,24 @@
     "Duration": "Duur",
     "Active": "Actief",
     "Advertisement": "Advertentie",
-    "Choose image drop": "Kies een plaatje of zet neer...",
-    "Drop file here...": "Zet bestand neer...",
     "Confirm deletion": "Bevestig verwijderen",
     "Please enter": "Voer een nummer in dat groter dan 0 is",
     "Are you sure": "Weet je zeker dat je deze advertentie wil verwijderen?",
     "Thumbnail": "Thumbnail",
     "Duration (ms)": "Duur (ms)",
     "Added on": "Toegevoegd op",
-    "id": "Bewerk"
+    "Edit": "Bewerk"
+  },
+  "fileFormPreview": {
+    "Choose image drop": "Kies een plaatje of zet neer...",
+    "Drop file": "Zet bestand neer..."
   },
   "confirmationModal": {
     "Cancel": "Cancel",
     "Confirm": "Bevestig"
   },
   "containersOverview": {
-    "Containers": "Containers"
+    "Containers": "Opslag"
   },
   "flaggedComponent": {
     "When": "Wanneer",
@@ -95,43 +136,45 @@
   },
   "transactionsComponent": {
     "from": "van",
+    "placeholder": "Selecteer een datum",
     "to": "tot",
     "Self Bought": "Zelf gekocht",
     "Put in for others": "Voor anderen afgestreept",
     "Put in for you": "Voor jou afgestreept",
     "Export to CSV": "Exporteren naar CSV",
-    "Reset filter": "Herstel filter",
+    "Reset filter": "Herstel filter"
+  },
+  "transactionsComponent": {
     "When": "Wanneer",
     "What": "Wat",
     "Info": "Info",
     "Page": "Pagina",
+    "Transactions": "Transacties"
+  },
+  "transactionDetailsModal": {
     "transaction details": "transactie details",
+    "Cancel": "Cancel",
+    "Flag transaction": "Markeer transactie",
+    "flag reason": "Geef een reden waarom de transactie gemarkeerd moet worden",
+    "reason placeholder": "Geef een reden",
+    "flag invalid": "Geef een reden op"
+  },
+  "transactionDetails": {
     "Total": "Totaal",
     "Point of sale": "Verkooppunt",
     "Put in by": "Afgestreept door",
     "Put in for": "Afgestreept voor",
     "Activity": "Activiteit",
-    "Products": "Producten",
-    "Cancel": "Cancel",
-    "Flag transaction": "Markeer transactie",
-    "Transactions": "Transacties",
-    "Monday": "Maandag",
-    "Tuesday": "Dinsdag",
-    "Wednesday": "Woensdag",
-    "Thursday": "Donderdag",
-    "Friday": "Vrijdag",
-    "Saturday": "Zaterdag",
-    "Sunday": "Zondag"
+    "Products": "Producten"
   },
-  "tvScreens": {
-    "Ending time": "Eind tijd",
-    "Confirm end time": "Bevestig eind tijd",
-    "Stop social drink mode": "Stop borrel modus",
-    "currently": "Borrel modus staat op dit moment ",
-    "on": "aan",
-    "off": "uit",
-    "turn off": "Borrel modus wordt automagisch uitgezet op ",
-    "turn on": "Je kunt borrel modus aanzetten door bovenin een tijd te kiezen. Op deze tijd wordt borrel modus weer uitgeschakeld.",
-    "early": "Je kunt de tijd bovenin veranderen of borrel modus vroegtijdig beëindigen door op \"Borrel modus uitschakelen\" te klikken."
+  "profile": {
+    "My profile": "Mijn profiel",
+    "Change pin code": "Verander pincode",
+    "Old pin code": "Oude pincode",
+    "New pin code": "Nieuwe pincode",
+    "Confirm new pin code": "Bevestig nieuwe pincode",
+    "Manage NFC devices": "Beheer NFC tokens",
+    "Confirm deletion": "Bevestig verwijderen",
+    "Are you sure": "Weet je zeker dat je deze NFC token wil verwijderen?"
   }
 }

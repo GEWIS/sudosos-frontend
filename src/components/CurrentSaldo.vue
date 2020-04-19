@@ -6,7 +6,7 @@
       </b-card-title>
       <b-card-body>
         <p id="saldo-text" class="lead">
-          €{{ user.saldo.toFixed(2).toString().replace(".", ",") }}
+          {{ dinero({amount: currentUser.saldo}).toFormat() }}
         </p>
       </b-card-body>
     </b-card>
@@ -17,12 +17,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 import { User } from '@/entities/User';
+import Formatters from '@/mixins/Formatters';
 
 @Component
-export default class CurrentSaldo extends Vue {
-  @Prop({ type: Object as () => User }) private user!: User;
+export default class CurrentSaldo extends Formatters {
+  public currentUser: User = this.$store.state.currentUser;
 }
 </script>
 
