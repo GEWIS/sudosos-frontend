@@ -2,8 +2,8 @@
   <div class="container-block">
     <div class="container-head px-3 d-flex">
       <b-input-group class="w-auto my-auto">
-        <b-form-checkbox :id="'cb_' + container.con_id" class="cb">
-          {{ container.con_id }}
+        <b-form-checkbox :id="'cb_' + container.id" class="cb">
+          {{ container.id }}
           <font-awesome-icon icon="pencil-alt" v-show="container.editable"
                              class="ml-1" size="sm">
           </font-awesome-icon>
@@ -31,7 +31,7 @@
     <!-- The container itself -->
     <b-collapse :id="container.con_id" class="mt-1">
         <b-row class="mx-0">
-          <b-col v-for="item in items"
+          <b-col v-for="item in container.items"
                  :key="item.id"
                  class="text-center product-card px-2"
                  cols="6" sm="4" md="3" lg="2">
@@ -45,25 +45,24 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      isOpen: false,
-      items: [
-        { id: 1, name: 'beugel', img: '../assets/img/beugel.png' },
-        { id: 2, name: 'radler (laf!)', img: '../assets/img/beugel.png' },
-        { id: 3, name: 'cola', img: '../assets/img/beugel.png' },
-        { id: 4, name: 'ijsthee', img: '../assets/img/beugel.png' },
-        { id: 5, name: 'beugel', img: '../assets/img/beugel.png' },
-        { id: 6, name: 'radler (laf!)', img: '../assets/img/beugel.png' },
-        { id: 7, name: 'cola', img: '../assets/img/beugel.png' },
-        { id: 8, name: 'ijsthee', img: '../assets/img/beugel.png' },
-      ],
-    };
-  },
-  props: ['container'],
-};
+<script lang="ts">
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Product } from '@/entities/Product';
+import { Storage } from '@/entities/Storage';
+@Component({})
+export default class Container extends Vue {
+  @Prop()
+  container: Storage | undefined;
+
+  isOpen: Boolean = false;
+
+  get editable() {
+    if (this.container) {
+      return this.$store.state.currentUser.organs.includes(this.container.ownerId);
+    }
+    return false;
+  }
+}
 </script>
 
 <style scoped lang="scss">

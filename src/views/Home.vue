@@ -37,6 +37,7 @@ export default class Home extends Vue {
       firstName: 'Pieter',
       lastName: 'Ebbers',
       saldo: 12,
+      organs: [],
     };
 }
 </script>
