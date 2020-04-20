@@ -2,57 +2,9 @@
   <div>
     <b-card>
       <b-card-title class="title-form">
-        <b-form-row>
-          <b-col xl="3" sm="6" cols="12" class="mb-2 mb-xl-0">
-            <b-form-group id="from" :label="$t('flaggedComponent.from')" label-cols="3">
-              <b-form-datepicker
-                id="from-date"
-                v-model="fromDate"
-                locale="en-NL"
-                :right="right"
-                no-flip
-                :date-format-options="{year: 'numeric', month: 'long', day: 'numeric'}"
-              ></b-form-datepicker>
-            </b-form-group>
-          </b-col>
-          <b-col xl="3" sm="6" cols="12" class="mb-2 mb-xl-0">
-            <b-form-group
-              id="to"
-              :label="$t('flaggedComponent.to')"
-              label-cols-sm="2"
-              label-cols="3"
-            >
-              <b-form-datepicker
-                id="to-date"
-                v-model="toDate"
-                locale="en-NL"
-                :right="right"
-                no-flip
-                :date-format-options="{year: 'numeric', month: 'long', day: 'numeric'}"
-              ></b-form-datepicker>
-            </b-form-group>
-          </b-col>
-
-          <b-col xl="6" lg="7" md="6" cols="12" class="my-lg-auto mb-2">
-            <b-form-row class="justify-content-between px-2">
-              <b-form-group id="self-bought" label-cols="0" class="mt-xl-0 mb-xl-3 my-lg-auto">
-                <b-form-checkbox
-                  id="hide-handled-input"
-                  name="hide-handled-input"
-                  v-model="hideHandled"
-                  :value="true"
-                  :unchecked-value="false"
-                >{{ $t('flaggedComponent.Hide handled') }}</b-form-checkbox>
-              </b-form-group>
-              <div class="mr-0 mr-sm-2 mt-2 mt-sm-0 button">
-                <b-button variant="primary" id="reset" v-on:click="resetFilters">
-                  <font-awesome-icon icon="times-circle" class="mr-2" />
-                  {{ $t('flaggedComponent.Reset filter')}}
-                </b-button>
-              </div>
-            </b-form-row>
-          </b-col>
-        </b-form-row>
+        <TransactionFlagTableFilter
+          v-model="filterValues"
+        ></TransactionFlagTableFilter>
       </b-card-title>
       <b-card-body>
         <b-table
@@ -62,22 +14,23 @@
           thead-class="table-header"
           :items="transactionFlagList"
           :fields="fields"
-          :tbody-tr-class="setRowClass"
+          tbody-tr-class="transaction-flag-row"
           :per-page="perPage" :current-page="currentPage"
-          :filter="filterWay"
+          id="transaction-flag-table"
+          :filter="filterValues.filterWay"
           :filter-function="filterRows"
         >
           <template v-slot:head(formattedDate)="data">
-            <span v-if="data">{{ $t(`flaggedComponent.${data.label}`) }}</span>
+            <span v-if="data">{{ data.label }}</span>
           </template>
           <template v-slot:head(flaggedById)="data">
-            <span v-if="data">{{ $t(`flaggedComponent.${data.label}`) }}</span>
+            <span v-if="data">{{ data.label }}</span>
           </template>
           <template v-slot:head(status)="data">
-            <span v-if="data">{{ $t(`flaggedComponent.${data.label}`) }}</span>
+            <span v-if="data">{{ data.label }}</span>
           </template>
           <template v-slot:head(reason)="data">
-            <span v-if="data">{{ $t(`flaggedComponent.${data.label}`) }}</span>
+            <span v-if="data">{{ data.label }}</span>
           </template>
           <template v-slot:head(id)>
             <span/>
@@ -101,8 +54,8 @@
             <div class="cell-reason" />
             {{ data.item.reason }}
           </template>
-          <template v-slot:cell(id)>
-            <a class="cell-link" href="#">
+          <template v-slot:cell(id)="data">
+            <a class="cell-link" :href="`/flagged-transactions/flag/${data.item.id}`">
               <font-awesome-icon icon="info-circle" class="icon-grey" />
             </a>
           </template>
@@ -110,12 +63,12 @@
       </b-card-body>
     </b-card>
     <b-card-footer class="d-flex">
-      <p v-if="totalRows > perPage" class="my-auto h-100">
-        {{ $t('flaggedComponent.Page') }}:
+      <p class="my-auto h-100">
+        {{ $t('transactionFlagsComponent.Page') }}:
       </p>
       <b-pagination
         v-model="currentPage"
-        :total-rows="totalRows"
+        :total-rows="totalRowCount"
         :per-page="perPage"
         limit="1"
         next-class="nextButton"
@@ -124,7 +77,6 @@
         hide-goto-end-buttons
         last-number
         @change="pageClicked"
-        v-if="totalRows > perPage"
         aria-controls="transaction-table"
         class="custom-pagination mb-0"
       ></b-pagination>
@@ -136,35 +88,41 @@
 import {
   Component, Prop, Vue, Watch,
 } from 'vue-property-decorator';
-import dinero, { Dinero } from 'dinero.js';
+import TransactionFlagTableFilter from '@/components/TransactionFlagTableFilter.vue';
 import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
 import { TransactionFlag, FlagStatus } from '@/entities/TransactionFlag';
 import fakeTransactionFlags from '@/assets/transactionFlags';
+import Formatters from '@/mixins/Formatters';
 
-@Component
-export default class TransactionFlagsComponent extends Vue {
+@Component({
+  components: {
+    TransactionFlagTableFilter,
+  },
+})
+export default class TransactionFlagsComponent extends Formatters {
+  @Prop({ type: Object as () => User }) private user!: User;
+
+  userAccount = this.$root.$data.currentUser;
+
   transactionFlagList: TransactionFlag[] = [];
 
   filteredTransactionFlags: TransactionFlag[] = [];
 
-  fromDate: String = '';
-
-  toDate: String = '';
-
-  filterWay: String | null = null;
-
-  hideHandled: Boolean = false;
-
-  right: boolean = false;
-
-  perPage: number = 4;
+  perPage: number = 9;
 
   currentPage: number = 1;
 
   previousPage: number = 1;
 
-  weekDays : string[] = [];
+  totalRows = new Set<String>();
+
+  filterValues: any = {
+    hideHandled: false,
+    filterWay: null,
+    fromDate: '',
+    toDate: '',
+  };
 
   /*
     Fields that should be shown from the transactionFlagList
@@ -172,31 +130,31 @@ export default class TransactionFlagsComponent extends Vue {
   fields: Object[] = [
     {
       key: 'formattedDate',
-      label: 'When',
+      label: this.getTranslation('transactionFlagsComponent.When'),
       tdClass: 'clickable',
       tdAttr: this.tableCellAttr,
     },
     {
       key: 'flaggedById',
-      label: 'Who',
+      label: this.getTranslation('transactionFlagsComponent.Who'),
       tdClass: 'clickable',
       tdAttr: this.tableCellAttr,
     },
     {
       key: 'status',
-      label: 'Status',
+      label: this.getTranslation('transactionFlagsComponent.Status'),
       tdClass: 'clickable',
       tdAttr: this.tableCellAttr,
     },
     {
       key: 'reason',
-      label: 'Reason',
+      label: this.getTranslation('transactionFlagsComponent.Reason'),
       tdClass: 'cell-reason clickable',
       tdAttr: this.tableCellAttr,
     },
     {
       key: 'id',
-      label: 'Info',
+      label: this.getTranslation('transactionFlagsComponent.Info'),
       tdClass: 'clickable',
       tdAttr: this.tableCellAttr,
     },
@@ -204,42 +162,15 @@ export default class TransactionFlagsComponent extends Vue {
 
   beforeMount() {
     this.transactionFlagList = this.formatTransactionFlags(
-      fakeTransactionFlags.fetchTransactionFlags({} as User),
+      fakeTransactionFlags.fetchTransactionFlags(this.user),
     );
-  }
-
-  /*
-    Function to make dinero usable in the template
-  */
-  dinero: Function = dinero;
-
-  /*
-    setRowClass gives a date row a date-row class and a transaction-flag
-    row a transaction-flag-row class
-
-    @param item : The transaction that makes up this row
-    @param type : The type of field this is (should be a row)
-    */
-  // eslint-disable-next-line class-methods-use-this
-  setRowClass(item: TransactionFlag, type: string): String {
-    return 'transaction-flag-row';
-  }
-
-  /*
-    Simple method that resets all filters to their base state
-  */
-  resetFilters(): void {
-    this.hideHandled = false;
-    this.filterWay = null;
-    this.fromDate = '';
-    this.toDate = '';
   }
 
   // eslint-disable-next-line class-methods-use-this
   tableCellAttr(value: any, key: string, item: TransactionFlag) {
     if (key !== 'id') {
       return {
-        onclick: `history.pushState({},'','/flagged-transactions/flag/${item.id}')`,
+        onclick: `window.location = '/flagged-transactions/flag/${item.id}'`,
       };
     }
     return {};
@@ -249,24 +180,32 @@ export default class TransactionFlagsComponent extends Vue {
     Filters the rows based time constraints and user selected options
   */
   filterRows(data: TransactionFlag, prop: String): boolean {
+    let other = true;
     let date: boolean;
 
     // First check if there is a date constraint
-    if (this.fromDate === '' || this.toDate === '') {
+    if (this.filterValues.fromDate === '' || this.filterValues.toDate === '') {
       date = true;
     } else {
-      const dateFrom = new Date(`${this.fromDate} 00:00:00`);
-      const dateTo = new Date(`${this.toDate} 23:59:59`);
+      const dateFrom = new Date(`${this.filterValues.fromDate} 00:00:00`);
+      const dateTo = new Date(`${this.filterValues.toDate} 23:59:59`);
 
       date = data.createdAt >= dateFrom && data.createdAt <= dateTo;
     }
 
-    // Check if there is a selfBought constraint and take date into account
-    if (this.hideHandled) {
-      return data.status === FlagStatus.TODO && date;
+    // Check if there is a hideHandled constraint
+    if (this.filterValues.hideHandled) {
+      if (data.status !== FlagStatus.TODO) {
+        other = false;
+      }
     }
 
-    return date;
+    if (date && other) {
+      this.totalRows.add(data.id);
+    }
+
+    console.log(this.totalRows.size);
+    return date && other;
   }
 
   /*
@@ -291,7 +230,7 @@ export default class TransactionFlagsComponent extends Vue {
       Method that grabs extra transactions when 2 pages or less are left
     */
   pageClicked(page: number) : void {
-    if (this.previousPage < page && page >= (Math.ceil(this.totalRows / this.perPage) - 2)) {
+    if (this.previousPage < page && page >= (Math.ceil(this.totalRows.size / this.perPage) - 2)) {
       // TODO: Grab new data
     }
 
@@ -302,29 +241,42 @@ export default class TransactionFlagsComponent extends Vue {
     return (value < 10 ? '0' : '') + value;
   }
 
+  // Reports if string is 00-00-0000 (word) format
+  checkFormattedDate = (date : String) : boolean => /\d{2}-\d{2}-\d{4}.\(\w*\)/.test(date.toString());
+
   /*
-    Paging not correct yet!
-  */
-  get totalRows() {
-    if (this.filteredTransactionFlags.length > 0) {
-      return this.filteredTransactionFlags.length;
+    Returns the total number of transactions that are currently present
+   */
+  get totalRowCount() {
+    console.log('get', this.totalRows.size);
+    return this.totalRows.size;
+  }
+
+  /*
+      Does everything that needs to be done when the filter changes
+    */
+  filterChange(data: string) : void {
+    this.filteredTransactionFlags = [];
+    this.filterValues.filterWay = data;
+    this.currentPage = 1;
+  }
+
+  @Watch('filterValues', { deep: true })
+  onFilterValuesChange(value: any, old: any) {
+    this.filterChange(value.filterWay);
+
+    // To make sure that when the filter resets the pagination shows correctly
+    if (value.filterWay === null) {
+      this.totalRows = new Set(this.transactionFlagList.map(f => f.id));
+    } else {
+      this.totalRows = new Set();
     }
-    return this.transactionFlagList.length;
   }
 
-  @Watch('fromDate')
-  onFromDateChanged(value: Date, old: Date): void {
-    this.filterWay = value.toString();
-  }
-
-  @Watch('toDate')
-  onToDateChanged(value: Date, old: Date): void {
-    this.filterWay = value.toString();
-  }
-
-  @Watch('hideHandled')
-  onSelfBoughtChanged(value: Boolean, old: Boolean): void {
-    this.filterWay = value.toString();
+  // Watcher to update the amount or rows present when new transactions are added
+  @Watch('transactionFlagList')
+  onTransactionFlagListChange(value: TransactionFlag[], old: TransactionFlag[]) {
+    this.totalRows = new Set(value.map(f => f.id));
   }
 }
 </script>
@@ -339,16 +291,14 @@ tr.transaction-flag-row:hover {
 }
 
 .cell-reason {
-  max-width: 0;
-  width: 50%;
-
   div,
   a {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
   }
 }
+
 </style>
 
 <style lang="scss" scoped>

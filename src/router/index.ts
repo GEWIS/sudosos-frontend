@@ -62,7 +62,7 @@ const routes = [
     component: FlaggedTransactions,
   },
   {
-    path: '/flagged-transaction/:id',
+    path: '/flagged-transactions/flag/:id',
     name: 'flaggedTransactionDetails',
     component: FlaggedTransactionDetails,
     props: true,
