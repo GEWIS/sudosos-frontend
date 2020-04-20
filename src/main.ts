@@ -23,6 +23,8 @@ import {
   faAngleDown,
   faPenAlt,
   faGlobeEurope,
+  faCheck,
+  faQuestion,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import App from './App.vue';
@@ -57,6 +59,7 @@ library.add(
   faPenAlt,
   faTrash,
   faGlobeEurope,
+  faQuestion,
 );
 
 // Default settings for Dinero

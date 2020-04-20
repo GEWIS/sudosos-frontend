@@ -166,7 +166,7 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
         }
     }
 
-    .transaction-row+.transaction-row {
+    .transaction-row+.transaction-row, .transaction-flag-row+.transaction-flag-row {
         border-top: 1px solid #cccccc;
     }
 }
@@ -321,6 +321,18 @@ h1 {
             }
         }
 
+        .cell-reason {
+            max-width: 0;
+            width: 50%;
+
+            div,
+            a {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+        }
+
         // Style for transaction table that will make sure specific rows have different colors
         .date-row {
             td {
@@ -336,7 +348,7 @@ h1 {
             }
         }
 
-        .transaction-row {
+        .transaction-row, .transaction-flag-row {
             border-top: none;
 
             > td:first-child {
@@ -345,7 +357,7 @@ h1 {
             }
         }
 
-        .transaction-row+.transaction-row {
+        .transaction-row+.transaction-row, .transaction-flag-row+.transaction-flag-row {
             border-top: none;
         }
     }

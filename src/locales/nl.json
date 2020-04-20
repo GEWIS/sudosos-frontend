@@ -142,6 +142,21 @@
   "containersOverview": {
     "Containers": "Opslag"
   },
+  "transactionFlagTableFilter": {
+    "from": "van",
+    "placeholder": "Selecteer een datum",
+    "to": "tot",
+    "Hide handled": "Verberg afgehandeld",
+    "Reset filter": "Herstel filter"
+  },
+  "transactionFlagsComponent": {
+    "When": "Wanneer",
+    "Who": "Wie",
+    "Status": "Status",
+    "Reason": "Reden",
+    "Info": "Info",
+    "Page": "Pagina"
+  },
   "transactionTableFilter": {
     "from": "van",
     "placeholder": "Selecteer een datum",

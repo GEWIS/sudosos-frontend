@@ -142,7 +142,21 @@
   "containersOverview": {
     "Containers": "Containers"
   },
-  "transactionTableFilter" : {
+  "transactionFlagTableFilter": {
+    "from": "from",
+    "placeholder": "No date selected",
+    "to": "to",
+    "Hide handled": "Hide handled",
+    "Reset filter": "Reset filter"
+  },
+  "transactionFlagsComponent": {
+    "When": "When",
+    "Who": "Who",
+    "Status": "Status",
+    "Reason": "Reason",
+    "Page": "Page"
+  },
+  "transactionTableFilter": {
     "from": "from",
     "placeholder": "No date selected",
     "to": "to",
