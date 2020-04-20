@@ -3,9 +3,10 @@
     "Transactions": "Transacties",
     "Saldo": "Saldo",
     "Points of Sale": "Verkooppunten",
-    "Overview": "Overzicht",
+    "Overview": "Overzicht POS",
     "Request": "Aanvraag",
-    "Admin": "Admin",
+    "Admin": "Beheer",
+    "Manage POS": "Beheer POS",
     "Screens": "TV Schermen",
     "Advertisements": "Advertenties",
     "BAC": "BAC",
@@ -34,7 +35,7 @@
   "saldo": {
     "Saldo": "Saldo"
   },
-  "posOverview": {
+  "pointOfSaleOverview": {
     "Point of sale overview": "Verkooppunt overzicht"
   },
   "posRequest": {
@@ -88,7 +89,8 @@
     "processed": "Behandeld",
     "ACCEPTED": "Geaccepteerd",
     "OPEN": "Open",
-    "REJECTED": "Afgewezen"
+    "REJECTED": "Afgewezen",
+    "Page": "Pagina"
   },
   "advertisements": {
     "Advertisements": "Advertenties"
