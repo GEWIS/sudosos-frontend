@@ -7,14 +7,16 @@ import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fort
 import {
   faCoffee,
   faChild,
-  faCheck,
   faCircle,
   faArchive,
   faCheckCircle,
   faPencilAlt,
   faTimes,
   faPlus,
+  faCheck,
   faInfoCircle,
+  faChevronLeft,
+  faChevronRight,
   faTimesCircle,
   faFileExport,
   faAngleUp,
@@ -26,7 +28,7 @@ import {
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import languages from '@/locales/index';
+import languages from './locales/index';
 
 // Import bootstrap js
 import 'bootstrap';
@@ -44,7 +46,10 @@ library.add(
   faPencilAlt,
   faTimes,
   faPlus,
+  faCheck,
   faInfoCircle,
+  faChevronLeft,
+  faChevronRight,
   faTimesCircle,
   faFileExport,
   faAngleUp,

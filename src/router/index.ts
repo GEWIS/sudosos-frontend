@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import Home from '@/views/Home.vue';
 import Saldo from '@/views/Saldo.vue';
 import Transactions from '@/views/Transactions.vue';
-import PointOfSale from '@/views/PointOfSale/PointOfSale.vue';
+import PointOfSaleOverview from '@/views/PointOfSale/PointOfSaleOverview.vue';
 import PointOfSaleRequest from '@/views/PointOfSale/PointOfSaleRequest.vue';
 import ManagePointOfSale from '@/views/Admin/ManagePointOfSale.vue';
 import Screens from '@/views/Admin/Screens.vue';
@@ -27,9 +27,9 @@ const routes = [
     component: Transactions,
   },
   {
-    path: '/point-of-sale',
+    path: '/point-of-sale-overview',
     name: 'pointOfSale',
-    component: PointOfSale,
+    component: PointOfSaleOverview,
   },
   {
     path: '/point-of-sale-request',

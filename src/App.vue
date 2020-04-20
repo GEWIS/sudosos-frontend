@@ -14,15 +14,16 @@
           <b-nav-item to="/transactions">{{ $t('app.Transactions') }}</b-nav-item>
           <b-nav-item to="/saldo">{{ $t('app.Saldo') }}</b-nav-item>
           <b-nav-item-dropdown :text="$t('app.Points of Sale')">
-            <b-dropdown-item to="/point-of-sale">{{ $t('app.Overview') }}</b-dropdown-item>
+            <b-dropdown-item to="/point-of-sale-overview">{{ $t('app.Overview') }}</b-dropdown-item>
             <b-dropdown-item to="/point-of-sale-request">{{ $t('app.Request') }}</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown :text="$t('app.Admin')">
-            <b-dropdown-item to="/manage-pos">{{ $t('app.Overview') }}</b-dropdown-item>
+            <b-dropdown-item to="/manage-pos">{{ $t('app.Manage POS') }}</b-dropdown-item>
             <b-dropdown-item to="/screens">{{ $t('app.Screens') }}</b-dropdown-item>
             <b-dropdown-item to="/advertisements">{{ $t('app.Advertisements') }}</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown :text="$t('app.BAC')">
+            <b-dropdown-item to="/manage-pos">{{ $t('app.Manage POS') }}</b-dropdown-item>
             <b-dropdown-item to="/flagged-transactions">
               {{ $t('app.Flagged transactions') }}
             </b-dropdown-item>

@@ -3,9 +3,10 @@
     "Transactions": "Transactions",
     "Saldo": "Saldo",
     "Points of Sale": "Points of Sale",
-    "Overview": "Overview",
+    "Overview": "POS Overview",
     "Request": "Request",
     "Admin": "Admin",
+    "Manage POS": "Manage POS",
     "Screens": "TV Screens",
     "Advertisements": "Advertisements",
     "BAC": "BAC",
@@ -34,7 +35,7 @@
   "saldo": {
     "Saldo": "Saldo"
   },
-  "posOverview": {
+  "pointOfSaleOverview": {
     "Point of sale overview": "Point of sale overview"
   },
   "posRequest": {
@@ -81,6 +82,15 @@
   },
   "managePOS": {
     "Manage points of sale": "Manage points of sale"
+  },
+  "POSOverview": {
+    "my points of sale": "My points of sale",
+    "requested points of sale": "Requested points of sale",
+    "processed": "Processed",
+    "ACCEPTED": "Accepted",
+    "OPEN": "Open",
+    "REJECTED": "Rejected",
+    "Page": "Page"
   },
   "advertisements": {
     "Advertisements": "Advertisements"
