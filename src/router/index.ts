@@ -4,6 +4,7 @@ import Home from '@/views/Home.vue';
 import Saldo from '@/views/Saldo.vue';
 import Transactions from '@/views/Transactions.vue';
 import PointOfSale from '@/views/PointOfSale/PointOfSale.vue';
+import PointOfSaleApprove from '@/views/PointOfSale/PointOfSaleApprove.vue';
 import PointOfSaleRequest from '@/views/PointOfSale/PointOfSaleRequest.vue';
 import ManagePointOfSale from '@/views/Admin/ManagePointOfSale.vue';
 import Screens from '@/views/Admin/Screens.vue';
@@ -30,6 +31,11 @@ const routes = [
     path: '/point-of-sale',
     name: 'pointOfSale',
     component: PointOfSale,
+  },
+  {
+    path: '/point-of-sale-approve',
+    name: 'pointOfSaleApprove',
+    component: PointOfSaleApprove,
   },
   {
     path: '/point-of-sale-request',
