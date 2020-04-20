@@ -4,7 +4,7 @@
            v-b-toggle="'container_' + container.id">
       <b-input-group class="my-auto" @click.stop="() => {}">
         <b-form-checkbox :id="'checkbox_' + container.id" class="checkbox"
-          v-model="checkBoxValue" :disabled="!enabled"/>
+          v-model="selected" :disabled="!enabled" @change="checkBoxChanged"/>
           <span v-on:click="isOpen = !isOpen" v-b-toggle="'container_' + container.id">
             {{ container.name }}
           </span>
@@ -60,12 +60,13 @@ export default class Container extends Vue {
 
   selected: Boolean = false;
 
-  get checkBoxValue() {
-    return this.selected || !this.enabled;
+  mounted() {
+    this.selected = !this.enabled || false;
   }
 
-  set checkBoxValue(newValue: Boolean) {
-    this.selected = newValue;
+  checkBoxChanged(event: any) {
+    const containerId = this.container ? this.container.id : '0';
+    this.$emit('toggled', { id: containerId, state: event });
   }
 
   get canEdit() {

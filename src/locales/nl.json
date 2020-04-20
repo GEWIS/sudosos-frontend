@@ -50,7 +50,8 @@
     "Request Point of Sale": "Aanvraag verkooppunt",
     "Request": "Vraag aan",
     "Please enter a name for this POS": "Voer alsjeblieft een naam in voor dit verkooppunt",
-    "Please select an owner for this POS": "Selecteer alsjeblieft een eigenaar voor dit verkooppunt"
+    "Please select an owner for this POS": "Selecteer alsjeblieft een eigenaar voor dit verkooppunt",
+    "Selected containers": "Geselecteerde containers"
   },
   "flagged": {
     "Flagged transactions": "Gemarkeerde transacties"

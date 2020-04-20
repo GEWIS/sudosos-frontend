@@ -10,20 +10,17 @@
       <b-col md="3" sm="12">
         <h3>{{ $t('posRequest.General') }}</h3>
         <b>{{ $t('posRequest.Title') }}</b>
-        <div>
-            <b-form-input type="text" v-model="requestedPOS.name" :state="validateTitle">
-            </b-form-input>
-        <b-form-invalid-feedback>
-            {{ $t('posRequest.Please enter a name for this POS')}}
-        </b-form-invalid-feedback></div>
+        <b-form-input type="text" v-model="requestedPOS.name"></b-form-input>
+        <b>{{ $t('posRequest.Selected containers')}}</b>
+        <ul>
+            <li v-for="storage in requestedPOS.storages" v-bind:key="storage.id">
+                {{ storage.name }}
+            </li>
+        </ul>
         <h3>{{ $t('posRequest.Management') }}</h3>
         <b>{{ $t('posRequest.Owner') }}</b>
-        <div><b-form-select v-model="requestedPOS.ownerId"
-            :options="availableOrgans" :state="validateOwner">
+        <b-form-select v-model="requestedPOS.ownerId" :options="availableOrgans">
         </b-form-select>
-        <b-form-invalid-feedback>
-            {{ $t('posRequest.Please select an owner for this POS')}}
-        </b-form-invalid-feedback></div>
         <b>{{ $t('posRequest.Managers') }}</b>
         <ul v-if="availableOrgans.find((organ) => organ.value === requestedPOS.ownerId)">
           <li v-for="member in
@@ -33,14 +30,14 @@
           </li>
         </ul><br>
         <b-button variant="success" @click="requestPOS"
-            :disabled="!(validateOwner && validateTitle)">
+            :disabled="requestButtonDisabled">
             {{ $t('posRequest.Request')}}
         </b-button>
       </b-col>
       <b-col md="9" sm="12" class="containers-container">
         <p class="containers-header">{{ $t('posRequest.Containers') }}</p>
         <Container v-for="storage in availableContainers" v-bind:key="storage.id"
-          :container="storage" :enabled="true"/>
+          :container="storage" :enabled="true" @toggled="containerToggled"/>
       </b-col>
     </b-row>
   </b-container>
@@ -166,12 +163,23 @@ export default class PointOfSaleRequest extends Vue {
     console.log(this.requestedPOS);
   }
 
-  get validateTitle() {
-    return this.requestedPOS.name.length > 0;
+  containerToggled(containerData: any) {
+    const updatedContainer = this.availableContainers
+      .find(storage => storage.id === containerData.id);
+
+    if (updatedContainer) {
+      if (containerData.state) {
+        this.requestedPOS.storages.push(updatedContainer);
+      } else {
+        // Using a filter to remove items from an object array
+        this.requestedPOS.storages = this.requestedPOS.storages
+          .filter(storage => storage.id !== updatedContainer.id);
+      }
+    }
   }
 
-  get validateOwner() {
-    return this.requestedPOS.ownerId !== '';
+  get requestButtonDisabled() {
+    return this.requestedPOS.name.length < 1 || this.requestedPOS.ownerId === '';
   }
 }
 </script>

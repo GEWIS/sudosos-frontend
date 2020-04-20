@@ -46,7 +46,12 @@
     "Management": "Management",
     "Owner": "Owner",
     "Managers": "Owners",
-    "Containers": "Containers"
+    "Containers": "Containers",
+    "Request Point of Sale": "Request Point of Sale",
+    "Request": "Request",
+    "Please enter a name for this POS": "Please enter a name for this POS",
+    "Please select an owner for this POS": "Please select an owner for this POS",
+    "Selected containers": "Selected containers"
   },
   "flagged": {
     "Flagged transactions": "Flagged transactions"
