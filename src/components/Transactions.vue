@@ -101,9 +101,7 @@ import Formatters from '@/mixins/Formatters';
     },
   })
 export default class TransactionsComponent extends Formatters {
-    @Prop({ type: Object as () => User }) private user!: User;
-
-    userAccount = this.$root.$data.currentUser;
+    userAccount: User = this.$store.state.currentUser;
 
     modalTrans: Transaction = {} as Transaction;
 
@@ -147,7 +145,9 @@ export default class TransactionsComponent extends Formatters {
     ];
 
     beforeMount() {
-      this.transactionList = this.formatTransactions(fakeTransactions.fetchTransactions(this.user));
+      this.transactionList = this.formatTransactions(
+        fakeTransactions.fetchTransactions(this.userAccount),
+      );
     }
 
     /*
