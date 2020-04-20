@@ -38,6 +38,16 @@
   "pointOfSaleOverview": {
     "Point of sale overview": "Point of sale overview"
   },
+  "posInfo": {
+    "POS": "POS",
+    "Close": "Close",
+    "General": "General",
+    "Title": "Title",
+    "Management": "Management",
+    "Owner": "Owner",
+    "Managers": "Owners",
+    "Containers": "Containers"
+  },
   "posRequest": {
     "Request:": "Request:",
     "Approve": "Approve",

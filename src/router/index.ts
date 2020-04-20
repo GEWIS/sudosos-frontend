@@ -12,6 +12,7 @@ import FlaggedTransactions from '@/views/BAC/FlaggedTransactions.vue';
 import ManageProducts from '@/views/BAC/ManageProducts.vue';
 import Profile from '@/views/User/Profile.vue';
 import FlaggedTransactionDetails from '@/views/BAC/FlaggedTransactionDetails.vue';
+import PointOfSaleInfo from '@/views/PointOfSale/PointOfSaleInfo.vue';
 
 Vue.use(VueRouter);
 
@@ -35,6 +36,12 @@ const routes = [
     path: '/point-of-sale-request',
     name: 'pointOfSaleRequest',
     component: PointOfSaleRequest,
+  },
+  {
+    path: '/point-of-sale/info/:id',
+    name: 'pointOfSaleInfo',
+    component: PointOfSaleInfo,
+    props: true,
   },
   {
     path: '/saldo',

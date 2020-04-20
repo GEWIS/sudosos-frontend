@@ -38,6 +38,16 @@
   "pointOfSaleOverview": {
     "Point of sale overview": "Verkooppunt overzicht"
   },
+  "posInfo": {
+    "POS": "POS",
+    "Close": "Sluiten",
+    "General": "Algemeen",
+    "Title": "Titel",
+    "Management": "Beheer",
+    "Owner": "Eigenaar",
+    "Managers": "Beheerders",
+    "Containers": "Containers"
+  },
   "posRequest": {
     "Request:": "Aanvraag:",
     "Approve": "Goedkeuren",
