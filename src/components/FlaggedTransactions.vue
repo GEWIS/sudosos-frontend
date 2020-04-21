@@ -19,28 +19,14 @@
           id="transaction-flag-table"
           :filter="filterValues.filterWay"
           :filter-function="filterRows"
+          v-on:filtered="filterDone"
         >
-          <template v-slot:head(formattedDate)="data">
-            <span v-if="data">{{ data.label }}</span>
-          </template>
-          <template v-slot:head(flaggedById)="data">
-            <span v-if="data">{{ data.label }}</span>
-          </template>
-          <template v-slot:head(status)="data">
-            <span v-if="data">{{ data.label }}</span>
-          </template>
-          <template v-slot:head(reason)="data">
-            <span v-if="data">{{ data.label }}</span>
-          </template>
-          <template v-slot:head(id)>
-            <span/>
-          </template>
 
           <template v-slot:cell(formattedDate)="data">
             {{ data.item.formattedDate }}
           </template>
           <template v-slot:cell(flaggedById)="data">{{ data.item.flaggedById }}</template>
-          <!--eslint-disable-next-line vue/no-unused-vars-->
+
           <template v-slot:cell(status)="data">
             <font-awesome-icon v-if="data.item.status === 'ACCEPTED'" icon="check" class="icon" />
             <font-awesome-icon
@@ -50,14 +36,14 @@
             />
             <font-awesome-icon v-else icon="question" class="icon" />
           </template>
+
           <template v-slot:cell(reason)="data">
             <div class="cell-reason" />
-            {{ data.item.reason }}
+            {{ data.item.reason }} 
           </template>
+
           <template v-slot:cell(id)="data">
-            <a class="cell-link" :href="`/flagged-transactions/flag/${data.item.id}`">
-              <font-awesome-icon icon="info-circle" class="icon-grey" />
-            </a>
+              <font-awesome-icon v-if="data" icon="info-circle" class="icon-grey" />
           </template>
         </b-table>
       </b-card-body>
@@ -68,7 +54,7 @@
       </p>
       <b-pagination
         v-model="currentPage"
-        :total-rows="totalRowCount"
+        :total-rows="totalRows"
         :per-page="perPage"
         limit="1"
         next-class="nextButton"
@@ -107,15 +93,13 @@ export default class TransactionFlagsComponent extends Formatters {
 
   transactionFlagList: TransactionFlag[] = [];
 
-  filteredTransactionFlags: TransactionFlag[] = [];
-
-  perPage: number = 9;
+  perPage: number = 4;
 
   currentPage: number = 1;
 
   previousPage: number = 1;
 
-  totalRows = new Set<String>();
+  totalRows : number = 0;
 
   filterValues: any = {
     hideHandled: false,
@@ -131,32 +115,22 @@ export default class TransactionFlagsComponent extends Formatters {
     {
       key: 'formattedDate',
       label: this.getTranslation('transactionFlagsComponent.When'),
-      tdClass: 'clickable',
-      tdAttr: this.tableCellAttr,
     },
     {
       key: 'flaggedById',
       label: this.getTranslation('transactionFlagsComponent.Who'),
-      tdClass: 'clickable',
-      tdAttr: this.tableCellAttr,
     },
     {
       key: 'status',
       label: this.getTranslation('transactionFlagsComponent.Status'),
-      tdClass: 'clickable',
-      tdAttr: this.tableCellAttr,
     },
     {
       key: 'reason',
       label: this.getTranslation('transactionFlagsComponent.Reason'),
-      tdClass: 'cell-reason clickable',
-      tdAttr: this.tableCellAttr,
     },
     {
       key: 'id',
       label: this.getTranslation('transactionFlagsComponent.Info'),
-      tdClass: 'clickable',
-      tdAttr: this.tableCellAttr,
     },
   ];
 
@@ -164,16 +138,8 @@ export default class TransactionFlagsComponent extends Formatters {
     this.transactionFlagList = this.formatTransactionFlags(
       fakeTransactionFlags.fetchTransactionFlags(this.user),
     );
-  }
 
-  // eslint-disable-next-line class-methods-use-this
-  tableCellAttr(value: any, key: string, item: TransactionFlag) {
-    if (key !== 'id') {
-      return {
-        onclick: `window.location = '/flagged-transactions/flag/${item.id}'`,
-      };
-    }
-    return {};
+    this.totalRows = this.transactionFlagList.length;
   }
 
   /*
@@ -200,9 +166,6 @@ export default class TransactionFlagsComponent extends Formatters {
       }
     }
 
-    if (date && other) {
-      this.totalRows.add(data.id);
-    }
     return date && other;
   }
 
@@ -216,75 +179,37 @@ export default class TransactionFlagsComponent extends Formatters {
     t: TransactionFlag[],
   ): TransactionFlag[] => t.map(flag => ({
     ...flag,
-    formattedDate:
-        `${TransactionFlagsComponent.parseTime(flag.createdAt.getDate())}-`
-        + `${TransactionFlagsComponent.parseTime(
-          flag.createdAt.getMonth() + 1,
-        )}-`
-        + `${flag.createdAt.getFullYear()}`,
+    formattedDate: this.formatDateTime(flag.createdAt, true),
   }));
 
   /*
       Method that grabs extra transactions when 2 pages or less are left
     */
   pageClicked(page: number) : void {
-    if (this.previousPage < page && page >= (Math.ceil(this.totalRows.size / this.perPage) - 2)) {
+    if (this.previousPage < page && page >= (Math.ceil(this.totalRows / this.perPage) - 2)) {
       // TODO: Grab new data
     }
 
     this.previousPage = page;
   }
 
-  static parseTime(value: number): string {
-    return (value < 10 ? '0' : '') + value;
-  }
-
-  // Reports if string is 00-00-0000 (word) format
-  checkFormattedDate = (date : String) : boolean => /\d{2}-\d{2}-\d{4}.\(\w*\)/.test(date.toString());
-
   /*
-    Returns the total number of transactions that are currently present
+  Once the filter is done update the totalRows and filtered rows
    */
-  get totalRowCount() {
-    return this.totalRows.size;
-  }
-
-  /*
-      Does everything that needs to be done when the filter changes
-    */
-  filterChange(data: string) : void {
-    this.filteredTransactionFlags = [];
-    this.filterValues.filterWay = data;
+  filterDone(result: Transaction[]): void {
+    this.totalRows = result.length;
     this.currentPage = 1;
   }
 
-  @Watch('filterValues', { deep: true })
-  onFilterValuesChange(value: any, old: any) {
-    this.filterChange(value.filterWay);
-
-    // To make sure that when the filter resets the pagination shows correctly
-    if (value.filterWay === null) {
-      this.totalRows = new Set(this.transactionFlagList.map(f => f.id));
-    } else {
-      this.totalRows = new Set();
-    }
-  }
-
-  // Watcher to update the amount or rows present when new transactions are added
-  @Watch('transactionFlagList')
-  onTransactionFlagListChange(value: TransactionFlag[], old: TransactionFlag[]) {
-    this.totalRows = new Set(value.map(f => f.id));
-  }
+  // rowClicked(item: Transaction, index: Number, event: object): void {
+  //
+  // }
 }
 </script>
 
 <style lang="scss">
 tr.transaction-flag-row:hover {
   background-color: #efefef;
-}
-
-.clickable {
-  cursor: pointer;
 }
 
 .cell-reason {
@@ -301,17 +226,6 @@ tr.transaction-flag-row:hover {
 <style lang="scss" scoped>
 @import "~bootstrap/scss/bootstrap";
 @import "./src/styles/Card.scss";
-
-.cell-link {
-  display: block;
-  color: initial;
-  width: 100%;
-}
-
-.cell-link:hover {
-  text-decoration: none;
-  color: $black;
-}
 
 .icon-grey {
   color: $gewis-grey;
