@@ -20,6 +20,7 @@
           :filter="filterValues.filterWay"
           :filter-function="filterRows"
           v-on:filtered="filterDone"
+          v-on:row-clicked="rowClicked"
         >
 
           <template v-slot:cell(formattedDate)="data">
@@ -39,7 +40,7 @@
 
           <template v-slot:cell(reason)="data">
             <div class="cell-reason" />
-            {{ data.item.reason }} 
+            {{ data.item.reason }}
           </template>
 
           <template v-slot:cell(id)="data">
@@ -48,7 +49,7 @@
         </b-table>
       </b-card-body>
     </b-card>
-    <b-card-footer class="d-flex">
+    <b-card-footer class="d-flex" v-if="totalRows > perPage">
       <p class="my-auto h-100">
         {{ $t('transactionFlagsComponent.Page') }}:
       </p>
@@ -93,7 +94,7 @@ export default class TransactionFlagsComponent extends Formatters {
 
   transactionFlagList: TransactionFlag[] = [];
 
-  perPage: number = 4;
+  perPage: number = 12;
 
   currentPage: number = 1;
 
@@ -127,6 +128,7 @@ export default class TransactionFlagsComponent extends Formatters {
     {
       key: 'reason',
       label: this.getTranslation('transactionFlagsComponent.Reason'),
+      tdClass: 'cell-reason',
     },
     {
       key: 'id',
@@ -201,15 +203,19 @@ export default class TransactionFlagsComponent extends Formatters {
     this.currentPage = 1;
   }
 
-  // rowClicked(item: Transaction, index: Number, event: object): void {
-  //
-  // }
+  rowClicked(item: Transaction, index: Number, event: object): void {
+    this.$router.push({ name: 'flaggedTransactionDetails', params: { id: item.id.toString() } });
+  }
 }
 </script>
 
 <style lang="scss">
 tr.transaction-flag-row:hover {
   background-color: #efefef;
+}
+
+.transaction-flag-row {
+  cursor: pointer;
 }
 
 .cell-reason {

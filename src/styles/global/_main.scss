@@ -2,6 +2,7 @@
 
 $primary: $gewis-red !default;
 $secondary: $gewis-grey !default;
+$success: $gewis-green !default;
 
 // Imports
 @import "~bootstrap/scss/bootstrap";
@@ -76,6 +77,14 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
     border-color: $gewis-grey !important;
 }
 
+.btn.btn-success {
+    color: white;
+}
+
+
+/*
+Global style for forms in a card title
+ */
 .title-form {
     .b-form-datepicker {
         border: 1px solid $gewis-grey-shadow;
@@ -168,6 +177,10 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
 
     .transaction-row {
         cursor: pointer;
+    }
+
+    .transaction-row:hover {
+        background-color: #ffffff;
     }
 
     .transaction-row+.transaction-row, .transaction-flag-row+.transaction-flag-row {

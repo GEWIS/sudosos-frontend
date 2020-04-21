@@ -46,7 +46,11 @@
     "Management": "Beheer",
     "Owner": "Eigenaar",
     "Managers": "Beheerders",
-    "Containers": "Containers"
+    "Containers": "Containers",
+    "Page": "Pagina",
+    "When": "Wanneer",
+    "What": "Wat",
+    "Info": "Info"
   },
   "posRequest": {
     "Request:": "Aanvraag:",

@@ -256,6 +256,10 @@ export default class POSOverview extends Vue {
     }
   }
 
+  .point-of-sale:hover {
+    background-color: rgba(234, 234, 234, 1);
+  }
+
   #processed {
     color: black;
   }

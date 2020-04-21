@@ -139,18 +139,14 @@ function fetchTransaction(): TransactionFlag {
       },
     })
 export default class FlaggedTransactionDetails extends Formatters {
-    @Prop() private transaction!: TransactionFlag;
+    @Prop() private transactionID!: string;
 
     flaggedTransaction: TransactionFlag = {} as TransactionFlag;
 
       flagReasonText: string = '';
 
       beforeMount() {
-        if (this.transaction === undefined) {
-          this.flaggedTransaction = fetchTransaction();
-        } else {
-          this.flaggedTransaction = this.transaction;
-        }
+        this.flaggedTransaction = fetchTransaction();
       }
 }
 </script>

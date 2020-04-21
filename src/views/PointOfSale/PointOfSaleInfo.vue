@@ -74,7 +74,7 @@
       </b-card>
       <b-card-footer v-if="totalRows > perPage" class="d-flex">
         <p class="my-auto h-100">
-          {{ $t('transactionsComponent.Page') }}:
+          {{ $t('posInfo.Page') }}:
         </p>
         <b-pagination
           v-model="currentPage"
@@ -249,15 +249,15 @@ export default class PointOfSaleInfo extends Formatters {
     fields: Object[] = [
       {
         key: 'formattedDate',
-        label: this.getTranslation('transactionsComponent.When'),
+        label: this.getTranslation('posInfo.When'),
       },
       {
         key: 'comment',
-        label: this.getTranslation('transactionsComponent.What'),
+        label: this.getTranslation('posInfo.What'),
       },
       {
         key: 'id',
-        label: this.getTranslation('transactionsComponent.Info'),
+        label: this.getTranslation('posInfo.Info'),
       },
     ];
 

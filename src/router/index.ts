@@ -13,6 +13,7 @@ import ManageProducts from '@/views/BAC/ManageProducts.vue';
 import Profile from '@/views/User/Profile.vue';
 import FlaggedTransactionDetails from '@/views/BAC/FlaggedTransactionDetails.vue';
 import PointOfSaleInfo from '@/views/PointOfSale/PointOfSaleInfo.vue';
+import { Transaction } from '@/entities/Transaction';
 
 Vue.use(VueRouter);
 
