@@ -166,6 +166,10 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
         }
     }
 
+    .transaction-row {
+        cursor: pointer;
+    }
+
     .transaction-row+.transaction-row, .transaction-flag-row+.transaction-flag-row {
         border-top: 1px solid #cccccc;
     }

@@ -203,8 +203,6 @@ export default class TransactionFlagsComponent extends Formatters {
     if (date && other) {
       this.totalRows.add(data.id);
     }
-
-    console.log(this.totalRows.size);
     return date && other;
   }
 
@@ -248,7 +246,6 @@ export default class TransactionFlagsComponent extends Formatters {
     Returns the total number of transactions that are currently present
    */
   get totalRowCount() {
-    console.log('get', this.totalRows.size);
     return this.totalRows.size;
   }
 
