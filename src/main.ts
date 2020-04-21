@@ -13,7 +13,6 @@ import {
   faPencilAlt,
   faTimes,
   faPlus,
-  faCheck,
   faInfoCircle,
   faChevronLeft,
   faChevronRight,

@@ -46,7 +46,11 @@
     "Management": "Management",
     "Owner": "Owner",
     "Managers": "Owners",
-    "Containers": "Containers"
+    "Containers": "Containers",
+    "Page": "Page",
+    "When": "When",
+    "What": "What",
+    "Info": "Info"
   },
   "posRequest": {
     "Request:": "Request:",
