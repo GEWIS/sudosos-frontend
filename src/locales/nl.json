@@ -216,5 +216,8 @@
     "Manage NFC devices": "Beheer NFC tokens",
     "Confirm deletion": "Bevestig verwijderen",
     "Are you sure": "Weet je zeker dat je deze NFC token wil verwijderen?"
+  },
+  "signOut": {
+    "message": "Je wordt uitgelogd! Hopelijk heb je het naar je zin gehad en zien we je snel weer :)"
   }
 }

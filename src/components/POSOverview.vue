@@ -31,8 +31,8 @@ import { POSStatus } from '@/entities/PointOfSale';
       <b-form-row class="point-of-sale"
                   v-for="pos in pointsOfSale"
                   :key="pos.id"
-                  @click="$router.push({ name: full ? 'pointOfSaleRequest' : 'pointOfSaleInfo',
-                  props: {pointOfSale: pos},
+                  @click="$router.push({
+                  name: full ? 'pointOfSaleApprove' : 'pointOfSaleInfo',
                   params: {id: pos.id} })">
         <b-col :cols="full ? 6 : 10" :lg="full ? 3 : 11" class="order-0 font-weight-bold">
           {{ pos.name }}

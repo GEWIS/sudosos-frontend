@@ -7,7 +7,7 @@
         </h1>
       </b-col>
       <b-col class="approve-reject-buttons" lg="2" cols="12">
-        <b-button variant="danger" @click="$router.go(-1)">
+        <b-button variant="danger" @click="$router.push({ name: 'pointOfSale' })">
           <font-awesome-icon icon="times"></font-awesome-icon>
           {{ $t('posInfo.Close')}}
         </b-button>

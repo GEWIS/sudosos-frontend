@@ -215,5 +215,8 @@
     "Manage NFC devices": "Manage NFC devices",
     "Confirm deletion": "Confirm deletion",
     "Are you sure": "Are you sure you want to remove this NFC device?"
+  },
+  "signOut": {
+    "message": "Signing you out! Hope you had a nice time :) Be sure to come back soon!"
   }
 }

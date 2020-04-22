@@ -14,7 +14,7 @@ import ManageProducts from '@/views/BAC/ManageProducts.vue';
 import Profile from '@/views/User/Profile.vue';
 import FlaggedTransactionDetails from '@/views/BAC/FlaggedTransactionDetails.vue';
 import PointOfSaleInfo from '@/views/PointOfSale/PointOfSaleInfo.vue';
-import { Transaction } from '@/entities/Transaction';
+import SignOut from '@/views/User/SignOut.vue';
 
 Vue.use(VueRouter);
 
@@ -30,9 +30,19 @@ const routes = [
     component: Transactions,
   },
   {
+    path: '/saldo',
+    name: 'saldo',
+    component: Saldo,
+  },
+  {
     path: '/point-of-sale-overview',
     name: 'pointOfSale',
     component: PointOfSaleOverview,
+  },
+  {
+    path: '/point-of-sale-request',
+    name: 'pointOfSaleRequest',
+    component: PointOfSaleRequest,
   },
   {
     path: '/point-of-sale/approve/:id',
@@ -41,20 +51,10 @@ const routes = [
     props: true,
   },
   {
-    path: '/point-of-sale-request',
-    name: 'pointOfSaleRequest',
-    component: PointOfSaleRequest,
-  },
-  {
     path: '/point-of-sale/info/:id',
     name: 'pointOfSaleInfo',
     component: PointOfSaleInfo,
     props: true,
-  },
-  {
-    path: '/saldo',
-    name: 'saldo',
-    component: Saldo,
   },
   {
     path: '/manage-pos',
@@ -91,6 +91,11 @@ const routes = [
     path: '/profile',
     name: 'profile',
     component: Profile,
+  },
+  {
+    path: '/sign-out',
+    name: 'signOut',
+    component: SignOut,
   },
   // {
   //   path: '/about',
