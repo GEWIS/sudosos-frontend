@@ -35,9 +35,10 @@ const routes = [
     component: PointOfSaleOverview,
   },
   {
-    path: '/point-of-sale-approve',
+    path: '/point-of-sale/approve/:id',
     name: 'pointOfSaleApprove',
     component: PointOfSaleApprove,
+    props: true,
   },
   {
     path: '/point-of-sale-request',

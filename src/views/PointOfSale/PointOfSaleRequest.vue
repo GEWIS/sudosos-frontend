@@ -159,9 +159,9 @@ export default class PointOfSaleRequest extends Vue {
   //
   // *************************************************
 
+  // eslint-disable-next-line class-methods-use-this
   requestPOS() {
     // TODO: Verwerking data
-    console.log(this.requestedPOS);
   }
 
   containerToggled(containerData: any) {

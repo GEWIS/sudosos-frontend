@@ -52,7 +52,7 @@
     "What": "What",
     "Info": "Info"
   },
-  "posRequest": {
+  "posApprove": {
     "Request:": "Request:",
     "Approve": "Approve",
     "Reject": "Reject",
@@ -61,12 +61,20 @@
     "Management": "Management",
     "Owner": "Owner",
     "Managers": "Owners",
-    "Containers": "Containers",
+    "Containers": "Containers"
+  },
+  "posRequest": {
     "Request Point of Sale": "Request Point of Sale",
+    "General": "General",
+    "Title": "Title",
+    "Selected containers": "Selected containers",
+    "Management": "Management",
+    "Owner": "Owner",
+    "Managers": "Owners",
+    "Containers": "Containers",
     "Request": "Request",
     "Please enter a name for this POS": "Please enter a name for this POS",
-    "Please select an owner for this POS": "Please select an owner for this POS",
-    "Selected containers": "Selected containers"
+    "Please select an owner for this POS": "Please select an owner for this POS"
   },
   "flagged": {
     "Flagged transactions": "Flagged transactions"

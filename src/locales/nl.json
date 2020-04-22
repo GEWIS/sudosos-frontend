@@ -52,7 +52,7 @@
     "What": "Wat",
     "Info": "Info"
   },
-  "posRequest": {
+  "posApprove": {
     "Request:": "Aanvraag:",
     "Approve": "Goedkeuren",
     "Reject": "Afkeuren",
@@ -61,12 +61,20 @@
     "Management": "Beheer",
     "Owner": "Eigenaar",
     "Managers": "Beheerders",
-    "Containers": "Containers",
+    "Containers": "Containers"
+  },
+  "posRequest": {
     "Request Point of Sale": "Aanvraag verkooppunt",
+    "General": "Algemeen",
+    "Title": "Titel",
+    "Selected containers": "Geselecteerde containers",
+    "Management": "Beheer",
+    "Owner": "Eigenaar",
+    "Managers": "Beheerders",
+    "Containers": "Containers",
     "Request": "Vraag aan",
     "Please enter a name for this POS": "Voer alsjeblieft een naam in voor dit verkooppunt",
-    "Please select an owner for this POS": "Selecteer alsjeblieft een eigenaar voor dit verkooppunt",
-    "Selected containers": "Geselecteerde containers"
+    "Please select an owner for this POS": "Selecteer alsjeblieft een eigenaar voor dit verkooppunt"
   },
   "flagged": {
     "Flagged transactions": "Gemarkeerde transacties"
