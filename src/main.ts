@@ -7,7 +7,6 @@ import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fort
 import {
   faCoffee,
   faChild,
-  faCheck,
   faCircle,
   faArchive,
   faCheckCircle,
@@ -15,18 +14,22 @@ import {
   faTimes,
   faPlus,
   faInfoCircle,
+  faChevronLeft,
+  faChevronRight,
   faTimesCircle,
   faFileExport,
   faAngleUp,
   faAngleDown,
   faPenAlt,
   faGlobeEurope,
+  faCheck,
+  faQuestion,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import languages from '@/locales/index';
+import languages from './locales/index';
 
 // Import bootstrap js
 import 'bootstrap';
@@ -44,7 +47,10 @@ library.add(
   faPencilAlt,
   faTimes,
   faPlus,
+  faCheck,
   faInfoCircle,
+  faChevronLeft,
+  faChevronRight,
   faTimesCircle,
   faFileExport,
   faAngleUp,
@@ -52,6 +58,7 @@ library.add(
   faPenAlt,
   faTrash,
   faGlobeEurope,
+  faQuestion,
 );
 
 // Default settings for Dinero

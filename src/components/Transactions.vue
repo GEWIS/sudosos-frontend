@@ -15,40 +15,19 @@
         <b-table stacked="sm" small borderless thead-class="table-header table-header-3"
                  :items="transactionList" :fields="fields" :tbody-tr-class="setRowClass"
                  :per-page="perPage" :current-page="currentPage" id="transaction-table"
-                 :filter="filterValues.filterWay" :filter-function="filterRows">
+                 :filter="filterValues.filterWay" :filter-function="filterRows"
+                  v-on:filtered="filterDone" v-on:row-clicked="rowClicked">
           <!-- Templates for each row cell -->
           <template v-slot:cell(formattedDate)="data">
-            <!-- Check if this is a date row, if not make it clickable -->
-            <div v-if="/\d{2}-\d{2}-\d{4}.\(\w*\)/.test(data.item.id)">
               {{ data.item.formattedDate }}
-            </div>
-            <a v-b-modal.details-modal
-               v-on:click="selectTransaction(data.item)"
-               class="cell-link"
-               v-else>
-              {{ data.item.formattedDate }}
-            </a>
           </template>
           <template v-slot:cell(comment)="data">
-            <!-- Check if this is a date row, if not make it clickable -->
-            <div v-if="/\d{2}-\d{2}-\d{4}.\(\w*\)/.test(data.item.id)">
               {{ data.item.comment }}
-            </div>
-            <a v-b-modal.details-modal
-               v-on:click="selectTransaction(data.item)"
-               class="cell-link"
-               v-else>
-              {{ data.item.comment }}
-            </a>
           </template>
           <template v-slot:cell(id)="data">
-            <!-- Check if this is a date row, if not add clickable info icon -->
-            <a v-b-modal.details-modal
-               v-on:click="selectTransaction(data.item)"
-               class="cell-link text-sm-right"
-               v-if="!/\d{2}-\d{2}-\d{4}.\(\w*\)/.test(data.item.id)">
+            <div class="text-sm-right" v-if="!checkFormattedDate(data.item.id)">
               <font-awesome-icon icon="info-circle" class="icon"></font-awesome-icon>
-            </a>
+            </div>
           </template>
         </b-table>
       </b-card-body>
@@ -101,9 +80,7 @@ import Formatters from '@/mixins/Formatters';
     },
   })
 export default class TransactionsComponent extends Formatters {
-    @Prop({ type: Object as () => User }) private user!: User;
-
-    userAccount = this.$root.$data.currentUser;
+    userAccount: User = this.$store.state.currentUser;
 
     modalTrans: Transaction = {} as Transaction;
 
@@ -147,7 +124,10 @@ export default class TransactionsComponent extends Formatters {
     ];
 
     beforeMount() {
-      this.transactionList = this.formatTransactions(fakeTransactions.fetchTransactions(this.user));
+      this.transactionList = this.formatTransactions(
+        fakeTransactions.fetchTransactions(this.userAccount),
+      );
+      this.totalRows = this.transactionList.length;
     }
 
     /*
@@ -276,85 +256,11 @@ export default class TransactionsComponent extends Formatters {
       if (this.filterValues.selfBought
         || this.filterValues.putInByYou
         || this.filterValues.putInForYou) {
-        if ((self || putInBy || putInFor)
-          && !this.checkFormattedDate(data.formattedDate || '')
-          && !this.filteredTransactions.includes(data)) {
-          this.filteredTransactions.push(data);
-          this.totalRows += 1;
-        } else if (this.checkFormattedDate(data.formattedDate || '')) {
-          this.totalRows += 1;
-        }
-
         return self || putInBy || putInFor;
       }
 
       return date;
     }
-
-    /*
-      formatTransactions add rows for each date and formats the dates into a nicer format that we
-      want to use for displaying the dates
-
-      @param t: List of transactions
-     */
-    formatTransactions: Function = (t: Transaction[]) => {
-      const dates: String[] = [];
-
-      let transactions: Transaction[] = [];
-      let dateTransactions: Transaction[] = [];
-      let dateRowTransaction: Transaction = {} as Transaction;
-      t.forEach((transaction) => {
-        // Create formatted date and time for each transaction
-        const fDate = this.formatDateTime(transaction.createdAt, true);
-        const time = this.formatDateTime(transaction.createdAt);
-
-        // If formatted date has not been used yet make a date row
-        if (!dates.find(d => d === fDate) || '') {
-          dates.push(fDate);
-
-          // If this is the second date row we found push the first one and add the transactions
-          // that occured on that date
-          if (dates.length > 1) {
-            transactions.push(dateRowTransaction);
-            transactions = transactions.concat(dateTransactions);
-            dateTransactions = [];
-          }
-
-          dateRowTransaction = {
-            id: fDate,
-            soldToId: '',
-            authorized: '',
-            totalPrice: 0,
-            pointOfSale: '',
-            activityId: '',
-            subTransactions: [],
-            comment: '',
-            createdAt: transaction.createdAt,
-            updatedAt: transaction.updatedAt,
-            formattedDate: fDate,
-          } as Transaction;
-        }
-
-        // Add all the needed information to the dateRow transaction from the transactions beneath
-        // it. This makes sure the filter function can correctly keep the dateRows in the
-        // transaction table
-        const trans: Transaction = transaction;
-        trans.formattedDate = time;
-        dateRowTransaction.soldToId = `${dateRowTransaction.soldToId} ${transaction.soldToId}`;
-        dateRowTransaction.authorized = `${dateRowTransaction.authorized} ${transaction.authorized}`;
-        dateRowTransaction.activityId = `${dateRowTransaction.activityId} ${transaction.activityId}`;
-
-        dateTransactions.push(trans);
-      });
-
-      // Push the last dateRow transaction and transactions that accompany it
-      if (dateRowTransaction.activityId !== '') {
-        transactions.push(dateRowTransaction);
-        transactions = transactions.concat(dateTransactions);
-      }
-
-      return transactions;
-    };
 
     /*
       Method that grabs extra transactions when 2 pages or less are left
@@ -367,64 +273,35 @@ export default class TransactionsComponent extends Formatters {
       this.previousPage = page;
     }
 
-    // /*
-    //   Returns the total number of transactions that are currently present
-    //  */
-    // get totalRows() {
-    //   if (this.filteredTransactions.length > 0) {
-    //     return this.filteredTransactions.length;
-    //   }
-    //   return this.transactionList.length;
-    // }
-
-    // Reports if string is 00-00-0000 (word) format
-    checkFormattedDate = (date : String) : boolean => /\d{2}-\d{2}-\d{4}.\(\w*\)/.test(date.toString());
-
     /*
-      Does everything that needs to be done when the filter changes
-    */
-    filterChange(data: string) : void {
-      this.filteredTransactions = [];
-      this.filterValues.filterWay = data;
+    Once the filter is done update the totalRows and filtered rows
+     */
+    filterDone(result: Transaction[]): void {
+      this.totalRows = result.length;
+      this.filteredTransactions = result.filter(t => !this.checkFormattedDate(t.formattedDate || ''));
       this.currentPage = 1;
     }
 
-    @Watch('filterValues', { deep: true })
-    onFilterValuesChange(value: any, old: any) {
-      this.filterChange(value.filterWay);
+    rowClicked(item: Transaction, index: Number, event: object): void {
+      if (!this.checkFormattedDate(item.formattedDate || '')) {
+        this.modalTrans = item;
 
-      // To make sure that when the filter resets the pagination shows correctly
-      if (value.filterWay === null) {
-        this.totalRows = this.transactionList.length;
-      } else {
-        this.totalRows = 0;
+        this.$nextTick(() => {
+          this.$bvModal.show('details-modal');
+        });
       }
     }
 
-    // Watcher to update the amount or rows present when new transactions are added
-    @Watch('transactionList')
-    onTransactionListChange(value: Transaction[], old: Transaction[]) {
-      this.totalRows = value.length;
-    }
+    /*
+    Check if string is of format `00-00-0000 (word)`
+     */
+    checkFormattedDate = (date : String) : boolean => /\d{2}-\d{2}-\d{4}.\(\w*\)/.test(date.toString());
 }
 </script>
 
 <style lang="scss" scoped>
   @import "~bootstrap/scss/bootstrap";
   @import './src/styles/Card.scss';
-
-  .cell-link {
-    display: block;
-    color: initial;
-    width: 100%;
-    cursor: pointer;
-  }
-
-  .cell-link:hover {
-    text-decoration: none;
-    color: $black;
-    cursor: pointer;
-  }
 
   .icon {
     color: $gewis-grey;

@@ -3,9 +3,10 @@
     "Transactions": "Transacties",
     "Saldo": "Saldo",
     "Points of Sale": "Verkooppunten",
-    "Overview": "Overzicht",
+    "Overview": "Overzicht POS",
     "Request": "Aanvraag",
-    "Admin": "Admin",
+    "Admin": "Beheer",
+    "Manage POS": "Beheer POS",
     "Screens": "TV Schermen",
     "Advertisements": "Advertenties",
     "BAC": "BAC",
@@ -34,8 +35,22 @@
   "saldo": {
     "Saldo": "Saldo"
   },
-  "posOverview": {
+  "pointOfSaleOverview": {
     "Point of sale overview": "Verkooppunt overzicht"
+  },
+  "posInfo": {
+    "POS": "POS",
+    "Close": "Sluiten",
+    "General": "Algemeen",
+    "Title": "Titel",
+    "Management": "Beheer",
+    "Owner": "Eigenaar",
+    "Managers": "Beheerders",
+    "Containers": "Containers",
+    "Page": "Pagina",
+    "When": "Wanneer",
+    "What": "Wat",
+    "Info": "Info"
   },
   "posRequest": {
     "Request:": "Aanvraag:",
@@ -87,6 +102,15 @@
   "managePOS": {
     "Manage points of sale": "Beheer verkooppunten"
   },
+  "POSOverview": {
+    "my points of sale": "Mijn verkooppunten",
+    "requested points of sale": "Aangevraagde verkooppunten",
+    "processed": "Behandeld",
+    "ACCEPTED": "Geaccepteerd",
+    "OPEN": "Open",
+    "REJECTED": "Afgewezen",
+    "Page": "Pagina"
+  },
   "advertisements": {
     "Advertisements": "Advertenties"
   },
@@ -126,6 +150,21 @@
   },
   "containersOverview": {
     "Containers": "Opslag"
+  },
+  "transactionFlagTableFilter": {
+    "from": "van",
+    "placeholder": "Selecteer een datum",
+    "to": "tot",
+    "Hide handled": "Verberg afgehandeld",
+    "Reset filter": "Herstel filter"
+  },
+  "transactionFlagsComponent": {
+    "When": "Wanneer",
+    "Who": "Wie",
+    "Status": "Status",
+    "Reason": "Reden",
+    "Info": "Info",
+    "Page": "Pagina"
   },
   "transactionTableFilter": {
     "from": "van",

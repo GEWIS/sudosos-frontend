@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import Home from '@/views/Home.vue';
 import Saldo from '@/views/Saldo.vue';
 import Transactions from '@/views/Transactions.vue';
-import PointOfSale from '@/views/PointOfSale/PointOfSale.vue';
+import PointOfSaleOverview from '@/views/PointOfSale/PointOfSaleOverview.vue';
 import PointOfSaleApprove from '@/views/PointOfSale/PointOfSaleApprove.vue';
 import PointOfSaleRequest from '@/views/PointOfSale/PointOfSaleRequest.vue';
 import ManagePointOfSale from '@/views/Admin/ManagePointOfSale.vue';
@@ -13,6 +13,8 @@ import FlaggedTransactions from '@/views/BAC/FlaggedTransactions.vue';
 import ManageProducts from '@/views/BAC/ManageProducts.vue';
 import Profile from '@/views/User/Profile.vue';
 import FlaggedTransactionDetails from '@/views/BAC/FlaggedTransactionDetails.vue';
+import PointOfSaleInfo from '@/views/PointOfSale/PointOfSaleInfo.vue';
+import { Transaction } from '@/entities/Transaction';
 
 Vue.use(VueRouter);
 
@@ -28,9 +30,9 @@ const routes = [
     component: Transactions,
   },
   {
-    path: '/point-of-sale',
+    path: '/point-of-sale-overview',
     name: 'pointOfSale',
-    component: PointOfSale,
+    component: PointOfSaleOverview,
   },
   {
     path: '/point-of-sale-approve',
@@ -41,6 +43,12 @@ const routes = [
     path: '/point-of-sale-request',
     name: 'pointOfSaleRequest',
     component: PointOfSaleRequest,
+  },
+  {
+    path: '/point-of-sale/info/:id',
+    name: 'pointOfSaleInfo',
+    component: PointOfSaleInfo,
+    props: true,
   },
   {
     path: '/saldo',
@@ -68,7 +76,7 @@ const routes = [
     component: FlaggedTransactions,
   },
   {
-    path: '/flagged-transaction/:id',
+    path: '/flagged-transactions/flag/:id',
     name: 'flaggedTransactionDetails',
     component: FlaggedTransactionDetails,
     props: true,
