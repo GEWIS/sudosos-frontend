@@ -47,141 +47,57 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Container from '@/components/Container.vue';
 import { Storage } from '@/entities/Storage';
-import { Product } from '@/entities/Product';
 import { PointOfSale, POSStatus } from '@/entities/PointOfSale';
+import PointsOfSale from '@/assets/pointsOfSale';
 
   @Component({
     components: { Container },
   })
 
 export default class PointOfSaleRequest extends Vue {
-  // *************************************************
-  //
-  //               Begin test data
-  //
-  // *************************************************
-  private beugel: Product = {
-    id: '1',
-    name: 'Grolsch beugel',
-    ownerId: '1',
-    price: 110,
-    picture: 'https://www.supermarktaanbiedingen.com/public/images/product/2017/39/0-508102fls-grolsch-premium-pilsner-beugel-45cl.jpg',
-    traySize: 20,
-    category: 'drink',
-    isAlcoholic: true,
-    negative: false,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
+    requestedPOS: PointOfSale = {
+      name: '',
+      id: '',
+      ownerId: '',
+      status: POSStatus.OPEN,
+      storages: [],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
 
-  private tripel: Product = {
-    id: '2',
-    name: 'Grimbergen tripel (voor de sfeer)',
-    ownerId: '1',
-    price: 90,
-    picture: 'https://deklokdranken.blob.core.windows.net/product-images/105120.jpg',
-    traySize: 24,
-    category: 'drink',
-    isAlcoholic: true,
-    negative: false,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
+    availableContainers: Storage[] = [];
 
-  private alcoholFree: Product = {
-    id: '3',
-    name: 'Alcoholvrije Athena-meuk',
-    ownerId: '2',
-    price: 50,
-    picture: 'https://www.cocktailicious.nl/wp-content/uploads/2019/10/sex-on-the-beach.jpg',
-    traySize: 1,
-    category: 'drink',
-    isAlcoholic: false,
-    negative: false,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
+    availableOrgans: Object = [];
 
-  private cocktail: Product = {
-    id: '4',
-    name: 'Athena-meuk met alcohol',
-    ownerId: '2',
-    price: 150,
-    picture: 'https://www.mitra.nl/cms/userfiles/cocktails/298-mojito43.png',
-    traySize: 1,
-    category: 'drink',
-    isAlcoholic: true,
-    negative: false,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  }
+    beforeMount() {
+      this.availableContainers = PointsOfSale.getAvailableContainers();
+      this.availableOrgans = PointsOfSale.getAvailableOrgans();
+    }
 
-  private bacFridge: Storage = {
-    name: 'BAC-koelkast',
-    id: '1',
-    ownerId: '1',
-    products: [this.beugel, this.tripel],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  }
 
-  private outdoorCocktails: Storage = {
-    name: 'Athena-cocktails',
-    id: '2',
-    ownerId: '2',
-    products: [this.alcoholFree, this.cocktail],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  }
-
-  private requestedPOS: PointOfSale = {
-    name: 'SudoSOS-tablet',
-    id: '1',
-    ownerId: '1',
-    status: POSStatus.ACCEPTED,
-    storages: [this.bacFridge, this.outdoorCocktails],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  }
-
-  private availableOrgans: Object = [
-    { value: '1', text: 'Fictieve sjaarzencommissie', members: ['Sjaars 1', 'Sjaars -1', 'Sjaars 65', 'Marcin van de Ven'] },
-    { value: '2', text: 'Niet-fictieve sjaarzencommissie', members: ['Sjaars 3', 'Sjaars -0', 'Sjaars 8', 'Marcin van de Ven'] },
-    { value: '3', text: 'Fictieve niet-sjaarzencommissie', members: ['Sjaars 2', 'Sjaars -10', 'Sjaars 88', 'Marcin van de Ven'] },
-    { value: '4', text: 'Niet-fictieve niet-sjaarzencommissie', members: ['Sjaars 69', 'Sjaars -7', 'Sjaars 42', 'Marcin van de Ven'] },
-  ];
-
-  private availableContainers: Array<Storage> = [this.bacFridge, this.outdoorCocktails]
-
-  // *************************************************
-  //
-  //               End test data
-  //
-  // *************************************************
-
-  // eslint-disable-next-line class-methods-use-this
-  requestPOS() {
+    // eslint-disable-next-line class-methods-use-this
+    requestPOS() {
     // TODO: Verwerking data
-  }
+    }
 
-  containerToggled(containerData: any) {
-    const updatedContainer = this.availableContainers
-      .find(storage => storage.id === containerData.id);
+    containerToggled(containerData: any) {
+      const updatedContainer = this.availableContainers
+        .find(storage => storage.id === containerData.id);
 
-    if (updatedContainer) {
-      if (containerData.state) {
-        this.requestedPOS.storages.push(updatedContainer);
-      } else {
+      if (updatedContainer) {
+        if (containerData.state) {
+          this.requestedPOS.storages.push(updatedContainer);
+        } else {
         // Using a filter to remove items from an object array
-        this.requestedPOS.storages = this.requestedPOS.storages
-          .filter(storage => storage.id !== updatedContainer.id);
+          this.requestedPOS.storages = this.requestedPOS.storages
+            .filter(storage => storage.id !== updatedContainer.id);
+        }
       }
     }
-  }
 
-  get requestButtonDisabled() {
-    return this.requestedPOS.name.length < 1 || this.requestedPOS.ownerId === '';
-  }
+    get requestButtonDisabled() {
+      return this.requestedPOS.name.length < 1 || this.requestedPOS.ownerId === '';
+    }
 }
 </script>
 

@@ -105,15 +105,14 @@
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator';
 import Container from '@/components/Container.vue';
-import { Storage } from '@/entities/Storage';
-import { Product } from '@/entities/Product';
-import { PointOfSale, POSStatus } from '@/entities/PointOfSale';
+import { PointOfSale } from '@/entities/PointOfSale';
 import TransactionDetailsModal from '@/components/TransactionDetailsModal.vue';
 import TransactionTableFilter from '@/components/TransactionTableFilter.vue';
 import Formatters from '@/mixins/Formatters';
 import { Transaction } from '@/entities/Transaction';
 import fakeTransactions from '@/assets/transactions';
 import { User } from '@/entities/User';
+import PointsOfSale from '@/assets/pointsOfSale';
 
   @Component({
     components: { Container, TransactionDetailsModal, TransactionTableFilter },
@@ -122,106 +121,9 @@ import { User } from '@/entities/User';
 export default class PointOfSaleInfo extends Formatters {
     @Prop() private pointOfSale!: PointOfSale;
 
-    // *************************************************
-    //
-    //               Begin test data
-    //
-    // *************************************************
-    private beugel: Product = {
-      id: '1',
-      name: 'Grolsch beugel',
-      ownerId: '1',
-      price: 110,
-      picture: 'https://www.supermarktaanbiedingen.com/public/images/product/2017/39/0-508102fls-grolsch-premium-pilsner-beugel-45cl.jpg',
-      traySize: 20,
-      category: 'drink',
-      isAlcoholic: true,
-      negative: false,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+    requestedPOS: PointOfSale = {} as PointOfSale;
 
-    private tripel: Product = {
-      id: '2',
-      name: 'Grimbergen tripel (voor de sfeer)',
-      ownerId: '1',
-      price: 90,
-      picture: 'https://deklokdranken.blob.core.windows.net/product-images/105120.jpg',
-      traySize: 24,
-      category: 'drink',
-      isAlcoholic: true,
-      negative: false,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-
-    private alcoholFree: Product = {
-      id: '3',
-      name: 'Alcoholvrije Athena-meuk',
-      ownerId: '2',
-      price: 50,
-      picture: 'https://www.cocktailicious.nl/wp-content/uploads/2019/10/sex-on-the-beach.jpg',
-      traySize: 1,
-      category: 'drink',
-      isAlcoholic: false,
-      negative: false,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-
-    private cocktail: Product = {
-      id: '4',
-      name: 'Athena-meuk met alcohol',
-      ownerId: '2',
-      price: 150,
-      picture: 'https://www.mitra.nl/cms/userfiles/cocktails/298-mojito43.png',
-      traySize: 1,
-      category: 'drink',
-      isAlcoholic: true,
-      negative: false,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }
-
-    private bacFridge: Storage = {
-      name: 'BAC-koelkast',
-      id: '1',
-      ownerId: '1',
-      products: [this.beugel, this.tripel],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }
-
-    private outdoorCocktails: Storage = {
-      name: 'Athena-cocktails',
-      id: '2',
-      ownerId: '2',
-      products: [this.alcoholFree, this.cocktail],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }
-
-    private requestedPOS: PointOfSale = {
-      name: 'SudoSOS-tablet',
-      id: '1',
-      ownerId: '1',
-      status: POSStatus.ACCEPTED,
-      storages: [this.bacFridge, this.outdoorCocktails],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }
-
-    private ownerData: Object = {
-      organName: 'Fictieve sjaarzencommissie',
-      members: ['Sjaars 1', 'Sjaars -1', 'Sjaars 65', 'Marcin van de Ven'],
-    }
-
-    // *************************************************
-    //
-    //               End test data
-    //
-    // *************************************************
-
+    ownerData: Object = {};
 
     modalTrans: Transaction = {} as Transaction;
 
@@ -265,6 +167,8 @@ export default class PointOfSaleInfo extends Formatters {
       this.transactionList = this.formatTransactions(fakeTransactions.fetchTransactions(
         {} as User,
       ));
+      this.requestedPOS = PointsOfSale.getPointOfSale();
+      this.ownerData = PointsOfSale.getOwnerData();
 
       this.totalRows = this.transactionList.length;
     }
