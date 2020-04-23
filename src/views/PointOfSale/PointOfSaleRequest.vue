@@ -69,6 +69,8 @@
                         v-on:storageAdded="addStorage"
                         v-on:storageEdited="editStorage"
     />
+
+    <EditProductModal />
   </b-container>
 </template>
 
@@ -79,9 +81,10 @@ import { Storage } from '@/entities/Storage';
 import { PointOfSale, POSStatus } from '@/entities/PointOfSale';
 import PointsOfSale from '@/assets/pointsOfSale';
 import EditContainerModal from '@/components/EditContainerModal.vue';
+import EditProductModal from '@/components/EditProductModal.vue';
 
   @Component({
-    components: { Container, EditContainerModal },
+    components: { Container, EditContainerModal, EditProductModal },
   })
 
 export default class PointOfSaleRequest extends Vue {

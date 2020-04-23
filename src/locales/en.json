@@ -174,6 +174,20 @@
     "added on": "Added on",
     "added by": "Added by"
   },
+  "editProductModal": {
+    "save": "save",
+    "cancel": "cancel",
+    "edit product": "edit product",
+    "add product": "add product",
+    "Name": "Name",
+    "added on": "Added on",
+    "added by": "Added by",
+    "container": "container",
+    "Price": "Price",
+    "Picture": "Picture",
+    "name invalid": "Please provide a valid name with length > 0",
+    "price invalid": "Please provide a valid price that is higher or equal to 0"
+  },
   "containerComponent": {
     "new": "New"
   },

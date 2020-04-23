@@ -169,10 +169,24 @@
     "Open from": "Open van",
     "Open till": "Open tot",
     "name invalid": "Vul een naam in die langer groter dan 0 tekens is",
-    "openFrom invalid": "Voor alsjeblieft een juiste tijd in",
+    "openFrom invalid": "Voer alsjeblieft een juiste tijd in",
     "openTill invalid": "Vul alsjeblieft een juist tijd die later is dan open van",
     "added on": "Toegevoegd op",
     "added by": "Toegevoegd door"
+  },
+  "editProductModal": {
+    "save": "opslaan",
+    "cancel": "cancel",
+    "edit product": "bewerk product",
+    "add product": "product toevoegen",
+    "Name": "Naam",
+    "added on": "Toegevoegd op",
+    "added by": "Toegevoegd door",
+    "container": "container",
+    "Price": "Prijs",
+    "Picture": "Plaatje",
+    "name invalid": "Voer een correcte naam in van die groter dan 0 tekens is",
+    "price invalid": "Voer een correcte prijs in die groter of gelijk aan 0 is"
   },
   "containerComponent": {
     "new": "Nieuw"

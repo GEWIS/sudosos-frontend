@@ -45,9 +45,21 @@
                  :key="item.id"
                  class="text-center product-card px-2"
                  cols="6" sm="4" md="3" lg="2">
-            <div class="product">
+            <div class="product" :class="{'add': canEdit && enabled && editable}">
               <img :src="item.picture" :alt="item.name"/>
               <p class="w-100 product-name mb-0">{{ item.name }}</p>
+            </div>
+          </b-col>
+
+
+          <b-col v-if="canEdit && enabled && editable"
+                 class="text-center product-card px-2"
+                 cols="6" sm="4" md="3" lg="2"
+                 v-b-modal.edit-product
+          >
+            <div class="product add">
+              <div><font-awesome-icon icon="plus" class="h-100" /></div>
+              <p class="w-100 product-name mb-0">{{ $t('containerComponent.new')}}</p>
             </div>
           </b-col>
         </b-row>
@@ -122,6 +134,15 @@ export default class Container extends Vue {
 
     > .product-name {
       background: $gewis-grey-accent;
+    }
+  }
+
+  .product.add {
+    cursor: pointer;
+
+    > div {
+      height: 5rem;
+      width: auto;
     }
   }
 }
