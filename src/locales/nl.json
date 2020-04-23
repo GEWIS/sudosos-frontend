@@ -72,6 +72,7 @@
     "Owner": "Eigenaar",
     "Managers": "Beheerders",
     "Containers": "Containers",
+    "add container": "Container toevoegen",
     "Request": "Vraag aan",
     "Please enter a name for this POS": "Voer alsjeblieft een naam in voor dit verkooppunt",
     "Please select an owner for this POS": "Selecteer alsjeblieft een eigenaar voor dit verkooppunt"
@@ -158,6 +159,19 @@
   },
   "containersOverview": {
     "Containers": "Opslag"
+  },
+  "editContainerModal": {
+    "save": "opslaan",
+    "cancel": "cancel",
+    "edit container": "bewerk container",
+    "Duration": "Duur",
+    "Open from": "Open van",
+    "Open till": "Open tot",
+    "name invalid": "Vul een naam in die langer groter dan 0 tekens is",
+    "openFrom invalid": "Voor alsjeblieft een juiste tijd in",
+    "openTill invalid": "Vul alsjeblieft een juist tijd die later is dan open van",
+    "added on": "Toegevoegd op",
+    "added by": "Toegevoegd door"
   },
   "transactionFlagTableFilter": {
     "from": "van",

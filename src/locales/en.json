@@ -72,6 +72,7 @@
     "Owner": "Owner",
     "Managers": "Owners",
     "Containers": "Containers",
+    "add container": "Add container",
     "Request": "Request",
     "Please enter a name for this POS": "Please enter a name for this POS",
     "Please select an owner for this POS": "Please select an owner for this POS"
@@ -158,6 +159,19 @@
   },
   "containersOverview": {
     "Containers": "Containers"
+  },
+  "editContainerModal": {
+    "save": "save",
+    "cancel": "cancel",
+    "edit container": "edit container",
+    "Duration": "Duration",
+    "Open from": "Open from",
+    "Open till": "Open till",
+    "name invalid": "Please enter a valid name with length > 0",
+    "openFrom invalid": "Please enter a valid time",
+    "openTill invalid": "Please enter a valid time later than open from",
+    "added on": "Added on",
+    "added by": "Added by"
   },
   "transactionFlagTableFilter": {
     "from": "from",

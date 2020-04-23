@@ -1,15 +1,26 @@
 <template>
-  <div class="container-block">
+  <div class="mb-2">
     <div class="container-head px-3 d-flex" v-on:click="isOpen = !isOpen"
            v-b-toggle="'container_' + container.id">
-      <b-input-group class="my-auto" @click.stop="() => {}">
-        <b-form-checkbox :id="'checkbox_' + container.id" class="checkbox"
-          v-model="selected" :disabled="!enabled" @change="checkBoxChanged"/>
-          <span v-on:click="isOpen = !isOpen" v-b-toggle="'container_' + container.id">
-            {{ container.name }}
-          </span>
-          <span class="edit-button" v-show="canEdit && enabled">Edit ✎</span>
+
+      <!-- The v-on click is to stop the container from toggling open -->
+      <b-input-group class="my-auto"
+                     v-on:click.stop="() => {}">
+        <b-form-checkbox :id="'checkbox_' + container.id"
+                         v-model="selected"
+                         :disabled="!enabled"
+                         @change="checkBoxChanged"
+        />
+          <span id="container-name">{{ container.name }}</span>
       </b-input-group>
+
+      <span class="mx-3 my-auto"
+            v-show="canEdit && enabled"
+            v-on:click.stop="() => {}"
+            v-on:click="$emit('input', container)"
+            v-b-modal.edit-container>
+            <font-awesome-icon icon="pen-alt" />
+      </span>
 
       <div class="d-inline ml-2 w-100 my-auto">
         <font-awesome-icon pull="right"
@@ -17,13 +28,13 @@
                            v-show="!isOpen"
                            class="mr-3"
                            size="lg"
-                            ></font-awesome-icon>
+        />
         <font-awesome-icon pull="right"
                            icon="angle-up"
                            v-show="isOpen"
                            class="mr-3"
                            size="lg"
-        ></font-awesome-icon>
+        />
       </div>
     </div>
 
@@ -46,15 +57,13 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Product } from '@/entities/Product';
 import { Storage } from '@/entities/Storage';
+
 @Component({})
 export default class Container extends Vue {
-  @Prop()
-  container: Storage | undefined;
+  @Prop() container: Storage | undefined;
 
-  @Prop()
-  enabled: Boolean | undefined;
+  @Prop() enabled: Boolean | undefined;
 
   isOpen: Boolean = false;
 
@@ -77,39 +86,23 @@ export default class Container extends Vue {
 </script>
 
 <style scoped lang="scss">
-.em-title {
-  color: $gewis-red;
-  text-transform: uppercase;
-}
-
 .input-group {
   flex-wrap: nowrap;
   width: auto;
-}
-
-.container-block {
-  margin-bottom: 0.5rem;
 }
 
 .container-head {
   background-color: $gewis-grey-light;
   cursor: pointer;
   height: 2.5rem;
+
   span {
       white-space: nowrap;
   }
-
-  .edit-button {
-      background-color: $gewis-grey;
-      margin-left: 8px;
-      border-radius: 4px;
-      padding-left: 4px;
-      padding-right: 4px;
-  }
 }
 
-.chec {
-  display: inline;
+#container-name {
+  cursor: default;
 }
 
 .product-card {
@@ -124,11 +117,11 @@ export default class Container extends Vue {
       max-height: 5rem;
       background-color: $gewis-grey-light;
     }
-  }
-}
 
-.product-name {
-  background: $gewis-grey-accent;
+    > .product-name {
+      background: $gewis-grey-accent;
+    }
+  }
 }
 
 </style>

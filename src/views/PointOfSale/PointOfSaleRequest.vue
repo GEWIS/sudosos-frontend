@@ -1,45 +1,61 @@
 <template>
   <b-container fluid="lg">
-    <b-row>
     <h1 class="mb-2 mb-sm-2 mb-lg-2">
         {{ $t('posRequest.Request Point of Sale') }}
     </h1>
-    </b-row>
     <hr>
-    <b-row>
-      <b-col md="3" sm="12">
-        <h3>{{ $t('posRequest.General') }}</h3>
-        <b>{{ $t('posRequest.Title') }}</b>
-        <b-form-input type="text" v-model="requestedPOS.name"></b-form-input>
-        <b>{{ $t('posRequest.Selected containers')}}</b>
-        <ul>
-            <li v-for="storage in requestedPOS.storages" v-bind:key="storage.id">
-                {{ storage.name }}
+    <b-row cols-lg="mx-0">
+      <b-col md="3" sm="12" class="mb-4 mb-md-0">
+        <h5>{{ $t('posRequest.General') }}</h5>
+        <div class="pl-1">
+          <b>{{ $t('posRequest.Title') }}</b>
+          <b-form-input class="my-2" type="text" v-model="requestedPOS.name" />
+          <b>{{ $t('posRequest.Selected containers')}}</b>
+          <ul>
+              <li v-for="storage in requestedPOS.storages" v-bind:key="storage.id">
+                  {{ storage.name }}
+              </li>
+          </ul>
+        </div>
+        <h5>{{ $t('posRequest.Management') }}</h5>
+        <div class="pl-1">
+          <b>{{ $t('posRequest.Owner') }}</b>
+          <b-form-select class="my-2" v-model="requestedPOS.ownerId" :options="availableOrgans">
+          </b-form-select>
+          <ul v-if="availableOrgans.find((organ) => organ.value === requestedPOS.ownerId)"
+              class="pl-4">
+            <li v-for="member in
+              availableOrgans.find((organ) => organ.value === requestedPOS.ownerId).members"
+                v-bind:key="member">
+              {{ member }}
             </li>
-        </ul>
-        <h3>{{ $t('posRequest.Management') }}</h3>
-        <b>{{ $t('posRequest.Owner') }}</b>
-        <b-form-select v-model="requestedPOS.ownerId" :options="availableOrgans">
-        </b-form-select>
-        <b>{{ $t('posRequest.Managers') }}</b>
-        <ul v-if="availableOrgans.find((organ) => organ.value === requestedPOS.ownerId)">
-          <li v-for="member in
-            availableOrgans.find((organ) => organ.value === requestedPOS.ownerId).members"
-              v-bind:key="member">
-            {{ member }}
-          </li>
-        </ul><br>
-        <b-button variant="success" @click="requestPOS"
+          </ul>
+        </div>
+        <b-button class="mt-2" variant="success" @click="requestPOS"
             :disabled="requestButtonDisabled">
             {{ $t('posRequest.Request')}}
         </b-button>
       </b-col>
+
       <b-col md="9" sm="12" class="containers-container">
-        <p class="containers-header">{{ $t('posRequest.Containers') }}</p>
-        <Container v-for="storage in availableContainers" v-bind:key="storage.id"
-          :container="storage" :enabled="true" @toggled="containerToggled"/>
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="containers-header">{{ $t('posRequest.Containers') }}</p>
+          <b-button class="my-2" variant="success">
+            <font-awesome-icon icon="plus" />
+            {{ $t('posRequest.add container') }}
+          </b-button>
+        </div>
+        <Container v-for="storage in availableContainers"
+                   v-bind:key="storage.id"
+                   :container="storage"
+                   :enabled="true"
+                   @toggled="containerToggled"
+                   v-model="editContainer"
+        />
       </b-col>
     </b-row>
+
+    <EditContainerModal :editContainer="editContainer" />
   </b-container>
 </template>
 
@@ -49,9 +65,10 @@ import Container from '@/components/Container.vue';
 import { Storage } from '@/entities/Storage';
 import { PointOfSale, POSStatus } from '@/entities/PointOfSale';
 import PointsOfSale from '@/assets/pointsOfSale';
+import EditContainerModal from '@/components/EditContainerModal.vue';
 
   @Component({
-    components: { Container },
+    components: { Container, EditContainerModal },
   })
 
 export default class PointOfSaleRequest extends Vue {
@@ -68,6 +85,8 @@ export default class PointOfSaleRequest extends Vue {
     availableContainers: Storage[] = [];
 
     availableOrgans: Object = [];
+
+    editContainer: Storage = {} as Storage;
 
     beforeMount() {
       this.availableContainers = PointsOfSale.getAvailableContainers();
