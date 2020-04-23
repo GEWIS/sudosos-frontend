@@ -11,21 +11,28 @@
 
 <script lang="ts">
 import {
-  Component, Vue, Watch,
+  Component, Prop, Vue, Watch,
 } from 'vue-property-decorator';
 
   @Component
 export default class FileFormPreview extends Vue {
+    @Prop() private img: string | undefined;
+
     file: File = new File([], '');
 
-    // If a file is uploaded, add an image to the label next to in which contains said file
-    // this way the user can preview the uploaded file.
-    @Watch('file')
-    onFileChanged(value: File, old: File) : void {
+    mounted() {
+      if (this.img) {
+        this.setFilePreview(this.file, this.img);
+      }
+    }
+
+    setFilePreview = (file: File, src?: string) : void => {
       if (document.activeElement !== null) {
         let element = document.getElementById('ad-file') as HTMLElement;
         const img = document.createElement('img');
-        img.setAttribute('src', URL.createObjectURL(value));
+        const url = src || URL.createObjectURL(file);
+
+        img.setAttribute('src', url);
         img.style.maxHeight = '100%';
         img.style.maxWidth = `${element.offsetWidth - 48}px`;
 
@@ -39,6 +46,13 @@ export default class FileFormPreview extends Vue {
           element.style.height = '150px';
         }
       }
+    };
+
+    // If a file is uploaded, add an image to the label next to in which contains said file
+    // this way the user can preview the uploaded file.
+    @Watch('file')
+    onFileChanged(value: File, old: File) : void {
+      this.setFilePreview(value);
 
       // To let the v-model property know that the file has been updated
       this.$emit('input', value);
