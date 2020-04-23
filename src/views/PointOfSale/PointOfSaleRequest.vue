@@ -4,14 +4,14 @@
         {{ $t('posRequest.Request Point of Sale') }}
     </h1>
     <hr>
-    <b-row cols-lg="mx-0">
+    <b-row class="mx-0">
       <b-col md="3" sm="12" class="mb-4 mb-md-0">
         <h5>{{ $t('posRequest.General') }}</h5>
         <div class="pl-1">
           <b>{{ $t('posRequest.Title') }}</b>
           <b-form-input class="my-2" type="text" v-model="requestedPOS.name" />
           <b>{{ $t('posRequest.Selected containers')}}</b>
-          <ul>
+          <ul class="pl-4">
               <li v-for="storage in requestedPOS.storages" v-bind:key="storage.id">
                   {{ storage.name }}
               </li>
@@ -40,22 +40,35 @@
       <b-col md="9" sm="12" class="containers-container">
         <div class="d-flex justify-content-between align-items-center">
           <p class="containers-header">{{ $t('posRequest.Containers') }}</p>
-          <b-button class="my-2" variant="success">
+          <b-button class="my-2" variant="success" v-on:click="addContainer">
             <font-awesome-icon icon="plus" />
             {{ $t('posRequest.add container') }}
           </b-button>
         </div>
-        <Container v-for="storage in availableContainers"
+        <Container v-for="storage in standardContainers"
                    v-bind:key="storage.id"
                    :container="storage"
                    :enabled="true"
+                   :editable="false"
+                   @toggled="containerToggled"
+                   v-model="editContainer"
+        />
+
+        <Container v-for="storage in addedContainers"
+                   v-bind:key="storage.id"
+                   :container="storage"
+                   :enabled="true"
+                   :editable="true"
                    @toggled="containerToggled"
                    v-model="editContainer"
         />
       </b-col>
     </b-row>
 
-    <EditContainerModal :editContainer="editContainer" />
+    <EditContainerModal :editContainer="editContainer"
+                        v-on:storageAdded="addStorage"
+                        v-on:storageEdited="editStorage"
+    />
   </b-container>
 </template>
 
@@ -82,17 +95,44 @@ export default class PointOfSaleRequest extends Vue {
       updatedAt: new Date(),
     };
 
-    availableContainers: Storage[] = [];
+    standardContainers: Storage[] = [];
+
+    addedContainers: Storage[] = [];
 
     availableOrgans: Object = [];
 
     editContainer: Storage = {} as Storage;
 
     beforeMount() {
-      this.availableContainers = PointsOfSale.getAvailableContainers();
+      this.standardContainers = PointsOfSale.getAvailableContainers();
       this.availableOrgans = PointsOfSale.getAvailableOrgans();
     }
 
+    /*
+    Method for adding a new container, makes sure editContainer is an empty Storage object
+     */
+    addContainer(): void {
+      this.editContainer = {} as Storage;
+      this.$bvModal.show('edit-container');
+    }
+
+    addStorage(storage: Storage): void {
+      this.addedContainers.push(storage);
+    }
+
+    editStorage(storage: Storage): void {
+      let i = this.addedContainers.findIndex(s => s.id === storage.id);
+
+      if (i > 0) {
+        this.addedContainers[i] = storage;
+      }
+
+      i = this.requestedPOS.storages.findIndex(s => s.id === storage.id);
+
+      if (i > 0) {
+        this.requestedPOS.storages[i] = storage;
+      }
+    }
 
     // eslint-disable-next-line class-methods-use-this
     requestPOS() {
@@ -100,8 +140,9 @@ export default class PointOfSaleRequest extends Vue {
     }
 
     containerToggled(containerData: any) {
-      const updatedContainer = this.availableContainers
-        .find(storage => storage.id === containerData.id);
+      const containers = this.standardContainers.concat(this.addedContainers);
+
+      const updatedContainer = containers.find(storage => storage.id === containerData.id);
 
       if (updatedContainer) {
         if (containerData.state) {

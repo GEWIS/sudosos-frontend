@@ -164,7 +164,8 @@
     "save": "opslaan",
     "cancel": "cancel",
     "edit container": "bewerk container",
-    "Duration": "Duur",
+    "add container": "container toevoegen",
+    "Name": "Naam",
     "Open from": "Open van",
     "Open till": "Open tot",
     "name invalid": "Vul een naam in die langer groter dan 0 tekens is",
@@ -172,6 +173,9 @@
     "openTill invalid": "Vul alsjeblieft een juist tijd die later is dan open van",
     "added on": "Toegevoegd op",
     "added by": "Toegevoegd door"
+  },
+  "containerComponent": {
+    "new": "Nieuw"
   },
   "transactionFlagTableFilter": {
     "from": "van",

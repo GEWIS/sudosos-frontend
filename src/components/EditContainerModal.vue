@@ -3,7 +3,9 @@
     id="edit-container"
     :ok-title="$t('editContainerModal.save')"
     :cancel-title="$t('editContainerModal.cancel')"
-    :title="$t('editContainerModal.edit container')"
+    :title="Object.keys(editContainer).length > 0 ?
+    $t('editContainerModal.edit container') :
+    $t('editContainerModal.add container')"
     size="lg"
     hide-header-close
     centered>
@@ -29,7 +31,7 @@
       <b-form-group
         label-cols="12"
         label-cols-sm="3"
-        :label="$t('editContainerModal.Duration')"
+        :label="$t('editContainerModal.Name')"
         label-align="left"
         label-for="name"
         :state="nameState"
@@ -83,7 +85,7 @@
 
     </div>
 
-    <template v-slot:modal-footer="{ ok, cancel }">
+    <template v-slot:modal-footer="{ cancel }">
       <b-button
         variant="primary"
         class="btn-empty"
@@ -93,7 +95,7 @@
       <b-button
         variant="primary"
         class="btn-empty"
-        @click="ok()">
+        @click="save">
         {{ $t('editContainerModal.save') }}
       </b-button>
     </template>
@@ -118,6 +120,40 @@ export default class EditContainerModal extends Formatters {
 
     // Open till input field
     openTill: string | null = null;
+
+    /*
+    First check if form has been filled in correctly. Then check if we are adding an object or not
+    if yes then make a Storage with the gathered data and emit this storage to the parent else make
+    sure the storage we were editting gets updated correctly.
+     */
+    save(): void {
+      if (this.nameState === null || !this.nameState) {
+        this.name = '';
+        this.openFrom = '';
+        this.openTill = '';
+      } else if (Object.keys(this.editContainer).length === 0) {
+        const storage = {
+          name: this.name,
+          id: '004',
+          ownerId: '1',
+          products: [],
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        } as unknown as Storage;
+
+        this.$emit('storageAdded', storage);
+        this.$bvModal.hide('edit-container');
+      } else {
+        const storage = this.editContainer;
+        storage.name = this.name;
+        storage.updatedAt = new Date();
+
+        // TODO make sure data gets pushed somehow
+
+        this.$emit('storageEdited', storage);
+        this.$bvModal.hide('edit-container');
+      }
+    }
 
     // Check state of name
     get nameState(): boolean | null {
@@ -164,7 +200,11 @@ export default class EditContainerModal extends Formatters {
 
     @Watch('editContainer')
     onEditContainerChange(value: Storage, old: Storage) : void {
-      this.name = value.name;
+      if (Object.keys(value).length > 0) {
+        this.name = value.name;
+      } else {
+        this.name = null;
+      }
     }
 }
 </script>

@@ -164,7 +164,8 @@
     "save": "save",
     "cancel": "cancel",
     "edit container": "edit container",
-    "Duration": "Duration",
+    "add container": "add container",
+    "Name": "Name",
     "Open from": "Open from",
     "Open till": "Open till",
     "name invalid": "Please enter a valid name with length > 0",
@@ -172,6 +173,9 @@
     "openTill invalid": "Please enter a valid time later than open from",
     "added on": "Added on",
     "added by": "Added by"
+  },
+  "containerComponent": {
+    "new": "New"
   },
   "transactionFlagTableFilter": {
     "from": "from",

@@ -15,7 +15,7 @@
       </b-input-group>
 
       <span class="mx-3 my-auto"
-            v-show="canEdit && enabled"
+            v-show="canEdit && enabled && editable"
             v-on:click.stop="() => {}"
             v-on:click="$emit('input', container)"
             v-b-modal.edit-container>
@@ -64,6 +64,8 @@ export default class Container extends Vue {
   @Prop() container: Storage | undefined;
 
   @Prop() enabled: Boolean | undefined;
+
+  @Prop({ default: true }) editable!: boolean;
 
   isOpen: Boolean = false;
 
