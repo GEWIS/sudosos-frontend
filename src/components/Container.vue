@@ -55,7 +55,7 @@
           <b-col v-if="canEdit && enabled && editable"
                  class="text-center product-card px-2"
                  cols="6" sm="4" md="3" lg="2"
-                 v-b-modal.edit-product
+                 v-on:click="$emit('addProduct', container.id)"
           >
             <div class="product add">
               <div><font-awesome-icon icon="plus" class="h-100" /></div>

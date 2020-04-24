@@ -184,8 +184,14 @@
     "added by": "Toegevoegd door",
     "container": "container",
     "Price": "Prijs",
+    "Category": "Categorie",
+    "Traysize": "Staffelgroote",
+    "Alcoholic": "Alcoholisch",
+    "Negative": "Mag saldo negatief maken",
     "Picture": "Plaatje",
     "name invalid": "Voer een correcte naam in van die groter dan 0 tekens is",
+    "category invalid": "Voer een correcte categorie in van die groter dan 0 tekens is",
+    "traysize invalid": "Voer een correcte staffegrote in die groter dan 0 is",
     "price invalid": "Voer een correcte prijs in die groter of gelijk aan 0 is"
   },
   "containerComponent": {

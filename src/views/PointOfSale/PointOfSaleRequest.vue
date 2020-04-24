@@ -61,6 +61,7 @@
                    :editable="true"
                    @toggled="containerToggled"
                    v-model="editContainer"
+                   v-on:addProduct="prepAddingProduct"
         />
       </b-col>
     </b-row>
@@ -70,7 +71,8 @@
                         v-on:storageEdited="editStorage"
     />
 
-    <EditProductModal />
+    <EditProductModal v-on:productAdded="addProduct"
+    />
   </b-container>
 </template>
 
@@ -82,6 +84,7 @@ import { PointOfSale, POSStatus } from '@/entities/PointOfSale';
 import PointsOfSale from '@/assets/pointsOfSale';
 import EditContainerModal from '@/components/EditContainerModal.vue';
 import EditProductModal from '@/components/EditProductModal.vue';
+import { Product } from '@/entities/Product';
 
   @Component({
     components: { Container, EditContainerModal, EditProductModal },
@@ -106,6 +109,8 @@ export default class PointOfSaleRequest extends Vue {
 
     editContainer: Storage = {} as Storage;
 
+    addContainerID: string = '';
+
     beforeMount() {
       this.standardContainers = PointsOfSale.getAvailableContainers();
       this.availableOrgans = PointsOfSale.getAvailableOrgans();
@@ -119,10 +124,16 @@ export default class PointOfSaleRequest extends Vue {
       this.$bvModal.show('edit-container');
     }
 
+    /*
+    Method for adding a storage container
+     */
     addStorage(storage: Storage): void {
       this.addedContainers.push(storage);
     }
 
+    /*
+    Method for editting storage container, once finished it's data will be updated everywhere
+     */
     editStorage(storage: Storage): void {
       let i = this.addedContainers.findIndex(s => s.id === storage.id);
 
@@ -135,6 +146,20 @@ export default class PointOfSaleRequest extends Vue {
       if (i > 0) {
         this.requestedPOS.storages[i] = storage;
       }
+    }
+
+    /*
+    Method for preparing adding a product
+     */
+    prepAddingProduct(id: string) : void {
+      this.addContainerID = id;
+      this.$bvModal.show('edit-product');
+    }
+
+    addProduct(product: Product) : void {
+      const i = this.addedContainers.findIndex(s => s.id === this.addContainerID);
+
+      this.addedContainers[i].products.push(product);
     }
 
     // eslint-disable-next-line class-methods-use-this

@@ -57,6 +57,24 @@
       <b-form-group
         label-cols="12"
         label-cols-sm="3"
+        :label="$t('editProductModal.Category')"
+        label-align="left"
+        label-for="category"
+        :state="categoryState"
+        :invalid-feedback="invalidCategory"
+      >
+        <b-form-input
+          id="category"
+          name="category"
+          type="text"
+          v-model="category"
+          :state="categoryState"
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        label-cols="12"
+        label-cols-sm="3"
         :label="$t('editProductModal.Price')"
         label-align="left"
         label-for="price"
@@ -76,6 +94,57 @@
       <b-form-group
         label-cols="12"
         label-cols-sm="3"
+        :label="$t('editProductModal.Traysize')"
+        label-align="left"
+        label-for="traysize"
+        :state="traysizeState"
+        :invalid-feedback="invalidTraysize"
+      >
+        <b-form-input
+          id="traysize"
+          name="traysize"
+          type="number"
+          step="1"
+          v-model="traySize"
+          :state="traysizeState"
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        label-cols="12"
+        label-cols-sm="3"
+        :label="$t('editProductModal.Alcoholic')"
+        label-align="left"
+        label-for="alcoholic"
+      >
+        <b-form-checkbox
+          id="alcoholic"
+          name="alcoholic"
+          v-model="alcoholic"
+        >
+          {{ $t('editProductModal.Alcoholic') }}
+        </b-form-checkbox>
+      </b-form-group>
+
+      <b-form-group
+        label-cols="12"
+        label-cols-sm="3"
+        :label="$t('editProductModal.Negative')"
+        label-align="left"
+        label-for="negative"
+      >
+        <b-form-checkbox
+          id="negative"
+          name="negative"
+          v-model="negative"
+        >
+          {{ $t('editProductModal.Negative') }}
+        </b-form-checkbox>
+      </b-form-group>
+
+      <b-form-group
+        label-cols="12"
+        label-cols-sm="3"
         :label="$t('editProductModal.Picture')"
         label-align="left"
         label-for="ad-file"
@@ -84,7 +153,7 @@
       </b-form-group>
     </div>
 
-    <template v-slot:modal-footer="{ ok, cancel }">
+    <template v-slot:modal-footer="{ cancel }">
       <b-button
         variant="primary"
         class="btn-empty"
@@ -94,7 +163,7 @@
       <b-button
         variant="primary"
         class="btn-empty"
-        @click="ok()">
+        @click="save">
         {{ $t('editProductModal.save') }}
       </b-button>
     </template>
@@ -121,6 +190,38 @@ export default class EditProductModal extends Vue {
 
     price: number | null = null;
 
+    traySize: number | null = null;
+
+    category: string | null = null;
+
+    alcoholic: boolean | null = null;
+
+    negative: boolean | null = null;
+
+    file: File = new File([], '');
+
+    save(): void {
+      if (this.nameState && this.categoryState && this.priceState
+          && this.traysizeState && this.file) {
+        const product = {
+          id: '00004',
+          name: this.name,
+          ownerId: '001',
+          price: this.price,
+          picture: URL.createObjectURL(this.file),
+          traySize: this.traySize,
+          category: this.category,
+          isAlcoholic: this.alcoholic,
+          negative: this.negative,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        } as Product;
+
+        this.$emit('productAdded', product);
+        this.$bvModal.hide('edit-product');
+      }
+    }
+
     // Check state of name
     get nameState(): boolean | null {
       return this.name === null ? null : this.name.length > 0;
@@ -130,6 +231,30 @@ export default class EditProductModal extends Vue {
     get invalidName(): string {
       if (!this.nameState) {
         return this.$t('editProductModal.name invalid').toString();
+      }
+
+      return '';
+    }
+
+    get categoryState(): boolean | null {
+      return this.category === null ? null : this.category.length > 0;
+    }
+
+    get invalidCategory() : string {
+      if (!this.categoryState) {
+        return this.$t('editProductModal.category invalid').toString();
+      }
+
+      return '';
+    }
+
+    get traysizeState(): boolean | null {
+      return this.traySize === null ? null : this.traySize > 0;
+    }
+
+    get invalidTraysize() : string {
+      if (!this.traysizeState) {
+        return this.$t('editProductModal.traysize invalid').toString();
       }
 
       return '';

@@ -184,8 +184,14 @@
     "added by": "Added by",
     "container": "container",
     "Price": "Price",
+    "Category": "Category",
+    "Traysize": "Traysize",
+    "Alcoholic": "Alcoholic",
+    "Negative": "Is allowed to introduce negative saldo",
     "Picture": "Picture",
     "name invalid": "Please provide a valid name with length > 0",
+    "category invalid": "Please provide a valid category with length > 0",
+    "traysize invalid": "Please provide a valid traysize that is higher than 0",
     "price invalid": "Please provide a valid price that is higher or equal to 0"
   },
   "containerComponent": {
