@@ -108,7 +108,7 @@
           label-align="left"
           label-for="ad-file"
         >
-          <FileFormPreview v-model="file"></FileFormPreview>
+          <FileFormPreview v-model="file" :img="img"></FileFormPreview>
         </b-form-group>
       </div>
 
@@ -187,6 +187,9 @@ export default class AdvertisementsList extends Formatters {
     // ID of currently opened advertisement
     currentActiveId: string = '';
 
+    // Image URL if editting advertisement
+    img: string = '';
+
     perPage: number = 12;
 
     currentPage: number = 1;
@@ -235,10 +238,12 @@ export default class AdvertisementsList extends Formatters {
         this.currentActiveId = id;
         this.duration = a.duration;
         this.active = a.active;
+        this.img = a.thumbnail.toString();
         // TODO: Fix that img is also shown in image preview box e.g. convert img to file
       } else {
         this.duration = 0;
         this.active = false;
+        this.img = '';
       }
     }
 

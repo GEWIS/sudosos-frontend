@@ -52,7 +52,7 @@
     "What": "Wat",
     "Info": "Info"
   },
-  "posRequest": {
+  "posApprove": {
     "Request:": "Aanvraag:",
     "Approve": "Goedkeuren",
     "Reject": "Afkeuren",
@@ -62,6 +62,38 @@
     "Owner": "Eigenaar",
     "Managers": "Beheerders",
     "Containers": "Containers"
+  },
+  "posRequest": {
+    "Request Point of Sale": "Aanvraag verkooppunt",
+    "General": "Algemeen",
+    "Title": "Titel",
+    "Selected containers": "Geselecteerde containers",
+    "Management": "Beheer",
+    "Owner": "Eigenaar",
+    "Managers": "Beheerders",
+    "Containers": "Containers",
+    "add container": "Container toevoegen",
+    "Request": "Vraag aan",
+    "Please enter a name for this POS": "Voer alsjeblieft een naam in voor dit verkooppunt",
+    "Please select an owner for this POS": "Selecteer alsjeblieft een eigenaar voor dit verkooppunt",
+    "confirm": "Bevestig verwijderen",
+    "are you sure": "Weet je zeker dat je deze container wil verwijderen?"
+  },
+  "productInfoModal": {
+    "title": "Product informatie",
+    "Cancel": "Sluiten",
+    "Name": "Naam",
+    "Put in by": "Toegevoegd door",
+    "Put in on": "Toegevoegd op",
+    "Price": "Prijs",
+    "Category": "Categorie",
+    "Traysize": "Staffelgrote",
+    "Contains alcohol": "Bevat alcohol",
+    "Yes": "Ja",
+    "No": "Nee",
+    "Can induce negative saldo": "Kan saldo negatief maken",
+    "Picture": "Plaatje",
+    "Product picture": "Product plaatje"
   },
   "flagged": {
     "Flagged transactions": "Gemarkeerde transacties"
@@ -146,6 +178,44 @@
   "containersOverview": {
     "Containers": "Opslag"
   },
+  "editContainerModal": {
+    "save": "opslaan",
+    "cancel": "cancel",
+    "edit container": "bewerk container",
+    "add container": "container toevoegen",
+    "Name": "Naam",
+    "Open from": "Open van",
+    "Open till": "Open tot",
+    "name invalid": "Vul een naam in die langer groter dan 0 tekens is",
+    "openFrom invalid": "Voer alsjeblieft een juiste tijd in",
+    "openTill invalid": "Vul alsjeblieft een juist tijd die later is dan open van",
+    "added on": "Toegevoegd op",
+    "added by": "Toegevoegd door"
+  },
+  "editProductModal": {
+    "save": "opslaan",
+    "cancel": "cancel",
+    "edit product": "bewerk product",
+    "add product": "product toevoegen",
+    "Name": "Naam",
+    "added on": "Toegevoegd op",
+    "added by": "Toegevoegd door",
+    "container": "container",
+    "Price": "Prijs",
+    "Category": "Categorie",
+    "Traysize": "Staffelgroote",
+    "Alcoholic": "Alcoholisch",
+    "Negative": "Mag saldo negatief maken",
+    "Picture": "Plaatje",
+    "Delete product": "Verwijder product",
+    "name invalid": "Voer een correcte naam in van die groter dan 0 tekens is",
+    "category invalid": "Voer een correcte categorie in van die groter dan 0 tekens is",
+    "traysize invalid": "Voer een correcte staffegrote in die groter dan 0 is",
+    "price invalid": "Voer een correcte prijs in die groter of gelijk aan 0 is"
+  },
+  "containerComponent": {
+    "new": "Nieuw"
+  },
   "transactionFlagTableFilter": {
     "from": "van",
     "placeholder": "Selecteer een datum",
@@ -203,5 +273,8 @@
     "Manage NFC devices": "Beheer NFC tokens",
     "Confirm deletion": "Bevestig verwijderen",
     "Are you sure": "Weet je zeker dat je deze NFC token wil verwijderen?"
+  },
+  "signOut": {
+    "message": "Je wordt uitgelogd! Hopelijk heb je het naar je zin gehad en zien we je snel weer :)"
   }
 }

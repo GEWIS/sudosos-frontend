@@ -1,44 +1,93 @@
 <template>
   <b-container fluid="lg">
-    <b-row>
-      <b-col lg="8" cols="12">
-        <h1 class="mb-2 mb-sm-2 mb-lg-2 text-truncate">
-          {{ $t('posRequest.Request:') }} {{ requestedPOS.name }}
-        </h1>
-      </b-col>
-      <b-col class="approve-reject-buttons" lg="4" cols="12">
-        <b-button variant="success">
-          <font-awesome-icon icon="check"></font-awesome-icon>
-          {{ $t('posRequest.Approve')}}
-        </b-button>
-        <b-button variant="danger">
-          <font-awesome-icon icon="times"></font-awesome-icon>
-          {{ $t('posRequest.Reject')}}
-        </b-button>
-      </b-col>
-    </b-row>
+    <h1 class="mb-2 mb-sm-2 mb-lg-2">
+        {{ $t('posRequest.Request Point of Sale') }}
+    </h1>
     <hr>
-    <b-row class="m-0">
-      <b-col md="3" sm="12">
-        <h3>{{ $t('posRequest.General') }}</h3>
-        <b>{{ $t('posRequest.Title') }}</b>
-        <p>{{ requestedPOS.name }}</p>
-        <h3>{{ $t('posRequest.Management') }}</h3>
-        <b>{{ $t('posRequest.Owner') }}</b>
-        <p>{{ ownerData.organName }}</p>
-        <b>{{ $t('posRequest.Managers') }}</b>
-        <ul>
-          <li v-for="member in ownerData.members" v-bind:key="member">
-            {{ member }}
-          </li>
-        </ul>
+    <b-row class="mx-0">
+      <b-col md="3" sm="12" class="mb-4 mb-md-0">
+        <h5>{{ $t('posRequest.General') }}</h5>
+        <div class="pl-1">
+          <b>{{ $t('posRequest.Title') }}</b>
+          <b-form-input class="my-2" type="text" v-model="requestedPOS.name" />
+          <b>{{ $t('posRequest.Selected containers')}}</b>
+          <ul class="pl-4">
+              <li v-for="storage in requestedPOS.storages" v-bind:key="storage.id">
+                  {{ storage.name }}
+              </li>
+          </ul>
+        </div>
+        <h5>{{ $t('posRequest.Management') }}</h5>
+        <div class="pl-1">
+          <b>{{ $t('posRequest.Owner') }}</b>
+          <b-form-select class="my-2" v-model="requestedPOS.ownerId" :options="availableOrgans">
+          </b-form-select>
+          <ul v-if="availableOrgans.find((organ) => organ.value === requestedPOS.ownerId)"
+              class="pl-4">
+            <li v-for="member in
+              availableOrgans.find((organ) => organ.value === requestedPOS.ownerId).members"
+                v-bind:key="member">
+              {{ member }}
+            </li>
+          </ul>
+        </div>
+        <b-button class="mt-2" variant="success" @click="requestPOS"
+            :disabled="requestButtonDisabled">
+            {{ $t('posRequest.Request')}}
+        </b-button>
       </b-col>
+
       <b-col md="9" sm="12" class="containers-container">
-        <p class="containers-header">{{ $t('Containers') }}</p>
-        <Container v-for="storage in requestedPOS.storages" v-bind:key="storage.id"
-          :container="storage" :enabled="false"/>
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="containers-header">{{ $t('posRequest.Containers') }}</p>
+          <b-button class="my-2" variant="success" v-on:click="addContainer">
+            <font-awesome-icon icon="plus" />
+            {{ $t('posRequest.add container') }}
+          </b-button>
+        </div>
+        <Container v-for="storage in standardContainers"
+                   v-bind:key="storage.id"
+                   :container="storage"
+                   :enabled="true"
+                   :editable="false"
+                   @toggled="containerToggled"
+                   v-model="editContainer"
+                   v-on:productDetails="showProductDetails"
+        />
+
+        <Container v-for="storage in addedContainers"
+                   v-bind:key="storage.id"
+                   :container="storage"
+                   :enabled="true"
+                   :editable="true"
+                   @toggled="containerToggled"
+                   v-model="editContainer"
+                   v-on:addProduct="prepAddingProduct"
+                   v-on:editProduct="prepEdittingProduct"
+                   v-on:productDetails="showProductDetails"
+        />
       </b-col>
     </b-row>
+
+    <EditContainerModal :editContainer="editContainer"
+                        v-on:storageAdded="addStorage"
+                        v-on:storageEdited="editStorage"
+    />
+
+    <EditProductModal :editProduct="editProduct"
+                      v-on:productAdded="addProduct"
+                      v-on:productEdited="editExistingProduct"
+                      v-on:productDeleted="deleteProduct"
+    />
+
+    <ConfirmationModal :reason="$t('posRequest.are you sure')"
+                       :title="$t('posRequest.confirm')"
+                       v-on:modalConfirmed="confirmStorageDelete"
+    />
+
+    <ProductInfoModal :product="infoProduct"
+                      v-if="Object.keys(infoProduct).length > 0"
+    />
   </b-container>
 </template>
 
@@ -46,129 +95,183 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Container from '@/components/Container.vue';
 import { Storage } from '@/entities/Storage';
-import { Product } from '@/entities/Product';
 import { PointOfSale, POSStatus } from '@/entities/PointOfSale';
+import PointsOfSale from '@/assets/pointsOfSale';
+import EditContainerModal from '@/components/EditContainerModal.vue';
+import EditProductModal from '@/components/EditProductModal.vue';
+import { Product } from '@/entities/Product';
+import ConfirmationModal from '@/components/ConfirmationModal.vue';
+import ProductInfoModal from '@/components/ProductInfoModal.vue';
 
   @Component({
-    components: { Container },
+    components: {
+      Container, EditContainerModal, EditProductModal, ConfirmationModal, ProductInfoModal,
+    },
   })
 
 export default class PointOfSaleRequest extends Vue {
-  // *************************************************
-  //
-  //               Begin test data
-  //
-  // *************************************************
-  private beugel: Product = {
-    id: '1',
-    name: 'Grolsch beugel',
-    ownerId: '1',
-    price: 110,
-    picture: 'https://www.supermarktaanbiedingen.com/public/images/product/2017/39/0-508102fls-grolsch-premium-pilsner-beugel-45cl.jpg',
-    traySize: 20,
-    category: 'drink',
-    isAlcoholic: true,
-    negative: false,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
+    requestedPOS: PointOfSale = {
+      name: '',
+      id: '',
+      ownerId: '',
+      status: POSStatus.OPEN,
+      storages: [],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
 
-  private tripel: Product = {
-    id: '2',
-    name: 'Grimbergen tripel (voor de sfeer)',
-    ownerId: '1',
-    price: 90,
-    picture: 'https://deklokdranken.blob.core.windows.net/product-images/105120.jpg',
-    traySize: 24,
-    category: 'drink',
-    isAlcoholic: true,
-    negative: false,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
+    standardContainers: Storage[] = [];
 
-  private alcoholFree: Product = {
-    id: '3',
-    name: 'Alcoholvrije Athena-meuk',
-    ownerId: '2',
-    price: 50,
-    picture: 'https://www.cocktailicious.nl/wp-content/uploads/2019/10/sex-on-the-beach.jpg',
-    traySize: 1,
-    category: 'drink',
-    isAlcoholic: false,
-    negative: false,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
+    addedContainers: Storage[] = [];
 
-  private cocktail: Product = {
-    id: '4',
-    name: 'Athena-meuk met alcohol',
-    ownerId: '2',
-    price: 150,
-    picture: 'https://www.mitra.nl/cms/userfiles/cocktails/298-mojito43.png',
-    traySize: 1,
-    category: 'drink',
-    isAlcoholic: true,
-    negative: false,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  }
+    availableOrgans: Object = [];
 
-  private bacFridge: Storage = {
-    name: 'BAC-koelkast',
-    id: '1',
-    ownerId: '1',
-    products: [this.beugel, this.tripel],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  }
+    editContainer: Storage = {} as Storage;
 
-  private outdoorCocktails: Storage = {
-    name: 'Athena-cocktails',
-    id: '2',
-    ownerId: '2',
-    products: [this.alcoholFree, this.cocktail],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  }
+    editProduct: Product = {} as Product;
 
-  private requestedPOS: PointOfSale = {
-    name: 'SudoSOS-tablet',
-    id: '1',
-    ownerId: '1',
-    status: POSStatus.ACCEPTED,
-    storages: [this.bacFridge, this.outdoorCocktails],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  }
+    addContainerID: string = '';
 
-  private ownerData: Object = {
-    organName: 'Fictieve sjaarzencommissie',
-    members: ['Sjaars 1', 'Sjaars -1', 'Sjaars 65', 'Marcin van de Ven'],
-  }
+    infoProduct: Product = {} as Product;
 
-  // *************************************************
-  //
-  //               End test data
-  //
-  // *************************************************
+    beforeMount(): void {
+      this.standardContainers = PointsOfSale.getAvailableContainers();
+      this.availableOrgans = PointsOfSale.getAvailableOrgans();
+    }
+
+    /*
+    Method for adding a new container, makes sure editContainer is an empty Storage object
+     */
+    addContainer(): void {
+      this.editContainer = {} as Storage;
+      this.$bvModal.show('edit-container');
+    }
+
+    /*
+    Method for adding a storage container
+     */
+    addStorage(storage: Storage): void {
+      this.addedContainers.push(storage);
+    }
+
+    /*
+    Method for editting storage container, once finished it's data will be updated everywhere
+     */
+    editStorage(storage: Storage): void {
+      let i = this.addedContainers.findIndex(s => s.id === storage.id);
+
+      if (i > 0) {
+        this.addedContainers[i] = storage;
+      }
+
+      i = this.requestedPOS.storages.findIndex(s => s.id === storage.id);
+
+      if (i > 0) {
+        this.requestedPOS.storages[i] = storage;
+      }
+    }
+
+    /*
+    Method for preparing adding a product
+     */
+    prepAddingProduct(id: string) : void {
+      this.addContainerID = id;
+      this.editProduct = {} as Product;
+      this.$bvModal.show('edit-product');
+    }
+
+    /*
+    Method for preparing editting an product
+     */
+    prepEdittingProduct(id: string, product: Product): void {
+      this.addContainerID = id;
+      this.editProduct = product;
+      this.$bvModal.show('edit-product');
+    }
+
+    /*
+    Method to add new products to the storage container. If the storage container was already
+    added to the requestedPOS is will be updated there as well.
+    */
+    addProduct(product: Product) : void {
+      const i = this.addedContainers.findIndex(s => s.id === this.addContainerID);
+      this.addedContainers[i].products.push(product);
+      this.editStorage(this.addedContainers[i]);
+    }
+
+    /*
+    Method to edit a currently existing product and updating it's data. Once updated it will also be
+    updated in the requestedPOS if it's storage container was already in there.
+    */
+    editExistingProduct(product: Product): void {
+      const i = this.addedContainers.findIndex(s => s.id === this.addContainerID);
+      const j = this.addedContainers[i].products.findIndex(p => p.id === product.id);
+      this.addedContainers[i].products[j] = product;
+      this.editStorage(this.addedContainers[i]);
+    }
+
+    /*
+    Once deletion of container is confirmed it should be removed from the editted containers as
+    well as the containers that were selected for the requestedPOS
+    */
+    confirmStorageDelete(): void {
+      this.addedContainers = this.addedContainers.filter(s => s.id !== this.editContainer.id);
+      this.requestedPOS.storages = this.requestedPOS.storages.filter(
+        s => s.id !== this.editContainer.id,
+      );
+    }
+
+    deleteProduct(product: Product): void {
+      const i = this.addedContainers.findIndex(s => s.id === this.addContainerID);
+      this.addedContainers[i].products = this.addedContainers[i].products.filter(
+        p => p.id !== product.id,
+      );
+      this.editStorage(this.addedContainers[i]);
+      this.$bvModal.hide('edit-product');
+    }
+
+    showProductDetails(product: Product): void {
+      this.infoProduct = product;
+      this.$nextTick(() => {
+        this.$bvModal.show('product-info-modal');
+      });
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    requestPOS() {
+    // TODO: Verwerking data
+    }
+
+    /*
+    Method that either deletes or add's selected containers to the requestedPOS
+     */
+    containerToggled(containerData: any) {
+      const containers = this.standardContainers.concat(this.addedContainers);
+
+      const updatedContainer = containers.find(storage => storage.id === containerData.id);
+
+      if (updatedContainer) {
+        if (containerData.state) {
+          this.requestedPOS.storages.push(updatedContainer);
+        } else {
+        // Using a filter to remove items from an object array
+          this.requestedPOS.storages = this.requestedPOS.storages
+            .filter(storage => storage.id !== updatedContainer.id);
+        }
+      }
+    }
+
+    get requestButtonDisabled() {
+      return this.requestedPOS.name.length < 1 || this.requestedPOS.ownerId === '';
+    }
 }
 </script>
 
 <style lang="scss" scoped>
-  .approve-reject-buttons {
-    margin-top: auto;
-    margin-bottom: auto;
-    text-align: right;
-
-    button:first-of-type {
-      margin-right: 8px;
-    }
-
+  .approve-reject-buttons{
     button {
+      margin-right: 8px;
       min-width: 100px;
-      margin-bottom: 8px;
     }
   }
   .containers-container{

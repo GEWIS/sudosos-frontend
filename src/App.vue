@@ -2,7 +2,7 @@
   <div id="app">
     <b-navbar toggleable="md" type="dark" variant="primary">
       <b-container fluid="md">
-      <b-navbar-brand to="/" active-class="" exact-active-class="">
+      <b-navbar-brand :to="{ name: 'home'}" active-class="" exact-active-class="">
         <span>SudoSOS</span>
         <img src="./assets/img/gewis-branding.svg"  alt="GEWIS Logo"/>
       </b-navbar-brand>
@@ -11,23 +11,37 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item to="/transactions">{{ $t('app.Transactions') }}</b-nav-item>
-          <b-nav-item to="/saldo">{{ $t('app.Saldo') }}</b-nav-item>
+          <b-nav-item :to="{ name: 'transactions'}">{{ $t('app.Transactions') }}</b-nav-item>
+          <b-nav-item :to="{ name: 'saldo'}">{{ $t('app.Saldo') }}</b-nav-item>
           <b-nav-item-dropdown :text="$t('app.Points of Sale')">
-            <b-dropdown-item to="/point-of-sale-overview">{{ $t('app.Overview') }}</b-dropdown-item>
-            <b-dropdown-item to="/point-of-sale-request">{{ $t('app.Request') }}</b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'pointOfSale'}">
+              {{ $t('app.Overview') }}
+            </b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'pointOfSaleRequest'}">
+              {{ $t('app.Request') }}
+            </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown :text="$t('app.Admin')">
-            <b-dropdown-item to="/manage-pos">{{ $t('app.Manage POS') }}</b-dropdown-item>
-            <b-dropdown-item to="/screens">{{ $t('app.Screens') }}</b-dropdown-item>
-            <b-dropdown-item to="/advertisements">{{ $t('app.Advertisements') }}</b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'managePointOfSale'}">
+              {{ $t('app.Manage POS') }}
+            </b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'screens'}">
+              {{ $t('app.Screens') }}
+            </b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'advertisements'}">
+              {{ $t('app.Advertisements') }}
+            </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown :text="$t('app.BAC')">
-            <b-dropdown-item to="/manage-pos">{{ $t('app.Manage POS') }}</b-dropdown-item>
-            <b-dropdown-item to="/flagged-transactions">
+            <b-dropdown-item :to="{ name: 'managePointOfSale'}">
+              {{ $t('app.Manage POS') }}
+            </b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'flaggedTransactions'}">
               {{ $t('app.Flagged transactions') }}
             </b-dropdown-item>
-            <b-dropdown-item to="/manage-products">{{ $t('app.Manage products') }}</b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'manageProducts'}">
+              {{ $t('app.Manage products') }}
+            </b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
 
@@ -38,10 +52,10 @@
             <template v-slot:button-content>
               {{ currentUser.firstName }}
             </template>
-            <b-dropdown-item to="/profile">{{ $t('app.Profile') }}</b-dropdown-item>
-            <b-dropdown-item to="/sign-out">{{ $t('app.Sign out') }}</b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'profile'}">{{ $t('app.Profile') }}</b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'signOut'}">{{ $t('app.Sign out') }}</b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item to="/saldo" active-class="" exact-active-class="">
+          <b-nav-item :to="{ name: 'saldo'}" active-class="" exact-active-class="">
             {{ dinero({amount: currentUser.saldo}).toFormat() }}
           </b-nav-item>
           <b-nav-item-dropdown right>
