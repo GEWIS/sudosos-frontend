@@ -52,6 +52,7 @@
                    :editable="false"
                    @toggled="containerToggled"
                    v-model="editContainer"
+                   v-on:productDetails="showProductDetails"
         />
 
         <Container v-for="storage in addedContainers"
@@ -63,6 +64,7 @@
                    v-model="editContainer"
                    v-on:addProduct="prepAddingProduct"
                    v-on:editProduct="prepEdittingProduct"
+                   v-on:productDetails="showProductDetails"
         />
       </b-col>
     </b-row>
@@ -79,8 +81,10 @@
 
     <ConfirmationModal :reason="$t('posRequest.are you sure')"
                        :title="$t('posRequest.confirm')"
-                       v-on:modalConfirmed="confirmDelete"
+                       v-on:modalConfirmed="confirmStorageDelete"
     />
+
+    <ProductInfoModal :product="infoProduct" />
   </b-container>
 </template>
 
@@ -94,10 +98,11 @@ import EditContainerModal from '@/components/EditContainerModal.vue';
 import EditProductModal from '@/components/EditProductModal.vue';
 import { Product } from '@/entities/Product';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
+import ProductInfoModal from '@/components/ProductInfoModal.vue';
 
   @Component({
     components: {
-      Container, EditContainerModal, EditProductModal, ConfirmationModal,
+      Container, EditContainerModal, EditProductModal, ConfirmationModal, ProductInfoModal,
     },
   })
 
@@ -123,6 +128,8 @@ export default class PointOfSaleRequest extends Vue {
     editProduct: Product = {} as Product;
 
     addContainerID: string = '';
+
+    infoProduct: Product = {} as Product;
 
     beforeMount(): void {
       this.standardContainers = PointsOfSale.getAvailableContainers();
@@ -179,12 +186,20 @@ export default class PointOfSaleRequest extends Vue {
       this.$bvModal.show('edit-product');
     }
 
+    /*
+    Method to add new products to the storage container. If the storage container was already
+    added to the requestedPOS is will be updated there as well.
+    */
     addProduct(product: Product) : void {
       const i = this.addedContainers.findIndex(s => s.id === this.addContainerID);
       this.addedContainers[i].products.push(product);
       this.editStorage(this.addedContainers[i]);
     }
 
+    /*
+    Method to edit a currently existing product and updating it's data. Once updated it will also be
+    updated in the requestedPOS if it's storage container was already in there.
+    */
     editExistingProduct(product: Product): void {
       const i = this.addedContainers.findIndex(s => s.id === this.addContainerID);
       const j = this.addedContainers[i].products.findIndex(p => p.id === product.id);
@@ -192,12 +207,20 @@ export default class PointOfSaleRequest extends Vue {
       this.editStorage(this.addedContainers[i]);
     }
 
-    confirmDelete(): void {
-      this.standardContainers = this.standardContainers.filter(s => s.id !== this.editContainer.id);
+    /*
+    Once deletion of container is confirmed it should be removed from the editted containers as
+    well as the containers that were selected for the requestedPOS
+    */
+    confirmStorageDelete(): void {
       this.addedContainers = this.addedContainers.filter(s => s.id !== this.editContainer.id);
       this.requestedPOS.storages = this.requestedPOS.storages.filter(
         s => s.id !== this.editContainer.id,
       );
+    }
+
+    showProductDetails(product: Product) {
+      this.infoProduct = product;
+      this.$bvModal.show('product-info-modal');
     }
 
     // eslint-disable-next-line class-methods-use-this
@@ -205,6 +228,9 @@ export default class PointOfSaleRequest extends Vue {
     // TODO: Verwerking data
     }
 
+    /*
+    Method that either deletes or add's selected containers to the requestedPOS
+     */
     containerToggled(containerData: any) {
       const containers = this.standardContainers.concat(this.addedContainers);
 

@@ -79,6 +79,22 @@
     "confirm": "Confirm deletion",
     "are you sure": "Are you sure you want to delete this container?"
   },
+  "productInfoModal": {
+    "title": "Product information",
+    "Cancel": "Cancel",
+    "Name": "Name",
+    "Put in by": "Put in by",
+    "Put in on": "Put in on",
+    "Price": "Price",
+    "Category": "Category",
+    "Traysize": "Traysize",
+    "Contains alcohol": "Contains alcohol",
+    "Yes": "Yes",
+    "No": "No",
+    "Can induce negative saldo": "Can induce negative saldo",
+    "Picture": "Picture",
+    "Product picture": "Product picture"
+  },
   "flagged": {
     "Flagged transactions": "Flagged transactions"
   },

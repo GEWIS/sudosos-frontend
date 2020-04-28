@@ -79,6 +79,22 @@
     "confirm": "Bevestig verwijderen",
     "are you sure": "Weet je zeker dat je deze container wil verwijderen?"
   },
+  "productInfoModal": {
+    "title": "Product informatie",
+    "Cancel": "Sluiten",
+    "Name": "Naam",
+    "Put in by": "Toegevoegd door",
+    "Put in on": "Toegevoegd op",
+    "Price": "Prijs",
+    "Category": "Categorie",
+    "Traysize": "Staffelgrote",
+    "Contains alcohol": "Bevat alcohol",
+    "Yes": "Ja",
+    "No": "Nee",
+    "Can induce negative saldo": "Kan saldo negatief maken",
+    "Picture": "Plaatje",
+    "Product picture": "Product plaatje"
+  },
   "flagged": {
     "Flagged transactions": "Gemarkeerde transacties"
   },

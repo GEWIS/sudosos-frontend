@@ -53,11 +53,11 @@
                  :key="item.id"
                  class="text-center product-card px-2"
                  cols="6" sm="4" md="3" lg="2"
-                 v-on:click="$emit('editProduct', container.id, item)"
+                 v-on:click="productDetails(container.id, item)"
           >
             <div class="product" :class="{'add': canEdit && enabled && editable}">
               <img :src="item.picture" :alt="item.name"/>
-              <p class="w-100 product-name mb-0">{{ item.name }}</p>
+              <p class="w-100 px-1 product-name mb-0 text-truncate">{{ item.name }}</p>
             </div>
           </b-col>
 
@@ -79,6 +79,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Storage } from '@/entities/Storage';
+import { Product } from '@/entities/Product';
 
 @Component({})
 export default class Container extends Vue {
@@ -94,6 +95,14 @@ export default class Container extends Vue {
 
   mounted() {
     this.selected = !this.enabled || false;
+  }
+
+  productDetails(id: String, product: Product) {
+    if (this.canEdit && this.enabled && this.editable) {
+      this.$emit('editProduct', id, product);
+    } else {
+      this.$emit('productDetails', product);
+    }
   }
 
   checkBoxChanged(event: any) {
@@ -139,6 +148,7 @@ export default class Container extends Vue {
   }
 
   .product {
+    cursor: pointer;
     background-color: $gewis-grey-light;
 
     > img {
@@ -155,13 +165,9 @@ export default class Container extends Vue {
     }
   }
 
-  .product.add {
-    cursor: pointer;
-
-    > div {
+  .product.add > div {
       height: 5rem;
       width: auto;
-    }
   }
 }
 
