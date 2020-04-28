@@ -112,7 +112,11 @@
     "accept manual": "Accept (handmatig oplossen)"
   },
   "manageProducts": {
-    "Manage products": "Productbeheer"
+    "Manage products": "Productbeheer",
+    "Containers": "Containers",
+    "add container": "Container toevoegen",
+    "are you sure": "Weet je zeker dat je de container wil verwijderen?",
+    "confirm": "Bevestig verwijderen"
   },
   "screens": {
     "Screens": "TV Schermen",

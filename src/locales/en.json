@@ -112,7 +112,11 @@
     "accept manual": "Accept (fix manual)"
   },
   "manageProducts": {
-    "Manage products": "Manage products"
+    "Manage products": "Manage products",
+    "Containers": "Containers",
+    "add container": "Add container",
+    "are you sure": "Are you sure you want to delete this container?",
+    "confirm": "Confirm deletion"
   },
   "screens": {
     "Screens": "TV Screens",

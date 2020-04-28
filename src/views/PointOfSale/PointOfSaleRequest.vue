@@ -40,7 +40,7 @@
       <b-col md="9" sm="12" class="containers-container">
         <div class="d-flex justify-content-between align-items-center">
           <p class="containers-header">{{ $t('posRequest.Containers') }}</p>
-          <b-button class="my-2" variant="success" v-on:click="addContainer">
+          <b-button class="my-2 text-truncate" variant="success" v-on:click="addContainer">
             <font-awesome-icon icon="plus" />
             {{ $t('posRequest.add container') }}
           </b-button>
@@ -221,6 +221,9 @@ export default class PointOfSaleRequest extends Vue {
       );
     }
 
+    /*
+    Method for deleting product from container
+    */
     deleteProduct(product: Product): void {
       const i = this.addedContainers.findIndex(s => s.id === this.addContainerID);
       this.addedContainers[i].products = this.addedContainers[i].products.filter(
@@ -230,6 +233,9 @@ export default class PointOfSaleRequest extends Vue {
       this.$bvModal.hide('edit-product');
     }
 
+    /*
+    Method for showing product details
+    */
     showProductDetails(product: Product): void {
       this.infoProduct = product;
       this.$nextTick(() => {
@@ -268,12 +274,6 @@ export default class PointOfSaleRequest extends Vue {
 </script>
 
 <style lang="scss" scoped>
-  .approve-reject-buttons{
-    button {
-      margin-right: 8px;
-      min-width: 100px;
-    }
-  }
   .containers-container{
     border: 2px solid $gewis-grey-light;
 
@@ -284,5 +284,9 @@ export default class PointOfSaleRequest extends Vue {
       text-transform: uppercase;
       margin: 1em;
     }
+  }
+
+  .modal {
+
   }
 </style>
