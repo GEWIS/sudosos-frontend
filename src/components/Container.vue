@@ -51,7 +51,6 @@
             </div>
           </b-col>
 
-
           <b-col v-if="canEdit && enabled && editable"
                  class="text-center product-card px-2"
                  cols="6" sm="4" md="3" lg="2"
@@ -122,6 +121,13 @@ export default class Container extends Vue {
 .product-card {
   margin: 0.5rem 0;
 
+  > div {
+    display: flex;
+    flex-wrap: wrap;
+    height: 100%;
+    justify-content: center;
+  }
+
   .product {
     background-color: $gewis-grey-light;
 
@@ -130,10 +136,12 @@ export default class Container extends Vue {
       height: auto;
       max-height: 5rem;
       background-color: $gewis-grey-light;
+      max-width: 100%;
     }
 
     > .product-name {
       background: $gewis-grey-accent;
+      margin-top: auto;
     }
   }
 
