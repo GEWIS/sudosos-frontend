@@ -77,6 +77,7 @@
     <EditProductModal :editProduct="editProduct"
                       v-on:productAdded="addProduct"
                       v-on:productEdited="editExistingProduct"
+                      v-on:productDeleted="deleteProduct"
     />
 
     <ConfirmationModal :reason="$t('posRequest.are you sure')"
@@ -84,7 +85,9 @@
                        v-on:modalConfirmed="confirmStorageDelete"
     />
 
-    <ProductInfoModal :product="infoProduct" />
+    <ProductInfoModal :product="infoProduct"
+                      v-if="Object.keys(infoProduct).length > 0"
+    />
   </b-container>
 </template>
 
@@ -218,9 +221,20 @@ export default class PointOfSaleRequest extends Vue {
       );
     }
 
-    showProductDetails(product: Product) {
+    deleteProduct(product: Product): void {
+      const i = this.addedContainers.findIndex(s => s.id === this.addContainerID);
+      this.addedContainers[i].products = this.addedContainers[i].products.filter(
+        p => p.id !== product.id,
+      );
+      this.editStorage(this.addedContainers[i]);
+      this.$bvModal.hide('edit-product');
+    }
+
+    showProductDetails(product: Product): void {
       this.infoProduct = product;
-      this.$bvModal.show('product-info-modal');
+      this.$nextTick(() => {
+        this.$bvModal.show('product-info-modal');
+      });
     }
 
     // eslint-disable-next-line class-methods-use-this

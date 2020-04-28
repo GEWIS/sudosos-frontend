@@ -1,6 +1,7 @@
 <template>
 <b-modal
   id="product-info-modal"
+  v-if="Object.keys(product).length > 0"
   :title="$t('productInfoModal.title')"
   size="lg"
   hide-header-close

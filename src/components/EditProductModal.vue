@@ -154,6 +154,15 @@
       </b-form-group>
     </div>
 
+    <div class="delete-button" v-if="Object.keys(editProduct).length > 0">
+      <b-button
+        variant="primary"
+        class="btn-primary"
+        v-on:click="$emit('productDeleted', editProduct)"
+      >{{ $t('editProductModal.Delete product') }}
+      </b-button>
+    </div>
+
     <template v-slot:modal-footer="{ cancel }">
       <b-button
         variant="primary"
@@ -172,7 +181,6 @@
 </template>
 
 <script lang="ts">
-
 import {
   Component, Prop, Watch,
 } from 'vue-property-decorator';
@@ -314,6 +322,11 @@ export default class EditProductModal extends Formatters {
 </script>
 
 <style lang="scss" scoped>
+  .delete-button {
+    padding-top: 1.5rem;
+    padding-right: 0.75px;
+  }
+
 .form-row {
   margin: 0.75rem 0;
 }

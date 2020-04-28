@@ -207,6 +207,7 @@
     "Alcoholic": "Alcoholic",
     "Negative": "Is allowed to introduce negative saldo",
     "Picture": "Picture",
+    "Delete product": "Delete product",
     "name invalid": "Please provide a valid name with length > 0",
     "category invalid": "Please provide a valid category with length > 0",
     "traysize invalid": "Please provide a valid traysize that is higher than 0",
