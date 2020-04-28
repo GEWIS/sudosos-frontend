@@ -134,7 +134,7 @@ export default class EditContainerModal extends Formatters {
       } else if (Object.keys(this.editContainer).length === 0) {
         const storage = {
           name: this.name,
-          id: '004',
+          id: `00004_${this.name}`,
           ownerId: '1',
           products: [],
           createdAt: new Date(),
@@ -142,7 +142,6 @@ export default class EditContainerModal extends Formatters {
         } as unknown as Storage;
 
         this.$emit('storageAdded', storage);
-        this.$bvModal.hide('edit-container');
       } else {
         const storage = this.editContainer;
         storage.name = this.name;
@@ -151,8 +150,9 @@ export default class EditContainerModal extends Formatters {
         // TODO make sure data gets pushed somehow
 
         this.$emit('storageEdited', storage);
-        this.$bvModal.hide('edit-container');
       }
+
+      this.$bvModal.hide('edit-container');
     }
 
     // Check state of name

@@ -44,7 +44,9 @@
           <b-col v-for="item in container.products"
                  :key="item.id"
                  class="text-center product-card px-2"
-                 cols="6" sm="4" md="3" lg="2">
+                 cols="6" sm="4" md="3" lg="2"
+                 v-on:click="$emit('editProduct', container.id, item)"
+          >
             <div class="product" :class="{'add': canEdit && enabled && editable}">
               <img :src="item.picture" :alt="item.name"/>
               <p class="w-100 product-name mb-0">{{ item.name }}</p>

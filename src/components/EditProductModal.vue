@@ -3,12 +3,13 @@
     id="edit-product"
     :ok-title="$t('editProductModal.save')"
     :cancel-title="$t('editProductModal.cancel')"
-    :title="editProduct ? $t('editProductModal.edit product') : $t('editProductModal.add product')"
+    :title="Object.keys(editProduct).length > 0
+    ? $t('editProductModal.edit product') : $t('editProductModal.add product')"
     size="lg"
     hide-header-close
     centered>
     <div id="edit-container-input">
-      <b-form-row v-if="editProduct">
+      <b-form-row v-if="Object.keys(editProduct).length > 0">
         <b-col cols="12" sm="3">
           <span class="font-weight-bold">{{ $t('editProductModal.added on')}}</span>
         </b-col>
@@ -17,7 +18,7 @@
         </b-col>
       </b-form-row>
 
-      <b-form-row v-if="editProduct">
+      <b-form-row v-if="Object.keys(editProduct).length > 0">
         <b-col cols="12" sm="3">
           <span class="font-weight-bold">{{ $t('editProductModal.added by')}}</span>
         </b-col>
@@ -26,7 +27,7 @@
         </b-col>
       </b-form-row>
 
-      <b-form-row v-if="editProduct">
+      <b-form-row v-if="Object.keys(editProduct).length > 0">
         <b-col cols="12" sm="3">
           <span class="font-weight-bold">{{ $t('editProductModal.container')}}</span>
         </b-col>
@@ -149,7 +150,7 @@
         label-align="left"
         label-for="ad-file"
       >
-        <FileFormPreview v-model="file"></FileFormPreview>
+        <FileFormPreview v-model="file" :img="img.length > 0 ? img : undefined"></FileFormPreview>
       </b-form-group>
     </div>
 
@@ -173,18 +174,19 @@
 <script lang="ts">
 
 import {
-  Component, Prop, Vue, Watch,
+  Component, Prop, Watch,
 } from 'vue-property-decorator';
 import { Product } from '@/entities/Product';
 import FileFormPreview from '@/components/FileFormPreview.vue';
+import Formatters from '@/mixins/Formatters';
 
   @Component({
     components: {
       FileFormPreview,
     },
   })
-export default class EditProductModal extends Vue {
-    @Prop() private editProduct: Product | undefined;
+export default class EditProductModal extends Formatters {
+    @Prop() private editProduct!: Product;
 
     name: string | null = null;
 
@@ -200,24 +202,40 @@ export default class EditProductModal extends Vue {
 
     file: File = new File([], '');
 
+    img: string = '';
+
     save(): void {
       if (this.nameState && this.categoryState && this.priceState
           && this.traysizeState && this.file) {
-        const product = {
-          id: '00004',
-          name: this.name,
-          ownerId: '001',
-          price: this.price,
-          picture: URL.createObjectURL(this.file),
-          traySize: this.traySize,
-          category: this.category,
-          isAlcoholic: this.alcoholic,
-          negative: this.negative,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        } as Product;
+        if (Object.keys(this.editProduct).length === 0) {
+          const product = {
+            id: `00004_${this.name}`,
+            name: this.name,
+            ownerId: '001',
+            price: this.price,
+            picture: URL.createObjectURL(this.file),
+            traySize: this.traySize,
+            category: this.category,
+            isAlcoholic: this.alcoholic,
+            negative: this.negative,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          } as Product;
 
-        this.$emit('productAdded', product);
+          this.$emit('productAdded', product);
+        } else {
+          const product = this.editProduct;
+          product.name = String(this.name);
+          product.price = Number(this.price);
+          product.picture = URL.createObjectURL(this.file) || this.img;
+          product.traySize = Number(this.traySize);
+          product.category = String(this.category);
+          product.isAlcoholic = Boolean(this.alcoholic);
+          product.negative = Boolean(this.negative);
+          product.updatedAt = new Date();
+
+          this.$emit('productEdited', product);
+        }
         this.$bvModal.hide('edit-product');
       }
     }
@@ -260,12 +278,8 @@ export default class EditProductModal extends Vue {
       return '';
     }
 
-    // See if a price is a price, because this is typescript we defined price as a number
-    // however in normal javascript the input apparently is a string. This allows for an empty
-    // input to be seen as correct. To fix this we convert the price to number (because otherwise
-    // typescript will bitch) and then see if there is a . in there
     get priceState(): boolean | null {
-      return this.price === null ? null : this.price >= 0 && /\d+\.\d+/.test(String(this.price));
+      return this.price === null ? null : Number(this.price) >= 0 && String(this.price).length > 0;
     }
 
     get invalidPrice() : string {
@@ -274,6 +288,27 @@ export default class EditProductModal extends Vue {
       }
 
       return '';
+    }
+
+    @Watch('editProduct')
+    onEditProductChange(value: Product, old: Product): void {
+      if (Object.keys(value).length > 0) {
+        this.name = String(value.name);
+        this.price = Number(value.price);
+        this.category = String(value.category);
+        this.traySize = Number(value.traySize);
+        this.alcoholic = Boolean(value.isAlcoholic);
+        this.negative = Boolean(value.negative);
+        this.img = String(value.picture);
+      } else {
+        this.name = null;
+        this.price = null;
+        this.category = null;
+        this.traySize = null;
+        this.alcoholic = null;
+        this.negative = null;
+        this.img = '';
+      }
     }
 }
 </script>

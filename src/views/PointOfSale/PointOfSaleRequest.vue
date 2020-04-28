@@ -62,6 +62,7 @@
                    @toggled="containerToggled"
                    v-model="editContainer"
                    v-on:addProduct="prepAddingProduct"
+                   v-on:editProduct="prepEdittingProduct"
         />
       </b-col>
     </b-row>
@@ -71,7 +72,9 @@
                         v-on:storageEdited="editStorage"
     />
 
-    <EditProductModal v-on:productAdded="addProduct"
+    <EditProductModal :editProduct="editProduct"
+                      v-on:productAdded="addProduct"
+                      v-on:productEdited="editExistingProduct"
     />
   </b-container>
 </template>
@@ -108,6 +111,8 @@ export default class PointOfSaleRequest extends Vue {
     availableOrgans: Object = [];
 
     editContainer: Storage = {} as Storage;
+
+    editProduct: Product = {} as Product;
 
     addContainerID: string = '';
 
@@ -153,13 +158,28 @@ export default class PointOfSaleRequest extends Vue {
      */
     prepAddingProduct(id: string) : void {
       this.addContainerID = id;
+      this.editProduct = {} as Product;
+      this.$bvModal.show('edit-product');
+    }
+
+    /*
+    Method for preparing editting an product
+     */
+    prepEdittingProduct(id: string, product: Product) {
+      this.addContainerID = id;
+      this.editProduct = product;
       this.$bvModal.show('edit-product');
     }
 
     addProduct(product: Product) : void {
       const i = this.addedContainers.findIndex(s => s.id === this.addContainerID);
-
       this.addedContainers[i].products.push(product);
+    }
+
+    editExistingProduct(product: Product) {
+      const i = this.addedContainers.findIndex(s => s.id === this.addContainerID);
+      const j = this.addedContainers[i].products.findIndex(p => p.id === product.id);
+      this.addedContainers[i].products[j] = product;
     }
 
     // eslint-disable-next-line class-methods-use-this
