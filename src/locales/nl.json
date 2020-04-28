@@ -75,7 +75,9 @@
     "add container": "Container toevoegen",
     "Request": "Vraag aan",
     "Please enter a name for this POS": "Voer alsjeblieft een naam in voor dit verkooppunt",
-    "Please select an owner for this POS": "Selecteer alsjeblieft een eigenaar voor dit verkooppunt"
+    "Please select an owner for this POS": "Selecteer alsjeblieft een eigenaar voor dit verkooppunt",
+    "confirm": "Bevestig verwijderen",
+    "are you sure": "Weet je zeker dat je deze container wil verwijderen?"
   },
   "flagged": {
     "Flagged transactions": "Gemarkeerde transacties"

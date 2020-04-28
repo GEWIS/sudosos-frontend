@@ -46,7 +46,9 @@ export default class ConfirmationModal extends Vue {
   // Once the modal is closed check if the OK action was used and proceed with method
   mounted() {
     this.$root.$on('bv::modal::hide', (bvEvent: any, modalId: string) => {
-      if (Object.keys(bvEvent).indexOf('trigger') !== -1 && bvEvent.trigger === 'ok') {
+      if (Object.keys(bvEvent).indexOf('trigger') !== -1
+        && bvEvent.trigger === 'ok'
+        && modalId === 'confirmation') {
         // TODO Actually send update to somewhere with url and method
         this.$emit('modalConfirmed');
       }

@@ -14,12 +14,20 @@
           <span id="container-name">{{ container.name }}</span>
       </b-input-group>
 
-      <span class="mx-3 my-auto"
+      <span class="ml-3 mr-2 my-auto"
             v-show="canEdit && enabled && editable"
             v-on:click.stop="() => {}"
             v-on:click="$emit('input', container)"
             v-b-modal.edit-container>
             <font-awesome-icon icon="pen-alt" />
+      </span>
+
+      <span class="ml-2 mr-3 my-auto"
+            v-show="canEdit && enabled && editable"
+            v-on:click.stop="() => {}"
+            v-on:click="$emit('input', container)"
+            v-b-modal.confirmation>
+            <font-awesome-icon icon="trash" />
       </span>
 
       <div class="d-inline ml-2 w-100 my-auto">

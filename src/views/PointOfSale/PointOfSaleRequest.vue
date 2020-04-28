@@ -76,6 +76,11 @@
                       v-on:productAdded="addProduct"
                       v-on:productEdited="editExistingProduct"
     />
+
+    <ConfirmationModal :reason="$t('posRequest.are you sure')"
+                       :title="$t('posRequest.confirm')"
+                       v-on:modalConfirmed="confirmDelete"
+    />
   </b-container>
 </template>
 
@@ -88,9 +93,12 @@ import PointsOfSale from '@/assets/pointsOfSale';
 import EditContainerModal from '@/components/EditContainerModal.vue';
 import EditProductModal from '@/components/EditProductModal.vue';
 import { Product } from '@/entities/Product';
+import ConfirmationModal from '@/components/ConfirmationModal.vue';
 
   @Component({
-    components: { Container, EditContainerModal, EditProductModal },
+    components: {
+      Container, EditContainerModal, EditProductModal, ConfirmationModal,
+    },
   })
 
 export default class PointOfSaleRequest extends Vue {
@@ -116,7 +124,7 @@ export default class PointOfSaleRequest extends Vue {
 
     addContainerID: string = '';
 
-    beforeMount() {
+    beforeMount(): void {
       this.standardContainers = PointsOfSale.getAvailableContainers();
       this.availableOrgans = PointsOfSale.getAvailableOrgans();
     }
@@ -165,7 +173,7 @@ export default class PointOfSaleRequest extends Vue {
     /*
     Method for preparing editting an product
      */
-    prepEdittingProduct(id: string, product: Product) {
+    prepEdittingProduct(id: string, product: Product): void {
       this.addContainerID = id;
       this.editProduct = product;
       this.$bvModal.show('edit-product');
@@ -174,12 +182,22 @@ export default class PointOfSaleRequest extends Vue {
     addProduct(product: Product) : void {
       const i = this.addedContainers.findIndex(s => s.id === this.addContainerID);
       this.addedContainers[i].products.push(product);
+      this.editStorage(this.addedContainers[i]);
     }
 
-    editExistingProduct(product: Product) {
+    editExistingProduct(product: Product): void {
       const i = this.addedContainers.findIndex(s => s.id === this.addContainerID);
       const j = this.addedContainers[i].products.findIndex(p => p.id === product.id);
       this.addedContainers[i].products[j] = product;
+      this.editStorage(this.addedContainers[i]);
+    }
+
+    confirmDelete(): void {
+      this.standardContainers = this.standardContainers.filter(s => s.id !== this.editContainer.id);
+      this.addedContainers = this.addedContainers.filter(s => s.id !== this.editContainer.id);
+      this.requestedPOS.storages = this.requestedPOS.storages.filter(
+        s => s.id !== this.editContainer.id,
+      );
     }
 
     // eslint-disable-next-line class-methods-use-this
