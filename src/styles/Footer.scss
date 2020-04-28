@@ -1,0 +1,25 @@
+body {
+    margin-bottom: $footer-height;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 0 1rem;
+
+    .container-md {
+        padding: 0;
+        max-width: 1180px;
+    }
+
+    height: $footer-height;
+    line-height: $footer-height;
+
+    background-color: #f5f5f5;
+}
