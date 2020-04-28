@@ -7,11 +7,9 @@
     "importHelpers": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "outDir": "out",
     "baseUrl": ".",
     "types": [
       "webpack-env"
