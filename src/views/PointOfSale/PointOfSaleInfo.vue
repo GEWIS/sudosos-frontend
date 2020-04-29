@@ -31,8 +31,12 @@
       </b-col>
       <b-col md="9" sm="12" class="containers-container">
         <p class="containers-header">{{ $t('posInfo.Containers') }}</p>
-        <Container v-for="storage in requestedPOS.storages" v-bind:key="storage.id"
-                   :container="storage" :enabled="false"/>
+        <Container v-for="storage in requestedPOS.storages"
+                   v-bind:key="storage.id"
+                   :container="storage"
+                   :enabled="false"
+                   v-on:productDetails="showProductDetails"
+        />
       </b-col>
     </b-row>
 
@@ -97,8 +101,11 @@
         :transaction="modalTrans"
       >
       </TransactionDetailsModal>
-
     </div>
+
+    <ProductInfoModal :product="infoProduct"
+                      v-if="Object.keys(infoProduct).length > 0"
+    />
   </b-container>
 </template>
 
@@ -113,9 +120,13 @@ import { Transaction } from '@/entities/Transaction';
 import fakeTransactions from '@/assets/transactions';
 import { User } from '@/entities/User';
 import PointsOfSale from '@/assets/pointsOfSale';
+import ProductInfoModal from '@/components/ProductInfoModal.vue';
+import { Product } from '@/entities/Product';
 
   @Component({
-    components: { Container, TransactionDetailsModal, TransactionTableFilter },
+    components: {
+      Container, TransactionDetailsModal, TransactionTableFilter, ProductInfoModal,
+    },
   })
 
 export default class PointOfSaleInfo extends Formatters {
@@ -130,6 +141,8 @@ export default class PointOfSaleInfo extends Formatters {
     transactionList: Transaction[] = [];
 
     filteredTransactions: Transaction[] = [];
+
+    infoProduct: Product = {} as Product;
 
     perPage: number = 12;
 
@@ -277,6 +290,16 @@ export default class PointOfSaleInfo extends Formatters {
           this.$bvModal.show('details-modal');
         });
       }
+    }
+
+    /*
+    Method for showing product details
+    */
+    showProductDetails(product: Product): void {
+      this.infoProduct = product;
+      this.$nextTick(() => {
+        this.$bvModal.show('product-info-modal');
+      });
     }
 
     /*

@@ -35,10 +35,19 @@
       </b-col>
       <b-col md="9" sm="12" class="containers-container">
         <p class="containers-header">{{ $t('posApprove.Containers') }}</p>
-        <Container v-for="storage in requestedPOS.storages" v-bind:key="storage.id"
-                   :container="storage" :enabled="false"/>
+        <Container v-for="storage in requestedPOS.storages"
+                   v-bind:key="storage.id"
+                   :container="storage"
+                   :enabled="false"
+                   v-on:productDetails="showProductDetails"
+        />
       </b-col>
     </b-row>
+
+
+    <ProductInfoModal :product="infoProduct"
+                      v-if="Object.keys(infoProduct).length > 0"
+    />
   </b-container>
 </template>
 
@@ -47,9 +56,11 @@ import { Component, Vue } from 'vue-property-decorator';
 import Container from '@/components/Container.vue';
 import { PointOfSale } from '@/entities/PointOfSale';
 import PointsOfSale from '@/assets/pointsOfSale';
+import { Product } from '@/entities/Product';
+import ProductInfoModal from '@/components/ProductInfoModal.vue';
 
   @Component({
-    components: { Container },
+    components: { Container, ProductInfoModal },
   })
 
 export default class PointOfSaleApprove extends Vue {
@@ -57,10 +68,21 @@ export default class PointOfSaleApprove extends Vue {
 
     ownerData: Object = {};
 
+    infoProduct: Product = {} as Product;
 
     beforeMount() {
       this.requestedPOS = PointsOfSale.getPointOfSale();
       this.ownerData = PointsOfSale.getOwnerData();
+    }
+
+    /*
+    Method for showing product details
+    */
+    showProductDetails(product: Product): void {
+      this.infoProduct = product;
+      this.$nextTick(() => {
+        this.$bvModal.show('product-info-modal');
+      });
     }
 }
 </script>
