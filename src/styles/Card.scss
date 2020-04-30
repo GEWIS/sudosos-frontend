@@ -5,6 +5,14 @@
   text-transform: uppercase;
 }
 
+.card-header {
+  padding: 0;
+  margin-bottom: 1rem;
+  background-color: #f8f8f8;
+  border-radius: 0;
+  border-bottom: 0;
+}
+
 .card {
   border: none;
   background-color: #f8f8f8;

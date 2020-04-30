@@ -86,6 +86,8 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
 Global style for forms in a card title
  */
 .title-form {
+    text-transform: uppercase;
+
     .b-form-datepicker {
         border: 1px solid $gewis-grey-shadow;
 

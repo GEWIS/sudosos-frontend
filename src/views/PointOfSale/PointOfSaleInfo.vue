@@ -42,9 +42,10 @@
 
     <div class="mt-4 mt-md-5">
       <b-card>
-        <b-card-title class="title-form">
+        <template v-slot:header>
 
           <TransactionTableFilter
+            class="title-form"
             v-model="filterValues"
             v-on:csv="downloadCSV"
             :selfBought="false"
@@ -52,7 +53,7 @@
             :putInForYou="false"
           ></TransactionTableFilter>
 
-        </b-card-title>
+        </template>
         <b-card-body>
 
           <!-- Table that will display the transactions -->

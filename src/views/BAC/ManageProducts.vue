@@ -3,6 +3,19 @@
     <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('manageProducts.Manage products') }}</h1>
 
     <b-row>
+      <b-col cols="12">
+        <b-card>
+          <template v-slot:header>
+            Dit is de header
+          </template>
+          <b-card-body>
+            <ProductTable :productsProp="fakeProducts" />
+          </b-card-body>
+        </b-card>
+      </b-col>
+    </b-row>
+
+    <b-row>
       <b-col cols="12" class="containers-container">
         <div class="d-flex justify-content-between align-items-center">
           <p class="containers-header">{{ $t('manageProducts.Containers') }}</p>
@@ -56,10 +69,18 @@ import ProductInfoModal from '@/components/ProductInfoModal.vue';
 import { Storage } from '@/entities/Storage';
 import { Product } from '@/entities/Product';
 import PointsOfSale from '@/assets/pointsOfSale';
+import ProductTable from '@/components/ProductTable.vue';
+
+import FakeProducts from '@/assets/products';
 
 @Component({
   components: {
-    Container, EditContainerModal, EditProductModal, ConfirmationModal, ProductInfoModal,
+    Container,
+    EditContainerModal,
+    EditProductModal,
+    ConfirmationModal,
+    ProductInfoModal,
+    ProductTable,
   },
 })
 
@@ -74,7 +95,10 @@ export default class ManageProducts extends Vue {
 
   infoProduct: Product = {} as Product;
 
+  fakeProducts: Product[] = [];
+
   beforeMount(): void {
+    this.fakeProducts = FakeProducts.fetchProducts();
     this.standardContainers = PointsOfSale.getAvailableContainers();
   }
 
@@ -176,6 +200,9 @@ Method for adding a new container, makes sure editContainer is an empty Storage 
 </script>
 
 <style lang="scss" scoped>
+  @import '~bootstrap/scss/bootstrap';
+  @import './src/styles/Card.scss';
+
   .containers-container{
     border: 2px solid $gewis-grey-light;
 

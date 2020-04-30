@@ -1,14 +1,13 @@
 <template>
   <div>
     <b-card>
-      <b-card-title class="title-form">
-
+      <template v-slot:header>
         <TransactionTableFilter
           v-model="filterValues"
+          class="title-form"
           v-on:csv="downloadCSV"
         ></TransactionTableFilter>
-
-      </b-card-title>
+      </template>
       <b-card-body>
 
         <!-- Table that will display the transactions -->
@@ -79,7 +78,7 @@ import Formatters from '@/mixins/Formatters';
       TransactionTableFilter,
     },
   })
-export default class TransactionsComponent extends Formatters {
+export default class TransactionsTable extends Formatters {
     userAccount: User = this.$store.state.currentUser;
 
     modalTrans: Transaction = {} as Transaction;

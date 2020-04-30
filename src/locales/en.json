@@ -118,6 +118,18 @@
     "are you sure": "Are you sure you want to delete this container?",
     "confirm": "Confirm deletion"
   },
+  "productTable": {
+    "picture": "picture",
+    "name": "name",
+    "category": "category",
+    "price": "price",
+    "alcoholic": "alcoholic",
+    "negative": "negative",
+    "Yes": "Yes",
+    "No": "No",
+    "Filter by name": "Filter by name",
+    "Fill in a name": "Fill in a name"
+  },
   "screens": {
     "Screens": "TV Screens",
     "Ending time": "Ending time",

@@ -118,6 +118,18 @@
     "are you sure": "Weet je zeker dat je de container wil verwijderen?",
     "confirm": "Bevestig verwijderen"
   },
+  "productTable": {
+    "picture": "plaatje",
+    "name": "naam",
+    "category": "categorie",
+    "price": "prijs",
+    "alcoholic": "alcoholisch",
+    "negative": "negatief",
+    "Yes": "Ja",
+    "No": "Nee",
+    "Filter by name": "Filter op naam",
+    "Fill in a name": "Vul een filter in"
+  },
   "screens": {
     "Screens": "TV Schermen",
     "Ending time": "Eind tijd",

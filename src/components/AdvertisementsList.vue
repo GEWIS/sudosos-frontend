@@ -8,7 +8,7 @@
       @modalConfirmed="modalConfirmed">
     </ConfirmationModal>
     <b-card>
-      <b-card-title>
+      <template v-slot:header>
         <b-button
           variant="primary"
           id="add"
@@ -16,7 +16,7 @@
           v-on:click="setAdvertisement('post')">
           <font-awesome-icon icon="plus"></font-awesome-icon> {{ $t('advertisementList.Add') }}
         </b-button>
-      </b-card-title>
+      </template>
       <b-card-body>
         <b-table stacked="sm" small borderless thead-class="table-header table-header-5"
                  :items="advertisementList" :fields="fields" :per-page="perPage"
@@ -287,8 +287,8 @@ export default class AdvertisementsList extends Formatters {
   @import './src/styles/Card.scss';
 
   .thumbnail {
-    width: 4rem;
-    height: 2.25rem;
+    max-width: 4rem;
+    max-height: 2.25rem;
   }
 
   .icon {
