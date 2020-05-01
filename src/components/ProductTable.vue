@@ -23,6 +23,9 @@
     thead-class="table-header"
     :filter="nameFilter"
     :filter-included-fields="['name']"
+    :per-page="perPage"
+    :current-page="currentPage"
+    v-on:filtered="filterFinished"
   >
     <template v-slot:cell(picture)="data">
       <img class="thumbnail" :src="data.value" alt="">
@@ -48,6 +51,26 @@
       {{ data.value ? $t('productTable.Yes') : $t('productTable.No') }}
     </template>
   </b-table>
+
+  <div class="d-flex pageination py-3" v-if="totalRows > perPage">
+    <p class="my-auto h-100">
+      {{ $t('transactionFlagsComponent.Page') }}:
+    </p>
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="totalRows"
+      :per-page="perPage"
+      limit="1"
+      next-class="nextButton"
+      prev-class="prevButton"
+      page-class="pageButton"
+      hide-goto-end-buttons
+      last-number
+      @change="pageClicked"
+      aria-controls="transaction-table"
+      class="custom-pagination mb-0"
+    ></b-pagination>
+  </div>
 </div>
 </template>
 
@@ -65,6 +88,14 @@ export default class ProductTable extends Formatters {
     nameFilter: string = '';
 
     productList: Product[] = [];
+
+    currentPage: number = 1;
+
+    previousPage: number = 0;
+
+    totalRows: number = 0;
+
+    perPage: number = 2;
 
     fields : Object[] = [
       {
@@ -99,6 +130,23 @@ export default class ProductTable extends Formatters {
       } else {
         this.productList = this.productsProp;
       }
+
+      this.totalRows = this.productList.length;
+    }
+
+    /**
+      Method that grabs extra transactions when 2 pages or less are left
+    */
+    pageClicked(page: number) : void {
+      if (this.previousPage < page && page >= (Math.ceil(this.totalRows / this.perPage) - 2)) {
+        // TODO: Grab new data
+      }
+
+      this.previousPage = page;
+    }
+
+    filterFinished(products: Product[], length: number): void {
+      this.totalRows = length;
     }
 }
 </script>
@@ -107,5 +155,10 @@ export default class ProductTable extends Formatters {
   .thumbnail {
     max-width: 4rem;
     max-height: 2.25rem;
+  }
+
+  .pageination {
+    color: gray;
+    text-transform: uppercase;
   }
 </style>
