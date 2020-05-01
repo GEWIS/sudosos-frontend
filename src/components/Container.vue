@@ -47,7 +47,7 @@
     </div>
 
     <!-- The container itself -->
-    <b-collapse :id="'container_' + container.id" class="mt-1">
+    <b-collapse v-sortable="sortableOptions" :id="'container_' + container.id" class="mt-1 storage">
         <b-row class="mx-0">
           <b-col v-for="item in container.products"
                  :key="item.id"
@@ -62,7 +62,7 @@
           </b-col>
 
           <b-col v-if="canEdit && enabled && editable"
-                 class="text-center product-card px-2"
+                 class="text-center product-card product-card-add px-2"
                  cols="6" sm="4" md="3" lg="2"
                  v-on:click="$emit('addProduct', container.id)"
           >
@@ -78,10 +78,20 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import Sortable from 'sortablejs';
 import { Storage } from '@/entities/Storage';
 import { Product } from '@/entities/Product';
 
-@Component({})
+@Component({
+  directives: {
+    sortable: {
+      bind(el: any, binding: any, vnode: any) {
+        const container = el;
+        container._sortable = Sortable.create(container.querySelector('.row'), { ...binding.value, vnode });
+      },
+    },
+  },
+})
 export default class Container extends Vue {
   @Prop() container: Storage | undefined;
 
@@ -93,10 +103,22 @@ export default class Container extends Vue {
 
   selected: Boolean = false;
 
+  sortableOptions: Object = {
+    chosenClass: 'is-selected',
+    filter: '.product-card-add',
+    onEnd: this.dragEnded,
+  };
+
   mounted() {
     this.selected = !this.enabled || false;
   }
 
+  /**
+   * Checks if person can edit this product, otherwise the details modal will be shown
+   *
+   * @param id ID of the container the product is in
+   * @param product Product that is being clicked
+   */
   productDetails(id: String, product: Product) {
     if (this.canEdit && this.enabled && this.editable) {
       this.$emit('editProduct', id, product);
@@ -105,11 +127,34 @@ export default class Container extends Vue {
     }
   }
 
+  /**
+   * Once dragging a products ends this method should also update index for sorting on the
+   * back-end side
+   *
+   * @param evt Event with all the dragging information
+   */
+  dragEnded(evt: any): void {
+    const indexOld: number = evt.oldIndex;
+    const indexNew: number = evt.newIndex;
+
+    // TODO: Make sure index is actually updated somewhere
+
+    this.editable = this.editable;
+  }
+
+  /**
+   * Check if the checkbox for toggling the storage on is checked
+   *
+   * @param event click event
+   */
   checkBoxChanged(event: any) {
     const containerId = this.container ? this.container.id : '0';
     this.$emit('toggled', { id: containerId, state: event });
   }
 
+  /**
+   * Check if current user has the rights to edit this storage container
+   */
   get canEdit() {
     return this.container
       ? this.$store.state.currentUser.organs.includes(this.container.ownerId) : false;

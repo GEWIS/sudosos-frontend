@@ -26,6 +26,7 @@
     :per-page="perPage"
     :current-page="currentPage"
     v-on:filtered="filterFinished"
+    v-sortable="sortableOptions"
   >
     <template v-slot:cell(picture)="data">
       <img class="thumbnail" :src="data.value" alt="">
@@ -75,13 +76,22 @@
 </template>
 
 <script lang="ts">
-
 import { Component, Prop } from 'vue-property-decorator';
+import Sortable from 'sortablejs';
 import Formatters from '@/mixins/Formatters';
 import { Product } from '@/entities/Product';
 import FakeProducts from '@/assets/products';
 
-  @Component
+  @Component({
+    directives: {
+      sortable: {
+        bind(el: any, binding: any, vnode: any) {
+          const table = el;
+          table._sortable = Sortable.create(table.querySelector('tbody'), { ...binding.value, vnode });
+        },
+      },
+    },
+  })
 export default class ProductTable extends Formatters {
     @Prop() private productsProp!: Product[];
 
@@ -95,7 +105,12 @@ export default class ProductTable extends Formatters {
 
     totalRows: number = 0;
 
-    perPage: number = 2;
+    perPage: number = 4;
+
+    sortableOptions: Object = {
+      chosenClass: 'is-selected',
+      onEnd: this.dragEnded,
+    };
 
     fields : Object[] = [
       {
@@ -135,14 +150,31 @@ export default class ProductTable extends Formatters {
     }
 
     /**
-      Method that grabs extra transactions when 2 pages or less are left
-    */
+     * Method that grabs extra transactions when 2 pages or less are left
+     *
+     * @param page new page number
+     */
     pageClicked(page: number) : void {
       if (this.previousPage < page && page >= (Math.ceil(this.totalRows / this.perPage) - 2)) {
         // TODO: Grab new data
       }
 
       this.previousPage = page;
+    }
+
+    /**
+     * Once dragging a products ends this method should also update index for sorting on the
+     * back-end side
+     *
+     * @param evt Event with all the dragging information
+     */
+    dragEnded(evt: any): void {
+      const indexOld: number = evt.oldIndex;
+      const indexNew: number = evt.newIndex;
+
+      // TODO: Make sure index is actually updated somewhere
+
+      this.sortableOptions = this.sortableOptions;
     }
 
     filterFinished(products: Product[], length: number): void {
