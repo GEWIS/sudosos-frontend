@@ -189,7 +189,7 @@
     "add container": "add container",
     "Name": "Name",
     "Open from": "Open from",
-    "Open till": "Open till",
+    "Open till": "To",
     "name invalid": "Please enter a name that is longer than 0 characters",
     "openFrom invalid": "Please enter a valid time",
     "openTill invalid": "Please enter a valid time later than open from",

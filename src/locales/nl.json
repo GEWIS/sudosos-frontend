@@ -189,7 +189,7 @@
     "add container": "container toevoegen",
     "Name": "Naam",
     "Open from": "Open van",
-    "Open till": "Open tot",
+    "Open till": "Tot",
     "name invalid": "Vul een naam in die langer groter dan 0 tekens is",
     "openFrom invalid": "Voer alsjeblieft een geldige tijd in",
     "openTill invalid": "Vul alsjeblieft een geldige tijd in die later is dan open van",
