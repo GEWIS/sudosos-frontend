@@ -51,13 +51,15 @@
           <template v-slot:cell(flaggedById)="data">{{ data.item.flaggedById }}</template>
 
           <template v-slot:cell(status)="data">
-            <font-awesome-icon v-if="data.item.status === 'ACCEPTED'" icon="check" class="icon" />
-            <font-awesome-icon
-              v-else-if="data.item.status === 'REJECTED'"
-              icon="times"
-              class="icon"
+            <font-awesome-icon v-if="data.item.status === 'ACCEPTED'"
+                               icon="check"
+                               class="icon green"
             />
-            <font-awesome-icon v-else icon="question" class="icon" />
+            <font-awesome-icon v-else-if="data.item.status === 'REJECTED'"
+                               icon="times"
+                               class="icon red"
+            />
+            <font-awesome-icon v-else icon="question" class="icon orange" />
           </template>
 
           <template v-slot:cell(reason)="data">
@@ -97,7 +99,7 @@
 import {
   Component, Prop, Vue, Watch,
 } from 'vue-property-decorator';
-import TransactionFlagTableFilter from '@/components/TransactionFlagTableFilter.vue';
+import TransactionFlagTableFilter from '@/components/FlaggedTransactionsTableFilter.vue';
 import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
 import { TransactionFlag, FlagStatus } from '@/entities/TransactionFlag';
@@ -109,7 +111,7 @@ import Formatters from '@/mixins/Formatters';
     TransactionFlagTableFilter,
   },
 })
-export default class TransactionFlagsComponent extends Formatters {
+export default class TransactionFlagsTable extends Formatters {
   @Prop({ type: Object as () => User }) private user!: User;
 
   userAccount = this.$root.$data.currentUser;
@@ -257,6 +259,18 @@ tr.transaction-flag-row:hover {
 
 .icon-grey {
   color: $gewis-grey;
+}
+
+.green {
+  color: $gewis-green;
+}
+
+.red {
+  color: $gewis-red;
+}
+
+.orange {
+  color: $gewis-orange;
 }
 
 .icon {

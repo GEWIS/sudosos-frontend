@@ -66,7 +66,7 @@
   "posRequest": {
     "Request Point of Sale": "Request Point of Sale",
     "General": "General",
-    "Title": "Title",
+    "Title": "POS Name",
     "Selected containers": "Selected containers",
     "Management": "Management",
     "Owner": "Owner",

@@ -125,9 +125,8 @@
             id="active"
             name="active"
             v-model="active"
-          >
-            {{ $t('advertisementList.Active') }}
-          </b-form-checkbox>
+            switch
+          />
         </b-form-group>
 
         <b-form-group
