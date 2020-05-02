@@ -104,7 +104,7 @@
              v-if="csv">
           <b-button
             variant="secondary"
-            id="add"
+            id="export"
             v-on:click="$emit('csv')"
           >
             <font-awesome-icon icon="file-export"></font-awesome-icon>

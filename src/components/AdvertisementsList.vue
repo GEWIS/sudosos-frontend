@@ -8,7 +8,7 @@
       @modalConfirmed="modalConfirmed">
     </ConfirmationModal>
     <b-card>
-      <b-card-title>
+      <template v-slot:header>
         <b-button
           variant="primary"
           id="add"
@@ -16,11 +16,40 @@
           v-on:click="setAdvertisement('post')">
           <font-awesome-icon icon="plus"></font-awesome-icon> {{ $t('advertisementList.Add') }}
         </b-button>
-      </b-card-title>
+      </template>
       <b-card-body>
-        <b-table stacked="sm" small borderless thead-class="table-header table-header-5"
-                 :items="advertisementList" :fields="fields" :per-page="perPage"
-                 :current-page="currentPage" class="table-striped">
+        <b-table stacked="sm"
+                 small
+                 borderless
+                 thead-class="table-header table-header-5"
+                 :items="advertisementList"
+                 :fields="fields"
+                 per-page="perPage"
+                 :current-page="currentPage"
+                 class="table-striped">
+
+          <!-- Template slots for header, makes headers translateable -->
+          <template v-slot:head(thumbnail)="data">
+            {{ $t(`advertisementList.${data.label}`) }}
+          </template>
+
+          <template v-slot:head(duration)="data">
+            {{ $t(`advertisementList.${data.label}`) }}
+          </template>
+
+          <template v-slot:head(active)="data">
+            {{ $t(`advertisementList.${data.label}`) }}
+          </template>
+
+          <template v-slot:head(added)="data">
+            {{ $t(`advertisementList.${data.label}`) }}
+          </template>
+
+          <template v-slot:head(id)="data">
+            {{ $t(`advertisementList.${data.label}`) }}
+          </template>
+
+          <!-- Templates for each row cell -->
           <template v-slot:cell(active)="data">
             <font-awesome-icon v-if="data.value" icon="check-circle"></font-awesome-icon>
           </template>
@@ -96,9 +125,8 @@
             id="active"
             name="active"
             v-model="active"
-          >
-            {{ $t('advertisementList.Active') }}
-          </b-form-checkbox>
+            switch
+          />
         </b-form-group>
 
         <b-form-group
@@ -200,24 +228,24 @@ export default class AdvertisementsList extends Formatters {
     fields: Object[] = [
       {
         key: 'thumbnail',
-        label: this.getTranslation('advertisementList.Thumbnail'),
+        label: 'Thumbnail',
       },
       {
         key: 'duration',
-        label: this.getTranslation('advertisementList.Duration (ms)'),
+        label: 'Duration (ms)',
       },
       {
         key: 'active',
-        label: this.getTranslation('advertisementList.Active'),
+        label: 'Active',
       },
       {
         key: 'added',
-        label: this.getTranslation('advertisementList.Added on'),
+        label: 'Added on',
         formatter: (value: Date) => this.formatDateTime(value, undefined, true),
       },
       {
         key: 'id',
-        label: this.getTranslation('advertisementList.Edit'),
+        label: 'Edit',
       },
     ];
 
@@ -287,8 +315,8 @@ export default class AdvertisementsList extends Formatters {
   @import './src/styles/Card.scss';
 
   .thumbnail {
-    width: 4rem;
-    height: 2.25rem;
+    max-width: 4rem;
+    max-height: 2.25rem;
   }
 
   .icon {

@@ -66,7 +66,7 @@
   "posRequest": {
     "Request Point of Sale": "Request Point of Sale",
     "General": "General",
-    "Title": "Title",
+    "Title": "POS Name",
     "Selected containers": "Selected containers",
     "Management": "Management",
     "Owner": "Owner",
@@ -112,11 +112,26 @@
     "accept manual": "Accept (fix manual)"
   },
   "manageProducts": {
-    "Manage products": "Manage products",
-    "Containers": "Containers",
-    "add container": "Add container",
-    "are you sure": "Are you sure you want to delete this container?",
-    "confirm": "Confirm deletion"
+    "Manage all products and default containers": "Manage all products and default containers",
+    "All products": "All products",
+    "Add product": "Add product",
+    "Default containers": "Default containers",
+    "Add container": "Add container",
+    "Are you sure": "Are you sure you want to delete this container?",
+    "Confirm": "Confirm deletion"
+  },
+  "productTable": {
+    "picture": "picture",
+    "name": "name",
+    "category": "category",
+    "price": "price",
+    "alcoholic": "alcoholic",
+    "negative": "negative",
+    "Yes": "Yes",
+    "No": "No",
+    "Filter by name": "Filter by name",
+    "Fill in a name": "Fill in a name",
+    "Products per page": "Products per page"
   },
   "screens": {
     "Screens": "TV Screens",
@@ -232,6 +247,7 @@
     "Who": "Who",
     "Status": "Status",
     "Reason": "Reason",
+    "Info": "Info",
     "Page": "Page"
   },
   "transactionTableFilter": {
@@ -269,7 +285,7 @@
   },
   "profile": {
     "My profile": "My profile",
-    "Change pin": "Change pin code",
+    "Change pin code": "Change pin code",
     "Old pin code": "Old pin code",
     "New pin code": "New pin code",
     "Confirm new pin code": "Confirm new pin code",

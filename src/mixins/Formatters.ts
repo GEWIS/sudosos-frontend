@@ -53,7 +53,7 @@ export default class Formatters extends Vue {
     Takes value where translation is located as input
    */
   public getTranslation(translation: string): string {
-    return this.$t(translation).toString();
+    return <string> this.$t(translation);
   }
 
   /*

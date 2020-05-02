@@ -42,9 +42,10 @@
 
     <div class="mt-4 mt-md-5">
       <b-card>
-        <b-card-title class="title-form">
+        <template v-slot:header>
 
           <TransactionTableFilter
+            class="title-form"
             v-model="filterValues"
             v-on:csv="downloadCSV"
             :selfBought="false"
@@ -52,15 +53,38 @@
             :putInForYou="false"
           ></TransactionTableFilter>
 
-        </b-card-title>
+        </template>
         <b-card-body>
 
           <!-- Table that will display the transactions -->
-          <b-table stacked="sm" small borderless thead-class="table-header table-header-3"
-                   :items="transactionList" :fields="fields" :tbody-tr-class="setRowClass"
-                   :per-page="perPage" :current-page="currentPage" id="transaction-table"
-                   :filter="filterValues.filterWay" :filter-function="filterRows"
-                   v-on:filtered="filterDone" v-on:row-clicked="rowClicked">
+          <b-table stacked="sm"
+                   small
+                   borderless
+                   thead-class="table-header table-header-3"
+                   id="transaction-table"
+                   :items="transactionList"
+                   :fields="fields"
+                   :tbody-tr-class="setRowClass"
+                   :per-page="perPage"
+                   :current-page="currentPage"
+                   :filter="filterValues.filterWay"
+                   :filter-function="filterRows"
+                   v-on:filtered="filterDone"
+                   v-on:row-clicked="rowClicked">
+
+            <!-- Template slots for header, makes headers translateable -->
+            <template v-slot:head(formattedDate)="data">
+              {{ $t(`posInfo.${data.label}`) }}
+            </template>
+
+            <template v-slot:head(comment)="data">
+              {{ $t(`posInfo.${data.label}`) }}
+            </template>
+
+            <template v-slot:head(id)="data">
+              {{ $t(`posInfo.${data.label}`) }}
+            </template>
+
             <!-- Templates for each row cell -->
             <template v-slot:cell(formattedDate)="data">
                 {{ data.item.formattedDate }}
@@ -164,15 +188,15 @@ export default class PointOfSaleInfo extends Formatters {
     fields: Object[] = [
       {
         key: 'formattedDate',
-        label: this.getTranslation('posInfo.When'),
+        label: 'When',
       },
       {
         key: 'comment',
-        label: this.getTranslation('posInfo.What'),
+        label: 'What',
       },
       {
         key: 'id',
-        label: this.getTranslation('posInfo.Info'),
+        label: 'Info',
       },
     ];
 

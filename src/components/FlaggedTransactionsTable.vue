@@ -23,19 +23,43 @@
           v-on:row-clicked="rowClicked"
         >
 
+          <!-- Template slots for header, makes headers translateable -->
+          <template v-slot:head(formattedDate)="data">
+            {{ $t(`transactionFlagsComponent.${data.label}`) }}
+          </template>
+
+          <template v-slot:head(flaggedById)="data">
+            {{ $t(`transactionFlagsComponent.${data.label}`) }}
+          </template>
+
+          <template v-slot:head(status)="data">
+            {{ $t(`transactionFlagsComponent.${data.label}`) }}
+          </template>
+
+          <template v-slot:head(reason)="data">
+            {{ $t(`transactionFlagsComponent.${data.label}`) }}
+          </template>
+
+          <template v-slot:head(id)="data">
+            {{ $t(`transactionFlagsComponent.${data.label}`) }}
+          </template>
+
+          <!-- Templates for each row cell -->
           <template v-slot:cell(formattedDate)="data">
             {{ data.item.formattedDate }}
           </template>
           <template v-slot:cell(flaggedById)="data">{{ data.item.flaggedById }}</template>
 
           <template v-slot:cell(status)="data">
-            <font-awesome-icon v-if="data.item.status === 'ACCEPTED'" icon="check" class="icon" />
-            <font-awesome-icon
-              v-else-if="data.item.status === 'REJECTED'"
-              icon="times"
-              class="icon"
+            <font-awesome-icon v-if="data.item.status === 'ACCEPTED'"
+                               icon="check"
+                               class="icon green"
             />
-            <font-awesome-icon v-else icon="question" class="icon" />
+            <font-awesome-icon v-else-if="data.item.status === 'REJECTED'"
+                               icon="times"
+                               class="icon red"
+            />
+            <font-awesome-icon v-else icon="question" class="icon orange" />
           </template>
 
           <template v-slot:cell(reason)="data">
@@ -75,7 +99,7 @@
 import {
   Component, Prop, Vue, Watch,
 } from 'vue-property-decorator';
-import TransactionFlagTableFilter from '@/components/TransactionFlagTableFilter.vue';
+import TransactionFlagTableFilter from '@/components/FlaggedTransactionsTableFilter.vue';
 import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
 import { TransactionFlag, FlagStatus } from '@/entities/TransactionFlag';
@@ -87,7 +111,7 @@ import Formatters from '@/mixins/Formatters';
     TransactionFlagTableFilter,
   },
 })
-export default class TransactionFlagsComponent extends Formatters {
+export default class TransactionFlagsTable extends Formatters {
   @Prop({ type: Object as () => User }) private user!: User;
 
   userAccount = this.$root.$data.currentUser;
@@ -115,24 +139,24 @@ export default class TransactionFlagsComponent extends Formatters {
   fields: Object[] = [
     {
       key: 'formattedDate',
-      label: this.getTranslation('transactionFlagsComponent.When'),
+      label: 'When',
     },
     {
       key: 'flaggedById',
-      label: this.getTranslation('transactionFlagsComponent.Who'),
+      label: 'Who',
     },
     {
       key: 'status',
-      label: this.getTranslation('transactionFlagsComponent.Status'),
+      label: 'Status',
     },
     {
       key: 'reason',
-      label: this.getTranslation('transactionFlagsComponent.Reason'),
+      label: 'Reason',
       tdClass: 'cell-reason',
     },
     {
       key: 'id',
-      label: this.getTranslation('transactionFlagsComponent.Info'),
+      label: 'Info',
     },
   ];
 
@@ -235,6 +259,18 @@ tr.transaction-flag-row:hover {
 
 .icon-grey {
   color: $gewis-grey;
+}
+
+.green {
+  color: $gewis-green;
+}
+
+.red {
+  color: $gewis-red;
+}
+
+.orange {
+  color: $gewis-orange;
 }
 
 .icon {

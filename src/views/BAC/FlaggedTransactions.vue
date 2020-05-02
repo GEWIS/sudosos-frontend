@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import FlaggedTransactionsComponent from '@/components/FlaggedTransactions.vue';
+import FlaggedTransactionsComponent from '@/components/FlaggedTransactionsTable.vue';
 
   @Component({
     components: {
