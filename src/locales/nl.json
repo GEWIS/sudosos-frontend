@@ -112,11 +112,13 @@
     "accept manual": "Accept (handmatig oplossen)"
   },
   "manageProducts": {
-    "Manage products": "Productbeheer",
-    "Containers": "Containers",
-    "add container": "Container toevoegen",
-    "are you sure": "Weet je zeker dat je de container wil verwijderen?",
-    "confirm": "Bevestig verwijderen"
+    "Manage all products and default containers": "Beheer alle producten en standaard containers",
+    "All products": "Alle producten",
+    "Add product": "Product toevoegen",
+    "Default containers": "Standaard containers",
+    "Add container": "Container toevoegen",
+    "Are you sure": "Weet je zeker dat je de container wil verwijderen?",
+    "Confirm": "Bevestig verwijderen"
   },
   "productTable": {
     "picture": "plaatje",
@@ -128,7 +130,8 @@
     "Yes": "Ja",
     "No": "Nee",
     "Filter by name": "Filter op naam",
-    "Fill in a name": "Vul een filter in"
+    "Fill in a name": "Vul een filter in",
+    "Products per page": "Producten per pagina"
   },
   "screens": {
     "Screens": "TV Schermen",

@@ -112,11 +112,13 @@
     "accept manual": "Accept (fix manual)"
   },
   "manageProducts": {
-    "Manage products": "Manage products",
-    "Containers": "Containers",
-    "add container": "Add container",
-    "are you sure": "Are you sure you want to delete this container?",
-    "confirm": "Confirm deletion"
+    "Manage all products and default containers": "Manage all products and default containers",
+    "All products": "All products",
+    "Add product": "Add product",
+    "Default containers": "Default containers",
+    "Add container": "Add container",
+    "Are you sure": "Are you sure you want to delete this container?",
+    "Confirm": "Confirm deletion"
   },
   "productTable": {
     "picture": "picture",
@@ -128,7 +130,8 @@
     "Yes": "Yes",
     "No": "No",
     "Filter by name": "Filter by name",
-    "Fill in a name": "Fill in a name"
+    "Fill in a name": "Fill in a name",
+    "Products per page": "Products per page"
   },
   "screens": {
     "Screens": "TV Screens",

@@ -177,11 +177,13 @@ Global style for forms in a card title
         }
     }
 
-    .transaction-row {
+    .transaction-row,
+    .productRow {
         cursor: pointer;
     }
 
-    .transaction-row:hover {
+    .transaction-row:hover,
+    .productRow:hover {
         background-color: #ffffff;
     }
 

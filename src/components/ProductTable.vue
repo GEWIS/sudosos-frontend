@@ -14,6 +14,21 @@
                   trim></b-form-input>
   </b-form-group>
 
+  <b-form-group
+    id="page-amount-group"
+    :label="$t('productTable.Products per page')"
+    label-for="page-amount"
+    label-cols-md="2"
+    label-cols="12"
+  >
+    <b-form-input id="page-amount"
+                  v-model="perPage"
+                  type="number"
+                  min="1"
+                  step="1"
+                  trim></b-form-input>
+  </b-form-group>
+
   <b-table
     :fields="fields"
     :items="productList"
@@ -26,7 +41,9 @@
     :per-page="perPage"
     :current-page="currentPage"
     v-on:filtered="filterFinished"
+    v-on:row-clicked="productDetails"
     v-sortable="sortableOptions"
+    tbody-tr-class="productRow"
   >
     <template v-slot:cell(picture)="data">
       <img class="thumbnail" :src="data.value" alt="">
@@ -94,6 +111,10 @@ import FakeProducts from '@/assets/products';
   })
 export default class ProductTable extends Formatters {
     @Prop() private productsProp!: Product[];
+
+    @Prop() enabled: Boolean | undefined;
+
+    @Prop({ default: true }) editable!: boolean;
 
     nameFilter: string = '';
 
@@ -177,7 +198,23 @@ export default class ProductTable extends Formatters {
       this.sortableOptions = this.sortableOptions;
     }
 
+    /**
+     * Checks if person can edit this product, otherwise the details modal will be shown
+     *
+     * @param product Product that is being clicked
+     * @param index The index of the row currently being clicked
+     * @param event Click event object
+     */
+    productDetails(product: Product, index: Number, event: object): void {
+      if (this.enabled && this.editable) {
+        this.$emit('editProduct', product);
+      } else {
+        this.$emit('productDetails', product);
+      }
+    }
+
     filterFinished(products: Product[], length: number): void {
+      this.currentPage = 1;
       this.totalRows = length;
     }
 }
@@ -192,5 +229,9 @@ export default class ProductTable extends Formatters {
   .pageination {
     color: gray;
     text-transform: uppercase;
+  }
+
+  tr {
+    cursor: pointer;
   }
 </style>

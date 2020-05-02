@@ -1,27 +1,34 @@
 <template>
   <b-container fluid="lg">
-    <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('manageProducts.Manage products') }}</h1>
+    <h1 class="mb-2 mb-sm-3 mb-lg-4">
+      {{ $t('manageProducts.Manage all products and default containers') }}
+    </h1>
 
     <b-row>
-      <b-col cols="12">
-        <b-card>
-          <template v-slot:header>
-            Dit is de header
-          </template>
-          <b-card-body>
-            <ProductTable :productsProp="fakeProducts" />
-          </b-card-body>
-        </b-card>
+      <b-col cols="12" class="containers-container">
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="containers-header">{{ $t('manageProducts.All products') }}</p>
+          <b-button class="my-2 text-truncate" variant="success" v-on:click="addContainer">
+            <font-awesome-icon icon="plus" />
+            {{ $t('manageProducts.Add product') }}
+          </b-button>
+        </div>
+            <ProductTable :productsProp="fakeProducts"
+                          :editable="true"
+                          :enabled="true"
+                          v-on:editProduct="prepEditStandardProduct"
+                          v-on:productDetails="showProductDetails"
+            />
       </b-col>
     </b-row>
 
     <b-row>
       <b-col cols="12" class="containers-container">
         <div class="d-flex justify-content-between align-items-center">
-          <p class="containers-header">{{ $t('manageProducts.Containers') }}</p>
+          <p class="containers-header">{{ $t('manageProducts.Default containers') }}</p>
           <b-button class="my-2 text-truncate" variant="success" v-on:click="addContainer">
             <font-awesome-icon icon="plus" />
-            {{ $t('manageProducts.add container') }}
+            {{ $t('manageProducts.Add container') }}
           </b-button>
         </div>
         <Container v-for="storage in standardContainers"
@@ -31,7 +38,7 @@
                    :editable="true"
                    v-model="editContainer"
                    v-on:addProduct="prepAddingProduct"
-                   v-on:editProduct="prepEdittingProduct"
+                   v-on:editProduct="prepEditContainerProduct"
                    v-on:productDetails="showProductDetails"
         />
       </b-col>
@@ -48,8 +55,8 @@
                       v-on:productDeleted="deleteProduct"
     />
 
-    <ConfirmationModal :reason="$t('manageProducts.are you sure')"
-                       :title="$t('manageProducts.confirm')"
+    <ConfirmationModal :reason="$t('manageProducts.Are you sure')"
+                       :title="$t('manageProducts.Confirm')"
                        v-on:modalConfirmed="confirmStorageDelete"
     />
 
@@ -140,8 +147,14 @@ Method for adding a new container, makes sure editContainer is an empty Storage 
   /*
   Method for preparing editting an product
    */
-  prepEdittingProduct(id: string, product: Product): void {
+  prepEditContainerProduct(id: string, product: Product): void {
     this.addContainerID = id;
+    this.editProduct = product;
+    this.$bvModal.show('edit-product');
+  }
+
+  prepEditStandardProduct(product: Product): void {
+    this.addContainerID = '-1';
     this.editProduct = product;
     this.$bvModal.show('edit-product');
   }
@@ -161,10 +174,15 @@ Method for adding a new container, makes sure editContainer is an empty Storage 
   updated in the requestedPOS if it's storage container was already in there.
   */
   editExistingProduct(product: Product): void {
-    const i = this.standardContainers.findIndex(s => s.id === this.addContainerID);
-    const j = this.standardContainers[i].products.findIndex(p => p.id === product.id);
-    this.standardContainers[i].products[j] = product;
-    this.editStorage(this.standardContainers[i]);
+    if (this.addContainerID === '-1') {
+      const i = this.fakeProducts.findIndex(s => s.id === product.id);
+      this.fakeProducts[i] = product;
+    } else {
+      const i = this.standardContainers.findIndex(s => s.id === this.addContainerID);
+      const j = this.standardContainers[i].products.findIndex(p => p.id === product.id);
+      this.standardContainers[i].products[j] = product;
+      this.editStorage(this.standardContainers[i]);
+    }
   }
 
   /*
@@ -203,15 +221,20 @@ Method for adding a new container, makes sure editContainer is an empty Storage 
   @import '~bootstrap/scss/bootstrap';
   @import './src/styles/Card.scss';
 
+  .row {
+    padding: 0 15px 0 15px;
+  }
+
   .containers-container{
     border: 2px solid $gewis-grey-light;
+    margin-bottom: 2rem;
 
     .containers-header {
       color: $gewis-red;
       font-size: 1em;
       font-weight: 600;
       text-transform: uppercase;
-      margin: 1em;
+      margin: 1em 1em 1em 0;
     }
   }
 </style>
