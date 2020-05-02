@@ -23,6 +23,28 @@
           v-on:row-clicked="rowClicked"
         >
 
+          <!-- Template slots for header, makes headers translateable -->
+          <template v-slot:head(formattedDate)="data">
+            {{ $t(`transactionFlagsComponent.${data.label}`) }}
+          </template>
+
+          <template v-slot:head(flaggedById)="data">
+            {{ $t(`transactionFlagsComponent.${data.label}`) }}
+          </template>
+
+          <template v-slot:head(status)="data">
+            {{ $t(`transactionFlagsComponent.${data.label}`) }}
+          </template>
+
+          <template v-slot:head(reason)="data">
+            {{ $t(`transactionFlagsComponent.${data.label}`) }}
+          </template>
+
+          <template v-slot:head(id)="data">
+            {{ $t(`transactionFlagsComponent.${data.label}`) }}
+          </template>
+
+          <!-- Templates for each row cell -->
           <template v-slot:cell(formattedDate)="data">
             {{ data.item.formattedDate }}
           </template>
@@ -115,24 +137,24 @@ export default class TransactionFlagsComponent extends Formatters {
   fields: Object[] = [
     {
       key: 'formattedDate',
-      label: this.getTranslation('transactionFlagsComponent.When'),
+      label: 'When',
     },
     {
       key: 'flaggedById',
-      label: this.getTranslation('transactionFlagsComponent.Who'),
+      label: 'Who',
     },
     {
       key: 'status',
-      label: this.getTranslation('transactionFlagsComponent.Status'),
+      label: 'Status',
     },
     {
       key: 'reason',
-      label: this.getTranslation('transactionFlagsComponent.Reason'),
+      label: 'Reason',
       tdClass: 'cell-reason',
     },
     {
       key: 'id',
-      label: this.getTranslation('transactionFlagsComponent.Info'),
+      label: 'Info',
     },
   ];
 

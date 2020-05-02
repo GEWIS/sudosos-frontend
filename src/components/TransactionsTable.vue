@@ -11,11 +11,34 @@
       <b-card-body>
 
         <!-- Table that will display the transactions -->
-        <b-table stacked="sm" small borderless thead-class="table-header table-header-3"
-                 :items="transactionList" :fields="fields" :tbody-tr-class="setRowClass"
-                 :per-page="perPage" :current-page="currentPage" id="transaction-table"
-                 :filter="filterValues.filterWay" :filter-function="filterRows"
-                  v-on:filtered="filterDone" v-on:row-clicked="rowClicked">
+        <b-table stacked="sm"
+                 small
+                 borderless
+                 thead-class="table-header table-header-3"
+                 id="transaction-table"
+                 :items="transactionList"
+                 :fields="fields"
+                 :tbody-tr-class="setRowClass"
+                 :per-page="perPage"
+                 :current-page="currentPage"
+                 :filter="filterValues.filterWay"
+                 :filter-function="filterRows"
+                 v-on:filtered="filterDone"
+                 v-on:row-clicked="rowClicked">
+
+          <!-- Template slots for header, makes headers translateable -->
+          <template v-slot:head(formattedDate)="data">
+            {{ $t(`transactionsComponent.${data.label}`) }}
+          </template>
+
+          <template v-slot:head(comment)="data">
+            {{ $t(`transactionsComponent.${data.label}`) }}
+          </template>
+
+          <template v-slot:head(id)="data">
+            {{ $t(`transactionsComponent.${data.label}`) }}
+          </template>
+
           <!-- Templates for each row cell -->
           <template v-slot:cell(formattedDate)="data">
               {{ data.item.formattedDate }}
@@ -110,15 +133,15 @@ export default class TransactionsTable extends Formatters {
     fields: Object[] = [
       {
         key: 'formattedDate',
-        label: this.getTranslation('transactionsComponent.When'),
+        label: 'When',
       },
       {
         key: 'comment',
-        label: this.getTranslation('transactionsComponent.What'),
+        label: 'What',
       },
       {
         key: 'id',
-        label: this.getTranslation('transactionsComponent.Info'),
+        label: 'Info',
       },
     ];
 

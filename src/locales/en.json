@@ -247,6 +247,7 @@
     "Who": "Who",
     "Status": "Status",
     "Reason": "Reason",
+    "Info": "Info",
     "Page": "Page"
   },
   "transactionTableFilter": {
@@ -284,7 +285,7 @@
   },
   "profile": {
     "My profile": "My profile",
-    "Change pin": "Change pin code",
+    "Change pin code": "Change pin code",
     "Old pin code": "Old pin code",
     "New pin code": "New pin code",
     "Confirm new pin code": "Confirm new pin code",

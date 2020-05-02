@@ -26,7 +26,8 @@
                   type="number"
                   min="1"
                   step="1"
-                  trim></b-form-input>
+                  trim>
+    </b-form-input>
   </b-form-group>
 
   <b-table
@@ -45,6 +46,33 @@
     v-sortable="sortableOptions"
     tbody-tr-class="productRow"
   >
+
+    <!-- Template slots for header, makes headers translateable -->
+    <template v-slot:head(picture)="data">
+      {{ $t(`productTable.${data.label}`) }}
+    </template>
+
+    <template v-slot:head(name)="data">
+      {{ $t(`productTable.${data.label}`) }}
+    </template>
+
+    <template v-slot:head(category)="data">
+      {{ $t(`productTable.${data.label}`) }}
+    </template>
+
+    <template v-slot:head(price)="data">
+      {{ $t(`productTable.${data.label}`) }}
+    </template>
+
+    <template v-slot:head(isAlcoholic)="data">
+      {{ $t(`productTable.${data.label}`) }}
+    </template>
+
+    <template v-slot:head(negative)="data">
+      {{ $t(`productTable.${data.label}`) }}
+    </template>
+
+    <!-- Templates for each row cell -->
     <template v-slot:cell(picture)="data">
       <img class="thumbnail" :src="data.value" alt="">
     </template>
@@ -136,27 +164,27 @@ export default class ProductTable extends Formatters {
     fields : Object[] = [
       {
         key: 'picture',
-        label: this.getTranslation('productTable.picture'),
+        label: 'picture',
       },
       {
         key: 'name',
-        label: this.getTranslation('productTable.name'),
+        label: 'name',
       },
       {
         key: 'category',
-        label: this.getTranslation('productTable.category'),
+        label: 'category',
       },
       {
         key: 'price',
-        label: this.getTranslation('productTable.price'),
+        label: 'price',
       },
       {
         key: 'isAlcoholic',
-        label: this.getTranslation('productTable.alcoholic'),
+        label: 'alcoholic',
       },
       {
         key: 'negative',
-        label: this.getTranslation('productTable.negative'),
+        label: 'negative',
       },
     ];
 

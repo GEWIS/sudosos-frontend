@@ -4,14 +4,14 @@
            v-b-toggle="'container_' + container.id">
 
       <!-- The v-on click is to stop the container from toggling open -->
-      <b-input-group class="my-auto"
-                     v-on:click.stop="() => {}">
+      <b-input-group class="my-auto">
         <b-form-checkbox :id="'checkbox_' + container.id"
                          v-model="selected"
                          :disabled="!enabled"
                          @change="checkBoxChanged"
+                         v-on:click.stop="() => {}"
         />
-          <span id="container-name">{{ container.name }}</span>
+          <span>{{ container.name }}</span>
       </b-input-group>
 
       <span class="ml-3 mr-2 my-auto"
@@ -176,10 +176,6 @@ export default class Container extends Vue {
   span {
       white-space: nowrap;
   }
-}
-
-#container-name {
-  cursor: default;
 }
 
 .product-card {

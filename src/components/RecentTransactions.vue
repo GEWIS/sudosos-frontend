@@ -7,6 +7,15 @@
       <b-card-body>
         <b-table stacked="sm" small borderless thead-class="table-header"
         :items="transactionList" :fields="fields">
+
+          <!-- Template slots for header, makes headers translateable -->
+          <template v-slot:head(createdAt)="data">
+            {{ $t(`recentTrans.${data.label}`) }}
+          </template>
+
+          <template v-slot:head(comment)="data">
+            {{ $t(`recentTrans.${data.label}`) }}
+          </template>
         </b-table>
       </b-card-body>
     </b-card>
@@ -33,12 +42,12 @@ export default class RecentTransactions extends Formatters {
   fields: Object[] = [
     {
       key: 'createdAt',
-      label: this.getTranslation('recentTrans.when'),
+      label: 'when',
       formatter: (value: Date) => this.formatDateTime(value, undefined, true),
     },
     {
       key: 'comment',
-      label: this.getTranslation('recentTrans.what'),
+      label: 'what',
     },
   ];
 
