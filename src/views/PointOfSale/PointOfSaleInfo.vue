@@ -72,19 +72,6 @@
                    v-on:filtered="filterDone"
                    v-on:row-clicked="rowClicked">
 
-            <!-- Template slots for header, makes headers translateable -->
-            <template v-slot:head(formattedDate)="data">
-              {{ $t(`posInfo.${data.label}`) }}
-            </template>
-
-            <template v-slot:head(comment)="data">
-              {{ $t(`posInfo.${data.label}`) }}
-            </template>
-
-            <template v-slot:head(id)="data">
-              {{ $t(`posInfo.${data.label}`) }}
-            </template>
-
             <!-- Templates for each row cell -->
             <template v-slot:cell(formattedDate)="data">
                 {{ data.item.formattedDate }}
@@ -146,6 +133,7 @@ import { User } from '@/entities/User';
 import PointsOfSale from '@/assets/pointsOfSale';
 import ProductInfoModal from '@/components/ProductInfoModal.vue';
 import { Product } from '@/entities/Product';
+import eventBus from '@/eventbus';
 
   @Component({
     components: {
@@ -188,15 +176,18 @@ export default class PointOfSaleInfo extends Formatters {
     fields: Object[] = [
       {
         key: 'formattedDate',
-        label: 'When',
+        label: this.getTranslation('posInfo.When'),
+        locale_key: 'When',
       },
       {
         key: 'comment',
-        label: 'What',
+        label: this.getTranslation('posInfo.What'),
+        locale_key: 'What',
       },
       {
         key: 'id',
-        label: 'Info',
+        label: this.getTranslation('posInfo.Info'),
+        locale_key: 'Info',
       },
     ];
 
@@ -208,6 +199,11 @@ export default class PointOfSaleInfo extends Formatters {
       this.ownerData = PointsOfSale.getOwnerData();
 
       this.totalRows = this.transactionList.length;
+
+      // If the locale is changed make sure the labels are also correctly updated for the b-table
+      eventBus.$on('localeUpdated', () => {
+        this.fields = this.updateTranslations(this.fields, 'posInfo');
+      });
     }
 
     /*

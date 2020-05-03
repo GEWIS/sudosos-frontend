@@ -47,31 +47,6 @@
     tbody-tr-class="productRow"
   >
 
-    <!-- Template slots for header, makes headers translateable -->
-    <template v-slot:head(picture)="data">
-      {{ $t(`productTable.${data.label}`) }}
-    </template>
-
-    <template v-slot:head(name)="data">
-      {{ $t(`productTable.${data.label}`) }}
-    </template>
-
-    <template v-slot:head(category)="data">
-      {{ $t(`productTable.${data.label}`) }}
-    </template>
-
-    <template v-slot:head(price)="data">
-      {{ $t(`productTable.${data.label}`) }}
-    </template>
-
-    <template v-slot:head(isAlcoholic)="data">
-      {{ $t(`productTable.${data.label}`) }}
-    </template>
-
-    <template v-slot:head(negative)="data">
-      {{ $t(`productTable.${data.label}`) }}
-    </template>
-
     <!-- Templates for each row cell -->
     <template v-slot:cell(picture)="data">
       <img class="thumbnail" :src="data.value" alt="">
@@ -100,7 +75,7 @@
 
   <div class="d-flex pageination py-3" v-if="totalRows > perPage">
     <p class="my-auto h-100">
-      {{ $t('transactionFlagsComponent.Page') }}:
+      {{ $t('productTable.Page') }}:
     </p>
     <b-pagination
       v-model="currentPage"
@@ -126,6 +101,7 @@ import Sortable from 'sortablejs';
 import Formatters from '@/mixins/Formatters';
 import { Product } from '@/entities/Product';
 import FakeProducts from '@/assets/products';
+import eventBus from '@/eventbus';
 
   @Component({
     directives: {
@@ -164,27 +140,33 @@ export default class ProductTable extends Formatters {
     fields : Object[] = [
       {
         key: 'picture',
-        label: 'picture',
+        label: this.getTranslation('productTable.picture'),
+        locale_key: 'picture',
       },
       {
         key: 'name',
-        label: 'name',
+        label: this.getTranslation('productTable.name'),
+        locale_key: 'name',
       },
       {
         key: 'category',
-        label: 'category',
+        label: this.getTranslation('productTable.category'),
+        locale_key: 'category',
       },
       {
         key: 'price',
-        label: 'price',
+        label: this.getTranslation('productTable.price'),
+        locale_key: 'price',
       },
       {
         key: 'isAlcoholic',
-        label: 'alcoholic',
+        label: this.getTranslation('productTable.alcoholic'),
+        locale_key: 'alcoholic',
       },
       {
         key: 'negative',
-        label: 'negative',
+        label: this.getTranslation('productTable.negative'),
+        locale_key: 'negative',
       },
     ];
 
@@ -196,6 +178,11 @@ export default class ProductTable extends Formatters {
       }
 
       this.totalRows = this.productList.length;
+
+      // If the locale is changed make sure the labels are also correctly updated for the b-table
+      eventBus.$on('localeUpdated', () => {
+        this.fields = this.updateTranslations(this.fields, 'productTable');
+      });
     }
 
     /**

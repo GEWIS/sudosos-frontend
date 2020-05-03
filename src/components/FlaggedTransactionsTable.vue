@@ -23,27 +23,6 @@
           v-on:row-clicked="rowClicked"
         >
 
-          <!-- Template slots for header, makes headers translateable -->
-          <template v-slot:head(formattedDate)="data">
-            {{ $t(`transactionFlagsComponent.${data.label}`) }}
-          </template>
-
-          <template v-slot:head(flaggedById)="data">
-            {{ $t(`transactionFlagsComponent.${data.label}`) }}
-          </template>
-
-          <template v-slot:head(status)="data">
-            {{ $t(`transactionFlagsComponent.${data.label}`) }}
-          </template>
-
-          <template v-slot:head(reason)="data">
-            {{ $t(`transactionFlagsComponent.${data.label}`) }}
-          </template>
-
-          <template v-slot:head(id)="data">
-            {{ $t(`transactionFlagsComponent.${data.label}`) }}
-          </template>
-
           <!-- Templates for each row cell -->
           <template v-slot:cell(formattedDate)="data">
             {{ data.item.formattedDate }}
@@ -105,6 +84,7 @@ import { Transaction } from '@/entities/Transaction';
 import { TransactionFlag, FlagStatus } from '@/entities/TransactionFlag';
 import fakeTransactionFlags from '@/assets/transactionFlags';
 import Formatters from '@/mixins/Formatters';
+import eventBus from '@/eventbus';
 
 @Component({
   components: {
@@ -139,24 +119,29 @@ export default class TransactionFlagsTable extends Formatters {
   fields: Object[] = [
     {
       key: 'formattedDate',
-      label: 'When',
+      label: this.getTranslation('transactionFlagsComponent.When'),
+      locale_key: 'When',
     },
     {
       key: 'flaggedById',
-      label: 'Who',
+      label: this.getTranslation('transactionFlagsComponent.Who'),
+      locale_key: 'Who',
     },
     {
       key: 'status',
-      label: 'Status',
+      label: this.getTranslation('transactionFlagsComponent.Status'),
+      locale_key: 'Status',
     },
     {
       key: 'reason',
-      label: 'Reason',
+      label: this.getTranslation('transactionFlagsComponent.Reason'),
+      locale_key: 'Reason',
       tdClass: 'cell-reason',
     },
     {
       key: 'id',
-      label: 'Info',
+      label: this.getTranslation('transactionFlagsComponent.Info'),
+      locale_key: 'Info',
     },
   ];
 
@@ -166,6 +151,11 @@ export default class TransactionFlagsTable extends Formatters {
     );
 
     this.totalRows = this.transactionFlagList.length;
+
+    // If the locale is changed make sure the labels are also correctly updated for the b-table
+    eventBus.$on('localeUpdated', () => {
+      this.fields = this.updateTranslations(this.fields, 'transactionFlagsComponent');
+    });
   }
 
   /*
