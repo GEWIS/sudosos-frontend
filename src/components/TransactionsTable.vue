@@ -26,19 +26,6 @@
                  v-on:filtered="filterDone"
                  v-on:row-clicked="rowClicked">
 
-          <!-- Template slots for header, makes headers translateable -->
-          <template v-slot:head(formattedDate)="data">
-            {{ $t(`transactionsComponent.${data.label}`) }}
-          </template>
-
-          <template v-slot:head(comment)="data">
-            {{ $t(`transactionsComponent.${data.label}`) }}
-          </template>
-
-          <template v-slot:head(id)="data">
-            {{ $t(`transactionsComponent.${data.label}`) }}
-          </template>
-
           <!-- Templates for each row cell -->
           <template v-slot:cell(formattedDate)="data">
               {{ data.item.formattedDate }}
@@ -84,15 +71,14 @@
 </template>
 
 <script lang="ts">
-import {
-  Component, Prop, Watch,
-} from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 import TransactionDetailsModal from '@/components/TransactionDetailsModal.vue';
 import TransactionTableFilter from '@/components/TransactionTableFilter.vue';
 import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
 import fakeTransactions from '@/assets/transactions';
 import Formatters from '@/mixins/Formatters';
+import eventBus from '@/eventbus';
 
 
   @Component({
@@ -133,15 +119,18 @@ export default class TransactionsTable extends Formatters {
     fields: Object[] = [
       {
         key: 'formattedDate',
-        label: 'When',
+        label: this.getTranslation('transactionsComponent.When'),
+        locale_key: 'When',
       },
       {
         key: 'comment',
-        label: 'What',
+        label: this.getTranslation('transactionsComponent.What'),
+        locale_key: 'What',
       },
       {
         key: 'id',
-        label: 'Info',
+        label: this.getTranslation('transactionsComponent.Info'),
+        locale_key: 'Info',
       },
     ];
 
@@ -149,7 +138,13 @@ export default class TransactionsTable extends Formatters {
       this.transactionList = this.formatTransactions(
         fakeTransactions.fetchTransactions(this.userAccount),
       );
+
       this.totalRows = this.transactionList.length;
+
+      // If the locale is changed make sure the labels are also correctly updated for the b-table
+      eventBus.$on('localeUpdated', () => {
+        this.fields = this.updateTranslations(this.fields, 'transactionsComponent');
+      });
     }
 
     /*

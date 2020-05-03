@@ -28,27 +28,6 @@
                  :current-page="currentPage"
                  class="table-striped">
 
-          <!-- Template slots for header, makes headers translateable -->
-          <template v-slot:head(thumbnail)="data">
-            {{ $t(`advertisementList.${data.label}`) }}
-          </template>
-
-          <template v-slot:head(duration)="data">
-            {{ $t(`advertisementList.${data.label}`) }}
-          </template>
-
-          <template v-slot:head(active)="data">
-            {{ $t(`advertisementList.${data.label}`) }}
-          </template>
-
-          <template v-slot:head(added)="data">
-            {{ $t(`advertisementList.${data.label}`) }}
-          </template>
-
-          <template v-slot:head(id)="data">
-            {{ $t(`advertisementList.${data.label}`) }}
-          </template>
-
           <!-- Templates for each row cell -->
           <template v-slot:cell(active)="data">
             <font-awesome-icon v-if="data.value" icon="check-circle"></font-awesome-icon>
@@ -167,6 +146,7 @@ import { Advertisement } from '@/entities/Advertisement';
 import { User } from '@/entities/User';
 import Formatters from '@/mixins/Formatters';
 import FileFormPreview from '@/components/FileFormPreview.vue';
+import eventBus from '@/eventbus';
 
 function fetchAdvertisements() : Advertisement[] {
   const advertisements = [{
@@ -228,29 +208,39 @@ export default class AdvertisementsList extends Formatters {
     fields: Object[] = [
       {
         key: 'thumbnail',
-        label: 'Thumbnail',
+        label: this.getTranslation('advertisementList.Thumbnail'),
+        locale_key: 'Thumbnail',
       },
       {
         key: 'duration',
-        label: 'Duration (ms)',
+        label: this.getTranslation('advertisementList.Duration (ms)'),
+        locale_key: 'Duration (ms)',
       },
       {
         key: 'active',
-        label: 'Active',
+        label: this.getTranslation('advertisementList.Active'),
+        locale_key: 'Active',
       },
       {
         key: 'added',
-        label: 'Added on',
+        label: this.getTranslation('advertisementList.Added on'),
+        locale_key: 'Added on',
         formatter: (value: Date) => this.formatDateTime(value, undefined, true),
       },
       {
         key: 'id',
-        label: 'Edit',
+        label: this.getTranslation('advertisementList.Edit'),
+        locale_key: 'Edit',
       },
     ];
 
     beforeMount() {
       this.advertisementList = fetchAdvertisements();
+
+      // If the locale is changed make sure the labels are also correctly updated for the b-table
+      eventBus.$on('localeUpdated', () => {
+        this.fields = this.updateTranslations(this.fields, 'advertisementList');
+      });
     }
 
     /*
