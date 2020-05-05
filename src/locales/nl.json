@@ -6,7 +6,7 @@
     "Overview": "Overzicht POS",
     "Request": "Aanvraag",
     "Admin": "Beheer",
-    "Manage POS": "Beheer POS",
+    "Manage POS": "Beheer verkooppunten",
     "Screens": "TV Schermen",
     "Advertisements": "Advertenties",
     "BAC": "BAC",
@@ -39,7 +39,7 @@
     "Point of sale overview": "Verkooppunt overzicht"
   },
   "posInfo": {
-    "POS": "POS",
+    "POS": "Verkooppunt",
     "Close": "Sluiten",
     "General": "Algemeen",
     "Title": "Titel",
@@ -106,7 +106,7 @@
     "flagged on": "Gemarkeerd op",
     "flagged by": "Gemarkeerd door",
     "reason": "Reden",
-    "comment placeholder": "Geef een reden als nodig",
+    "comment placeholder": "Geef een reden indien nodig",
     "reject": "Afwijzen",
     "accept auto": "Accept (automagisch oplossen)",
     "accept manual": "Accept (handmatig oplossen)"
@@ -136,14 +136,14 @@
   },
   "screens": {
     "Screens": "TV Schermen",
-    "Ending time": "Eind tijd",
-    "Confirm end time": "Bevestig eind tijd",
+    "Ending time": "Eindtijd",
+    "Confirm end time": "Bevestig eindtijd",
     "Stop social drink mode": "Stop borrel modus",
     "currently": "Borrel modus staat op dit moment ",
     "on": "aan",
     "off": "uit",
     "turn off": "Borrel modus wordt automagisch uitgezet op ",
-    "turn on": "Je kunt borrel modus aanzetten door bovenin een tijd te kiezen. Op deze tijd wordt borrel modus weer uitgeschakeld.",
+    "turn on": "Je kunt borrel modus aanzetten door bovenin een tijd te kiezen en door op de knop te klikken. Op deze tijd wordt borrel modus weer uitgeschakeld.",
     "early": "Je kunt de tijd bovenin veranderen of borrel modus vroegtijdig beëindigen door op \"Borrel modus uitschakelen\" te klikken."
   },
   "managePOS": {
@@ -174,9 +174,9 @@
   "advertisementList" : {
     "Add": "Toevoegen",
     "save": "opslaan",
-    "cancel": "cancel",
+    "cancel": "annuleren",
     "new advertisement": "nieuwe advertentie",
-    "Duration": "Duur",
+    "Duration": "Duur (in ms)",
     "Active": "Actief",
     "Advertisement": "Advertentie",
     "Confirm deletion": "Bevestig verwijderen",
@@ -185,36 +185,36 @@
     "Thumbnail": "Thumbnail",
     "Duration (ms)": "Duur (ms)",
     "Added on": "Toegevoegd op",
-    "Edit": "Bewerk"
+    "Edit": "Aanpassen"
   },
   "fileFormPreview": {
     "Choose image drop": "Kies een plaatje of zet neer...",
-    "Drop file": "Zet bestand neer..."
+    "Drop file": "Zet bestand hier neer..."
   },
   "confirmationModal": {
-    "Cancel": "Cancel",
-    "Confirm": "Bevestig"
+    "Cancel": "Annuleren",
+    "Confirm": "Bevestigen"
   },
   "containersOverview": {
-    "Containers": "Opslag"
+    "Containers": "Containers"
   },
   "editContainerModal": {
     "save": "opslaan",
-    "cancel": "cancel",
+    "cancel": "annuleren",
     "edit container": "bewerk container",
     "add container": "container toevoegen",
     "Name": "Naam",
     "Open from": "Open van",
-    "Open till": "Open tot",
+    "Open till": "Tot",
     "name invalid": "Vul een naam in die langer groter dan 0 tekens is",
-    "openFrom invalid": "Voer alsjeblieft een juiste tijd in",
-    "openTill invalid": "Vul alsjeblieft een juist tijd die later is dan open van",
+    "openFrom invalid": "Voer alsjeblieft een geldige tijd in",
+    "openTill invalid": "Vul alsjeblieft een geldige tijd in die later is dan open van",
     "added on": "Toegevoegd op",
     "added by": "Toegevoegd door"
   },
   "editProductModal": {
     "save": "opslaan",
-    "cancel": "cancel",
+    "cancel": "annuleren",
     "edit product": "bewerk product",
     "add product": "product toevoegen",
     "Name": "Naam",
@@ -225,10 +225,10 @@
     "Category": "Categorie",
     "Traysize": "Staffelgroote",
     "Alcoholic": "Alcoholisch",
-    "Negative": "Mag saldo negatief maken",
+    "Negative": "Kan saldo negatief maken",
     "Picture": "Plaatje",
     "Delete product": "Verwijder product",
-    "name invalid": "Voer een correcte naam in van die groter dan 0 tekens is",
+    "name invalid": "Voer een correcte naam in van die langer is dan 0 tekens",
     "category invalid": "Voer een correcte categorie in van die groter dan 0 tekens is",
     "traysize invalid": "Voer een correcte staffegrote in die groter dan 0 is",
     "price invalid": "Voer een correcte prijs in die groter of gelijk aan 0 is"
@@ -255,9 +255,9 @@
     "from": "van",
     "placeholder": "Selecteer een datum",
     "to": "tot",
-    "Self Bought": "Zelf gekocht",
-    "Put in for others": "Voor anderen afgestreept",
-    "Put in for you": "Voor jou afgestreept",
+    "Self Bought": "Gekocht door jou",
+    "Put in for others": "Gekocht voor anderen",
+    "Put in for you": "Gekocht voor jou",
     "Export to CSV": "Exporteren naar CSV",
     "Reset filter": "Herstel filter"
   },
@@ -270,11 +270,11 @@
   },
   "transactionDetailsModal": {
     "transaction details": "transactie details",
-    "Cancel": "Cancel",
+    "Cancel": "Sluiten",
     "Flag transaction": "Markeer transactie",
     "flag reason": "Geef een reden waarom de transactie gemarkeerd moet worden",
     "reason placeholder": "Geef een reden",
-    "flag invalid": "Geef een reden op"
+    "flag invalid": "Geef alsjeblieft een reden"
   },
   "transactionDetails": {
     "Total": "Totaal",
