@@ -90,7 +90,7 @@ import {
 } from 'vue-property-decorator';
 
   @Component
-export default class TransactionTableFilter extends Vue {
+export default class FlaggedTransactionsTableFilter extends Vue {
     /*
       Props to set the filters, if any of these are false the filter will not be displayed
     */

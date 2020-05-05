@@ -23,19 +23,22 @@
           v-on:row-clicked="rowClicked"
         >
 
+          <!-- Templates for each row cell -->
           <template v-slot:cell(formattedDate)="data">
             {{ data.item.formattedDate }}
           </template>
           <template v-slot:cell(flaggedById)="data">{{ data.item.flaggedById }}</template>
 
           <template v-slot:cell(status)="data">
-            <font-awesome-icon v-if="data.item.status === 'ACCEPTED'" icon="check" class="icon" />
-            <font-awesome-icon
-              v-else-if="data.item.status === 'REJECTED'"
-              icon="times"
-              class="icon"
+            <font-awesome-icon v-if="data.item.status === 'ACCEPTED'"
+                               icon="check"
+                               class="icon green"
             />
-            <font-awesome-icon v-else icon="question" class="icon" />
+            <font-awesome-icon v-else-if="data.item.status === 'REJECTED'"
+                               icon="times"
+                               class="icon red"
+            />
+            <font-awesome-icon v-else icon="question" class="icon orange" />
           </template>
 
           <template v-slot:cell(reason)="data">
@@ -75,19 +78,20 @@
 import {
   Component, Prop, Vue, Watch,
 } from 'vue-property-decorator';
-import TransactionFlagTableFilter from '@/components/TransactionFlagTableFilter.vue';
+import TransactionFlagTableFilter from '@/components/FlaggedTransactionsTableFilter.vue';
 import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
 import { TransactionFlag, FlagStatus } from '@/entities/TransactionFlag';
 import fakeTransactionFlags from '@/assets/transactionFlags';
 import Formatters from '@/mixins/Formatters';
+import eventBus from '@/eventbus';
 
 @Component({
   components: {
     TransactionFlagTableFilter,
   },
 })
-export default class TransactionFlagsComponent extends Formatters {
+export default class TransactionFlagsTable extends Formatters {
   @Prop({ type: Object as () => User }) private user!: User;
 
   userAccount = this.$root.$data.currentUser;
@@ -116,23 +120,28 @@ export default class TransactionFlagsComponent extends Formatters {
     {
       key: 'formattedDate',
       label: this.getTranslation('transactionFlagsComponent.When'),
+      locale_key: 'When',
     },
     {
       key: 'flaggedById',
       label: this.getTranslation('transactionFlagsComponent.Who'),
+      locale_key: 'Who',
     },
     {
       key: 'status',
       label: this.getTranslation('transactionFlagsComponent.Status'),
+      locale_key: 'Status',
     },
     {
       key: 'reason',
       label: this.getTranslation('transactionFlagsComponent.Reason'),
+      locale_key: 'Reason',
       tdClass: 'cell-reason',
     },
     {
       key: 'id',
       label: this.getTranslation('transactionFlagsComponent.Info'),
+      locale_key: 'Info',
     },
   ];
 
@@ -142,6 +151,11 @@ export default class TransactionFlagsComponent extends Formatters {
     );
 
     this.totalRows = this.transactionFlagList.length;
+
+    // If the locale is changed make sure the labels are also correctly updated for the b-table
+    eventBus.$on('localeUpdated', () => {
+      this.fields = this.updateTranslations(this.fields, 'transactionFlagsComponent');
+    });
   }
 
   /*
@@ -235,6 +249,18 @@ tr.transaction-flag-row:hover {
 
 .icon-grey {
   color: $gewis-grey;
+}
+
+.green {
+  color: $gewis-green;
+}
+
+.red {
+  color: $gewis-red;
+}
+
+.orange {
+  color: $gewis-orange;
 }
 
 .icon {

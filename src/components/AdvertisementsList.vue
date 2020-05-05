@@ -8,7 +8,7 @@
       @modalConfirmed="modalConfirmed">
     </ConfirmationModal>
     <b-card>
-      <b-card-title>
+      <template v-slot:header>
         <b-button
           variant="primary"
           id="add"
@@ -16,11 +16,19 @@
           v-on:click="setAdvertisement('post')">
           <font-awesome-icon icon="plus"></font-awesome-icon> {{ $t('advertisementList.Add') }}
         </b-button>
-      </b-card-title>
+      </template>
       <b-card-body>
-        <b-table stacked="sm" small borderless thead-class="table-header table-header-5"
-                 :items="advertisementList" :fields="fields" :per-page="perPage"
-                 :current-page="currentPage" class="table-striped">
+        <b-table stacked="sm"
+                 small
+                 borderless
+                 thead-class="table-header table-header-5"
+                 :items="advertisementList"
+                 :fields="fields"
+                 per-page="perPage"
+                 :current-page="currentPage"
+                 class="table-striped">
+
+          <!-- Templates for each row cell -->
           <template v-slot:cell(active)="data">
             <font-awesome-icon v-if="data.value" icon="check-circle"></font-awesome-icon>
           </template>
@@ -96,9 +104,8 @@
             id="active"
             name="active"
             v-model="active"
-          >
-            {{ $t('advertisementList.Active') }}
-          </b-form-checkbox>
+            switch
+          />
         </b-form-group>
 
         <b-form-group
@@ -139,6 +146,7 @@ import { Advertisement } from '@/entities/Advertisement';
 import { User } from '@/entities/User';
 import Formatters from '@/mixins/Formatters';
 import FileFormPreview from '@/components/FileFormPreview.vue';
+import eventBus from '@/eventbus';
 
 function fetchAdvertisements() : Advertisement[] {
   const advertisements = [{
@@ -201,28 +209,38 @@ export default class AdvertisementsList extends Formatters {
       {
         key: 'thumbnail',
         label: this.getTranslation('advertisementList.Thumbnail'),
+        locale_key: 'Thumbnail',
       },
       {
         key: 'duration',
         label: this.getTranslation('advertisementList.Duration (ms)'),
+        locale_key: 'Duration (ms)',
       },
       {
         key: 'active',
         label: this.getTranslation('advertisementList.Active'),
+        locale_key: 'Active',
       },
       {
         key: 'added',
         label: this.getTranslation('advertisementList.Added on'),
+        locale_key: 'Added on',
         formatter: (value: Date) => this.formatDateTime(value, undefined, true),
       },
       {
         key: 'id',
         label: this.getTranslation('advertisementList.Edit'),
+        locale_key: 'Edit',
       },
     ];
 
     beforeMount() {
       this.advertisementList = fetchAdvertisements();
+
+      // If the locale is changed make sure the labels are also correctly updated for the b-table
+      eventBus.$on('localeUpdated', () => {
+        this.fields = this.updateTranslations(this.fields, 'advertisementList');
+      });
     }
 
     /*
@@ -287,8 +305,8 @@ export default class AdvertisementsList extends Formatters {
   @import './src/styles/Card.scss';
 
   .thumbnail {
-    width: 4rem;
-    height: 2.25rem;
+    max-width: 4rem;
+    max-height: 2.25rem;
   }
 
   .icon {

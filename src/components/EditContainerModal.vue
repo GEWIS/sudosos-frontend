@@ -185,8 +185,10 @@ export default class EditContainerModal extends Formatters {
 
     // Check state of openTill
     get openTillState(): boolean | null {
-      return this.openTill === null ? null : this.openTill.length > 0
-        && this.openFrom !== this.openTill;
+      if (this.openTill === null || this.openFrom === null) {
+        return null;
+      }
+      return this.openTill.length > 0 && this.openFrom < this.openTill;
     }
 
     // Return appropriate validating message for openTill

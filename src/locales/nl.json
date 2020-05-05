@@ -66,7 +66,7 @@
   "posRequest": {
     "Request Point of Sale": "Aanvraag verkooppunt",
     "General": "Algemeen",
-    "Title": "Titel",
+    "Title": "POS Naam",
     "Selected containers": "Geselecteerde containers",
     "Management": "Beheer",
     "Owner": "Eigenaar",
@@ -112,11 +112,27 @@
     "accept manual": "Accept (handmatig oplossen)"
   },
   "manageProducts": {
-    "Manage products": "Productbeheer",
-    "Containers": "Containers",
-    "add container": "Container toevoegen",
-    "are you sure": "Weet je zeker dat je deze container wil verwijderen?",
-    "confirm": "Bevestig verwijderen"
+    "Manage all products and default containers": "Beheer alle producten en standaard containers",
+    "All products": "Alle producten",
+    "Add product": "Product toevoegen",
+    "Default containers": "Standaard containers",
+    "Add container": "Container toevoegen",
+    "Are you sure": "Weet je zeker dat je de container wil verwijderen?",
+    "Confirm": "Bevestig verwijderen"
+  },
+  "productTable": {
+    "picture": "Plaatje",
+    "name": "Naam",
+    "category": "Categorie",
+    "price": "Prijs",
+    "alcoholic": "Alcoholisch",
+    "negative": "Negatief",
+    "Page": "Pagina",
+    "Yes": "Ja",
+    "No": "Nee",
+    "Filter by name": "Filter op naam",
+    "Fill in a name": "Vul een filter in",
+    "Products per page": "Producten per pagina"
   },
   "screens": {
     "Screens": "TV Schermen",

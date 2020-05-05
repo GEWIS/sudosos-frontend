@@ -17,8 +17,8 @@ import { POSStatus } from '@/entities/PointOfSale';
               id="processed-input"
               name="processed-input"
               v-model="processed"
-              :value="true"
-              :unchecked-value="false"
+              :value="false"
+              :unchecked-value="true"
             >
               {{ $t('POSOverview.processed') }}
             </b-form-checkbox>

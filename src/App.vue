@@ -55,7 +55,10 @@
             <b-dropdown-item :to="{ name: 'profile'}">{{ $t('app.Profile') }}</b-dropdown-item>
             <b-dropdown-item :to="{ name: 'signOut'}">{{ $t('app.Sign out') }}</b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item :to="{ name: 'saldo'}" active-class="" exact-active-class="">
+          <b-nav-item class="d-none d-md-inline"
+                      :to="{ name: 'saldo'}"
+                      active-class=""
+                      exact-active-class="">
             {{ dinero({amount: currentUser.saldo}).toFormat() }}
           </b-nav-item>
           <b-nav-item-dropdown right>
@@ -65,13 +68,13 @@
             <b-dropdown-item
               :class="{'router-link-active' : $i18n.locale === 'nl'}"
               :disabled="$i18n.locale === 'nl'"
-              @click="$i18n.locale = 'nl'">
+              @click="localeChange('nl')">
               <span class="flag-icon" id="dutch"></span>{{ $t('app.Netherlands') }}
             </b-dropdown-item>
             <b-dropdown-item
               :class="{'router-link-active' : $i18n.locale === 'en'}"
               :disabled="$i18n.locale === 'en'"
-              @click="$i18n.locale = 'en'">
+              @click="localeChange('en')">
               <span class="flag-icon" id="english"></span>{{ $t('app.English') }}
             </b-dropdown-item>
           </b-nav-item-dropdown>
@@ -96,12 +99,18 @@ import { User } from '@/entities/User';
 import './styles/Navbar.scss';
 import './styles/Footer.scss';
 import Formatters from '@/mixins/Formatters';
-
+import eventBus from '@/eventbus';
 
 const user = namespace('user');
 
 export default class App extends Formatters {
   public currentUser: User = this.$store.state.currentUser;
+
+  localeChange(value: string): void {
+    this.$root.$i18n.locale = value;
+
+    eventBus.$emit('localeUpdated');
+  }
 }
 </script>
 

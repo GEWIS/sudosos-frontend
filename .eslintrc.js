@@ -15,6 +15,7 @@ module.exports = {
     '@typescript-eslint/no-unused-expressions': 'off',
     'no-param-reassign': ['error', { props: false }],
     '@typescript-eslint/no-empty-function': ['error', { allow: ['constructors'] }],
+    'no-underscore-dangle': 'off',
   },
   parserOptions: {
     parser: '@typescript-eslint/parser',

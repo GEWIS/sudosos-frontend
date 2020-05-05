@@ -5,8 +5,12 @@
         {{ $t('recentTrans.recent transactions') }}
       </b-card-title>
       <b-card-body>
-        <b-table stacked="sm" small borderless thead-class="table-header"
-        :items="transactionList" :fields="fields">
+        <b-table stacked="sm"
+                 small
+                 borderless
+                 thead-class="table-header"
+                 :items="transactionList"
+                 :fields="fields">
         </b-table>
       </b-card-body>
     </b-card>
@@ -19,14 +23,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { TranslateResult } from 'vue-i18n';
+import { Component } from 'vue-property-decorator';
 import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
 import fakeTransactions from '@/assets/transactions';
 import Formatters from '@/mixins/Formatters';
+import eventBus from '@/eventbus';
 
-@Component
+  @Component
 export default class RecentTransactions extends Formatters {
   transactionList: Transaction[] = [];
 
@@ -35,15 +39,22 @@ export default class RecentTransactions extends Formatters {
       key: 'createdAt',
       label: this.getTranslation('recentTrans.when'),
       formatter: (value: Date) => this.formatDateTime(value, undefined, true),
+      locale_key: 'when',
     },
     {
       key: 'comment',
       label: this.getTranslation('recentTrans.what'),
+      locale_key: 'what',
     },
   ];
 
   beforeMount() {
     this.transactionList = fakeTransactions.fetchTransactions({} as User);
+
+    // If the locale is changed make sure the labels are also correctly updated for the b-table
+    eventBus.$on('localeUpdated', () => {
+      this.fields = this.updateTranslations(this.fields, 'recentTrans');
+    });
   }
 }
 

@@ -122,9 +122,8 @@
           id="alcoholic"
           name="alcoholic"
           v-model="alcoholic"
-        >
-          {{ $t('editProductModal.Alcoholic') }}
-        </b-form-checkbox>
+          switch
+        />
       </b-form-group>
 
       <b-form-group
@@ -138,9 +137,8 @@
           id="negative"
           name="negative"
           v-model="negative"
-        >
-          {{ $t('editProductModal.Negative') }}
-        </b-form-checkbox>
+          switch
+        />
       </b-form-group>
 
       <b-form-group

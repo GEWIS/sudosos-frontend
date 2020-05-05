@@ -42,9 +42,10 @@
 
     <div class="mt-4 mt-md-5">
       <b-card>
-        <b-card-title class="title-form">
+        <template v-slot:header>
 
           <TransactionTableFilter
+            class="title-form"
             v-model="filterValues"
             v-on:csv="downloadCSV"
             :selfBought="false"
@@ -52,15 +53,25 @@
             :putInForYou="false"
           ></TransactionTableFilter>
 
-        </b-card-title>
+        </template>
         <b-card-body>
 
           <!-- Table that will display the transactions -->
-          <b-table stacked="sm" small borderless thead-class="table-header table-header-3"
-                   :items="transactionList" :fields="fields" :tbody-tr-class="setRowClass"
-                   :per-page="perPage" :current-page="currentPage" id="transaction-table"
-                   :filter="filterValues.filterWay" :filter-function="filterRows"
-                   v-on:filtered="filterDone" v-on:row-clicked="rowClicked">
+          <b-table stacked="sm"
+                   small
+                   borderless
+                   thead-class="table-header table-header-3"
+                   id="transaction-table"
+                   :items="transactionList"
+                   :fields="fields"
+                   :tbody-tr-class="setRowClass"
+                   :per-page="perPage"
+                   :current-page="currentPage"
+                   :filter="filterValues.filterWay"
+                   :filter-function="filterRows"
+                   v-on:filtered="filterDone"
+                   v-on:row-clicked="rowClicked">
+
             <!-- Templates for each row cell -->
             <template v-slot:cell(formattedDate)="data">
                 {{ data.item.formattedDate }}
@@ -122,6 +133,7 @@ import { User } from '@/entities/User';
 import PointsOfSale from '@/assets/pointsOfSale';
 import ProductInfoModal from '@/components/ProductInfoModal.vue';
 import { Product } from '@/entities/Product';
+import eventBus from '@/eventbus';
 
   @Component({
     components: {
@@ -165,14 +177,17 @@ export default class PointOfSaleInfo extends Formatters {
       {
         key: 'formattedDate',
         label: this.getTranslation('posInfo.When'),
+        locale_key: 'When',
       },
       {
         key: 'comment',
         label: this.getTranslation('posInfo.What'),
+        locale_key: 'What',
       },
       {
         key: 'id',
         label: this.getTranslation('posInfo.Info'),
+        locale_key: 'Info',
       },
     ];
 
@@ -184,6 +199,11 @@ export default class PointOfSaleInfo extends Formatters {
       this.ownerData = PointsOfSale.getOwnerData();
 
       this.totalRows = this.transactionList.length;
+
+      // If the locale is changed make sure the labels are also correctly updated for the b-table
+      eventBus.$on('localeUpdated', () => {
+        this.fields = this.updateTranslations(this.fields, 'posInfo');
+      });
     }
 
     /*

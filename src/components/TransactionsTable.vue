@@ -1,22 +1,31 @@
 <template>
   <div>
     <b-card>
-      <b-card-title class="title-form">
-
+      <template v-slot:header>
         <TransactionTableFilter
           v-model="filterValues"
+          class="title-form"
           v-on:csv="downloadCSV"
         ></TransactionTableFilter>
-
-      </b-card-title>
+      </template>
       <b-card-body>
 
         <!-- Table that will display the transactions -->
-        <b-table stacked="sm" small borderless thead-class="table-header table-header-3"
-                 :items="transactionList" :fields="fields" :tbody-tr-class="setRowClass"
-                 :per-page="perPage" :current-page="currentPage" id="transaction-table"
-                 :filter="filterValues.filterWay" :filter-function="filterRows"
-                  v-on:filtered="filterDone" v-on:row-clicked="rowClicked">
+        <b-table stacked="sm"
+                 small
+                 borderless
+                 thead-class="table-header table-header-3"
+                 id="transaction-table"
+                 :items="transactionList"
+                 :fields="fields"
+                 :tbody-tr-class="setRowClass"
+                 :per-page="perPage"
+                 :current-page="currentPage"
+                 :filter="filterValues.filterWay"
+                 :filter-function="filterRows"
+                 v-on:filtered="filterDone"
+                 v-on:row-clicked="rowClicked">
+
           <!-- Templates for each row cell -->
           <template v-slot:cell(formattedDate)="data">
               {{ data.item.formattedDate }}
@@ -62,15 +71,14 @@
 </template>
 
 <script lang="ts">
-import {
-  Component, Prop, Watch,
-} from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 import TransactionDetailsModal from '@/components/TransactionDetailsModal.vue';
 import TransactionTableFilter from '@/components/TransactionTableFilter.vue';
 import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
 import fakeTransactions from '@/assets/transactions';
 import Formatters from '@/mixins/Formatters';
+import eventBus from '@/eventbus';
 
 
   @Component({
@@ -79,7 +87,7 @@ import Formatters from '@/mixins/Formatters';
       TransactionTableFilter,
     },
   })
-export default class TransactionsComponent extends Formatters {
+export default class TransactionsTable extends Formatters {
     userAccount: User = this.$store.state.currentUser;
 
     modalTrans: Transaction = {} as Transaction;
@@ -112,14 +120,17 @@ export default class TransactionsComponent extends Formatters {
       {
         key: 'formattedDate',
         label: this.getTranslation('transactionsComponent.When'),
+        locale_key: 'When',
       },
       {
         key: 'comment',
         label: this.getTranslation('transactionsComponent.What'),
+        locale_key: 'What',
       },
       {
         key: 'id',
         label: this.getTranslation('transactionsComponent.Info'),
+        locale_key: 'Info',
       },
     ];
 
@@ -127,7 +138,13 @@ export default class TransactionsComponent extends Formatters {
       this.transactionList = this.formatTransactions(
         fakeTransactions.fetchTransactions(this.userAccount),
       );
+
       this.totalRows = this.transactionList.length;
+
+      // If the locale is changed make sure the labels are also correctly updated for the b-table
+      eventBus.$on('localeUpdated', () => {
+        this.fields = this.updateTranslations(this.fields, 'transactionsComponent');
+      });
     }
 
     /*

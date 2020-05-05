@@ -7,11 +7,11 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import TransactionsComponent from '@/components/Transactions.vue';
+import TransactionsTable from '@/components/TransactionsTable.vue';
 
   @Component({
     components: {
-      TransactionsComponent,
+      TransactionsComponent: TransactionsTable,
     },
   })
 
