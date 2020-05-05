@@ -90,7 +90,6 @@ import { initFilter, TableFilter } from '@/entities/TableFilter';
 
 import fakeTransactions from '@/assets/transactions';
 
-
   @Component({
     components: {
       TransactionDetailsModal,
@@ -136,7 +135,7 @@ export default class TransactionsTable extends Formatters {
     filterValues: TableFilter = initFilter();
 
     /**
-      Fields that should be shown from the transactionList
+     Fields that should be shown from the transactionList
      */
     fields: Object[] = [
       {
@@ -188,7 +187,7 @@ export default class TransactionsTable extends Formatters {
 
     /**
      * Method that takes the current data rows and outputs a downloadable csv file
-    */
+     */
     downloadCSV() : void {
       let csv = '';
       let downloadSet : Transaction[];
@@ -222,6 +221,72 @@ export default class TransactionsTable extends Formatters {
       link.click();
       document.body.removeChild(link);
     }
+
+    /**
+     * formatTransactions add rows for each date and formats the dates into a nicer format that we
+     * want to use for displaying the dates
+     *
+     * @param t List of transactions
+     *
+     */
+    formatTransactions = (t: Transaction[]) => {
+      const dates: String[] = [];
+
+      let transactions: Transaction[] = [];
+      let dateTransactions: Transaction[] = [];
+      let dateRowTransaction: Transaction = {} as Transaction;
+      t.forEach((transaction) => {
+        // Create formatted date and time for each transaction
+        const fDate = this.formatDateTime(transaction.createdAt, true);
+        const time = this.formatDateTime(transaction.createdAt);
+
+        // If formatted date has not been used yet make a date row
+        if (!dates.find(d => d === fDate) || '') {
+          dates.push(fDate);
+
+          // If this is the second date row we found push the first one and add the transactions
+          // that occurred on that date
+          if (dates.length > 1) {
+            transactions.push(dateRowTransaction);
+            transactions = transactions.concat(dateTransactions);
+            dateTransactions = [];
+          }
+
+          dateRowTransaction = {
+            id: fDate,
+            soldToId: '',
+            authorized: '',
+            totalPrice: 0,
+            pointOfSale: '',
+            activityId: '',
+            subTransactions: [],
+            comment: '',
+            createdAt: transaction.createdAt,
+            updatedAt: transaction.updatedAt,
+            formattedDate: fDate,
+          } as Transaction;
+        }
+
+        // Add all the needed information to the dateRow transaction from the transactions beneath
+        // it. This makes sure the filter function can correctly keep the dateRows in the
+        // transaction table
+        const trans: Transaction = transaction;
+        trans.formattedDate = time;
+        dateRowTransaction.soldToId = `${dateRowTransaction.soldToId} ${transaction.soldToId}`;
+        dateRowTransaction.authorized = `${dateRowTransaction.authorized} ${transaction.authorized}`;
+        dateRowTransaction.activityId = `${dateRowTransaction.activityId} ${transaction.activityId}`;
+
+        dateTransactions.push(trans);
+      });
+
+      // Push the last dateRow transaction and transactions that accompany it
+      if (dateRowTransaction.activityId !== '') {
+        transactions.push(dateRowTransaction);
+        transactions = transactions.concat(dateTransactions);
+      }
+
+      return transactions;
+    };
 
     /**
      * Filters the rows based time constraints and user selected options, is called by the b-table
@@ -300,7 +365,7 @@ export default class TransactionsTable extends Formatters {
 
     /**
      * Method that grabs extra transactions when 2 pages or less are left
-    */
+     */
     pageClicked(page: number) : void {
       if (this.previousPage < page && page >= (Math.ceil(this.totalRows / this.perPage) - 2)) {
         // TODO: Grab new data

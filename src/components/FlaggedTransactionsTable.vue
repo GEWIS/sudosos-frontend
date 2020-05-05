@@ -213,7 +213,7 @@ export default class TransactionFlagsTable extends Formatters {
   }
 
   /**
-   * formatTransactions add rows for each date and formats the dates into a nicer format that we
+   * formatTransactionFlags add rows for each date and formats the dates into a nicer format that we
    * want to use for displaying the dates
    *
    * @param t: List of transactions
