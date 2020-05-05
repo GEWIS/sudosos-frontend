@@ -5,6 +5,13 @@
         <TransactionTableFilter
           v-model="filterValues"
           class="title-form"
+          :fromDate="fromDate"
+          :toDate="toDate"
+          :selfBought="selfBought"
+          :putInByYou="putInByYou"
+          :putInForYou="putInForYou"
+          :reset="reset"
+          :csv="csv"
           v-on:csv="downloadCSV"
         ></TransactionTableFilter>
       </template>
@@ -41,6 +48,7 @@
         </b-table>
       </b-card-body>
     </b-card>
+
     <b-card-footer v-if="totalRows > perPage" class="d-flex">
       <p class="my-auto h-100">
         {{ $t('transactionsComponent.Page') }}:
@@ -64,14 +72,13 @@
     <TransactionDetailsModal
       v-if="Object.keys(modalTrans).length > 0"
       :transaction="modalTrans"
-    >
-    </TransactionDetailsModal>
+    />
 
   </div>
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
+import { Component, Prop } from 'vue-property-decorator';
 import TransactionDetailsModal from '@/components/TransactionDetailsModal.vue';
 import TransactionTableFilter from '@/components/TransactionTableFilter.vue';
 import { User } from '@/entities/User';
@@ -79,6 +86,7 @@ import { Transaction } from '@/entities/Transaction';
 import fakeTransactions from '@/assets/transactions';
 import Formatters from '@/mixins/Formatters';
 import eventBus from '@/eventbus';
+import { TableFilter } from '@/entities/TableFilter';
 
 
   @Component({
@@ -88,6 +96,23 @@ import eventBus from '@/eventbus';
     },
   })
 export default class TransactionsTable extends Formatters {
+    /**
+     Props to set the filters, if any of these are false the filter will not be displayed
+     */
+    @Prop({ default: true, type: Boolean }) selfBought!: boolean;
+
+    @Prop({ default: true, type: Boolean }) private putInByYou!: boolean;
+
+    @Prop({ default: true, type: Boolean }) private putInForYou!: boolean;
+
+    @Prop({ default: true, type: Boolean }) private fromDate!: boolean;
+
+    @Prop({ default: true, type: Boolean }) private toDate!: boolean;
+
+    @Prop({ default: true, type: Boolean }) private reset!: boolean;
+
+    @Prop({ default: true, type: Boolean }) private csv!: boolean;
+
     userAccount: User = this.$store.state.currentUser;
 
     modalTrans: Transaction = {} as Transaction;
@@ -104,7 +129,7 @@ export default class TransactionsTable extends Formatters {
 
     totalRows: number = 0;
 
-    filterValues: any = {
+    filterValues: TableFilter = {
       selfBought: false,
       putInByYou: false,
       putInForYou: false,
@@ -113,7 +138,7 @@ export default class TransactionsTable extends Formatters {
       toDate: '',
     };
 
-    /*
+    /**
       Fields that should be shown from the transactionList
      */
     fields: Object[] = [
@@ -147,18 +172,11 @@ export default class TransactionsTable extends Formatters {
       });
     }
 
-    /*
-      Puts the currently selected transaction into the modal
-    */
-    selectTransaction(data: Transaction) : void {
-      this.modalTrans = data;
-    }
-
-    /*
-      setRowClass gives a date row a date-row class and a transaction row a transaction-row class
-
-      @param item : The transaction that makes up this row
-      @param type : The type of field this is (should be a row)
+    /**
+     * setRowClass gives a date row a date-row class and a transaction row a transaction-row class
+     *
+     * @param item The transaction that makes up this row
+     * @param type The type of field this is (should be a row)
      */
     setRowClass = (item: Transaction, type: string): String => {
       if (type === 'row' && item.formattedDate !== undefined) {
@@ -171,8 +189,8 @@ export default class TransactionsTable extends Formatters {
       return '';
     };
 
-    /*
-      Method that takes the current data rows and outputs a downloadable csv file
+    /**
+     * Method that takes the current data rows and outputs a downloadable csv file
     */
     downloadCSV() : void {
       let csv = '';
@@ -208,9 +226,13 @@ export default class TransactionsTable extends Formatters {
       document.body.removeChild(link);
     }
 
-    /*
-      Filters the rows based time constraints and user selected options
-    */
+    /**
+     * Filters the rows based time constraints and user selected options, is called by the b-table
+     * if the filterValues.filterRow is updated
+     *
+     * @prop data Transaction that is currently being filtered against the filterValues
+     * @prop prop filterProp that has been filled in by the user
+     */
     filterRows(data: Transaction, prop: String): boolean {
       let self = false;
       let putInBy = false;
@@ -221,13 +243,13 @@ export default class TransactionsTable extends Formatters {
       const auth = data.authorized.toString().split(' ').filter(item => item !== '');
 
       // First check if there is a date constraint
-      if (this.filterValues.fromDate === '' || this.filterValues.toDate === '') {
+      if (this.filterValues.fromDate === '' && this.filterValues.toDate === '') {
         date = true;
       } else {
-        const dateFrom = new Date(`${this.filterValues.fromDate} 00:00:00`);
-        const dateTo = new Date(`${this.filterValues.toDate} 23:59:59`);
+        const dateFromDate = new Date(`${this.filterValues.fromDate} 00:00:00`);
+        const dateToDate = new Date(`${this.filterValues.toDate} 23:59:59`);
 
-        date = data.createdAt >= dateFrom && data.createdAt <= dateTo;
+        date = data.createdAt >= dateFromDate || data.createdAt <= dateToDate;
       }
 
       // Check if there is a selfBought constraint and take date into account
@@ -279,8 +301,8 @@ export default class TransactionsTable extends Formatters {
       return date;
     }
 
-    /*
-      Method that grabs extra transactions when 2 pages or less are left
+    /**
+     * Method that grabs extra transactions when 2 pages or less are left
     */
     pageClicked(page: number) : void {
       if (this.previousPage < page && page >= (Math.ceil(this.totalRows / this.perPage) - 2)) {
@@ -290,8 +312,8 @@ export default class TransactionsTable extends Formatters {
       this.previousPage = page;
     }
 
-    /*
-    Once the filter is done update the totalRows and filtered rows
+    /**
+     * Once the filter is done update the totalRows and filtered rows
      */
     filterDone(result: Transaction[]): void {
       this.totalRows = result.length;
@@ -299,6 +321,13 @@ export default class TransactionsTable extends Formatters {
       this.currentPage = 1;
     }
 
+    /**
+     * Shows the details modal if the transaction row is clicked
+     *
+     * @param item Transaction that makes up the clicked row
+     * @param index Index of the row in the current view
+     * @param event Click event of the row
+     */
     rowClicked(item: Transaction, index: Number, event: object): void {
       if (!this.checkFormattedDate(item.formattedDate || '')) {
         this.modalTrans = item;
@@ -309,8 +338,8 @@ export default class TransactionsTable extends Formatters {
       }
     }
 
-    /*
-    Check if string is of format `00-00-0000 (word)`
+    /**
+     * Check if string is of format `00-00-0000 (word)`
      */
     checkFormattedDate = (date : String) : boolean => /\d{2}-\d{2}-\d{4}.\(\w*\)/.test(date.toString());
 }

@@ -182,9 +182,12 @@ Global style for forms in a card title
         cursor: pointer;
     }
 
-    .transaction-row:hover,
-    .productRow:hover {
+    .transaction-row:hover {
         background-color: #ffffff;
+    }
+
+    .productRow:hover {
+        background-color: $gewis-grey-light;
     }
 
     .transaction-row+.transaction-row, .transaction-flag-row+.transaction-flag-row {

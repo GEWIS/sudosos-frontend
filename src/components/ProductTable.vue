@@ -24,6 +24,7 @@
     <b-form-input id="page-amount"
                   v-model="perPage"
                   type="number"
+                  inputmode="decimal"
                   min="1"
                   step="1"
                   trim>

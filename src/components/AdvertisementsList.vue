@@ -88,6 +88,7 @@
             id="duration"
             name="duration"
             type="number"
+            inputmode="decimal"
             v-model="duration"
             :state="durationState"
           ></b-form-input>
