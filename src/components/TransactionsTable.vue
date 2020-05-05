@@ -10,10 +10,11 @@
           :selfBought="selfBought"
           :putInByYou="putInByYou"
           :putInForYou="putInForYou"
+          :hideHandled="hideHandled"
           :reset="reset"
           :csv="csv"
           v-on:csv="downloadCSV"
-        ></TransactionTableFilter>
+        />
       </template>
       <b-card-body>
 
@@ -79,14 +80,15 @@
 
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator';
+import Formatters from '@/mixins/Formatters';
 import TransactionDetailsModal from '@/components/TransactionDetailsModal.vue';
 import TransactionTableFilter from '@/components/TransactionTableFilter.vue';
+import eventBus from '@/eventbus';
 import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
+import { initFilter, TableFilter } from '@/entities/TableFilter';
+
 import fakeTransactions from '@/assets/transactions';
-import Formatters from '@/mixins/Formatters';
-import eventBus from '@/eventbus';
-import { TableFilter } from '@/entities/TableFilter';
 
 
   @Component({
@@ -104,6 +106,8 @@ export default class TransactionsTable extends Formatters {
     @Prop({ default: true, type: Boolean }) private putInByYou!: boolean;
 
     @Prop({ default: true, type: Boolean }) private putInForYou!: boolean;
+
+    @Prop({ default: true, type: Boolean }) private hideHandled!: boolean;
 
     @Prop({ default: true, type: Boolean }) private fromDate!: boolean;
 
@@ -129,14 +133,7 @@ export default class TransactionsTable extends Formatters {
 
     totalRows: number = 0;
 
-    filterValues: TableFilter = {
-      selfBought: false,
-      putInByYou: false,
-      putInForYou: false,
-      filterWay: null,
-      fromDate: '',
-      toDate: '',
-    };
+    filterValues: TableFilter = initFilter();
 
     /**
       Fields that should be shown from the transactionList

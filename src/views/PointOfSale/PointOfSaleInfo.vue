@@ -44,6 +44,7 @@
                        :selfBought="false"
                        :putInByYou="false"
                        :putInForYou="false"
+                       :hideHandled="false"
     />
 
     <ProductInfoModal :product="infoProduct"
