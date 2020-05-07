@@ -1,0 +1,301 @@
+{
+  "app": {
+    "Transactions": "Transactions",
+    "Saldo": "Balance",
+    "Points of Sale": "Points of Sale",
+    "Overview": "POS Overview",
+    "Request": "Request",
+    "Admin": "Admin",
+    "Manage POS": "Manage POS",
+    "Screens": "TV Screens",
+    "Advertisements": "Advertisements",
+    "BAC": "BAC",
+    "Flagged transactions": "Flagged transactions",
+    "Manage products": "Manage products",
+    "Profile": "Profile",
+    "Sign out": "Sign out",
+    "Netherlands": "Nederlands",
+    "English": "English"
+  },
+  "formatters": {
+    "Monday": "Monday",
+    "Tuesday": "Tuesday",
+    "Wednesday": "Wednesday",
+    "Thursday": "Thursday",
+    "Friday": "Friday",
+    "Saturday": "Saturday",
+    "Sunday": "Sunday"
+  },
+  "home": {
+    "Overview": "Overview"
+  },
+  "transactions": {
+    "Transactions": "Transactions"
+  },
+  "saldo": {
+    "Saldo": "Balance"
+  },
+  "pointOfSaleOverview": {
+    "Point of sale overview": "Point of sale overview"
+  },
+  "posInfo": {
+    "POS": "POS",
+    "Close": "Close",
+    "General": "General",
+    "Title": "Title",
+    "Management": "Management",
+    "Owner": "Owner",
+    "Managers": "Managers",
+    "Containers": "Containers",
+    "Page": "Page",
+    "When": "When",
+    "What": "What",
+    "Info": "Info"
+  },
+  "posApprove": {
+    "Request:": "Request:",
+    "Approve": "Approve",
+    "Reject": "Reject",
+    "General": "General",
+    "Title": "Title",
+    "Management": "Management",
+    "Owner": "Owner",
+    "Managers": "Managers",
+    "Containers": "Containers"
+  },
+  "posRequest": {
+    "Request Point of Sale": "Request Point of Sale",
+    "General": "General",
+    "Title": "POS Name",
+    "Selected containers": "Selected containers",
+    "Management": "Management",
+    "Owner": "Owner",
+    "Managers": "Managers",
+    "Containers": "Containers",
+    "add container": "Add container",
+    "Request": "Request",
+    "Please enter a name for this POS": "Please enter a name for this POS",
+    "Please select an owner for this POS": "Please select an owner for this POS",
+    "confirm": "Confirm deletion",
+    "are you sure": "Are you sure you want to delete this container?"
+  },
+  "productInfoModal": {
+    "title": "Product information",
+    "Cancel": "Close",
+    "Name": "Name",
+    "Put in by": "Put in by",
+    "Put in on": "Put in on",
+    "Price": "Price",
+    "Category": "Category",
+    "Traysize": "Traysize",
+    "Contains alcohol": "Contains alcohol",
+    "Yes": "Yes",
+    "No": "No",
+    "Can induce negative saldo": "Can introduce negative balance",
+    "Picture": "Picture",
+    "Product picture": "Product picture"
+  },
+  "flagged": {
+    "Flagged transactions": "Flagged transactions"
+  },
+  "flaggedDetails": {
+    "Flagged transaction": "Flagged transaction",
+    "Transaction details": "Transaction details",
+    "Flag details": "Flag details",
+    "status": "Status",
+    "flagged on": "Flagged on",
+    "flagged by": "Flagged by",
+    "reason": "Reason",
+    "comment placeholder": "Provide a comment if needed",
+    "reject": "Reject",
+    "accept auto": "Accept (fix automatically)",
+    "accept manual": "Accept (fix manual)"
+  },
+  "manageProducts": {
+    "Manage all products and default containers": "Manage all products and default containers",
+    "All products": "All products",
+    "Add product": "Add product",
+    "Default containers": "Default containers",
+    "Add container": "Add container",
+    "Are you sure": "Are you sure you want to delete this container?",
+    "Confirm": "Confirm deletion"
+  },
+  "productTable": {
+    "picture": "Picture",
+    "name": "Name",
+    "category": "Category",
+    "price": "Price",
+    "alcoholic": "Alcoholic",
+    "negative": "Negative",
+    "Page": "Page",
+    "Yes": "Yes",
+    "No": "No",
+    "Filter by name": "Filter by name",
+    "Fill in a name": "Fill in a name",
+    "Products per page": "Products per page"
+  },
+  "screens": {
+    "Screens": "TV Screens",
+    "Ending time": "Ending time",
+    "Confirm end time": "Confirm end time",
+    "Stop social drink mode": "Stop social drink mode",
+    "currently": "Currently social drink mode is turned ",
+    "on": "on",
+    "off": "off",
+    "turn off": "Social drink mode will automatically be turned off at ",
+    "turn on": "You can turn on social drink mode by choosing a time above and clicking the button. The social drink mode will automatically be turned of at that time.",
+    "early": "You can either change the time above or turn off the social drink mode prematurely by clicking on \"Stop social drink mode\"."
+  },
+  "managePOS": {
+    "Manage points of sale": "Manage points of sale"
+  },
+  "POSOverview": {
+    "my points of sale": "My points of sale",
+    "requested points of sale": "Requested points of sale",
+    "processed": "Processed",
+    "ACCEPTED": "Accepted",
+    "OPEN": "Open",
+    "REJECTED": "Rejected",
+    "Page": "Page"
+  },
+  "advertisements": {
+    "Advertisements": "Advertisements"
+  },
+  "saldoCom": {
+    "saldo": "balance",
+    "upgrade online": "increase online"
+  },
+  "recentTrans": {
+    "recent transactions": "recent transactions",
+    "all transactions": "all transactions",
+    "when": "When",
+    "what": "What"
+  },
+  "advertisementList" : {
+    "Add": "Add",
+    "save": "save",
+    "cancel": "cancel",
+    "new advertisement": "new advertisement",
+    "Duration": "Duration (in ms)",
+    "Active": "Active",
+    "Advertisement": "Advertisement",
+    "Confirm deletion": "Confirm deletion",
+    "Please enter": "Please enter a number larger than 0",
+    "Are you sure": "Are you sure you want to delete this advertisement?",
+    "Thumbnail": "Thumbnail",
+    "Duration (ms)": "Duration (ms)",
+    "Added on": "Added on",
+    "Edit": "Edit"
+  },
+  "fileFormPreview": {
+    "Choose image drop": "Choose image or drop here...",
+    "Drop file": "Drop file here..."
+  },
+  "confirmationModal": {
+    "Cancel": "Cancel",
+    "Confirm": "Confirm"
+  },
+  "containersOverview": {
+    "Containers": "Containers"
+  },
+  "editContainerModal": {
+    "save": "save",
+    "cancel": "cancel",
+    "edit container": "edit container",
+    "add container": "add container",
+    "Name": "Name",
+    "Open from": "Open from",
+    "Open till": "To",
+    "name invalid": "Please enter a name that is longer than 0 characters",
+    "openFrom invalid": "Please enter a valid time",
+    "openTill invalid": "Please enter a valid time later than open from",
+    "added on": "Added on",
+    "added by": "Added by"
+  },
+  "editProductModal": {
+    "save": "save",
+    "cancel": "cancel",
+    "edit product": "edit product",
+    "add product": "add product",
+    "Name": "Name",
+    "added on": "Added on",
+    "added by": "Added by",
+    "container": "container",
+    "Price": "Price",
+    "Category": "Category",
+    "Traysize": "Traysize",
+    "Alcoholic": "Alcoholic",
+    "Negative": "Can introduce negative balance",
+    "Picture": "Picture",
+    "Delete product": "Delete product",
+    "name invalid": "Please provide a valid name that is longer than 0 characters",
+    "category invalid": "Please provide a valid category that is larger than 0 characters",
+    "traysize invalid": "Please provide a valid traysize that is higher than 0",
+    "price invalid": "Please provide a valid price that is higher or equal to 0"
+  },
+  "containerComponent": {
+    "new": "New"
+  },
+  "transactionFlagTableFilter": {
+    "from": "from",
+    "placeholder": "No date selected",
+    "to": "to",
+    "Hide handled": "Hide handled",
+    "Reset filter": "Reset filter"
+  },
+  "transactionFlagsComponent": {
+    "When": "When",
+    "Who": "Who",
+    "Status": "Status",
+    "Reason": "Reason",
+    "Info": "Info",
+    "Page": "Page"
+  },
+  "transactionTableFilter": {
+    "from": "from",
+    "placeholder": "Select a date",
+    "to": "to",
+    "Self Bought": "Bought by you",
+    "Put in for others": "Bought for others",
+    "Put in for you": "Bought by others for you",
+    "Hide handled": "Hide handled",
+    "Export to CSV": "Export to CSV",
+    "Reset filter": "Reset filter"
+  },
+  "transactionsComponent": {
+    "When": "When",
+    "What": "What",
+    "Info": "Info",
+    "Page": "Page",
+    "Transactions": "Transactions"
+  },
+  "transactionDetailsModal": {
+    "transaction details": "transaction details",
+    "Cancel": "Close",
+    "Flag transaction": "Flag transaction",
+    "flag reason": "Please provide a reason for flagging the transaction",
+    "reason placeholder": "Provide a reason",
+    "flag invalid": "Please provide a reason"
+  },
+  "transactionDetails": {
+    "Total": "Total",
+    "Point of sale": "Point of sale",
+    "Put in by": "Bought by",
+    "Put in for": "Bought for",
+    "Activity": "Activity",
+    "Products": "Products"
+  },
+  "profile": {
+    "My profile": "My profile",
+    "Change pin code": "Change pin code",
+    "Old pin code": "Old pin code",
+    "New pin code": "New pin code",
+    "Confirm new pin code": "Confirm new pin code",
+    "Manage NFC devices": "Manage NFC devices",
+    "Confirm deletion": "Confirm deletion",
+    "Are you sure": "Are you sure you want to remove this NFC device?"
+  },
+  "signOut": {
+    "message": "Signing you out! Hope you had a nice time :) Be sure to come back soon!"
+  }
+}

@@ -1,0 +1,301 @@
+{
+  "app": {
+    "Transactions": "Transacties",
+    "Saldo": "Saldo",
+    "Points of Sale": "Verkooppunten",
+    "Overview": "Overzicht POS",
+    "Request": "Aanvraag",
+    "Admin": "Beheer",
+    "Manage POS": "Beheer verkooppunten",
+    "Screens": "TV Schermen",
+    "Advertisements": "Advertenties",
+    "BAC": "BAC",
+    "Flagged transactions": "Gemarkeerde transacties",
+    "Manage products": "Beheer producten",
+    "Profile": "Profiel",
+    "Sign out": "Uitloggen",
+    "Netherlands": "Nederlands",
+    "English": "English"
+  },
+  "formatters": {
+    "Monday": "Maandag",
+    "Tuesday": "Dinsdag",
+    "Wednesday": "Woensdag",
+    "Thursday": "Donderdag",
+    "Friday": "Vrijdag",
+    "Saturday": "Zaterdag",
+    "Sunday": "Zondag"
+  },
+  "home": {
+    "Overview": "Overzicht"
+  },
+  "transactions": {
+    "Transactions": "Transacties"
+  },
+  "saldo": {
+    "Saldo": "Saldo"
+  },
+  "pointOfSaleOverview": {
+    "Point of sale overview": "Verkooppunt overzicht"
+  },
+  "posInfo": {
+    "POS": "Verkooppunt",
+    "Close": "Sluiten",
+    "General": "Algemeen",
+    "Title": "Titel",
+    "Management": "Beheer",
+    "Owner": "Eigenaar",
+    "Managers": "Beheerders",
+    "Containers": "Containers",
+    "Page": "Pagina",
+    "When": "Wanneer",
+    "What": "Wat",
+    "Info": "Info"
+  },
+  "posApprove": {
+    "Request:": "Aanvraag:",
+    "Approve": "Goedkeuren",
+    "Reject": "Afkeuren",
+    "General": "Algemeen",
+    "Title": "Titel",
+    "Management": "Beheer",
+    "Owner": "Eigenaar",
+    "Managers": "Beheerders",
+    "Containers": "Containers"
+  },
+  "posRequest": {
+    "Request Point of Sale": "Aanvraag verkooppunt",
+    "General": "Algemeen",
+    "Title": "POS Naam",
+    "Selected containers": "Geselecteerde containers",
+    "Management": "Beheer",
+    "Owner": "Eigenaar",
+    "Managers": "Beheerders",
+    "Containers": "Containers",
+    "add container": "Container toevoegen",
+    "Request": "Vraag aan",
+    "Please enter a name for this POS": "Voer alsjeblieft een naam in voor dit verkooppunt",
+    "Please select an owner for this POS": "Selecteer alsjeblieft een eigenaar voor dit verkooppunt",
+    "confirm": "Bevestig verwijderen",
+    "are you sure": "Weet je zeker dat je deze container wil verwijderen?"
+  },
+  "productInfoModal": {
+    "title": "Product informatie",
+    "Cancel": "Sluiten",
+    "Name": "Naam",
+    "Put in by": "Toegevoegd door",
+    "Put in on": "Toegevoegd op",
+    "Price": "Prijs",
+    "Category": "Categorie",
+    "Traysize": "Staffelgrote",
+    "Contains alcohol": "Bevat alcohol",
+    "Yes": "Ja",
+    "No": "Nee",
+    "Can induce negative saldo": "Kan saldo negatief maken",
+    "Picture": "Plaatje",
+    "Product picture": "Product plaatje"
+  },
+  "flagged": {
+    "Flagged transactions": "Gemarkeerde transacties"
+  },
+  "flaggedDetails": {
+    "Flagged transaction": "Germarkeerde transactie",
+    "Transaction details": "Transactie details",
+    "Flag details": "Details van markering",
+    "status": "Status",
+    "flagged on": "Gemarkeerd op",
+    "flagged by": "Gemarkeerd door",
+    "reason": "Reden",
+    "comment placeholder": "Geef een reden indien nodig",
+    "reject": "Afwijzen",
+    "accept auto": "Accept (automagisch oplossen)",
+    "accept manual": "Accept (handmatig oplossen)"
+  },
+  "manageProducts": {
+    "Manage all products and default containers": "Beheer alle producten en standaard containers",
+    "All products": "Alle producten",
+    "Add product": "Product toevoegen",
+    "Default containers": "Standaard containers",
+    "Add container": "Container toevoegen",
+    "Are you sure": "Weet je zeker dat je de container wil verwijderen?",
+    "Confirm": "Bevestig verwijderen"
+  },
+  "productTable": {
+    "picture": "Plaatje",
+    "name": "Naam",
+    "category": "Categorie",
+    "price": "Prijs",
+    "alcoholic": "Alcoholisch",
+    "negative": "Negatief",
+    "Page": "Pagina",
+    "Yes": "Ja",
+    "No": "Nee",
+    "Filter by name": "Filter op naam",
+    "Fill in a name": "Vul een filter in",
+    "Products per page": "Producten per pagina"
+  },
+  "screens": {
+    "Screens": "TV Schermen",
+    "Ending time": "Eindtijd",
+    "Confirm end time": "Bevestig eindtijd",
+    "Stop social drink mode": "Stop borrel modus",
+    "currently": "Borrel modus staat op dit moment ",
+    "on": "aan",
+    "off": "uit",
+    "turn off": "Borrel modus wordt automagisch uitgezet op ",
+    "turn on": "Je kunt borrel modus aanzetten door bovenin een tijd te kiezen en door op de knop te klikken. Op deze tijd wordt borrel modus weer uitgeschakeld.",
+    "early": "Je kunt de tijd bovenin veranderen of borrel modus vroegtijdig beëindigen door op \"Borrel modus uitschakelen\" te klikken."
+  },
+  "managePOS": {
+    "Manage points of sale": "Beheer verkooppunten"
+  },
+  "POSOverview": {
+    "my points of sale": "Mijn verkooppunten",
+    "requested points of sale": "Aangevraagde verkooppunten",
+    "processed": "Behandeld",
+    "ACCEPTED": "Geaccepteerd",
+    "OPEN": "Open",
+    "REJECTED": "Afgewezen",
+    "Page": "Pagina"
+  },
+  "advertisements": {
+    "Advertisements": "Advertenties"
+  },
+  "saldoCom": {
+    "saldo": "saldo",
+    "upgrade online": "online opwaarderen"
+  },
+  "recentTrans": {
+    "recent transactions": "recente transacties",
+    "all transactions": "alle transacties",
+    "when": "Wanneer",
+    "what": "Wat"
+  },
+  "advertisementList" : {
+    "Add": "Toevoegen",
+    "save": "opslaan",
+    "cancel": "annuleren",
+    "new advertisement": "nieuwe advertentie",
+    "Duration": "Duur (in ms)",
+    "Active": "Actief",
+    "Advertisement": "Advertentie",
+    "Confirm deletion": "Bevestig verwijderen",
+    "Please enter": "Voer een nummer in dat groter dan 0 is",
+    "Are you sure": "Weet je zeker dat je deze advertentie wil verwijderen?",
+    "Thumbnail": "Thumbnail",
+    "Duration (ms)": "Duur (ms)",
+    "Added on": "Toegevoegd op",
+    "Edit": "Aanpassen"
+  },
+  "fileFormPreview": {
+    "Choose image drop": "Kies een plaatje of zet neer...",
+    "Drop file": "Zet bestand hier neer..."
+  },
+  "confirmationModal": {
+    "Cancel": "Annuleren",
+    "Confirm": "Bevestigen"
+  },
+  "containersOverview": {
+    "Containers": "Containers"
+  },
+  "editContainerModal": {
+    "save": "opslaan",
+    "cancel": "annuleren",
+    "edit container": "bewerk container",
+    "add container": "container toevoegen",
+    "Name": "Naam",
+    "Open from": "Open van",
+    "Open till": "Tot",
+    "name invalid": "Vul een naam in die langer groter dan 0 tekens is",
+    "openFrom invalid": "Voer alsjeblieft een geldige tijd in",
+    "openTill invalid": "Vul alsjeblieft een geldige tijd in die later is dan open van",
+    "added on": "Toegevoegd op",
+    "added by": "Toegevoegd door"
+  },
+  "editProductModal": {
+    "save": "opslaan",
+    "cancel": "annuleren",
+    "edit product": "bewerk product",
+    "add product": "product toevoegen",
+    "Name": "Naam",
+    "added on": "Toegevoegd op",
+    "added by": "Toegevoegd door",
+    "container": "container",
+    "Price": "Prijs",
+    "Category": "Categorie",
+    "Traysize": "Staffelgroote",
+    "Alcoholic": "Alcoholisch",
+    "Negative": "Kan saldo negatief maken",
+    "Picture": "Plaatje",
+    "Delete product": "Verwijder product",
+    "name invalid": "Voer een correcte naam in van die langer is dan 0 tekens",
+    "category invalid": "Voer een correcte categorie in van die groter dan 0 tekens is",
+    "traysize invalid": "Voer een correcte staffegrote in die groter dan 0 is",
+    "price invalid": "Voer een correcte prijs in die groter of gelijk aan 0 is"
+  },
+  "containerComponent": {
+    "new": "Nieuw"
+  },
+  "transactionFlagTableFilter": {
+    "from": "van",
+    "placeholder": "Selecteer een datum",
+    "to": "tot",
+    "Hide handled": "Verberg afgehandeld",
+    "Reset filter": "Herstel filter"
+  },
+  "transactionFlagsComponent": {
+    "When": "Wanneer",
+    "Who": "Wie",
+    "Status": "Status",
+    "Reason": "Reden",
+    "Info": "Info",
+    "Page": "Pagina"
+  },
+  "transactionTableFilter": {
+    "from": "van",
+    "placeholder": "Selecteer een datum",
+    "to": "tot",
+    "Self Bought": "Gekocht door jou",
+    "Put in for others": "Gekocht voor anderen",
+    "Put in for you": "Gekocht voor jou",
+    "Hide handled": "Verberg afgehandeld",
+    "Export to CSV": "Exporteren naar CSV",
+    "Reset filter": "Herstel filter"
+  },
+  "transactionsComponent": {
+    "When": "Wanneer",
+    "What": "Wat",
+    "Info": "Info",
+    "Page": "Pagina",
+    "Transactions": "Transacties"
+  },
+  "transactionDetailsModal": {
+    "transaction details": "transactie details",
+    "Cancel": "Sluiten",
+    "Flag transaction": "Markeer transactie",
+    "flag reason": "Geef een reden waarom de transactie gemarkeerd moet worden",
+    "reason placeholder": "Geef een reden",
+    "flag invalid": "Geef alsjeblieft een reden"
+  },
+  "transactionDetails": {
+    "Total": "Totaal",
+    "Point of sale": "Verkooppunt",
+    "Put in by": "Afgestreept door",
+    "Put in for": "Afgestreept voor",
+    "Activity": "Activiteit",
+    "Products": "Producten"
+  },
+  "profile": {
+    "My profile": "Mijn profiel",
+    "Change pin code": "Verander pincode",
+    "Old pin code": "Oude pincode",
+    "New pin code": "Nieuwe pincode",
+    "Confirm new pin code": "Bevestig nieuwe pincode",
+    "Manage NFC devices": "Beheer NFC tokens",
+    "Confirm deletion": "Bevestig verwijderen",
+    "Are you sure": "Weet je zeker dat je deze NFC token wil verwijderen?"
+  },
+  "signOut": {
+    "message": "Je wordt uitgelogd! Hopelijk heb je het naar je zin gehad en zien we je snel weer :)"
+  }
+}
