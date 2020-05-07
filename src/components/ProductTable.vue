@@ -24,6 +24,7 @@
     <b-form-input id="page-amount"
                   v-model="perPage"
                   type="number"
+                  inputmode="decimal"
                   min="1"
                   step="1"
                   trim>
@@ -98,10 +99,11 @@
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator';
 import Sortable from 'sortablejs';
+import eventBus from '@/eventbus';
 import Formatters from '@/mixins/Formatters';
 import { Product } from '@/entities/Product';
+
 import FakeProducts from '@/assets/products';
-import eventBus from '@/eventbus';
 
   @Component({
     directives: {

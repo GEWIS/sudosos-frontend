@@ -1,7 +1,7 @@
 <template>
   <b-form-row>
-    <b-col v-if="dates"
-           :xl="selfBought || putInForYou || putInByYou ? 3 : 6"
+    <b-col v-if="fromDate"
+           :xl="(selfBought || putInForYou || putInByYou) && toDate ? 3 : 6"
            sm="6"
            cols="12"
            class="mb-2 mb-xl-0">
@@ -21,8 +21,8 @@
         ></b-form-datepicker>
       </b-form-group>
     </b-col>
-    <b-col v-if="dates"
-           :xl="selfBought || putInForYou || putInByYou ? 3 : 6"
+    <b-col v-if="toDate"
+           :xl="(selfBought || putInForYou || putInByYou) && fromDate ? 3 : 6"
            sm="6"
            cols="12"
            class="mb-2 mb-xl-0">
@@ -44,8 +44,11 @@
       </b-form-group>
     </b-col>
 
-    <b-col :xl="dates ? 6 : 12" :lg="dates ? 7 : 12" :md="dates ? 6 : 12" cols="12"
-           class="my-lg-auto mb-2">
+    <b-col :xl="(fromDate || toDate) ? 6 : 12"
+           :lg="(fromDate && toDate) ? 12 : ((fromDate || toDate) ? 6 : 12)"
+           md="12"
+           cols="12"
+           class="mb-2 checkboxes">
       <b-form-row class="justify-content-between px-2">
         <b-form-group
           id="self-bought"
@@ -63,6 +66,7 @@
             {{ $t('transactionTableFilter.Self Bought') }}
           </b-form-checkbox>
         </b-form-group>
+
         <b-form-group
           id="put-in-by-you"
           label-cols="0"
@@ -79,6 +83,7 @@
             {{ $t('transactionTableFilter.Put in for others') }}
           </b-form-checkbox>
         </b-form-group>
+
         <b-form-group
           id="put-in-for-you"
           label-cols="0"
@@ -95,10 +100,27 @@
             {{ $t('transactionTableFilter.Put in for you') }}
           </b-form-checkbox>
         </b-form-group>
+
+        <b-form-group
+          id="hide-handled"
+          label-cols="0"
+          class="mt-xl-0 mb-xl-3 my-lg-auto"
+          v-if="hideHandled"
+        >
+          <b-form-checkbox
+            id="hide-handled-input"
+            name="hide-handled-input"
+            v-model="filterValues.hideHandled"
+            :value="true"
+            :unchecked-value="false"
+          >
+            {{ $t('transactionTableFilter.Hide handled') }}
+          </b-form-checkbox>
+        </b-form-group>
       </b-form-row>
     </b-col>
 
-    <b-col xl="12" lg="5" md="6" cols="12" class="mb-2 mb-lg-0">
+    <b-col cols="12">
       <b-form-row class="flex-row-reverse button-row">
         <div class="button"
              v-if="csv">
@@ -131,19 +153,24 @@
 import {
   Component, Prop, Vue, Watch,
 } from 'vue-property-decorator';
+import { TableFilter, initFilter } from '@/entities/TableFilter';
 
   @Component
 export default class TransactionTableFilter extends Vue {
-    /*
-      Props to set the filters, if any of these are false the filter will not be displayed
-    */
+    /**
+     * Props to set the filters, if any of these are false the filter will not be displayed
+     */
     @Prop({ default: true, type: Boolean }) selfBought!: boolean;
 
     @Prop({ default: true, type: Boolean }) private putInByYou!: boolean;
 
     @Prop({ default: true, type: Boolean }) private putInForYou!: boolean;
 
-    @Prop({ default: true, type: Boolean }) private dates!: boolean;
+    @Prop({ default: true, type: Boolean }) private hideHandled!: boolean;
+
+    @Prop({ default: true, type: Boolean }) private fromDate!: boolean;
+
+    @Prop({ default: true, type: Boolean }) private toDate!: boolean;
 
     @Prop({ default: true, type: Boolean }) private reset!: boolean;
 
@@ -151,18 +178,15 @@ export default class TransactionTableFilter extends Vue {
 
     right: boolean = true;
 
-    filterValues: any = {
-      selfBought: false,
-      putInByYou: false,
-      putInForYou: false,
-      filterWay: null,
-      fromDate: '',
-      toDate: '',
-    };
+    filterValues: TableFilter = {} as TableFilter;
 
-    /*
-      Mounted currently makes sure that the date dropdowns are located correctly
-    */
+    beforeMount(): void {
+      this.filterValues = initFilter();
+    }
+
+    /**
+     * Mounted currently makes sure that the date dropdowns are located correctly
+     */
     mounted() {
       this.checkRight();
 
@@ -175,65 +199,43 @@ export default class TransactionTableFilter extends Vue {
       });
     }
 
-    /*
-      Sets the dropdown location of date pickers according to screen width to make sure they fit
-    */
+    /**
+     * Sets the dropdown location of date pickers according to screen width to make sure they fit
+     */
     checkRight() : void {
       const ms : boolean = window.innerWidth < 700 && window.innerWidth >= 576;
       const sm : boolean = window.innerWidth < 440;
       this.right = ms || sm;
     }
 
-    /*
-      Simple method that resets all filters to their base state
-    */
+    /**
+     * Simple method that resets all filters to their base state
+     */
     resetFilters() : void {
-      this.filterValues.selfBought = false;
-      this.filterValues.putInByYou = false;
-      this.filterValues.putInForYou = false;
-      this.filterValues.filterWay = null;
-      this.filterValues.fromDate = '';
-      this.filterValues.toDate = '';
+      this.filterValues = initFilter();
 
-      // $nextTick is here to make sure that the filterWay is null such that the filter will
-      // actually reset properly
-      this.$nextTick(() => {
-        this.filterValues.filterWay = null;
-        this.$emit('input', this.filterValues);
-      });
+      this.$emit('input', this.filterValues);
     }
 
+    /**
+     * Checks which filters are currently active and returns the object needed for filtering
+     *
+     * @param filterWay updated filterString, used for the b-table filter
+     */
     filterUpdated(filterWay : string) : void {
-      const filterResults: any = {};
+      const filterResults: TableFilter = this.filterValues;
 
       // If none of the filters are selected make sure the filterWay is null this makes sure the
       // bootstrap table resets the filter and displays all currently available rows
       if (!this.filterValues.selfBought
           && !this.filterValues.putInForYou
           && !this.filterValues.putInByYou
+          && !this.filterValues.hideHandled
           && this.filterValues.fromDate === ''
           && this.filterValues.toDate === '') {
         filterResults.filterWay = null;
       } else {
         filterResults.filterWay = filterWay;
-      }
-
-      // Check which filters are applied are available and return only those values
-      if (this.selfBought) {
-        filterResults.selfBought = this.filterValues.selfBought;
-      }
-
-      if (this.putInForYou) {
-        filterResults.putInForYou = this.filterValues.putInForYou;
-      }
-
-      if (this.putInByYou) {
-        filterResults.putInByYou = this.filterValues.putInByYou;
-      }
-
-      if (this.dates) {
-        filterResults.toDate = this.filterValues.toDate;
-        filterResults.fromDate = this.filterValues.fromDate;
       }
 
       this.$emit('input', filterResults);
@@ -263,6 +265,11 @@ export default class TransactionTableFilter extends Vue {
     onPutInForYouChanged(value: Boolean, old: Boolean) : void {
       this.filterUpdated(value.toString());
     }
+
+    @Watch('filterValues.hideHandled')
+    onHideHandledChanged(value: Boolean, old: Boolean) : void {
+      this.filterUpdated(value.toString());
+    }
 }
 </script>
 
@@ -279,6 +286,13 @@ export default class TransactionTableFilter extends Vue {
 
   .button-row {
     padding: 0 5px;
+  }
+
+  .checkboxes {
+    fieldset {
+      margin-left: 0.5rem;
+      margin-right: 0.5rem;
+    }
   }
 
   @include media-breakpoint-down(lg) {

@@ -1,7 +1,7 @@
 <template>
   <b-container fluid="lg">
       <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('transactions.Transactions') }}</h1>
-    <TransactionsComponent></TransactionsComponent>
+    <TransactionsComponent :hideHandled="false" />
   </b-container>
 </template>
 

@@ -257,7 +257,8 @@
     "to": "to",
     "Self Bought": "Bought by you",
     "Put in for others": "Bought for others",
-    "Put in for you": "Bought by others you",
+    "Put in for you": "Bought by others for you",
+    "Hide handled": "Hide handled",
     "Export to CSV": "Export to CSV",
     "Reset filter": "Reset filter"
   },

@@ -212,4 +212,13 @@ export default class Container extends Vue {
   }
 }
 
+.product-card:hover {
+  > .product {
+    background-color: $gewis-grey-accent;
+    > .product-name {
+      background-color: rgba(215, 215, 215, 1);
+    }
+  }
+}
+
 </style>

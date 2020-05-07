@@ -1,11 +1,20 @@
 <template>
   <div>
     <b-card>
-      <b-card-title class="title-form">
-        <TransactionFlagTableFilter
+      <template v-slot:header>
+        <TransactionTableFilter
           v-model="filterValues"
-        ></TransactionFlagTableFilter>
-      </b-card-title>
+          class="title-form"
+          :fromDate="fromDate"
+          :toDate="toDate"
+          :selfBought="selfBought"
+          :putInByYou="putInByYou"
+          :putInForYou="putInForYou"
+          :hideHandled="hideHandled"
+          :reset="reset"
+          :csv="csv"
+        />
+      </template>
       <b-card-body>
         <b-table
           stacked="sm"
@@ -76,23 +85,41 @@
 
 <script lang="ts">
 import {
-  Component, Prop, Vue, Watch,
+  Component, Prop,
 } from 'vue-property-decorator';
-import TransactionFlagTableFilter from '@/components/FlaggedTransactionsTableFilter.vue';
-import { User } from '@/entities/User';
+import Formatters from '@/mixins/Formatters';
+import TransactionTableFilter from '@/components/TransactionTableFilter.vue';
+import eventBus from '@/eventbus';
 import { Transaction } from '@/entities/Transaction';
 import { TransactionFlag, FlagStatus } from '@/entities/TransactionFlag';
+import { initFilter, TableFilter } from '@/entities/TableFilter';
+
 import fakeTransactionFlags from '@/assets/transactionFlags';
-import Formatters from '@/mixins/Formatters';
-import eventBus from '@/eventbus';
 
 @Component({
   components: {
-    TransactionFlagTableFilter,
+    TransactionTableFilter,
   },
 })
 export default class TransactionFlagsTable extends Formatters {
-  @Prop({ type: Object as () => User }) private user!: User;
+  /**
+   Props to set the filters, if any of these are false the filter will not be displayed
+   */
+  @Prop({ default: true, type: Boolean }) selfBought!: boolean;
+
+  @Prop({ default: true, type: Boolean }) private putInByYou!: boolean;
+
+  @Prop({ default: true, type: Boolean }) private putInForYou!: boolean;
+
+  @Prop({ default: true, type: Boolean }) private hideHandled!: boolean;
+
+  @Prop({ default: true, type: Boolean }) private fromDate!: boolean;
+
+  @Prop({ default: true, type: Boolean }) private toDate!: boolean;
+
+  @Prop({ default: true, type: Boolean }) private reset!: boolean;
+
+  @Prop({ default: true, type: Boolean }) private csv!: boolean;
 
   userAccount = this.$root.$data.currentUser;
 
@@ -106,16 +133,11 @@ export default class TransactionFlagsTable extends Formatters {
 
   totalRows : number = 0;
 
-  filterValues: any = {
-    hideHandled: false,
-    filterWay: null,
-    fromDate: '',
-    toDate: '',
-  };
+  filterValues: TableFilter = {} as TableFilter;
 
-  /*
-    Fields that should be shown from the transactionFlagList
-    */
+  /**
+   * Fields that should be shown from the transactionFlagList
+   */
   fields: Object[] = [
     {
       key: 'formattedDate',
@@ -146,8 +168,10 @@ export default class TransactionFlagsTable extends Formatters {
   ];
 
   beforeMount() {
+    this.filterValues = initFilter();
+
     this.transactionFlagList = this.formatTransactionFlags(
-      fakeTransactionFlags.fetchTransactionFlags(this.user),
+      fakeTransactionFlags.fetchTransactionFlags(this.userAccount),
     );
 
     this.totalRows = this.transactionFlagList.length;
@@ -158,21 +182,24 @@ export default class TransactionFlagsTable extends Formatters {
     });
   }
 
-  /*
-    Filters the rows based time constraints and user selected options
+  /**
+   * Filters the rows based time constraints and user selected options
+   *
+   * @param data TransactionFlag that needs to be filtered
+   * @param prop String that we can filter against
   */
   filterRows(data: TransactionFlag, prop: String): boolean {
     let other = true;
     let date: boolean;
 
     // First check if there is a date constraint
-    if (this.filterValues.fromDate === '' || this.filterValues.toDate === '') {
+    if (this.filterValues.fromDate === '' && this.filterValues.toDate === '') {
       date = true;
     } else {
       const dateFrom = new Date(`${this.filterValues.fromDate} 00:00:00`);
       const dateTo = new Date(`${this.filterValues.toDate} 23:59:59`);
 
-      date = data.createdAt >= dateFrom && data.createdAt <= dateTo;
+      date = data.createdAt >= dateFrom || data.createdAt <= dateTo;
     }
 
     // Check if there is a hideHandled constraint
@@ -185,12 +212,12 @@ export default class TransactionFlagsTable extends Formatters {
     return date && other;
   }
 
-  /*
-    formatTransactions add rows for each date and formats the dates into a nicer format that we
-    want to use for displaying the dates
-
-    @param t: List of transactions
-    */
+  /**
+   * formatTransactionFlags add rows for each date and formats the dates into a nicer format that we
+   * want to use for displaying the dates
+   *
+   * @param t: List of transactions
+   */
   formatTransactionFlags: Function = (
     t: TransactionFlag[],
   ): TransactionFlag[] => t.map(flag => ({
@@ -198,8 +225,8 @@ export default class TransactionFlagsTable extends Formatters {
     formattedDate: this.formatDateTime(flag.createdAt, true),
   }));
 
-  /*
-      Method that grabs extra transactions when 2 pages or less are left
+  /**
+    * Method that grabs extra transactions when 2 pages or less are left
     */
   pageClicked(page: number) : void {
     if (this.previousPage < page && page >= (Math.ceil(this.totalRows / this.perPage) - 2)) {
@@ -209,14 +236,21 @@ export default class TransactionFlagsTable extends Formatters {
     this.previousPage = page;
   }
 
-  /*
-  Once the filter is done update the totalRows and filtered rows
+  /**
+   * Once the filter is done update the totalRows and filtered rows
    */
   filterDone(result: Transaction[]): void {
     this.totalRows = result.length;
     this.currentPage = 1;
   }
 
+  /**
+   * If a table row is clicked this method will push the transaction to the details page
+   *
+   * @param item Transaction that makes up the row
+   * @param index Index of the row on the current page
+   * @param event Click event from the row
+   */
   rowClicked(item: Transaction, index: Number, event: object): void {
     this.$router.push({ name: 'flaggedTransactionDetails', params: { id: item.id.toString() } });
   }
