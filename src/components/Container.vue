@@ -85,7 +85,8 @@
 
       <b-row v-show="tableView">
         <b-col cols="12" class="containers-container">
-          <div class="d-flex justify-content-between align-items-center">
+          <div v-if="canEdit && enabled && editable"
+               class="d-flex justify-content-between align-items-center">
             <b-button class="my-2 text-truncate"
                       variant="success"
                       v-on:click="$emit('addProduct', container.id)">
