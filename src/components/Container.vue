@@ -1,7 +1,8 @@
 <template>
   <div class="mb-2">
-    <div class="container-head px-3 d-flex" v-on:click="isOpen = !isOpen"
-           v-b-toggle="'container_' + container.id">
+    <div class="container-head px-3 d-flex"
+         v-on:click="collapseContainer"
+    >
 
       <!-- The v-on click is to stop the container from toggling open -->
       <b-input-group class="my-auto">
@@ -9,14 +10,14 @@
                          v-model="selected"
                          :disabled="!enabled"
                          @change="checkBoxChanged"
-                         v-on:click.stop="() => {}"
+                         v-on:click.stop=""
         />
           <span>{{ container.name }}</span>
       </b-input-group>
 
       <span class="ml-3 mr-2 my-auto"
             v-show="canEdit && enabled && editable"
-            v-on:click.stop="() => {}"
+            v-on:click.stop=""
             v-on:click="$emit('input', container)"
             v-b-modal.edit-container>
             <font-awesome-icon icon="pen-alt" />
@@ -24,7 +25,7 @@
 
       <span class="ml-2 mr-3 my-auto"
             v-show="canEdit && enabled && editable"
-            v-on:click.stop="() => {}"
+            v-on:click.stop=""
             v-on:click="$emit('input', container)"
             v-b-modal.confirmation>
             <font-awesome-icon icon="trash" />
@@ -44,9 +45,9 @@
                            size="lg"
         />
         <b-form-checkbox class="float-right mr-2"
+                         v-on:click.stop=""
                          v-model="tableView"
                          name="check-button"
-                         v-on:click.stop="() => {}"
                          switch>
           {{ $t('containerComponent.Table view')}}
         </b-form-checkbox>
@@ -54,7 +55,9 @@
     </div>
 
     <!-- The container itself -->
-    <b-collapse v-sortable="sortableOptions" :id="'container_' + container.id" class="mt-1 storage">
+    <b-collapse v-if="isOpen"
+                v-model="isOpen"
+                v-sortable="sortableOptions" :id="'container_' + container.id" class="mt-1 storage">
         <b-row v-show="!tableView" class="mx-0">
           <b-col v-for="item in container.products"
                  :key="item.id"
@@ -143,6 +146,12 @@ export default class Container extends Vue {
 
   mounted() {
     this.selected = !this.enabled || false;
+  }
+
+  collapseContainer() {
+    this.isOpen = !this.isOpen;
+
+    this.$root.$emit('bv::toggle:collapse', `container_${this.container.id}`);
   }
 
   /**
