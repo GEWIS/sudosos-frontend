@@ -234,7 +234,9 @@
     "price invalid": "Voer een correcte prijs in die groter of gelijk aan 0 is"
   },
   "containerComponent": {
-    "new": "Nieuw"
+    "Table view": "Tafel modus",
+    "new": "Nieuw",
+    "Add product": "Voeg product toe"
   },
   "transactionFlagTableFilter": {
     "from": "van",

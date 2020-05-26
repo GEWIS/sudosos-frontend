@@ -34,26 +34,33 @@
         <font-awesome-icon pull="right"
                            icon="angle-down"
                            v-show="!isOpen"
-                           class="mr-3"
+                           class="mr-3 mt-1"
                            size="lg"
         />
         <font-awesome-icon pull="right"
                            icon="angle-up"
                            v-show="isOpen"
-                           class="mr-3"
+                           class="mr-3 mt-1"
                            size="lg"
         />
+        <b-form-checkbox class="float-right mr-2"
+                         v-model="tableView"
+                         name="check-button"
+                         v-on:click.stop="() => {}"
+                         switch>
+          {{ $t('containerComponent.Table view')}}
+        </b-form-checkbox>
       </div>
     </div>
 
     <!-- The container itself -->
     <b-collapse v-sortable="sortableOptions" :id="'container_' + container.id" class="mt-1 storage">
-        <b-row class="mx-0">
+        <b-row v-show="!tableView" class="mx-0">
           <b-col v-for="item in container.products"
                  :key="item.id"
                  class="text-center product-card px-2"
                  cols="6" sm="4" md="3" lg="2"
-                 v-on:click="productDetails(container.id, item)"
+                 v-on:click="productDetails(item)"
           >
             <div class="product" :class="{'add': canEdit && enabled && editable}">
               <img :src="item.picture" :alt="item.name"/>
@@ -72,6 +79,25 @@
             </div>
           </b-col>
         </b-row>
+
+      <b-row v-show="tableView">
+        <b-col cols="12" class="containers-container">
+          <div class="d-flex justify-content-between align-items-center">
+            <b-button class="my-2 text-truncate"
+                      variant="success"
+                      v-on:click="$emit('addProduct', container.id)">
+              <font-awesome-icon icon="plus" />
+              {{ $t('containerComponent.Add product') }}
+            </b-button>
+          </div>
+          <ProductTable :productsProp="container.products"
+                        :editable="true"
+                        :enabled="true"
+                        v-on:editProduct="productDetails"
+                        v-on:productDetails="productDetails"
+          />
+        </b-col>
+      </b-row>
     </b-collapse>
   </div>
 </template>
@@ -79,6 +105,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import Sortable from 'sortablejs';
+import ProductTable from '@/components/ProductTable.vue';
 import { Storage } from '@/entities/Storage';
 import { Product } from '@/entities/Product';
 
@@ -91,9 +118,12 @@ import { Product } from '@/entities/Product';
       },
     },
   },
+  components: {
+    ProductTable,
+  },
 })
 export default class Container extends Vue {
-  @Prop() container: Storage | undefined;
+  @Prop() container!: Storage;
 
   @Prop() enabled: Boolean | undefined;
 
@@ -102,6 +132,8 @@ export default class Container extends Vue {
   isOpen: Boolean = false;
 
   selected: Boolean = false;
+
+  tableView: Boolean = false;
 
   sortableOptions: Object = {
     chosenClass: 'is-selected',
@@ -116,12 +148,11 @@ export default class Container extends Vue {
   /**
    * Checks if person can edit this product, otherwise the details modal will be shown
    *
-   * @param id ID of the container the product is in
    * @param product Product that is being clicked
    */
-  productDetails(id: String, product: Product) {
+  productDetails(product: Product) {
     if (this.canEdit && this.enabled && this.editable) {
-      this.$emit('editProduct', id, product);
+      this.$emit('editProduct', this.container.id, product);
     } else {
       this.$emit('productDetails', product);
     }

@@ -234,7 +234,9 @@
     "price invalid": "Please provide a valid price that is higher or equal to 0"
   },
   "containerComponent": {
-    "new": "New"
+    "Table view": "Table view",
+    "new": "New",
+    "Add product": "Add product"
   },
   "transactionFlagTableFilter": {
     "from": "from",
