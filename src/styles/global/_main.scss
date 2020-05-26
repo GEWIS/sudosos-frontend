@@ -79,6 +79,14 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
 
 .btn.btn-success {
     color: white;
+    background-color: $gewis-green;
+    border-color: $gewis-green;
+}
+
+.btn.btn-success:hover {
+    background-color: $white;
+    color: $gewis-green;
+    border-color: $gewis-green;
 }
 
 
