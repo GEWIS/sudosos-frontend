@@ -12,6 +12,7 @@
     "BAC": "BAC",
     "Flagged transactions": "Gemarkeerde transacties",
     "Manage products": "Beheer producten",
+    "Social drink cards": "Borrelkaarten",
     "Profile": "Profiel",
     "Sign out": "Uitloggen",
     "Netherlands": "Nederlands",
@@ -157,6 +158,9 @@
     "OPEN": "Open",
     "REJECTED": "Afgewezen",
     "Page": "Pagina"
+  },
+  "socialDrinkCards": {
+    "Social drink cards overview": "Borrelkaarten overzicht"
   },
   "advertisements": {
     "Advertisements": "Advertenties"

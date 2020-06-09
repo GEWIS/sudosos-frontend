@@ -12,6 +12,7 @@
     "BAC": "BAC",
     "Flagged transactions": "Flagged transactions",
     "Manage products": "Manage products",
+    "Social drink cards": "Social drink cards",
     "Profile": "Profile",
     "Sign out": "Sign out",
     "Netherlands": "Nederlands",
@@ -157,6 +158,9 @@
     "OPEN": "Open",
     "REJECTED": "Rejected",
     "Page": "Page"
+  },
+  "socialDrinkCards": {
+  "Social drink cards overview": "Social drink cards overview"
   },
   "advertisements": {
     "Advertisements": "Advertisements"
