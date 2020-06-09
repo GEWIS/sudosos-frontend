@@ -32,9 +32,11 @@
           <template v-slot:cell(active)="data">
             <font-awesome-icon v-if="data.value" icon="check-circle"></font-awesome-icon>
           </template>
+
           <template v-slot:cell(thumbnail)="data">
             <img class="thumbnail" :src="data.value" alt="Thumbnail">
           </template>
+
           <template v-slot:cell(id)="data">
             <a v-b-modal.modal-add v-on:click="setAdvertisement('put', data.value)">
               <font-awesome-icon icon="pencil-alt" class="ml-2 icon click-icon"></font-awesome-icon>
@@ -43,6 +45,7 @@
               <font-awesome-icon icon="times" class="ml-2 icon click-icon"></font-awesome-icon>
             </a>
           </template>
+
         </b-table>
       </b-card-body>
     </b-card>

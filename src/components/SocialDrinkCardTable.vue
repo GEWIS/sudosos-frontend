@@ -49,7 +49,7 @@
         </template>
 
         <template v-slot:cell(activated)="data">
-          {{ data.item.activated }}
+          <font-awesome-icon v-if="data.item.activated" icon="check-circle"></font-awesome-icon>
         </template>
 
         <template v-slot:cell(initialValue)="data">
