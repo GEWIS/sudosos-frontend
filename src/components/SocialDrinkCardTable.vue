@@ -2,6 +2,7 @@
   <b-table stacked="sm"
            small
            borderless
+           striped
            thead-class="table-header table-header-5"
            :items="socialDrinkCards"
            :fields="fields"
@@ -40,6 +41,8 @@
                small
                borderless
                thead-class="table-header"
+               tbody-tr-class="details-table-tr"
+               class="details-table"
                :items="row.item.socialDrinkCards"
                :fields="detailFields"
       >
@@ -168,6 +171,13 @@ export default class SocialDrinkCardTable extends Formatters {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  .details-table {
+    margin: 0.5rem 1rem;
+    width: calc(100% - 2rem) !important;
 
+    tbody tr {
+      background-color: white !important;
+    }
+  }
 </style>
