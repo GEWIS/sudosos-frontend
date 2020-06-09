@@ -3,7 +3,7 @@ import { User } from '@/entities/User';
 import { SocialDrinkCardGroup } from '@/entities/SocialDrinkCardGroup';
 
 export default class Socialdrinkcards {
-  cardOwner = {
+  public static cardOwner = {
     id: '000',
     firstName: 'Ruben',
     lastName: 'Brinkman',
@@ -11,7 +11,7 @@ export default class Socialdrinkcards {
     organs: [],
   } as User;
 
-  card1 = {
+  public static card1 = {
     card: {
       id: '001',
       firstName: 'Borrel',
@@ -24,7 +24,7 @@ export default class Socialdrinkcards {
     activated: true,
   } as SocialDrinkCard;
 
-  card2 = {
+  public static card2 = {
     card: {
       id: '002',
       firstName: 'Borrel',
@@ -37,7 +37,7 @@ export default class Socialdrinkcards {
     activated: true,
   } as SocialDrinkCard;
 
-  card3 = {
+  public static card3: SocialDrinkCard = {
     card: {
       id: '003',
       firstName: 'Borrel',
@@ -48,9 +48,9 @@ export default class Socialdrinkcards {
     barcode: '24242424242',
     initialValue: 700,
     activated: true,
-  } as SocialDrinkCard;
+  };
 
-  card4 = {
+  public static card4: SocialDrinkCard = {
     card: {
       id: '004',
       firstName: 'Borrel',
@@ -60,49 +60,43 @@ export default class Socialdrinkcards {
     },
     barcode: '34343434343',
     initialValue: 700,
-    activated: true,
-  } as SocialDrinkCard;
+    activated: false,
+  };
 
-  cardGroup = {
-    owner: this.cardOwner,
+  public static cardGroup = {
+    owner: Socialdrinkcards.cardOwner,
     name: 'FYC Drinks 01',
-    socialDrinkCards: [this.card1, this.card2, this.card3, this.card4],
-    validFrom: new Date(2019, 1, 1),
-    validTill: new Date(2020, 12, 31),
+    // eslint-disable-next-line max-len
+    socialDrinkCards: [Socialdrinkcards.card1, Socialdrinkcards.card2, Socialdrinkcards.card3, Socialdrinkcards.card4],
+    validDates: {
+      validFrom: new Date(2019, 1, 1),
+      validTill: new Date(2020, 12, 31),
+    },
   } as SocialDrinkCardGroup;
 
-  cardGroup2 = {
-    owner: this.cardOwner,
+  public static cardGroup2 = {
+    owner: Socialdrinkcards.cardOwner,
     name: 'Birthday Cards',
-    socialDrinkCards: [this.card1, this.card3],
-    validFrom: null,
-    validTill: null,
+    socialDrinkCards: [Socialdrinkcards.card1, Socialdrinkcards.card3],
+    validDates: null,
   } as SocialDrinkCardGroup;
 
-  cardGroup3 = {
-    owner: this.cardOwner,
+  public static cardGroup3 = {
+    owner: Socialdrinkcards.cardOwner,
     name: 'Contest prize',
-    socialDrinkCards: [this.card4],
-    validFrom: null,
-    validTill: null,
+    socialDrinkCards: [Socialdrinkcards.card4],
+    validDates: null,
   } as SocialDrinkCardGroup;
 
-  public getCard(num?: number) {
-    const cards = [this.card1, this.card2, this.card3, this.card4];
-
-    if (num !== undefined) {
-      return cards[num];
-    }
+  public static getCards() {
+    // eslint-disable-next-line max-len
+    const cards = [Socialdrinkcards.card1, Socialdrinkcards.card2, Socialdrinkcards.card3, Socialdrinkcards.card4];
 
     return cards;
   }
 
-  public getGroup(num?: number) {
+  public static getGroups() {
     const groups = [this.cardGroup, this.cardGroup2, this.cardGroup3];
-
-    if (num !== undefined) {
-      return groups[num];
-    }
 
     return groups;
   }

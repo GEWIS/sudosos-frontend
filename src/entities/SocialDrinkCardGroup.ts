@@ -5,6 +5,10 @@ export interface SocialDrinkCardGroup {
   owner: User;
   name: String;
   socialDrinkCards: SocialDrinkCard[];
-  validFrom: Date | null;
-  validTill: Date | null;
+  amount?: Number;
+  amountActive?: Number;
+  validDates: {
+    validTill: Date,
+    validFrom: Date,
+  } | null;
 }

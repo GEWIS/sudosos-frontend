@@ -135,6 +135,16 @@
     "Fill in a name": "Vul een filter in",
     "Products per page": "Producten per pagina"
   },
+  "socialDrinkCardTable": {
+    "Name": "Naam",
+    "Total amount": "Totale hoeveelheid",
+    "Activated amount": "Geactiveerde hoeveelheid",
+    "Validity": "Geldigheid",
+    "Info": "Info",
+    "From": "Van",
+    "Till": "Tot",
+    "Forever": "Oneindig"
+  },
   "screens": {
     "Screens": "TV Schermen",
     "Ending time": "Eindtijd",

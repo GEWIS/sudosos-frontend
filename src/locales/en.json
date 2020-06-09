@@ -135,6 +135,16 @@
     "Fill in a name": "Fill in a name",
     "Products per page": "Products per page"
   },
+  "socialDrinkCardTable": {
+    "Name": "Name",
+    "Total amount": "Total amount",
+    "Activated amount": "Activated amount",
+    "Validity": "Validity",
+    "Info": "Info",
+    "From": "From",
+    "Till": "Till",
+    "Forever": "Forever"
+  },
   "screens": {
     "Screens": "TV Screens",
     "Ending time": "Ending time",
