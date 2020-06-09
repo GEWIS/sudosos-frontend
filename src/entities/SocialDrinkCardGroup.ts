@@ -11,4 +11,5 @@ export interface SocialDrinkCardGroup {
     validTill: Date,
     validFrom: Date,
   } | null;
+  showDetails?: boolean;
 }

@@ -32,7 +32,35 @@
     </template>
 
     <template v-slot:cell(owner)="data">
-      {{ data.item.owner.id }}
+      <font-awesome-icon icon="info-circle" @click="data.toggleDetails"></font-awesome-icon>
+    </template>
+
+    <template v-slot:row-details="row">
+      <b-table stacked="sm"
+               small
+               borderless
+               thead-class="table-header"
+               :items="row.item.socialDrinkCards"
+               :fields="detailFields"
+      >
+        <!-- Templates for each row cell -->
+        <template v-slot:cell(barcode)="data">
+          {{ data.item.barcode }}
+        </template>
+
+        <template v-slot:cell(activated)="data">
+          {{ data.item.activated }}
+        </template>
+
+        <template v-slot:cell(initialValue)="data">
+          {{ dinero({ amount: data.item.initialValue }).toFormat() }}
+        </template>
+
+        <template v-slot:cell(card.saldo)="data">
+          {{ dinero({ amount: data.item.card.saldo }).toFormat() }}
+        </template>
+
+      </b-table>
     </template>
   </b-table>
 </template>
@@ -77,6 +105,29 @@ export default class SocialDrinkCardTable extends Formatters {
       },
     ];
 
+    detailFields: Object[] = [
+      {
+        key: 'barcode',
+        label: this.getTranslation('socialDrinkCardTable.Barcode'),
+        locale_key: 'Barcode',
+      },
+      {
+        key: 'activated',
+        label: this.getTranslation('socialDrinkCardTable.Active'),
+        locale_key: 'Active',
+      },
+      {
+        key: 'initialValue',
+        label: this.getTranslation('socialDrinkCardTable.Initial value'),
+        locale_key: 'Initial value',
+      },
+      {
+        key: 'card.saldo',
+        label: this.getTranslation('socialDrinkCardTable.Current value'),
+        locale_key: 'Current value',
+      },
+    ];
+
     beforeMount() {
       this.socialDrinkCards = this.formatSocialDrinkCards(
         Socialdrinkcards.getGroups(),
@@ -85,6 +136,7 @@ export default class SocialDrinkCardTable extends Formatters {
       // If the locale is changed make sure the labels are also correctly updated for the b-table
       eventBus.$on('localeUpdated', () => {
         this.fields = this.updateTranslations(this.fields, 'socialDrinkCardTable');
+        this.detailFields = this.updateTranslations(this.detailFields, 'socialDrinkCardTable');
       });
     }
 
