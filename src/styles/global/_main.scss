@@ -344,7 +344,6 @@ Global style for forms in a card title
     }
 
     .form-group {
-        margin-bottom: 0;
 
         > div {
             margin: auto 0;
@@ -450,6 +449,10 @@ h1 {
 
     .modal {
         input {
+            width: 75% !important;
+        }
+
+        .b-form-datepicker {
             width: 75% !important;
         }
 

@@ -1,114 +1,125 @@
 <template>
   <div>
+    <div class="w-100 text-right mb-2">
+      <b-button
+        variant="success"
+        id="add"
+        class=""
+        v-b-modal.modal-add>
+        <font-awesome-icon icon="plus"></font-awesome-icon>
+        {{ $t('socialDrinkCardTable.Add social drink cards') }}
+      </b-button>
+    </div>
+
     <b-form-group
       id="name-filter-group"
-      :label="$t('productTable.Filter by name')"
+      :label="$t('socialDrinkCardTable.Filter by name')"
       label-for="name-filter"
-      label-cols-md="2"
+      label-cols-md="3"
       label-cols="12"
     >
-      <b-form-input id="name-filter"
-                    v-model="nameFilter"
-                    type="text"
-                    :placeholder="$t('productTable.Fill in a name')"
-                    trim></b-form-input>
+      <b-form-input
+        id="name-filter"
+        v-model="nameFilter"
+        type="text"
+        :placeholder="$t('socialDrinkCardTable.Fill in a name')"
+        trim />
     </b-form-group>
 
     <b-form-group
       id="page-amount-group"
-      :label="$t('productTable.Products per page')"
+      :label="$t('socialDrinkCardTable.Social drink cards per page')"
       label-for="page-amount"
-      label-cols-md="2"
+      label-cols-md="3"
       label-cols="12"
     >
-      <b-form-input id="page-amount"
-                    v-model="perPage"
-                    type="number"
-                    inputmode="decimal"
-                    min="1"
-                    step="1"
-                    trim>
-      </b-form-input>
+      <b-form-input
+        id="page-amount"
+        v-model="perPage"
+        type="number"
+        inputmode="decimal"
+        min="1"
+        step="1"
+        trim
+      />
     </b-form-group>
 
-    <!--  TODO: Add new social drink group -->
+    <b-table stacked="sm"
+             small
+             borderless
+             striped
+             thead-class="table-header table-header-5"
+             :items="socialDrinkCards"
+             :fields="fields"
+             :filter="nameFilter"
+             :filter-included-fields="['name']"
+             :per-page="perPage"
+             :current-page="currentPage"
+             v-on:filtered="filterFinished"
+    >
+      <!-- Templates for each row cell -->
+      <template v-slot:cell(name)="data">
+        {{ data.item.name }}
+      </template>
 
-  <b-table stacked="sm"
-           small
-           borderless
-           striped
-           thead-class="table-header table-header-5"
-           :items="socialDrinkCards"
-           :fields="fields"
-           :filter="nameFilter"
-           :filter-included-fields="['name']"
-           :per-page="perPage"
-           :current-page="currentPage"
-           v-on:filtered="filterFinished"
-  >
-  <!-- Templates for each row cell -->
-    <template v-slot:cell(name)="data">
-      {{ data.item.name }}
-    </template>
+      <template v-slot:cell(amount)="data">
+        {{ data.item.amount }}
+      </template>
 
-    <template v-slot:cell(amount)="data">
-      {{ data.item.amount }}
-    </template>
+      <template v-slot:cell(amountActive)="data">
+        {{ data.item.amountActive }}
+      </template>
 
-    <template v-slot:cell(amountActive)="data">
-      {{ data.item.amountActive }}
-    </template>
-
-    <template v-slot:cell(validDates)="data">
+      <template v-slot:cell(validDates)="data">
       <span v-if="data.item.validDates">
         {{ $t('socialDrinkCardTable.From') }}
         {{ formatDateTime(data.item.validDates.validFrom, true) }} <br>
         {{ $t('socialDrinkCardTable.Till') }}
         {{ formatDateTime(data.item.validDates.validTill, true) }}
       </span>
-      <span v-else>
+        <span v-else>
         {{ $t('socialDrinkCardTable.Forever') }}
       </span>
-    </template>
+      </template>
 
-    <template v-slot:cell(owner)="data">
-      <font-awesome-icon class="icon" icon="info-circle" @click="data.toggleDetails" />
-    </template>
+      <template v-slot:cell(owner)="data">
+        <font-awesome-icon class="icon" icon="info-circle" @click="data.toggleDetails" />
+      </template>
 
-    <template v-slot:row-details="row">
-      <b-table stacked="sm"
-               small
-               borderless
-               thead-class="table-header"
-               tbody-tr-class="details-table-tr"
-               class="details-table"
-               :items="row.item.socialDrinkCards"
-               :fields="detailFields"
-      >
-        <!-- Templates for each row cell -->
-        <template v-slot:cell(barcode)="data">
-          {{ data.item.barcode }}
-        </template>
+      <template v-slot:row-details="row">
+        <b-table stacked="sm"
+                 small
+                 borderless
+                 thead-class="table-header"
+                 tbody-tr-class="details-table-tr"
+                 class="details-table"
+                 :items="row.item.socialDrinkCards"
+                 :fields="detailFields"
+        >
+          <!-- Templates for each row cell -->
+          <template v-slot:cell(barcode)="data">
+            {{ data.item.barcode }}
+          </template>
 
-        <template v-slot:cell(activated)="data">
-          <font-awesome-icon v-if="data.item.activated" icon="check-circle" />
-        </template>
+          <template v-slot:cell(activated)="data">
+            <font-awesome-icon v-if="data.item.activated" icon="check-circle" />
+          </template>
 
-        <template v-slot:cell(initialValue)="data">
-          {{ dinero({ amount: data.item.initialValue }).toFormat() }}
-        </template>
+          <template v-slot:cell(initialValue)="data">
+            {{ dinero({ amount: data.item.initialValue }).toFormat() }}
+          </template>
 
-        <template v-slot:cell(card.saldo)="data">
-          {{ dinero({ amount: data.item.card.saldo }).toFormat() }}
-        </template>
+          <template v-slot:cell(card.saldo)="data">
+            {{ dinero({ amount: data.item.card.saldo }).toFormat() }}
+          </template>
 
-      </b-table>
-    </template>
-  </b-table>
+        </b-table>
+      </template>
+    </b-table>
 
-    <div class="d-flex pageination py-3" v-if="totalRows > perPage">
+    <div class="d-flex pageination" v-if="totalRows > perPage">
       <p class="my-auto h-100">
-        {{ $t('productTable.Page') }}:
+        {{ $t('socialDrinkCardTable.Page') }}:
       </p>
       <b-pagination
         v-model="currentPage"
@@ -125,6 +136,127 @@
         class="custom-pagination mb-0"
       ></b-pagination>
     </div>
+
+    <b-modal
+      id="modal-add"
+      :ok-title="$t('socialDrinkCardTable.save')"
+      :cancel-title="$t('socialDrinkCardTable.cancel')"
+      :title="$t('socialDrinkCardTable.new social drink cards')"
+      size="lg"
+      hide-header-close
+      centered>
+      <div id="add-modal-input">
+        <b-form-group
+          label-cols="12"
+          label-cols-sm="3"
+          :label="$t('socialDrinkCardTable.Name')"
+          label-align="left"
+          label-for="name"
+          :state="newCardNameState"
+          :invalid-feedback="newCardNameInvalid"
+        >
+          <b-form-input
+            id="name"
+            name="name"
+            type="text"
+            v-model="newCardName"
+            :state="newCardNameState"
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group
+          label-cols="12"
+          label-cols-sm="3"
+          :label="$t('socialDrinkCardTable.Amount of cards')"
+          label-align="left"
+          label-for="amount"
+          :state="newCardAmountState"
+          :invalid-feedback="newCardAmountInvalid"
+        >
+          <b-form-input
+            id="amount"
+            name="amount"
+            type="number"
+            steps="1"
+            min="0"
+            inputmode="decimal"
+            v-model="newCardAmount"
+            :state="newCardAmountState"
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group
+          label-cols="12"
+          label-cols-sm="3"
+          :label="$t('socialDrinkCardTable.Initial value')"
+          label-align="left"
+          label-for="initial"
+          :state="newCardInitialValueState"
+          :invalid-feedback="newCardInitialValueInvalid"
+        >
+          <b-form-input
+            id="initial"
+            name="initial"
+            type="number"
+            min="0"
+            steps="0.01"
+            inputmode="decimal"
+            v-model="newCardInitialValue"
+            :state="newCardInitialValueState"
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group
+          label-cols="12"
+          label-cols-sm="3"
+          :label="$t('socialDrinkCardTable.Valid from')"
+          label-align="left"
+          label-for="date-from"
+          :state="newCardFromDateState"
+          :invalid-feedback="newCardFromDateInvalid"
+        >
+          <b-form-datepicker
+            id="date-from"
+            name="date-from"
+            v-model="newCardFromDate"
+            :state="newCardFromDateState"
+          ></b-form-datepicker>
+        </b-form-group>
+
+        <b-form-group
+          label-cols="12"
+          label-cols-sm="3"
+          :label="$t('socialDrinkCardTable.Valid till')"
+          label-align="left"
+          label-for="date-till"
+          :state="newCardToDateState"
+          :invalid-feedback="newCardToDateInvalid"
+        >
+          <b-form-datepicker
+            id="date-till"
+            name="date-till"
+            v-model="newCardToDate"
+            :state="newCardToDateState"
+          ></b-form-datepicker>
+        </b-form-group>
+
+      </div>
+
+      <template v-slot:modal-footer="{ ok, cancel }">
+        <b-button
+          variant="primary"
+          class="btn-empty"
+          @click="cancel()"
+        >{{ $t('socialDrinkCardTable.cancel') }}
+        </b-button>
+        <b-button
+          variant="primary"
+          class="btn-empty"
+          @click="ok()">
+          {{ $t('socialDrinkCardTable.save') }}
+        </b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -149,6 +281,16 @@ export default class SocialDrinkCardTable extends Formatters {
     totalRows: number = 0;
 
     perPage: number = 4;
+
+    newCardName: String = '';
+
+    newCardAmount: Number = 0;
+
+    newCardInitialValue: Number = 0;
+
+    newCardFromDate: Date | null = null;
+
+    newCardToDate: Date | null = null;
 
     fields: Object[] = [
       {
@@ -264,6 +406,84 @@ export default class SocialDrinkCardTable extends Formatters {
       this.currentPage = 1;
       this.totalRows = length;
     }
+
+    get newCardNameState(): boolean {
+      return this.newCardName.length > 0;
+    }
+
+    get newCardNameInvalid(): String {
+      if (!this.newCardNameState) {
+        return this.$t('socialDrinkCardTable.Name need to be larger than 0 characters').toString();
+      }
+
+      return '';
+    }
+
+    get newCardAmountState(): boolean {
+      return this.newCardAmount > 0;
+    }
+
+    get newCardAmountInvalid(): String {
+      if (!this.newCardAmountState) {
+        return this.$t('socialDrinkCardTable.Amount of cards needs to be larger than 0').toString();
+      }
+
+      return '';
+    }
+
+    get newCardInitialValueState(): boolean {
+      return this.newCardInitialValue >= 0;
+    }
+
+    get newCardInitialValueInvalid(): String {
+      if (!this.newCardInitialValueState) {
+        return this.$t('socialDrinkCardTable.Initial value needs to be 0 or larger').toString();
+      }
+
+      return '';
+    }
+
+    get newCardFromDateState(): boolean {
+      if (this.newCardFromDate !== null || this.newCardToDate !== null) {
+        const from : Date = this.newCardFromDate || new Date();
+        const to : Date = this.newCardToDate || new Date();
+
+        if ((this.newCardFromDate === null && this.newCardToDate !== null) || from >= to) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    get newCardFromDateInvalid(): String {
+      if (!this.newCardFromDateState) {
+        return this.$t('socialDrinkCardTable.From date needs a date earlier than till date').toString();
+      }
+
+      return '';
+    }
+
+    get newCardToDateState(): boolean {
+      if (this.newCardFromDate !== null || this.newCardToDate !== null) {
+        const from : Date = this.newCardFromDate || new Date();
+        const to : Date = this.newCardToDate || new Date();
+
+        if ((this.newCardFromDate !== null && this.newCardToDate === null) || from >= to) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    get newCardToDateInvalid(): String {
+      if (!this.newCardToDateState) {
+        return this.$t('socialDrinkCardTable.Till date needs a date later than from date').toString();
+      }
+
+      return '';
+    }
 }
 </script>
 
@@ -284,5 +504,9 @@ export default class SocialDrinkCardTable extends Formatters {
 
   .icon:hover {
     color: $gewis-grey-shadow;
+  }
+
+  .add-modal-input > div {
+    margin: 0.5rem 0;
   }
 </style>

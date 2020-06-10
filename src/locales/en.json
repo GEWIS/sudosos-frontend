@@ -136,6 +136,10 @@
     "Products per page": "Products per page"
   },
   "socialDrinkCardTable": {
+    "Add social drink cards": "Add social drink cards",
+    "Filter by name": "Filter by name",
+    "Fill in a name": "Fill in a name",
+    "Social drink cards per page": "Social drink cards per page",
     "Name": "Name",
     "Total amount": "Total amount",
     "Activated amount": "Activated amount",
@@ -147,7 +151,19 @@
     "Info": "Info",
     "From": "From",
     "Till": "Till",
-    "Forever": "Forever"
+    "Forever": "Forever",
+    "Page": "Page",
+    "save": "save",
+    "cancel": "cancel",
+    "new social drink cards": "new social drink cards",
+    "Amount of cards": "Amount of cards",
+    "Valid from": "Valid from",
+    "Valid till": "Valid till",
+    "Name need to be larger than 0 characters": "Name need to be larger than 0 characters",
+    "Amount of cards needs to be larger than 0": "Amount of cards needs to be larger than 0",
+    "Initial value needs to be 0 or larger": "Initial value needs to be 0 or larger",
+    "From date needs a date earlier than till date": "From date needs a date earlier than till date",
+    "Till date needs a date later than from date": "Till date needs a date later than from date"
   },
   "screens": {
     "Screens": "TV Screens",

@@ -247,7 +247,7 @@ export default class AdvertisementsList extends Formatters {
       });
     }
 
-    /*
+    /**
       setAdvertisement sets the values that are shown in the modal are either set to those of the
       advertisement being modified or reset for a fresh advertisement.
 
@@ -290,9 +290,9 @@ export default class AdvertisementsList extends Formatters {
       return '';
     }
 
-    /*
-  Method that grabs extra transactions when 2 pages or less are left
-  */
+    /**
+    Method that grabs extra transactions when 2 pages or less are left
+    */
     pageClicked(page: number) : void {
       if (this.previousPage < page
         && page >= (Math.ceil(this.advertisementList.length / this.perPage) - 2)) {

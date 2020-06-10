@@ -136,6 +136,10 @@
     "Products per page": "Producten per pagina"
   },
   "socialDrinkCardTable": {
+    "Add social drink cards": "Borrelkaarten toevoegen",
+    "Filter by name": "Filter op naam",
+    "Fill in a name": "Vul een naam in",
+    "Social drink cards per page": "Borrelkaarten per pagina",
     "Name": "Naam",
     "Total amount": "Totale hoeveelheid",
     "Activated amount": "Geactiveerde hoeveelheid",
@@ -147,7 +151,19 @@
     "Info": "Info",
     "From": "Van",
     "Till": "Tot",
-    "Forever": "Oneindig"
+    "Forever": "Oneindig",
+    "Page": "Pagina",
+    "save": "opslaan",
+    "cancel": "cancel",
+    "new social drink cards": "nieuwe borrelkaarten",
+    "Amount of cards": "Hoeveelheid kaarten",
+    "Valid from": "Geldig van",
+    "Valid till": "Geldig tot",
+    "Name need to be larger than 0 characters": "Naam moet meer dan 0 characters bevatten",
+    "Amount of cards needs to be larger than 0": "De hoeveelheid kaarten moet groter zijn dan 0",
+    "Initial value needs to be 0 or larger": "De initiele waarde moet 0 of hoger zijn",
+    "From date needs a date earlier than till date": "Geldig van moet een datum bevatten vroeger dan geldig tot",
+    "Till date needs a date later than from date": "Geldig tot moet een datum bevatten later dan geldig van"
   },
   "screens": {
     "Screens": "TV Schermen",
