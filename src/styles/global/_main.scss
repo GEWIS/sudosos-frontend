@@ -164,19 +164,19 @@ Global style for forms in a card title
         transition: background-color 0.3s;
 
         > td {
-            padding: .75rem 0;
+            padding: .75rem .3rem;
             transition: padding 0.2s;
         }
 
-        > td:first-of-type {
-            padding-left: 0.75rem;
-            transition: padding-left 0.2s;
-        }
-
-        >td:last-of-type {
-            padding-right: 0.75rem;
-            transition: padding-right 0.2s;
-        }
+        //> td:first-of-type {
+        //    padding-left: 0.75rem;
+        //    transition: padding-left 0.2s;
+        //}
+        //
+        //>td:last-of-type {
+        //    padding-right: 0.75rem;
+        //    transition: padding-right 0.2s;
+        //}
     }
 
     // Use this as table header style to make sure table has the correctly styled headers

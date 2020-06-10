@@ -1,4 +1,38 @@
 <template>
+  <div>
+    <b-form-group
+      id="name-filter-group"
+      :label="$t('productTable.Filter by name')"
+      label-for="name-filter"
+      label-cols-md="2"
+      label-cols="12"
+    >
+      <b-form-input id="name-filter"
+                    v-model="nameFilter"
+                    type="text"
+                    :placeholder="$t('productTable.Fill in a name')"
+                    trim></b-form-input>
+    </b-form-group>
+
+    <b-form-group
+      id="page-amount-group"
+      :label="$t('productTable.Products per page')"
+      label-for="page-amount"
+      label-cols-md="2"
+      label-cols="12"
+    >
+      <b-form-input id="page-amount"
+                    v-model="perPage"
+                    type="number"
+                    inputmode="decimal"
+                    min="1"
+                    step="1"
+                    trim>
+      </b-form-input>
+    </b-form-group>
+
+    <!--  TODO: Add new social drink group -->
+
   <b-table stacked="sm"
            small
            borderless
@@ -6,6 +40,11 @@
            thead-class="table-header table-header-5"
            :items="socialDrinkCards"
            :fields="fields"
+           :filter="nameFilter"
+           :filter-included-fields="['name']"
+           :per-page="perPage"
+           :current-page="currentPage"
+           v-on:filtered="filterFinished"
   >
   <!-- Templates for each row cell -->
     <template v-slot:cell(name)="data">
@@ -33,7 +72,7 @@
     </template>
 
     <template v-slot:cell(owner)="data">
-      <font-awesome-icon icon="info-circle" @click="data.toggleDetails"></font-awesome-icon>
+      <font-awesome-icon class="icon" icon="info-circle" @click="data.toggleDetails" />
     </template>
 
     <template v-slot:row-details="row">
@@ -52,7 +91,7 @@
         </template>
 
         <template v-slot:cell(activated)="data">
-          <font-awesome-icon v-if="data.item.activated" icon="check-circle"></font-awesome-icon>
+          <font-awesome-icon v-if="data.item.activated" icon="check-circle" />
         </template>
 
         <template v-slot:cell(initialValue)="data">
@@ -66,6 +105,27 @@
       </b-table>
     </template>
   </b-table>
+
+    <div class="d-flex pageination py-3" v-if="totalRows > perPage">
+      <p class="my-auto h-100">
+        {{ $t('productTable.Page') }}:
+      </p>
+      <b-pagination
+        v-model="currentPage"
+        :total-rows="totalRows"
+        :per-page="perPage"
+        limit="1"
+        next-class="nextButton"
+        prev-class="prevButton"
+        page-class="pageButton"
+        hide-goto-end-buttons
+        last-number
+        @change="pageClicked"
+        aria-controls="transaction-table"
+        class="custom-pagination mb-0"
+      ></b-pagination>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -79,6 +139,16 @@ import Socialdrinkcards from '@/assets/socialdrinkcards';
   @Component
 export default class SocialDrinkCardTable extends Formatters {
     socialDrinkCards: SocialDrinkCardGroup[] = [];
+
+    nameFilter: string = '';
+
+    currentPage: number = 1;
+
+    previousPage: number = 0;
+
+    totalRows: number = 0;
+
+    perPage: number = 4;
 
     fields: Object[] = [
       {
@@ -136,6 +206,8 @@ export default class SocialDrinkCardTable extends Formatters {
         Socialdrinkcards.getGroups(),
       );
 
+      this.totalRows = this.socialDrinkCards.length;
+
       // If the locale is changed make sure the labels are also correctly updated for the b-table
       eventBus.$on('localeUpdated', () => {
         this.fields = this.updateTranslations(this.fields, 'socialDrinkCardTable');
@@ -168,16 +240,49 @@ export default class SocialDrinkCardTable extends Formatters {
 
       return formattedCards;
     }
+
+    /**
+     * Method that grabs extra transactions when 2 pages or less are left
+     *
+     * @param page new page number
+     */
+    pageClicked(page: number) : void {
+      if (this.previousPage < page && page >= (Math.ceil(this.totalRows / this.perPage) - 2)) {
+        // TODO: Grab new data
+      }
+
+      this.previousPage = page;
+    }
+
+    /**
+     * Methods that makes sure the pagination functions correctly after sorting
+     *
+     * @param socialDrinkCards
+     * @param length
+     */
+    filterFinished(socialDrinkCards: SocialDrinkCardGroup[], length: number): void {
+      this.currentPage = 1;
+      this.totalRows = length;
+    }
 }
 </script>
 
 <style lang="scss" scoped>
   .details-table {
-    margin: 0.5rem 1rem;
-    width: calc(100% - 2rem) !important;
+    margin: 0.5rem 1.5rem;
+    width: calc(100% - 3rem) !important;
 
     tbody tr {
       background-color: white !important;
     }
+  }
+
+  .icon {
+    color: $gewis-grey;
+    cursor: pointer;
+  }
+
+  .icon:hover {
+    color: $gewis-grey-shadow;
   }
 </style>
