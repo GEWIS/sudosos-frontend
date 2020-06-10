@@ -117,6 +117,7 @@
       </template>
     </b-table>
 
+    <!--  Pagination  -->
     <div class="d-flex pageination" v-if="totalRows > perPage">
       <p class="my-auto h-100">
         {{ $t('socialDrinkCardTable.Page') }}:
@@ -137,6 +138,7 @@
       ></b-pagination>
     </div>
 
+    <!--  Adding more Social drink cards modal  -->
     <b-modal
       id="modal-add"
       :ok-title="$t('socialDrinkCardTable.save')"
@@ -242,17 +244,17 @@
 
       </div>
 
-      <template v-slot:modal-footer="{ ok, cancel }">
+      <template v-slot:modal-footer="">
         <b-button
           variant="primary"
           class="btn-empty"
-          @click="cancel()"
+          @click="cancelAdding"
         >{{ $t('socialDrinkCardTable.cancel') }}
         </b-button>
         <b-button
           variant="primary"
           class="btn-empty"
-          @click="ok()">
+          @click="addNewCards">
           {{ $t('socialDrinkCardTable.save') }}
         </b-button>
       </template>
@@ -407,6 +409,30 @@ export default class SocialDrinkCardTable extends Formatters {
       this.totalRows = length;
     }
 
+    /**
+     * Once the OK button is pressed the new cards should be made
+     */
+    addNewCards(): void {
+      // TODO: Make request to add new cards
+
+      this.currentPage = this.currentPage;
+    }
+
+    /**
+     * If the cancel button on the modal is pressed everything needs to be reset
+     */
+    cancelAdding(): void {
+      this.$bvModal.hide('modal-add');
+      this.newCardName = '';
+      this.newCardAmount = 0;
+      this.newCardInitialValue = 0;
+      this.newCardFromDate = null;
+      this.newCardToDate = null;
+    }
+
+    /**
+     * Below are the methods for front-end validation of the form in the modal
+     */
     get newCardNameState(): boolean {
       return this.newCardName.length > 0;
     }
