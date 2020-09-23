@@ -16,6 +16,7 @@ module.exports = {
     'no-param-reassign': ['error', { props: false }],
     '@typescript-eslint/no-empty-function': ['error', { allow: ['constructors'] }],
     'no-underscore-dangle': 'off',
+    'no-plusplus': [0, { allowForLoopAfterthoughts: true }],
   },
   parserOptions: {
     parser: '@typescript-eslint/parser',
