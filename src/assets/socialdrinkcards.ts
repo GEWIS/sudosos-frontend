@@ -90,9 +90,15 @@ export default class Socialdrinkcards {
 
   public static getCards() {
     // eslint-disable-next-line max-len
-    const cards = [Socialdrinkcards.card1, Socialdrinkcards.card2, Socialdrinkcards.card3, Socialdrinkcards.card4];
+    const cards = [Socialdrinkcards.card2, Socialdrinkcards.card3, Socialdrinkcards.card4];
 
     return cards;
+  }
+
+  public static getCardGroup() {
+    const { cardGroup } = this;
+
+    return cardGroup;
   }
 
   public static getGroups() {

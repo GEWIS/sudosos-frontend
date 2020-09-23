@@ -135,6 +135,13 @@
     "Fill in a name": "Vul een filter in",
     "Products per page": "Producten per pagina"
   },
+  "socialDrinkCardsPrint": {
+    "instructions": "Print deze pagina op A4 formaat en de borrelkaartjes rollen uit de printer :)",
+    "BAr Committee Social drink card": "BAr Commissie Borrelkaart",
+    "valid": "Geldig",
+    "until": "tot",
+    "value": "Waarde"
+  },
   "socialDrinkCardTable": {
     "Add social drink cards": "Borrelkaarten toevoegen",
     "Filter by name": "Filter op naam",

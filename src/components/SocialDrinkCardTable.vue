@@ -83,7 +83,13 @@
       </template>
 
       <template v-slot:cell(owner)="data">
+        <div class="text-md-right">
+        <font-awesome-icon
+          class="icon mr-2"
+          icon="file-export"
+          @click="$router.push({name: 'socialDrinkCardsPrint', params: {name: data.item.name}})" />
         <font-awesome-icon class="icon" icon="info-circle" @click="data.toggleDetails" />
+        </div>
       </template>
 
       <template v-slot:row-details="row">

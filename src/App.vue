@@ -144,4 +144,14 @@ export default class App extends Formatters {
   #english {
     background-image: url('./assets/img/en.svg');
   }
+
+  @media print {
+    nav, footer {
+      display: none !important;
+    }
+
+    main {
+      margin: 0 !important;
+    }
+  }
 </style>

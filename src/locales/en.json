@@ -135,6 +135,13 @@
     "Fill in a name": "Fill in a name",
     "Products per page": "Products per page"
   },
+  "socialDrinkCardsPrint": {
+    "instructions": "Simply print this page to A4 format and the borrel cards will roll out of the printer correctly :)",
+    "BAr Committee Social drink card": "BAr Committee Social drink card",
+    "valid": "Valid",
+    "until": "until",
+    "value": "Value"
+  },
   "socialDrinkCardTable": {
     "Add social drink cards": "Add social drink cards",
     "Filter by name": "Filter by name",

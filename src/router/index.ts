@@ -16,6 +16,7 @@ import FlaggedTransactionDetails from '@/views/BAC/FlaggedTransactionDetails.vue
 import PointOfSaleInfo from '@/views/PointOfSale/PointOfSaleInfo.vue';
 import SignOut from '@/views/User/SignOut.vue';
 import SocialDrinkCards from '@/views/BAC/SocialDrinkCards.vue';
+import SocialDrinkCardsPrint from '@/views/BAC/SocialDrinkCardsPrint.vue';
 
 Vue.use(VueRouter);
 
@@ -92,6 +93,11 @@ const routes = [
     path: '/social-drink-cards',
     name: 'socialDrinkCards',
     component: SocialDrinkCards,
+  },
+  {
+    path: '/social-drink-cards/cards/:name',
+    name: 'socialDrinkCardsPrint',
+    component: SocialDrinkCardsPrint,
   },
   {
     path: '/profile',
