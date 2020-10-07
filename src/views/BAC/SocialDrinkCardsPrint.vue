@@ -14,7 +14,7 @@
                    :alt="socialDrinkCards[group + card - 1].barcode"
               />
             </div>
-            <p>{{ socialDrinkCards[group + card - 1].barcode }}</p>
+            <p id="barcode-text">{{ socialDrinkCards[group + card - 1].barcode }}</p>
             <p>{{
                 `${$t('socialDrinkCardsPrint.valid')}:
                    ${formatDateTime(cardGroup.validDates.validFrom, false, true)}
@@ -87,6 +87,11 @@ export default class SocialDrinkCardsPrint extends Formatters {
   }
 
   .drinkcard {
+    #barcode-text {
+      margin-top: -0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
     > p {
       text-align: center;
       margin-bottom: 0;

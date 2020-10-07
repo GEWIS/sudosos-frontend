@@ -288,7 +288,7 @@ export default class SocialDrinkCardTable extends Formatters {
 
     totalRows: number = 0;
 
-    perPage: number = 4;
+    perPage: number = 12;
 
     newCardName: String = '';
 
