@@ -230,6 +230,12 @@ export default class ProductTable extends Formatters {
       }
     }
 
+    /**
+     * Methods that makes sure the pagination functions correctly after sorting
+     *
+     * @param socialDrinkCards
+     * @param length
+     */
     filterFinished(products: Product[], length: number): void {
       this.currentPage = 1;
       this.totalRows = length;

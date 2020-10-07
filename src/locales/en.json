@@ -12,6 +12,7 @@
     "BAC": "BAC",
     "Flagged transactions": "Flagged transactions",
     "Manage products": "Manage products",
+    "Social drink cards": "Social drink cards",
     "Profile": "Profile",
     "Sign out": "Sign out",
     "Netherlands": "Nederlands",
@@ -134,6 +135,43 @@
     "Fill in a name": "Fill in a name",
     "Products per page": "Products per page"
   },
+  "socialDrinkCardsPrint": {
+    "instructions": "Simply print this page to A4 format and the borrel cards will roll out of the printer correctly :)",
+    "BAr Committee Social drink card": "BAr Committee Social drink card",
+    "valid": "Valid",
+    "until": "until",
+    "value": "Value"
+  },
+  "socialDrinkCardTable": {
+    "Add social drink cards": "Add social drink cards",
+    "Filter by name": "Filter by name",
+    "Fill in a name": "Fill in a name",
+    "Social drink cards per page": "Social drink cards per page",
+    "Name": "Name",
+    "Total amount": "Total amount",
+    "Activated amount": "Activated amount",
+    "Validity": "Validity",
+    "Barcode": "Barcode",
+    "Active": "Active",
+    "Initial value": "Initial value",
+    "Current value": "Current value",
+    "Info": "Info",
+    "From": "From",
+    "Till": "Till",
+    "Forever": "Forever",
+    "Page": "Page",
+    "save": "save",
+    "cancel": "cancel",
+    "new social drink cards": "new social drink cards",
+    "Amount of cards": "Amount of cards",
+    "Valid from": "Valid from",
+    "Valid till": "Valid till",
+    "Name need to be larger than 0 characters": "Name need to be larger than 0 characters",
+    "Amount of cards needs to be larger than 0": "Amount of cards needs to be larger than 0",
+    "Initial value needs to be 0 or larger": "Initial value needs to be 0 or larger",
+    "From date needs a date earlier than till date": "From date needs a date earlier than till date",
+    "Till date needs a date later than from date": "Till date needs a date later than from date"
+  },
   "screens": {
     "Screens": "TV Screens",
     "Ending time": "Ending time",
@@ -157,6 +195,9 @@
     "OPEN": "Open",
     "REJECTED": "Rejected",
     "Page": "Page"
+  },
+  "socialDrinkCards": {
+  "Social drink cards overview": "Social drink cards overview"
   },
   "advertisements": {
     "Advertisements": "Advertisements"

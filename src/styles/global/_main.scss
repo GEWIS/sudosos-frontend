@@ -149,6 +149,36 @@ Global style for forms in a card title
  */
 .b-table {
 
+    &.details-table {
+        tr {
+            background-color: inherit !important;
+        }
+
+        .details-table-tr:not(:first-of-type) {
+            border-top: 1px solid #cccccc;
+        }
+    }
+
+    .b-table-has-details {
+        background-color: rgba(0, 0, 0, 0.1) !important;
+        transition: background-color 0.3s;
+
+        > td {
+            padding: .75rem .3rem;
+            transition: padding 0.2s;
+        }
+
+        //> td:first-of-type {
+        //    padding-left: 0.75rem;
+        //    transition: padding-left 0.2s;
+        //}
+        //
+        //>td:last-of-type {
+        //    padding-right: 0.75rem;
+        //    transition: padding-right 0.2s;
+        //}
+    }
+
     // Use this as table header style to make sure table has the correctly styled headers
     .table-header {
         border-bottom: 1px solid #cccccc;
@@ -198,7 +228,8 @@ Global style for forms in a card title
         background-color: $gewis-grey-light;
     }
 
-    .transaction-row+.transaction-row, .transaction-flag-row+.transaction-flag-row {
+    .transaction-row+.transaction-row,
+    .transaction-flag-row+.transaction-flag-row {
         border-top: 1px solid #cccccc;
     }
 }
@@ -313,7 +344,6 @@ Global style for forms in a card title
     }
 
     .form-group {
-        margin-bottom: 0;
 
         > div {
             margin: auto 0;
@@ -341,6 +371,12 @@ h1 {
     }
 
     .b-table {
+
+        &.details-table {
+            .details-table-tr:not(:first-of-type) {
+                border-top: none;
+            }
+        }
 
         .table-header-3 {
             th:nth-of-type(3) {
@@ -413,6 +449,10 @@ h1 {
 
     .modal {
         input {
+            width: 75% !important;
+        }
+
+        .b-form-datepicker {
             width: 75% !important;
         }
 

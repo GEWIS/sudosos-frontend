@@ -42,6 +42,9 @@
             <b-dropdown-item :to="{ name: 'manageProducts'}">
               {{ $t('app.Manage products') }}
             </b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'socialDrinkCards'}">
+              {{ $t('app.Social drink cards') }}
+            </b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
 
@@ -140,5 +143,15 @@ export default class App extends Formatters {
 
   #english {
     background-image: url('./assets/img/en.svg');
+  }
+
+  @media print {
+    nav, footer {
+      display: none !important;
+    }
+
+    main {
+      margin: 0 !important;
+    }
   }
 </style>

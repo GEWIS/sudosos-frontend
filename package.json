@@ -21,6 +21,7 @@
     "core-js": "^3.4.4",
     "dinero.js": "^1.8.1",
     "jquery": "^3.4.1",
+    "jsbarcode": "^3.11.0",
     "sortablejs": "^1.10.2",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
