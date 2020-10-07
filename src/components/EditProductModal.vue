@@ -3,8 +3,7 @@
     id="edit-product"
     :ok-title="$t('editProductModal.save')"
     :cancel-title="$t('editProductModal.cancel')"
-    :title="Object.keys(editProduct).length > 0
-    ? $t('editProductModal.edit product') : $t('editProductModal.add product')"
+    :title="modalTitle"
     size="lg"
     hide-header-close
     centered>
@@ -36,6 +35,24 @@
         </b-col>
       </b-form-row>
 
+      <b-form-group
+        label-cols="12"
+        label-cols-sm="3"
+        :label="$t('editProductModal.Add existing product')"
+        label-align="left"
+        label-for="name"
+        :state="nameState"
+        :invalid-feedback="invalidName"
+        v-if="container"
+      >
+        <b-form-input
+          id="name"
+          name="name"
+          type="text"
+          v-model="name"
+          :state="nameState"
+        ></b-form-input>
+      </b-form-group>
 
       <b-form-group
         label-cols="12"
@@ -196,6 +213,8 @@ import Formatters from '@/mixins/Formatters';
 export default class EditProductModal extends Formatters {
     @Prop() private editProduct!: Product;
 
+    @Prop() private container!: Product;
+
     name: string | null = null;
 
     price: number | null = null;
@@ -296,6 +315,15 @@ export default class EditProductModal extends Formatters {
       }
 
       return '';
+    }
+
+    get modalTitle() {
+      const title: string = this.container ? ' container' : '';
+
+      if (Object.keys(this.editProduct).length > 0) {
+        return this.$t(`editProductModal.edit product${title}`);
+      }
+      return this.$t(`editProductModal.add product${title}`);
     }
 
     @Watch('editProduct')

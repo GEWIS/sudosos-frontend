@@ -8,7 +8,10 @@
       <b-col cols="12" class="containers-container">
         <div class="d-flex justify-content-between align-items-center">
           <p class="containers-header">{{ $t('manageProducts.All products') }}</p>
-          <b-button class="my-2 text-truncate" variant="success" v-on:click="addContainer">
+          <b-button class="my-2 text-truncate"
+                    variant="success"
+                    v-on:click="prepAddingProduct( '')"
+          >
             <font-awesome-icon icon="plus" />
             {{ $t('manageProducts.Add product') }}
           </b-button>
@@ -50,6 +53,7 @@
     />
 
     <EditProductModal :editProduct="editProduct"
+                      :container="addFromContainer"
                       v-on:productAdded="addProduct"
                       v-on:productEdited="editExistingProduct"
                       v-on:productDeleted="deleteProduct"
@@ -104,6 +108,8 @@ export default class ManageProducts extends Vue {
 
   fakeProducts: Product[] = [];
 
+  addFromContainer: boolean = false;
+
   beforeMount(): void {
     this.fakeProducts = FakeProducts.fetchProducts();
     this.standardContainers = PointsOfSale.getAvailableContainers();
@@ -140,6 +146,7 @@ Method for adding a new container, makes sure editContainer is an empty Storage 
    */
   prepAddingProduct(id: string) : void {
     this.addContainerID = id;
+    this.addFromContainer = id.length > 0;
     this.editProduct = {} as Product;
     this.$bvModal.show('edit-product');
   }

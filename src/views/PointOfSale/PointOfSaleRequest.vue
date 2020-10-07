@@ -75,6 +75,7 @@
     />
 
     <EditProductModal :editProduct="editProduct"
+                      :container="addFromContainer"
                       v-on:productAdded="addProduct"
                       v-on:productEdited="editExistingProduct"
                       v-on:productDeleted="deleteProduct"
@@ -130,6 +131,8 @@ export default class PointOfSaleRequest extends Vue {
 
     editProduct: Product = {} as Product;
 
+    addFromContainer: boolean = false;
+
     addContainerID: string = '';
 
     infoProduct: Product = {} as Product;
@@ -176,6 +179,7 @@ export default class PointOfSaleRequest extends Vue {
      */
     prepAddingProduct(id: string) : void {
       this.addContainerID = id;
+      this.addFromContainer = id.length > 0;
       this.editProduct = {} as Product;
       this.$bvModal.show('edit-product');
     }
