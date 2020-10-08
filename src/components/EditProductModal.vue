@@ -35,6 +35,8 @@
         </b-col>
       </b-form-row>
 
+      <div v-if="container && Object.keys(editProduct).length === 0">
+
       <h6>Add existing product</h6>
 
       <b-form-group
@@ -43,7 +45,6 @@
         :label="$t('editProductModal.Add existing product')"
         label-align="left"
         label-for="select"
-        v-if="container"
       >
         <v-select :options="products"
                   :getOptionLabel="option => option.name"
@@ -63,6 +64,8 @@
       <hr class="my-4">
 
       <h6>Add new product</h6>
+
+      </div>
 
       <b-form-group
         label-cols="12"
@@ -292,6 +295,10 @@ export default class EditProductModal extends Formatters {
 
           this.$emit('productEdited', product);
         }
+        this.$bvModal.hide('edit-product');
+      } else if (this.selectedProduct !== null) {
+        this.$emit('productAdded', this.selectedProduct);
+        this.selectedProduct = null;
         this.$bvModal.hide('edit-product');
       }
     }
