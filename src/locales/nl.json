@@ -257,11 +257,14 @@
     "save": "opslaan",
     "cancel": "annuleren",
     "edit product": "bewerk product",
+    "edit product container": "bewerk product in container",
     "add product": "product toevoegen",
+    "add product container": "product toevoegen in container",
     "Name": "Naam",
     "added on": "Toegevoegd op",
     "added by": "Toegevoegd door",
     "container": "container",
+    "Add existing product": "Voeg bestaand product aan container toe",
     "Price": "Prijs",
     "Category": "Categorie",
     "Traysize": "Staffelgroote",
@@ -277,7 +280,7 @@
   "containerComponent": {
     "Table view": "Tafel modus",
     "new": "Nieuw",
-    "Add product": "Voeg product toe"
+    "Add product": "Voeg nieuw product toe"
   },
   "transactionFlagTableFilter": {
     "from": "van",

@@ -3,8 +3,7 @@
     id="edit-product"
     :ok-title="$t('editProductModal.save')"
     :cancel-title="$t('editProductModal.cancel')"
-    :title="Object.keys(editProduct).length > 0
-    ? $t('editProductModal.edit product') : $t('editProductModal.add product')"
+    :title="modalTitle"
     size="lg"
     hide-header-close
     centered>
@@ -36,6 +35,37 @@
         </b-col>
       </b-form-row>
 
+      <div v-if="container && Object.keys(editProduct).length === 0">
+
+      <h6>Add existing product</h6>
+
+      <b-form-group
+        label-cols="12"
+        label-cols-sm="3"
+        :label="$t('editProductModal.Add existing product')"
+        label-align="left"
+        label-for="select"
+      >
+        <v-select :options="products"
+                  :getOptionLabel="option => option.name"
+                  v-model="selectedProduct"
+        >
+          <template v-slot:selected-option="product">
+            <img :src="product.picture" alt="product image">
+            {{ product.name }}
+          </template>
+          <template v-slot:option="product">
+            <img :src="product.picture" alt="product image">
+            {{ product.name }}
+          </template>
+        </v-select>
+      </b-form-group>
+
+      <hr class="my-4">
+
+      <h6>Add new product</h6>
+
+      </div>
 
       <b-form-group
         label-cols="12"
@@ -52,6 +82,7 @@
           type="text"
           v-model="name"
           :state="nameState"
+          :disabled="selectedProduct !== null"
         ></b-form-input>
       </b-form-group>
 
@@ -70,6 +101,7 @@
           type="text"
           v-model="category"
           :state="categoryState"
+          :disabled="selectedProduct !== null"
         ></b-form-input>
       </b-form-group>
 
@@ -90,6 +122,7 @@
           step="0.01"
           v-model="price"
           :state="priceState"
+          :disabled="selectedProduct !== null"
         ></b-form-input>
       </b-form-group>
 
@@ -110,6 +143,7 @@
           step="1"
           v-model="traySize"
           :state="traysizeState"
+          :disabled="selectedProduct !== null"
         ></b-form-input>
       </b-form-group>
 
@@ -125,6 +159,7 @@
           name="alcoholic"
           v-model="alcoholic"
           switch
+          :disabled="selectedProduct !== null"
         />
       </b-form-group>
 
@@ -140,6 +175,7 @@
           name="negative"
           v-model="negative"
           switch
+          :disabled="selectedProduct !== null"
         />
       </b-form-group>
 
@@ -150,7 +186,11 @@
         label-align="left"
         label-for="ad-file"
       >
-        <FileFormPreview v-model="file" :img="img.length > 0 ? img : undefined"></FileFormPreview>
+        <FileFormPreview
+          v-model="file"
+          :img="img.length > 0 ? img : undefined"
+          :disabled="selectedProduct !== null"
+        ></FileFormPreview>
       </b-form-group>
     </div>
 
@@ -187,6 +227,7 @@ import {
 import { Product } from '@/entities/Product';
 import FileFormPreview from '@/components/FileFormPreview.vue';
 import Formatters from '@/mixins/Formatters';
+import FakeProducts from '@/assets/products';
 
   @Component({
     components: {
@@ -195,6 +236,8 @@ import Formatters from '@/mixins/Formatters';
   })
 export default class EditProductModal extends Formatters {
     @Prop() private editProduct!: Product;
+
+    @Prop() private container!: Product;
 
     name: string | null = null;
 
@@ -211,6 +254,14 @@ export default class EditProductModal extends Formatters {
     file: File = new File([], '');
 
     img: string = '';
+
+    products: Product[] = [];
+
+    selectedProduct: Product | null = null;
+
+    beforeMount() {
+      this.products = FakeProducts.fetchProducts();
+    }
 
     save(): void {
       if (this.nameState && this.categoryState && this.priceState
@@ -244,6 +295,10 @@ export default class EditProductModal extends Formatters {
 
           this.$emit('productEdited', product);
         }
+        this.$bvModal.hide('edit-product');
+      } else if (this.selectedProduct !== null) {
+        this.$emit('productAdded', this.selectedProduct);
+        this.selectedProduct = null;
         this.$bvModal.hide('edit-product');
       }
     }
@@ -298,6 +353,15 @@ export default class EditProductModal extends Formatters {
       return '';
     }
 
+    get modalTitle() {
+      const title: string = this.container ? ' container' : '';
+
+      if (Object.keys(this.editProduct).length > 0) {
+        return this.$t(`editProductModal.edit product${title}`);
+      }
+      return this.$t(`editProductModal.add product${title}`);
+    }
+
     @Watch('editProduct')
     onEditProductChange(value: Product, old: Product): void {
       if (Object.keys(value).length > 0) {
@@ -322,7 +386,18 @@ export default class EditProductModal extends Formatters {
 </script>
 
 <style lang="scss" scoped>
-  .delete-button {
+
+.v-select {
+  img {
+    max-height: 20px;
+    max-width: 20px;
+    width: auto;
+    height: auto;
+    margin-right: 1rem;
+  }
+}
+
+.delete-button {
     padding-top: 1.5rem;
     padding-right: 0.75px;
   }

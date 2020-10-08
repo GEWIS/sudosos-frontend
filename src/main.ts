@@ -26,10 +26,14 @@ import {
   faQuestion,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
+import vSelect from 'vue-select';
 import App from './App.vue';
 import router from './router';
 import store from './store';
 import languages from './locales/index';
+
+import 'vue-select/dist/vue-select.css';
+
 
 // Import bootstrap js
 import 'bootstrap';
@@ -68,6 +72,7 @@ dinero.defaultPrecision = 2;
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.component('font-awesome-layers', FontAwesomeLayers);
 Vue.component('font-awesome-layers-text', FontAwesomeLayersText);
+Vue.component('v-select', vSelect);
 
 Vue.use(VueI18n);
 Vue.use(BootstrapVue);
