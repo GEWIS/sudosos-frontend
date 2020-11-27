@@ -1,17 +1,16 @@
 import { Transaction } from '@/entities/Transaction';
+import { User } from '@/entities/User';
 
 export interface TransactionFlag {
-    id: String;
-    status: FlagStatus;
-    flaggedById: String;
-    reason: String;
+  id: number;
+  status: FlagStatus;
+  flaggedBy: User;
+  reason: string;
+  transaction: Transaction;
 
-    transaction: Transaction;
-
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt?: Date;
-    formattedDate?: String;
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date;
 }
 
 export enum FlagStatus {

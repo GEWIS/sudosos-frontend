@@ -1,9 +1,10 @@
 import { User } from '@/entities/User';
 
-export interface Transaction {
+export interface NFCAuthentication {
   id: number;
-  from: User;
-  createdBy: User;
+  user: User;
+  uid: string;
+  name: string;
 
   createdAt?: Date;
   updatedAt?: Date;

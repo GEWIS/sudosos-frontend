@@ -1,7 +1,12 @@
 export interface Advertisement {
-  id: String; // Advertisement ID
-  thumbnail: String;
-  duration: Number;
-  active: Boolean;
-  added: Date;
+  id: number;
+  picture: string;
+  duration: number;
+  active: boolean;
+  startDate: Date;
+  endDate: Date;
+
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date;
 }

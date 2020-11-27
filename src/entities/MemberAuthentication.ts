@@ -1,9 +1,9 @@
 import { User } from '@/entities/User';
 
-export interface Transaction {
+export interface MemberAuthentication {
   id: number;
-  from: User;
-  createdBy: User;
+  user: User;
+  authenticateAs: User;
 
   createdAt?: Date;
   updatedAt?: Date;

@@ -1,11 +1,14 @@
-export interface ContainerData {
-  id: String;
-  added: Date;
-  addedBy: String; // Or User-id
-  name: String;
-  open: String;
-  close: String;
-  lastEdit: Date;
-  editable: boolean;
+import { User } from '@/entities/User';
+import { Product } from '@/entities/Product';
+
+export interface Container {
+  id: number;
+  version: number;
+  name: string;
+  owner: User;
+  productIDs: Product['id'][];
+
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date;
 }
-// TODO: add the list of products

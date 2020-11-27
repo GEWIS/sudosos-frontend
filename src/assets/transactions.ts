@@ -10,7 +10,7 @@ export default class fakeTransactions {
       id: '001',
       soldToId: 'Ruben',
       authorized: 'Ruben',
-      totalPrice: 2870,
+      totalPrice: 2838,
       pointOfSale: 'Bar (GEWIS)',
       activityId: '001',
       subTransactions: [{
@@ -25,7 +25,7 @@ export default class fakeTransactions {
         productId: '002',
         storageId: '002',
         amount: 5,
-        pricePerProduct: 130,
+        pricePerProduct: 138,
       },
       {
         transactionId: '003',
@@ -60,7 +60,7 @@ export default class fakeTransactions {
         id: '003',
         soldToId: 'Ruben',
         authorized: 'BAC',
-        totalPrice: 3000,
+        totalPrice: 3838,
         pointOfSale: 'Bar (GEWIS)',
         activityId: '002',
         subTransactions: [{
@@ -68,9 +68,9 @@ export default class fakeTransactions {
           productId: '000',
           storageId: '000',
           amount: 1,
-          pricePerProduct: 3000,
+          pricePerProduct: 3838,
         }],
-        comment: 'You put €30.00 on your account',
+        comment: 'You put €38.38 on your account',
         createdAt: new Date('February 2, 2020 05:07:00'),
         updatedAt: new Date(),
       } as Transaction,
@@ -78,7 +78,7 @@ export default class fakeTransactions {
         id: '004',
         soldToId: 'Pieter',
         authorized: 'Ruben',
-        totalPrice: 840,
+        totalPrice: 838,
         pointOfSale: 'Bar (GEWIS)',
         activityId: '003',
         subTransactions: [{

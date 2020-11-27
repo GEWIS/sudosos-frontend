@@ -1,9 +1,9 @@
 import { User } from '@/entities/User';
 
-export interface Transaction {
+export interface PINAuthentication {
   id: number;
-  from: User;
-  createdBy: User;
+  user: User;
+  pin: number;
 
   createdAt?: Date;
   updatedAt?: Date;

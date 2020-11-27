@@ -1,9 +1,9 @@
 import { User } from '@/entities/User';
 
-export interface Transaction {
+export interface EANAuthentication {
   id: number;
-  from: User;
-  createdBy: User;
+  userID: User['id'];
+  eanCode: string;
 
   createdAt?: Date;
   updatedAt?: Date;

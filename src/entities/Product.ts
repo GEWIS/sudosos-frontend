@@ -1,14 +1,17 @@
+import { User } from '@/entities/User';
+import { ProductCategory } from '@/entities/ProductCategory';
+
 export interface Product {
-    id: String;
-    name: String;
-    ownerId: String;
-    price: Number;
-    picture: String;
-    traySize: Number;
-    category: String;
-    isAlcoholic: Boolean;
-    negative: Boolean;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt?: Date;
+  id: number;
+  version: number;
+  name: string;
+  price: number;
+  owner: User;
+  category: ProductCategory;
+  picture: string;
+  alcoholPercentage: number;
+
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date;
 }

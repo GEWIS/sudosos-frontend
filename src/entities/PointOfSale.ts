@@ -1,18 +1,19 @@
-import { Storage } from '@/entities/Storage';
+import { User } from '@/entities/User';
+import { Container } from '@/entities/Container';
+
 
 export interface PointOfSale {
-    name: String;
-    id: String;
-    ownerId: String;
-    status: POSStatus;
-    storages: Storage[];
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt?: Date;
-}
+  id: number;
+  version: number;
+  name: string;
+  owner: User;
+  startDate: Date;
+  endDate: Date;
+  containerIds: Container['id'][];
+  approved: boolean;
+  useAuthentication: boolean;
 
-export enum POSStatus {
-  OPEN = 'OPEN',
-  ACCEPTED = 'ACCEPTED',
-  REJECTED = 'REJECTED',
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date;
 }
