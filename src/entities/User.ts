@@ -1,13 +1,12 @@
-export interface User {
+import { BaseEntity } from '@/entities/BaseEntity';
+
+export interface User extends BaseEntity {
   id: number;
   gewisID: number;
   name: string;
   active: boolean;
   type: UserType;
-
-  createdAt?: Date;
-  updatedAt?: Date;
-  deletedAt?: Date;
+  saldo: number;
 }
 
 export enum UserType {

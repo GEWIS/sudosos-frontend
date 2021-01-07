@@ -1,8 +1,6 @@
-export interface ProductCategory {
+import { BaseEntity } from '@/entities/BaseEntity';
+
+export interface ProductCategory extends BaseEntity {
   id: number;
   name: string;
-
-  createdAt?: Date;
-  updatedAt?: Date;
-  deletedAt?: Date;
 }

@@ -1,7 +1,8 @@
 import { User } from '@/entities/User';
 import { ProductCategory } from '@/entities/ProductCategory';
+import { BaseEntity } from '@/entities/BaseEntity';
 
-export interface Product {
+export interface Product extends BaseEntity {
   id: number;
   version: number;
   name: string;
@@ -10,8 +11,4 @@ export interface Product {
   category: ProductCategory;
   picture: string;
   alcoholPercentage: number;
-
-  createdAt?: Date;
-  updatedAt?: Date;
-  deletedAt?: Date;
 }

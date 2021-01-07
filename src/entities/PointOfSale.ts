@@ -1,8 +1,9 @@
 import { User } from '@/entities/User';
 import { Container } from '@/entities/Container';
+import { BaseEntity } from '@/entities/BaseEntity';
 
 
-export interface PointOfSale {
+export interface PointOfSale extends BaseEntity {
   id: number;
   version: number;
   name: string;
@@ -12,8 +13,4 @@ export interface PointOfSale {
   containerIds: Container['id'][];
   approved: boolean;
   useAuthentication: boolean;
-
-  createdAt?: Date;
-  updatedAt?: Date;
-  deletedAt?: Date;
 }

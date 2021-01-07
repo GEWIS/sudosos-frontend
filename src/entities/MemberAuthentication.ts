@@ -1,11 +1,8 @@
 import { User } from '@/entities/User';
+import { BaseEntity } from '@/entities/BaseEntity';
 
-export interface MemberAuthentication {
+export interface MemberAuthentication extends BaseEntity {
   id: number;
   user: User;
   authenticateAs: User;
-
-  createdAt?: Date;
-  updatedAt?: Date;
-  deletedAt?: Date;
 }

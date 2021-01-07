@@ -1,14 +1,11 @@
 import { User } from '@/entities/User';
 import { Product } from '@/entities/Product';
+import { BaseEntity } from '@/entities/BaseEntity';
 
-export interface Container {
+export interface Container extends BaseEntity {
   id: number;
   version: number;
   name: string;
   owner: User;
   productIDs: Product['id'][];
-
-  createdAt?: Date;
-  updatedAt?: Date;
-  deletedAt?: Date;
 }
