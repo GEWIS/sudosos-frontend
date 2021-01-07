@@ -7,7 +7,7 @@ export interface Product extends BaseEntity {
   version: number;
   name: string;
   price: number;
-  owner: User;
+  owner: User['id'];
   category: ProductCategory;
   picture: string;
   alcoholPercentage: number;
