@@ -1,17 +1,16 @@
 import { Transaction } from '@/entities/Transaction';
-import { User } from '@/entities/User';
+import { BaseUser, User } from '@/entities/User';
 import { BaseEntity } from '@/entities/BaseEntity';
 
-export interface TransactionFlag extends BaseEntity {
-  id: number;
+export interface FlaggedTransaction extends BaseEntity {
   status: FlagStatus;
-  flaggedBy: User;
+  flaggedBy: BaseUser | User;
   reason: string;
   transaction: Transaction;
 }
 
 export enum FlagStatus {
-    TODO = 'TODO',
-    ACCEPTED = 'ACCEPTED',
-    REJECTED = 'REJECTED',
+  TODO = 1,
+  ACCEPTED = 2,
+  REJECTED = 3,
 }

@@ -3,9 +3,8 @@ import { Product } from '@/entities/Product';
 import { BaseEntity } from '@/entities/BaseEntity';
 
 export interface Container extends BaseEntity {
-  id: number;
-  version: number;
+  revision: number;
   name: string;
   owner: User;
-  productIDs: Product['id'][];
+  products: Product[];
 }

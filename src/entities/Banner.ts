@@ -1,10 +1,9 @@
 import { BaseEntity } from '@/entities/BaseEntity';
 
-export interface Advertisement extends BaseEntity {
-  id: number;
+export interface Banner extends BaseEntity {
   picture: string;
   duration: number;
   active: boolean;
-  startDate: Date;
+  startDate?: Date;
   endDate: Date;
 }

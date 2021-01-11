@@ -1,18 +1,22 @@
+import { Dinero } from 'dinero.js';
 import { BaseEntity } from '@/entities/BaseEntity';
 
-export interface User extends BaseEntity {
-  id: number;
-  gewisID: number;
+export interface BaseUser extends BaseEntity {
   name: string;
+}
+
+export interface User extends BaseUser {
+  gewisID?: number;
+  email?: string;
   active: boolean;
   type: UserType;
-  saldo: number;
+  saldo: Dinero;
 }
 
 export enum UserType {
-  MEMBER = 'MEMBER',
-  ORGAN = 'ORGAN',
-  BORRELKAART = 'BORRELKAART',
-  LOCALUSER = 'LOCALUSER',
-  LOCALADMIN = 'LOCALADMIN',
+  MEMBER = 1,
+  ORGAN = 2,
+  BORRELKAART = 3,
+  LOCAL_USER = 4,
+  LOCAL_ADMIN = 5,
 }
