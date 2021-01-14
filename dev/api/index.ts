@@ -1,12 +1,21 @@
+import Products from './data/products.json';
+
 export default {
-  getCorrectFileName(baseURL: string, route: string) {
-    // Product routes
+  fetchJSON(route: string) {
+    // Route params
+    const params = new URLSearchParams(route);
+
     if (route.includes('product')) {
       if (route.includes('id')) {
-        return `${baseURL}data/product.json`;
+        return {
+          data: Products.find(prd => prd.id === Number(params.get('id'))),
+        };
       }
+
+      return Products;
     }
 
-    return `${baseURL}data/error.json`;
+    // Because typescript cannot handle throwing the way I want it.
+    throw String(`${route} is not specified in devAPI fetchJSON`);
   },
 };
