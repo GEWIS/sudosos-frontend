@@ -1,9 +1,10 @@
-import router from '../router';
+import router from '@/router';
+import eventBus from '@/eventbus';
 import devAPI from '../../dev/api';
+import { ApiError } from '@/entities/ApiError';
 
 const baseURL = ''; // TODO: Set base URL
 const token = ''; // TODO: Make sure we get the token
-const baseURLDev = '../../dev/api/';
 const isDev = process.env.NODE_ENV === 'development';
 
 
@@ -31,11 +32,6 @@ function makeRoute(route: string, args: any = null) {
     newRoute += argsString;
   }
 
-  // If we are currently in develop we need to grab a local JSON file
-  if (isDev) {
-    return devAPI.getCorrectFileName(baseURLDev, newRoute);
-  }
-
   return baseURL + newRoute;
 }
 
@@ -49,6 +45,13 @@ function checkResponse(fetchResponse: Response) {
     if (fetchResponse.status === 401) {
       console.warn('401 - Unauthorized');
       // TODO : Reroute / give visual warning
+
+      // TODO: Test if below works
+      const body = {
+        status: fetchResponse.status,
+        message: 'apiError.test',
+      } as ApiError;
+      eventBus.$emit('apiError', body);
     } else if (fetchResponse.status === 403) {
       console.warn('403 - Forbidden');
       // TODO : Reroute / give visual warning
@@ -69,20 +72,33 @@ function checkResponse(fetchResponse: Response) {
  * @param body: body that has all the correct info for the fetch
  */
 function fetchResource(route: string, body: object) {
+  let fetchResult = {};
+
   if (token === '' && !isDev) {
     const currentPath = router.currentRoute;
     router.push(`/login?next=${currentPath}`);
     return null;
   }
 
-  return fetch(route, body)
+  // If we are currently in development mode get data from the Fake API
+  if (isDev) {
+    try {
+      fetchResult = devAPI.fetchJSON(route);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  fetch(route, body)
     .then((fetchResponse) => {
       checkResponse(fetchResponse);
-      return fetchResponse.json();
+      fetchResult = fetchResponse.json();
     })
     .catch((error) => {
       console.error(error);
     });
+
+  return fetchResult;
 }
 
 
