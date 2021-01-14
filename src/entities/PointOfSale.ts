@@ -8,7 +8,7 @@ export interface BasePointOfSale extends BaseEntity {
 }
 
 export interface PointOfSale extends BasePointOfSale {
-  revision: number;
+  revision?: number;
   owner: User;
   startDate: Date;
   endDate: Date;

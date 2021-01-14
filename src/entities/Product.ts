@@ -4,7 +4,7 @@ import { ProductCategory } from '@/entities/ProductCategory';
 import { BaseEntity } from '@/entities/BaseEntity';
 
 export interface Product extends BaseEntity {
-  revision: number;
+  revision?: number;
   name: string;
   price: Dinero;
   owner: BaseUser | User;

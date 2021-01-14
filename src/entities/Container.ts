@@ -3,7 +3,7 @@ import { Product } from '@/entities/Product';
 import { BaseEntity } from '@/entities/BaseEntity';
 
 export interface Container extends BaseEntity {
-  revision: number;
+  revision?: number;
   name: string;
   owner: User;
   products: Product[];
