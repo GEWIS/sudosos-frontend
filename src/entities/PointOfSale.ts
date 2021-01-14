@@ -1,7 +1,6 @@
 import { User } from '@/entities/User';
 import { Container } from '@/entities/Container';
 import { BaseEntity } from '@/entities/BaseEntity';
-import { Product } from '@/entities/Product';
 import { ProductOrder } from '@/entities/ProductOrder';
 
 export interface BasePointOfSale extends BaseEntity {
@@ -15,6 +14,5 @@ export interface PointOfSale extends BasePointOfSale {
   endDate: Date;
   containers: Container[];
   productOrder?: ProductOrder[];
-  approved: boolean;
   useAuthentication: boolean;
 }
