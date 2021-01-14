@@ -1,17 +1,20 @@
 import Vue from 'vue';
-import Vuex from 'vuex';
-import CurrentUser from '@/store/user';
+import Vuex, { Store } from 'vuex';
+import { initializeStores, modules } from '@/store/store-accessor';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const initializer = (store: Store<any>) => initializeStores(store);
+export const plugins = [initializer];
+export * from '@/store/store-accessor';
+
+export default new Store({
+  plugins,
+  modules,
   state: {
   },
   mutations: {
   },
   actions: {
-  },
-  modules: {
-    currentUser: CurrentUser,
   },
 });
