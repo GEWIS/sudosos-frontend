@@ -1,9 +1,10 @@
 import { Banner } from '@/entities/Banner';
+import BaseTransformer from '@/transformers/BaseTransformer';
 
 export default {
   makeBanner(data: any) : Banner {
     return {
-      id: data.id,
+      ...BaseTransformer.makeBaseEntity(data),
       name: data.name,
       duration: data.duration,
       active: data.active,

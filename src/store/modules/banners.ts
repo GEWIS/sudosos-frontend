@@ -6,7 +6,7 @@ import APIHelper from '@/mixins/APIHelper';
 import BannerTransformer from '@/transformers/BannerTransformer';
 
 @Module({ namespaced: true, name: 'banners' })
-class BannerModule extends VuexModule {
+export default class BannerModule extends VuexModule {
   banners: Banner[] = [];
 
   get getBanners() {

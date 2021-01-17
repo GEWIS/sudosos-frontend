@@ -4,18 +4,19 @@ import { BasePointOfSale, PointOfSale } from '@/entities/PointOfSale';
 import UserTransformer from '@/transformers/UserTransformer';
 import ContainerTransformer from '@/transformers/ContainerTransformer';
 import ProductTransformer from '@/transformers/ProductTransformer';
+import BaseTransformer from '@/transformers/BaseTransformer';
 
 export default {
   makePointOfSale(data: any): BasePointOfSale | PointOfSale {
     if (!Object.keys(data).includes('owner')) {
       return {
-        id: data.id,
+        ...BaseTransformer.makeBaseEntity(data),
         name: data.name,
       } as BasePointOfSale;
     }
 
     return {
-      id: data.id,
+      ...BaseTransformer.makeBaseEntity(data),
       name: data.name,
       revision: data.revision,
       owner: UserTransformer.makeUser(data.owner),

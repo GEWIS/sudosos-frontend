@@ -7,7 +7,7 @@ import APIHelper from '@/mixins/APIHelper';
 import UserTransformer from '@/transformers/UserTransformer';
 
 @Module({ namespaced: true, name: 'user' })
-class UserModule extends VuexModule {
+export default class UserModule extends VuexModule {
   user: User = {} as User;
 
   get getUser() {

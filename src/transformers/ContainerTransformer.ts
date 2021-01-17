@@ -1,18 +1,19 @@
 import { BaseContainer, Container } from '@/entities/Container';
 import UserTransformer from '@/transformers/UserTransformer';
 import ProductTransformer from '@/transformers/ProductTransformer';
+import BaseTransformer from '@/transformers/BaseTransformer';
 
 export default {
   makeContainer(data: any) : BaseContainer | Container {
     if (!Object.keys(data).includes('owner')) {
       return {
-        id: data.id,
+        ...BaseTransformer.makeBaseEntity(data),
         name: data.name,
       } as BaseContainer;
     }
 
     return {
-      id: data.id,
+      ...BaseTransformer.makeBaseEntity(data),
       name: data.name,
       revision: data.revision,
       owner: UserTransformer.makeUser(data.owner),

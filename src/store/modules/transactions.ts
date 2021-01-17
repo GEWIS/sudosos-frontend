@@ -21,6 +21,27 @@ export default class TransactionModule extends VuexModule {
     this.transactions = transactions;
   }
 
+  @Mutation
+  addTransaction(transaction: Transaction) {
+    const transactionResponse = APIHelper.postResource('transactions', transaction);
+    this.transactions.push(TransactionTransformer.makeTransaction(transactionResponse));
+  }
+
+  @Mutation
+  removeTransaction(transaction: Transaction) {
+    APIHelper.delResource('transactions', transaction);
+    const index = this.transactions.findIndex(trns => trns.id === transaction.id);
+    this.transactions.splice(index, 1);
+  }
+
+  @Mutation
+  updateTransaction(transaction: {}) {
+    const response = APIHelper.putResource('transactions', transaction);
+    const transactionResponse = TransactionTransformer.makeTransaction(response);
+    const index = this.transactions.findIndex(trns => trns.id === transactionResponse.id);
+    this.transactions[index] = transactionResponse;
+  }
+
   @Action
   fetchTransactions() {
     const transactionResponse = APIHelper.getResource('transactions') as [];

@@ -1,13 +1,13 @@
 import {
   Action, Module, Mutation, VuexModule,
 } from 'vuex-module-decorators';
-import { Product } from '@/entities/Product';
+import { BaseProduct, Product } from '@/entities/Product';
 import APIHelper from '@/mixins/APIHelper';
 import ProductTransformer from '@/transformers/ProductTransformer';
 
 @Module({ namespaced: true, name: 'products' })
 export default class ProductsModule extends VuexModule {
-  products: Product[] = [];
+  products: Product[] | BaseProduct[] = [];
 
   get getProducts() {
     if (this.products.length === 0) {
@@ -24,7 +24,7 @@ export default class ProductsModule extends VuexModule {
   @Mutation
   addProduct(product: {}) {
     const productResponse = APIHelper.postResource('products', product);
-    this.products.push(ProductTransformer.makeProduct(productResponse));
+    this.products.push(ProductTransformer.makeProduct(productResponse) as Product);
   }
 
   @Mutation
