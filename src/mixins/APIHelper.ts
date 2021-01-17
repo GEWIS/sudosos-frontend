@@ -2,6 +2,7 @@ import router from '@/router';
 import eventBus from '@/eventbus';
 import devAPI from '../../dev/api';
 import { ApiError } from '@/entities/ApiError';
+import { ResponseBody } from '@/entities/ResponseBody';
 
 const baseURL = ''; // TODO: Set base URL
 const token = ''; // TODO: Make sure we get the token
@@ -71,7 +72,7 @@ function checkResponse(fetchResponse: Response) {
  * @param route: string that is the route that we need to fetch
  * @param body: body that has all the correct info for the fetch
  */
-function fetchResource(route: string, body: object) {
+function fetchResource(route: string, body: ResponseBody) {
   let fetchResult = {};
 
   if (token === '' && !isDev) {
@@ -83,7 +84,7 @@ function fetchResource(route: string, body: object) {
   // If we are currently in development mode get data from the Fake API
   if (isDev) {
     try {
-      fetchResult = devAPI.fetchJSON(route);
+      fetchResult = devAPI.fetchJSON(route, body);
     } catch (e) {
       console.error(e);
     }
@@ -110,7 +111,7 @@ export default {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    };
+    } as ResponseBody;
 
     return fetchResource(constructedRoute, getBody);
   },
@@ -119,13 +120,13 @@ export default {
     const constructedRoute = makeRoute(route, args);
 
     const patchBody = {
-      body: JSON.stringify(data),
-      method: 'PATCH',
       headers: {
         Authorization: `Bearer ${token}`,
         'content-type': 'application/json',
       },
-    };
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    } as ResponseBody;
 
     return fetchResource(constructedRoute, patchBody);
   },
@@ -140,7 +141,7 @@ export default {
         Authorization: `Bearer ${token}`,
         'content-type': 'application/json',
       },
-    };
+    } as ResponseBody;
 
     return fetchResource(constructedRoute, putBody);
   },
@@ -155,7 +156,7 @@ export default {
         Authorization: `Bearer ${token}`,
         'content-type': 'application/json',
       },
-    };
+    } as ResponseBody;
 
     return fetchResource(constructedRoute, postBody);
   },
@@ -170,7 +171,7 @@ export default {
         Authorization: `Bearer ${token}`,
         'content-type': 'application/json',
       },
-    };
+    } as ResponseBody;
 
     return fetchResource(constructedRoute, delBody);
   },
@@ -186,7 +187,7 @@ export default {
         'cache-control': 'no-store',
         pragma: 'no-cache',
       },
-    };
+    } as ResponseBody;
 
     return fetchResource(constructedRoute, postFileBody);
   },

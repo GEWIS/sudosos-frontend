@@ -1,0 +1,51 @@
+import {
+  Action, Module, Mutation, VuexModule,
+} from 'vuex-module-decorators';
+import { Banner } from '@/entities/Banner';
+import APIHelper from '@/mixins/APIHelper';
+import BannerTransformer from '@/transformers/BannerTransformer';
+
+@Module({ namespaced: true, name: 'banners' })
+class BannerModule extends VuexModule {
+  banners: Banner[] = [];
+
+  get getBanners() {
+    if (this.banners.length === 0) {
+      this.fetchBanners();
+    }
+    return this.banners;
+  }
+
+  @Mutation
+  setBanners(banners: Banner[]) {
+    this.banners = banners;
+  }
+
+  @Mutation
+  addBanner(banner: Banner) {
+    const bannerResponse = APIHelper.postResource('banner', banner);
+    this.banners.push(BannerTransformer.makeBanner(bannerResponse));
+  }
+
+  @Mutation
+  removeBanner(banner: Banner) {
+    APIHelper.delResource('banners', banner);
+    const index = this.banners.findIndex(bnr => bnr.id === banner.id);
+    this.banners.splice(index, 1);
+  }
+
+  @Mutation
+  updateAdvertisement(banner: {}) {
+    const response = APIHelper.putResource('banners', banner);
+    const bannerResponse = BannerTransformer.makeBanner(response);
+    const index = this.banners.findIndex(bnr => bnr.id === bannerResponse.id);
+    this.banners[index] = bannerResponse;
+  }
+
+  @Action
+  fetchBanners() {
+    const bannersResponse = APIHelper.getResource('banners') as [];
+    bannersResponse.map(banner => BannerTransformer.makeBanner(banner));
+    this.context.commit('setBanners', bannersResponse);
+  }
+}

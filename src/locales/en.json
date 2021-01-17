@@ -257,24 +257,16 @@
     "save": "save",
     "cancel": "cancel",
     "edit product": "edit product",
-    "edit product container": "edit product in container",
     "add product": "add product",
-    "add product container": "add product in container",
     "Name": "Name",
     "added on": "Added on",
     "added by": "Added by",
-    "container": "container",
-    "Add existing product": "Add existing product to container",
     "Price": "Price",
     "Category": "Category",
-    "Traysize": "Traysize",
-    "Alcoholic": "Alcoholic",
-    "Negative": "Can introduce negative balance",
+    "Alcohol Percentage": "Alcohol percentage",
     "Picture": "Picture",
     "Delete product": "Delete product",
     "name invalid": "Please provide a valid name that is longer than 0 characters",
-    "category invalid": "Please provide a valid category that is larger than 0 characters",
-    "traysize invalid": "Please provide a valid traysize that is higher than 0",
     "price invalid": "Please provide a valid price that is higher or equal to 0"
   },
   "containerComponent": {
@@ -343,5 +335,8 @@
   },
   "signOut": {
     "message": "Signing you out! Hope you had a nice time :) Be sure to come back soon!"
+  },
+  "apiError": {
+    "test": "This is a test"
   }
 }

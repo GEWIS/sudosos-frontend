@@ -10,7 +10,7 @@ export interface User extends BaseUser {
   email?: string;
   active: boolean;
   type: UserType;
-  saldo: Dinero;
+  saldo?: Dinero;
 }
 
 export enum UserType {

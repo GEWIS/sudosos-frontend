@@ -257,24 +257,16 @@
     "save": "opslaan",
     "cancel": "annuleren",
     "edit product": "bewerk product",
-    "edit product container": "bewerk product in container",
     "add product": "product toevoegen",
-    "add product container": "product toevoegen in container",
     "Name": "Naam",
     "added on": "Toegevoegd op",
     "added by": "Toegevoegd door",
-    "container": "container",
-    "Add existing product": "Voeg bestaand product aan container toe",
     "Price": "Prijs",
     "Category": "Categorie",
-    "Traysize": "Staffelgroote",
-    "Alcoholic": "Alcoholisch",
-    "Negative": "Kan saldo negatief maken",
+    "Alcohol Percentage": "Alcohol percentage",
     "Picture": "Plaatje",
     "Delete product": "Verwijder product",
     "name invalid": "Voer een correcte naam in van die langer is dan 0 tekens",
-    "category invalid": "Voer een correcte categorie in van die groter dan 0 tekens is",
-    "traysize invalid": "Voer een correcte staffegrote in die groter dan 0 is",
     "price invalid": "Voer een correcte prijs in die groter of gelijk aan 0 is"
   },
   "containerComponent": {
@@ -343,5 +335,8 @@
   },
   "signOut": {
     "message": "Je wordt uitgelogd! Hopelijk heb je het naar je zin gehad en zien we je snel weer :)"
+  },
+  "apiError": {
+    "test": "Dit is een test"
   }
 }

@@ -1,8 +1,8 @@
-import { TransactionFlag, FlagStatus } from '@/entities/TransactionFlag';
+import { FlaggedTransaction, FlagStatus } from '@/entities/FlaggedTransaction';
 import { User } from '@/entities/User';
 
 export default class fakeTransactionFlags {
-  public static fetchTransactionFlags(user: User): TransactionFlag[] {
+  public static fetchTransactionFlags(user: User): FlaggedTransaction[] {
     // something like return client.fetchTransactionFlags(user.id);
     return [
       {

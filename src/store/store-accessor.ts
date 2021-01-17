@@ -8,15 +8,21 @@
 import { Store } from 'vuex';
 import { getModule } from 'vuex-module-decorators';
 import ProductsModule from '@/store/modules/products';
+import UserModule from '@/store/modules/user';
+import BannerModule from '@/store/modules/banners';
 
 // Each store is the singleton instance of its module class
 // Use these -- they have methods for state/getters/mutations/actions
 // (result from getModule(...))
 export let productStore: ProductsModule;
+export let userStore: UserModule;
+export let bannerStore: BannerModule;
 
 // initializer plugin: sets up state/getters/mutations/actions for each store
 export function initializeStores(store: Store<any>): void {
   productStore = getModule(ProductsModule, store);
+  userStore = getModule(UserModule, store);
+  bannerStore = getModule(BannerModule, store);
 }
 
 // for use in 'modules' store init (see store/index.ts), so each module
@@ -24,4 +30,6 @@ export function initializeStores(store: Store<any>): void {
 // (This is required!)
 export const modules = {
   products: ProductsModule,
+  user: UserModule,
+  banners: BannerModule,
 };

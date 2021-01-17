@@ -11,7 +11,7 @@ export default class ProductsModule extends VuexModule {
 
   get getProducts() {
     if (this.products.length === 0) {
-      this.fetchProduct();
+      this.fetchProducts();
     }
     return this.products;
   }
@@ -22,24 +22,28 @@ export default class ProductsModule extends VuexModule {
   }
 
   @Mutation
-  addProduct(product: Product) {
-    this.products.push(product);
+  addProduct(product: {}) {
+    const productResponse = APIHelper.postResource('products', product);
+    this.products.push(ProductTransformer.makeProduct(productResponse));
   }
 
   @Mutation
   removeProduct(product: Product) {
+    APIHelper.delResource('products', product);
     const index = this.products.findIndex(prd => prd.id === product.id);
     this.products.splice(index, 1);
   }
 
   @Mutation
-  updateProduct(product: Product) {
-    const index = this.products.findIndex(prd => prd.id === product.id);
-    this.products[index] = product;
+  updateProduct(product: {}) {
+    const response = APIHelper.putResource('products', product);
+    const productResponse = ProductTransformer.makeProduct(response);
+    const index = this.products.findIndex(prd => prd.id === productResponse.id);
+    this.products[index] = productResponse;
   }
 
   @Action
-  fetchProduct() {
+  fetchProducts() {
     const productsResponse = APIHelper.getResource('products') as [];
     productsResponse.map(product => ProductTransformer.makeProduct(product));
     this.context.commit('setProducts', productsResponse);
