@@ -4,6 +4,7 @@ import { ProductCategory } from '@/entities/ProductCategory';
 import { ProductOrder } from '@/entities/ProductOrder';
 import UserTransformer from '@/transformers/UserTransformer';
 import BaseTransformer from '@/transformers/BaseTransformer';
+import ProductCategoryTransformer from '@/transformers/ProductCategoryTransformer';
 
 export default {
   makeProduct(data: any) : BaseProduct | Product {
@@ -15,18 +16,13 @@ export default {
       } as BaseProduct;
     }
 
-    const category = {
-      id: data.productCategory.id,
-      name: data.productCategory.name,
-    } as ProductCategory;
-
     return {
       ...BaseTransformer.makeBaseEntity(data),
       revision: data.revision,
       name: data.name,
       price: Dinero({ amount: Number(data.price), currency: 'EUR' }),
       owner: UserTransformer.makeUser(data.owner),
-      category,
+      category: ProductCategoryTransformer.makeProductCategory(data.category),
       picture: data.picture,
       alcoholPercentage: data.alcoholPercentage,
     } as Product;
