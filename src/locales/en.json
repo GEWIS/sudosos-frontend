@@ -212,20 +212,25 @@
     "when": "When",
     "what": "What"
   },
-  "advertisementList" : {
+  "bannerTable" : {
     "Add": "Add",
     "save": "save",
     "cancel": "cancel",
-    "new advertisement": "new advertisement",
+    "new banner": "new banner",
     "Duration": "Duration (in ms)",
     "Active": "Active",
-    "Advertisement": "Advertisement",
+    "Page": "Page",
+    "Banner": "Banner",
     "Confirm deletion": "Confirm deletion",
-    "Please enter": "Please enter a number larger than 0",
+    "Please enter dur": "Please enter a number larger than 0",
+    "End date should": "End date should be set and later than today",
     "Are you sure": "Are you sure you want to delete this advertisement?",
     "Thumbnail": "Thumbnail",
     "Duration (ms)": "Duration (ms)",
-    "Added on": "Added on",
+    "Start date": "Start date",
+    "End date": "End date",
+    "Starts on": "Starts on",
+    "Stops on": "Stops on",
     "Edit": "Edit"
   },
   "fileFormPreview": {

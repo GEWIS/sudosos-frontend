@@ -212,20 +212,25 @@
     "when": "Wanneer",
     "what": "Wat"
   },
-  "advertisementList" : {
+  "bannerTable" : {
     "Add": "Toevoegen",
     "save": "opslaan",
     "cancel": "annuleren",
-    "new advertisement": "nieuwe advertentie",
+    "new banner": "nieuwe banner",
     "Duration": "Duur (in ms)",
     "Active": "Actief",
-    "Advertisement": "Advertentie",
+    "Page": "Pagina",
+    "Banner": "Banner",
     "Confirm deletion": "Bevestig verwijderen",
-    "Please enter": "Voer een nummer in dat groter dan 0 is",
+    "Please enter dur": "Voer een nummer in dat groter dan 0 is",
+    "End date should": "Eind datum moet een waarde hebben die later is dan vandaag",
     "Are you sure": "Weet je zeker dat je deze advertentie wil verwijderen?",
     "Thumbnail": "Thumbnail",
     "Duration (ms)": "Duur (ms)",
-    "Added on": "Toegevoegd op",
+    "Start date": "Start datum",
+    "End date": "Eind datum",
+    "Starts on": "Start op",
+    "Stops on": "Stopt op",
     "Edit": "Aanpassen"
   },
   "fileFormPreview": {

@@ -35,7 +35,7 @@ export default class BannerModule extends VuexModule {
   }
 
   @Mutation
-  updateAdvertisement(banner: {}) {
+  updateBanner(banner: {}) {
     const response = APIHelper.putResource('banners', banner);
     const bannerResponse = BannerTransformer.makeBanner(response);
     const index = this.banners.findIndex(bnr => bnr.id === bannerResponse.id);
