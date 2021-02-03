@@ -1,0 +1,60 @@
+[
+  {
+    "id": 0,
+    "name": "borrel",
+    "revision": 0,
+    "owner": {
+      "id": 1,
+      "name": "BAr Commissie"
+    },
+    "startDate": "2021-01-01T12:38:38.380Z",
+    "endDate": "2021-12-31T12:38:38.380Z",
+    "containers": [
+      {
+        "id": 0,
+        "name": "Koelkast speciaalbier"
+      },
+      {
+        "id": 1,
+        "name": "Koelkast katerwater"
+      }
+    ],
+    "productOrder": [
+      {
+        "productID": 2,
+        "order": 0
+      },
+      {
+        "productID": 1,
+        "order": 1
+      }
+    ],
+    "useAuthentication": false,
+    "createdAt": "2021-01-01T12:38:38.380Z",
+    "updatedAt": "2021-01-01T12:38:38.380Z"
+  },
+  {
+    "id": 1,
+    "name": "standaard",
+    "revision": 0,
+    "owner": {
+      "id": 1,
+      "name": "BAr Commissie"
+    },
+    "startDate": "2021-01-01T12:38:38.380Z",
+    "endDate": "2021-12-31T12:38:38.380Z",
+    "containers": [
+      {
+        "id": 0,
+        "name": "Koelkast speciaalbier"
+      },
+      {
+        "id": 1,
+        "name": "Koelkast katerwater"
+      }
+    ],
+    "useAuthentication": true,
+    "createdAt": "2021-01-01T12:38:38.380Z",
+    "updatedAt": "2021-01-01T12:38:38.380Z"
+  }
+]

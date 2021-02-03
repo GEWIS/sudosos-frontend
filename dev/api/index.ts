@@ -3,6 +3,9 @@ import { ResponseBody } from '@/entities/ResponseBody';
 import User from './data/user.json';
 import Saldo from './data/saldo.json';
 import Banners from './data/banners.json';
+import Containers from './data/containers.json';
+import Transactions from './data/transactions.json';
+import PointsOfSale from './data/pos.json';
 
 function setResponse(body: ResponseBody, route: string, type: any) {
   const params = new URLSearchParams(route);
@@ -10,12 +13,17 @@ function setResponse(body: ResponseBody, route: string, type: any) {
   if (body.method === 'POST') {
     const response = JSON.parse(body.body || '');
     response.id = Number(Math.random() * 10000).toFixed();
+    response.createdAt = new Date();
+    response.updatedAt = response.createdAt;
 
     return response;
   }
 
   if (body.method === 'PUT' || body.method === 'PATCH') {
-    return JSON.parse(body.body || '');
+    const response = JSON.parse(body.body || '');
+    response.updatedAt = new Date();
+
+    return response;
   }
 
   if (route.includes('id')) {
@@ -45,6 +53,18 @@ export default {
 
     if (route.includes('banners')) {
       return setResponse(body, route, Banners);
+    }
+
+    if (route.includes('container')) {
+      return setResponse(body, route, Containers);
+    }
+
+    if (route.includes('pointofsale')) {
+      return setResponse(body, route, PointsOfSale);
+    }
+
+    if (route.includes('transaction')) {
+      return setResponse(body, route, Transactions);
     }
 
     // Because typescript cannot handle throwing the way I want it.
