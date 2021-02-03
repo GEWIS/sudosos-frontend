@@ -1,104 +1,126 @@
 <template>
   <div class="mb-2">
-    <div class="container-head px-3 d-flex"
-         v-on:click="collapseContainer"
-    >
+    <div class="container-head px-3 d-flex" v-on:click="collapseContainer">
 
-      <!-- The v-on click is to stop the container from toggling open -->
+      <!-- Select the container to enable it in the POS -->
       <b-input-group class="my-auto">
-        <b-form-checkbox :id="'checkbox_' + container.id"
-                         v-model="selected"
-                         :disabled="!enabled"
-                         @change="checkBoxChanged"
-                         v-on:click.stop=""
+        <b-form-checkbox
+          :id="'checkbox_' + container.id"
+          v-model="selected"
+          :disabled="!enabled"
+          @change="checkBoxChanged"
+          v-on:click.stop=""
         />
-          <span>{{ container.name }}</span>
+        <span>{{ container.name }}</span>
       </b-input-group>
 
-      <span class="ml-3 mr-2 my-auto"
-            v-show="canEdit && enabled && editable"
-            v-on:click.stop=""
-            v-on:click="$emit('input', container)"
-            v-b-modal.edit-container>
+      <!--  Container edit button    -->
+      <span
+        class="ml-3 mr-2 my-auto"
+        v-show="canEdit && enabled && editable"
+        v-on:click.stop=""
+        v-on:click="$emit('input', container)"
+        v-b-modal.edit-container>
             <font-awesome-icon icon="pen-alt" />
       </span>
 
-      <span class="ml-2 mr-3 my-auto"
-            v-show="canEdit && enabled && editable"
-            v-on:click.stop=""
-            v-on:click="$emit('input', container)"
-            v-b-modal.confirmation>
+      <!--   Container delete button   -->
+      <span
+        class="ml-2 mr-3 my-auto"
+        v-show="canEdit && enabled && editable"
+        v-on:click.stop=""
+        v-on:click="$emit('input', container)"
+        v-b-modal.confirmation>
             <font-awesome-icon icon="trash" />
       </span>
 
+      <!--   Icons to either collapse or uncollapse
+      container and switch between product views   -->
       <div class="d-inline ml-2 w-100 my-auto">
-        <font-awesome-icon pull="right"
-                           icon="angle-down"
-                           v-show="!isOpen"
-                           class="mr-3 mt-1"
-                           size="lg"
+        <font-awesome-icon
+          pull="right"
+          icon="angle-down"
+          v-show="!isOpen"
+          class="mr-3 mt-1"
+          size="lg"
         />
-        <font-awesome-icon pull="right"
-                           icon="angle-up"
-                           v-show="isOpen"
-                           class="mr-3 mt-1"
-                           size="lg"
+        <font-awesome-icon
+          pull="right"
+          icon="angle-up"
+          v-show="isOpen"
+          class="mr-3 mt-1"
+          size="lg"
         />
-        <b-form-checkbox class="float-right mr-2"
-                         v-on:click.stop=""
-                         v-model="tableView"
-                         name="check-button"
-                         switch>
+        <b-form-checkbox
+          class="float-right mr-2"
+          v-on:click.stop=""
+          v-model="tableView"
+          name="check-button"
+          switch
+        >
           {{ $t('containerComponent.Table view')}}
         </b-form-checkbox>
       </div>
     </div>
 
-    <!-- The container itself -->
-    <b-collapse v-if="isOpen"
-                v-model="isOpen"
-                v-sortable="sortableOptions" :id="'container_' + container.id" class="mt-1 storage">
-        <b-row v-show="!tableView" class="mx-0">
-          <b-col v-for="item in container.products"
-                 :key="item.id"
-                 class="text-center product-card px-2"
-                 cols="6" sm="4" md="3" lg="2"
-                 v-on:click="productDetails(item)"
-          >
-            <div class="product" :class="{'add': canEdit && enabled && editable}">
-              <img :src="item.picture" :alt="item.name"/>
-              <p class="w-100 px-1 product-name mb-0 text-truncate">{{ item.name }}</p>
-            </div>
-          </b-col>
+    <!-- Product overview from products that are currently active in container -->
+    <b-collapse
+      v-if="isOpen"
+      v-model="isOpen"
+      v-sortable="sortableOptions"
+      :id="'container_' + container.id"
+      class="mt-1 storage"
+    >
+      <!--  Card view for products   -->
+      <b-row v-show="!tableView" class="mx-0">
+        <b-col
+          v-for="item in container.products"
+          :key="item.id"
+          class="text-center product-card px-2"
+          cols="6" sm="4" md="3" lg="2"
+          v-on:click="productDetails(item)"
+        >
+          <div class="product" :class="{'add': canEdit && enabled && editable}">
+            <img :src="item.picture" :alt="item.name"/>
+            <p class="w-100 px-1 product-name mb-0 text-truncate">{{ item.name }}</p>
+          </div>
+        </b-col>
 
-          <b-col v-if="canEdit && enabled && editable"
-                 class="text-center product-card product-card-add px-2"
-                 cols="6" sm="4" md="3" lg="2"
-                 v-on:click="$emit('addProduct', container.id)"
-          >
-            <div class="product add">
-              <div><font-awesome-icon icon="plus" class="h-100" /></div>
-              <p class="w-100 product-name mb-0">{{ $t('containerComponent.new')}}</p>
-            </div>
-          </b-col>
-        </b-row>
+        <!-- Add new product card -->
+        <b-col
+          v-if="canEdit && enabled && editable"
+          class="text-center product-card product-card-add px-2"
+          cols="6" sm="4" md="3" lg="2"
+          v-on:click="$emit('addProduct', container.id)"
+        >
+          <div class="product add">
+            <div><font-awesome-icon icon="plus" class="h-100" /></div>
+            <p class="w-100 product-name mb-0">{{ $t('containerComponent.new')}}</p>
+          </div>
+        </b-col>
+      </b-row>
 
+      <!--   Table view for products   -->
       <b-row v-show="tableView">
         <b-col cols="12" class="containers-container">
-          <div v-if="canEdit && enabled && editable"
-               class="d-flex justify-content-between align-items-center">
-            <b-button class="my-2 text-truncate"
-                      variant="success"
-                      v-on:click="$emit('addProduct', container.id)">
+          <div
+            v-if="canEdit && enabled && editable"
+            class="d-flex justify-content-between align-items-center">
+            <b-button
+              class="my-2 text-truncate"
+              variant="success"
+              v-on:click="$emit('addProduct', container.id)"
+            >
               <font-awesome-icon icon="plus" />
               {{ $t('containerComponent.Add product') }}
             </b-button>
           </div>
-          <ProductTable :productsProp="container.products"
-                        :editable="true"
-                        :enabled="true"
-                        v-on:editProduct="productDetails"
-                        v-on:productDetails="productDetails"
+          <ProductTable
+            :productsProp="container.products"
+            :editable="true"
+            :enabled="true"
+            v-on:editProduct="productDetails"
+            v-on:productDetails="productDetails"
           />
         </b-col>
       </b-row>
@@ -110,8 +132,9 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import Sortable from 'sortablejs';
 import ProductTable from '@/components/ProductTable.vue';
-import { Storage } from '@/entities/Storage';
+import { Container } from '@/entities/Container';
 import { Product } from '@/entities/Product';
+import { userStore } from '@/store';
 
 @Component({
   directives: {
@@ -126,8 +149,8 @@ import { Product } from '@/entities/Product';
     ProductTable,
   },
 })
-export default class Container extends Vue {
-  @Prop() container!: Storage;
+export default class ContainerComponent extends Vue {
+  @Prop() container!: Container;
 
   @Prop() enabled: Boolean | undefined;
 
@@ -186,7 +209,7 @@ export default class Container extends Vue {
   /**
    * Check if the checkbox for toggling the storage on is checked
    *
-   * @param event click event
+   * @param event: click event
    */
   checkBoxChanged(event: any) {
     const containerId = this.container ? this.container.id : '0';
@@ -197,8 +220,7 @@ export default class Container extends Vue {
    * Check if current user has the rights to edit this storage container
    */
   get canEdit() {
-    return this.container
-      ? this.$store.state.currentUser.organs.includes(this.container.ownerId) : false;
+    return this.container.owner.id === userStore.user.id;
   }
 }
 </script>
@@ -215,7 +237,7 @@ export default class Container extends Vue {
   height: 2.5rem;
 
   span {
-      white-space: nowrap;
+    white-space: nowrap;
   }
 }
 
@@ -248,8 +270,8 @@ export default class Container extends Vue {
   }
 
   .product.add > div {
-      height: 5rem;
-      width: auto;
+    height: 5rem;
+    width: auto;
   }
 }
 

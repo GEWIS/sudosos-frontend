@@ -21,7 +21,7 @@
       <p class="font-weight-bold">{{ $t('productInfoModal.Put in by') }}</p>
     </b-col>
     <b-col cols="6" sm="8" class="text-right text-sm-left">
-      <p>{{ product.ownerId }}</p>
+      <p>{{ product.owner.name }}</p>
     </b-col>
   </b-row>
 

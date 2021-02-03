@@ -91,7 +91,7 @@ import Formatters from '@/mixins/Formatters';
 import TransactionTableFilter from '@/components/TransactionTableFilter.vue';
 import eventBus from '@/eventbus';
 import { Transaction } from '@/entities/Transaction';
-import { TransactionFlag, FlagStatus } from '@/entities/TransactionFlag';
+import { FlaggedTransaction, FlagStatus } from '@/entities/FlaggedTransaction';
 import { initFilter, TableFilter } from '@/entities/TableFilter';
 
 import fakeTransactionFlags from '@/assets/transactionFlags';
@@ -123,7 +123,7 @@ export default class TransactionFlagsTable extends Formatters {
 
   userAccount = this.$root.$data.currentUser;
 
-  transactionFlagList: TransactionFlag[] = [];
+  transactionFlagList: FlaggedTransaction[] = [];
 
   perPage: number = 12;
 
@@ -185,10 +185,10 @@ export default class TransactionFlagsTable extends Formatters {
   /**
    * Filters the rows based time constraints and user selected options
    *
-   * @param data TransactionFlag that needs to be filtered
+   * @param data FlaggedTransaction that needs to be filtered
    * @param prop String that we can filter against
   */
-  filterRows(data: TransactionFlag, prop: String): boolean {
+  filterRows(data: FlaggedTransaction, prop: String): boolean {
     let other = true;
     let date: boolean;
 
@@ -219,8 +219,8 @@ export default class TransactionFlagsTable extends Formatters {
    * @param t: List of transactions
    */
   formatTransactionFlags: Function = (
-    t: TransactionFlag[],
-  ): TransactionFlag[] => t.map(flag => ({
+    t: FlaggedTransaction[],
+  ): FlaggedTransaction[] => t.map(flag => ({
     ...flag,
     formattedDate: this.formatDateTime(flag.createdAt, true),
   }));

@@ -1,11 +1,11 @@
-import { POSStatus } from '@/entities/PointOfSale';
 <template>
+  <!-- TODO: Remove filter, add seperate call for POSs that have not yet been approved -->
   <b-card class="container-card">
     <b-card-title class="mb-3 mb-lg-5">
       <b-form-row class="mx-0">
         <b-col cols="12" :lg="filter ?  8 : 12">
           <span v-if="requested">{{ $t('POSOverview.requested points of sale') }}</span>
-          <span v-else>{{ $t('POSOverview.my points of sale')}}</span>
+          <span v-else>{{ $t('POSOverview.my points of sale') }}</span>
         </b-col>
         <b-col v-if="filter" cols="12" lg="4" class="text-right mt-2 mt-lg-0">
           <b-form-group
@@ -28,26 +28,21 @@ import { POSStatus } from '@/entities/PointOfSale';
     </b-card-title>
 
     <b-card-body>
-      <b-form-row class="point-of-sale"
-                  v-for="pos in pointsOfSale"
-                  :key="pos.id"
-                  @click="$router.push({
-                  name: full ? 'pointOfSaleApprove' : 'pointOfSaleInfo',
-                  params: {id: pos.id} })">
+      <b-form-row
+        class="point-of-sale"
+        v-for="pos in pointsOfSale.slice(currentPage * perPage, currentPage * perPage + perPage)"
+        :key="pos.id"
+        @click="$router.push({
+        name: full ? 'pointOfSaleApprove' : 'pointOfSaleInfo',
+        params: {id: pos.id} })">
         <b-col :cols="full ? 6 : 10" :lg="full ? 3 : 11" class="order-0 font-weight-bold">
           {{ pos.name }}
         </b-col>
         <b-col v-if="full" cols="10" lg="4" class="smaller order-3 order-lg-2">
-          {{ pos.ownerId }}
-        </b-col>
-        <b-col v-if="full" cols="6" lg="4" class="smaller text-right order-1 order-lg-3"
-               :class="{'open': pos.status === 'OPEN',
-                            'accepted': pos.status === 'ACCEPTED',
-                            'rejected': pos.status === 'REJECTED'}">
-          {{ $t(`POSOverview.${pos.status}`) }}
+          {{ pos.owner.name }}
         </b-col>
         <b-col cols="2"  lg="1" class="text-right order-4">
-          <font-awesome-icon icon="info-circle"></font-awesome-icon>
+          <font-awesome-icon icon="info-circle" />
         </b-col>
       </b-form-row>
     </b-card-body>
@@ -69,7 +64,7 @@ import { POSStatus } from '@/entities/PointOfSale';
         @change="pageClicked"
         aria-controls="transaction-table"
         class="custom-pagination mb-0"
-      ></b-pagination>
+      />
     </b-card-footer>
   </b-card>
 </template>
@@ -79,43 +74,8 @@ import { POSStatus } from '@/entities/PointOfSale';
 import {
   Component, Prop, Vue, Watch,
 } from 'vue-property-decorator';
-import { User } from '@/entities/User';
-import { PointOfSale, POSStatus } from '@/entities/PointOfSale';
-
-// Points of sale to display in My points of sale
-function fetchMyPoints(user: User) : PointOfSale[] {
-  // testing points
-  const points = [{
-    name: 'posName',
-    id: 'myID',
-    ownerId: 'myOwnerID',
-    status: POSStatus.OPEN,
-    storages: [],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  } as PointOfSale,
-      {
-        name: 'posName2',
-        id: 'myID',
-        ownerId: 'myOwnerID',
-        status: POSStatus.ACCEPTED,
-        storages: [],
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      } as PointOfSale,
-      {
-        name: 'posName3',
-        id: 'myID',
-        ownerId: 'myOwnerID',
-        status: POSStatus.REJECTED,
-        storages: [],
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      } as PointOfSale,
-  ] as PointOfSale[];
-
-  return points;
-}
+import { PointOfSale } from '@/entities/PointOfSale';
+import { pointOfSaleStore } from '@/store';
 
   @Component
 export default class POSOverview extends Vue {
@@ -128,9 +88,6 @@ export default class POSOverview extends Vue {
     // If true the title will be for requested pos's otherwise for your own pos's
     @Prop() private requested!: boolean;
 
-    // To store all fetched points of sale
-    pointsOfSaleStore: PointOfSale[] = [];
-
     // To store all fetched transaction with the filter applied
     pointsOfSaleFiltered: PointOfSale[] = [];
 
@@ -142,61 +99,47 @@ export default class POSOverview extends Vue {
 
     previousPage: number = 0;
 
-    currentPage: number = 1;
+    currentPage: number = 0;
 
     perPage: number = 2;
 
     beforeMount() {
-      this.pointsOfSaleStore = fetchMyPoints({} as User);
+      this.pointsOfSale = pointOfSaleStore.pointsOfSale;
       this.filterItems(this.processed);
     }
 
-    /*
-    Method that grabs extra transactions when 2 pages or less are left
-    */
+    /**
+     * Method that grabs extra transactions when 2 pages or less are left
+     *
+     * @param page = page that is being navigated to
+     */
     pageClicked(page: number) : void {
       if (this.previousPage < page
         && page >= (Math.ceil(this.pointsOfSaleFiltered.length / this.perPage) - 2)) {
         // TODO: Grab new data
       }
 
-      this.setPageItems(page);
-
       this.previousPage = page;
     }
 
-    /*
-    Method that puts the current page items into the pointsOfSale array
-
-    @param page = page that is currently being navigated to
-     */
-    setPageItems(page: number = 1) : void {
-      const sliceStart = (page - 1) * this.perPage;
-      const sliceEnd = sliceStart + this.perPage;
-
-      this.pointsOfSale = this.pointsOfSaleFiltered.slice(sliceStart, sliceEnd);
-    }
-
-    /*
-    Method that filters the current points of sale present in the pointsOfSaleStore based on an
-    input value
-
-    @param value = If true then pages that have POSStatus.OPEN will be pushed to the filtered list
+    /**
+     * Method that filters the current points of sale present in the pointsOfSale based on an
+     * input value
+     *
+     * @param value = If true then pages that have POSStatus.OPEN will be pushed to the filtered list
      */
     filterItems(value: boolean) : void {
       this.pointsOfSaleFiltered = [];
 
       if (value) {
-        this.pointsOfSaleStore.forEach((pos) => {
+        this.pointsOfSale.forEach((pos) => {
           if (pos.status === POSStatus.OPEN) {
             this.pointsOfSaleFiltered.push(pos);
           }
         });
       } else {
-        this.pointsOfSaleFiltered = this.pointsOfSaleStore;
+        this.pointsOfSaleFiltered = this.pointsOfSale;
       }
-
-      this.setPageItems();
     }
 
     @Watch('processed')

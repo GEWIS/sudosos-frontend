@@ -20,10 +20,16 @@
 import { Component } from 'vue-property-decorator';
 import { User } from '@/entities/User';
 import Formatters from '@/mixins/Formatters';
+import { userStore } from '@/store';
 
 @Component
 export default class CurrentSaldo extends Formatters {
-  public currentUser: User = this.$store.state.currentUser;
+  public currentUser: User = {} as User;
+
+  mounted() {
+    this.currentUser = userStore.getUser;
+    this.currentUser = userStore.user;
+  }
 }
 </script>
 

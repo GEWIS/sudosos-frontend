@@ -4,6 +4,8 @@ import {
 import { Container } from '@/entities/Container';
 import APIHelper from '@/mixins/APIHelper';
 import ContainerTransformer from '@/transformers/ContainerTransformer';
+import { Product } from '@/entities/Product';
+import ProductTransformer from '@/transformers/ProductTransformer';
 
 @Module({ namespaced: true, name: 'containers' })
 export default class ContainerModule extends VuexModule {
@@ -28,17 +30,27 @@ export default class ContainerModule extends VuexModule {
   }
 
   @Mutation
+  addProduct(container: Container, product: Product) {
+    let productResponse = APIHelper.postResource('product', product);
+    productResponse = ProductTransformer.makeProduct(productResponse);
+    let containerResponse = APIHelper.postResource(`container/${container.id}/product`, productResponse);
+    containerResponse = ContainerTransformer.makeContainer(containerResponse);
+    const index = this.containers.findIndex(cntnr => cntnr.id === container.id);
+    this.containers[index] = containerResponse as Container;
+  }
+
+  @Mutation
   removeContainer(container: Container) {
     APIHelper.delResource('containers', container);
-    const index = this.containers.findIndex(bnr => bnr.id === container.id);
+    const index = this.containers.findIndex(cntnr => cntnr.id === container.id);
     this.containers.splice(index, 1);
   }
 
   @Mutation
-  updateAdvertisement(container: {}) {
+  updateContainer(container: {}) {
     const response = APIHelper.putResource('containers', container);
     const containerResponse = ContainerTransformer.makeContainer(response);
-    const index = this.containers.findIndex(bnr => bnr.id === containerResponse.id);
+    const index = this.containers.findIndex(cntnr => cntnr.id === containerResponse.id);
     this.containers[index] = containerResponse as Container;
   }
 

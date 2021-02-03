@@ -62,7 +62,7 @@
     </template>
 
     <template v-slot:cell(price)="data">
-      {{ dinero({ amount: data.value}).toFormat() }}
+      {{ data.value.toFormat() }}
     </template>
 
     <template v-slot:cell(isAlcoholic)="data">
@@ -102,8 +102,8 @@ import Sortable from 'sortablejs';
 import eventBus from '@/eventbus';
 import Formatters from '@/mixins/Formatters';
 import { Product } from '@/entities/Product';
+import { productStore } from '@/store';
 
-import FakeProducts from '@/assets/products';
 
   @Component({
     directives: {
@@ -116,7 +116,7 @@ import FakeProducts from '@/assets/products';
     },
   })
 export default class ProductTable extends Formatters {
-    @Prop() private productsProp!: Product[];
+    @Prop() private productsProp?: Product[];
 
     @Prop() enabled: Boolean | undefined;
 
@@ -174,7 +174,7 @@ export default class ProductTable extends Formatters {
 
     beforeMount() {
       if (this.productsProp === undefined) {
-        this.productList = FakeProducts.fetchProducts();
+        this.productList = productStore.products;
       } else {
         this.productList = this.productsProp;
       }
@@ -233,7 +233,7 @@ export default class ProductTable extends Formatters {
     /**
      * Methods that makes sure the pagination functions correctly after sorting
      *
-     * @param socialDrinkCards
+     * @param products
      * @param length
      */
     filterFinished(products: Product[], length: number): void {

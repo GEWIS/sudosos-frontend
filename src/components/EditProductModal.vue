@@ -22,22 +22,13 @@
           <span class="font-weight-bold">{{ $t('editProductModal.added by')}}</span>
         </b-col>
         <b-col cols="12" sm="3">
-          {{ editProduct.ownerId }}
-        </b-col>
-      </b-form-row>
-
-      <b-form-row v-if="Object.keys(editProduct).length > 0">
-        <b-col cols="12" sm="3">
-          <span class="font-weight-bold">{{ $t('editProductModal.container')}}</span>
-        </b-col>
-        <b-col cols="12" sm="3">
-          {{ editProduct.ownerId }}
+          {{ editProduct.owner.name }}
         </b-col>
       </b-form-row>
 
       <div v-if="container && Object.keys(editProduct).length === 0">
 
-      <h6>Add existing product</h6>
+      <h6>{{ $t('editProductModal.Add existing') }}</h6>
 
       <b-form-group
         label-cols="12"
@@ -63,7 +54,7 @@
 
       <hr class="my-4">
 
-      <h6>Add new product</h6>
+      <h6>{{ $t('editProductModal.Add new') }}</h6>
 
       </div>
 
@@ -80,7 +71,7 @@
           id="name"
           name="name"
           type="text"
-          v-model="name"
+          v-model="currProduct.name"
           :state="nameState"
           :disabled="selectedProduct !== null"
         ></b-form-input>
@@ -92,15 +83,12 @@
         :label="$t('editProductModal.Category')"
         label-align="left"
         label-for="category"
-        :state="categoryState"
-        :invalid-feedback="invalidCategory"
       >
         <b-form-input
           id="category"
           name="category"
           type="text"
-          v-model="category"
-          :state="categoryState"
+          v-model="currProduct.category"
           :disabled="selectedProduct !== null"
         ></b-form-input>
       </b-form-group>
@@ -120,7 +108,7 @@
           type="number"
           inputmode="decimal"
           step="0.01"
-          v-model="price"
+          v-model="currProduct.price"
           :state="priceState"
           :disabled="selectedProduct !== null"
         ></b-form-input>
@@ -129,54 +117,19 @@
       <b-form-group
         label-cols="12"
         label-cols-sm="3"
-        :label="$t('editProductModal.Traysize')"
+        :label="$t('editProductModal.Alcohol Percentage')"
         label-align="left"
-        label-for="traysize"
-        :state="traysizeState"
-        :invalid-feedback="invalidTraysize"
+        label-for="alcohol"
       >
         <b-form-input
-          id="traysize"
-          name="traysize"
+          id="alcohol"
+          name="alcohol"
           type="number"
           inputmode="decimal"
-          step="1"
-          v-model="traySize"
-          :state="traysizeState"
+          step="0.01"
+          v-model="currProduct.alcoholPercentage"
           :disabled="selectedProduct !== null"
         ></b-form-input>
-      </b-form-group>
-
-      <b-form-group
-        label-cols="12"
-        label-cols-sm="3"
-        :label="$t('editProductModal.Alcoholic')"
-        label-align="left"
-        label-for="alcoholic"
-      >
-        <b-form-checkbox
-          id="alcoholic"
-          name="alcoholic"
-          v-model="alcoholic"
-          switch
-          :disabled="selectedProduct !== null"
-        />
-      </b-form-group>
-
-      <b-form-group
-        label-cols="12"
-        label-cols-sm="3"
-        :label="$t('editProductModal.Negative')"
-        label-align="left"
-        label-for="negative"
-      >
-        <b-form-checkbox
-          id="negative"
-          name="negative"
-          v-model="negative"
-          switch
-          :disabled="selectedProduct !== null"
-        />
       </b-form-group>
 
       <b-form-group
@@ -222,12 +175,13 @@
 
 <script lang="ts">
 import {
-  Component, Prop, Watch,
+  Component, Prop,
 } from 'vue-property-decorator';
 import { Product } from '@/entities/Product';
 import FileFormPreview from '@/components/FileFormPreview.vue';
 import Formatters from '@/mixins/Formatters';
-import FakeProducts from '@/assets/products';
+import { containerStore, productStore, userStore } from '@/store';
+import { Container } from '@/entities/Container';
 
   @Component({
     components: {
@@ -237,19 +191,9 @@ import FakeProducts from '@/assets/products';
 export default class EditProductModal extends Formatters {
     @Prop() private editProduct!: Product;
 
-    @Prop() private container!: Product;
+    @Prop() private container!: Container;
 
-    name: string | null = null;
-
-    price: number | null = null;
-
-    traySize: number | null = null;
-
-    category: string | null = null;
-
-    alcoholic: boolean | null = null;
-
-    negative: boolean | null = null;
+    currProduct: Product = {} as Product;
 
     file: File = new File([], '');
 
@@ -260,56 +204,45 @@ export default class EditProductModal extends Formatters {
     selectedProduct: Product | null = null;
 
     beforeMount() {
-      this.products = FakeProducts.fetchProducts();
+      this.products = productStore.products as Product[];
+      this.currProduct = this.editProduct;
     }
 
     save(): void {
-      if (this.nameState && this.categoryState && this.priceState
-          && this.traysizeState && this.file) {
+      if (this.nameState && this.priceState && this.file) {
         if (Object.keys(this.editProduct).length === 0) {
-          const product = {
-            id: `00004_${this.name}`,
-            name: this.name,
-            ownerId: '001',
-            price: this.price,
-            picture: URL.createObjectURL(this.file),
-            traySize: this.traySize,
-            category: this.category,
-            isAlcoholic: this.alcoholic,
-            negative: this.negative,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          } as Product;
+          this.currProduct.owner = {
+            id: userStore.user.id,
+            name: userStore.user.name,
+          };
 
-          this.$emit('productAdded', product);
+          this.currProduct.picture = URL.createObjectURL(this.file);
+
+          if (this.container) {
+            containerStore.addProduct(this.container, this.currProduct);
+          } else {
+            productStore.addProduct(this.currProduct);
+          }
         } else {
-          const product = this.editProduct;
-          product.name = String(this.name);
-          product.price = Number(this.price);
-          product.picture = URL.createObjectURL(this.file) || this.img;
-          product.traySize = Number(this.traySize);
-          product.category = String(this.category);
-          product.isAlcoholic = Boolean(this.alcoholic);
-          product.negative = Boolean(this.negative);
-          product.updatedAt = new Date();
+          this.currProduct.picture = URL.createObjectURL(this.file);
 
-          this.$emit('productEdited', product);
+          productStore.updateProduct(this.currProduct);
         }
         this.$bvModal.hide('edit-product');
       } else if (this.selectedProduct !== null) {
-        this.$emit('productAdded', this.selectedProduct);
+        containerStore.addProduct(this.container, this.selectedProduct);
         this.selectedProduct = null;
         this.$bvModal.hide('edit-product');
       }
     }
 
     // Check state of name
-    get nameState(): boolean | null {
-      return this.name === null ? null : this.name.length > 0;
+    nameState(): boolean | null {
+      return this.currProduct.name === null ? null : this.currProduct.name.length > 0;
     }
 
     // Return appropriate validating message for name
-    get invalidName(): string {
+    invalidName(): string {
       if (!this.nameState) {
         return this.$t('editProductModal.name invalid').toString();
       }
@@ -317,35 +250,11 @@ export default class EditProductModal extends Formatters {
       return '';
     }
 
-    get categoryState(): boolean | null {
-      return this.category === null ? null : this.category.length > 0;
+    priceState(): boolean | null {
+      return this.currProduct.price === null ? null : Number(this.currProduct.price) >= 0 && String(this.currProduct.price).length > 0;
     }
 
-    get invalidCategory() : string {
-      if (!this.categoryState) {
-        return this.$t('editProductModal.category invalid').toString();
-      }
-
-      return '';
-    }
-
-    get traysizeState(): boolean | null {
-      return this.traySize === null ? null : this.traySize > 0;
-    }
-
-    get invalidTraysize() : string {
-      if (!this.traysizeState) {
-        return this.$t('editProductModal.traysize invalid').toString();
-      }
-
-      return '';
-    }
-
-    get priceState(): boolean | null {
-      return this.price === null ? null : Number(this.price) >= 0 && String(this.price).length > 0;
-    }
-
-    get invalidPrice() : string {
+    invalidPrice() : string {
       if (!this.priceState) {
         return this.$t('editProductModal.price invalid').toString();
       }
@@ -353,34 +262,13 @@ export default class EditProductModal extends Formatters {
       return '';
     }
 
-    get modalTitle() {
+    modalTitle() {
       const title: string = this.container ? ' container' : '';
 
       if (Object.keys(this.editProduct).length > 0) {
         return this.$t(`editProductModal.edit product${title}`);
       }
       return this.$t(`editProductModal.add product${title}`);
-    }
-
-    @Watch('editProduct')
-    onEditProductChange(value: Product, old: Product): void {
-      if (Object.keys(value).length > 0) {
-        this.name = String(value.name);
-        this.price = Number(value.price);
-        this.category = String(value.category);
-        this.traySize = Number(value.traySize);
-        this.alcoholic = Boolean(value.isAlcoholic);
-        this.negative = Boolean(value.negative);
-        this.img = String(value.picture);
-      } else {
-        this.name = null;
-        this.price = null;
-        this.category = null;
-        this.traySize = null;
-        this.alcoholic = null;
-        this.negative = null;
-        this.img = '';
-      }
     }
 }
 </script>
