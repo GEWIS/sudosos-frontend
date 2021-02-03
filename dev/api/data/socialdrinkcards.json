@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Verjaardagskaartjes",
+    "activeStartDate": "2021-01-01T00:00:00.000Z",
+    "activeEndDate": "2021-31-12T00:00:00.000Z",
+    "borrelkaarten": [
+      {
+        "id": 10038,
+        "name": "04040404040",
+        "active": true,
+        "type": 3,
+        "saldo": 3838
+      },
+      {
+        "id": 10039,
+        "name": "04040404041",
+        "active": true,
+        "type": 3,
+        "saldo": 3839
+      },
+      {
+        "id": 10040,
+        "name": "04040404042",
+        "active": true,
+        "type": 3,
+        "saldo": 3840
+      }
+    ],
+    "createdAt": "2021-01-01T12:38:38.380Z",
+    "updatedAt": "2021-01-01T12:38:38.380Z"
+  }
+]

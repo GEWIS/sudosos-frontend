@@ -6,6 +6,8 @@ import Banners from './data/banners.json';
 import Containers from './data/containers.json';
 import Transactions from './data/transactions.json';
 import PointsOfSale from './data/pos.json';
+import SocialDrinkCards from './data/socialdrinkcards.json';
+import FlaggedTransactions from './data/flaggedtransactions.json';
 
 function setResponse(body: ResponseBody, route: string, type: any) {
   const params = new URLSearchParams(route);
@@ -65,6 +67,14 @@ export default {
 
     if (route.includes('transaction')) {
       return setResponse(body, route, Transactions);
+    }
+
+    if (route.includes('borrelkaartGroup')) {
+      return setResponse(body, route, SocialDrinkCards);
+    }
+
+    if (route.includes('flagged')) {
+      return setResponse(body, route, FlaggedTransactions);
     }
 
     // Because typescript cannot handle throwing the way I want it.
