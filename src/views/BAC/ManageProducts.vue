@@ -8,20 +8,22 @@
       <b-col cols="12" class="containers-container">
         <div class="d-flex justify-content-between align-items-center">
           <p class="containers-header">{{ $t('manageProducts.All products') }}</p>
-          <b-button class="my-2 text-truncate"
-                    variant="success"
-                    v-on:click="prepAddingProduct( '')"
+          <b-button
+            class="my-2 text-truncate"
+            variant="success"
+            v-on:click="prepAddingProduct( '')"
           >
             <font-awesome-icon icon="plus" />
             {{ $t('manageProducts.Add product') }}
           </b-button>
         </div>
-            <ProductTable :productsProp="fakeProducts"
-                          :editable="true"
-                          :enabled="true"
-                          v-on:editProduct="prepEditStandardProduct"
-                          v-on:productDetails="showProductDetails"
-            />
+        <ProductTable
+          :productsProp="fakeProducts"
+          :editable="true"
+          :enabled="true"
+          v-on:editProduct="prepEditStandardProduct"
+          v-on:productDetails="showProductDetails"
+        />
       </b-col>
     </b-row>
 
@@ -34,59 +36,62 @@
             {{ $t('manageProducts.Add container') }}
           </b-button>
         </div>
-        <Container v-for="storage in standardContainers"
-                   v-bind:key="storage.id"
-                   :container="storage"
-                   :enabled="true"
-                   :editable="true"
-                   v-model="editContainer"
-                   v-on:addProduct="prepAddingProduct"
-                   v-on:editProduct="prepEditContainerProduct"
-                   v-on:productDetails="showProductDetails"
+        <ContainerComponent
+          v-for="container in standardContainers"
+          v-bind:key="container.id"
+          :container="container"
+          :enabled="true"
+          :editable="true"
+          v-model="editContainer"
+          v-on:addProduct="prepAddingProduct"
+          v-on:editProduct="prepEditContainerProduct"
+          v-on:productDetails="showProductDetails"
         />
       </b-col>
     </b-row>
 
-    <EditContainerModal :editContainer="editContainer"
-                        v-on:storageAdded="addStorage"
-                        v-on:storageEdited="editStorage"
+    <EditContainerModal
+      :editContainer="editContainer"
+      v-on:storageAdded="addStorage"
+      v-on:storageEdited="editStorage"
     />
 
-    <EditProductModal :editProduct="editProduct"
-                      :container="addFromContainer"
-                      v-on:productAdded="addProduct"
-                      v-on:productEdited="editExistingProduct"
-                      v-on:productDeleted="deleteProduct"
+    <EditProductModal
+      :editProduct="editProduct"
+      :container="addFromContainer"
+      v-on:productAdded="addProduct"
+      v-on:productEdited="editExistingProduct"
+      v-on:productDeleted="deleteProduct"
     />
 
-    <ConfirmationModal :reason="$t('manageProducts.Are you sure')"
-                       :title="$t('manageProducts.Confirm')"
-                       v-on:modalConfirmed="confirmStorageDelete"
+    <ConfirmationModal
+      :reason="$t('manageProducts.Are you sure')"
+      :title="$t('manageProducts.Confirm')"
+      v-on:modalConfirmed="confirmStorageDelete"
     />
 
-    <ProductInfoModal :product="infoProduct"
-                      v-if="Object.keys(infoProduct).length > 0"
+    <ProductInfoModal
+      :product="infoProduct"
+      v-if="Object.keys(infoProduct).length > 0"
     />
   </b-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Container from '@/components/Container.vue';
+import ContainerComponent from '@/components/ContainerComponent.vue';
 import EditContainerModal from '@/components/EditContainerModal.vue';
 import EditProductModal from '@/components/EditProductModal.vue';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
 import ProductInfoModal from '@/components/ProductInfoModal.vue';
-import { Storage } from '@/entities/Storage';
+import { Container } from '@/entities/Container';
 import { Product } from '@/entities/Product';
-import PointsOfSale from '@/assets/pointsOfSale';
 import ProductTable from '@/components/ProductTable.vue';
 
-import FakeProducts from '@/assets/products';
 
 @Component({
   components: {
-    Container,
+    ContainerComponent,
     EditContainerModal,
     EditProductModal,
     ConfirmationModal,
@@ -96,13 +101,13 @@ import FakeProducts from '@/assets/products';
 })
 
 export default class ManageProducts extends Vue {
-  standardContainers: Storage[] = [];
+  standardContainers: Container[] = [];
 
-  editContainer: Storage = {} as Storage;
+  editContainer: Container = {} as Container;
 
   editProduct: Product = {} as Product;
 
-  addContainerID: string = '';
+  addContainerID: number = 0;
 
   infoProduct: Product = {} as Product;
 
@@ -116,37 +121,37 @@ export default class ManageProducts extends Vue {
   }
 
   /*
-Method for adding a new container, makes sure editContainer is an empty Storage object
+Method for adding a new container, makes sure editContainer is an empty Container object
  */
   addContainer(): void {
-    this.editContainer = {} as Storage;
+    this.editContainer = {} as Container;
     this.$bvModal.show('edit-container');
   }
 
   /*
-  Method for adding a storage container
+  Method for adding a container container
    */
-  addStorage(storage: Storage): void {
-    this.standardContainers.push(storage);
+  addStorage(container: Container): void {
+    this.standardContainers.push(container);
   }
 
   /*
-  Method for editting storage container, once finished it's data will be updated everywhere
+  Method for editting container, once finished it's data will be updated everywhere
    */
-  editStorage(storage: Storage): void {
-    const i = this.standardContainers.findIndex(s => s.id === storage.id);
+  editStorage(container: Container): void {
+    const i = this.standardContainers.findIndex(s => s.id === container.id);
 
     if (i > 0) {
-      this.standardContainers[i] = storage;
+      this.standardContainers[i] = container;
     }
   }
 
   /*
   Method for preparing adding a product
    */
-  prepAddingProduct(id: string) : void {
+  prepAddingProduct(id: number) : void {
     this.addContainerID = id;
-    this.addFromContainer = id.length > 0;
+    this.addFromContainer = id > 0;
     this.editProduct = {} as Product;
     this.$bvModal.show('edit-product');
   }
@@ -154,20 +159,20 @@ Method for adding a new container, makes sure editContainer is an empty Storage 
   /*
   Method for preparing editting an product
    */
-  prepEditContainerProduct(id: string, product: Product): void {
+  prepEditContainerProduct(id: number, product: Product): void {
     this.addContainerID = id;
     this.editProduct = product;
     this.$bvModal.show('edit-product');
   }
 
   prepEditStandardProduct(product: Product): void {
-    this.addContainerID = '-1';
+    this.addContainerID = -1;
     this.editProduct = product;
     this.$bvModal.show('edit-product');
   }
 
   /*
-  Method to add new products to the storage container. If the storage container was already
+  Method to add new products to the container container. If the container container was already
   added to the requestedPOS is will be updated there as well.
   */
   addProduct(product: Product) : void {
@@ -178,10 +183,10 @@ Method for adding a new container, makes sure editContainer is an empty Storage 
 
   /*
   Method to edit a currently existing product and updating it's data. Once updated it will also be
-  updated in the requestedPOS if it's storage container was already in there.
+  updated in the requestedPOS if it's container container was already in there.
   */
   editExistingProduct(product: Product): void {
-    if (this.addContainerID === '-1') {
+    if (this.addContainerID === -1) {
       const i = this.fakeProducts.findIndex(s => s.id === product.id);
       this.fakeProducts[i] = product;
     } else {
@@ -225,23 +230,23 @@ Method for adding a new container, makes sure editContainer is an empty Storage 
 </script>
 
 <style lang="scss" scoped>
-  @import '~bootstrap/scss/bootstrap';
-  @import './src/styles/Card.scss';
+@import '~bootstrap/scss/bootstrap';
+@import './src/styles/Card.scss';
 
-  .row {
-    padding: 0 15px 0 15px;
+.row {
+  padding: 0 15px 0 15px;
+}
+
+.containers-container{
+  border: 2px solid $gewis-grey-light;
+  margin-bottom: 2rem;
+
+  .containers-header {
+    color: $gewis-red;
+    font-size: 1em;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin: 1em 1em 1em 0;
   }
-
-  .containers-container{
-    border: 2px solid $gewis-grey-light;
-    margin-bottom: 2rem;
-
-    .containers-header {
-      color: $gewis-red;
-      font-size: 1em;
-      font-weight: 600;
-      text-transform: uppercase;
-      margin: 1em 1em 1em 0;
-    }
-  }
+}
 </style>

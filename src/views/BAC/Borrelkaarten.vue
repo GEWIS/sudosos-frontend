@@ -4,19 +4,19 @@
       {{ $t('socialDrinkCards.Social drink cards overview') }}
     </h1>
     <b-card>
-    <SocialDrinkCardTable></SocialDrinkCardTable>
+    <BorrelkaartTable/>
     </b-card>
   </b-container>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import SocialDrinkCardTable from '@/components/SocialDrinkCardTable.vue';
+import BorrelkaartTable from '@/components/BorrelkaartTable.vue';
 
   @Component({
-    components: { SocialDrinkCardTable },
+    components: { BorrelkaartTable },
   })
-export default class SocialDrinkCards extends Vue {
+export default class BorrelkaartOverview extends Vue {
 
 }
 </script>

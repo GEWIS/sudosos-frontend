@@ -1,3 +1,4 @@
+import { Dinero } from 'dinero.js';
 import { BaseUser, User } from '@/entities/User';
 import { BaseEntity } from '@/entities/BaseEntity';
 import { BasePointOfSale, PointOfSale } from '@/entities/PointOfSale';
@@ -8,4 +9,5 @@ export interface Transaction extends BaseEntity {
   createdBy?: BaseUser | User;
   pointOfSale: BasePointOfSale | PointOfSale;
   subTransactions: SubTransaction[];
+  price?: Dinero;
 }

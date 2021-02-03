@@ -14,7 +14,6 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { User } from '@/entities/User';
 import RecentTransactions from '@/components/RecentTransactions.vue';
 import CurrentSaldo from '@/components/CurrentSaldo.vue';
 
@@ -23,15 +22,7 @@ import CurrentSaldo from '@/components/CurrentSaldo.vue';
       RecentTransactions, CurrentSaldo,
     },
   })
-
 export default class Home extends Vue {
-    public user: User = {
-      id: '8549',
-      firstName: 'Pieter',
-      lastName: 'Ebbers',
-      saldo: 12,
-      organs: [],
-    };
 }
 </script>
 

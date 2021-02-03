@@ -5,7 +5,7 @@
       <p class="font-weight-bold">{{ $t('transactionDetails.Total') }}</p>
     </b-col>
     <b-col cols="6" sm="8" class="text-right text-sm-left">
-      <p>{{ dinero({amount: transaction.totalPrice}).toFormat() }}</p>
+      <p>{{ transaction.price.toFormat() }}</p>
     </b-col>
   </b-row>
   <b-row>
@@ -21,7 +21,7 @@
       <p class="font-weight-bold">{{ $t('transactionDetails.Put in by') }}</p>
     </b-col>
     <b-col cols="6" sm="8" class="text-right text-sm-left">
-      <p>{{ transaction.authorized }}</p>
+      <p>{{ transaction.createdBy }}</p>
     </b-col>
   </b-row>
   <b-row>
@@ -29,7 +29,7 @@
       <p class="font-weight-bold">{{ $t('transactionDetails.Put in for') }}</p>
     </b-col>
     <b-col cols="6" sm="8" class="text-right text-sm-left">
-      <p>{{ transaction.soldToId }}</p>
+      <p>{{ transaction.from }}</p>
     </b-col>
   </b-row>
   <b-row>
@@ -37,7 +37,7 @@
       <p class="font-weight-bold">{{ $t('transactionDetails.Activity') }}</p>
     </b-col>
     <b-col cols="6" sm="8" class="text-right text-sm-left">
-      <p>{{ transaction.activityId }}</p>
+      <p>{{ transaction.pointOfSale.name }}</p>
     </b-col>
   </b-row>
   <b-row>
@@ -63,7 +63,7 @@
         <b-col cols="12" class="text-right">
           <p>
             <i class="mr-1">{{ $t('transactionDetails.Total') }} </i>
-            {{ dinero({amount: transaction.totalPrice}).toFormat() }}</p>
+            {{ transaction.price.toFormat() }}</p>
         </b-col>
       </b-row>
     </b-col>

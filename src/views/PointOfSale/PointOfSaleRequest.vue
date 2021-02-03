@@ -12,17 +12,17 @@
           <b-form-input class="my-2" type="text" v-model="requestedPOS.name" />
           <b>{{ $t('posRequest.Selected containers')}}</b>
           <ul class="pl-4">
-              <li v-for="storage in requestedPOS.storages" v-bind:key="storage.id">
-                  {{ storage.name }}
+              <li v-for="container in requestedPOS.containers" v-bind:key="container.id">
+                  {{ container.name }}
               </li>
           </ul>
         </div>
         <h5>{{ $t('posRequest.Management') }}</h5>
         <div class="pl-1">
           <b>{{ $t('posRequest.Owner') }}</b>
-          <b-form-select class="my-2" v-model="requestedPOS.ownerId" :options="availableOrgans">
+          <b-form-select class="my-2" v-model="requestedPOS.owner.id" :options="availableOrgans">
           </b-form-select>
-          <ul v-if="availableOrgans.find((organ) => organ.value === requestedPOS.ownerId)"
+          <ul v-if="availableOrgans.find((organ) => organ.value === requestedPOS.owner.id)"
               class="pl-4">
             <li v-for="member in
               availableOrgans.find((organ) => organ.value === requestedPOS.ownerId).members"
@@ -31,7 +31,10 @@
             </li>
           </ul>
         </div>
-        <b-button class="mt-2" variant="success" @click="requestPOS"
+        <b-button
+          class="mt-2"
+          variant="success"
+          @click="requestPOS"
             :disabled="requestButtonDisabled">
             {{ $t('posRequest.Request')}}
         </b-button>
@@ -45,9 +48,10 @@
             {{ $t('posRequest.add container') }}
           </b-button>
         </div>
-        <Container v-for="storage in standardContainers"
-                   v-bind:key="storage.id"
-                   :container="storage"
+        <Container
+          v-for="container in standardContainers"
+                   v-bind:key="container.id"
+                   :container="container"
                    :enabled="true"
                    :editable="false"
                    @toggled="containerToggled"
@@ -55,9 +59,10 @@
                    v-on:productDetails="showProductDetails"
         />
 
-        <Container v-for="storage in addedContainers"
-                   v-bind:key="storage.id"
-                   :container="storage"
+        <ContainerComponent
+          v-for="container in addedContainers"
+                   v-bind:key="container.id"
+                   :container="container"
                    :enabled="true"
                    :editable="true"
                    @toggled="containerToggled"
@@ -69,24 +74,28 @@
       </b-col>
     </b-row>
 
-    <EditContainerModal :editContainer="editContainer"
-                        v-on:storageAdded="addStorage"
-                        v-on:storageEdited="editStorage"
+    <EditContainerModal
+      :editContainer="editContainer"
+      v-on:storageAdded="addStorage"
+      v-on:storageEdited="editStorage"
     />
 
-    <EditProductModal :editProduct="editProduct"
+    <EditProductModal
+      :editProduct="editProduct"
                       :container="addFromContainer"
                       v-on:productAdded="addProduct"
                       v-on:productEdited="editExistingProduct"
                       v-on:productDeleted="deleteProduct"
     />
 
-    <ConfirmationModal :reason="$t('posRequest.are you sure')"
+    <ConfirmationModal
+      :reason="$t('posRequest.are you sure')"
                        :title="$t('posRequest.confirm')"
                        v-on:modalConfirmed="confirmStorageDelete"
     />
 
-    <ProductInfoModal :product="infoProduct"
+    <ProductInfoModal
+      :product="infoProduct"
                       v-if="Object.keys(infoProduct).length > 0"
     />
   </b-container>
@@ -94,10 +103,9 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Container from '@/components/Container.vue';
-import { Storage } from '@/entities/Storage';
-import { PointOfSale, POSStatus } from '@/entities/PointOfSale';
-import PointsOfSale from '@/assets/pointsOfSale';
+import ContainerComponent from '@/components/ContainerComponent.vue';
+import { Container } from '@/entities/Container';
+import { PointOfSale } from '@/entities/PointOfSale';
 import EditContainerModal from '@/components/EditContainerModal.vue';
 import EditProductModal from '@/components/EditProductModal.vue';
 import { Product } from '@/entities/Product';
@@ -106,34 +114,30 @@ import ProductInfoModal from '@/components/ProductInfoModal.vue';
 
   @Component({
     components: {
-      Container, EditContainerModal, EditProductModal, ConfirmationModal, ProductInfoModal,
+      ContainerComponent,
+      EditContainerModal,
+      EditProductModal,
+      ConfirmationModal,
+      ProductInfoModal,
     },
   })
 
 export default class PointOfSaleRequest extends Vue {
-    requestedPOS: PointOfSale = {
-      name: '',
-      id: '',
-      ownerId: '',
-      status: POSStatus.OPEN,
-      storages: [],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+    requestedPOS: PointOfSale = {} as PointOfSale;
 
-    standardContainers: Storage[] = [];
+    standardContainers: Container[] = [];
 
-    addedContainers: Storage[] = [];
+    addedContainers: Container[] = [];
 
     availableOrgans: Object = [];
 
-    editContainer: Storage = {} as Storage;
+    editContainer: Container = {} as Container;
 
     editProduct: Product = {} as Product;
 
     addFromContainer: boolean = false;
 
-    addContainerID: string = '';
+    addContainerID: number = 0;
 
     infoProduct: Product = {} as Product;
 
@@ -143,43 +147,43 @@ export default class PointOfSaleRequest extends Vue {
     }
 
     /*
-    Method for adding a new container, makes sure editContainer is an empty Storage object
+    Method for adding a new container, makes sure editContainer is an empty Container object
      */
     addContainer(): void {
-      this.editContainer = {} as Storage;
+      this.editContainer = {} as Container;
       this.$bvModal.show('edit-container');
     }
 
     /*
-    Method for adding a storage container
+    Method for adding a container container
      */
-    addStorage(storage: Storage): void {
-      this.addedContainers.push(storage);
+    addStorage(container: Container): void {
+      this.addedContainers.push(container);
     }
 
     /*
-    Method for editting storage container, once finished it's data will be updated everywhere
+    Method for editting container container, once finished it's data will be updated everywhere
      */
-    editStorage(storage: Storage): void {
-      let i = this.addedContainers.findIndex(s => s.id === storage.id);
+    editStorage(container: Container): void {
+      let i = this.addedContainers.findIndex(s => s.id === container.id);
 
       if (i > 0) {
-        this.addedContainers[i] = storage;
+        this.addedContainers[i] = container;
       }
 
-      i = this.requestedPOS.storages.findIndex(s => s.id === storage.id);
+      i = this.requestedPOS.containers.findIndex(s => s.id === container.id);
 
       if (i > 0) {
-        this.requestedPOS.storages[i] = storage;
+        this.requestedPOS.containers[i] = container;
       }
     }
 
     /*
     Method for preparing adding a product
      */
-    prepAddingProduct(id: string) : void {
+    prepAddingProduct(id: number) : void {
       this.addContainerID = id;
-      this.addFromContainer = id.length > 0;
+      this.addFromContainer = id > 0;
       this.editProduct = {} as Product;
       this.$bvModal.show('edit-product');
     }
@@ -187,14 +191,14 @@ export default class PointOfSaleRequest extends Vue {
     /*
     Method for preparing editting an product
      */
-    prepEdittingProduct(id: string, product: Product): void {
+    prepEdittingProduct(id: number, product: Product): void {
       this.addContainerID = id;
       this.editProduct = product;
       this.$bvModal.show('edit-product');
     }
 
     /*
-    Method to add new products to the storage container. If the storage container was already
+    Method to add new products to the container container. If the container container was already
     added to the requestedPOS is will be updated there as well.
     */
     addProduct(product: Product) : void {
@@ -205,7 +209,7 @@ export default class PointOfSaleRequest extends Vue {
 
     /*
     Method to edit a currently existing product and updating it's data. Once updated it will also be
-    updated in the requestedPOS if it's storage container was already in there.
+    updated in the requestedPOS if it's container container was already in there.
     */
     editExistingProduct(product: Product): void {
       const i = this.addedContainers.findIndex(s => s.id === this.addContainerID);
@@ -220,7 +224,7 @@ export default class PointOfSaleRequest extends Vue {
     */
     confirmStorageDelete(): void {
       this.addedContainers = this.addedContainers.filter(s => s.id !== this.editContainer.id);
-      this.requestedPOS.storages = this.requestedPOS.storages.filter(
+      this.requestedPOS.containers = this.requestedPOS.containers.filter(
         s => s.id !== this.editContainer.id,
       );
     }
@@ -258,21 +262,21 @@ export default class PointOfSaleRequest extends Vue {
     containerToggled(containerData: any) {
       const containers = this.standardContainers.concat(this.addedContainers);
 
-      const updatedContainer = containers.find(storage => storage.id === containerData.id);
+      const updatedContainer = containers.find(container => container.id === containerData.id);
 
       if (updatedContainer) {
         if (containerData.state) {
-          this.requestedPOS.storages.push(updatedContainer);
+          this.requestedPOS.containers.push(updatedContainer);
         } else {
         // Using a filter to remove items from an object array
-          this.requestedPOS.storages = this.requestedPOS.storages
-            .filter(storage => storage.id !== updatedContainer.id);
+          this.requestedPOS.containers = this.requestedPOS.containers
+            .filter(container => container.id !== updatedContainer.id);
         }
       }
     }
 
     get requestButtonDisabled() {
-      return this.requestedPOS.name.length < 1 || this.requestedPOS.ownerId === '';
+      return this.requestedPOS.name.length < 1 || this.requestedPOS.owner.id === -1;
     }
 }
 </script>

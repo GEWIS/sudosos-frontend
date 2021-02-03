@@ -88,7 +88,7 @@ import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
 import { initFilter, TableFilter } from '@/entities/TableFilter';
 
-import fakeTransactions from '@/assets/transactions';
+import { transactionStore } from '@/store';
 
   @Component({
     components: {
@@ -156,9 +156,7 @@ export default class TransactionsTable extends Formatters {
     ];
 
     beforeMount() {
-      this.transactionList = this.formatTransactions(
-        fakeTransactions.fetchTransactions(this.userAccount),
-      );
+      this.transactionList = transactionStore.transactions;
 
       this.totalRows = this.transactionList.length;
 
@@ -237,8 +235,8 @@ export default class TransactionsTable extends Formatters {
       let dateRowTransaction: Transaction = {} as Transaction;
       t.forEach((transaction) => {
         // Create formatted date and time for each transaction
-        const fDate = this.formatDateTime(transaction.createdAt, true);
-        const time = this.formatDateTime(transaction.createdAt);
+        const fDate = this.formatDateTime(transaction.createdAt as Date, true);
+        const time = this.formatDateTime(transaction.createdAt as Date);
 
         // If formatted date has not been used yet make a date row
         if (!dates.find(d => d === fDate) || '') {

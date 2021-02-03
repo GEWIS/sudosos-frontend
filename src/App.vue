@@ -29,7 +29,7 @@
               {{ $t('app.Screens') }}
             </b-dropdown-item>
             <b-dropdown-item :to="{ name: 'advertisements'}">
-              {{ $t('app.Advertisements') }}
+              {{ $t('app.Banners') }}
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown :text="$t('app.BAC')">
@@ -103,11 +103,24 @@ import './styles/Navbar.scss';
 import './styles/Footer.scss';
 import Formatters from '@/mixins/Formatters';
 import eventBus from '@/eventbus';
+import { ApiError } from '@/entities/ApiError';
 
 const user = namespace('user');
 
 export default class App extends Formatters {
   public currentUser: User = this.$store.state.currentUser;
+
+  beforeMount() {
+    // TODO: Test if this works
+    eventBus.$on('apiError', (error: ApiError) => {
+      this.$bvToast.toast(this.$t(error.message), {
+        title: `Error ${error.status}`,
+        autoHideDelay: 5000,
+        variant: 'danger',
+        appendToast: true,
+      });
+    });
+  }
 
   localeChange(value: string): void {
     this.$root.$i18n.locale = value;

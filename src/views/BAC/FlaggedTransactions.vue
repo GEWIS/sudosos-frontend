@@ -1,10 +1,11 @@
 <template>
   <b-container fluid="lg">
     <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('flagged.Flagged transactions') }}</h1>
-    <FlaggedTransactionsComponent :selfBought="false"
-                                  :putInByYou="false"
-                                  :putInForYou="false"
-                                  :csv="false"
+    <FlaggedTransactionsComponent
+      :selfBought="false"
+      :putInByYou="false"
+      :putInForYou="false"
+      :csv="false"
     />
   </b-container>
 </template>
@@ -18,7 +19,6 @@ import FlaggedTransactionsComponent from '@/components/FlaggedTransactionsTable.
       FlaggedTransactionsComponent,
     },
   })
-
 export default class FlaggedTransactions extends Vue {
 }
 </script>

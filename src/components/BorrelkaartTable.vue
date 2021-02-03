@@ -23,7 +23,8 @@
         v-model="nameFilter"
         type="text"
         :placeholder="$t('socialDrinkCardTable.Fill in a name')"
-        trim />
+        trim
+      />
     </b-form-group>
 
     <b-form-group
@@ -44,18 +45,19 @@
       />
     </b-form-group>
 
-    <b-table stacked="sm"
-             small
-             borderless
-             striped
-             thead-class="table-header table-header-5"
-             :items="socialDrinkCards"
-             :fields="fields"
-             :filter="nameFilter"
-             :filter-included-fields="['name']"
-             :per-page="perPage"
-             :current-page="currentPage"
-             v-on:filtered="filterFinished"
+    <b-table
+      stacked="sm"
+      small
+      borderless
+      striped
+      thead-class="table-header table-header-5"
+      :items="borrelkaarten"
+      :fields="fields"
+      :filter="nameFilter"
+      :filter-included-fields="['name']"
+      :per-page="perPage"
+      :current-page="currentPage"
+      v-on:filtered="filterFinished"
     >
       <!-- Templates for each row cell -->
       <template v-slot:cell(name)="data">
@@ -64,10 +66,6 @@
 
       <template v-slot:cell(amount)="data">
         {{ data.item.amount }}
-      </template>
-
-      <template v-slot:cell(amountActive)="data">
-        {{ data.item.amountActive }}
       </template>
 
       <template v-slot:cell(validDates)="data">
@@ -87,7 +85,7 @@
         <font-awesome-icon
           class="icon mr-2"
           icon="file-export"
-          @click="$router.push({name: 'socialDrinkCardsPrint', params: {name: data.item.name}})" />
+          @click="$router.push({name: 'socialDrinkCardsPrint', params: {id: data.item.id}})" />
         <font-awesome-icon class="icon" icon="info-circle" @click="data.toggleDetails" />
         </div>
       </template>
@@ -99,7 +97,7 @@
                  thead-class="table-header"
                  tbody-tr-class="details-table-tr"
                  class="details-table"
-                 :items="row.item.socialDrinkCards"
+                 :items="row.item.borrelkaarten"
                  :fields="detailFields"
         >
           <!-- Templates for each row cell -->
@@ -272,13 +270,12 @@
 import { Component } from 'vue-property-decorator';
 import Formatters from '@/mixins/Formatters';
 import eventBus from '@/eventbus';
-import { SocialDrinkCardGroup } from '@/entities/SocialDrinkCardGroup';
-
-import Socialdrinkcards from '@/assets/socialdrinkcards';
+import { BorrelkaartGroup } from '@/entities/BorrelkaartGroup';
+import { borrelkaartGroupStore } from '@/store';
 
   @Component
-export default class SocialDrinkCardTable extends Formatters {
-    socialDrinkCards: SocialDrinkCardGroup[] = [];
+export default class BorrelkaartTable extends Formatters {
+    borrelkaarten: BorrelkaartGroup[] = [];
 
     nameFilter: string = '';
 
@@ -352,11 +349,9 @@ export default class SocialDrinkCardTable extends Formatters {
     ];
 
     beforeMount() {
-      this.socialDrinkCards = this.formatSocialDrinkCards(
-        Socialdrinkcards.getGroups(),
-      );
+      this.borrelkaarten = borrelkaartGroupStore.borrelkaartGroups;
 
-      this.totalRows = this.socialDrinkCards.length;
+      this.totalRows = this.borrelkaarten.length;
 
       // If the locale is changed make sure the labels are also correctly updated for the b-table
       eventBus.$on('localeUpdated', () => {
@@ -371,22 +366,23 @@ export default class SocialDrinkCardTable extends Formatters {
      *
      * @param cardGroup: SocialDrinkCardGroup list
      */
-    formatSocialDrinkCards = (cardGroup: SocialDrinkCardGroup[]) => {
-      const formattedCards: SocialDrinkCardGroup[] = [];
+    formatSocialDrinkCards = (cardGroup: BorrelkaartGroup[]) => {
+      const formattedCards: BorrelkaartGroup[] = [];
 
-      cardGroup.forEach((g) => {
-        g.amount = g.socialDrinkCards.length;
-        let amountActive = 0;
-
-        g.socialDrinkCards.forEach((c) => {
-          if (c.activated) {
-            amountActive += 1;
-          }
-        });
-
-        g.amountActive = amountActive;
-        formattedCards.push(g);
-      });
+      // TODO: Fix
+      // cardGroup.forEach((g) => {
+      //   g.amount = g.borrelkaarten.length;
+      //   let amountActive = 0;
+      //
+      //   g.borrelkaarten.forEach((c) => {
+      //     if (c.activated) {
+      //       amountActive += 1;
+      //     }
+      //   });
+      //
+      //   g.amountActive = amountActive;
+      //   formattedCards.push(g);
+      // });
 
       return formattedCards;
     }
@@ -407,10 +403,10 @@ export default class SocialDrinkCardTable extends Formatters {
     /**
      * Methods that makes sure the pagination functions correctly after sorting
      *
-     * @param socialDrinkCards
+     * @param borrelkaarten
      * @param length
      */
-    filterFinished(socialDrinkCards: SocialDrinkCardGroup[], length: number): void {
+    filterFinished(borrelkaarten: BorrelkaartGroup[], length: number): void {
       this.currentPage = 1;
       this.totalRows = length;
     }

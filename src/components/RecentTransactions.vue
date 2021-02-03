@@ -5,13 +5,14 @@
         {{ $t('recentTrans.recent transactions') }}
       </b-card-title>
       <b-card-body>
-        <b-table stacked="sm"
-                 small
-                 borderless
-                 thead-class="table-header"
-                 :items="transactionList"
-                 :fields="fields">
-        </b-table>
+        <b-table
+          stacked="sm"
+          small
+          borderless
+          thead-class="table-header"
+          :items="transactionList"
+          :fields="fields"
+        />
       </b-card-body>
     </b-card>
     <b-card-footer>
@@ -24,11 +25,10 @@
 
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
-import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
-import fakeTransactions from '@/assets/transactions';
 import Formatters from '@/mixins/Formatters';
 import eventBus from '@/eventbus';
+import { transactionStore } from '@/store';
 
   @Component
 export default class RecentTransactions extends Formatters {
@@ -49,7 +49,7 @@ export default class RecentTransactions extends Formatters {
   ];
 
   beforeMount() {
-    this.transactionList = fakeTransactions.fetchTransactions({} as User);
+    this.transactionList = transactionStore.transactions;
 
     // If the locale is changed make sure the labels are also correctly updated for the b-table
     eventBus.$on('localeUpdated', () => {

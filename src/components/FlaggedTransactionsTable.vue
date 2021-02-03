@@ -94,8 +94,6 @@ import { Transaction } from '@/entities/Transaction';
 import { FlaggedTransaction, FlagStatus } from '@/entities/FlaggedTransaction';
 import { initFilter, TableFilter } from '@/entities/TableFilter';
 
-import fakeTransactionFlags from '@/assets/transactionFlags';
-
 @Component({
   components: {
     TransactionTableFilter,

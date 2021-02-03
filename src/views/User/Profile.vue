@@ -90,7 +90,6 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { NFCDevice } from '@/entities/NFCDevice';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
 
   @Component({

@@ -18,7 +18,7 @@
 
   <b-row>
     <b-col cols="6" sm="4">
-      <p class="font-weight-bold">{{ $t('productInfoModal.Put in by') }}</p>
+      <p class="font-weight-bold">{{ $t('productInfoModal.Added by') }}</p>
     </b-col>
     <b-col cols="6" sm="8" class="text-right text-sm-left">
       <p>{{ product.owner.name }}</p>
@@ -27,10 +27,19 @@
 
   <b-row>
     <b-col cols="6" sm="4">
-      <p class="font-weight-bold">{{ $t('productInfoModal.Put in on') }}</p>
+      <p class="font-weight-bold">{{ $t('productInfoModal.Added on') }}</p>
     </b-col>
     <b-col cols="6" sm="8" class="text-right text-sm-left">
       <p>{{ formatDateTime(product.createdAt, true) }}</p>
+    </b-col>
+  </b-row>
+
+  <b-row>
+    <b-col cols="6" sm="4">
+      <p class="font-weight-bold">{{ $t('productInfoModal.Updated on') }}</p>
+    </b-col>
+    <b-col cols="6" sm="8" class="text-right text-sm-left">
+      <p>{{ formatDateTime(product.updatedAt, true) }}</p>
     </b-col>
   </b-row>
 
@@ -54,28 +63,12 @@
 
   <b-row>
     <b-col cols="6" sm="4">
-      <p class="font-weight-bold">{{ $t('productInfoModal.Traysize') }}</p>
-    </b-col>
-    <b-col cols="6" sm="8" class="text-right text-sm-left">
-      <p>{{ product.traySize }}</p>
-    </b-col>
-  </b-row>
-
-  <b-row>
-    <b-col cols="6" sm="4">
       <p class="font-weight-bold">{{ $t('productInfoModal.Contains alcohol') }}</p>
     </b-col>
     <b-col cols="6" sm="8" class="text-right text-sm-left">
-      <p>{{ product.isAlcoholic ? $t('productInfoModal.Yes') : $t('productInfoModal.No') }}</p>
-    </b-col>
-  </b-row>
-
-  <b-row>
-    <b-col cols="6" sm="4">
-      <p class="font-weight-bold">{{ $t('productInfoModal.Can induce negative saldo') }}</p>
-    </b-col>
-    <b-col cols="6" sm="8" class="text-right text-sm-left">
-      <p>{{ product.negative ? $t('productInfoModal.Yes') : $t('productInfoModal.No') }}</p>
+      <p>
+        {{ product.alcoholPercentage > 0 ? $t('productInfoModal.Yes') : $t('productInfoModal.No') }}
+      </p>
     </b-col>
   </b-row>
 

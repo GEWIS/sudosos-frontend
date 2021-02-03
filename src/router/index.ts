@@ -15,8 +15,8 @@ import Profile from '@/views/User/Profile.vue';
 import FlaggedTransactionDetails from '@/views/BAC/FlaggedTransactionDetails.vue';
 import PointOfSaleInfo from '@/views/PointOfSale/PointOfSaleInfo.vue';
 import SignOut from '@/views/User/SignOut.vue';
-import SocialDrinkCards from '@/views/BAC/SocialDrinkCards.vue';
-import SocialDrinkCardsPrint from '@/views/BAC/SocialDrinkCardsPrint.vue';
+import BorrelkaartOverview from '@/views/BAC/Borrelkaarten.vue';
+import BorrelkaartenPrint from '@/views/BAC/BorrelkaartenPrint.vue';
 
 Vue.use(VueRouter);
 
@@ -90,14 +90,14 @@ const routes = [
     component: ManageProducts,
   },
   {
-    path: '/social-drink-cards',
-    name: 'socialDrinkCards',
-    component: SocialDrinkCards,
+    path: '/borrelkaart-overview',
+    name: 'borrelkaartOverview',
+    component: BorrelkaartOverview,
   },
   {
-    path: '/social-drink-cards/cards/:name',
-    name: 'socialDrinkCardsPrint',
-    component: SocialDrinkCardsPrint,
+    path: '/borrelkaarten-overview/cards/:id',
+    name: 'borrelkaartenPrint',
+    component: BorrelkaartenPrint,
   },
   {
     path: '/profile',

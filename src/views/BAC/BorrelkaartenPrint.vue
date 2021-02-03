@@ -33,32 +33,35 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
-import { SocialDrinkCard } from '@/entities/SocialDrinkCard';
-
-import Socialdrinkcards from '@/assets/socialdrinkcards';
-import { SocialDrinkCardGroup } from '@/entities/SocialDrinkCardGroup';
+import { Component, Prop } from 'vue-property-decorator';
+import { User } from '@/entities/User';
+import { BorrelkaartGroup } from '@/entities/BorrelkaartGroup';
 import Formatters from '@/mixins/Formatters';
+import { borrelkaartGroupStore } from '@/store';
 
 const JsBarcode = require('jsbarcode');
 
   @Component
-export default class SocialDrinkCardsPrint extends Formatters {
-    socialDrinkCards: SocialDrinkCard[] = [];
+export default class BorrelkaartenPrint extends Formatters {
+    @Prop() id!: number;
 
-    cardGroup: SocialDrinkCardGroup = {} as SocialDrinkCardGroup;
+    socialDrinkCards: User[] = [];
+
+    cardGroup: BorrelkaartGroup = {} as BorrelkaartGroup;
 
 
     beforeMount() {
-      this.cardGroup = Socialdrinkcards.getCardGroup();
-      this.socialDrinkCards = this.cardGroup.socialDrinkCards;
+      const kaarten = borrelkaartGroupStore.borrelkaartGroups;
+      const index = kaarten.findIndex(krt => krt.id === this.id);
+      this.cardGroup = kaarten[index];
+      this.socialDrinkCards = this.cardGroup.borrelkaarten;
     }
 
     mounted() {
       this.$nextTick(() => {
         this.socialDrinkCards.forEach((card, i) => {
           const barCode = `#card-${i + 1}`;
-          JsBarcode(barCode, card.barcode, {
+          JsBarcode(barCode, card.name, {
             width: 2.05,
             height: 70,
             displayValue: false,

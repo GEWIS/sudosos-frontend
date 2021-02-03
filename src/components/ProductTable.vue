@@ -7,11 +7,13 @@
     label-cols-md="2"
     label-cols="12"
   >
-    <b-form-input id="name-filter"
-                  v-model="nameFilter"
-                  type="text"
-                  :placeholder="$t('productTable.Fill in a name')"
-                  trim></b-form-input>
+    <b-form-input
+      id="name-filter"
+      v-model="nameFilter"
+      type="text"
+      :placeholder="$t('productTable.Fill in a name')"
+      trim
+    />
   </b-form-group>
 
   <b-form-group
@@ -21,14 +23,15 @@
     label-cols-md="2"
     label-cols="12"
   >
-    <b-form-input id="page-amount"
-                  v-model="perPage"
-                  type="number"
-                  inputmode="decimal"
-                  min="1"
-                  step="1"
-                  trim>
-    </b-form-input>
+    <b-form-input
+      id="page-amount"
+      v-model="perPage"
+      type="number"
+      inputmode="decimal"
+      min="1"
+      step="1"
+      trim
+    />
   </b-form-group>
 
   <b-table
@@ -91,7 +94,7 @@
       @change="pageClicked"
       aria-controls="transaction-table"
       class="custom-pagination mb-0"
-    ></b-pagination>
+    />
   </div>
 </div>
 </template>
@@ -174,7 +177,7 @@ export default class ProductTable extends Formatters {
 
     beforeMount() {
       if (this.productsProp === undefined) {
-        this.productList = productStore.products;
+        this.productList = productStore.products as Product[];
       } else {
         this.productList = this.productsProp;
       }

@@ -56,12 +56,12 @@
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator';
 import Formatters from '@/mixins/Formatters';
-import Container from '@/components/Container.vue';
-import PointsOfSale from '@/assets/pointsOfSale';
+import Container from '@/components/ContainerComponent.vue';
 import TransactionsTable from '@/components/TransactionsTable.vue';
 import ProductInfoModal from '@/components/ProductInfoModal.vue';
 import { PointOfSale } from '@/entities/PointOfSale';
 import { Product } from '@/entities/Product';
+import { pointOfSaleStore } from '@/store';
 
   @Component({
     components: {
@@ -72,7 +72,7 @@ import { Product } from '@/entities/Product';
   })
 
 export default class PointOfSaleInfo extends Formatters {
-    @Prop() private pointOfSale!: PointOfSale;
+    @Prop() id!: number;
 
     requestedPOS: PointOfSale = {} as PointOfSale;
 
@@ -81,8 +81,9 @@ export default class PointOfSaleInfo extends Formatters {
     infoProduct: Product = {} as Product;
 
     beforeMount() {
-      this.requestedPOS = PointsOfSale.getPointOfSale();
-      this.ownerData = PointsOfSale.getOwnerData();
+      const pos = pointOfSaleStore.pointsOfSale;
+      const index = pos.findIndex(ps => ps.id === this.id);
+      this.requestedPOS = pos[index];
     }
 
     /**

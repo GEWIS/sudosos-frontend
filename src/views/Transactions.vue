@@ -14,7 +14,6 @@ import TransactionsTable from '@/components/TransactionsTable.vue';
       TransactionsTable,
     },
   })
-
 export default class Transactions extends Vue {
 }
 </script>
