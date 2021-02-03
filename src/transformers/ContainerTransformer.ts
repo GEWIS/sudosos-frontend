@@ -18,6 +18,7 @@ export default {
       revision: data.revision,
       owner: UserTransformer.makeUser(data.owner),
       products: data.products.map((product: any) => ProductTransformer.makeProduct(product)),
+      public: data.public,
     } as Container;
   },
 };

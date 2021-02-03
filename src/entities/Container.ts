@@ -10,4 +10,5 @@ export interface Container extends BaseContainer {
   revision?: number;
   owner: BaseUser | User;
   products: Product[];
+  public?: boolean;
 }
