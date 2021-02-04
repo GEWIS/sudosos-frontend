@@ -1,20 +1,14 @@
 import {
   Action, Module, Mutation, VuexModule,
 } from 'vuex-module-decorators';
+import store from '@/store';
 import APIHelper from '@/mixins/APIHelper';
 import { Transaction } from '@/entities/Transaction';
 import TransactionTransformer from '@/transformers/TransactionTransformer';
 
-@Module({ namespaced: true, name: 'transactions' })
+@Module({ dynamic: true, store, name: 'TransactionModule' })
 export default class TransactionModule extends VuexModule {
   transactions: Transaction[] = [];
-
-  get getTransactions() {
-    if (this.transactions.length === 0) {
-      this.fetchTransactions();
-    }
-    return this.transactions;
-  }
 
   @Mutation
   setTransactions(transactions: Transaction[]) {
@@ -43,9 +37,11 @@ export default class TransactionModule extends VuexModule {
   }
 
   @Action
-  fetchTransactions() {
-    const transactionResponse = APIHelper.getResource('transactions') as [];
-    transactionResponse.map(transaction => TransactionTransformer.makeTransaction(transaction));
-    this.context.commit('setTransactions', transactionResponse);
+  fetchTransactions(force: boolean = false) {
+    if (this.transactions.length === 0 || force) {
+      const transactionResponse = APIHelper.getResource('transactions') as [];
+      const trans = transactionResponse.map(trns => TransactionTransformer.makeTransaction(trns));
+      this.context.commit('setTransactions', trans);
+    }
   }
 }

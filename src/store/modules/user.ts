@@ -2,20 +2,15 @@ import {
   Action, Module, Mutation, VuexModule,
 } from 'vuex-module-decorators';
 import Dinero from 'dinero.js';
+import store from '@/store';
 import { User } from '@/entities/User';
 import APIHelper from '@/mixins/APIHelper';
 import UserTransformer from '@/transformers/UserTransformer';
 
-@Module({ namespaced: true, name: 'user' })
+
+@Module({ dynamic: true, store, name: 'UserModule' })
 export default class UserModule extends VuexModule {
   user: User = {} as User;
-
-  get getUser() {
-    if (Object.keys(this.user).length) {
-      this.fetchUser();
-    }
-    return this.user;
-  }
 
   @Mutation
   setUser(user: User) {
@@ -28,10 +23,12 @@ export default class UserModule extends VuexModule {
   }
 
   @Action
-  fetchUser() {
-    const userResponse = APIHelper.getResource('user') as {};
-    this.context.commit('setUser', UserTransformer.makeUser(userResponse));
-    const saldoResponse = APIHelper.getResource('saldo') as { saldo: number };
-    this.context.commit('updateSaldo', saldoResponse.saldo);
+  fetchUser(force: boolean = false) {
+    if (this.user.id === undefined || force) {
+      const userResponse = APIHelper.getResource('user') as {};
+      this.context.commit('setUser', UserTransformer.makeUser(userResponse));
+      const saldoResponse = APIHelper.getResource('saldo') as { saldo: number };
+      this.context.commit('updateSaldo', saldoResponse.saldo);
+    }
   }
 }

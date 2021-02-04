@@ -8,7 +8,7 @@ export default {
     return {
       ...BaseTransformer.makeBaseEntity(data),
       from: UserTransformer.makeUser(data.from),
-      to: UserTransformer.makeUser(data.to),
+      createdBy: UserTransformer.makeUser(data.createdBy),
       amount: Dinero({ amount: data.amount, currency: 'EUR' }),
       type: data.type,
       description: data.description,

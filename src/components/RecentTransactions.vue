@@ -25,13 +25,16 @@
 
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
 import { Transaction } from '@/entities/Transaction';
 import Formatters from '@/mixins/Formatters';
 import eventBus from '@/eventbus';
-import { transactionStore } from '@/store';
+import TransactionModule from '@/store/modules/transactions';
 
-  @Component
+@Component
 export default class RecentTransactions extends Formatters {
+  private transactionState = getModule(TransactionModule);
+
   transactionList: Transaction[] = [];
 
   fields: Object[] = [
@@ -49,7 +52,8 @@ export default class RecentTransactions extends Formatters {
   ];
 
   beforeMount() {
-    this.transactionList = transactionStore.transactions;
+    this.transactionState.fetchTransactions();
+    this.transactionList = this.transactionState.transactions;
 
     // If the locale is changed make sure the labels are also correctly updated for the b-table
     eventBus.$on('localeUpdated', () => {

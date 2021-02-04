@@ -18,6 +18,14 @@ export default class ContainerModule extends VuexModule {
     return this.containers;
   }
 
+  get getPublicContainers() {
+    if (this.containers.length === 0) {
+      this.fetchContainers();
+    }
+
+    return this.containers.filter(cntnr => cntnr.public);
+  }
+
   @Mutation
   setContainers(containers: Container[]) {
     this.containers = containers;

@@ -6,7 +6,7 @@
       </b-card-title>
       <b-card-body>
         <p id="saldo-text" class="lead">
-          {{ dinero({amount: currentUser.saldo}).toFormat() }}
+          {{ currentUser.saldo.toFormat() }}
         </p>
       </b-card-body>
     </b-card>
@@ -18,17 +18,20 @@
 
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
 import { User } from '@/entities/User';
 import Formatters from '@/mixins/Formatters';
-import { userStore } from '@/store';
+import UserModule from '@/store/modules/user';
 
 @Component
 export default class CurrentSaldo extends Formatters {
+  private userState = getModule(UserModule);
+
   public currentUser: User = {} as User;
 
-  mounted() {
-    this.currentUser = userStore.getUser;
-    this.currentUser = userStore.user;
+  beforeMount() {
+    this.userState.fetchUser();
+    this.currentUser = this.userState.user;
   }
 }
 </script>

@@ -10,4 +10,5 @@ export interface Transaction extends BaseEntity {
   pointOfSale: BasePointOfSale | PointOfSale;
   subTransactions: SubTransaction[];
   price?: Dinero;
+  formattedDate: string;
 }

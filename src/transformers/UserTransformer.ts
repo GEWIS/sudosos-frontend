@@ -3,6 +3,10 @@ import BaseTransformer from '@/transformers/BaseTransformer';
 
 export default {
   makeUser(data: any) : BaseUser | User {
+    if (data === undefined) {
+      return {} as BaseUser;
+    }
+
     if (!Object.keys(data).includes('active')) {
       return {
         ...BaseTransformer.makeBaseEntity(data),

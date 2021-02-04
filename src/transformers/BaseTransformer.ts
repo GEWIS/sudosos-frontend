@@ -2,10 +2,18 @@ import { BaseEntity } from '@/entities/BaseEntity';
 
 export default {
   makeBaseEntity(data: any) {
-    return {
-      id: data.id,
-      createdAt: new Date(data.createdAt),
-      updatedAt: new Date(data.updatedAt),
-    } as BaseEntity;
+    const base: BaseEntity = {} as BaseEntity;
+
+    base.id = data.id;
+
+    if ('createdAt' in data) {
+      base.createdAt = new Date(data.createdAt);
+    }
+
+    if ('updatedAt' in data) {
+      base.updatedAt = new Date(data.updatedAt);
+    }
+
+    return base;
   },
 };

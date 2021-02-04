@@ -119,6 +119,7 @@
         },
         "subTransactionRows": [
           {
+            "id": 0,
             "product": {
               "id": 1,
               "revision": 1,
@@ -140,6 +141,7 @@
             "amount": 3
           },
           {
+            "id": 1,
             "product": {
               "id": 2,
               "revision": 1,
@@ -173,6 +175,7 @@
         },
         "subTransactionRows": [
           {
+            "id": 2,
             "product": {
               "id": 4,
               "revision": 1,
@@ -200,7 +203,7 @@
     "updatedAt": "2021-01-04T12:38:38.380Z"
   },
   {
-    "id": 1,
+    "id": 2,
     "pointOfSale": {
       "id": 1,
       "name": "standaard"
@@ -217,6 +220,7 @@
         },
         "subTransactionRows": [
           {
+            "id": 3,
             "product": {
               "id": 4,
               "revision": 1,

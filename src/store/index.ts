@@ -1,20 +1,32 @@
 import Vue from 'vue';
-import Vuex, { Store } from 'vuex';
-import { initializeStores, modules } from '@/store/store-accessor';
+import Vuex from 'vuex';
+
+import ProductsModule from '@/store/modules/products';
+import BannerModule from '@/store/modules/banners';
+import PointOfSaleModule from '@/store/modules/pointsofsale';
+import ContainerModule from '@/store/modules/containers';
+import FlaggedTransactionModule from '@/store/modules/flaggedtransaction';
+import TransferModule from '@/store/modules/transfers';
+import BorrelkaartGroupModule from '@/store/modules/borrelkaartgroup';
+import ProductCategoryModule from '@/store/modules/productcategory';
 
 Vue.use(Vuex);
 
-const initializer = (store: Store<any>) => initializeStores(store);
-export const plugins = [initializer];
-export * from '@/store/store-accessor';
-
-export default new Store({
-  plugins,
-  modules,
+export default new Vuex.Store({
   state: {
   },
   mutations: {
   },
   actions: {
+  },
+  modules: {
+    productState: ProductsModule,
+    bannerState: BannerModule,
+    pointOfSaleState: PointOfSaleModule,
+    containerState: ContainerModule,
+    flaggedTransactionState: FlaggedTransactionModule,
+    transferState: TransferModule,
+    borrelkaartGroupState: BorrelkaartGroupModule,
+    productCategoryState: ProductCategoryModule,
   },
 });
