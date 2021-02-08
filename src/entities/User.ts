@@ -11,6 +11,7 @@ export interface User extends BaseUser {
   active: boolean;
   type: UserType;
   saldo?: Dinero;
+  ean?: string;
 }
 
 export enum UserType {

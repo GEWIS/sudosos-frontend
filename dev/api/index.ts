@@ -9,14 +9,32 @@ import PointsOfSale from './data/pos.json';
 import SocialDrinkCards from './data/socialdrinkcards.json';
 import FlaggedTransactions from './data/flaggedtransactions.json';
 
-function setResponse(body: ResponseBody, route: string, type: any) {
+function setResponse(body: ResponseBody, route: string, type: any, typeName?: string) {
   const params = new URLSearchParams(route);
 
   if (body.method === 'POST') {
     const response = JSON.parse(body.body || '');
-    response.id = Number(Math.random() * 10000).toFixed();
+    response.id = Number(Math.random() * 1000000).toFixed();
     response.createdAt = new Date();
     response.updatedAt = response.createdAt;
+
+    if (typeName === 'borrelkaart') {
+      response.borrelkaarten = [];
+      for (let i = 0; i < response.amount; i++) {
+        const id = Number(Math.random() * 10000000000).toFixed();
+
+        const kaart = {
+          id,
+          ean: id,
+          name: String(id),
+          saldo: response.initialValue,
+          type: 3,
+          active: false,
+        };
+
+        response.borrelkaarten.push(kaart);
+      }
+    }
 
     return response;
   }
@@ -70,7 +88,7 @@ export default {
     }
 
     if (route.includes('borrelkaartGroup')) {
-      return setResponse(body, route, SocialDrinkCards);
+      return setResponse(body, route, SocialDrinkCards, 'borrelkaart');
     }
 
     if (route.includes('flagged')) {
