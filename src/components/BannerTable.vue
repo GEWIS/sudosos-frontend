@@ -8,7 +8,7 @@
           id="add"
           v-b-modal.modal-add
         >
-          <font-awesome-icon icon="plus"></font-awesome-icon> {{ $t('bannerTable.Add') }}
+          <font-awesome-icon icon="plus" /> {{ $t('bannerTable.Add') }}
         </b-button>
       </template>
       <b-card-body>
@@ -16,7 +16,7 @@
           stacked="sm"
           small
           borderless
-          thead-class="table-header table-header-5"
+          thead-class="table-header table-header-6"
           :items="banners"
           :fields="fields"
           per-page="perPage"
@@ -166,18 +166,21 @@
 
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
+import FileFormPreview from '@/components/FileFormPreview.vue';
 import { Banner } from '@/entities/Banner';
 import Formatters from '@/mixins/Formatters';
-import FileFormPreview from '@/components/FileFormPreview.vue';
 import eventBus from '@/eventbus';
-import { bannerStore } from '@/store';
+import BannerModule from '@/store/modules/banners';
 
 
 @Component({
   components: { ConfirmationModal, FileFormPreview },
 })
-export default class AdvertisementsList extends Formatters {
+export default class BannerTable extends Formatters {
+    private bannerState = getModule(BannerModule)
+
     // List of banners
     banners: Banner[] = [];
 
@@ -212,8 +215,8 @@ export default class AdvertisementsList extends Formatters {
       },
       {
         key: 'startDate',
-        label: this.getTranslation('bannerTable.Started on'),
-        locale_key: 'Started on',
+        label: this.getTranslation('bannerTable.Starts on'),
+        locale_key: 'Starts on',
         formatter: (value: Date) => this.formatDateTime(value, undefined, true),
       },
       {
@@ -230,7 +233,8 @@ export default class AdvertisementsList extends Formatters {
     ];
 
     beforeMount() {
-      this.banners = bannerStore.getBanners;
+      this.bannerState.fetchBanners();
+      this.banners = this.bannerState.banners;
 
       // If the locale is changed make sure the labels are also correctly updated for the b-table
       eventBus.$on('localeUpdated', () => {
@@ -245,12 +249,12 @@ export default class AdvertisementsList extends Formatters {
     setBanner() {
       // TODO: If something goes wrong show message and do not reset banner
       if (this.currBanner.id === undefined) {
-        bannerStore.addBanner(this.currBanner);
+        this.bannerState.addBanner(this.currBanner);
       } else {
-        bannerStore.updateBanner(this.currBanner);
+        this.bannerState.updateBanner(this.currBanner);
       }
       this.currBanner = {} as Banner;
-      this.banners = bannerStore.banners;
+      this.banners = this.bannerState.banners;
       this.$bvModal.hide('modal-add');
     }
 
@@ -267,8 +271,8 @@ export default class AdvertisementsList extends Formatters {
      * Delete a banner that is currently set
      */
     deleteBanner() {
-      bannerStore.removeBanner(this.currBanner);
-      this.banners = bannerStore.banners;
+      this.bannerState.removeBanner(this.currBanner);
+      this.banners = this.bannerState.banners;
     }
 
     /**
@@ -283,7 +287,7 @@ export default class AdvertisementsList extends Formatters {
      */
     get durationInvalid(): string {
       if (!this.durationState) {
-        return this.$t('bannerTable.Please enter').toString();
+        return this.$t('bannerTable.Please enter dur').toString();
       }
       return '';
     }

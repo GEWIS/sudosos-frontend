@@ -27,22 +27,28 @@ export default class Formatters extends Vue {
       this.$t('formatters.Sunday').toString(),
     ];
 
+    const parseDate = new Date(date);
+
+    if (parseDate === undefined) {
+      return '';
+    }
+
     if (full) {
-      return `${this.parseTime(date.getDate())}-`
-        + `${this.parseTime(date.getMonth() + 1)}-`
-        + `${date.getFullYear()} (${weekDays[date.getDay()]})`;
+      return `${this.parseTime(parseDate.getDate())}-`
+        + `${this.parseTime(parseDate.getMonth() + 1)}-`
+        + `${parseDate.getFullYear()} (${weekDays[parseDate.getDay()]})`;
     }
 
     if (partial) {
-      return `${this.parseTime(date.getDate())}-`
-        + `${this.parseTime(date.getMonth() + 1)}-`
-        + `${date.getFullYear()} - `
-        + `${this.parseTime(date.getHours())}:`
-        + `${this.parseTime(date.getMinutes())}`;
+      return `${this.parseTime(parseDate.getDate())}-`
+        + `${this.parseTime(parseDate.getMonth() + 1)}-`
+        + `${parseDate.getFullYear()} - `
+        + `${this.parseTime(parseDate.getHours())}:`
+        + `${this.parseTime(parseDate.getMinutes())}`;
     }
 
-    return `${this.parseTime(date.getHours())}:`
-      + `${this.parseTime(date.getMinutes())}`;
+    return `${this.parseTime(parseDate.getHours())}:`
+      + `${this.parseTime(parseDate.getMinutes())}`;
   }
 
   /**

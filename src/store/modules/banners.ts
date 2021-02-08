@@ -1,20 +1,14 @@
 import {
   Action, Module, Mutation, VuexModule,
 } from 'vuex-module-decorators';
+import store from '@/store';
 import { Banner } from '@/entities/Banner';
 import APIHelper from '@/mixins/APIHelper';
 import BannerTransformer from '@/transformers/BannerTransformer';
 
-@Module({ namespaced: true, name: 'banners' })
+@Module({ dynamic: true, store, name: 'BannerModule' })
 export default class BannerModule extends VuexModule {
   banners: Banner[] = [];
-
-  get getBanners() {
-    if (this.banners.length === 0) {
-      this.fetchBanners();
-    }
-    return this.banners;
-  }
 
   @Mutation
   setBanners(banners: Banner[]) {
@@ -43,9 +37,11 @@ export default class BannerModule extends VuexModule {
   }
 
   @Action
-  fetchBanners() {
-    const bannersResponse = APIHelper.getResource('banners') as [];
-    bannersResponse.map(banner => BannerTransformer.makeBanner(banner));
-    this.context.commit('setBanners', bannersResponse);
+  fetchBanners(force: boolean = false) {
+    if (this.banners.length === 0 || force) {
+      const bannersResponse = APIHelper.getResource('banners') as [];
+      bannersResponse.map(banner => BannerTransformer.makeBanner(banner));
+      this.context.commit('setBanners', bannersResponse);
+    }
   }
 }

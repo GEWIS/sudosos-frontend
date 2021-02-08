@@ -7,7 +7,7 @@
           <img src="./assets/img/gewis-branding.svg"  alt="GEWIS Logo"/>
         </b-navbar-brand>
 
-        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+        <b-navbar-toggle target="nav-collapse" />
 
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav>
@@ -28,7 +28,7 @@
               <b-dropdown-item :to="{ name: 'screens'}">
                 {{ $t('app.Screens') }}
               </b-dropdown-item>
-              <b-dropdown-item :to="{ name: 'advertisements'}">
+              <b-dropdown-item :to="{ name: 'banners'}">
                 {{ $t('app.Banners') }}
               </b-dropdown-item>
             </b-nav-item-dropdown>
@@ -61,14 +61,12 @@
             <b-nav-item
               v-if="currentUser.saldo"
               class="d-none d-md-inline"
-              :to="{ name: 'saldo'}"
-              active-class=""
-              exact-active-class="">
+              :to="{ name: 'saldo'}">
               {{ currentUser.saldo.toFormat() }}
             </b-nav-item>
             <b-nav-item-dropdown right>
               <template v-slot:button-content>
-                <font-awesome-icon icon="globe-europe"></font-awesome-icon>
+                <font-awesome-icon icon="globe-europe" />
               </template>
               <b-dropdown-item
                 :class="{'router-link-active' : $i18n.locale === 'nl'}"

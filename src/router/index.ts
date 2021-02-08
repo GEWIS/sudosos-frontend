@@ -8,7 +8,7 @@ import PointOfSaleApprove from '@/views/PointOfSale/PointOfSaleApprove.vue';
 import PointOfSaleRequest from '@/views/PointOfSale/PointOfSaleRequest.vue';
 import ManagePointOfSale from '@/views/Admin/ManagePointOfSale.vue';
 import Screens from '@/views/Admin/Screens.vue';
-import Advertisements from '@/views/Admin/Advertisements.vue';
+import Banners from '@/views/Admin/Banners.vue';
 import FlaggedTransactions from '@/views/BAC/FlaggedTransactions.vue';
 import ManageProducts from '@/views/BAC/ManageProducts.vue';
 import Profile from '@/views/User/Profile.vue';
@@ -69,9 +69,9 @@ const routes = [
     component: Screens,
   },
   {
-    path: '/advertisements',
-    name: 'advertisements',
-    component: Advertisements,
+    path: '/banners',
+    name: 'banners',
+    component: Banners,
   },
   {
     path: '/flagged-transactions',

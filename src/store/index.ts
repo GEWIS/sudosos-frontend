@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import ProductsModule from '@/store/modules/products';
-import BannerModule from '@/store/modules/banners';
 import PointOfSaleModule from '@/store/modules/pointsofsale';
 import ContainerModule from '@/store/modules/containers';
 import FlaggedTransactionModule from '@/store/modules/flaggedtransaction';
@@ -21,7 +20,6 @@ export default new Vuex.Store({
   },
   modules: {
     productState: ProductsModule,
-    bannerState: BannerModule,
     pointOfSaleState: PointOfSaleModule,
     containerState: ContainerModule,
     flaggedTransactionState: FlaggedTransactionModule,

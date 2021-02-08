@@ -1,4 +1,3 @@
-import router from '@/router';
 import eventBus from '@/eventbus';
 import devAPI from '../../dev/api';
 import { ApiError } from '@/entities/ApiError';
@@ -76,8 +75,10 @@ function fetchResource(route: string, body: ResponseBody) {
   let fetchResult = {};
 
   if (token === '' && !isDev) {
-    const currentPath = router.currentRoute;
-    router.push(`/login?next=${currentPath}`);
+    // @ts-ignore
+    const currentPath = this.$router.currentRoute;
+    // @ts-ignore
+    this.$router.push(`/login?next=${currentPath}`);
     return null;
   }
 
