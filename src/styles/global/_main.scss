@@ -184,6 +184,12 @@ Global style for forms in a card title
         border-bottom: 1px solid #cccccc;
         text-transform: uppercase;
 
+        &.align-last-right {
+            tr > th:last-of-type {
+                text-align: right;
+            }
+        }
+
         tr > th {
             font-weight: 400;
         }

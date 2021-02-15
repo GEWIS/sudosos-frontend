@@ -87,7 +87,6 @@ import { Component, Prop } from 'vue-property-decorator';
 import Formatters from '../../mixins/Formatters';
 import { FlaggedTransaction } from '@/entities/FlaggedTransaction';
 import TransactionDetails from '@/components/TransactionDetails.vue';
-import { flaggedTransactionStore } from '@/store';
 
     @Component({
       components: {
@@ -101,11 +100,11 @@ export default class FlaggedTransactionDetails extends Formatters {
 
     flagReasonText: string = '';
 
-    beforeMount() {
-      const flgd = flaggedTransactionStore.flaggedTransactions;
-      const index = flgd.findIndex(flg => flg.id === this.transactionID);
-      this.flaggedTransaction = flaggedTransactionStore.flaggedTransactions[index];
-    }
+  // beforeMount() {
+  //   const flgd = flaggedTransactionStore.flaggedTransactions;
+  //   const index = flgd.findIndex(flg => flg.id === this.transactionID);
+  //   this.flaggedTransaction = flaggedTransactionStore.flaggedTransactions[index];
+  // }
 }
 </script>
 

@@ -310,7 +310,9 @@
     "What": "Wat",
     "Info": "Info",
     "Page": "Pagina",
-    "Transactions": "Transacties"
+    "Transactions": "Transacties",
+    "transaction": "Je hebt in totaal {amount} uitgegeven",
+    "transfer": "Je hebt opgewaardeerd voor {amount}"
   },
   "transactionDetailsModal": {
     "transaction details": "transactie details",

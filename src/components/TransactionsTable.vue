@@ -1,3 +1,5 @@
+// TODO: FIX FILTER AND DOWNLOAD
+
 <template>
   <div>
     <b-card>
@@ -19,12 +21,13 @@
       <b-card-body>
 
         <!-- Table that will display the transactions -->
-        <b-table stacked="sm"
+        <b-table
+          stacked="sm"
                  small
                  borderless
                  thead-class="table-header table-header-3"
                  id="transaction-table"
-                 :items="transactionList"
+                 :items="transProvider"
                  :fields="fields"
                  :tbody-tr-class="setRowClass"
                  :per-page="perPage"
@@ -35,14 +38,14 @@
                  v-on:row-clicked="rowClicked">
 
           <!-- Templates for each row cell -->
-          <template v-slot:cell(formattedDate)="data">
-              {{ data.item.formattedDate }}
+          <template v-slot:cell(updatedAt)="data">
+              {{ setDate(data.item) }}
           </template>
-          <template v-slot:cell(comment)="data">
-              {{ data.item.comment }}
+          <template v-slot:cell(createdAt)="data">
+              {{ setDescription(data.item) }}
           </template>
           <template v-slot:cell(id)="data">
-            <div class="text-sm-right" v-if="!checkFormattedDate(data.item.id)">
+            <div class="text-sm-right" v-if="!('formattedDate' in data.item)">
               <font-awesome-icon icon="info-circle" class="icon"></font-awesome-icon>
             </div>
           </template>
@@ -71,8 +74,8 @@
     </b-card-footer>
 
     <TransactionDetailsModal
-      v-if="Object.keys(modalTrans).length > 0"
-      :transaction="modalTrans"
+      v-if="Object.keys(modalTransaction).length > 0"
+      :transaction="modalTransaction"
     />
 
   </div>
@@ -80,15 +83,18 @@
 
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
 import Formatters from '@/mixins/Formatters';
 import TransactionDetailsModal from '@/components/TransactionDetailsModal.vue';
 import TransactionTableFilter from '@/components/TransactionTableFilter.vue';
 import eventBus from '@/eventbus';
-import { User } from '@/entities/User';
 import { Transaction } from '@/entities/Transaction';
 import { initFilter, TableFilter } from '@/entities/TableFilter';
+import TransactionModule from '@/store/modules/transactions';
+import TransferModule from '@/store/modules/transfers';
+import { Transfer } from '@/entities/Transfer';
+import { TransactionDateRow } from '@/entities/TransactionDateRow';
 
-import { transactionStore } from '@/store';
 
   @Component({
     components: {
@@ -97,9 +103,8 @@ import { transactionStore } from '@/store';
     },
   })
 export default class TransactionsTable extends Formatters {
-    /**
-     Props to set the filters, if any of these are false the filter will not be displayed
-     */
+    // Props to set the filters, if any of these are false the
+    // corresponding filter will not be displayed
     @Prop({ default: true, type: Boolean }) selfBought!: boolean;
 
     @Prop({ default: true, type: Boolean }) private putInByYou!: boolean;
@@ -116,35 +121,44 @@ export default class TransactionsTable extends Formatters {
 
     @Prop({ default: true, type: Boolean }) private csv!: boolean;
 
-    userAccount: User = this.$store.state.currentUser;
+    private transactionState = getModule(TransactionModule);
 
-    modalTrans: Transaction = {} as Transaction;
+    private transferState = getModule(TransferModule);
 
-    transactionList: Transaction[] = [];
+    // Transaction this is displayed in the details modal
+    modalTransaction: Transaction = {} as Transaction;
 
-    filteredTransactions: Transaction[] = [];
+    // List of all the transactions and transfers
+    transList: (Transaction | Transfer)[] = [];
 
+    // List of all the filtered transactions and transfers (used for csv download)
+    filteredTransList: (Transaction | Transfer)[] = [];
+
+    // Amount of items that is being displayed per page
     perPage: number = 12;
 
+    // The current active page
     currentPage: number = 1;
 
+    // The previous page (currentpage +/- 1)
     previousPage: number = 1;
 
+    // Contains the total amount of rows that are in the transaction list
     totalRows: number = 0;
 
     filterValues: TableFilter = initFilter();
 
     /**
-     Fields that should be shown from the transactionList
+     * Fields that should be shown from the transList
      */
     fields: Object[] = [
       {
-        key: 'formattedDate',
+        key: 'updatedAt',
         label: this.getTranslation('transactionsComponent.When'),
         locale_key: 'When',
       },
       {
-        key: 'comment',
+        key: 'createdAt',
         label: this.getTranslation('transactionsComponent.What'),
         locale_key: 'What',
       },
@@ -156,9 +170,11 @@ export default class TransactionsTable extends Formatters {
     ];
 
     beforeMount() {
-      this.transactionList = transactionStore.transactions;
+      this.transactionState.fetchTransactions();
+      this.transferState.fetchTransfers();
+      this.transList = [...this.transactionState.transactions, ...this.transferState.transfers];
 
-      this.totalRows = this.transactionList.length;
+      this.totalRows = this.transList.length;
 
       // If the locale is changed make sure the labels are also correctly updated for the b-table
       eventBus.$on('localeUpdated', () => {
@@ -167,17 +183,86 @@ export default class TransactionsTable extends Formatters {
     }
 
     /**
-     * setRowClass gives a date row a date-row class and a transaction row a transaction-row class
+     * A items provider function for the b-table. This inserts the needed dateRows
+     * into the items such that formatting is clear
+     */
+    transProvider(ctx: any) {
+      console.log(JSON.stringify(ctx));
+      const dates: String[] = [];
+      const transProviderList: (Transaction | Transfer | TransactionDateRow)[] = [];
+
+      this.transList.forEach((trans) => {
+        // Create formatted date and time for each transaction
+        const fDate = this.formatDateTime(trans.createdAt, true);
+
+        // If formatted date has not been used yet make a date row
+        if (!dates.find(d => d === fDate) || '') {
+          const dateRow: TransactionDateRow = {} as TransactionDateRow;
+          dates.push(fDate);
+          dateRow.formattedDate = fDate;
+          dateRow.createdAt = new Date(trans.createdAt.getTime() - 1);
+          dateRow.updatedAt = new Date(trans.updatedAt.getTime() - 1);
+          transProviderList.push(dateRow);
+        }
+
+        // Push the transaction or transfer
+        transProviderList.push(trans);
+      });
+
+      // Sort the whole thing just in case
+      transProviderList.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
+
+      return transProviderList;
+    }
+
+    /**
+     * If this is a dateRow the formatted date will be displayed otherwise just
+     * the time
+     */
+    setDate(rowItem: Transaction | Transfer | TransactionDateRow) {
+      if ('formattedDate' in rowItem) {
+        return this.formatDateTime(rowItem.updatedAt, true);
+      }
+
+      return this.formatDateTime(rowItem.updatedAt);
+    }
+
+    /**
+     * Depending on the type of rowItem we have a description is needed. This sets
+     * the description according to the the type of the row
+     */
+    setDescription(rowItem: Transaction | Transfer | TransactionDateRow) {
+      if (!('formattedDate' in rowItem)) {
+        // We have a transactions
+        if ('pointOfSale' in rowItem) {
+          return this.$t('transactionsComponent.transaction', { amount: rowItem.price.toFormat() });
+        }
+
+        if (rowItem.description !== undefined) {
+          return rowItem.description;
+        }
+
+        return this.$t('transactionsComponent.transfer', { amount: rowItem.amount.toFormat() });
+      }
+      return '';
+    }
+
+    /**
+     * setRowClass gives a date row a date-row class and a transaction/transfer
+     * row a transaction-row class
+     *
+     * If the item has an id (i.e. is a transaction or transfer) it is given
+     * said class.
      *
      * @param item The transaction that makes up this row
      * @param type The type of field this is (should be a row)
      */
-    setRowClass = (item: Transaction, type: string): String => {
-      if (type === 'row' && item.formattedDate !== undefined) {
-        if (this.checkFormattedDate(item.formattedDate)) {
-          return 'date-row';
+    setRowClass = (item: Transaction | Transfer | TransactionDateRow, type: string): String => {
+      if (type === 'row') {
+        if ('id' in item) {
+          return 'transaction-row';
         }
-        return 'transaction-row';
+        return 'date-row';
       }
 
       return '';
@@ -188,14 +273,16 @@ export default class TransactionsTable extends Formatters {
      */
     downloadCSV() : void {
       let csv = '';
-      let downloadSet : Transaction[];
+      let downloadSet: (Transaction | Transfer)[] = [];
 
       // Check if a filter has been applied, if yes use the filtered set otherwise first take out
       // all the dateRow rows since those are simply there to make things look pretty.
-      if (this.filteredTransactions.length > 0) {
-        downloadSet = this.filteredTransactions;
+      if (this.filteredTransList.length > 0) {
+        downloadSet = this.filteredTransList;
       } else {
-        downloadSet = this.transactionList.filter(t => !this.checkFormattedDate(t.formattedDate || ''));
+        // TODO: FIX
+        // eslint-disable-next-line max-len
+        // downloadSet = this.transList.filter(t => !this.checkFormattedDate(t.formattedDate || ''));
       }
 
       // Put all the keys into the csv
@@ -221,72 +308,6 @@ export default class TransactionsTable extends Formatters {
     }
 
     /**
-     * formatTransactions add rows for each date and formats the dates into a nicer format that we
-     * want to use for displaying the dates
-     *
-     * @param t List of transactions
-     *
-     */
-    formatTransactions = (t: Transaction[]) => {
-      const dates: String[] = [];
-
-      let transactions: Transaction[] = [];
-      let dateTransactions: Transaction[] = [];
-      let dateRowTransaction: Transaction = {} as Transaction;
-      t.forEach((transaction) => {
-        // Create formatted date and time for each transaction
-        const fDate = this.formatDateTime(transaction.createdAt as Date, true);
-        const time = this.formatDateTime(transaction.createdAt as Date);
-
-        // If formatted date has not been used yet make a date row
-        if (!dates.find(d => d === fDate) || '') {
-          dates.push(fDate);
-
-          // If this is the second date row we found push the first one and add the transactions
-          // that occurred on that date
-          if (dates.length > 1) {
-            transactions.push(dateRowTransaction);
-            transactions = transactions.concat(dateTransactions);
-            dateTransactions = [];
-          }
-
-          dateRowTransaction = {
-            id: fDate,
-            soldToId: '',
-            authorized: '',
-            totalPrice: 0,
-            pointOfSale: '',
-            activityId: '',
-            subTransactions: [],
-            comment: '',
-            createdAt: transaction.createdAt,
-            updatedAt: transaction.updatedAt,
-            formattedDate: fDate,
-          } as Transaction;
-        }
-
-        // Add all the needed information to the dateRow transaction from the transactions beneath
-        // it. This makes sure the filter function can correctly keep the dateRows in the
-        // transaction table
-        const trans: Transaction = transaction;
-        trans.formattedDate = time;
-        dateRowTransaction.soldToId = `${dateRowTransaction.soldToId} ${transaction.soldToId}`;
-        dateRowTransaction.authorized = `${dateRowTransaction.authorized} ${transaction.authorized}`;
-        dateRowTransaction.activityId = `${dateRowTransaction.activityId} ${transaction.activityId}`;
-
-        dateTransactions.push(trans);
-      });
-
-      // Push the last dateRow transaction and transactions that accompany it
-      if (dateRowTransaction.activityId !== '') {
-        transactions.push(dateRowTransaction);
-        transactions = transactions.concat(dateTransactions);
-      }
-
-      return transactions;
-    };
-
-    /**
      * Filters the rows based time constraints and user selected options, is called by the b-table
      * if the filterValues.filterRow is updated
      *
@@ -294,69 +315,72 @@ export default class TransactionsTable extends Formatters {
      * @prop prop filterProp that has been filled in by the user
      */
     filterRows(data: Transaction, prop: String): boolean {
-      let self = false;
-      let putInBy = false;
-      let putInFor = false;
+      // let self = false;
+      // let putInBy = false;
+      // let putInFor = false;
       let date: boolean;
+      console.log('hoi');
 
-      const sold = data.soldToId.toString().split(' ').filter(item => item !== '');
-      const auth = data.authorized.toString().split(' ').filter(item => item !== '');
+      // const sold = data.soldToId.toString().split(' ').filter(item => item !== '');
+      // const auth = data.authorized.toString().split(' ').filter(item => item !== '');
 
       // First check if there is a date constraint
       if (this.filterValues.fromDate === '' && this.filterValues.toDate === '') {
         date = true;
-      } else {
+      } else if (data.createdAt) {
         const dateFromDate = new Date(`${this.filterValues.fromDate} 00:00:00`);
         const dateToDate = new Date(`${this.filterValues.toDate} 23:59:59`);
 
         date = data.createdAt >= dateFromDate || data.createdAt <= dateToDate;
+      } else {
+        date = true;
       }
 
       // Check if there is a selfBought constraint and take date into account
-      if (this.filterValues.selfBought) {
-        let matchFound = false;
-
-        sold.forEach((person, i) => {
-          if (person === auth[i]) {
-            matchFound = true;
-          }
-        });
-
-        self = matchFound && date;
-      }
+      // if (this.filterValues.selfBought) {
+      //   let matchFound = false;
+      //
+      //   sold.forEach((person, i) => {
+      //     if (person === auth[i]) {
+      //       matchFound = true;
+      //     }
+      //   });
+      //
+      //   self = matchFound && date;
+      // }
 
       // Check if there is a putInByYou constraint and take date into account
-      if (this.filterValues.putInByYou) {
-        let matchFound = false;
-
-        auth.forEach((person, i) => {
-          if (person === this.userAccount.firstName && person !== sold[i]) {
-            matchFound = true;
-          }
-        });
-
-        putInBy = matchFound && date;
-      }
+      // if (this.filterValues.putInByYou) {
+      //   let matchFound = false;
+      //
+      //   auth.forEach((person, i) => {
+      //     if (person === this.userAccount.name && person !== sold[i]) {
+      //       matchFound = true;
+      //     }
+      //   });
+      //
+      //   putInBy = matchFound && date;
+      // }
 
       // Check if there is a putInForYou constraint and take date into account
-      if (this.filterValues.putInForYou) {
-        let matchFound = false;
-
-        auth.forEach((person, i) => {
-          if (person !== this.userAccount.firstName && person !== sold[i]) {
-            matchFound = true;
-          }
-        });
-
-        putInFor = matchFound && date;
-      }
+      // if (this.filterValues.putInForYou) {
+      //   let matchFound = false;
+      //
+      //   auth.forEach((person, i) => {
+      //     if (person !== this.userAccount.firstName && person !== sold[i]) {
+      //       matchFound = true;
+      //     }
+      //   });
+      //
+      //   putInFor = matchFound && date;
+      // }
 
       // Check if either selfBought, putInByYou or putInForYou are true
-      if (this.filterValues.selfBought
-        || this.filterValues.putInByYou
-        || this.filterValues.putInForYou) {
-        return self || putInBy || putInFor;
-      }
+      // if (this.filterValues.selfBought
+      //   || this.filterValues.putInByYou
+      //   || this.filterValues.putInForYou) {
+      //   return self || putInBy || putInFor;
+      // }
 
       return date;
     }
@@ -377,7 +401,9 @@ export default class TransactionsTable extends Formatters {
      */
     filterDone(result: Transaction[]): void {
       this.totalRows = result.length;
-      this.filteredTransactions = result.filter(t => !this.checkFormattedDate(t.formattedDate || ''));
+      // TODO: FIX
+      // eslint-disable-next-line max-len
+      // this.filteredTransList = result.filter(t => !this.checkFormattedDate(t.formattedDate || ''));
       this.currentPage = 1;
     }
 
@@ -389,8 +415,9 @@ export default class TransactionsTable extends Formatters {
      * @param event Click event of the row
      */
     rowClicked(item: Transaction, index: Number, event: object): void {
-      if (!this.checkFormattedDate(item.formattedDate || '')) {
-        this.modalTrans = item;
+      // TODO: FIX
+      if (!this.checkFormattedDate('')) {
+        this.modalTransaction = item;
 
         this.$nextTick(() => {
           this.$bvModal.show('details-modal');

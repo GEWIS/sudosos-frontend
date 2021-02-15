@@ -3,20 +3,14 @@
 import {
   Action, Module, Mutation, VuexModule,
 } from 'vuex-module-decorators';
+import store from '@/store';
 import APIHelper from '@/mixins/APIHelper';
 import { FlaggedTransaction } from '@/entities/FlaggedTransaction';
 import FlaggedTransactionTransformer from '@/transformers/FlaggedTransactionTransformer';
 
-@Module({ namespaced: true, name: 'flaggedTransactions' })
+@Module({ dynamic: true, store, name: 'FlaggedTransactionsModule' })
 export default class FlaggedTransactionModule extends VuexModule {
   flaggedTransactions: FlaggedTransaction[] = [];
-
-  get getFlaggedTransactions() {
-    if (this.flaggedTransactions.length === 0) {
-      this.fetchFlaggedTransactions();
-    }
-    return this.flaggedTransactions;
-  }
 
   @Mutation
   setFlaggedTransactions(flaggedTransactions: FlaggedTransaction[]) {
@@ -45,9 +39,11 @@ export default class FlaggedTransactionModule extends VuexModule {
   }
 
   @Action
-  fetchFlaggedTransactions() {
-    const flaggedTransactionResponse = APIHelper.getResource('flaggedTransactions') as [];
-    flaggedTransactionResponse.map(flaggedTransaction => FlaggedTransactionTransformer.makeFlaggedTransaction(flaggedTransaction));
-    this.context.commit('setFlaggedTransactions', flaggedTransactionResponse);
+  fetchFlaggedTransactions(force: boolean = false) {
+    if (this.flaggedTransactions.length === 0 || force) {
+      const flaggedTransactionResponse = APIHelper.getResource('flaggedTransactions') as [];
+      flaggedTransactionResponse.map(flaggedTransaction => FlaggedTransactionTransformer.makeFlaggedTransaction(flaggedTransaction));
+      this.context.commit('setFlaggedTransactions', flaggedTransactionResponse);
+    }
   }
 }

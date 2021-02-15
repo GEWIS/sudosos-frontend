@@ -310,7 +310,9 @@
     "What": "What",
     "Info": "Info",
     "Page": "Page",
-    "Transactions": "Transactions"
+    "Transactions": "Transactions",
+    "transaction": "You spent a total of {amount}",
+    "transfer": "You topped up with {amount}"
   },
   "transactionDetailsModal": {
     "transaction details": "transaction details",

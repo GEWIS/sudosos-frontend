@@ -87,12 +87,14 @@
 import {
   Component, Prop,
 } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
 import Formatters from '@/mixins/Formatters';
-import TransactionTableFilter from '@/components/TransactionTableFilter.vue';
 import eventBus from '@/eventbus';
+import TransactionTableFilter from '@/components/TransactionTableFilter.vue';
 import { Transaction } from '@/entities/Transaction';
 import { FlaggedTransaction, FlagStatus } from '@/entities/FlaggedTransaction';
 import { initFilter, TableFilter } from '@/entities/TableFilter';
+import FlaggedTransactionModule from '@/store/modules/flaggedtransaction';
 
 @Component({
   components: {
@@ -118,6 +120,8 @@ export default class TransactionFlagsTable extends Formatters {
   @Prop({ default: true, type: Boolean }) private reset!: boolean;
 
   @Prop({ default: true, type: Boolean }) private csv!: boolean;
+
+  private flaggedTransactionsState = getModule(FlaggedTransactionModule);
 
   userAccount = this.$root.$data.currentUser;
 
@@ -167,10 +171,8 @@ export default class TransactionFlagsTable extends Formatters {
 
   beforeMount() {
     this.filterValues = initFilter();
-
-    this.transactionFlagList = this.formatTransactionFlags(
-      fakeTransactionFlags.fetchTransactionFlags(this.userAccount),
-    );
+    this.flaggedTransactionsState.fetchFlaggedTransactions();
+    this.transactionFlagList = this.flaggedTransactionsState.flaggedTransactions;
 
     this.totalRows = this.transactionFlagList.length;
 
@@ -193,11 +195,13 @@ export default class TransactionFlagsTable extends Formatters {
     // First check if there is a date constraint
     if (this.filterValues.fromDate === '' && this.filterValues.toDate === '') {
       date = true;
-    } else {
+    } else if (data.createdAt) {
       const dateFrom = new Date(`${this.filterValues.fromDate} 00:00:00`);
       const dateTo = new Date(`${this.filterValues.toDate} 23:59:59`);
 
       date = data.createdAt >= dateFrom || data.createdAt <= dateTo;
+    } else {
+      date = true;
     }
 
     // Check if there is a hideHandled constraint
@@ -220,7 +224,7 @@ export default class TransactionFlagsTable extends Formatters {
     t: FlaggedTransaction[],
   ): FlaggedTransaction[] => t.map(flag => ({
     ...flag,
-    formattedDate: this.formatDateTime(flag.createdAt, true),
+    formattedDate: this.formatDateTime(flag.createdAt as Date, true),
   }));
 
   /**

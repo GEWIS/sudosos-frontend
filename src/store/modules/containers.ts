@@ -1,28 +1,18 @@
 import {
   Action, Module, Mutation, VuexModule,
 } from 'vuex-module-decorators';
-import { Container } from '@/entities/Container';
+import store from '@/store';
 import APIHelper from '@/mixins/APIHelper';
-import ContainerTransformer from '@/transformers/ContainerTransformer';
 import { Product } from '@/entities/Product';
+import { Container } from '@/entities/Container';
 import ProductTransformer from '@/transformers/ProductTransformer';
+import ContainerTransformer from '@/transformers/ContainerTransformer';
 
-@Module({ namespaced: true, name: 'containers' })
+@Module({ dynamic: true, store, name: 'ContainerModule' })
 export default class ContainerModule extends VuexModule {
   containers: Container[] = [];
 
-  get getContainers() {
-    if (this.containers.length === 0) {
-      this.fetchContainers();
-    }
-    return this.containers;
-  }
-
   get getPublicContainers() {
-    if (this.containers.length === 0) {
-      this.fetchContainers();
-    }
-
     return this.containers.filter(cntnr => cntnr.public);
   }
 
@@ -63,9 +53,11 @@ export default class ContainerModule extends VuexModule {
   }
 
   @Action
-  fetchContainers() {
-    const containersResponse = APIHelper.getResource('containers') as [];
-    containersResponse.map(container => ContainerTransformer.makeContainer(container));
-    this.context.commit('setContainers', containersResponse);
+  fetchContainers(force: boolean = false) {
+    if (this.containers.length === 0 || force) {
+      const containersResponse = APIHelper.getResource('containers') as [];
+      containersResponse.map(container => ContainerTransformer.makeContainer(container));
+      this.context.commit('setContainers', containersResponse);
+    }
   }
 }

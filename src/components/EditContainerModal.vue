@@ -84,13 +84,16 @@
 import {
   Component, Prop, Watch,
 } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
 import Formatters from '@/mixins/Formatters';
 import { Container } from '@/entities/Container';
-import { containerStore } from '@/store';
+import ContainerModule from '@/store/modules/containers';
 
   @Component
 export default class EditContainerModal extends Formatters {
     @Prop() private editContainer! : Container;
+
+    private containerState = getModule(ContainerModule);
 
     currContainer: Container = {} as Container;
 
@@ -107,9 +110,9 @@ export default class EditContainerModal extends Formatters {
       if (this.nameState === null || !this.nameState) {
         this.currContainer = {} as Container;
       } else if (Object.keys(this.editContainer).length === 0) {
-        containerStore.addContainer(this.currContainer);
+        this.containerState.addContainer(this.currContainer);
       } else {
-        containerStore.updateContainer(this.currContainer);
+        this.containerState.updateContainer(this.currContainer);
       }
 
       this.$bvModal.hide('edit-container');

@@ -86,6 +86,7 @@ const i18n = new VueI18n({
 });
 
 Vue.config.productionTip = false;
+Vue.config.devtools = true;
 
 new Vue({
   router,

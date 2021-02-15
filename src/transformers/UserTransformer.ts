@@ -4,8 +4,6 @@ import BaseTransformer from '@/transformers/BaseTransformer';
 
 export default {
   makeUser(data: any) : BaseUser | User {
-    console.log(data);
-
     if (data === undefined) {
       return {} as BaseUser;
     }

@@ -55,13 +55,14 @@
 
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
 import Formatters from '@/mixins/Formatters';
 import Container from '@/components/ContainerComponent.vue';
 import TransactionsTable from '@/components/TransactionsTable.vue';
 import ProductInfoModal from '@/components/ProductInfoModal.vue';
 import { PointOfSale } from '@/entities/PointOfSale';
 import { Product } from '@/entities/Product';
-import { pointOfSaleStore } from '@/store';
+import PointOfSaleModule from '@/store/modules/pointsofsale';
 
   @Component({
     components: {
@@ -74,17 +75,19 @@ import { pointOfSaleStore } from '@/store';
 export default class PointOfSaleInfo extends Formatters {
     @Prop() id!: number;
 
+    private pointOfSaleState = getModule(PointOfSaleModule);
+
     requestedPOS: PointOfSale = {} as PointOfSale;
 
     ownerData: Object = {};
 
     infoProduct: Product = {} as Product;
 
-    beforeMount() {
-      const pos = pointOfSaleStore.pointsOfSale;
-      const index = pos.findIndex(ps => ps.id === this.id);
-      this.requestedPOS = pos[index];
-    }
+    // beforeMount() {
+    //   const pos = this.pointOfSaleState.getPointsOfSale;
+    //   const index = pos.findIndex(ps => ps.id === this.id);
+    //   this.requestedPOS = pos[index];
+    // }
 
     /**
      * Method for showing product details

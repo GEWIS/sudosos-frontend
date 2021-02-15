@@ -1,20 +1,14 @@
 import {
   Action, Module, Mutation, VuexModule,
 } from 'vuex-module-decorators';
+import store from '@/store';
 import APIHelper from '@/mixins/APIHelper';
 import { PointOfSale } from '@/entities/PointOfSale';
 import PointOfSaleTransformer from '@/transformers/PointOfSaleTransformer';
 
-@Module({ namespaced: true, name: 'pointofsale' })
+@Module({ dynamic: true, store, name: 'PointOfSaleModule' })
 export default class PointOfSaleModule extends VuexModule {
   pointsOfSale: PointOfSale[] = [];
-
-  get getPointsOfSale() {
-    if (this.pointsOfSale.length === 0) {
-      this.fetchPointsOfSale();
-    }
-    return this.pointsOfSale;
-  }
 
   @Mutation
   setPointsOfSale(pointsOfSale: PointOfSale[]) {
@@ -44,9 +38,11 @@ export default class PointOfSaleModule extends VuexModule {
   }
 
   @Action
-  fetchPointsOfSale() {
-    const pointsOfSaleResponse = APIHelper.getResource('pointOfSale') as [];
-    pointsOfSaleResponse.map(pos => PointOfSaleTransformer.makePointOfSale(pos));
-    this.context.commit('setPointsOfSale', pointsOfSaleResponse);
+  fetchPointsOfSale(force: boolean = false) {
+    if (this.pointsOfSale.length === 0 || force) {
+      const pointsOfSaleResponse = APIHelper.getResource('pointOfSale') as [];
+      pointsOfSaleResponse.map(pos => PointOfSaleTransformer.makePointOfSale(pos));
+      this.context.commit('setPointsOfSale', pointsOfSaleResponse);
+    }
   }
 }

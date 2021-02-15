@@ -50,7 +50,7 @@
       small
       borderless
       striped
-      thead-class="table-header table-header-5"
+      thead-class="table-header table-header-5 align-last-right"
       :items="borrelkaarten"
       :fields="fields"
       :filter="nameFilter"

@@ -131,10 +131,11 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import Sortable from 'sortablejs';
+import { getModule } from 'vuex-module-decorators';
+import UserModule from '@/store/modules/user';
 import ProductTable from '@/components/ProductTable.vue';
 import { Container } from '@/entities/Container';
 import { Product } from '@/entities/Product';
-import { userStore } from '@/store';
 
 @Component({
   directives: {
@@ -156,6 +157,8 @@ export default class ContainerComponent extends Vue {
 
   @Prop({ default: true }) editable!: boolean;
 
+  private userState = getModule(UserModule)
+
   isOpen: Boolean = false;
 
   selected: Boolean = false;
@@ -167,6 +170,10 @@ export default class ContainerComponent extends Vue {
     filter: '.product-card-add',
     onEnd: this.dragEnded,
   };
+
+  beforeMount() {
+    this.userState.fetchUser();
+  }
 
   mounted() {
     this.selected = !this.enabled || false;
@@ -220,7 +227,7 @@ export default class ContainerComponent extends Vue {
    * Check if current user has the rights to edit this storage container
    */
   get canEdit() {
-    return this.container.owner.id === userStore.user.id;
+    return this.container.owner.id === this.userState.user.id;
   }
 }
 </script>

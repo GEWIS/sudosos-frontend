@@ -79,6 +79,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
 import ContainerComponent from '@/components/ContainerComponent.vue';
 import EditContainerModal from '@/components/EditContainerModal.vue';
 import EditProductModal from '@/components/EditProductModal.vue';
@@ -87,6 +88,8 @@ import ProductInfoModal from '@/components/ProductInfoModal.vue';
 import { Container } from '@/entities/Container';
 import { Product } from '@/entities/Product';
 import ProductTable from '@/components/ProductTable.vue';
+import ProductsModule from '@/store/modules/products';
+import ContainerModule from '@/store/modules/containers';
 
 
 @Component({
@@ -101,6 +104,10 @@ import ProductTable from '@/components/ProductTable.vue';
 })
 
 export default class ManageProducts extends Vue {
+  private productState = getModule(ProductsModule);
+
+  private containerState = getModule(ContainerModule);
+
   standardContainers: Container[] = [];
 
   editContainer: Container = {} as Container;
@@ -115,10 +122,10 @@ export default class ManageProducts extends Vue {
 
   addFromContainer: boolean = false;
 
-  beforeMount(): void {
-    this.fakeProducts = FakeProducts.fetchProducts();
-    this.standardContainers = PointsOfSale.getAvailableContainers();
-  }
+  // beforeMount() {
+  //   this.fakeProducts = this.productState.getProducts as Product[];
+  //   this.standardContainers = this.containerState.getPublicContainers;
+  // }
 
   /*
 Method for adding a new container, makes sure editContainer is an empty Container object

@@ -177,11 +177,15 @@
 import {
   Component, Prop,
 } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
 import { Product } from '@/entities/Product';
 import FileFormPreview from '@/components/FileFormPreview.vue';
 import Formatters from '@/mixins/Formatters';
-import { containerStore, productStore, userStore } from '@/store';
 import { Container } from '@/entities/Container';
+import ProductsModule from '@/store/modules/products';
+import { BaseUser } from '@/entities/User';
+import ContainerModule from '@/store/modules/containers';
+import UserModule from '@/store/modules/user';
 
   @Component({
     components: {
@@ -192,6 +196,12 @@ export default class EditProductModal extends Formatters {
     @Prop() private editProduct!: Product;
 
     @Prop() private container!: Container;
+
+    private productState = getModule(ProductsModule);
+
+    private containerState = getModule(ContainerModule);
+
+    private userState = getModule(UserModule);
 
     currProduct: Product = {} as Product;
 
@@ -204,7 +214,8 @@ export default class EditProductModal extends Formatters {
     selectedProduct: Product | null = null;
 
     beforeMount() {
-      this.products = productStore.products as Product[];
+      this.productState.fetchProducts();
+      this.products = this.productState.products as Product[];
       this.currProduct = this.editProduct;
     }
 
@@ -212,25 +223,25 @@ export default class EditProductModal extends Formatters {
       if (this.nameState && this.priceState && this.file) {
         if (Object.keys(this.editProduct).length === 0) {
           this.currProduct.owner = {
-            id: userStore.user.id,
-            name: userStore.user.name,
-          };
+            id: this.userState.user.id,
+            name: this.userState.user.name,
+          } as BaseUser;
 
           this.currProduct.picture = URL.createObjectURL(this.file);
 
           if (this.container) {
-            containerStore.addProduct(this.container, this.currProduct);
+            this.containerState.addProduct(this.container, this.currProduct);
           } else {
-            productStore.addProduct(this.currProduct);
+            this.productState.addProduct(this.currProduct);
           }
         } else {
           this.currProduct.picture = URL.createObjectURL(this.file);
 
-          productStore.updateProduct(this.currProduct);
+          this.productState.updateProduct(this.currProduct);
         }
         this.$bvModal.hide('edit-product');
       } else if (this.selectedProduct !== null) {
-        containerStore.addProduct(this.container, this.selectedProduct);
+        this.containerState.addProduct(this.container, this.selectedProduct);
         this.selectedProduct = null;
         this.$bvModal.hide('edit-product');
       }
@@ -251,7 +262,8 @@ export default class EditProductModal extends Formatters {
     }
 
     priceState(): boolean | null {
-      return this.currProduct.price === null ? null : Number(this.currProduct.price) >= 0 && String(this.currProduct.price).length > 0;
+      return this.currProduct.price === null ? null
+        : Number(this.currProduct.price) >= 0 && String(this.currProduct.price).length > 0;
     }
 
     invalidPrice() : string {

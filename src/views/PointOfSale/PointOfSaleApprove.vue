@@ -53,11 +53,12 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
 import Container from '@/components/ContainerComponent.vue';
 import { PointOfSale } from '@/entities/PointOfSale';
 import { Product } from '@/entities/Product';
 import ProductInfoModal from '@/components/ProductInfoModal.vue';
-import { pointOfSaleStore } from '@/store';
+import PointOfSaleModule from '@/store/modules/pointsofsale';
 
   @Component({
     components: { Container, ProductInfoModal },
@@ -66,17 +67,19 @@ import { pointOfSaleStore } from '@/store';
 export default class PointOfSaleApprove extends Vue {
     @Prop() id!: number;
 
+    private pointOfSaleState = getModule(PointOfSaleModule);
+
     requestedPOS: PointOfSale = {} as PointOfSale;
 
     ownerData: Object = {};
 
     infoProduct: Product = {} as Product;
 
-    beforeMount() {
-      const pos = pointOfSaleStore.pointsOfSale;
-      const index = pos.findIndex(ps => ps.id === this.id);
-      this.requestedPOS = pos[index];
-    }
+    // beforeMount() {
+    //   const pos = this.pointOfSaleState.getPointsOfSale;
+    //   const index = pos.findIndex(ps => ps.id === this.id);
+    //   this.requestedPOS = pos[index];
+    // }
 
     /*
     Method for showing product details

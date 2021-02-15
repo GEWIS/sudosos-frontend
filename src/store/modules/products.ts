@@ -1,20 +1,14 @@
 import {
   Action, Module, Mutation, VuexModule,
 } from 'vuex-module-decorators';
-import { BaseProduct, Product } from '@/entities/Product';
+import store from '@/store';
 import APIHelper from '@/mixins/APIHelper';
+import { BaseProduct, Product } from '@/entities/Product';
 import ProductTransformer from '@/transformers/ProductTransformer';
 
-@Module({ namespaced: true, name: 'products' })
+@Module({ dynamic: true, store, name: 'ProductsModule' })
 export default class ProductsModule extends VuexModule {
   products: Product[] | BaseProduct[] = [];
-
-  get getProducts() {
-    if (this.products.length === 0) {
-      this.fetchProducts();
-    }
-    return this.products;
-  }
 
   @Mutation
   setProducts(products: Product[]) {
@@ -43,9 +37,11 @@ export default class ProductsModule extends VuexModule {
   }
 
   @Action
-  fetchProducts() {
-    const productsResponse = APIHelper.getResource('products') as [];
-    productsResponse.map(product => ProductTransformer.makeProduct(product));
-    this.context.commit('setProducts', productsResponse);
+  fetchProducts(force: boolean = false) {
+    if (this.products.length === 0 || force) {
+      const productsResponse = APIHelper.getResource('products') as [];
+      productsResponse.map(product => ProductTransformer.makeProduct(product));
+      this.context.commit('setProducts', productsResponse);
+    }
   }
 }

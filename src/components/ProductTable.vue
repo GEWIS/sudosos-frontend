@@ -102,10 +102,11 @@
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator';
 import Sortable from 'sortablejs';
+import { getModule } from 'vuex-module-decorators';
 import eventBus from '@/eventbus';
 import Formatters from '@/mixins/Formatters';
 import { Product } from '@/entities/Product';
-import { productStore } from '@/store';
+import ProductsModule from '@/store/modules/products';
 
 
   @Component({
@@ -124,6 +125,8 @@ export default class ProductTable extends Formatters {
     @Prop() enabled: Boolean | undefined;
 
     @Prop({ default: true }) editable!: boolean;
+
+    private productState = getModule(ProductsModule);
 
     nameFilter: string = '';
 
@@ -177,7 +180,8 @@ export default class ProductTable extends Formatters {
 
     beforeMount() {
       if (this.productsProp === undefined) {
-        this.productList = productStore.products as Product[];
+        this.productState.fetchProducts();
+        this.productList = this.productState.products as Product[];
       } else {
         this.productList = this.productsProp;
       }

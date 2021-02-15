@@ -74,8 +74,9 @@
 import {
   Component, Prop, Vue, Watch,
 } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
 import { PointOfSale } from '@/entities/PointOfSale';
-import { pointOfSaleStore } from '@/store';
+import PointOfSaleModule from '@/store/modules/pointsofsale';
 
   @Component
 export default class POSOverview extends Vue {
@@ -87,6 +88,8 @@ export default class POSOverview extends Vue {
 
     // If true the title will be for requested pos's otherwise for your own pos's
     @Prop() private requested!: boolean;
+
+    private pointOfSaleState = getModule(PointOfSaleModule);
 
     // To store all fetched transaction with the filter applied
     pointsOfSaleFiltered: PointOfSale[] = [];
@@ -104,8 +107,8 @@ export default class POSOverview extends Vue {
     perPage: number = 2;
 
     beforeMount() {
-      this.pointsOfSale = pointOfSaleStore.pointsOfSale;
-      this.filterItems(this.processed);
+      this.pointOfSaleState.fetchPointsOfSale();
+      this.pointsOfSale = this.pointOfSaleState.pointsOfSale;
     }
 
     /**
@@ -122,30 +125,9 @@ export default class POSOverview extends Vue {
       this.previousPage = page;
     }
 
-    /**
-     * Method that filters the current points of sale present in the pointsOfSale based on an
-     * input value
-     *
-     * @param value = If true then pages that have POSStatus.OPEN will be pushed to the filtered list
-     */
-    filterItems(value: boolean) : void {
-      this.pointsOfSaleFiltered = [];
-
-      if (value) {
-        this.pointsOfSale.forEach((pos) => {
-          if (pos.status === POSStatus.OPEN) {
-            this.pointsOfSaleFiltered.push(pos);
-          }
-        });
-      } else {
-        this.pointsOfSaleFiltered = this.pointsOfSale;
-      }
-    }
-
     @Watch('processed')
     onProcessedChanged(value: boolean, old: boolean) {
       this.currentPage = 1;
-      this.filterItems(value);
     }
 }
 </script>

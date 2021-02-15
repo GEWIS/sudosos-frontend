@@ -15,7 +15,7 @@
         >
           <!-- Templates for each row cell -->
           <template v-slot:cell(id)="data">
-            {{ transactionDescription(data.item) }}
+            {{ setDescription(data.item) }}
           </template>
         </b-table>
       </b-card-body>
@@ -48,7 +48,7 @@ export default class RecentTransactions extends Formatters {
 
   fields: Object[] = [
     {
-      key: 'createdAt',
+      key: 'updatedAt',
       label: this.getTranslation('recentTrans.when'),
       formatter: (value: Date) => this.formatDateTime(value, undefined, true),
       locale_key: 'when',
@@ -77,7 +77,7 @@ export default class RecentTransactions extends Formatters {
    *
    * @param {Transaction} trans : Transaction or transfer that we need description for
    */
-  transactionDescription(trans: Transaction | Transfer) {
+  setDescription(trans: Transaction | Transfer) {
     // We have a transactions
     if ('pointOfSale' in trans) {
       return this.$t('recentTrans.transaction', { amount: trans.price.toFormat() });

@@ -3,20 +3,14 @@
 import {
   Action, Module, Mutation, VuexModule,
 } from 'vuex-module-decorators';
-import { ProductCategory } from '@/entities/ProductCategory';
+import store from '@/store';
 import APIHelper from '@/mixins/APIHelper';
+import { ProductCategory } from '@/entities/ProductCategory';
 import ProductCategoryTransformer from '@/transformers/ProductCategoryTransformer';
 
-@Module({ namespaced: true, name: 'productCategories' })
+@Module({ dynamic: true, store, name: 'ProductCategoryModule' })
 export default class ProductCategoryModule extends VuexModule {
   productCategories: ProductCategory[] = [];
-
-  get getProductCategories() {
-    if (this.productCategories.length === 0) {
-      this.fetchProductCategories();
-    }
-    return this.productCategories;
-  }
 
   @Mutation
   setProductCategories(productCategories: ProductCategory[]) {
@@ -45,9 +39,11 @@ export default class ProductCategoryModule extends VuexModule {
   }
 
   @Action
-  fetchProductCategories() {
-    const productCategoriesResponse = APIHelper.getResource('productCategories') as [];
-    productCategoriesResponse.map(productCategory => ProductCategoryTransformer.makeProductCategory(productCategory));
-    this.context.commit('setProductCategories', productCategoriesResponse);
+  fetchProductCategories(force: boolean = false) {
+    if (this.productCategories.length === 0 || force) {
+      const productCategoriesResponse = APIHelper.getResource('productCategories') as [];
+      productCategoriesResponse.map(productCategory => ProductCategoryTransformer.makeProductCategory(productCategory));
+      this.context.commit('setProductCategories', productCategoriesResponse);
+    }
   }
 }
