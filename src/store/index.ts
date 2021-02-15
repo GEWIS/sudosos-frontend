@@ -5,7 +5,6 @@ import ProductsModule from '@/store/modules/products';
 import PointOfSaleModule from '@/store/modules/pointsofsale';
 import ContainerModule from '@/store/modules/containers';
 import FlaggedTransactionModule from '@/store/modules/flaggedtransaction';
-import TransferModule from '@/store/modules/transfers';
 import ProductCategoryModule from '@/store/modules/productcategory';
 
 Vue.use(Vuex);
@@ -22,7 +21,6 @@ export default new Vuex.Store({
     pointOfSaleState: PointOfSaleModule,
     containerState: ContainerModule,
     flaggedTransactionState: FlaggedTransactionModule,
-    transferState: TransferModule,
     productCategoryState: ProductCategoryModule,
   },
 });

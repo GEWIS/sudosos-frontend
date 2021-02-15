@@ -209,7 +209,9 @@
     "recent transactions": "recente transacties",
     "all transactions": "alle transacties",
     "when": "Wanneer",
-    "what": "Wat"
+    "what": "Wat",
+    "transaction": "Je hebt in totaal {amount} uitgegeven",
+    "transfer": "Je hebt opgewaardeerd voor {amount}"
   },
   "bannerTable" : {
     "Add": "Toevoegen",

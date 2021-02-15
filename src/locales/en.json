@@ -209,7 +209,9 @@
     "recent transactions": "recent transactions",
     "all transactions": "all transactions",
     "when": "When",
-    "what": "What"
+    "what": "What",
+    "transaction": "You spent a total of {amount}",
+    "transfer": "You topped up with {amount}"
   },
   "bannerTable" : {
     "Add": "Add",

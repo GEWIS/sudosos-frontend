@@ -8,6 +8,7 @@ import Transactions from './data/transactions.json';
 import PointsOfSale from './data/pos.json';
 import SocialDrinkCards from './data/socialdrinkcards.json';
 import FlaggedTransactions from './data/flaggedtransactions.json';
+import Transfer from './data/transfer.json';
 
 function setResponse(body: ResponseBody, route: string, type: any, typeName?: string) {
   const params = new URLSearchParams(route);
@@ -56,9 +57,6 @@ function setResponse(body: ResponseBody, route: string, type: any, typeName?: st
 
 export default {
   fetchJSON(route: string, body: ResponseBody) {
-    // Route params
-    const params = new URLSearchParams(route);
-
     if (route.includes('product')) {
       return setResponse(body, route, Products);
     }
@@ -93,6 +91,10 @@ export default {
 
     if (route.includes('flagged')) {
       return setResponse(body, route, FlaggedTransactions);
+    }
+
+    if (route.includes('transfer')) {
+      return setResponse(body, route, Transfer);
     }
 
     // Because typescript cannot handle throwing the way I want it.

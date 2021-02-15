@@ -10,9 +10,14 @@
           small
           borderless
           thead-class="table-header"
-          :items="transactionList"
+          :items="transList"
           :fields="fields"
-        />
+        >
+          <!-- Templates for each row cell -->
+          <template v-slot:cell(id)="data">
+            {{ transactionDescription(data.item) }}
+          </template>
+        </b-table>
       </b-card-body>
     </b-card>
     <b-card-footer>
@@ -27,15 +32,19 @@
 import { Component } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import { Transaction } from '@/entities/Transaction';
+import { Transfer } from '@/entities/Transfer';
 import Formatters from '@/mixins/Formatters';
 import eventBus from '@/eventbus';
 import TransactionModule from '@/store/modules/transactions';
+import TransferModule from '@/store/modules/transfers';
 
 @Component
 export default class RecentTransactions extends Formatters {
   private transactionState = getModule(TransactionModule);
 
-  transactionList: Transaction[] = [];
+  private transferState = getModule(TransferModule);
+
+  transList: (Transaction | Transfer)[] = [];
 
   fields: Object[] = [
     {
@@ -45,7 +54,7 @@ export default class RecentTransactions extends Formatters {
       locale_key: 'when',
     },
     {
-      key: 'comment',
+      key: 'id',
       label: this.getTranslation('recentTrans.what'),
       locale_key: 'what',
     },
@@ -53,12 +62,32 @@ export default class RecentTransactions extends Formatters {
 
   beforeMount() {
     this.transactionState.fetchTransactions();
-    this.transactionList = this.transactionState.transactions;
+    this.transferState.fetchTransfers();
+    this.transList = [...this.transactionState.transactions, ...this.transferState.transfers];
+    this.transList.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
 
     // If the locale is changed make sure the labels are also correctly updated for the b-table
     eventBus.$on('localeUpdated', () => {
       this.fields = this.updateTranslations(this.fields, 'recentTrans');
     });
+  }
+
+  /**
+   * Sets the correct translation for what happened with the transaction
+   *
+   * @param {Transaction} trans : Transaction or transfer that we need description for
+   */
+  transactionDescription(trans: Transaction | Transfer) {
+    // We have a transactions
+    if ('pointOfSale' in trans) {
+      return this.$t('recentTrans.transaction', { amount: trans.price.toFormat() });
+    }
+
+    if (trans.description !== undefined) {
+      return trans.description;
+    }
+
+    return this.$t('recentTrans.transfer', { amount: trans.amount.toFormat() });
   }
 }
 

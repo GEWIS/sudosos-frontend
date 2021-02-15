@@ -9,6 +9,6 @@ export interface Transaction extends BaseEntity {
   createdBy?: BaseUser | User;
   pointOfSale: BasePointOfSale | PointOfSale;
   subTransactions: SubTransaction[];
-  price?: Dinero;
-  formattedDate: string;
+  price: Dinero;
+  formattedDate?: string;
 }

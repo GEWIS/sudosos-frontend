@@ -4,17 +4,11 @@ import {
 import APIHelper from '@/mixins/APIHelper';
 import { Transfer } from '@/entities/Transfer';
 import TransferTransformer from '@/transformers/TransferTransformer';
+import store from '@/store';
 
-@Module({ namespaced: true, name: 'transfers' })
+@Module({ dynamic: true, store, name: 'TransferModule' })
 export default class TransferModule extends VuexModule {
   transfers: Transfer[] = [];
-
-  get getTransfers() {
-    if (this.transfers.length === 0) {
-      this.fetchTransfers();
-    }
-    return this.transfers;
-  }
 
   @Mutation
   setTransfers(transfers: Transfer[]) {
@@ -38,14 +32,16 @@ export default class TransferModule extends VuexModule {
   updateTransfer(transfer: {}) {
     const response = APIHelper.putResource('transfers', transfer);
     const transferResponse = TransferTransformer.makeTransfer(response);
-    const index = this.transfers.findIndex(trns => trns.id === transferResponse.id);
+    const index = this.transfers.findIndex(trnsfr => trnsfr.id === transferResponse.id);
     this.transfers[index] = transferResponse;
   }
 
-  @Action
-  fetchTransfers() {
-    const transferResponse = APIHelper.getResource('transfers') as [];
-    transferResponse.map(transfer => TransferTransformer.makeTransfer(transfer));
-    this.context.commit('setTransfers', transferResponse);
+  @Action({ rawError: true })
+  fetchTransfers(force: boolean = false) {
+    if (this.transfers.length === 0 || force) {
+      const transferResponse = APIHelper.getResource('transfers') as [];
+      const transfers = transferResponse.map(trnsfr => TransferTransformer.makeTransfer(trnsfr));
+      this.context.commit('setTransfers', transfers);
+    }
   }
 }
