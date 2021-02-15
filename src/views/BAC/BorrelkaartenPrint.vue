@@ -11,18 +11,18 @@
             <p>{{ cardGroup.name }}</p>
             <div>
               <img :id="`card-${group + card - 1}`"
-                   :alt="socialDrinkCards[group + card - 1].barcode"
+                   :alt="socialDrinkCards[group + card - 1].ean"
               />
             </div>
-            <p id="barcode-text">{{ socialDrinkCards[group + card - 1].barcode }}</p>
-            <p>{{
+            <p id="barcode-text">{{ socialDrinkCards[group + card - 1].ean }}</p>
+            <p v-if="cardGroup.validDates !== undefined">{{
                 `${$t('socialDrinkCardsPrint.valid')}:
-                   ${formatDateTime(cardGroup.validDates.validFrom, false, true)}
+                   ${formatDateTime(cardGroup.validDates.activeStartDate, false, true)}
                    ${$t('socialDrinkCardsPrint.until')}
-                   ${formatDateTime(cardGroup.validDates.validTill, false, true)}`
+                   ${formatDateTime(cardGroup.validDates.activeEndDate, false, true)}`
               }}</p>
             <p>{{ `${$t('socialDrinkCardsPrint.value')}:
-                  ${dinero({ amount: socialDrinkCards[group + card - 1].initialValue }).toFormat()}`
+                  ${socialDrinkCards[group + card - 1].saldo.toFormat()}`
               }}</p>
           </div>
         </td>
@@ -34,10 +34,11 @@
 
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
 import { User } from '@/entities/User';
 import { BorrelkaartGroup } from '@/entities/BorrelkaartGroup';
 import Formatters from '@/mixins/Formatters';
-import { borrelkaartGroupStore } from '@/store';
+import BorrelkaartGroupModule from '@/store/modules/borrelkaartgroup';
 
 const JsBarcode = require('jsbarcode');
 
@@ -45,14 +46,16 @@ const JsBarcode = require('jsbarcode');
 export default class BorrelkaartenPrint extends Formatters {
     @Prop() id!: number;
 
+    private borrelkaartGroupState = getModule(BorrelkaartGroupModule);
+
     socialDrinkCards: User[] = [];
 
     cardGroup: BorrelkaartGroup = {} as BorrelkaartGroup;
 
-
     beforeMount() {
-      const kaarten = borrelkaartGroupStore.borrelkaartGroups;
-      const index = kaarten.findIndex(krt => krt.id === this.id);
+      this.borrelkaartGroupState.fetchBorrelkaartGroups();
+      const kaarten = this.borrelkaartGroupState.borrelkaartGroups;
+      const index = kaarten.findIndex(krt => krt.id === Number(this.id));
       this.cardGroup = kaarten[index];
       this.socialDrinkCards = this.cardGroup.borrelkaarten;
     }
@@ -60,8 +63,8 @@ export default class BorrelkaartenPrint extends Formatters {
     mounted() {
       this.$nextTick(() => {
         this.socialDrinkCards.forEach((card, i) => {
-          const barCode = `#card-${i + 1}`;
-          JsBarcode(barCode, card.name, {
+          const ean = `#card-${i + 1}`;
+          JsBarcode(ean, card.ean, {
             width: 2.05,
             height: 70,
             displayValue: false,

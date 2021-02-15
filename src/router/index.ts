@@ -98,6 +98,7 @@ const routes = [
     path: '/borrelkaarten-overview/cards/:id',
     name: 'borrelkaartenPrint',
     component: BorrelkaartenPrint,
+    props: true,
   },
   {
     path: '/profile',

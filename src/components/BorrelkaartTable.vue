@@ -274,7 +274,7 @@ import BorrelkaartGroupModule from '@/store/modules/borrelkaartgroup';
 
 @Component
 export default class BorrelkaartTable extends Formatters {
-  private borrelkaartGroupState = getModule(BorrelkaartGroupModule)
+  private borrelkaartGroupState = getModule(BorrelkaartGroupModule);
 
   borrelkaarten: BorrelkaartGroup[] = [];
 

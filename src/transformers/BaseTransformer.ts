@@ -4,7 +4,7 @@ export default {
   makeBaseEntity(data: any) {
     const base: BaseEntity = {} as BaseEntity;
 
-    base.id = data.id;
+    base.id = Number(data.id);
 
     if ('createdAt' in data) {
       base.createdAt = new Date(data.createdAt);
