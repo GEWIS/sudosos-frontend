@@ -37,12 +37,15 @@ import Formatters from '@/mixins/Formatters';
 import eventBus from '@/eventbus';
 import TransactionModule from '@/store/modules/transactions';
 import TransferModule from '@/store/modules/transfers';
+import UserModule from '@/store/modules/user';
 
 @Component
 export default class RecentTransactions extends Formatters {
   private transactionState = getModule(TransactionModule);
 
   private transferState = getModule(TransferModule);
+
+  private userState = getModule(UserModule)
 
   transList: (Transaction | Transfer)[] = [];
 
@@ -62,6 +65,7 @@ export default class RecentTransactions extends Formatters {
 
   beforeMount() {
     this.transactionState.fetchTransactions();
+    this.userState.fetchUser();
     this.transferState.fetchTransfers();
     this.transList = [...this.transactionState.transactions, ...this.transferState.transfers];
     this.transList.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
@@ -80,7 +84,25 @@ export default class RecentTransactions extends Formatters {
   setDescription(trans: Transaction | Transfer) {
     // We have a transactions
     if ('pointOfSale' in trans) {
-      return this.$t('recentTrans.transaction', { amount: trans.price.toFormat() });
+      const { id } = this.userState.user;
+
+      // This is a transaction you put in for someone else
+      if (trans.createdBy !== undefined
+        && Object.keys(trans.createdBy).length > 0
+        && trans.createdBy.id === id
+        && trans.from.id !== id) {
+        return this.$t('transactionsComponent.transactionPutFor', { name: trans.from.name, amount: trans.price.toFormat() });
+      }
+
+      // This is a transaction that was put in for you by someone else
+      if (trans.createdBy !== undefined
+        && Object.keys(trans.createdBy).length > 0
+        && trans.from.id === id
+        && trans.createdBy.id !== id) {
+        return this.$t('transactionsComponent.transactionPutBy', { name: trans.createdBy.name, amount: trans.price.toFormat() });
+      }
+
+      return this.$t('transactionsComponent.transaction', { amount: trans.price.toFormat() });
     }
 
     if (trans.description !== undefined) {

@@ -312,6 +312,8 @@
     "Page": "Pagina",
     "Transactions": "Transacties",
     "transaction": "Je hebt in totaal {amount} uitgegeven",
+    "transactionPutFor": "Je hebt {amount} afgestreept voor {name}",
+    "transactionPutBy": "{name} heeft voor {amount} afgestreept bij jou",
     "transfer": "Je hebt opgewaardeerd voor {amount}"
   },
   "transactionDetailsModal": {

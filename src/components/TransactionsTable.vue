@@ -386,6 +386,24 @@ export default class TransactionsTable extends Formatters {
     if (!('formattedDate' in rowItem) && !('fillerRow' in rowItem)) {
       // Ladies and gentlemen, we have a transactions, we gottem
       if ('pointOfSale' in rowItem) {
+        const { id } = this.userState.user;
+
+        // This is a transaction you put in for someone else
+        if (rowItem.createdBy !== undefined
+              && Object.keys(rowItem.createdBy).length > 0
+              && rowItem.createdBy.id === id
+              && rowItem.from.id !== id) {
+          return this.$t('transactionsComponent.transactionPutFor', { name: rowItem.from.name, amount: rowItem.price.toFormat() });
+        }
+
+        // This is a transaction that was put in for you by someone else
+        if (rowItem.createdBy !== undefined
+          && Object.keys(rowItem.createdBy).length > 0
+          && rowItem.from.id === id
+          && rowItem.createdBy.id !== id) {
+          return this.$t('transactionsComponent.transactionPutBy', { name: rowItem.createdBy.name, amount: rowItem.price.toFormat() });
+        }
+
         return this.$t('transactionsComponent.transaction', { amount: rowItem.price.toFormat() });
       }
 

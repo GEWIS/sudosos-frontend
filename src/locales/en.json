@@ -312,6 +312,8 @@
     "Page": "Page",
     "Transactions": "Transactions",
     "transaction": "You spent a total of {amount}",
+    "transactionPutFor": "You charged {name} for {amount}",
+    "transactionPutBy": "{name} charged you {amount}",
     "transfer": "You topped up with {amount}"
   },
   "transactionDetailsModal": {
