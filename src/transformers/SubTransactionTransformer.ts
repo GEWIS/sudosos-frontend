@@ -11,16 +11,23 @@ import { SubTransactionRow } from '@/entities/SubTransactionRow';
 export default {
   makeSubTransaction(data: any) : SubTransaction {
     const subTransactionRows = data.subTransactionRows.map((subTransRow: any) => SubTransactionRowTransformer.makeSubTransactionRow(subTransRow));
-    let price = 0;
+    let price;
 
-    subTransactionRows.forEach((subTransRow: SubTransactionRow) => { price += subTransRow.price.getAmount(); });
+    if (typeof data.price === 'object' && 'amount' in data.price) {
+      price = Dinero({ amount: Number(data.price.amount), currency: 'EUR' });
+    } else {
+      let tempPrice = 0;
+      subTransactionRows.forEach((subTransRow: SubTransactionRow) => { tempPrice += subTransRow.price.getAmount(); });
+      price = Dinero({ amount: Number(tempPrice), currency: 'EUR' });
+    }
+
 
     return {
       ...BaseTransformer.makeBaseEntity(data),
       to: UserTransformer.makeUser(data.to),
       container: ContainerTransformer.makeContainer(data.container),
       subTransactionRows,
-      price: Dinero({ amount: price, currency: 'EUR' }),
+      price,
     } as SubTransaction;
   },
 };

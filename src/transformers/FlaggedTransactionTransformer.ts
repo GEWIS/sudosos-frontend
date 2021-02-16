@@ -8,9 +8,9 @@ export default {
     return {
       ...BaseTransformer.makeBaseEntity(data),
       status: data.status,
-      flaggedBy: UserTransformer.makeUser(data),
+      flaggedBy: UserTransformer.makeUser(data.flaggedBy),
       reason: data.reason,
-      transaction: TransactionTransformer.makeTransaction(data),
+      transaction: TransactionTransformer.makeTransaction(data.transaction),
     } as FlaggedTransaction;
   },
 };

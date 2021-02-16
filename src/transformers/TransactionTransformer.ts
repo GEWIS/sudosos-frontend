@@ -6,13 +6,20 @@ import PointOfSaleTransformer from '@/transformers/PointOfSaleTransformer';
 import SubTransactionTransformer from '@/transformers/SubTransactionTransformer';
 import BaseTransformer from '@/transformers/BaseTransformer';
 import { SubTransaction } from '@/entities/SubTransaction';
+import { SubTransactionRow } from '@/entities/SubTransactionRow';
 
 export default {
   makeTransaction(data: any) : Transaction {
     const subTransactions = data.subTransactions.map((subTrans: any) => SubTransactionTransformer.makeSubTransaction(subTrans));
-    let price = 0;
+    let price;
 
-    subTransactions.forEach((subTrans: SubTransaction) => { price += subTrans.price.getAmount(); });
+    if (typeof data.price === 'object' && 'amount' in data.price) {
+      price = Dinero({ amount: Number(data.price.amount), currency: 'EUR' });
+    } else {
+      let tempPrice = 0;
+      subTransactions.forEach((subTrans: SubTransaction) => { tempPrice += subTrans.price.getAmount(); });
+      price = Dinero({ amount: Number(tempPrice), currency: 'EUR' });
+    }
 
 
     return {
@@ -21,7 +28,7 @@ export default {
       createdBy: UserTransformer.makeUser(data.createdBy),
       pointOfSale: PointOfSaleTransformer.makePointOfSale(data.pointOfSale),
       subTransactions,
-      price: Dinero({ amount: price, currency: 'EUR' }),
+      price,
     } as Transaction;
   },
 };
