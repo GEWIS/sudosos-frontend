@@ -70,7 +70,7 @@
         <b-button
           variant="primary"
           class="btn-empty"
-          @click="ok()"
+          @click="saveFlaggedTransaction"
         >{{ $t('transactionDetailsModal.Flag transaction') }}
         </b-button>
       </template>
@@ -82,11 +82,13 @@
 import {
   Component, Prop,
 } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
 import Formatters from '@/mixins/Formatters';
 import { Transaction } from '@/entities/Transaction';
 import { Transfer } from '@/entities/Transfer';
 import TransactionDetails from '@/components/TransactionDetails.vue';
 import TransferDetails from '@/components/TransferDetails.vue';
+import FlaggedTransactionModule from '@/store/modules/flaggedtransaction';
 
 @Component({
   components: {
@@ -97,7 +99,24 @@ import TransferDetails from '@/components/TransferDetails.vue';
 export default class TransactionDetailsModal extends Formatters {
   @Prop() trans!: Transaction | Transfer;
 
+  private flaggedTransactionState = getModule(FlaggedTransactionModule);
+
   flagReasonText: string = '';
+
+  beforeMount() {
+    this.flaggedTransactionState.fetchFlaggedTransactions();
+  }
+
+  saveFlaggedTransaction() {
+    if (this.flagReasonState) {
+      const flagTrans = {
+        reason: this.flagReasonText,
+        transaction: this.trans,
+      };
+      this.flaggedTransactionState.addFlaggedTransaction(flagTrans);
+      this.$bvModal.hide('flag-modal');
+    }
+  }
 
   get flagReasonValid(): string {
     if (!this.flagReasonState) {

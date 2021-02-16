@@ -18,7 +18,7 @@ export default class FlaggedTransactionModule extends VuexModule {
   }
 
   @Mutation
-  addFlaggedTransaction(flaggedTransaction: FlaggedTransaction) {
+  addFlaggedTransaction(flaggedTransaction: object) {
     const flaggedTransactionResponse = APIHelper.postResource('flaggedTransactions', flaggedTransaction);
     this.flaggedTransactions.push(FlaggedTransactionTransformer.makeFlaggedTransaction(flaggedTransactionResponse));
   }
@@ -38,7 +38,9 @@ export default class FlaggedTransactionModule extends VuexModule {
     this.flaggedTransactions[index] = flaggedTransactionResponse;
   }
 
-  @Action
+  @Action({
+    rawError: true,
+  })
   fetchFlaggedTransactions(force: boolean = false) {
     if (this.flaggedTransactions.length === 0 || force) {
       const flaggedTransactionResponse = APIHelper.getResource('flaggedTransactions') as [];

@@ -64,7 +64,6 @@
         page-class="pageButton"
         hide-goto-end-buttons
         last-number
-        @change="pageClicked"
         aria-controls="transaction-table"
         class="custom-pagination mb-0"
       ></b-pagination>

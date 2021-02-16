@@ -24,7 +24,8 @@
           :items="transactionFlagList"
           :fields="fields"
           tbody-tr-class="transaction-flag-row"
-          :per-page="perPage" :current-page="currentPage"
+          :per-page="perPage"
+          :current-page="currentPage"
           id="transaction-flag-table"
           :filter="filterValues.lastUpdate"
           :filter-function="filterRows"
@@ -33,17 +34,22 @@
         >
 
           <!-- Templates for each row cell -->
-          <template v-slot:cell(formattedDate)="data">
-            {{ data.item.formattedDate }}
+          <template v-slot:cell(updatedAt)="data">
+            {{ formatDateTime(data.item.updatedAt, true) }}
           </template>
-          <template v-slot:cell(flaggedById)="data">{{ data.item.flaggedById }}</template>
+
+          <template v-slot:cell(flaggedBy)="data">
+            {{ data.item.flaggedBy.name }}
+          </template>
 
           <template v-slot:cell(status)="data">
-            <font-awesome-icon v-if="data.item.status === 'ACCEPTED'"
+            <font-awesome-icon
+              v-if="data.item.status === 2"
                                icon="check"
                                class="icon green"
             />
-            <font-awesome-icon v-else-if="data.item.status === 'REJECTED'"
+            <font-awesome-icon
+              v-else-if="data.item.status === 3"
                                icon="times"
                                class="icon red"
             />
@@ -56,7 +62,7 @@
           </template>
 
           <template v-slot:cell(id)="data">
-              <font-awesome-icon v-if="data" icon="info-circle" class="icon-grey" />
+            <font-awesome-icon v-if="data" icon="info-circle" class="icon-grey" />
           </template>
         </b-table>
       </b-card-body>
@@ -123,8 +129,6 @@ export default class TransactionFlagsTable extends Formatters {
 
   private flaggedTransactionsState = getModule(FlaggedTransactionModule);
 
-  userAccount = this.$root.$data.currentUser;
-
   transactionFlagList: FlaggedTransaction[] = [];
 
   perPage: number = 12;
@@ -142,12 +146,12 @@ export default class TransactionFlagsTable extends Formatters {
    */
   fields: Object[] = [
     {
-      key: 'formattedDate',
+      key: 'updatedAt',
       label: this.getTranslation('transactionFlagsComponent.When'),
       locale_key: 'When',
     },
     {
-      key: 'flaggedById',
+      key: 'flaggedBy',
       label: this.getTranslation('transactionFlagsComponent.Who'),
       locale_key: 'Who',
     },
@@ -187,7 +191,7 @@ export default class TransactionFlagsTable extends Formatters {
    *
    * @param data FlaggedTransaction that needs to be filtered
    * @param prop String that we can filter against
-  */
+   */
   filterRows(data: FlaggedTransaction, prop: String): boolean {
     let other = true;
     let date: boolean;
@@ -228,8 +232,8 @@ export default class TransactionFlagsTable extends Formatters {
   }));
 
   /**
-    * Method that grabs extra transactions when 2 pages or less are left
-    */
+   * Method that grabs extra transactions when 2 pages or less are left
+   */
   pageClicked(page: number) : void {
     if (this.previousPage < page && page >= (Math.ceil(this.totalRows / this.perPage) - 2)) {
       // TODO: Grab new data
@@ -271,9 +275,9 @@ tr.transaction-flag-row:hover {
 .cell-reason {
   div,
   a {
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }
 

@@ -36,7 +36,9 @@ export default class TransactionModule extends VuexModule {
     this.transactions[index] = transactionResponse;
   }
 
-  @Action
+  @Action({
+    rawError: true,
+  })
   fetchTransactions(force: boolean = false) {
     if (this.transactions.length === 0 || force) {
       const transactionResponse = APIHelper.getResource('transactions') as [];

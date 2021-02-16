@@ -37,6 +37,14 @@ function setResponse(body: ResponseBody, route: string, type: any, typeName?: st
       }
     }
 
+    if (typeName === 'flaggedtransaction') {
+      response.status = 1;
+      response.flaggedBy = {
+        id: 0,
+        name: 'Ruben Brinkman',
+      };
+    }
+
     return response;
   }
 
@@ -90,7 +98,7 @@ export default {
     }
 
     if (route.includes('flagged')) {
-      return setResponse(body, route, FlaggedTransactions);
+      return setResponse(body, route, FlaggedTransactions, 'flaggedtransaction');
     }
 
     if (route.includes('transfer')) {

@@ -8,6 +8,10 @@
     "reason": "Dit is een test",
     "transaction": {
       "id": 0,
+      "from": {
+        "id": 0,
+        "name": "Ruben Brinkman"
+      },
       "createdBy": {
         "id": 1,
         "name": "BAr Commissie"
@@ -18,9 +22,10 @@
       },
       "subTransactions": [
         {
+          "id": 0,
           "to": {
-            "id": 0,
-            "name": "Ruben Brinkman"
+            "id": 1,
+            "name": "BAr Commissie"
           },
           "container": {
             "id": 0,
@@ -28,6 +33,7 @@
           },
           "subTransactionRows": [
             {
+              "id": 0,
               "product": {
                 "id": 1,
                 "revision": 1,
@@ -49,6 +55,7 @@
               "amount": 3
             },
             {
+              "id": 1,
               "product": {
                 "id": 2,
                 "revision": 1,
@@ -72,9 +79,10 @@
           ]
         },
         {
+          "id": 1,
           "to": {
-            "id": 0,
-            "name": "Ruben Brinkman"
+            "id": 1,
+            "name": "BAr Commissie"
           },
           "container": {
             "id": 1,
