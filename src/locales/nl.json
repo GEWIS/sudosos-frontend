@@ -325,10 +325,16 @@
   "transactionDetails": {
     "Total": "Totaal",
     "Point of sale": "Verkooppunt",
+    "Bought by": "Afgestreept voor",
     "Put in by": "Afgestreept door",
-    "Put in for": "Afgestreept voor",
-    "Activity": "Activiteit",
     "Products": "Producten"
+  },
+  "transferDetails": {
+    "Total": "Totaal",
+    "From": "Van",
+    "To": "Naar",
+    "Type": "Transactie type",
+    "Description": "Beschrijving"
   },
   "profile": {
     "My profile": "Mijn profiel",

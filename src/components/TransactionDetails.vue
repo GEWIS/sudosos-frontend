@@ -1,84 +1,81 @@
 <template>
   <div>
-  <b-row>
-    <b-col cols="6" sm="4">
-      <p class="font-weight-bold">{{ $t('transactionDetails.Total') }}</p>
-    </b-col>
-    <b-col cols="6" sm="8" class="text-right text-sm-left">
-      <p>{{ transaction.price.toFormat() }}</p>
-    </b-col>
-  </b-row>
-  <b-row>
-    <b-col cols="6" sm="4">
-      <p class="font-weight-bold">{{ $t('transactionDetails.Point of sale') }}</p>
-    </b-col>
-    <b-col cols="6" sm="8" class="text-right text-sm-left">
-      <p>{{ transaction.pointOfSale }}</p>
-    </b-col>
-  </b-row>
-  <b-row>
-    <b-col cols="6" sm="4">
-      <p class="font-weight-bold">{{ $t('transactionDetails.Put in by') }}</p>
-    </b-col>
-    <b-col cols="6" sm="8" class="text-right text-sm-left">
-      <p>{{ transaction.createdBy }}</p>
-    </b-col>
-  </b-row>
-  <b-row>
-    <b-col cols="6" sm="4">
-      <p class="font-weight-bold">{{ $t('transactionDetails.Put in for') }}</p>
-    </b-col>
-    <b-col cols="6" sm="8" class="text-right text-sm-left">
-      <p>{{ transaction.from }}</p>
-    </b-col>
-  </b-row>
-  <b-row>
-    <b-col cols="6" sm="4">
-      <p class="font-weight-bold">{{ $t('transactionDetails.Activity') }}</p>
-    </b-col>
-    <b-col cols="6" sm="8" class="text-right text-sm-left">
-      <p>{{ transaction.pointOfSale.name }}</p>
-    </b-col>
-  </b-row>
-  <b-row>
-    <b-col cols="12" sm="4">
-      <p class="font-weight-bold">{{ $t('transactionDetails.Products') }}</p>
-    </b-col>
-    <b-col cols="12" sm="8" class="total-price">
-      <b-row v-for="trans in transaction.subTransactions"
-             v-bind:key="trans.productId"
-      >
-        <b-col cols="5" sm="6">
-          <p class="text-truncate">{{ `${trans.amount} x ${trans.productId}` }}</p>
-        </b-col>
-        <b-col cols="7" sm="6" class="text-right">
-          <p>
-            {{ `( ${dinero({amount: trans.pricePerProduct}).toFormat()} ) ` +
-            `= ${ dinero({amount: trans.pricePerProduct}).multiply(trans.amount).toFormat()}` }}
-          </p>
-        </b-col>
-      </b-row>
-      <hr>
-      <b-row>
-        <b-col cols="12" class="text-right">
-          <p>
-            <i class="mr-1">{{ $t('transactionDetails.Total') }} </i>
-            {{ transaction.price.toFormat() }}</p>
-        </b-col>
-      </b-row>
-    </b-col>
-  </b-row>
+    <b-row>
+      <b-col cols="6" sm="4">
+        <p class="font-weight-bold">{{ $t('transactionDetails.Total') }}</p>
+      </b-col>
+      <b-col cols="6" sm="8" class="text-right text-sm-left">
+        <p>{{ transaction.price.toFormat() }}</p>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col cols="6" sm="4">
+        <p class="font-weight-bold">{{ $t('transactionDetails.Point of sale') }}</p>
+      </b-col>
+      <b-col cols="6" sm="8" class="text-right text-sm-left">
+        <p>{{ transaction.pointOfSale.name }}</p>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col cols="6" sm="4">
+        <p class="font-weight-bold">{{ $t('transactionDetails.Bought by') }}</p>
+      </b-col>
+      <b-col cols="6" sm="8" class="text-right text-sm-left">
+        <p>{{ transaction.from.name }}</p>
+      </b-col>
+    </b-row>
+    <b-row v-if="Object.keys(transaction.createdBy).length !== 0">
+      <b-col cols="6" sm="4">
+        <p class="font-weight-bold">{{ $t('transactionDetails.Put in by') }}</p>
+      </b-col>
+      <b-col cols="6" sm="8" class="text-right text-sm-left">
+        <p>{{ transaction.createdBy.name }}</p>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col cols="12" sm="4">
+        <p class="font-weight-bold">{{ $t('transactionDetails.Products') }}</p>
+      </b-col>
+      <b-col cols="12" sm="8" class="total-price">
+        <div
+          v-for="subTransaction in transaction.subTransactions"
+          v-bind:key="subTransaction.id"
+        >
+          <b-row
+            v-for="subTransRow in subTransaction.subTransactionRows"
+            v-bind:key="subTransRow.id"
+          >
+            <b-col cols="5" sm="6">
+              <p class="text-truncate">{{`${subTransRow.amount} x ${subTransRow.product.name}`}}</p>
+            </b-col>
+            <b-col cols="7" sm="6" class="text-right">
+              <p>
+                {{ `( ${ subTransRow.product.price.toFormat() } ) ` +
+              `= ${ subTransRow.price.toFormat()}` }}
+              </p>
+            </b-col>
+          </b-row>
+        </div>
+        <hr>
+        <b-row>
+          <b-col cols="12" class="text-right">
+            <p>
+              <i class="mr-1">{{ $t('transactionDetails.Total') }} </i>
+              {{ transaction.price.toFormat() }}</p>
+          </b-col>
+        </b-row>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator';
-import Formatters from '@/mixins/Formatters';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import { Transaction } from '@/entities/Transaction';
 
-  @Component
-export default class TransactionDetails extends Formatters {
-    @Prop() private transaction: Transaction | undefined;
+@Component
+export default class TransactionDetails extends Vue {
+  @Prop() transaction: Transaction | undefined;
 }
 </script>
 

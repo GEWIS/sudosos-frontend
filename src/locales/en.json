@@ -196,7 +196,7 @@
     "Page": "Page"
   },
   "socialDrinkCards": {
-  "Social drink cards overview": "Social drink cards overview"
+    "Social drink cards overview": "Social drink cards overview"
   },
   "banners": {
     "Banners": "Banners"
@@ -325,10 +325,16 @@
   "transactionDetails": {
     "Total": "Total",
     "Point of sale": "Point of sale",
-    "Put in by": "Bought by",
-    "Put in for": "Bought for",
-    "Activity": "Activity",
+    "Bought by": "Bought by",
+    "Put in by": "Put in by",
     "Products": "Products"
+  },
+  "transferDetails": {
+    "Total": "Total",
+    "From": "From",
+    "To": "To",
+    "Type": "Transaction type",
+    "Description": "Description"
   },
   "profile": {
     "My profile": "My profile",
