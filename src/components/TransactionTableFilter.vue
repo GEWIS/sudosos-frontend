@@ -220,12 +220,12 @@ export default class TransactionTableFilter extends Vue {
     /**
      * Checks which filters are currently active and returns the object needed for filtering
      *
-     * @param filterWay updated filterString, used for the b-table filter
+     * @param lastUpdate updated filterString, used for the b-table filter
      */
-    filterUpdated(filterWay : string) : void {
+    filterUpdated(lastUpdate : string) : void {
       const filterResults: TableFilter = this.filterValues;
 
-      // If none of the filters are selected make sure the filterWay is null this makes sure the
+      // If none of the filters are selected make sure the lastUpdate is null this makes sure the
       // bootstrap table resets the filter and displays all currently available rows
       if (!this.filterValues.selfBought
           && !this.filterValues.putInForYou
@@ -233,9 +233,9 @@ export default class TransactionTableFilter extends Vue {
           && !this.filterValues.hideHandled
           && this.filterValues.fromDate === ''
           && this.filterValues.toDate === '') {
-        filterResults.filterWay = null;
+        filterResults.lastUpdate = null;
       } else {
-        filterResults.filterWay = filterWay;
+        filterResults.lastUpdate = lastUpdate;
       }
 
       this.$emit('input', filterResults);
@@ -243,32 +243,32 @@ export default class TransactionTableFilter extends Vue {
 
     @Watch('filterValues.fromDate')
     onFromDateChanged(value: Date, old: Date): void {
-      this.filterUpdated(value.toString());
+      this.filterUpdated(`fromDate${value.toString()}`);
     }
 
     @Watch('filterValues.toDate')
     onToDateChanged(value: Date, old: Date): void {
-      this.filterUpdated(value.toString());
+      this.filterUpdated(`toDate${value.toString()}`);
     }
 
     @Watch('filterValues.selfBought')
     onSelfBoughtChanged(value: Boolean, old: Boolean): void {
-      this.filterUpdated(value.toString());
+      this.filterUpdated(`selfBought${value.toString()}`);
     }
 
     @Watch('filterValues.putInByYou')
     onPutInByYouChanged(value: Boolean, old: Boolean): void {
-      this.filterUpdated(value.toString());
+      this.filterUpdated(`putInByYou${value.toString()}`);
     }
 
     @Watch('filterValues.putInForYou')
     onPutInForYouChanged(value: Boolean, old: Boolean) : void {
-      this.filterUpdated(value.toString());
+      this.filterUpdated(`putInForYou${value.toString()}`);
     }
 
     @Watch('filterValues.hideHandled')
     onHideHandledChanged(value: Boolean, old: Boolean) : void {
-      this.filterUpdated(value.toString());
+      this.filterUpdated(`hideHandled${value.toString()}`);
     }
 }
 </script>

@@ -3,7 +3,7 @@ export interface TableFilter {
   putInByYou: Boolean,
   putInForYou: Boolean,
   hideHandled: Boolean,
-  filterWay: String | null,
+  lastUpdate: String | null,
   fromDate: String,
   toDate: String,
 }
@@ -14,7 +14,7 @@ export function initFilter(): TableFilter {
     putInByYou: false,
     putInForYou: false,
     hideHandled: false,
-    filterWay: null,
+    lastUpdate: null,
     fromDate: '',
     toDate: '',
   };

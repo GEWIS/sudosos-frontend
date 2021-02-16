@@ -26,7 +26,7 @@
           tbody-tr-class="transaction-flag-row"
           :per-page="perPage" :current-page="currentPage"
           id="transaction-flag-table"
-          :filter="filterValues.filterWay"
+          :filter="filterValues.lastUpdate"
           :filter-function="filterRows"
           v-on:filtered="filterDone"
           v-on:row-clicked="rowClicked"

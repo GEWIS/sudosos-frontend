@@ -265,5 +265,59 @@
     ],
     "createdAt": "2021-01-05T12:38:38.380Z",
     "updatedAt": "2021-01-05T12:38:38.380Z"
+  },
+  {
+    "id": 3,
+    "from": {
+      "id": 1,
+      "name": "BAr Commissie"
+    },
+    "createdBy": {
+      "id": 0,
+      "name": "Ruben Brinkman"
+    },
+    "pointOfSale": {
+      "id": 1,
+      "name": "standaard"
+    },
+    "subTransactions": [
+      {
+        "id": 5,
+        "to": {
+          "id": 1,
+          "name": "BAr Commissie"
+        },
+        "container": {
+          "id": 1,
+          "name": "Koelkast katerwater"
+        },
+        "subTransactionRows": [
+          {
+            "id": 5,
+            "product": {
+              "id": 4,
+              "revision": 1,
+              "name": "Aquarius",
+              "price": 70,
+              "owner": {
+                "id": 1,
+                "name": "BAr Commissie"
+              },
+              "category": {
+                "id": 1,
+                "name": "drink"
+              },
+              "picture": "https://bosgroothandel.nl/images/stories/virtuemart/product/aquarius_lemon_blik.jpg",
+              "alcoholPercentage": 0,
+              "createdAt": "2021-01-01T13:08:38.380Z",
+              "updatedAt": "2021-01-01T13:08:38.380Z"
+            },
+            "amount": 10
+          }
+        ]
+      }
+    ],
+    "createdAt": "2021-01-09T12:38:38.380Z",
+    "updatedAt": "2021-01-09T12:38:38.380Z"
   }
 ]

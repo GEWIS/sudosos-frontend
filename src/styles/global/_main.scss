@@ -221,6 +221,10 @@ Global style for forms in a card title
         }
     }
 
+    .filler-row {
+        display: none;
+    }
+
     .transaction-row,
     .productRow {
         cursor: pointer;
