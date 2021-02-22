@@ -65,6 +65,9 @@ function setResponse(body: ResponseBody, route: string, type: any, typeName?: st
 
 export default {
   fetchJSON(route: string, body: ResponseBody) {
+    // eslint-disable-next-line no-param-reassign
+    route = route.toLowerCase();
+
     if (route.includes('product')) {
       return setResponse(body, route, Products);
     }
@@ -93,7 +96,7 @@ export default {
       return setResponse(body, route, Transactions);
     }
 
-    if (route.includes('borrelkaartGroup')) {
+    if (route.includes('borrelkaartgroup')) {
       return setResponse(body, route, SocialDrinkCards, 'borrelkaart');
     }
 

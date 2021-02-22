@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+
 import {
   Action, Module, Mutation, VuexModule,
 } from 'vuex-module-decorators';
@@ -43,8 +45,8 @@ export default class PointOfSaleModule extends VuexModule {
   fetchPointsOfSale(force: boolean = false) {
     if (this.pointsOfSale.length === 0 || force) {
       const pointsOfSaleResponse = APIHelper.getResource('pointOfSale') as [];
-      pointsOfSaleResponse.map(pos => PointOfSaleTransformer.makePointOfSale(pos));
-      this.context.commit('setPointsOfSale', pointsOfSaleResponse);
+      const posResponse = pointsOfSaleResponse.map(pos => PointOfSaleTransformer.makePointOfSale(pos));
+      this.context.commit('setPointsOfSale', posResponse);
     }
   }
 }

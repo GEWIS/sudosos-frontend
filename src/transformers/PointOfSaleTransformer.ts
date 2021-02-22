@@ -15,6 +15,13 @@ export default {
       } as BasePointOfSale;
     }
 
+    let productOrder;
+
+    const containers = data.containers.map((container: any) => ContainerTransformer.makeContainer(container));
+    if (data.productOrder !== undefined) {
+      productOrder = data.productOrder.map((order: any) => ProductTransformer.makeProductOrder(order));
+    }
+
     return {
       ...BaseTransformer.makeBaseEntity(data),
       name: data.name,
@@ -22,8 +29,8 @@ export default {
       owner: UserTransformer.makeUser(data.owner),
       startDate: new Date(data.startDate),
       endDate: new Date(data.endDate),
-      containers: data.containers.map((container: any) => ContainerTransformer.makeContainer(container)),
-      productOrder: data.productOrder.map((order: any) => ProductTransformer.makeProductOrder(order)),
+      containers,
+      productOrder,
       useAuthentication: data.useAuthentication,
     } as PointOfSale;
   },
