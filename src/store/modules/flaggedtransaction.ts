@@ -39,7 +39,7 @@ export default class FlaggedTransactionModule extends VuexModule {
   }
 
   @Action({
-    rawError: true,
+    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
   })
   fetchFlaggedTransactions(force: boolean = false) {
     if (this.flaggedTransactions.length === 0 || force) {

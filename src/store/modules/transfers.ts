@@ -36,7 +36,9 @@ export default class TransferModule extends VuexModule {
     this.transfers[index] = transferResponse;
   }
 
-  @Action({ rawError: true })
+  @Action({
+    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+  })
   fetchTransfers(force: boolean = false) {
     if (this.transfers.length === 0 || force) {
       const transferResponse = APIHelper.getResource('transfers') as [];

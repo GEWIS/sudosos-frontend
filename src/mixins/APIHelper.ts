@@ -1,11 +1,14 @@
+import * as dotenv from 'dotenv';
 import eventBus from '@/eventbus';
 import devAPI from '../../dev/api';
 import { ApiError } from '@/entities/ApiError';
 import { ResponseBody } from '@/entities/ResponseBody';
 
-const baseURL = ''; // TODO: Set base URL
+dotenv.config();
+
+const baseURL = process.env.VUE_APP_API_BASE; // TODO: Set base URL
 const token = ''; // TODO: Make sure we get the token
-const isDev = process.env.NODE_ENV === 'development';
+const isDev = process.env.VUE_APP_DEVELOP;
 
 
 /**

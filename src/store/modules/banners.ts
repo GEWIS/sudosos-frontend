@@ -36,7 +36,9 @@ export default class BannerModule extends VuexModule {
     this.banners[index] = bannerResponse;
   }
 
-  @Action
+  @Action({
+    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+  })
   fetchBanners(force: boolean = false) {
     if (this.banners.length === 0 || force) {
       const bannersResponse = APIHelper.getResource('banners') as [];

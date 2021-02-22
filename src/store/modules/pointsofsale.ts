@@ -37,7 +37,9 @@ export default class PointOfSaleModule extends VuexModule {
     this.pointsOfSale[index] = pointOfSaleResponse as PointOfSale;
   }
 
-  @Action
+  @Action({
+    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+  })
   fetchPointsOfSale(force: boolean = false) {
     if (this.pointsOfSale.length === 0 || force) {
       const pointsOfSaleResponse = APIHelper.getResource('pointOfSale') as [];

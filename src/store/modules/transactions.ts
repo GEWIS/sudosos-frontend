@@ -37,7 +37,7 @@ export default class TransactionModule extends VuexModule {
   }
 
   @Action({
-    rawError: true,
+    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
   })
   fetchTransactions(force: boolean = false) {
     if (this.transactions.length === 0 || force) {

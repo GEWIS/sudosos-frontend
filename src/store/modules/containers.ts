@@ -52,7 +52,9 @@ export default class ContainerModule extends VuexModule {
     this.containers[index] = containerResponse as Container;
   }
 
-  @Action
+  @Action({
+    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+  })
   fetchContainers(force: boolean = false) {
     if (this.containers.length === 0 || force) {
       const containersResponse = APIHelper.getResource('containers') as [];

@@ -36,7 +36,9 @@ export default class ProductsModule extends VuexModule {
     this.products[index] = productResponse;
   }
 
-  @Action
+  @Action({
+    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+  })
   fetchProducts(force: boolean = false) {
     if (this.products.length === 0 || force) {
       const productsResponse = APIHelper.getResource('products') as [];

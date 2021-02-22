@@ -22,7 +22,9 @@ export default class UserModule extends VuexModule {
     this.user.saldo = Dinero({ amount: newSaldo, currency: 'EUR' });
   }
 
-  @Action
+  @Action({
+    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+  })
   fetchUser(force: boolean = false) {
     if (this.user.id === undefined || force) {
       const userResponse = APIHelper.getResource('user') as {};

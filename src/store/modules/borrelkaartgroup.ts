@@ -38,7 +38,9 @@ export default class BorrelkaartGroupModule extends VuexModule {
     this.borrelkaartGroups[index] = borrelkaartGroupResponse;
   }
 
-  @Action({ rawError: true })
+  @Action({
+    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+  })
   fetchBorrelkaartGroups(force: boolean = false) {
     if (this.borrelkaartGroups.length === 0 || force) {
       const borrelkaartGroupsResponse = APIHelper.getResource('borrelkaartGroups') as [];
