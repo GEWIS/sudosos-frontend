@@ -195,12 +195,7 @@ export default class TransactionsTable extends Formatters {
   transProvider(ctx: any) {
     // Check if the filter has not changed, if not we can simply return the next/previous
     if (!this.filterWasUpdated) {
-      let start;
-      if (ctx.currentPage > this.previousPage) {
-        start = (ctx.currentPage + 1) * this.perPage;
-      } else {
-        start = (ctx.currentPage - 1) * this.perPage;
-      }
+      const start = (ctx.currentPage - 1) * this.perPage;
 
       this.previousPage = this.currentPage;
       return this.formattedTransList.slice(start, start + this.perPage);
