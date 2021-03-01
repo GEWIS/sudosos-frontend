@@ -48,7 +48,7 @@
       <p class="font-weight-bold">{{ $t('productInfoModal.Price') }}</p>
     </b-col>
     <b-col cols="6" sm="8" class="text-right text-sm-left">
-      <p>{{ dinero({ amount: product.price}).toFormat() }}</p>
+      <p>{{ product.price.toFormat() }}</p>
     </b-col>
   </b-row>
 
@@ -57,17 +57,17 @@
       <p class="font-weight-bold">{{ $t('productInfoModal.Category') }}</p>
     </b-col>
     <b-col cols="6" sm="8" class="text-right text-sm-left">
-      <p>{{ product.category }}</p>
+      <p>{{ setCapitalLetter(product.category.name) }}</p>
     </b-col>
   </b-row>
 
-  <b-row>
+  <b-row v-if="product.alcoholPercentage > 0">
     <b-col cols="6" sm="4">
-      <p class="font-weight-bold">{{ $t('productInfoModal.Contains alcohol') }}</p>
+      <p class="font-weight-bold">{{ $t('productInfoModal.Alcohol percentage') }}</p>
     </b-col>
     <b-col cols="6" sm="8" class="text-right text-sm-left">
       <p>
-        {{ product.alcoholPercentage > 0 ? $t('productInfoModal.Yes') : $t('productInfoModal.No') }}
+        {{ product.alcoholPercentage }}%
       </p>
     </b-col>
   </b-row>

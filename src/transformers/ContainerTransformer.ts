@@ -12,12 +12,14 @@ export default {
       } as BaseContainer;
     }
 
+    const products = data.products.map((product: any) => ProductTransformer.makeProduct(product));
+
     return {
       ...BaseTransformer.makeBaseEntity(data),
       name: data.name,
       revision: data.revision,
       owner: UserTransformer.makeUser(data.owner),
-      products: data.products.map((product: any) => ProductTransformer.makeProduct(product)),
+      products,
       public: data.public,
     } as Container;
   },

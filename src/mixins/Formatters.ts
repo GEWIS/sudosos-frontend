@@ -91,4 +91,17 @@ export default class Formatters extends Vue {
 
     return updatedFields;
   }
+
+  /**
+   * Give every word in a sentence a capital letter
+   *
+   * @param {string} sentence: the sentence we want to have a capital letter
+   * @return {string}: the sentence with a capital letter before each word
+   */
+  // eslint-disable-next-line class-methods-use-this
+  public setCapitalLetter(sentence: string): string {
+    let words = sentence.split(' ');
+    words = words.map(wrd => wrd[0].toUpperCase() + wrd.substring(1));
+    return words.join(' ');
+  }
 }

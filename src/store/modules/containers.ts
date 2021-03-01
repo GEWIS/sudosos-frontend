@@ -58,8 +58,8 @@ export default class ContainerModule extends VuexModule {
   fetchContainers(force: boolean = false) {
     if (this.containers.length === 0 || force) {
       const containersResponse = APIHelper.getResource('containers') as [];
-      containersResponse.map(container => ContainerTransformer.makeContainer(container));
-      this.context.commit('setContainers', containersResponse);
+      const cntrs = containersResponse.map(cntr => ContainerTransformer.makeContainer(cntr));
+      this.context.commit('setContainers', cntrs);
     }
   }
 }

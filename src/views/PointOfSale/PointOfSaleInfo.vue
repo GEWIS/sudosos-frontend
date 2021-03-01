@@ -81,7 +81,6 @@ export default class PointOfSaleInfo extends Formatters {
     this.pointOfSaleState.fetchPointsOfSale();
     const pos = this.pointOfSaleState.pointsOfSale;
     const index = pos.findIndex(ps => Number(ps.id) === Number(this.id));
-    console.log(pos);
     this.infoPOS = pos[index];
   }
 
