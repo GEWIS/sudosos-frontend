@@ -44,8 +44,8 @@ export default class ProductCategoryModule extends VuexModule {
   fetchProductCategories(force: boolean = false) {
     if (this.productCategories.length === 0 || force) {
       const productCategoriesResponse = APIHelper.getResource('productCategories') as [];
-      productCategoriesResponse.map(productCategory => ProductCategoryTransformer.makeProductCategory(productCategory));
-      this.context.commit('setProductCategories', productCategoriesResponse);
+      const ctgrs = productCategoriesResponse.map(productCategory => ProductCategoryTransformer.makeProductCategory(productCategory));
+      this.context.commit('setProductCategories', ctgrs);
     }
   }
 }

@@ -42,8 +42,8 @@ export default class BannerModule extends VuexModule {
   fetchBanners(force: boolean = false) {
     if (this.banners.length === 0 || force) {
       const bannersResponse = APIHelper.getResource('banners') as [];
-      bannersResponse.map(banner => BannerTransformer.makeBanner(banner));
-      this.context.commit('setBanners', bannersResponse);
+      const bnrs = bannersResponse.map(banner => BannerTransformer.makeBanner(banner));
+      this.context.commit('setBanners', bnrs);
     }
   }
 }

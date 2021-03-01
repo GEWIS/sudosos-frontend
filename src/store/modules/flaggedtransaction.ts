@@ -44,8 +44,8 @@ export default class FlaggedTransactionModule extends VuexModule {
   fetchFlaggedTransactions(force: boolean = false) {
     if (this.flaggedTransactions.length === 0 || force) {
       const flaggedTransactionResponse = APIHelper.getResource('flaggedTransactions') as [];
-      flaggedTransactionResponse.map(flaggedTransaction => FlaggedTransactionTransformer.makeFlaggedTransaction(flaggedTransaction));
-      this.context.commit('setFlaggedTransactions', flaggedTransactionResponse);
+      const flgd = flaggedTransactionResponse.map(flaggedTransaction => FlaggedTransactionTransformer.makeFlaggedTransaction(flaggedTransaction));
+      this.context.commit('setFlaggedTransactions', flgd);
     }
   }
 }

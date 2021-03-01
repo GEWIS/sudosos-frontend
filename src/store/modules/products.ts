@@ -42,8 +42,8 @@ export default class ProductsModule extends VuexModule {
   fetchProducts(force: boolean = false) {
     if (this.products.length === 0 || force) {
       const productsResponse = APIHelper.getResource('products') as [];
-      productsResponse.map(product => ProductTransformer.makeProduct(product));
-      this.context.commit('setProducts', productsResponse);
+      const products = productsResponse.map(product => ProductTransformer.makeProduct(product));
+      this.context.commit('setProducts', products);
     }
   }
 }
