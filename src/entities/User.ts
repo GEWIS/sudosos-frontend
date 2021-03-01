@@ -29,3 +29,11 @@ export interface UserPermissions {
   READ_FINANCIAL_DATA: boolean;
   EDIT_FINANCIAL_DATA: boolean;
 }
+
+export function checkPermissions(permissions: UserPermissions, type: string) {
+  if (type === 'container') {
+    return permissions.EDIT_ALL_POS_ENTITIES || permissions.EDIT_OWN_POS_ENTITIES;
+  }
+
+  return false;
+}

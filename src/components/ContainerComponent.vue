@@ -137,6 +137,7 @@ import ProductTable from '@/components/ProductTable.vue';
 import { Container } from '@/entities/Container';
 import { Product } from '@/entities/Product';
 import ContainerModule from '@/store/modules/containers';
+import { checkPermissions } from '@/entities/User';
 
 @Component({
   directives: {
@@ -237,7 +238,7 @@ export default class ContainerComponent extends Vue {
   get canEdit() {
     const { user } = this.userState;
     const owner = this.container.owner.id === user.id;
-    const hasPermission = this.userState.hasPermission('container');
+    const hasPermission = checkPermissions(this.userState.permissions, 'container');
 
     return owner || hasPermission;
   }

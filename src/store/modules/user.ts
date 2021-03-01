@@ -35,13 +35,4 @@ export default class UserModule extends VuexModule {
       this.context.commit('updateSaldo', saldoResponse.saldo);
     }
   }
-
-  @Action
-  hasPermission(asking: string) {
-    if (asking === 'container') {
-      return this.permissions.EDIT_ALL_POS_ENTITIES || this.permissions.EDIT_OWN_POS_ENTITIES;
-    }
-
-    return false;
-  }
 }
