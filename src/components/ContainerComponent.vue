@@ -136,6 +136,7 @@ import UserModule from '@/store/modules/user';
 import ProductTable from '@/components/ProductTable.vue';
 import { Container } from '@/entities/Container';
 import { Product } from '@/entities/Product';
+import ContainerModule from '@/store/modules/containers';
 
 @Component({
   directives: {
@@ -151,13 +152,17 @@ import { Product } from '@/entities/Product';
   },
 })
 export default class ContainerComponent extends Vue {
-  @Prop() container!: Container;
+  @Prop() containerID!: number;
 
   @Prop() enabled: Boolean | undefined;
 
   @Prop({ default: true }) editable!: boolean;
 
-  private userState = getModule(UserModule)
+  container: Container = {} as Container;
+
+  private userState = getModule(UserModule);
+
+  private containerState = getModule(ContainerModule);
 
   isOpen: Boolean = false;
 
@@ -173,6 +178,9 @@ export default class ContainerComponent extends Vue {
 
   beforeMount() {
     this.userState.fetchUser();
+    this.containerState.fetchContainers();
+    const { containers } = this.containerState;
+    this.container = containers.find(cntr => cntr.id === this.containerID) as Container;
   }
 
   mounted() {
@@ -227,7 +235,11 @@ export default class ContainerComponent extends Vue {
    * Check if current user has the rights to edit this storage container
    */
   get canEdit() {
-    return this.container.owner.id === this.userState.user.id;
+    const { user } = this.userState;
+    const owner = this.container.owner.id === user.id;
+    const hasPermission = this.userState.hasPermission('container');
+
+    return owner || hasPermission;
   }
 }
 </script>

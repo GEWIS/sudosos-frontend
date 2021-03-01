@@ -21,3 +21,11 @@ export enum UserType {
   LOCAL_USER = 4,
   LOCAL_ADMIN = 5,
 }
+
+export interface UserPermissions {
+  EDIT_OWN_POS_ENTITIES: boolean;
+  EDIT_ALL_POS_ENTITIES: boolean;
+  ACCEPT_POS_ENTITY_UPDATES: boolean;
+  READ_FINANCIAL_DATA: boolean;
+  EDIT_FINANCIAL_DATA: boolean;
+}

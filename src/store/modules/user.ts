@@ -3,7 +3,7 @@ import {
 } from 'vuex-module-decorators';
 import Dinero from 'dinero.js';
 import store from '@/store';
-import { User } from '@/entities/User';
+import { User, UserPermissions } from '@/entities/User';
 import APIHelper from '@/mixins/APIHelper';
 import UserTransformer from '@/transformers/UserTransformer';
 
@@ -11,6 +11,8 @@ import UserTransformer from '@/transformers/UserTransformer';
 @Module({ dynamic: true, store, name: 'UserModule' })
 export default class UserModule extends VuexModule {
   user: User = {} as User;
+
+  permissions: UserPermissions = {} as UserPermissions;
 
   @Mutation
   setUser(user: User) {
@@ -32,5 +34,14 @@ export default class UserModule extends VuexModule {
       const saldoResponse = APIHelper.getResource('saldo') as { saldo: number };
       this.context.commit('updateSaldo', saldoResponse.saldo);
     }
+  }
+
+  @Action
+  hasPermission(asking: string) {
+    if (asking === 'container') {
+      return this.permissions.EDIT_ALL_POS_ENTITIES || this.permissions.EDIT_OWN_POS_ENTITIES;
+    }
+
+    return false;
   }
 }
