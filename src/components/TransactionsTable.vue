@@ -118,6 +118,8 @@ export default class TransactionsTable extends Formatters {
 
   @Prop({ default: true, type: Boolean }) private csv!: boolean;
 
+  @Prop() private pointOfSale: number | undefined;
+
   private transactionState = getModule(TransactionModule);
 
   private transferState = getModule(TransferModule);
@@ -178,7 +180,12 @@ export default class TransactionsTable extends Formatters {
     this.transactionState.fetchTransactions();
     this.transferState.fetchTransfers();
     this.userState.fetchUser();
-    this.transList = [...this.transactionState.transactions, ...this.transferState.transfers];
+
+    if (this.pointOfSale !== undefined) {
+      this.transList = this.transactionState.fetchPOSTransactions(this.pointOfSale);
+    } else {
+      this.transList = [...this.transactionState.transactions, ...this.transferState.transfers];
+    }
     this.transList.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
 
 

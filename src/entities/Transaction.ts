@@ -11,3 +11,8 @@ export interface Transaction extends BaseEntity {
   subTransactions: SubTransaction[];
   price: Dinero;
 }
+
+export interface POSTransaction {
+  id: number;
+  transactions: Transaction[];
+}

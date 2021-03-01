@@ -90,6 +90,12 @@ function fetchResource(route: string, body: ResponseBody) {
     try {
       fetchResult = devAPI.fetchJSON(route, body);
     } catch (e) {
+      const reponseBody = {
+        status: 404,
+        message: 'apiError.Something went wrong',
+        error: e,
+      } as ApiError;
+      eventBus.$emit('apiError', reponseBody);
       console.error(e);
     }
   }

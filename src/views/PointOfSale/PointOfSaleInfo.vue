@@ -40,6 +40,7 @@
       :putInByYou="false"
       :putInForYou="false"
       :hideHandled="false"
+      :pointOfSale="id"
     />
 
     <ProductInfoModal

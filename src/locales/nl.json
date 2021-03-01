@@ -347,6 +347,7 @@
     "message": "Je wordt uitgelogd! Hopelijk heb je het naar je zin gehad en zien we je snel weer :)"
   },
   "apiError": {
-    "test": "Dit is een test"
+    "message": "Foutmelding",
+    "Something went wrong": "Er ging iets mis"
   }
 }

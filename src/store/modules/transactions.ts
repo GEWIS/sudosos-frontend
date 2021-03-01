@@ -3,12 +3,14 @@ import {
 } from 'vuex-module-decorators';
 import store from '@/store';
 import APIHelper from '@/mixins/APIHelper';
-import { Transaction } from '@/entities/Transaction';
+import { POSTransaction, Transaction } from '@/entities/Transaction';
 import TransactionTransformer from '@/transformers/TransactionTransformer';
 
 @Module({ dynamic: true, store, name: 'TransactionModule' })
 export default class TransactionModule extends VuexModule {
   transactions: Transaction[] = [];
+
+  posTransactions: POSTransaction[] = [];
 
   @Mutation
   setTransactions(transactions: Transaction[]) {
@@ -45,5 +47,34 @@ export default class TransactionModule extends VuexModule {
       const trans = transactionResponse.map(trns => TransactionTransformer.makeTransaction(trns));
       this.context.commit('setTransactions', trans);
     }
+  }
+
+  @Mutation
+  addPOSTransaction(transaction: POSTransaction) {
+    this.posTransactions.push(transaction);
+  }
+
+  @Mutation
+  updatePOSTransaction(transaction: POSTransaction) {
+    const index = this.posTransactions.findIndex(pos => pos.id === transaction.id);
+    this.posTransactions[index] = transaction;
+  }
+
+  @Action({
+    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+  })
+  fetchPOSTransactions(posID: number) {
+    const index = this.posTransactions.findIndex(pos => pos.id === posID);
+    if (index === -1) {
+      const transactionResponse = APIHelper.getResource(`transactionPOS?id=${posID}`) as [];
+      const trans = transactionResponse.map(trns => TransactionTransformer.makeTransaction(trns));
+      this.context.commit('addPOSTransaction', {
+        id: posID,
+        transactions: trans,
+      } as POSTransaction);
+      return trans;
+    }
+
+    return this.posTransactions[index].transactions;
   }
 }

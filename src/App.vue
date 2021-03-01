@@ -118,9 +118,25 @@ export default class App extends Formatters {
     this.userState.fetchUser();
     this.currentUser = this.userState.user;
 
-    // TODO: Test if this works
     eventBus.$on('apiError', (error: ApiError) => {
-      this.$bvToast.toast(String(this.$t(error.message)), {
+      // Create the body for the toast error message, first make a div
+      // then create three paragraph elements with the error messages
+      const toastBody = this.$createElement('div',
+        { class: [''] },
+        [
+          this.$createElement('p',
+            { class: ['mb-2'] },
+            `${String(this.$t(error.message))}`),
+          this.$createElement('p',
+            { class: ['mb-0'] },
+            `${String(this.$t('apiError.message'))}:`),
+          this.$createElement('p',
+            { class: ['mb-0', 'small'] },
+            `${error.error}`),
+        ]);
+
+      // Show the toast for 5 seconds
+      this.$bvToast.toast(toastBody, {
         title: `Error ${error.status}`,
         autoHideDelay: 5000,
         variant: 'danger',

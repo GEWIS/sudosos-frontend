@@ -92,7 +92,7 @@ export default {
       return setResponse(body, route, PointsOfSale);
     }
 
-    if (route.includes('transaction')) {
+    if (route.includes('transactions')) {
       return setResponse(body, route, Transactions);
     }
 
