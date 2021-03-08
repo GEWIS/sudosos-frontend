@@ -63,18 +63,18 @@ export default class TransactionModule extends VuexModule {
   @Action({
     rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
   })
-  fetchPOSTransactions(posID: number) {
+  fetchPOSTransactions(posID: number, force: boolean = false) {
     const index = this.posTransactions.findIndex(pos => pos.id === posID);
-    if (index === -1) {
+
+    // If the transactions for this POS have not been resolved yet resolve them.
+    if (index === -1 || force) {
       const transactionResponse = APIHelper.getResource(`transactionPOS?id=${posID}`) as [];
       const trans = transactionResponse.map(trns => TransactionTransformer.makeTransaction(trns));
+
       this.context.commit('addPOSTransaction', {
         id: posID,
         transactions: trans,
       } as POSTransaction);
-      return trans;
     }
-
-    return this.posTransactions[index].transactions;
   }
 }

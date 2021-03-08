@@ -33,7 +33,6 @@
           :current-page="currentPage"
           v-on:row-clicked="rowClicked"
         >
-
           <!-- Templates for each row cell -->
           <template v-slot:cell(updatedAt)="data">
             {{ setDate(data.item) }}
@@ -181,11 +180,21 @@ export default class TransactionsTable extends Formatters {
     this.transferState.fetchTransfers();
     this.userState.fetchUser();
 
+    // Check if we need to grab all transaction that are related to a specific point of sale
+    // if not just grab all transactions for this user
     if (this.pointOfSale !== undefined) {
-      this.transList = this.transactionState.fetchPOSTransactions(this.pointOfSale);
+      // First fetch all the transactions for a specific point of sale
+      // Then check if this point of sale has any transactions
+      this.transactionState.fetchPOSTransactions(this.pointOfSale);
+      const psTr = this.transactionState.posTransactions.find(trns => trns.id === this.pointOfSale);
+      if (psTr !== undefined) {
+        // this.transList = psTr.transactions;
+      }
     } else {
       this.transList = [...this.transactionState.transactions, ...this.transferState.transfers];
     }
+
+    // Sort the transactions just in case
     this.transList.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
 
 

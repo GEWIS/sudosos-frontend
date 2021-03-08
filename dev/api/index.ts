@@ -11,7 +11,7 @@ import FlaggedTransactions from './data/flaggedtransactions.json';
 import Transfer from './data/transfer.json';
 
 function setResponse(body: ResponseBody, route: string, type: any, typeName?: string) {
-  const params = new URLSearchParams(route);
+  const params = new URLSearchParams(route.split('?')[1]);
 
   if (body.method === 'POST') {
     const response = JSON.parse(body.body || '');
@@ -56,7 +56,12 @@ function setResponse(body: ResponseBody, route: string, type: any, typeName?: st
   }
 
   if (route.includes('id')) {
-    return type.find((response: { id: number; }) => response.id === Number(params.get('id')));
+    const id = Number(params.get('id'));
+
+    if (typeName === 'transactionPos') {
+      return type.filter((trans: { pointOfSale: { id: number; }; }) => trans.pointOfSale.id === id);
+    }
+    return type.filter((response: { id: number; }) => response.id === id);
   }
 
   return type;
@@ -106,6 +111,10 @@ export default {
 
     if (route.includes('transfer')) {
       return setResponse(body, route, Transfer);
+    }
+
+    if (route.includes('transactionpos')) {
+      return setResponse(body, route, Transactions, 'transactionPos');
     }
 
     // Because typescript cannot handle throwing the way I want it.
