@@ -61,19 +61,15 @@
     </template>
 
     <template v-slot:cell(category)="data">
-      {{ data.value }}
+      {{ setCapitalLetter(data.value.name) }}
     </template>
 
     <template v-slot:cell(price)="data">
       {{ data.value.toFormat() }}
     </template>
 
-    <template v-slot:cell(isAlcoholic)="data">
-      {{ data.value ? $t('productTable.Yes') : $t('productTable.No') }}
-    </template>
-
-    <template v-slot:cell(negative)="data">
-      {{ data.value ? $t('productTable.Yes') : $t('productTable.No') }}
+    <template v-slot:cell(alcoholPercentage)="data">
+      {{ data.value }}%
     </template>
   </b-table>
 
@@ -167,14 +163,9 @@ export default class ProductTable extends Formatters {
         locale_key: 'price',
       },
       {
-        key: 'isAlcoholic',
+        key: 'alcoholPercentage',
         label: this.getTranslation('productTable.alcoholic'),
         locale_key: 'alcoholic',
-      },
-      {
-        key: 'negative',
-        label: this.getTranslation('productTable.negative'),
-        locale_key: 'negative',
       },
     ];
 
