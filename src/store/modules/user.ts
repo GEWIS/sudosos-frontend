@@ -8,7 +8,9 @@ import APIHelper from '@/mixins/APIHelper';
 import UserTransformer from '@/transformers/UserTransformer';
 
 
-@Module({ dynamic: true, store, name: 'UserModule' })
+@Module({
+  dynamic: true, namespaced: true, store, name: 'UserModule',
+})
 export default class UserModule extends VuexModule {
   user: User = {} as User;
 

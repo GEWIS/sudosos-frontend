@@ -8,7 +8,9 @@ import { BorrelkaartGroup } from '@/entities/BorrelkaartGroup';
 import APIHelper from '@/mixins/APIHelper';
 import BorrelkaartGroupTransformer from '@/transformers/BorrelkaartGroupTransformer';
 
-@Module({ dynamic: true, store, name: 'borrelkaartGroupModule' })
+@Module({
+  dynamic: true, namespaced: true, store, name: 'borrelkaartGroupModule',
+})
 export default class BorrelkaartGroupModule extends VuexModule {
   borrelkaartGroups: BorrelkaartGroup[] = [];
 

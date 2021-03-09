@@ -8,7 +8,9 @@ import APIHelper from '@/mixins/APIHelper';
 import { ProductCategory } from '@/entities/ProductCategory';
 import ProductCategoryTransformer from '@/transformers/ProductCategoryTransformer';
 
-@Module({ dynamic: true, store, name: 'ProductCategoryModule' })
+@Module({
+  dynamic: true, namespaced: true, store, name: 'ProductCategoryModule',
+})
 export default class ProductCategoryModule extends VuexModule {
   productCategories: ProductCategory[] = [];
 

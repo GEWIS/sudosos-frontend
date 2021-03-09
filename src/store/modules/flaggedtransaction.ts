@@ -8,7 +8,9 @@ import APIHelper from '@/mixins/APIHelper';
 import { FlaggedTransaction } from '@/entities/FlaggedTransaction';
 import FlaggedTransactionTransformer from '@/transformers/FlaggedTransactionTransformer';
 
-@Module({ dynamic: true, store, name: 'FlaggedTransactionsModule' })
+@Module({
+  dynamic: true, namespaced: true, store, name: 'FlaggedTransactionsModule',
+})
 export default class FlaggedTransactionModule extends VuexModule {
   flaggedTransactions: FlaggedTransaction[] = [];
 

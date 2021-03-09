@@ -6,7 +6,9 @@ import { Transfer } from '@/entities/Transfer';
 import TransferTransformer from '@/transformers/TransferTransformer';
 import store from '@/store';
 
-@Module({ dynamic: true, store, name: 'TransferModule' })
+@Module({
+  dynamic: true, namespaced: true, store, name: 'TransferModule',
+})
 export default class TransferModule extends VuexModule {
   transfers: Transfer[] = [];
 

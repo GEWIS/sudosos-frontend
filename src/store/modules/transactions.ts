@@ -6,7 +6,9 @@ import APIHelper from '@/mixins/APIHelper';
 import { POSTransaction, Transaction } from '@/entities/Transaction';
 import TransactionTransformer from '@/transformers/TransactionTransformer';
 
-@Module({ dynamic: true, store, name: 'TransactionModule' })
+@Module({
+  dynamic: true, namespaced: true, store, name: 'TransactionModule',
+})
 export default class TransactionModule extends VuexModule {
   transactions: Transaction[] = [];
 

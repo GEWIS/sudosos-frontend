@@ -8,7 +8,9 @@ import APIHelper from '@/mixins/APIHelper';
 import { PointOfSale } from '@/entities/PointOfSale';
 import PointOfSaleTransformer from '@/transformers/PointOfSaleTransformer';
 
-@Module({ dynamic: true, store, name: 'PointOfSaleModule' })
+@Module({
+  dynamic: true, namespaced: true, store, name: 'PointOfSaleModule',
+})
 export default class PointOfSaleModule extends VuexModule {
   pointsOfSale: PointOfSale[] = [];
 

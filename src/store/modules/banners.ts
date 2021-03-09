@@ -6,7 +6,9 @@ import { Banner } from '@/entities/Banner';
 import APIHelper from '@/mixins/APIHelper';
 import BannerTransformer from '@/transformers/BannerTransformer';
 
-@Module({ dynamic: true, store, name: 'BannerModule' })
+@Module({
+  dynamic: true, namespaced: true, store, name: 'BannerModule',
+})
 export default class BannerModule extends VuexModule {
   banners: Banner[] = [];
 
