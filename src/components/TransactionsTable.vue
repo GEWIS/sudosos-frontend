@@ -72,7 +72,6 @@
       v-if="Object.keys(modalTransaction).length > 0"
       :trans="modalTransaction"
     />
-
   </div>
 </template>
 
@@ -188,7 +187,7 @@ export default class TransactionsTable extends Formatters {
       this.transactionState.fetchPOSTransactions(this.pointOfSale);
       const psTr = this.transactionState.posTransactions.find(trns => trns.id === this.pointOfSale);
       if (psTr !== undefined) {
-        // this.transList = psTr.transactions;
+        this.transList = psTr.transactions;
       }
     } else {
       this.transList = [...this.transactionState.transactions, ...this.transferState.transfers];
