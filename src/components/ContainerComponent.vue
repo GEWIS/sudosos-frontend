@@ -1,6 +1,7 @@
 <template>
   <div class="mb-2">
-    <div class="container-head px-3 d-flex" v-on:click="collapseContainer">
+    <b-row no-gutters class="container-head px-3" v-on:click="collapseContainer">
+      <b-col cols="9" class="d-flex">
 
       <!-- Select the container to enable it in the POS -->
       <b-input-group class="my-auto">
@@ -11,32 +12,35 @@
           @change="checkBoxChanged"
           v-on:click.stop=""
         />
-        <span>{{ container.name }}</span>
-      </b-input-group>
+        <span class="text-truncate">{{ container.name }}</span>
+        <span v-if="container.public" class="text-muted small ml-3">Public</span>
 
-      <!--  Container edit button    -->
-      <span
-        class="ml-3 mr-2 my-auto"
-        v-show="canEdit && enabled && editable"
-        v-on:click.stop=""
-        v-on:click="$emit('input', container)"
-        v-b-modal.edit-container>
+        <!--  Container edit button    -->
+        <span
+          class="ml-3 mr-2"
+          v-show="canEdit && enabled && editable"
+          v-on:click.stop=""
+          v-on:click="$emit('input', container)"
+          v-b-modal.edit-container>
             <font-awesome-icon icon="pen-alt" />
       </span>
 
-      <!--   Container delete button   -->
-      <span
-        class="ml-2 mr-3 my-auto"
-        v-show="canEdit && enabled && editable"
-        v-on:click.stop=""
-        v-on:click="$emit('input', container)"
-        v-b-modal.confirmation>
+        <!--   Container delete button   -->
+        <span
+          class="ml-2 mr-3"
+          v-show="canEdit && enabled && editable"
+          v-on:click.stop=""
+          v-on:click="$emit('input', container)"
+          v-b-modal.confirmation>
             <font-awesome-icon icon="trash" />
       </span>
+      </b-input-group>
+      </b-col>
 
       <!--   Icons to either collapse or uncollapse
       container and switch between product views   -->
-      <div class="d-inline ml-2 w-100 my-auto">
+      <b-col cols="3" class="d-flex">
+        <div class="my-auto ml-auto">
         <font-awesome-icon
           pull="right"
           icon="angle-down"
@@ -60,8 +64,9 @@
         >
           {{ $t('containerComponent.Table view')}}
         </b-form-checkbox>
-      </div>
-    </div>
+        </div>
+      </b-col>
+    </b-row>
 
     <!-- Product overview from products that are currently active in container -->
     <b-collapse
@@ -91,7 +96,7 @@
           v-if="canEdit && enabled && editable"
           class="text-center product-card product-card-add px-2"
           cols="6" sm="4" md="3" lg="2"
-          v-on:click="$emit('addProduct', container.id)"
+          v-on:click="$emit('addProduct', container)"
         >
           <div class="product add">
             <div><font-awesome-icon icon="plus" class="h-100" /></div>
@@ -109,7 +114,7 @@
             <b-button
               class="my-2 text-truncate"
               variant="success"
-              v-on:click="$emit('addProduct', container.id)"
+              v-on:click="$emit('addProduct', container)"
             >
               <font-awesome-icon icon="plus" />
               {{ $t('containerComponent.Add product') }}
@@ -134,7 +139,7 @@ import Sortable from 'sortablejs';
 import { getModule } from 'vuex-module-decorators';
 import UserModule from '@/store/modules/user';
 import ProductTable from '@/components/ProductTable.vue';
-import { Container } from '@/entities/Container';
+import { BaseContainer, Container } from '@/entities/Container';
 import { Product } from '@/entities/Product';
 import ContainerModule from '@/store/modules/containers';
 import { checkPermissions } from '@/entities/User';
@@ -180,8 +185,9 @@ export default class ContainerComponent extends Vue {
   beforeMount() {
     this.userState.fetchUser();
     this.containerState.fetchContainers();
-    const { containers } = this.containerState;
-    this.container = containers.find(cntr => cntr.id === this.containerID) as Container;
+    const { containers, publicContainers } = this.containerState;
+    const containerList = [...containers, ...publicContainers];
+    this.container = containerList.find(cntr => cntr.id === this.containerID) as Container;
   }
 
   mounted() {
@@ -201,7 +207,7 @@ export default class ContainerComponent extends Vue {
    */
   productDetails(product: Product) {
     if (this.canEdit && this.enabled && this.editable) {
-      this.$emit('editProduct', this.container.id, product);
+      this.$emit('editProduct', this.container, product);
     } else {
       this.$emit('productDetails', product);
     }
@@ -228,8 +234,7 @@ export default class ContainerComponent extends Vue {
    * @param event: click event
    */
   checkBoxChanged(event: any) {
-    const containerId = this.container ? this.container.id : '0';
-    this.$emit('toggled', { id: containerId, state: event });
+    this.$emit('toggled', { container: this.container, state: event as boolean });
   }
 
   /**
@@ -248,7 +253,6 @@ export default class ContainerComponent extends Vue {
 <style scoped lang="scss">
 .input-group {
   flex-wrap: nowrap;
-  width: auto;
 }
 
 .container-head {

@@ -33,7 +33,7 @@ export default class ProductCategoryModule extends VuexModule {
   }
 
   @Mutation
-  updateAdvertisement(productCategory: {}) {
+  updateProductCategories(productCategory: {}) {
     const response = APIHelper.putResource('productCategories', productCategory);
     const productCategoryResponse = ProductCategoryTransformer.makeProductCategory(response);
     const index = this.productCategories.findIndex(prdc => prdc.id === productCategoryResponse.id);

@@ -253,6 +253,8 @@
   "editProductModal": {
     "Add existing": "Add existing product",
     "Add new": "Add new product",
+    "Product details": "Product details",
+    "Existing products": "Existing products",
     "save": "save",
     "cancel": "cancel",
     "edit product": "edit product",
@@ -262,11 +264,14 @@
     "added by": "Added by",
     "Price": "Price",
     "Category": "Category",
+    "Please select": "Please select a product category",
     "Alcohol Percentage": "Alcohol percentage",
     "Picture": "Picture",
     "Delete product": "Delete product",
     "name invalid": "Please provide a valid name that is longer than 0 characters",
-    "price invalid": "Please provide a valid price that is higher or equal to 0"
+    "category invalid": "Please select one of the product categories",
+    "price invalid": "Please provide a valid price that is higher or equal to 0",
+    "picture invalid": "Please provide a picture"
   },
   "containerComponent": {
     "Table view": "Table view",

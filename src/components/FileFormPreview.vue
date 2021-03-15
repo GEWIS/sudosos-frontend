@@ -7,6 +7,7 @@
     :placeholder="$t('fileFormPreview.Choose image drop')"
     :drop-placeholder="$t('fileFormPreview.Drop file')"
     :disabled="disabled"
+    :state="state"
   ></b-form-file>
 </template>
 
@@ -20,6 +21,8 @@ export default class FileFormPreview extends Vue {
     @Prop() private img: string | undefined;
 
     @Prop({ default: false }) disabled?: boolean;
+
+    @Prop() state?: void;
 
     file: File = new File([], '');
 

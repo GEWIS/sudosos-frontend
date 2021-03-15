@@ -14,7 +14,7 @@
         <b-col cols="12" sm="3">
           <span class="font-weight-bold">{{ $t('editContainerModal.added on')}}</span>
         </b-col>
-        <b-col cols="12" sm="3">
+        <b-col cols="12" sm="9">
           {{ formatDateTime(editContainer.createdAt, true) }}
         </b-col>
       </b-form-row>
@@ -23,7 +23,7 @@
         <b-col cols="12" sm="3">
           <span class="font-weight-bold">{{ $t('editContainerModal.added by')}}</span>
         </b-col>
-        <b-col cols="12" sm="3">
+        <b-col cols="12" sm="9">
           {{ editContainer.owner.name }}
         </b-col>
       </b-form-row>
@@ -41,7 +41,7 @@
           id="name"
           name="name"
           type="text"
-          v-model="currContainer.name"
+          v-model="containerName"
           :state="nameState"
         />
       </b-form-group>
@@ -55,7 +55,7 @@
       >
         <b-form-checkbox
           id="public"
-          v-model="currContainer.public"
+          v-model="containerPublic"
           name="public"
           value="true"
           unchecked-value="false"
@@ -95,10 +95,15 @@ export default class EditContainerModal extends Formatters {
 
     private containerState = getModule(ContainerModule);
 
-    currContainer: Container = {} as Container;
+    containerName: string | null = null;
 
-    mounted() {
-      this.currContainer = this.editContainer;
+    containerPublic: boolean = false;
+
+    beforeMount() {
+      if (Object.keys(this.editContainer).length > 0) {
+        this.containerName = this.editContainer.name;
+        this.containerPublic = this.editContainer.public as boolean;
+      }
     }
 
     /**
@@ -108,11 +113,19 @@ export default class EditContainerModal extends Formatters {
      */
     save(): void {
       if (this.nameState === null || !this.nameState) {
-        this.currContainer = {} as Container;
+        this.containerName = null;
+        this.containerPublic = false;
       } else if (Object.keys(this.editContainer).length === 0) {
-        this.containerState.addContainer(this.currContainer);
+        this.containerState.addContainer({
+          name: this.containerName,
+          public: this.containerPublic,
+        });
       } else {
-        this.containerState.updateContainer(this.currContainer);
+        const updatedContainer = this.editContainer;
+        updatedContainer.name = this.containerName as string;
+        updatedContainer.public = this.containerPublic;
+
+        this.containerState.updateContainer(updatedContainer);
       }
 
       this.$bvModal.hide('edit-container');
@@ -120,7 +133,7 @@ export default class EditContainerModal extends Formatters {
 
     // Check state of name
     get nameState(): boolean | null {
-      return this.currContainer.name === null ? null : this.currContainer.name.length > 0;
+      return this.containerName === null ? null : this.containerName.length > 0;
     }
 
     // Return appropriate validating message for name
@@ -135,9 +148,11 @@ export default class EditContainerModal extends Formatters {
     @Watch('editContainer')
     onEditContainerChange(value: Container, old: Container) : void {
       if (Object.keys(value).length > 0) {
-        this.currContainer.name = value.name;
+        this.containerName = value.name;
+        this.containerPublic = value.public as boolean;
       } else {
-        this.currContainer.name = '';
+        this.containerName = null;
+        this.containerPublic = false;
       }
     }
 }

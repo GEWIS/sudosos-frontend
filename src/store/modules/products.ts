@@ -3,7 +3,7 @@ import {
 } from 'vuex-module-decorators';
 import store from '@/store';
 import APIHelper from '@/mixins/APIHelper';
-import { BaseProduct, Product } from '@/entities/Product';
+import { Product } from '@/entities/Product';
 import ProductTransformer from '@/transformers/ProductTransformer';
 
 @Module({
@@ -27,8 +27,8 @@ export default class ProductsModule extends VuexModule {
   @Mutation
   addProduct(product: {}) {
     const productResponse = APIHelper.postResource('products', product);
-    this.products.push(ProductTransformer.makeProduct(productResponse) as Product);
-    return productResponse;
+    const productToAdd = ProductTransformer.makeProduct(productResponse) as Product;
+    this.products.push(productToAdd);
   }
 
   @Mutation
@@ -61,7 +61,7 @@ export default class ProductsModule extends VuexModule {
     rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
   })
   fetchUserProducts(force: boolean = false) {
-    if (this.products.length === 0 || force) {
+    if (this.userProducts.length === 0 || force) {
       const productsResponse = APIHelper.getResource('userproducts') as [];
       const products = productsResponse.map(product => ProductTransformer.makeProduct(product));
       this.context.commit('setUserProducts', products);

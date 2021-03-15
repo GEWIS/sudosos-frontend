@@ -28,23 +28,25 @@ export default class ContainerModule extends VuexModule {
 
   @Mutation
   addContainer(container: any) {
-    const containerResponse = APIHelper.postResource('container', container);
+    const containerResponse = APIHelper.postResource('containers', container);
     this.containers.push(ContainerTransformer.makeContainer(containerResponse) as Container);
   }
 
   @Mutation
-  addProduct(container: Container, product: Product) {
-    let productToAdd = product;
+  addProduct(data: { container: Container, product: {} }) {
+    console.log(data);
+    let productToAdd = data.product;
 
     // If this is not an existing product yet we need to add it
-    if (!('id' in product)) {
-      productToAdd = APIHelper.postResource('products', product) as Product;
+    if (!('id' in data.product)) {
+      productToAdd = APIHelper.postResource('products', data.product) as Product;
     }
 
-    const containerResponse = APIHelper.postResource(`container/${container.id}/product`, productToAdd);
-    const updatedContainer = ContainerTransformer.makeContainer(containerResponse);
-    const index = this.containers.findIndex(cntnr => cntnr.id === container.id);
-    this.containers[index] = updatedContainer as Container;
+    // TODO: Check if this works with real API
+    const containerResponse = APIHelper.postResource(`containers/${data.container.id}/product`, productToAdd);
+    // const updatedContainer = ContainerTransformer.makeContainer(containerResponse);
+    const index = this.containers.findIndex(cntnr => cntnr.id === data.container.id);
+    this.containers[index].products.push(ProductTransformer.makeProduct(productToAdd) as Product);
   }
 
   @Mutation
