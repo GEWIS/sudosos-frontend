@@ -1,3 +1,4 @@
+import { globalFormatRoundingMode } from 'dinero.js';
 import { BaseContainer, Container } from '@/entities/Container';
 import UserTransformer from '@/transformers/UserTransformer';
 import ProductTransformer from '@/transformers/ProductTransformer';
@@ -12,7 +13,12 @@ export default {
       } as BaseContainer;
     }
 
-    const products = data.products.map((product: any) => ProductTransformer.makeProduct(product));
+    let products = [];
+
+    if (data.products !== undefined) {
+      products = data.products.map((product: any) => ProductTransformer.makeProduct(product));
+    }
+
 
     return {
       ...BaseTransformer.makeBaseEntity(data),

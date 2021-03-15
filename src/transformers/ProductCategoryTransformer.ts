@@ -6,6 +6,7 @@ export default {
     return {
       ...BaseTransformer.makeBaseEntity(data),
       name: data.name,
+      text: data.name,
     } as ProductCategory;
   },
 };

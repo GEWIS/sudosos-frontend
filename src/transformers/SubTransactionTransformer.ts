@@ -13,8 +13,10 @@ export default {
     const subTransactionRows = data.subTransactionRows.map((subTransRow: any) => SubTransactionRowTransformer.makeSubTransactionRow(subTransRow));
     let price;
 
-    if (typeof data.price === 'object' && 'amount' in data.price) {
-      price = Dinero({ amount: Number(data.price.amount), currency: 'EUR' });
+    if (typeof data.price === 'object') {
+      // This is to satisfy ESLint, yay
+      const dineroPrice = data.price;
+      price = dineroPrice;
     } else {
       let tempPrice = 0;
       subTransactionRows.forEach((subTransRow: SubTransactionRow) => { tempPrice += subTransRow.price.getAmount(); });

@@ -9,8 +9,10 @@ export default {
   makeProduct(data: any) : BaseProduct | Product {
     let price;
 
-    if (typeof data.price === 'object' && 'amount' in data.price) {
-      price = Dinero({ amount: Number(data.price.amount), currency: 'EUR' });
+    if (typeof data.price === 'object') {
+      // This is to satisfy ESLint, yay
+      const dineroPrice = data.price;
+      price = dineroPrice;
     } else {
       price = Dinero({ amount: Number(data.price), currency: 'EUR' });
     }

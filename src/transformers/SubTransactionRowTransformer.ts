@@ -8,8 +8,10 @@ export default {
     const product = ProductTransformer.makeProduct(data.product);
     let price;
 
-    if (typeof data.price === 'object' && 'amount' in data.price) {
-      price = Dinero({ amount: Number(data.price.amount), currency: 'EUR' });
+    if (typeof data.price === 'object') {
+      // This is to satisfy ESLint, yay
+      const dineroPrice = data.price;
+      price = dineroPrice;
     } else {
       price = Dinero({ amount: Number(product.price.getAmount() * data.amount), currency: 'EUR' });
     }
