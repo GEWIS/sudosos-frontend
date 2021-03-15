@@ -1,14 +1,17 @@
-import Products from './data/products.json';
 import { ResponseBody } from '@/entities/ResponseBody';
+import Products from './data/products.json';
+import UserProducts from './data/userproducts.json';
 import User from './data/user.json';
 import Saldo from './data/saldo.json';
 import Banners from './data/banners.json';
 import Containers from './data/containers.json';
+import PublicContainers from './data/publiccontainers.json';
 import Transactions from './data/transactions.json';
 import PointsOfSale from './data/pos.json';
 import SocialDrinkCards from './data/socialdrinkcards.json';
 import FlaggedTransactions from './data/flaggedtransactions.json';
 import Transfer from './data/transfer.json';
+import ProductCategories from './data/productcategories.json';
 
 function setResponse(body: ResponseBody, route: string, type: any, typeName?: string) {
   const params = new URLSearchParams(route.split('?')[1]);
@@ -45,12 +48,23 @@ function setResponse(body: ResponseBody, route: string, type: any, typeName?: st
       };
     }
 
+    if (typeName === 'containers') {
+      response.owner = {
+        id: 0,
+        name: 'Ruben Brinkman',
+      };
+      response.products = [];
+    }
+
     return response;
   }
 
   if (body.method === 'PUT' || body.method === 'PATCH') {
     const response = JSON.parse(body.body || '');
     response.updatedAt = new Date();
+
+    console.log(response.updatedAt);
+    console.log(response);
 
     return response;
   }
@@ -73,6 +87,14 @@ export default {
     // eslint-disable-next-line no-param-reassign
     route = route.toLowerCase();
 
+    if (route.includes('userproducts')) {
+      return setResponse(body, route, UserProducts);
+    }
+
+    if (route.includes('productcategories')) {
+      return setResponse(body, route, ProductCategories);
+    }
+
     if (route.includes('product')) {
       return setResponse(body, route, Products);
     }
@@ -89,8 +111,12 @@ export default {
       return setResponse(body, route, Banners);
     }
 
-    if (route.includes('container')) {
-      return setResponse(body, route, Containers);
+    if (route.includes('publiccontainer')) {
+      return setResponse(body, route, PublicContainers);
+    }
+
+    if (route.includes('containers')) {
+      return setResponse(body, route, Containers, 'containers');
     }
 
     if (route.includes('pointofsale')) {

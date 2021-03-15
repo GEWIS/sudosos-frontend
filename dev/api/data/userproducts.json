@@ -1,0 +1,20 @@
+[
+  {
+    "id": 5,
+    "revision": 1,
+    "name": "Hamburger",
+    "price": 70,
+    "owner": {
+      "id": 0,
+      "name": "Ruben Brinkman"
+    },
+    "category": {
+      "id": 2,
+      "name": "Food"
+    },
+    "picture": "https://s.mijnreceptenboek.nl/i/lib/v/amerikaanse-hamburger.png",
+    "alcoholPercentage": 0,
+    "createdAt": "2021-01-03T13:08:38.380Z",
+    "updatedAt": "2021-01-03T13:08:38.380Z"
+  }
+]

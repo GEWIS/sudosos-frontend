@@ -38,7 +38,7 @@
               },
               "category": {
                 "id": 0,
-                "name": "alcoholic drink"
+                "name": "Alcoholic"
               },
               "picture": "https://www.supermarktaanbiedingen.com/public/images/product/2017/39/0-508102fls-grolsch-premium-pilsner-beugel-45cl.jpg",
               "alcoholPercentage": 5.6,
@@ -60,7 +60,7 @@
               },
               "category": {
                 "id": 0,
-                "name": "alcoholic drink"
+                "name": "Alcoholic"
               },
               "picture": "https://deklokdranken.blob.core.windows.net/product-images/105120.jpg",
               "alcoholPercentage": 7.8,
@@ -94,7 +94,7 @@
               },
               "category": {
                 "id": 1,
-                "name": "drink"
+                "name": "Non-alcoholic"
               },
               "picture": "https://cdn.webshopapp.com/shops/71421/files/264918896/140x140x2/aquarius-blik-24x33cl-lemon.jpg",
               "alcoholPercentage": 0,
@@ -144,7 +144,7 @@
               },
               "category": {
                 "id": 0,
-                "name": "alcoholic drink"
+                "name": "Alcoholic"
               },
               "picture": "https://www.supermarktaanbiedingen.com/public/images/product/2017/39/0-508102fls-grolsch-premium-pilsner-beugel-45cl.jpg",
               "alcoholPercentage": 5.6,
@@ -166,7 +166,7 @@
               },
               "category": {
                 "id": 0,
-                "name": "alcoholic drink"
+                "name": "Alcoholic"
               },
               "picture": "https://deklokdranken.blob.core.windows.net/product-images/105120.jpg",
               "alcoholPercentage": 7.8,
@@ -201,7 +201,7 @@
               },
               "category": {
                 "id": 1,
-                "name": "drink"
+                "name": "Non-alcoholic"
               },
               "picture": "https://cdn.webshopapp.com/shops/71421/files/264918896/140x140x2/aquarius-blik-24x33cl-lemon.jpg",
               "alcoholPercentage": 0,
@@ -251,7 +251,7 @@
               },
               "category": {
                 "id": 1,
-                "name": "drink"
+                "name": "Non-alcoholic"
               },
               "picture": "https://cdn.webshopapp.com/shops/71421/files/264918896/140x140x2/aquarius-blik-24x33cl-lemon.jpg",
               "alcoholPercentage": 0,
@@ -305,7 +305,7 @@
               },
               "category": {
                 "id": 1,
-                "name": "drink"
+                "name": "Non-alcoholic"
               },
               "picture": "https://cdn.webshopapp.com/shops/71421/files/264918896/140x140x2/aquarius-blik-24x33cl-lemon.jpg",
               "alcoholPercentage": 0,
