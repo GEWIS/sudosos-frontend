@@ -14,4 +14,5 @@ export interface Product extends BaseProduct {
   category: ProductCategory;
   picture: string;
   alcoholPercentage: number;
+  updatePending?: boolean;
 }

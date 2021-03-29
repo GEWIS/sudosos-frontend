@@ -34,6 +34,7 @@ export default {
       category: ProductCategoryTransformer.makeProductCategory(data.category),
       picture: data.picture,
       alcoholPercentage: data.alcoholPercentage,
+      updatePending: data.updatePending,
     } as Product;
   },
 
