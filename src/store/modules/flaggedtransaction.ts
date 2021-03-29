@@ -37,7 +37,7 @@ export default class FlaggedTransactionModule extends VuexModule {
     const response = APIHelper.putResource('flaggedTransactions', flaggedTransaction);
     const flaggedTransactionResponse = FlaggedTransactionTransformer.makeFlaggedTransaction(response);
     const index = this.flaggedTransactions.findIndex(trns => trns.id === flaggedTransactionResponse.id);
-    this.flaggedTransactions[index] = flaggedTransactionResponse;
+    this.flaggedTransactions.splice(index, 1, flaggedTransactionResponse);
   }
 
   @Action({

@@ -35,7 +35,7 @@ export default class BannerModule extends VuexModule {
     const response = APIHelper.putResource('banners', banner);
     const bannerResponse = BannerTransformer.makeBanner(response);
     const index = this.banners.findIndex(bnr => bnr.id === bannerResponse.id);
-    this.banners[index] = bannerResponse;
+    this.banners.splice(index, 1, bannerResponse);
   }
 
   @Action({

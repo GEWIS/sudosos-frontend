@@ -33,12 +33,11 @@ export default class ContainerModule extends VuexModule {
   }
 
   @Mutation
-  addProduct(data: { container: Container, product: {} }) {
-    console.log(data);
+  addProduct(data: { container: Container, product: { id: number | null} }) {
     let productToAdd = data.product;
 
     // If this is not an existing product yet we need to add it
-    if (!('id' in data.product)) {
+    if (!('id' in data.product) || data.product.id === null) {
       productToAdd = APIHelper.postResource('products', data.product) as Product;
     }
 
@@ -47,6 +46,17 @@ export default class ContainerModule extends VuexModule {
     // const updatedContainer = ContainerTransformer.makeContainer(containerResponse);
     const index = this.containers.findIndex(cntnr => cntnr.id === data.container.id);
     this.containers[index].products.push(ProductTransformer.makeProduct(productToAdd) as Product);
+  }
+
+  @Mutation
+  updateProduct(data: {container: Container, product: { id: number | null } }) {
+    let productToEdit = APIHelper.putResource('products', data.product);
+    productToEdit = ProductTransformer.makeProduct(productToEdit);
+
+    const index = this.containers.findIndex(cntnr => cntnr.id === data.container.id);
+    const prdIndex = this.containers[index].products.findIndex(prod => prod.id === data.product.id);
+
+    this.containers[index].products.splice(prdIndex, 1, productToEdit as Product);
   }
 
   @Mutation
@@ -61,7 +71,7 @@ export default class ContainerModule extends VuexModule {
     const response = APIHelper.putResource('containers', container);
     const containerResponse = ContainerTransformer.makeContainer(response);
     const index = this.containers.findIndex(cntnr => cntnr.id === containerResponse.id);
-    this.containers[index] = containerResponse as Container;
+    this.containers.splice(index, 1, containerResponse as Container);
   }
 
   @Action({

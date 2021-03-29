@@ -37,7 +37,7 @@ export default class BorrelkaartGroupModule extends VuexModule {
     const response = APIHelper.putResource('borrelkaartGroups', borrelkaartGroup);
     const borrelkaartGroupResponse = BorrelkaartGroupTransformer.makeBorrelkaartGroup(response);
     const index = this.borrelkaartGroups.findIndex(brlkrt => brlkrt.id === borrelkaartGroupResponse.id);
-    this.borrelkaartGroups[index] = borrelkaartGroupResponse;
+    this.borrelkaartGroups.splice(index, 1, borrelkaartGroupResponse);
   }
 
   @Action({

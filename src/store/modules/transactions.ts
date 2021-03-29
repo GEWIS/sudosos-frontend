@@ -37,7 +37,7 @@ export default class TransactionModule extends VuexModule {
     const response = APIHelper.putResource('transactions', transaction);
     const transactionResponse = TransactionTransformer.makeTransaction(response);
     const index = this.transactions.findIndex(trns => trns.id === transactionResponse.id);
-    this.transactions[index] = transactionResponse;
+    this.transactions.splice(index, 1, transactionResponse);
   }
 
   @Action({
@@ -59,7 +59,7 @@ export default class TransactionModule extends VuexModule {
   @Mutation
   updatePOSTransaction(transaction: POSTransaction) {
     const index = this.posTransactions.findIndex(pos => pos.id === transaction.id);
-    this.posTransactions[index] = transaction;
+    this.posTransactions.splice(index, 1, transaction);
   }
 
   @Action({

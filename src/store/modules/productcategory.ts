@@ -37,7 +37,7 @@ export default class ProductCategoryModule extends VuexModule {
     const response = APIHelper.putResource('productCategories', productCategory);
     const productCategoryResponse = ProductCategoryTransformer.makeProductCategory(response);
     const index = this.productCategories.findIndex(prdc => prdc.id === productCategoryResponse.id);
-    this.productCategories[index] = productCategoryResponse;
+    this.productCategories.splice(index, 1, productCategoryResponse);
   }
 
   @Action({

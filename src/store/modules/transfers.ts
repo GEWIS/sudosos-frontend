@@ -35,7 +35,7 @@ export default class TransferModule extends VuexModule {
     const response = APIHelper.putResource('transfers', transfer);
     const transferResponse = TransferTransformer.makeTransfer(response);
     const index = this.transfers.findIndex(trnsfr => trnsfr.id === transferResponse.id);
-    this.transfers[index] = transferResponse;
+    this.transfers.splice(index, 1, transferResponse);
   }
 
   @Action({

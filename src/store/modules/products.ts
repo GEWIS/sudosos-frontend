@@ -42,8 +42,8 @@ export default class ProductsModule extends VuexModule {
   updateProduct(product: {}) {
     const response = APIHelper.putResource('products', product);
     const productResponse = ProductTransformer.makeProduct(response);
-    const index = this.products.findIndex(prd => prd.id === productResponse.id);
-    this.products[index] = productResponse as Product;
+    const index = this.userProducts.findIndex(prd => prd.id === productResponse.id);
+    this.userProducts.splice(index, 1, productResponse as Product);
   }
 
   @Action({

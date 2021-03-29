@@ -38,7 +38,7 @@ export default class PointOfSaleModule extends VuexModule {
     const response = APIHelper.putResource('pointOfSale', pointOfSale);
     const pointOfSaleResponse = PointOfSaleTransformer.makePointOfSale(response);
     const index = this.pointsOfSale.findIndex(pos => pos.id === pointOfSaleResponse.id);
-    this.pointsOfSale[index] = pointOfSaleResponse as PointOfSale;
+    this.pointsOfSale.splice(index, 1, pointOfSaleResponse as PointOfSale);
   }
 
   @Action({
