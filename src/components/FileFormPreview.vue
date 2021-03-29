@@ -26,12 +26,6 @@ export default class FileFormPreview extends Vue {
 
     file: File = new File([], '');
 
-    mounted() {
-      if (this.img) {
-        this.setFilePreview(this.file, this.img);
-      }
-    }
-
     setFilePreview = (file: File, src?: string) : void => {
       if (document.activeElement !== null) {
         let element = document.getElementById('ad-file') as HTMLElement;
@@ -62,6 +56,13 @@ export default class FileFormPreview extends Vue {
 
       // To let the v-model property know that the file has been updated
       this.$emit('input', value);
+    }
+
+    @Watch('img')
+    onIMGChange(value: string | undefined, old: string | undefined) {
+      if (value !== undefined) {
+        this.setFilePreview(this.file, value);
+      }
     }
 }
 </script>

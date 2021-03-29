@@ -4,6 +4,7 @@
     :ok-title="$t('editProductModal.save')"
     :cancel-title="$t('editProductModal.cancel')"
     :title="modalTitle"
+    v-on:shown="setProduct"
     size="lg"
     hide-header-close
     centered>
@@ -18,6 +19,16 @@
           {{ formatDateTime(editProduct.createdAt, true) }}
         </b-col>
       </b-form-row>
+
+      <b-form-row v-if="Object.keys(editProduct).length > 0">
+        <b-col cols="12" sm="3">
+          <span class="font-weight-bold">{{ $t('editProductModal.updated on') }}</span>
+        </b-col>
+        <b-col cols="12" sm="3">
+          {{ formatDateTime(editProduct.updatedAt, true) }}
+        </b-col>
+      </b-form-row>
+
 
       <b-form-row v-if="Object.keys(editProduct).length > 0">
         <b-col cols="12" sm="3">
@@ -167,16 +178,14 @@
       </b-form-group>
     </div>
 
-    <div class="delete-button" v-if="Object.keys(editProduct).length > 0">
+    <template v-slot:modal-footer="{ }">
       <b-button
+        v-if="Object.keys(editProduct).length > 0"
         variant="primary"
-        class="btn-primary"
+        class="btn-primary mr-auto"
         v-on:click="$emit('productDeleted', editProduct)"
       >{{ $t('editProductModal.Delete product') }}
       </b-button>
-    </div>
-
-    <template v-slot:modal-footer="{ }">
       <b-button
         variant="primary"
         class="btn-empty"
@@ -203,7 +212,6 @@ import FileFormPreview from '@/components/FileFormPreview.vue';
 import Formatters from '@/mixins/Formatters';
 import { Container } from '@/entities/Container';
 import ProductsModule from '@/store/modules/products';
-import { BaseUser } from '@/entities/User';
 import ContainerModule from '@/store/modules/containers';
 import UserModule from '@/store/modules/user';
 import ProductCategoryModule from '@/store/modules/productcategory';
@@ -246,8 +254,13 @@ export default class EditProductModal extends Formatters {
     this.productState.fetchUserProducts();
     this.productCategoryState.fetchProductCategories();
     this.products = this.productState.userProducts;
+  }
+
+  setProduct() {
     if (Object.keys(this.editProduct).length > 0) {
       this.setProductProperties(this.editProduct);
+    } else {
+      this.setProductProperties();
     }
   }
 
@@ -269,29 +282,40 @@ export default class EditProductModal extends Formatters {
         });
         this.setProductProperties();
         this.$bvModal.hide('edit-product');
-      // Check if a new product is being added and if all the the inputs are correctly
-      // set. If that is the case add the product first and then add it to the container
-      // else make sure the user is shown what still needs to be inputted.
+        // Check if a new product is being added and if all the the inputs are correctly
+        // set. If that is the case add the product first and then add it to the container
+        // else make sure the user is shown what still needs to be inputted.
       } else if (this.nameState && this.categoryState && this.priceState && this.pictureState) {
         // Construct the new product property
         const product = this.constructProduct();
 
-        // Then add the product to the container
-        this.containerState.addProduct({
-          container: this.container,
-          product,
-        });
+        // Check if a product is being added or being editted
+        if (Object.keys(this.editProduct).length > 0) {
+          this.containerState.updateProduct({
+            container: this.container,
+            product,
+          });
+        } else {
+          this.containerState.addProduct({
+            container: this.container,
+            product,
+          });
+        }
         this.$bvModal.hide('edit-product');
       } else {
         this.setInvalidStates();
       }
-    // Else just add the product normally
+      // Else just add the product normally
     } else if (this.nameState && this.categoryState && this.priceState && this.pictureState) {
       // Construct the new product property
       const product = this.constructProduct();
 
-      // Then add the product to the product state
-      this.productState.addProduct(product);
+      // Check if a product is being added or being editted
+      if (Object.keys(this.editProduct).length > 0) {
+        this.productState.updateProduct(product);
+      } else {
+        this.productState.addProduct(product);
+      }
       this.$bvModal.hide('edit-product');
     } else {
       this.setInvalidStates();
@@ -310,7 +334,8 @@ export default class EditProductModal extends Formatters {
    * Makes a product object based on the set inputs and returns it.
    */
   constructProduct() {
-    return {
+    const product = {
+      id: Object.keys(this.editProduct).length > 0 ? this.editProduct.id : null,
       name: this.name,
       owner: {
         id: this.userState.user.id,
@@ -320,9 +345,16 @@ export default class EditProductModal extends Formatters {
       category: this.productCategoryState.productCategories.find(
         cat => cat.name === this.category,
       ),
-      picture: URL.createObjectURL(this.file),
+      picture: this.file !== null ? URL.createObjectURL(this.file) : this.img,
       alcoholPercentage: this.alcoholPercentage === null ? 0 : this.alcoholPercentage,
+      createdAt: Object.keys(this.editProduct).length > 0 ? this.editProduct.createdAt : null,
     };
+
+    if (Object.keys(this.editProduct).length <= 0) {
+      delete product.id;
+    }
+
+    return product;
   }
 
   /**
@@ -421,7 +453,14 @@ export default class EditProductModal extends Formatters {
 
   // Check if file has the correct value
   get pictureState() {
-    return this.file === null ? null : this.file.size > 0;
+    if (this.img.length === 0) {
+      if (this.file === null) {
+        return null;
+      }
+      return this.file.size > 0;
+    }
+
+    return true;
   }
 
   // Return appropriate validating message for picture

@@ -3,67 +3,71 @@
     <b-row no-gutters class="container-head px-3" v-on:click="collapseContainer">
       <b-col cols="9" class="d-flex">
 
-      <!-- Select the container to enable it in the POS -->
-      <b-input-group class="my-auto">
-        <b-form-checkbox
-          :id="'checkbox_' + container.id"
-          v-model="selected"
-          :disabled="!enabled"
-          @change="checkBoxChanged"
-          v-on:click.stop=""
-        />
-        <span class="text-truncate">{{ container.name }}</span>
-        <span v-if="container.public" class="text-muted small ml-3">Public</span>
+        <!-- Select the container to enable it in the POS -->
+        <b-input-group class="my-auto">
+          <b-form-checkbox
+            :id="'checkbox_' + container.id"
+            v-model="selected"
+            :disabled="!enabled"
+            @change="checkBoxChanged"
+            v-on:click.stop=""
+          />
+          <span class="text-truncate">{{ container.name }}</span>
+          <span v-if="container.public" class="text-muted small ml-3">
+            {{ $t('containerComponent.Public') }}
+          </span>
 
-        <!--  Container edit button    -->
-        <span
-          class="ml-3 mr-2"
-          v-show="canEdit && enabled && editable"
-          v-on:click.stop=""
-          v-on:click="$emit('input', container)"
-          v-b-modal.edit-container>
-            <font-awesome-icon icon="pen-alt" />
-      </span>
+<!--      TODO Fix these:-->
 
-        <!--   Container delete button   -->
-        <span
-          class="ml-2 mr-3"
-          v-show="canEdit && enabled && editable"
-          v-on:click.stop=""
-          v-on:click="$emit('input', container)"
-          v-b-modal.confirmation>
-            <font-awesome-icon icon="trash" />
-      </span>
-      </b-input-group>
+          <!--  Container edit button    -->
+          <span
+            class="ml-3 mr-2"
+            v-show="canEdit && enabled && editable"
+            v-on:click.stop=""
+            v-on:click="$emit('input', container)"
+            v-b-modal.edit-container>
+            <font-awesome-icon icon="pen-alt"/>
+          </span>
+
+          <!--   Container delete button   -->
+          <span
+            class="ml-2 mr-3"
+            v-show="canEdit && enabled && editable"
+            v-on:click.stop=""
+            v-on:click="$emit('input', container)"
+            v-b-modal.confirmation>
+            <font-awesome-icon icon="trash"/>
+          </span>
+        </b-input-group>
       </b-col>
 
       <!--   Icons to either collapse or uncollapse
       container and switch between product views   -->
       <b-col cols="3" class="d-flex">
         <div class="my-auto ml-auto">
-        <font-awesome-icon
-          pull="right"
-          icon="angle-down"
-          v-show="!isOpen"
-          class="mr-3 mt-1"
-          size="lg"
-        />
-        <font-awesome-icon
-          pull="right"
-          icon="angle-up"
-          v-show="isOpen"
-          class="mr-3 mt-1"
-          size="lg"
-        />
-        <b-form-checkbox
-          class="float-right mr-2"
-          v-on:click.stop=""
-          v-model="tableView"
-          name="check-button"
-          switch
-        >
-          {{ $t('containerComponent.Table view')}}
-        </b-form-checkbox>
+          <font-awesome-icon
+            pull="right"
+            icon="angle-down"
+            v-show="!isOpen"
+            class="mr-3 mt-1"
+            size="lg"
+          />
+          <font-awesome-icon
+            pull="right"
+            icon="angle-up"
+            v-show="isOpen"
+            class="mr-3 mt-1"
+            size="lg"
+          />
+          <b-form-checkbox
+            class="float-right mr-2"
+            v-on:click.stop=""
+            v-model="tableView"
+            name="check-button"
+            switch
+          >
+            {{ $t('containerComponent.Table view') }}
+          </b-form-checkbox>
         </div>
       </b-col>
     </b-row>
@@ -73,7 +77,7 @@
       v-if="isOpen"
       v-model="isOpen"
       v-sortable="sortableOptions"
-      :id="'container_' + container.id"
+      :key="container.id"
       class="mt-1 storage"
     >
       <!--  Card view for products   -->
@@ -87,7 +91,10 @@
         >
           <div class="product" :class="{'add': canEdit && enabled && editable}">
             <img :src="item.picture" :alt="item.name"/>
-            <p class="w-100 px-1 product-name mb-0 text-truncate">{{ item.name }}</p>
+            <p
+              class="w-100 px-1 product-name mb-0 text-truncate"
+              :class="{'update': item.updatePending}"
+            >{{ item.name }}</p>
           </div>
         </b-col>
 
@@ -99,8 +106,10 @@
           v-on:click="$emit('addProduct', container)"
         >
           <div class="product add">
-            <div><font-awesome-icon icon="plus" class="h-100" /></div>
-            <p class="w-100 product-name mb-0">{{ $t('containerComponent.new')}}</p>
+            <div>
+              <font-awesome-icon icon="plus" class="h-100"/>
+            </div>
+            <p class="w-100 product-name mb-0">{{ $t('containerComponent.new') }}</p>
           </div>
         </b-col>
       </b-row>
@@ -116,7 +125,7 @@
               variant="success"
               v-on:click="$emit('addProduct', container)"
             >
-              <font-awesome-icon icon="plus" />
+              <font-awesome-icon icon="plus"/>
               {{ $t('containerComponent.Add product') }}
             </b-button>
           </div>
@@ -139,9 +148,8 @@ import Sortable from 'sortablejs';
 import { getModule } from 'vuex-module-decorators';
 import UserModule from '@/store/modules/user';
 import ProductTable from '@/components/ProductTable.vue';
-import { BaseContainer, Container } from '@/entities/Container';
+import { Container } from '@/entities/Container';
 import { Product } from '@/entities/Product';
-import ContainerModule from '@/store/modules/containers';
 import { checkPermissions } from '@/entities/User';
 
 @Component({
@@ -158,17 +166,13 @@ import { checkPermissions } from '@/entities/User';
   },
 })
 export default class ContainerComponent extends Vue {
-  @Prop() containerID!: number;
+  @Prop() container!: Container;
 
   @Prop() enabled: Boolean | undefined;
 
   @Prop({ default: true }) editable!: boolean;
 
-  container: Container = {} as Container;
-
   private userState = getModule(UserModule);
-
-  private containerState = getModule(ContainerModule);
 
   isOpen: Boolean = false;
 
@@ -184,13 +188,6 @@ export default class ContainerComponent extends Vue {
 
   beforeMount() {
     this.userState.fetchUser();
-    this.containerState.fetchContainers();
-    const { containers, publicContainers } = this.containerState;
-    const containerList = [...containers, ...publicContainers];
-    this.container = containerList.find(cntr => cntr.id === this.containerID) as Container;
-  }
-
-  mounted() {
     this.selected = !this.enabled || false;
   }
 
@@ -206,6 +203,7 @@ export default class ContainerComponent extends Vue {
    * @param product Product that is being clicked
    */
   productDetails(product: Product) {
+    console.log(product.price.getAmount());
     if (this.canEdit && this.enabled && this.editable) {
       this.$emit('editProduct', this.container, product);
     } else {
@@ -291,18 +289,23 @@ export default class ContainerComponent extends Vue {
       background: $gewis-grey-accent;
       margin-top: auto;
     }
-  }
 
-  .product.add > div {
-    height: 5rem;
-    width: auto;
+    &.add > div {
+      height: 5rem;
+      width: auto;
+    }
+
+    > .update {
+      background: $gewis-orange;
+    }
   }
 }
 
 .product-card:hover {
   > .product {
     background-color: $gewis-grey-accent;
-    > .product-name {
+
+    > .product-name:not(&.update) {
       background-color: rgba(215, 215, 215, 1);
     }
   }

@@ -63,8 +63,9 @@ function setResponse(body: ResponseBody, route: string, type: any, typeName?: st
     const response = JSON.parse(body.body || '');
     response.updatedAt = new Date();
 
-    console.log(response.updatedAt);
-    console.log(response);
+    if (typeName === 'products') {
+      response.updatePending = true;
+    }
 
     return response;
   }
@@ -96,7 +97,7 @@ export default {
     }
 
     if (route.includes('product')) {
-      return setResponse(body, route, Products);
+      return setResponse(body, route, Products, 'products');
     }
 
     if (route.includes('user')) {

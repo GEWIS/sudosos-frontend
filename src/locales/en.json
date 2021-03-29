@@ -261,6 +261,7 @@
     "add product": "add product",
     "Name": "Name",
     "added on": "Added on",
+    "updated on": "Last updated on",
     "added by": "Added by",
     "Price": "Price",
     "Category": "Category",
@@ -274,6 +275,7 @@
     "picture invalid": "Please provide a picture"
   },
   "containerComponent": {
+    "Public": "Public",
     "Table view": "Table view",
     "new": "New",
     "Add product": "Add product"

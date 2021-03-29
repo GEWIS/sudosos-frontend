@@ -40,7 +40,7 @@
         <ContainerComponent
           v-for="container in publicContainers"
           v-bind:key="container.id"
-          :containerID="container.id"
+          :container="container"
           :enabled="true"
           :editable="false"
           @toggled="containerToggled"
@@ -50,11 +50,10 @@
         <ContainerComponent
           v-for="container in containers"
           v-bind:key="container.id"
-          :containerID="container.id"
+          :container="container"
           :enabled="true"
           :editable="true"
           @toggled="containerToggled"
-          v-model="editContainer"
           v-on:addProduct="prepAddingProduct"
           v-on:editProduct="prepEdittingProduct"
           v-on:productDetails="showProductDetails"
@@ -69,9 +68,6 @@
     <EditProductModal
       :editProduct="editProduct"
       :container="activeContainer"
-      v-on:productAdded="addProduct"
-      v-on:productEdited="editExistingProduct"
-      v-on:productDeleted="deleteProduct"
     />
 
     <ConfirmationModal

@@ -261,6 +261,7 @@
     "add product": "product toevoegen",
     "Name": "Naam",
     "added on": "Toegevoegd op",
+    "updated on": "Laatst geupdated op",
     "added by": "Toegevoegd door",
     "Price": "Prijs",
     "Category": "Categorie",
@@ -274,6 +275,7 @@
     "picture invalid": "Upload een plaatje"
   },
   "containerComponent": {
+    "Public": "Publiek",
     "Table view": "Tafel modus",
     "new": "Nieuw",
     "Add product": "Voeg nieuw product toe"
