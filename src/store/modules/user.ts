@@ -6,6 +6,7 @@ import store from '@/store';
 import { User, UserPermissions } from '@/entities/User';
 import APIHelper from '@/mixins/APIHelper';
 import UserTransformer from '@/transformers/UserTransformer';
+import { NFCDevice } from '@/entities/NFCDevice';
 
 
 @Module({
@@ -24,6 +25,32 @@ export default class UserModule extends VuexModule {
   @Mutation
   updateSaldo(newSaldo: number) {
     this.user.saldo = Dinero({ amount: newSaldo, currency: 'EUR' });
+  }
+
+  @Mutation
+  updatePinCode(data: {}) {
+    APIHelper.putResource('user/pincode', data);
+    this.fetchUser(true);
+  }
+
+  @Mutation
+  addNFCDevice(data: {}) {
+    const nfcResponse = APIHelper.postResource('user/nfcdevice', data);
+    this.user.nfcDevices.splice(0, 0, UserTransformer.makeNFCDevice(nfcResponse));
+  }
+
+  @Mutation
+  updateNFCDevice(data: {id : number}) {
+    const nfcResponse = APIHelper.putResource('user/nfcdevice', data);
+    const index = this.user.nfcDevices.findIndex((nfc: NFCDevice) => nfc.id === data.id);
+    this.user.nfcDevices.splice(index, 1, UserTransformer.makeNFCDevice(nfcResponse));
+  }
+
+  @Mutation
+  removeNFCDevice(data: {id: number}) {
+    const nfcResponse = APIHelper.delResource('user/nfcdevice', data);
+    const index = this.user.nfcDevices.findIndex((nfc: NFCDevice) => nfc.id === data.id);
+    this.user.nfcDevices.splice(index, 1);
   }
 
   @Action({

@@ -346,7 +346,11 @@
     "Confirm new pin code": "Confirm new pin code",
     "Manage NFC devices": "Manage NFC devices",
     "Confirm deletion": "Confirm deletion",
-    "Are you sure": "Are you sure you want to remove this NFC device?"
+    "Are you sure": "Are you sure you want to remove this NFC device?",
+    "Pin code must be 4 digits": "Pin code must be 4 digits",
+    "New pin code length must be 4 digits": "New pin code length must be 4 digits",
+    "New pin code must be unique from old pin code": "New pin code must be unique from old pin code",
+    "Confirmation does not match pin code": "Confirmation does not match pin code"
   },
   "signOut": {
     "message": "Signing you out! Hope you had a nice time :) Be sure to come back soon!"

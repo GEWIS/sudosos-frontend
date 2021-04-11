@@ -17,9 +17,16 @@ export default {
 
     const { ean } = data;
     let saldo;
+    let nfcDevices = [];
 
     if ('saldo' in data) {
       saldo = dinero({ amount: Number(data.saldo), currency: 'EUR' });
+    }
+
+    if ('nfcDevices' in data) {
+      nfcDevices = data.nfcDevices.map((nfcDevice: { name: any; address: any; }) => (
+        this.makeNFCDevice(nfcDevice)
+      ));
     }
 
     return {
@@ -31,6 +38,15 @@ export default {
       type: data.type,
       saldo,
       ean,
+      nfcDevices,
     } as User;
+  },
+
+  makeNFCDevice(data: any) {
+    return {
+      ...BaseTransformer.makeBaseEntity(data),
+      name: data.name,
+      address: data.address,
+    };
   },
 };

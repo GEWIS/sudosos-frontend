@@ -88,6 +88,10 @@ export default {
     // eslint-disable-next-line no-param-reassign
     route = route.toLowerCase();
 
+    if (route.includes('nfcdevice')) {
+      return setResponse(body, route, User);
+    }
+
     if (route.includes('userproducts')) {
       return setResponse(body, route, UserProducts);
     }

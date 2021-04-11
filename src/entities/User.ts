@@ -1,5 +1,6 @@
 import { Dinero } from 'dinero.js';
 import { BaseEntity } from '@/entities/BaseEntity';
+import { NFCDevice } from '@/entities/NFCDevice';
 
 export interface BaseUser extends BaseEntity {
   name: string;
@@ -12,6 +13,7 @@ export interface User extends BaseUser {
   type: UserType;
   saldo?: Dinero;
   ean?: string;
+  nfcDevices: NFCDevice[];
 }
 
 export enum UserType {

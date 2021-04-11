@@ -3,10 +3,8 @@
 
     <ConfirmationModal
       :title="$t('profile.Confirm deletion')"
-      method="del"
-      url="URL"
       :reason="$t('profile.Are you sure')"
-      @confirmModal="confirmModal">
+      @modalConfirmed="confirmModal">
     </ConfirmationModal>
 
     <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('profile.My profile')}}</h1>
@@ -57,27 +55,38 @@
           <b-card-title>{{ $t('profile.Manage NFC devices')}}</b-card-title>
           <b-card-body>
             <b-row
-              v-for="device in nfcDevices"
+              v-for="device in userState.user.nfcDevices"
               v-bind:key="device.id"
               class="nfc-device-badge mb-2">
-              <span v-show="!device.editing"
-                    @click="device.editing = true"
-                    class="mx-2 information">
+              <span
+                v-show="device.id !== editDevice.id"
+                @click="editDevice = device"
+                class="mx-2 information">
                 {{ device.name }}
               </span>
-              <b-form-input type="text" class="edit-devicename mx-2"
-                            v-on:keyup="updateDevice(device, $event)"
-                            @blur="updateDevice(device)"
-                            v-show="device.editing"
-                            v-model="device.name"/>
-              <span class="information mx-2 mx-sm-0">({{ device.uid }})</span>
-              <span v-b-modal.confirmation @click="removeDevice(device)" class="ml-auto mr-2 icon">
+              <b-form-input
+                type="text" class="edit-devicename mx-2"
+                v-on:keypress.enter="updateDevice(device)"
+                @blur="updateDevice(device)"
+                v-show="device.id === editDevice.id"
+                v-model="editDevice.name"/>
+              <span class="information mx-2 mx-sm-0">({{ device.address }})</span>
+              <span
+                v-b-modal.confirmation
+                @click="removeDevice = device"
+                class="ml-auto mr-2 icon">
               <font-awesome-icon icon="times-circle"></font-awesome-icon>
             </span>
-              <span v-show="!device.editing" @click="device.editing = true" class="mr-2 icon">
+              <span
+                v-show="editDevice.id !== device.id"
+                @click="editDevice = device"
+                class="mr-2 icon">
               <font-awesome-icon icon="pencil-alt"></font-awesome-icon>
             </span>
-              <span v-show="device.editing" @click="device.editing = false" class="mr-2 icon">
+              <span
+                v-show="editDevice.id === device.id"
+                @click="updateDevice(device)"
+                class="mr-2 icon">
               <font-awesome-icon icon="check-circle"></font-awesome-icon>
             </span>
             </b-row>
@@ -90,152 +99,129 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
+import UserModule from '@/store/modules/user';
+import { NFCDevice } from '@/entities/NFCDevice';
 
-  @Component({
-    components: {
-      ConfirmationModal,
-    },
-  })
+@Component({
+  components: {
+    ConfirmationModal,
+  },
+})
 export default class Profile extends Vue {
-    formError: string = '';
+  private userState = getModule(UserModule);
 
-    pincode: any = {
-      oldPincode: '',
-      newPincode: '',
-      confirmPincode: '',
-    };
+  editDevice: NFCDevice = {} as NFCDevice;
 
-    nfcDevices: any[] = [
-      {
-        id: '1',
-        uid: 'aa:aa:aa:aa:aa',
-        name: 'OV Chipkaart',
-        createdAt: new Date(),
-        editing: false,
-      },
-      {
-        id: '2',
-        uid: 'bb:ac:ab:ba:cc',
-        name: 'Fontys-pas',
-        createdAt: new Date(),
-        editing: false,
-      },
-    ];
+  removeDevice: NFCDevice = {} as NFCDevice;
 
-    changePincode() {
-      // TODO: Change the pincode
-      this.formError = this.formError;
+  pincode: any = {
+    oldPincode: '',
+    newPincode: '',
+    confirmPincode: '',
+  };
+
+  changePincode() {
+    this.userState.updatePinCode(this.pincode);
+  }
+
+  updateDevice(device: NFCDevice) {
+    this.userState.updateNFCDevice(device);
+    this.editDevice = {} as NFCDevice;
+  }
+
+  confirmModal() : void {
+    this.userState.removeNFCDevice(this.removeDevice);
+  }
+
+  // Validators for the form
+  get validateOldPincode() {
+    return this.pincode.oldPincode.length !== 4;
+  }
+
+  get oldPincodeFeedback() {
+    if (this.pincode.oldPincode.length > 4) {
+      return this.$t('profile.Pin code must be 4 digits').toString();
     }
+    return '';
+  }
 
-    updateDevice = (device: any, event?: any) => {
-      // If there is an event, we are replying to a keypress
-      // Otherwise, it is the blur event, and we just need to stop the editing
-      if (event) {
-        if (event.key === 'Enter') {
-          // eslint-disable-next-line
-          device.editing = false;
-          // TODO: Send new data to backend
-        }
-      } else {
-        // eslint-disable-next-line
-        device.editing = false;
-        // TODO: Send new data to backend
-      }
-    };
+  get validateNewPincode() {
+    return (
+      this.pincode.newPincode.length !== 4
+      && this.pincode.newPincode !== this.pincode.oldPincode
+    );
+  }
 
-    confirmModal() : void {
-      // TODO make sure data is removed after confirmation
-      this.formError = this.formError;
+  get newPincodeFeedback() {
+    if (this.pincode.newPincode.length !== 4) {
+      return this.$t('profile.New pin code length must be 4 digits').toString();
     }
-
-    // Validators for the form
-    get validateOldPincode() {
-      return this.pincode.oldPincode.length <= 4;
+    if (
+      this.pincode.newPincode === this.pincode.oldPincode
+      && this.pincode.newPincode !== ''
+    ) {
+      return this.$t('profile.New pin code must be unique from old pin code').toString();
     }
+    return '';
+  }
 
-    get oldPincodeFeedback() {
-      if (this.pincode.oldPincode.length > 4) {
-        return 'Pin code must be 4 digits';
-      }
-      return '';
-    }
+  get validateConfirmPincode() {
+    return this.pincode.newPincode === this.pincode.confirmPincode;
+  }
 
-    get validateNewPincode() {
-      return (
-        this.pincode.newPincode.length <= 4
-        && this.pincode.newPincode !== this.pincode.oldPincode
-      );
+  get confirmPincodeFeedback() {
+    if (this.pincode.confirmPincode.length !== this.pincode.newPincode) {
+      return this.$t('profile.Confirmation does not match pin code').toString();
     }
-
-    get newPincodeFeedback() {
-      if (this.pincode.newPincode.length > 4) {
-        return 'New pin code length must be 4 digits';
-      }
-      if (
-        this.pincode.newPincode === this.pincode.oldPincode
-        && this.pincode.newPincode !== ''
-      ) {
-        return 'New pin code must be unique from old pin code';
-      }
-      return '';
-    }
-
-    get validateConfirmPincode() {
-      return this.pincode.newPincode === this.pincode.confirmPincode;
-    }
-
-    get confirmPincodeFeedback() {
-      if (this.pincode.confirmPincode.length !== this.pincode.newPincode) {
-        return 'Confirmation does not match pin code';
-      }
-      return '';
-    }
+    return '';
+  }
 }
 </script>
 
 <style scoped lang="scss">
-  @import '~bootstrap/scss/bootstrap';
-  @import './src/styles/Card.scss';
+@import '~bootstrap/scss/bootstrap';
+@import './src/styles/Card.scss';
 
-  input {
-    max-width: 10ch;
+input {
+  max-width: 10ch;
+}
+
+button {
+  float: left !important;
+}
+
+.nfc-device-badge {
+  background-color: #e8e8e8;
+  padding: 8px;
+  margin: 0;
+  border-radius: 4px;
+  font-weight: 600;
+  display: flex;
+
+  > * {
+    margin-top: auto;
+    margin-bottom: auto;
   }
 
-  button {
-    float: left !important;
+  span:first-of-type,
+  .icon {
+    cursor: pointer;
   }
 
+  .edit-devicename {
+    min-width: 15ch;
+    width: 100%;
+  }
+}
+
+@include media-breakpoint-down(xs) {
   .nfc-device-badge {
-    background-color: #e8e8e8;
-    padding: 8px;
-    margin: 0;
-    border-radius: 4px;
-    font-weight: 600;
-    display: flex;
-
-    > * {
-      margin-top: auto;
-      margin-bottom: auto;
-    }
-
-    span:first-of-type,
-    .icon {
-      cursor: pointer;
-    }
-
-    .edit-devicename {
-      min-width: 15ch;
+    span.information,
+    input {
       width: 100%;
     }
   }
-
-  @include media-breakpoint-down(xs) {
-    .nfc-device-badge {
-      span.information,
-      input {
-        width: 100%;
-      }
-    }
-  }
+}
 </style>
