@@ -6,15 +6,15 @@
       <!-- Loop over cards in pairs of two -->
       <tr v-for="group in Math.ceil(socialDrinkCards.length / 2)" :key="group">
         <td v-for="card in 2" :key="cardGroup + card">
-          <div class="drinkcard" v-if="socialDrinkCards[group + card - 1]">
+          <div class="drinkcard" v-if="(group * 2) + card - 3 < socialDrinkCards.length">
             <p><b>{{ $t('socialDrinkCardsPrint.BAr Committee Social drink card') }}</b></p>
             <p>{{ cardGroup.name }}</p>
             <div>
-              <img :id="`card-${group + card - 1}`"
-                   :alt="socialDrinkCards[group + card - 1].ean"
+              <img :id="`card-${(group * 2) + card - 3}`"
+                   :alt="socialDrinkCards[(group * 2) + card - 3].ean"
               />
             </div>
-            <p id="barcode-text">{{ socialDrinkCards[group + card - 1].ean }}</p>
+            <p id="barcode-text">{{ socialDrinkCards[(group * 2) + card - 3].ean }}</p>
             <p v-if="cardGroup.validDates !== undefined">{{
                 `${$t('socialDrinkCardsPrint.valid')}:
                    ${formatDateTime(cardGroup.validDates.activeStartDate, false, true)}
@@ -22,7 +22,7 @@
                    ${formatDateTime(cardGroup.validDates.activeEndDate, false, true)}`
               }}</p>
             <p>{{ `${$t('socialDrinkCardsPrint.value')}:
-                  ${socialDrinkCards[group + card - 1].saldo.toFormat()}`
+                  ${socialDrinkCards[(group * 2) + card - 3].saldo.toFormat()}`
               }}</p>
           </div>
         </td>
@@ -63,7 +63,7 @@ export default class BorrelkaartenPrint extends Formatters {
     mounted() {
       this.$nextTick(() => {
         this.socialDrinkCards.forEach((card, i) => {
-          const ean = `#card-${i + 1}`;
+          const ean = `#card-${i}`;
           JsBarcode(ean, card.ean, {
             width: 2.05,
             height: 70,
