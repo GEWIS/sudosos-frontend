@@ -28,14 +28,14 @@ export default class ProductsModule extends VuexModule {
   addProduct(product: {}) {
     const productResponse = APIHelper.postResource('products', product);
     const productToAdd = ProductTransformer.makeProduct(productResponse) as Product;
-    this.products.push(productToAdd);
+    this.userProducts.push(productToAdd);
   }
 
   @Mutation
   removeProduct(product: Product) {
     APIHelper.delResource('products', product);
     const index = this.products.findIndex(prd => prd.id === product.id);
-    this.products.splice(index, 1);
+    this.userProducts.splice(index, 1);
   }
 
   @Mutation

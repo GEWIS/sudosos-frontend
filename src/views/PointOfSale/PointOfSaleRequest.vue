@@ -8,12 +8,28 @@
       <b-col md="3" sm="12" class="mb-4 mb-md-0">
         <h5>{{ $t('posRequest.General') }}</h5>
         <div class="pl-1">
-          <b>{{ $t('posRequest.Title') }}</b>
-          <b-form-input class="my-2" type="text" v-model="requestedPOS.name" />
+          <b-form-group
+            id="name-label"
+            label-cols="12"
+            label-cols-sm="12"
+            :label="$t('posRequest.Title')"
+            label-align="left"
+            label-for="name"
+            :state="nameState"
+            :invalid-feedback="invalidName"
+          >
+            <b-form-input
+              id="name"
+              name="name"
+              type="text"
+              v-model="name"
+              :state="nameState"
+            ></b-form-input>
+          </b-form-group>
           <b>{{ $t('posRequest.Selected containers')}}</b>
           <ul class="pl-4">
             <li
-              v-for="container in requestedPOS.containers"
+              v-for="container in requestContainers"
               v-bind:key="container.id"
             >
               <p class="text-truncate m-0">{{ container.name }}</p>
@@ -24,7 +40,7 @@
           class="mt-2"
           variant="success"
           @click="requestPOS"
-          :disabled="requestButtonDisabled">
+          :disabled="nameState">
           {{ $t('posRequest.Request')}}
         </b-button>
       </b-col>
@@ -44,6 +60,7 @@
           :enabled="true"
           :editable="false"
           @toggled="containerToggled"
+          v-model="editContainer"
           v-on:productDetails="showProductDetails"
         />
 
@@ -54,6 +71,7 @@
           :enabled="true"
           :editable="true"
           @toggled="containerToggled"
+          v-model="editContainer"
           v-on:addProduct="prepAddingProduct"
           v-on:editProduct="prepEdittingProduct"
           v-on:productDetails="showProductDetails"
@@ -108,15 +126,13 @@ import { Product } from '@/entities/Product';
 export default class PointOfSaleRequest extends Vue {
   private containerState = getModule(ContainerModule);
 
-  requestedPOS: PointOfSale = {
-    containers: [] as Container[],
-  } as PointOfSale;
+  name: string | null = null;
+
+  requestContainers: Container[] = [];
 
   containers: Container[] = [];
 
   publicContainers: Container[] = [];
-
-  addedContainers: Container[] = [];
 
   editContainer: Container = {} as Container;
 
@@ -134,17 +150,19 @@ export default class PointOfSaleRequest extends Vue {
   }
 
   /**
-   * Method that either deletes or adds a container to the requestedPOS
+   * Method that either deletes or adds a container to the requestedContainers
    *
    * @param data: object that contains the container that needs to be added or removed and the
    * state of the checkbox
    */
   containerToggled(data: { container: Container, state: boolean }) {
     if (data.state) {
-      this.requestedPOS.containers.push(data.container);
+      this.requestContainers.push(data.container);
     } else {
-      const index = this.requestedPOS.containers.findIndex(cntr => cntr.id === data.container.id);
-      this.requestedPOS.containers.splice(index, 1);
+      const index = this.requestContainers.findIndex(
+        (cntr: Container) => cntr.id === data.container.id,
+      );
+      this.requestContainers.splice(index, 1);
     }
   }
 
@@ -154,25 +172,6 @@ export default class PointOfSaleRequest extends Vue {
   addContainer(): void {
     this.editContainer = {} as Container;
     this.$bvModal.show('edit-container');
-  }
-
-  // TODO: Fix rest below :):)
-
-  /*
-  Method for editting container container, once finished it's data will be updated everywhere
-   */
-  editStorage(container: Container): void {
-    let i = this.addedContainers.findIndex(s => s.id === container.id);
-
-    if (i > 0) {
-      this.addedContainers[i] = container;
-    }
-
-    i = this.requestedPOS.containers.findIndex(s => s.id === container.id);
-
-    if (i > 0) {
-      this.requestedPOS.containers[i] = container;
-    }
   }
 
   /**
@@ -187,10 +186,10 @@ export default class PointOfSaleRequest extends Vue {
   }
 
   /**
-   * Method for preparing editting an product
+   * Method for preparing editing an product
    *
-   * @param container: The container in which a product is being editted
-   * @param product: The product which is being editted in the container
+   * @param container: The container in which a product is being edited
+   * @param product: The product which is being edited in the container
    */
   prepEdittingProduct(container: Container, product: Product): void {
     this.activeContainer = container;
@@ -198,50 +197,17 @@ export default class PointOfSaleRequest extends Vue {
     this.$bvModal.show('edit-product');
   }
 
-  /*
-  Method to add new products to the container container. If the container container was already
-  added to the requestedPOS is will be updated there as well.
-  */
-  addProduct(product: Product) : void {
-    const i = this.addedContainers.findIndex(s => s.id === this.activeContainer.id);
-    this.addedContainers[i].products.push(product);
-    this.editStorage(this.addedContainers[i]);
-  }
-
-  /*
-  Method to edit a currently existing product and updating it's data. Once updated it will also be
-  updated in the requestedPOS if it's container container was already in there.
-  */
-  editExistingProduct(product: Product): void {
-    const i = this.addedContainers.findIndex(s => s.id === this.activeContainer.id);
-    const j = this.addedContainers[i].products.findIndex(p => p.id === product.id);
-    this.addedContainers[i].products[j] = product;
-    this.editStorage(this.addedContainers[i]);
-  }
-
-  /*
-  Once deletion of container is confirmed it should be removed from the editted containers as
-  well as the containers that were selected for the requestedPOS
+  /**
+   * Once deletion of container is confirmed it should be removed from
+   * the edited containers as well as the containers that were selected
+   * for the requestedContainers
   */
   confirmStorageDelete(): void {
-    this.addedContainers = this.addedContainers.filter(s => s.id !== this.editContainer.id);
-    this.requestedPOS.containers = this.requestedPOS.containers.filter(
-      s => s.id !== this.editContainer.id,
-    );
-  }
-
-  /**
-   * Method for deleting product from container
-   *
-   * @param product: product that needs to be deleted
-   */
-  deleteProduct(product: Product): void {
-    const i = this.addedContainers.findIndex(s => s.id === this.activeContainer.id);
-    this.addedContainers[i].products = this.addedContainers[i].products.filter(
-      p => p.id !== product.id,
-    );
-    this.editStorage(this.addedContainers[i]);
-    this.$bvModal.hide('edit-product');
+    const index = this.requestContainers.findIndex(cntnr => cntnr.id === this.editContainer.id);
+    if (index >= 0) {
+      this.requestContainers.splice(index, 1);
+    }
+    this.containerState.removeContainer(this.editContainer);
   }
 
   /**
@@ -261,10 +227,22 @@ export default class PointOfSaleRequest extends Vue {
     // TODO: Verwerking data
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  get requestButtonDisabled() {
-    return false;
-    // return this.requestedPOS.name.length < 1 || this.requestedPOS.owner.id === -1;
+  /**
+   * Checks if the name is correctly set, if initialized it won't display an
+   * error because the name is still null
+   *
+   * @return {null | boolean}
+   */
+  get nameState() {
+    return this.name === null ? null : this.name.length > 0;
+  }
+
+  get invalidName() {
+    if (!this.nameState) {
+      return this.$t('posRequest.name invalid').toString();
+    }
+
+    return '';
   }
 }
 </script>
@@ -280,5 +258,9 @@ export default class PointOfSaleRequest extends Vue {
     text-transform: uppercase;
     margin: 1em;
   }
+}
+
+#name-label {
+  font-weight: 700;
 }
 </style>

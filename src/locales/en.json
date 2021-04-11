@@ -73,8 +73,7 @@
     "Containers": "Containers",
     "add container": "Add container",
     "Request": "Request",
-    "Please enter a name for this POS": "Please enter a name for this POS",
-    "Please select an owner for this POS": "Please select an owner for this POS",
+    "name invalid": "Please provide a valid name that is longer than 0 characters",
     "confirm": "Confirm deletion",
     "are you sure": "Are you sure you want to delete this container?"
   },

@@ -73,8 +73,7 @@
     "Containers": "Containers",
     "add container": "Container toevoegen",
     "Request": "Vraag aan",
-    "Please enter a name for this POS": "Voer alsjeblieft een naam in voor dit verkooppunt",
-    "Please select an owner for this POS": "Selecteer alsjeblieft een eigenaar voor dit verkooppunt",
+    "name invalid": "Voer een correcte naam in van die langer is dan 0 tekens",
     "confirm": "Bevestig verwijderen",
     "are you sure": "Weet je zeker dat je deze container wil verwijderen?"
   },

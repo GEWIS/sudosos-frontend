@@ -178,12 +178,13 @@
       </b-form-group>
     </div>
 
+    <!-- TODO: Fix product delete   -->
     <template v-slot:modal-footer="{ }">
       <b-button
         v-if="Object.keys(editProduct).length > 0"
         variant="primary"
         class="btn-primary mr-auto"
-        v-on:click="$emit('productDeleted', editProduct)"
+        v-on:click="deleteProduct"
       >{{ $t('editProductModal.Delete product') }}
       </b-button>
       <b-button
@@ -320,6 +321,16 @@ export default class EditProductModal extends Formatters {
     } else {
       this.setInvalidStates();
     }
+  }
+
+  deleteProduct() {
+    const product = this.constructProduct();
+
+    this.containerState.removeProduct({
+      container: this.container,
+      product,
+    });
+    this.$bvModal.hide('edit-product');
   }
 
   /**

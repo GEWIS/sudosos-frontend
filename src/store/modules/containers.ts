@@ -1,5 +1,5 @@
 import {
-  Action, Module, Mutation, VuexModule,
+  Action, getModule, Module, Mutation, VuexModule,
 } from 'vuex-module-decorators';
 import store from '@/store';
 import APIHelper from '@/mixins/APIHelper';
@@ -7,6 +7,9 @@ import { Product } from '@/entities/Product';
 import { Container } from '@/entities/Container';
 import ProductTransformer from '@/transformers/ProductTransformer';
 import ContainerTransformer from '@/transformers/ContainerTransformer';
+import ProductsModule from '@/store/modules/products';
+
+const productState = getModule(ProductsModule);
 
 @Module({
   dynamic: true, namespaced: true, store, name: 'ContainerModule',
@@ -39,6 +42,7 @@ export default class ContainerModule extends VuexModule {
     // If this is not an existing product yet we need to add it
     if (!('id' in data.product) || data.product.id === null) {
       productToAdd = APIHelper.postResource('products', data.product) as Product;
+      productState.addProduct(data.product);
     }
 
     // TODO: Check if this works with real API
@@ -53,10 +57,26 @@ export default class ContainerModule extends VuexModule {
     let productToEdit = APIHelper.putResource('products', data.product);
     productToEdit = ProductTransformer.makeProduct(productToEdit);
 
+    productState.updateProduct(productToEdit);
+
+    // TODO: Check if this works with real API
+    const containerResponse = APIHelper.putResource(`containers/${data.container.id}/product`, productToEdit);
+    // const updatedContainer = ContainerTransformer.makeContainer(containerResponse);
     const index = this.containers.findIndex(cntnr => cntnr.id === data.container.id);
     const prdIndex = this.containers[index].products.findIndex(prod => prod.id === data.product.id);
 
     this.containers[index].products.splice(prdIndex, 1, productToEdit as Product);
+  }
+
+  @Mutation
+  removeProduct(data: {container: Container, product: {id: number | null} }) {
+    // TODO: Check if this works with real API
+    const containerResponse = APIHelper.delResource(`containers/${data.container.id}/product`, data.product);
+    // const updatedContainer = ContainerTransformer.makeContainer(containerResponse);
+    const index = this.containers.findIndex(cntnr => cntnr.id === data.container.id);
+    const prdIndex = this.containers[index].products.findIndex(prod => prod.id === data.product.id);
+
+    this.containers[index].products.splice(prdIndex, 1);
   }
 
   @Mutation
