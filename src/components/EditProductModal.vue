@@ -41,7 +41,9 @@
 
       <!--  If a product is being added to a container the user can pick an existing  -->
       <!--  product from here to add it    -->
-      <div v-if="container && Object.keys(editProduct).length === 0 && products.length > 0">
+      <div v-if="Object.keys(container).length > 0
+        && Object.keys(editProduct).length === 0
+        && products.length > 0">
         <h6>{{ $t('editProductModal.Add existing') }}</h6>
 
         <b-form-group

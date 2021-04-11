@@ -11,14 +11,14 @@
           <b-button
             class="my-2 text-truncate"
             variant="success"
-            v-on:click="prepAddingProduct( '')"
+            v-on:click="prepAddingProduct({})"
           >
             <font-awesome-icon icon="plus" />
             {{ $t('manageProducts.Add product') }}
           </b-button>
         </div>
         <ProductTable
-          :productsProp="fakeProducts"
+          :productsProp="products"
           :editable="true"
           :enabled="true"
           v-on:editProduct="prepEditStandardProduct"
@@ -52,22 +52,17 @@
 
     <EditContainerModal
       :editContainer="editContainer"
-      v-on:storageAdded="addStorage"
-      v-on:storageEdited="editStorage"
     />
 
     <EditProductModal
       :editProduct="editProduct"
-      :container="addFromContainer"
-      v-on:productAdded="addProduct"
-      v-on:productEdited="editExistingProduct"
-      v-on:productDeleted="deleteProduct"
+      :container="activeContainer"
     />
 
     <ConfirmationModal
       :reason="$t('manageProducts.Are you sure')"
       :title="$t('manageProducts.Confirm')"
-      v-on:modalConfirmed="confirmStorageDelete"
+      v-on:modalConfirmed="confirmContainerDelete"
     />
 
     <ProductInfoModal
@@ -114,119 +109,67 @@ export default class ManageProducts extends Vue {
 
   editProduct: Product = {} as Product;
 
-  addContainerID: number = 0;
-
   infoProduct: Product = {} as Product;
 
-  fakeProducts: Product[] = [];
+  products: Product[] = [];
 
-  addFromContainer: boolean = false;
+  activeContainer: Container = {} as Container;
 
-  // beforeMount() {
-  //   this.fakeProducts = this.productState.getProducts as Product[];
-  //   this.standardContainers = this.containerState.getPublicContainers;
-  // }
+  beforeMount() {
+    this.containerState.fetchContainers();
+    this.containerState.fetchPublicContainers();
+    this.productState.fetchProducts();
+    this.products = this.productState.userProducts;
+    this.standardContainers = this.containerState.containers;
+  }
 
-  /*
-Method for adding a new container, makes sure editContainer is an empty Container object
- */
+  /**
+   * Method for adding a new container, makes sure editContainer is an empty Container object
+   */
   addContainer(): void {
     this.editContainer = {} as Container;
     this.$bvModal.show('edit-container');
   }
 
-  /*
-  Method for adding a container container
+  /**
+   * Method for preparing adding a product
+   *
+   * @param container: The container that a product is being added to
    */
-  addStorage(container: Container): void {
-    this.standardContainers.push(container);
-  }
-
-  /*
-  Method for editting container, once finished it's data will be updated everywhere
-   */
-  editStorage(container: Container): void {
-    const i = this.standardContainers.findIndex(s => s.id === container.id);
-
-    if (i > 0) {
-      this.standardContainers[i] = container;
-    }
-  }
-
-  /*
-  Method for preparing adding a product
-   */
-  prepAddingProduct(id: number) : void {
-    this.addContainerID = id;
-    this.addFromContainer = id > 0;
+  prepAddingProduct(container: Container) : void {
+    this.activeContainer = container;
     this.editProduct = {} as Product;
     this.$bvModal.show('edit-product');
   }
 
-  /*
-  Method for preparing editting an product
+  /**
+   * Method for preparing editting an product
    */
-  prepEditContainerProduct(id: number, product: Product): void {
-    this.addContainerID = id;
+  prepEditContainerProduct(container: Container, product: Product): void {
+    this.activeContainer = container;
     this.editProduct = product;
     this.$bvModal.show('edit-product');
   }
 
   prepEditStandardProduct(product: Product): void {
-    this.addContainerID = -1;
     this.editProduct = product;
     this.$bvModal.show('edit-product');
   }
 
-  /*
-  Method to add new products to the container container. If the container container was already
-  added to the requestedPOS is will be updated there as well.
-  */
-  addProduct(product: Product) : void {
-    const i = this.standardContainers.findIndex(s => s.id === this.addContainerID);
-    this.standardContainers[i].products.push(product);
-    this.editStorage(this.standardContainers[i]);
+  /**
+   * Once deletion of container is confirmed it should be removed from
+   * the edited containers as well as the containers that were selected
+   * for the requestedContainers
+   */
+  confirmContainerDelete(): void {
+    this.containerState.removeContainer(this.editContainer);
   }
 
-  /*
-  Method to edit a currently existing product and updating it's data. Once updated it will also be
-  updated in the requestedPOS if it's container container was already in there.
-  */
-  editExistingProduct(product: Product): void {
-    if (this.addContainerID === -1) {
-      const i = this.fakeProducts.findIndex(s => s.id === product.id);
-      this.fakeProducts[i] = product;
-    } else {
-      const i = this.standardContainers.findIndex(s => s.id === this.addContainerID);
-      const j = this.standardContainers[i].products.findIndex(p => p.id === product.id);
-      this.standardContainers[i].products[j] = product;
-      this.editStorage(this.standardContainers[i]);
-    }
-  }
-
-  /*
-  Once deletion of container is confirmed it should be removed from the editted containers as
-  well as the containers that were selected for the requestedPOS
-  */
-  confirmStorageDelete(): void {
-    this.standardContainers = this.standardContainers.filter(s => s.id !== this.editContainer.id);
-  }
-
-  /*
-  Method for deleting product from container
-  */
-  deleteProduct(product: Product): void {
-    const i = this.standardContainers.findIndex(s => s.id === this.addContainerID);
-    this.standardContainers[i].products = this.standardContainers[i].products.filter(
-      p => p.id !== product.id,
-    );
-    this.editStorage(this.standardContainers[i]);
-    this.$bvModal.hide('edit-product');
-  }
-
-  /*
-  Method for showing product details
-  */
+  /**
+   * Method for showing product details
+   *
+   * @param product: The product that needs to be shown
+   */
   showProductDetails(product: Product): void {
     this.infoProduct = product;
     this.$nextTick(() => {
@@ -237,7 +180,7 @@ Method for adding a new container, makes sure editContainer is an empty Containe
 </script>
 
 <style lang="scss" scoped>
-@import '~bootstrap/scss/bootstrap';
+//@import '~bootstrap/scss/bootstrap';
 @import './src/styles/Card.scss';
 
 .row {

@@ -91,7 +91,7 @@
     <ConfirmationModal
       :reason="$t('posRequest.are you sure')"
       :title="$t('posRequest.confirm')"
-      v-on:modalConfirmed="confirmStorageDelete"
+      v-on:modalConfirmed="confirmContainerDelete"
     />
 
     <ProductInfoModal
@@ -111,7 +111,6 @@ import ConfirmationModal from '@/components/ConfirmationModal.vue';
 import ProductInfoModal from '@/components/ProductInfoModal.vue';
 import ContainerModule from '@/store/modules/containers';
 import { Container } from '@/entities/Container';
-import { PointOfSale } from '@/entities/PointOfSale';
 import { Product } from '@/entities/Product';
 
 @Component({
@@ -202,7 +201,7 @@ export default class PointOfSaleRequest extends Vue {
    * the edited containers as well as the containers that were selected
    * for the requestedContainers
   */
-  confirmStorageDelete(): void {
+  confirmContainerDelete(): void {
     const index = this.requestContainers.findIndex(cntnr => cntnr.id === this.editContainer.id);
     if (index >= 0) {
       this.requestContainers.splice(index, 1);

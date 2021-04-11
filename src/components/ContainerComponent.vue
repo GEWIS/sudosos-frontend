@@ -203,7 +203,6 @@ export default class ContainerComponent extends Vue {
    * @param product Product that is being clicked
    */
   productDetails(product: Product) {
-    console.log(product.price.getAmount());
     if (this.canEdit && this.enabled && this.editable) {
       this.$emit('editProduct', this.container, product);
     } else {
