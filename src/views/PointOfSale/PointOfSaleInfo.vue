@@ -24,10 +24,10 @@
       </b-col>
       <b-col md="9" sm="12" class="containers-container">
         <p class="containers-header">{{ $t('posInfo.Containers') }}</p>
-        <Container
+        <ContainerComponent
           v-for="container in infoPOS.containers"
-          v-bind:key="container.id"
-          :containerID="container.id"
+          :key="container.id"
+          :container="container"
           :enabled="false"
           v-on:productDetails="showProductDetails"
         />
@@ -54,7 +54,7 @@
 import { Component, Prop } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import Formatters from '@/mixins/Formatters';
-import Container from '@/components/ContainerComponent.vue';
+import ContainerComponent from '@/components/ContainerComponent.vue';
 import TransactionsTable from '@/components/TransactionsTable.vue';
 import ProductInfoModal from '@/components/ProductInfoModal.vue';
 import { PointOfSale } from '@/entities/PointOfSale';
@@ -63,7 +63,7 @@ import PointOfSaleModule from '@/store/modules/pointsofsale';
 
 @Component({
   components: {
-    Container,
+    ContainerComponent,
     ProductInfoModal,
     TransactionsTable,
   },
