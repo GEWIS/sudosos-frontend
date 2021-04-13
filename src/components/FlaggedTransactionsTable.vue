@@ -24,26 +24,32 @@
           :items="transactionFlagList"
           :fields="fields"
           tbody-tr-class="transaction-flag-row"
-          :per-page="perPage" :current-page="currentPage"
+          :per-page="perPage"
+          :current-page="currentPage"
           id="transaction-flag-table"
-          :filter="filterValues.filterWay"
+          :filter="filterValues.lastUpdate"
           :filter-function="filterRows"
           v-on:filtered="filterDone"
           v-on:row-clicked="rowClicked"
         >
 
           <!-- Templates for each row cell -->
-          <template v-slot:cell(formattedDate)="data">
-            {{ data.item.formattedDate }}
+          <template v-slot:cell(updatedAt)="data">
+            {{ formatDateTime(data.item.updatedAt, true) }}
           </template>
-          <template v-slot:cell(flaggedById)="data">{{ data.item.flaggedById }}</template>
+
+          <template v-slot:cell(flaggedBy)="data">
+            {{ data.item.flaggedBy.name }}
+          </template>
 
           <template v-slot:cell(status)="data">
-            <font-awesome-icon v-if="data.item.status === 'ACCEPTED'"
+            <font-awesome-icon
+              v-if="data.item.status === 2"
                                icon="check"
                                class="icon green"
             />
-            <font-awesome-icon v-else-if="data.item.status === 'REJECTED'"
+            <font-awesome-icon
+              v-else-if="data.item.status === 3"
                                icon="times"
                                class="icon red"
             />
@@ -56,7 +62,7 @@
           </template>
 
           <template v-slot:cell(id)="data">
-              <font-awesome-icon v-if="data" icon="info-circle" class="icon-grey" />
+            <font-awesome-icon v-if="data" icon="info-circle" class="icon-grey" />
           </template>
         </b-table>
       </b-card-body>
@@ -87,14 +93,14 @@
 import {
   Component, Prop,
 } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
 import Formatters from '@/mixins/Formatters';
-import TransactionTableFilter from '@/components/TransactionTableFilter.vue';
 import eventBus from '@/eventbus';
+import TransactionTableFilter from '@/components/TransactionTableFilter.vue';
 import { Transaction } from '@/entities/Transaction';
-import { TransactionFlag, FlagStatus } from '@/entities/TransactionFlag';
+import { FlaggedTransaction, FlagStatus } from '@/entities/FlaggedTransaction';
 import { initFilter, TableFilter } from '@/entities/TableFilter';
-
-import fakeTransactionFlags from '@/assets/transactionFlags';
+import FlaggedTransactionModule from '@/store/modules/flaggedtransaction';
 
 @Component({
   components: {
@@ -121,9 +127,9 @@ export default class TransactionFlagsTable extends Formatters {
 
   @Prop({ default: true, type: Boolean }) private csv!: boolean;
 
-  userAccount = this.$root.$data.currentUser;
+  private flaggedTransactionsState = getModule(FlaggedTransactionModule);
 
-  transactionFlagList: TransactionFlag[] = [];
+  transactionFlagList: FlaggedTransaction[] = [];
 
   perPage: number = 12;
 
@@ -140,12 +146,12 @@ export default class TransactionFlagsTable extends Formatters {
    */
   fields: Object[] = [
     {
-      key: 'formattedDate',
+      key: 'updatedAt',
       label: this.getTranslation('transactionFlagsComponent.When'),
       locale_key: 'When',
     },
     {
-      key: 'flaggedById',
+      key: 'flaggedBy',
       label: this.getTranslation('transactionFlagsComponent.Who'),
       locale_key: 'Who',
     },
@@ -169,10 +175,8 @@ export default class TransactionFlagsTable extends Formatters {
 
   beforeMount() {
     this.filterValues = initFilter();
-
-    this.transactionFlagList = this.formatTransactionFlags(
-      fakeTransactionFlags.fetchTransactionFlags(this.userAccount),
-    );
+    this.flaggedTransactionsState.fetchFlaggedTransactions();
+    this.transactionFlagList = this.flaggedTransactionsState.flaggedTransactions;
 
     this.totalRows = this.transactionFlagList.length;
 
@@ -185,21 +189,23 @@ export default class TransactionFlagsTable extends Formatters {
   /**
    * Filters the rows based time constraints and user selected options
    *
-   * @param data TransactionFlag that needs to be filtered
+   * @param data FlaggedTransaction that needs to be filtered
    * @param prop String that we can filter against
-  */
-  filterRows(data: TransactionFlag, prop: String): boolean {
+   */
+  filterRows(data: FlaggedTransaction, prop: String): boolean {
     let other = true;
     let date: boolean;
 
     // First check if there is a date constraint
     if (this.filterValues.fromDate === '' && this.filterValues.toDate === '') {
       date = true;
-    } else {
+    } else if (data.createdAt) {
       const dateFrom = new Date(`${this.filterValues.fromDate} 00:00:00`);
       const dateTo = new Date(`${this.filterValues.toDate} 23:59:59`);
 
       date = data.createdAt >= dateFrom || data.createdAt <= dateTo;
+    } else {
+      date = true;
     }
 
     // Check if there is a hideHandled constraint
@@ -219,15 +225,15 @@ export default class TransactionFlagsTable extends Formatters {
    * @param t: List of transactions
    */
   formatTransactionFlags: Function = (
-    t: TransactionFlag[],
-  ): TransactionFlag[] => t.map(flag => ({
+    t: FlaggedTransaction[],
+  ): FlaggedTransaction[] => t.map(flag => ({
     ...flag,
-    formattedDate: this.formatDateTime(flag.createdAt, true),
+    formattedDate: this.formatDateTime(flag.createdAt as Date, true),
   }));
 
   /**
-    * Method that grabs extra transactions when 2 pages or less are left
-    */
+   * Method that grabs extra transactions when 2 pages or less are left
+   */
   pageClicked(page: number) : void {
     if (this.previousPage < page && page >= (Math.ceil(this.totalRows / this.perPage) - 2)) {
       // TODO: Grab new data
@@ -269,9 +275,9 @@ tr.transaction-flag-row:hover {
 .cell-reason {
   div,
   a {
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }
 

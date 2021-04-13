@@ -7,6 +7,7 @@
     :placeholder="$t('fileFormPreview.Choose image drop')"
     :drop-placeholder="$t('fileFormPreview.Drop file')"
     :disabled="disabled"
+    :state="state"
   ></b-form-file>
 </template>
 
@@ -21,13 +22,9 @@ export default class FileFormPreview extends Vue {
 
     @Prop({ default: false }) disabled?: boolean;
 
-    file: File = new File([], '');
+    @Prop() state?: void;
 
-    mounted() {
-      if (this.img) {
-        this.setFilePreview(this.file, this.img);
-      }
-    }
+    file: File = new File([], '');
 
     setFilePreview = (file: File, src?: string) : void => {
       if (document.activeElement !== null) {
@@ -59,6 +56,13 @@ export default class FileFormPreview extends Vue {
 
       // To let the v-model property know that the file has been updated
       this.$emit('input', value);
+    }
+
+    @Watch('img')
+    onIMGChange(value: string | undefined, old: string | undefined) {
+      if (value !== undefined) {
+        this.setFilePreview(this.file, value);
+      }
     }
 }
 </script>

@@ -14,7 +14,6 @@ import POSOverview from '@/components/POSOverview.vue';
       POSOverview,
     },
   })
-
 export default class ManagePointOfSale extends Vue {
 }
 </script>

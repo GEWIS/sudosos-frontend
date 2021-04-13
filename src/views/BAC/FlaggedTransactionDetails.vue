@@ -85,53 +85,8 @@
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator';
 import Formatters from '../../mixins/Formatters';
-import { TransactionFlag, FlagStatus } from '@/entities/TransactionFlag';
-import { Transaction } from '@/entities/Transaction';
+import { FlaggedTransaction } from '@/entities/FlaggedTransaction';
 import TransactionDetails from '@/components/TransactionDetails.vue';
-
-function fetchTransaction(): TransactionFlag {
-  return {
-    id: '001',
-    flaggedById: 'Ruben',
-    status: FlagStatus.TODO,
-    reason:
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    transaction: {
-      id: '001',
-      soldToId: 'Ruben',
-      authorized: 'Ruben',
-      totalPrice: 2870,
-      pointOfSale: 'Bar (GEWIS)',
-      activityId: '001',
-      subTransactions: [{
-        transactionId: '001',
-        productId: '001',
-        storageId: '001',
-        amount: 2,
-        pricePerProduct: 70,
-      },
-      {
-        transactionId: '002',
-        productId: '002',
-        storageId: '002',
-        amount: 5,
-        pricePerProduct: 130,
-      },
-      {
-        transactionId: '003',
-        productId: '003000000000000000',
-        storageId: '003',
-        amount: 8,
-        pricePerProduct: 260,
-      }],
-      comment: 'You spent a total of €28.70',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    } as Transaction,
-  };
-}
 
     @Component({
       components: {
@@ -139,15 +94,17 @@ function fetchTransaction(): TransactionFlag {
       },
     })
 export default class FlaggedTransactionDetails extends Formatters {
-    @Prop() private transactionID!: string;
+    @Prop() private transactionID!: number;
 
-    flaggedTransaction: TransactionFlag = {} as TransactionFlag;
+    flaggedTransaction: FlaggedTransaction = {} as FlaggedTransaction;
 
-      flagReasonText: string = '';
+    flagReasonText: string = '';
 
-      beforeMount() {
-        this.flaggedTransaction = fetchTransaction();
-      }
+  // beforeMount() {
+  //   const flgd = flaggedTransactionStore.flaggedTransactions;
+  //   const index = flgd.findIndex(flg => flg.id === this.transactionID);
+  //   this.flaggedTransaction = flaggedTransactionStore.flaggedTransactions[index];
+  // }
 }
 </script>
 

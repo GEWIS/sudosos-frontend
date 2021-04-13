@@ -4,13 +4,16 @@
     :ok-title="$t('editProductModal.save')"
     :cancel-title="$t('editProductModal.cancel')"
     :title="modalTitle"
+    v-on:shown="setProduct"
     size="lg"
     hide-header-close
     centered>
     <div id="edit-container-input">
+
+      <!--  If a product is being editted we show some extra info  -->
       <b-form-row v-if="Object.keys(editProduct).length > 0">
         <b-col cols="12" sm="3">
-          <span class="font-weight-bold">{{ $t('editProductModal.added on')}}</span>
+          <span class="font-weight-bold">{{ $t('editProductModal.added on') }}</span>
         </b-col>
         <b-col cols="12" sm="3">
           {{ formatDateTime(editProduct.createdAt, true) }}
@@ -19,54 +22,60 @@
 
       <b-form-row v-if="Object.keys(editProduct).length > 0">
         <b-col cols="12" sm="3">
-          <span class="font-weight-bold">{{ $t('editProductModal.added by')}}</span>
+          <span class="font-weight-bold">{{ $t('editProductModal.updated on') }}</span>
         </b-col>
         <b-col cols="12" sm="3">
-          {{ editProduct.ownerId }}
+          {{ formatDateTime(editProduct.updatedAt, true) }}
         </b-col>
       </b-form-row>
+
 
       <b-form-row v-if="Object.keys(editProduct).length > 0">
         <b-col cols="12" sm="3">
-          <span class="font-weight-bold">{{ $t('editProductModal.container')}}</span>
+          <span class="font-weight-bold">{{ $t('editProductModal.added by') }}</span>
         </b-col>
         <b-col cols="12" sm="3">
-          {{ editProduct.ownerId }}
+          {{ editProduct.owner.name }}
         </b-col>
       </b-form-row>
 
-      <div v-if="container && Object.keys(editProduct).length === 0">
+      <!--  If a product is being added to a container the user can pick an existing  -->
+      <!--  product from here to add it    -->
+      <div v-if="Object.keys(container).length > 0
+        && Object.keys(editProduct).length === 0
+        && products.length > 0">
+        <h6>{{ $t('editProductModal.Add existing') }}</h6>
 
-      <h6>Add existing product</h6>
-
-      <b-form-group
-        label-cols="12"
-        label-cols-sm="3"
-        :label="$t('editProductModal.Add existing product')"
-        label-align="left"
-        label-for="select"
-      >
-        <v-select :options="products"
-                  :getOptionLabel="option => option.name"
-                  v-model="selectedProduct"
+        <b-form-group
+          label-cols="12"
+          label-cols-sm="3"
+          :label="$t('editProductModal.Existing products')"
+          label-align="left"
+          label-for="select"
         >
-          <template v-slot:selected-option="product">
-            <img :src="product.picture" alt="product image">
-            {{ product.name }}
-          </template>
-          <template v-slot:option="product">
-            <img :src="product.picture" alt="product image">
-            {{ product.name }}
-          </template>
-        </v-select>
-      </b-form-group>
+          <v-select
+            :options="products"
+            :getOptionLabel="option => option.name"
+            v-model="selectedProduct"
+          >
+            <template v-slot:selected-option="product">
+              <img :src="product.picture" alt="product image">
+              {{ product.name }}
+            </template>
+            <template v-slot:option="product">
+              <img :src="product.picture" alt="product image">
+              {{ product.name }}
+            </template>
+          </v-select>
+        </b-form-group>
 
-      <hr class="my-4">
+        <hr class="my-4">
 
-      <h6>Add new product</h6>
+        <h6>{{ addNewTitle }}</h6>
 
       </div>
 
+      <!--   This is to form for adding a new product or editting an existing one   -->
       <b-form-group
         label-cols="12"
         label-cols-sm="3"
@@ -91,16 +100,42 @@
         label-cols-sm="3"
         :label="$t('editProductModal.Category')"
         label-align="left"
-        label-for="category"
+        label-for="product-category"
         :state="categoryState"
-        :invalid-feedback="invalidCategory"
+        :invalid-feedback="invalidProductCategory"
+      >
+        <b-form-select
+          id="product-category"
+          name="product-category"
+          value-field="text"
+          v-model="category"
+          :disabled="selectedProduct !== null"
+          :options="productCategoryState.productCategories"
+          :state="categoryState"
+        >
+          <template #first>
+            <b-form-select-option value="null" disabled>
+              {{ $t('editProductModal.Please select') }}
+            </b-form-select-option>
+          </template>
+        </b-form-select>
+      </b-form-group>
+
+      <b-form-group
+        label-cols="12"
+        label-cols-sm="3"
+        :label="$t('editProductModal.Alcohol Percentage')"
+        label-align="left"
+        label-for="alcohol"
+        v-if="category === 'Alcoholic'"
       >
         <b-form-input
-          id="category"
-          name="category"
-          type="text"
-          v-model="category"
-          :state="categoryState"
+          id="alcohol"
+          name="alcohol"
+          type="number"
+          inputmode="decimal"
+          step="0.01"
+          v-model="alcoholPercentage"
           :disabled="selectedProduct !== null"
         ></b-form-input>
       </b-form-group>
@@ -129,85 +164,35 @@
       <b-form-group
         label-cols="12"
         label-cols-sm="3"
-        :label="$t('editProductModal.Traysize')"
-        label-align="left"
-        label-for="traysize"
-        :state="traysizeState"
-        :invalid-feedback="invalidTraysize"
-      >
-        <b-form-input
-          id="traysize"
-          name="traysize"
-          type="number"
-          inputmode="decimal"
-          step="1"
-          v-model="traySize"
-          :state="traysizeState"
-          :disabled="selectedProduct !== null"
-        ></b-form-input>
-      </b-form-group>
-
-      <b-form-group
-        label-cols="12"
-        label-cols-sm="3"
-        :label="$t('editProductModal.Alcoholic')"
-        label-align="left"
-        label-for="alcoholic"
-      >
-        <b-form-checkbox
-          id="alcoholic"
-          name="alcoholic"
-          v-model="alcoholic"
-          switch
-          :disabled="selectedProduct !== null"
-        />
-      </b-form-group>
-
-      <b-form-group
-        label-cols="12"
-        label-cols-sm="3"
-        :label="$t('editProductModal.Negative')"
-        label-align="left"
-        label-for="negative"
-      >
-        <b-form-checkbox
-          id="negative"
-          name="negative"
-          v-model="negative"
-          switch
-          :disabled="selectedProduct !== null"
-        />
-      </b-form-group>
-
-      <b-form-group
-        label-cols="12"
-        label-cols-sm="3"
         :label="$t('editProductModal.Picture')"
         label-align="left"
         label-for="ad-file"
+        v-if="selectedProduct === null"
+        :state="pictureState"
+        :invalid-feedback="invalidPicture"
       >
         <FileFormPreview
           v-model="file"
           :img="img.length > 0 ? img : undefined"
           :disabled="selectedProduct !== null"
+          :state="pictureState"
         ></FileFormPreview>
       </b-form-group>
     </div>
 
-    <div class="delete-button" v-if="Object.keys(editProduct).length > 0">
+    <!-- TODO: Fix product delete   -->
+    <template v-slot:modal-footer="{ }">
       <b-button
+        v-if="Object.keys(editProduct).length > 0"
         variant="primary"
-        class="btn-primary"
-        v-on:click="$emit('productDeleted', editProduct)"
+        class="btn-primary mr-auto"
+        v-on:click="deleteProduct"
       >{{ $t('editProductModal.Delete product') }}
       </b-button>
-    </div>
-
-    <template v-slot:modal-footer="{ cancel }">
       <b-button
         variant="primary"
         class="btn-empty"
-        @click="cancel()"
+        @click="cancelAdding"
       >{{ $t('editProductModal.cancel') }}
       </b-button>
       <b-button
@@ -224,164 +209,326 @@
 import {
   Component, Prop, Watch,
 } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
 import { Product } from '@/entities/Product';
 import FileFormPreview from '@/components/FileFormPreview.vue';
 import Formatters from '@/mixins/Formatters';
-import FakeProducts from '@/assets/products';
+import { Container } from '@/entities/Container';
+import ProductsModule from '@/store/modules/products';
+import ContainerModule from '@/store/modules/containers';
+import UserModule from '@/store/modules/user';
+import ProductCategoryModule from '@/store/modules/productcategory';
 
-  @Component({
-    components: {
-      FileFormPreview,
-    },
-  })
+@Component({
+  components: {
+    FileFormPreview,
+  },
+})
 export default class EditProductModal extends Formatters {
-    @Prop() private editProduct!: Product;
+  @Prop() private editProduct!: Product;
 
-    @Prop() private container!: Product;
+  @Prop() private container!: Container;
 
-    name: string | null = null;
+  private productState = getModule(ProductsModule);
 
-    price: number | null = null;
+  private containerState = getModule(ContainerModule);
 
-    traySize: number | null = null;
+  private productCategoryState = getModule(ProductCategoryModule);
 
-    category: string | null = null;
+  private userState = getModule(UserModule);
 
-    alcoholic: boolean | null = null;
+  name: string | null = null;
 
-    negative: boolean | null = null;
+  category: string | null = null;
 
-    file: File = new File([], '');
+  price: number | null = null;
 
-    img: string = '';
+  alcoholPercentage: number | null = null;
 
-    products: Product[] = [];
+  img: string = '';
 
-    selectedProduct: Product | null = null;
+  file: File | null = null;
 
-    beforeMount() {
-      this.products = FakeProducts.fetchProducts();
+  products: Product[] = [];
+
+  selectedProduct: Product | null = null;
+
+  beforeMount() {
+    this.productState.fetchUserProducts();
+    this.productCategoryState.fetchProductCategories();
+    this.products = this.productState.userProducts;
+  }
+
+  setProduct() {
+    if (Object.keys(this.editProduct).length > 0) {
+      this.setProductProperties(this.editProduct);
+    } else {
+      this.setProductProperties();
     }
+  }
 
-    save(): void {
-      if (this.nameState && this.categoryState && this.priceState
-          && this.traysizeState && this.file) {
-        if (Object.keys(this.editProduct).length === 0) {
-          const product = {
-            id: `00004_${this.name}`,
-            name: this.name,
-            ownerId: '001',
-            price: this.price,
-            picture: URL.createObjectURL(this.file),
-            traySize: this.traySize,
-            category: this.category,
-            isAlcoholic: this.alcoholic,
-            negative: this.negative,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          } as Product;
+  /**
+   * Method that saves the product the user wants to add. If a product is being added
+   * added directly to a container this is taken into account and the corresponding
+   * API calls are made. If a product does not have all needed info set the user will
+   * be notified of this.
+   */
+  save(): void {
+    // First check if we are adding a product to a container directly
+    if (Object.keys(this.container).length > 0) {
+      // If a product is selected we are adding that to the container meaning we do not
+      // also have to create a new product
+      if (this.selectedProduct !== null) {
+        this.containerState.addProduct({
+          container: this.container,
+          product: this.selectedProduct,
+        });
+        this.setProductProperties();
+        this.$bvModal.hide('edit-product');
+        // Check if a new product is being added and if all the the inputs are correctly
+        // set. If that is the case add the product first and then add it to the container
+        // else make sure the user is shown what still needs to be inputted.
+      } else if (this.nameState && this.categoryState && this.priceState && this.pictureState) {
+        // Construct the new product property
+        const product = this.constructProduct();
 
-          this.$emit('productAdded', product);
+        // Check if a product is being added or being editted
+        if (Object.keys(this.editProduct).length > 0) {
+          this.containerState.updateProduct({
+            container: this.container,
+            product,
+          });
         } else {
-          const product = this.editProduct;
-          product.name = String(this.name);
-          product.price = Number(this.price);
-          product.picture = URL.createObjectURL(this.file) || this.img;
-          product.traySize = Number(this.traySize);
-          product.category = String(this.category);
-          product.isAlcoholic = Boolean(this.alcoholic);
-          product.negative = Boolean(this.negative);
-          product.updatedAt = new Date();
-
-          this.$emit('productEdited', product);
+          this.containerState.addProduct({
+            container: this.container,
+            product,
+          });
         }
         this.$bvModal.hide('edit-product');
-      } else if (this.selectedProduct !== null) {
-        this.$emit('productAdded', this.selectedProduct);
-        this.selectedProduct = null;
-        this.$bvModal.hide('edit-product');
-      }
-    }
-
-    // Check state of name
-    get nameState(): boolean | null {
-      return this.name === null ? null : this.name.length > 0;
-    }
-
-    // Return appropriate validating message for name
-    get invalidName(): string {
-      if (!this.nameState) {
-        return this.$t('editProductModal.name invalid').toString();
-      }
-
-      return '';
-    }
-
-    get categoryState(): boolean | null {
-      return this.category === null ? null : this.category.length > 0;
-    }
-
-    get invalidCategory() : string {
-      if (!this.categoryState) {
-        return this.$t('editProductModal.category invalid').toString();
-      }
-
-      return '';
-    }
-
-    get traysizeState(): boolean | null {
-      return this.traySize === null ? null : this.traySize > 0;
-    }
-
-    get invalidTraysize() : string {
-      if (!this.traysizeState) {
-        return this.$t('editProductModal.traysize invalid').toString();
-      }
-
-      return '';
-    }
-
-    get priceState(): boolean | null {
-      return this.price === null ? null : Number(this.price) >= 0 && String(this.price).length > 0;
-    }
-
-    get invalidPrice() : string {
-      if (!this.priceState) {
-        return this.$t('editProductModal.price invalid').toString();
-      }
-
-      return '';
-    }
-
-    get modalTitle() {
-      const title: string = this.container ? ' container' : '';
-
-      if (Object.keys(this.editProduct).length > 0) {
-        return this.$t(`editProductModal.edit product${title}`);
-      }
-      return this.$t(`editProductModal.add product${title}`);
-    }
-
-    @Watch('editProduct')
-    onEditProductChange(value: Product, old: Product): void {
-      if (Object.keys(value).length > 0) {
-        this.name = String(value.name);
-        this.price = Number(value.price);
-        this.category = String(value.category);
-        this.traySize = Number(value.traySize);
-        this.alcoholic = Boolean(value.isAlcoholic);
-        this.negative = Boolean(value.negative);
-        this.img = String(value.picture);
       } else {
-        this.name = null;
-        this.price = null;
-        this.category = null;
-        this.traySize = null;
-        this.alcoholic = null;
-        this.negative = null;
-        this.img = '';
+        this.setInvalidStates();
       }
+      // Else just add the product normally
+    } else if (this.nameState && this.categoryState && this.priceState && this.pictureState) {
+      // Construct the new product property
+      const product = this.constructProduct();
+
+      // Check if a product is being added or being editted
+      if (Object.keys(this.editProduct).length > 0) {
+        this.productState.updateProduct(product);
+      } else {
+        this.productState.addProduct(product);
+      }
+      this.$bvModal.hide('edit-product');
+    } else {
+      this.setInvalidStates();
     }
+  }
+
+  deleteProduct() {
+    const product = this.constructProduct();
+
+    this.containerState.removeProduct({
+      container: this.container,
+      product,
+    });
+    this.$bvModal.hide('edit-product');
+  }
+
+  /**
+   * If the user cancels the adding we want to make sure all the inputs a reset.
+   */
+  cancelAdding() {
+    this.setProductProperties();
+    this.$bvModal.hide('edit-product');
+  }
+
+  /**
+   * Makes a product object based on the set inputs and returns it.
+   */
+  constructProduct() {
+    const product = {
+      id: Object.keys(this.editProduct).length > 0 ? this.editProduct.id : null,
+      name: this.name,
+      owner: {
+        id: this.userState.user.id,
+        name: this.userState.user.name,
+      },
+      price: this.price === null ? 0 : (this.price * 100).toPrecision(2),
+      category: this.productCategoryState.productCategories.find(
+        cat => cat.name === this.category,
+      ),
+      picture: this.file !== null ? URL.createObjectURL(this.file) : this.img,
+      alcoholPercentage: this.alcoholPercentage === null ? 0 : this.alcoholPercentage,
+      createdAt: Object.keys(this.editProduct).length > 0 ? this.editProduct.createdAt : null,
+    };
+
+    if (Object.keys(this.editProduct).length <= 0) {
+      delete product.id;
+    }
+
+    return product;
+  }
+
+  /**
+   * Set or reset all the inputs for a product
+   */
+  setProductProperties(product: Product | null = null) {
+    if (product === null) {
+      this.selectedProduct = null;
+      this.name = null;
+      this.category = null;
+      this.price = null;
+      this.alcoholPercentage = null;
+      this.img = '';
+      this.file = null;
+    } else {
+      this.name = product.name;
+      this.category = this.setCapitalLetter(product.category.name);
+      this.price = Number((product.price.getAmount() / 100).toPrecision(2));
+      this.alcoholPercentage = product.alcoholPercentage;
+      this.img = product.picture;
+    }
+  }
+
+  /**
+   * If the user wants to save a product whilst some of the input states are invalid
+   * we want to make sure that the invalid input messages for the invalid inputs
+   * are being displayed. This method checks which messages need to be displayed and
+   * updates those inputs accordingly.
+   */
+  setInvalidStates() {
+    if (!this.nameState) {
+      this.name = '';
+    }
+
+    if (!this.categoryState) {
+      this.category = '';
+    }
+
+    if (!this.priceState) {
+      this.price = NaN;
+    }
+
+    if (!this.pictureState) {
+      this.file = new File([], '');
+    }
+  }
+
+  /**
+   * Below are all the input box state and invalid message computed properties.
+   * These check whether the properties have been correctly filled in and display
+   * an error message if not.
+   */
+
+  // Check if name has the correct value
+  get nameState() {
+    return this.name === null ? null : this.name.length > 0;
+  }
+
+  // Return appropriate validating message for name
+  get invalidName() {
+    if (!this.nameState && this.nameState !== null) {
+      return this.$t('editProductModal.name invalid').toString();
+    }
+
+    return '';
+  }
+
+  // Check if category has the correct value
+  get categoryState() {
+    return this.category === null ? null : this.category.length > 0;
+  }
+
+  // Return appropriate validating message for category
+  get invalidProductCategory() {
+    if (!this.categoryState && this.categoryState !== null) {
+      return this.$t('editProductModal.category invalid').toString();
+    }
+
+    return '';
+  }
+
+  // Check if price has the correct value
+  get priceState() {
+    return this.price === null ? null
+      : Number(this.price) >= 0 && String(this.price).length > 0;
+  }
+
+  // Return appropriate validating message for price
+  get invalidPrice() {
+    if (!this.priceState && this.priceState !== null) {
+      return this.$t('editProductModal.price invalid').toString();
+    }
+
+    return '';
+  }
+
+  // Check if file has the correct value
+  get pictureState() {
+    if (this.img.length === 0) {
+      if (this.file === null) {
+        return null;
+      }
+      return this.file.size > 0;
+    }
+
+    return true;
+  }
+
+  // Return appropriate validating message for picture
+  get invalidPicture() {
+    if (!this.pictureState && this.pictureState !== null) {
+      return this.$t('editProductModal.picture invalid').toString();
+    }
+
+    return '';
+  }
+
+  /**
+   * Method that sets the modal title based on adding or editting a product
+   *
+   * @return {string}: The title that will be displayed
+   */
+  get modalTitle() {
+    // Check if we are editting a product
+    if (Object.keys(this.editProduct).length > 0) {
+      return this.$t('editProductModal.edit product').toString();
+    }
+    return this.$t('editProductModal.add product').toString();
+  }
+
+  /**
+   * If a product is being added to a container directly show an different title
+   * for clarification
+   *
+   * @return {string}: The title that will be displayed
+   */
+  get addNewTitle() {
+    if (this.selectedProduct !== null) {
+      return this.$t('editProductModal.Product details').toString();
+    }
+
+    return this.$t('editProductModal.Add new').toString();
+  }
+
+  /**
+   * If an already existing product is selected we want to show some details about
+   * it in the boxes that are normally used for inputting a product. To set the details
+   * we watch the selectedProduct deep (all of it's properties) and update the input box
+   * values once a product is selected.
+   *
+   * @param {Product | null} value
+   * @param {Product | null} old
+   */
+  @Watch('selectedProduct', { deep: true })
+  onSelectedProductChange(value: Product | null, old: Product | null) {
+    if (value === null) {
+      this.setProductProperties();
+    } else {
+      this.setProductProperties(value);
+    }
+  }
 }
 </script>
 
@@ -398,9 +545,9 @@ export default class EditProductModal extends Formatters {
 }
 
 .delete-button {
-    padding-top: 1.5rem;
-    padding-right: 0.75px;
-  }
+  padding-top: 1.5rem;
+  padding-right: 0.75px;
+}
 
 .form-row {
   margin: 0.75rem 0;

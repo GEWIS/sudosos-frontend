@@ -1,6 +1,6 @@
-export interface NFCDevice {
-  id: String,
-  uid: String,
-  name: String,
-  createdAt: Date,
+import { BaseEntity } from '@/entities/BaseEntity';
+
+export interface NFCDevice extends BaseEntity {
+  name: string;
+  address: string;
 }

@@ -1,0 +1,30 @@
+[
+  {
+    "id": 0,
+    "name": "Wij sponsoren SudoSOS",
+    "picture": "https://www.colonylimo.com/blog/wp-content/uploads/2018/06/fabulous-places-in-houston-to-hold-your-tweens-birthday-party.jpg",
+    "duration": 3600,
+    "active": true,
+    "startDate": "2021-01-01T09:00:00.000Z",
+    "endDate": "2021-12-31T09:00:00.000Z"
+  },
+  {
+    "id": 1,
+    "name": "Wick Routers voor echte WiFi",
+    "picture": "https://gewis.nl/photo/download/128500",
+    "duration": 3600,
+    "active": true,
+    "startDate": "2021-01-01T09:00:00.000Z",
+    "endDate": "2021-12-31T09:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "name": "Deze is niet meer actief",
+    "picture": "https://i2.kym-cdn.com/photos/images/facebook/000/809/287/73b.jpg",
+    "duration": 3600,
+    "active": false,
+    "startDate": "2021-01-01T09:00:00.000Z",
+    "endDate": "2021-12-31T09:00:00.000Z"
+  }
+
+]

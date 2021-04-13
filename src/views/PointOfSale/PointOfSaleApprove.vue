@@ -35,9 +35,9 @@
       </b-col>
       <b-col md="9" sm="12" class="containers-container">
         <p class="containers-header">{{ $t('posApprove.Containers') }}</p>
-        <Container v-for="storage in requestedPOS.storages"
-                   v-bind:key="storage.id"
-                   :container="storage"
+        <Container v-for="container in requestedPOS.containers"
+                   v-bind:key="container.id"
+                   :container="container"
                    :enabled="false"
                    v-on:productDetails="showProductDetails"
         />
@@ -52,28 +52,34 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import Container from '@/components/Container.vue';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
+import Container from '@/components/ContainerComponent.vue';
 import { PointOfSale } from '@/entities/PointOfSale';
-import PointsOfSale from '@/assets/pointsOfSale';
 import { Product } from '@/entities/Product';
 import ProductInfoModal from '@/components/ProductInfoModal.vue';
+import PointOfSaleModule from '@/store/modules/pointsofsale';
 
   @Component({
     components: { Container, ProductInfoModal },
   })
 
 export default class PointOfSaleApprove extends Vue {
+    @Prop() id!: number;
+
+    private pointOfSaleState = getModule(PointOfSaleModule);
+
     requestedPOS: PointOfSale = {} as PointOfSale;
 
     ownerData: Object = {};
 
     infoProduct: Product = {} as Product;
 
-    beforeMount() {
-      this.requestedPOS = PointsOfSale.getPointOfSale();
-      this.ownerData = PointsOfSale.getOwnerData();
-    }
+    // beforeMount() {
+    //   const pos = this.pointOfSaleState.getPointsOfSale;
+    //   const index = pos.findIndex(ps => ps.id === this.id);
+    //   this.requestedPOS = pos[index];
+    // }
 
     /*
     Method for showing product details

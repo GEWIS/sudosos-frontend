@@ -1,14 +1,18 @@
-export interface Product {
-    id: String;
-    name: String;
-    ownerId: String;
-    price: Number;
-    picture: String;
-    traySize: Number;
-    category: String;
-    isAlcoholic: Boolean;
-    negative: Boolean;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt?: Date;
+import { Dinero } from 'dinero.js';
+import { BaseUser, User } from '@/entities/User';
+import { ProductCategory } from '@/entities/ProductCategory';
+import { BaseEntity } from '@/entities/BaseEntity';
+
+export interface BaseProduct extends BaseEntity {
+  name: string;
+  price: Dinero;
+}
+
+export interface Product extends BaseProduct {
+  revision?: number;
+  owner: BaseUser | User;
+  category: ProductCategory;
+  picture: string;
+  alcoholPercentage: number;
+  updatePending?: boolean;
 }

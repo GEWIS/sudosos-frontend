@@ -14,7 +14,7 @@
         <b-col cols="12" sm="3">
           <span class="font-weight-bold">{{ $t('editContainerModal.added on')}}</span>
         </b-col>
-        <b-col cols="12" sm="3">
+        <b-col cols="12" sm="9">
           {{ formatDateTime(editContainer.createdAt, true) }}
         </b-col>
       </b-form-row>
@@ -23,8 +23,8 @@
         <b-col cols="12" sm="3">
           <span class="font-weight-bold">{{ $t('editContainerModal.added by')}}</span>
         </b-col>
-        <b-col cols="12" sm="3">
-          {{ editContainer.ownerId }}
+        <b-col cols="12" sm="9">
+          {{ editContainer.owner.name }}
         </b-col>
       </b-form-row>
 
@@ -41,48 +41,26 @@
           id="name"
           name="name"
           type="text"
-          v-model="name"
+          v-model="containerName"
           :state="nameState"
-        ></b-form-input>
+        />
       </b-form-group>
 
       <b-form-group
         label-cols="12"
         label-cols-sm="3"
-        :label="$t('editContainerModal.Open from')"
+        :label="$t('editContainerModal.Public')"
         label-align="left"
-        label-for="openFrom"
-        :state="openFromState"
-        :invalid-feedback="invalidOpenFrom"
+        label-for="public"
       >
-        <b-form-input
-          id="openFrom"
-          name="openFrom"
-          type="time"
-          v-model="openFrom"
-          :state="openFromState"
-        ></b-form-input>
+        <b-form-checkbox
+          id="public"
+          v-model="containerPublic"
+          name="public"
+          value="true"
+          unchecked-value="false"
+        />
       </b-form-group>
-
-      <b-form-group
-        label-cols="12"
-        label-cols-sm="3"
-        :label="$t('editContainerModal.Open till')"
-        label-align="left"
-        label-for="openTill"
-        :state="openTillState"
-        :invalid-feedback="invalidOpenTill"
-      >
-        <b-form-input
-          id="openTill"
-          name="openTill"
-          type="time"
-          v-model="openTill"
-          :state="openTillState"
-        ></b-form-input>
-      </b-form-group>
-
-
     </div>
 
     <template v-slot:modal-footer="{ cancel }">
@@ -106,50 +84,48 @@
 import {
   Component, Prop, Watch,
 } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
 import Formatters from '@/mixins/Formatters';
+import { Container } from '@/entities/Container';
+import ContainerModule from '@/store/modules/containers';
 
   @Component
 export default class EditContainerModal extends Formatters {
-    @Prop() private editContainer! : Storage;
+    @Prop() private editContainer! : Container;
 
-    // Name of the container
-    name: string | null = null;
+    private containerState = getModule(ContainerModule);
 
-    // Open from input field
-    openFrom: string | null = null;
+    containerName: string | null = null;
 
-    // Open till input field
-    openTill: string | null = null;
+    containerPublic: boolean = false;
 
-    /*
-    First check if form has been filled in correctly. Then check if we are adding an object or not
-    if yes then make a Storage with the gathered data and emit this storage to the parent else make
-    sure the storage we were editting gets updated correctly.
+    beforeMount() {
+      if (Object.keys(this.editContainer).length > 0) {
+        this.containerName = this.editContainer.name;
+        this.containerPublic = this.editContainer.public as boolean;
+      }
+    }
+
+    /**
+     * First check if form has been filled in correctly. Then check if we are adding an object or
+     * not if yes then make a Storage with the gathered data and emit this storage to the parent
+     * else make sure the storage we were editing gets updated correctly.
      */
     save(): void {
       if (this.nameState === null || !this.nameState) {
-        this.name = '';
-        this.openFrom = '';
-        this.openTill = '';
+        this.containerName = null;
+        this.containerPublic = false;
       } else if (Object.keys(this.editContainer).length === 0) {
-        const storage = {
-          name: this.name,
-          id: `00004_${this.name}`,
-          ownerId: '1',
-          products: [],
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        } as unknown as Storage;
-
-        this.$emit('storageAdded', storage);
+        this.containerState.addContainer({
+          name: this.containerName,
+          public: this.containerPublic,
+        });
       } else {
-        const storage = this.editContainer;
-        storage.name = this.name;
-        storage.updatedAt = new Date();
+        const updatedContainer = this.editContainer;
+        updatedContainer.name = this.containerName as string;
+        updatedContainer.public = this.containerPublic;
 
-        // TODO make sure data gets pushed somehow
-
-        this.$emit('storageEdited', storage);
+        this.containerState.updateContainer(updatedContainer);
       }
 
       this.$bvModal.hide('edit-container');
@@ -157,7 +133,7 @@ export default class EditContainerModal extends Formatters {
 
     // Check state of name
     get nameState(): boolean | null {
-      return this.name === null ? null : this.name.length > 0;
+      return this.containerName === null ? null : this.containerName.length > 0;
     }
 
     // Return appropriate validating message for name
@@ -169,43 +145,14 @@ export default class EditContainerModal extends Formatters {
       return '';
     }
 
-    // Check state of openFrom
-    get openFromState(): boolean | null{
-      return this.openFrom === null ? null : this.openFrom.length > 0;
-    }
-
-    // Return appropriate validating message for openFrom
-    get invalidOpenFrom(): string {
-      if (!this.openFromState) {
-        return this.$t('editContainerModal.openFrom invalid').toString();
-      }
-
-      return '';
-    }
-
-    // Check state of openTill
-    get openTillState(): boolean | null {
-      if (this.openTill === null || this.openFrom === null) {
-        return null;
-      }
-      return this.openTill.length > 0 && this.openFrom < this.openTill;
-    }
-
-    // Return appropriate validating message for openTill
-    get invalidOpenTill(): string {
-      if (!this.openTillState) {
-        return this.$t('editContainerModal.openTill invalid').toString();
-      }
-
-      return '';
-    }
-
     @Watch('editContainer')
-    onEditContainerChange(value: Storage, old: Storage) : void {
+    onEditContainerChange(value: Container, old: Container) : void {
       if (Object.keys(value).length > 0) {
-        this.name = value.name;
+        this.containerName = value.name;
+        this.containerPublic = value.public as boolean;
       } else {
-        this.name = null;
+        this.containerName = null;
+        this.containerPublic = false;
       }
     }
 }

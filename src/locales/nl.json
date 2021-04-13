@@ -8,7 +8,7 @@
     "Admin": "Beheer",
     "Manage POS": "Beheer verkooppunten",
     "Screens": "TV Schermen",
-    "Advertisements": "Advertenties",
+    "Banners": "Banners",
     "BAC": "BAC",
     "Flagged transactions": "Gemarkeerde transacties",
     "Manage products": "Beheer producten",
@@ -44,9 +44,7 @@
     "Close": "Sluiten",
     "General": "Algemeen",
     "Title": "Titel",
-    "Management": "Beheer",
     "Owner": "Eigenaar",
-    "Managers": "Beheerders",
     "Containers": "Containers",
     "Page": "Pagina",
     "When": "Wanneer",
@@ -75,8 +73,7 @@
     "Containers": "Containers",
     "add container": "Container toevoegen",
     "Request": "Vraag aan",
-    "Please enter a name for this POS": "Voer alsjeblieft een naam in voor dit verkooppunt",
-    "Please select an owner for this POS": "Selecteer alsjeblieft een eigenaar voor dit verkooppunt",
+    "name invalid": "Voer een correcte naam in van die langer is dan 0 tekens",
     "confirm": "Bevestig verwijderen",
     "are you sure": "Weet je zeker dat je deze container wil verwijderen?"
   },
@@ -84,15 +81,12 @@
     "title": "Product informatie",
     "Cancel": "Sluiten",
     "Name": "Naam",
-    "Put in by": "Toegevoegd door",
-    "Put in on": "Toegevoegd op",
+    "Added by": "Toegevoegd door",
+    "Added on": "Toegevoegd op",
+    "Updated on": "Geupdated op",
     "Price": "Prijs",
     "Category": "Categorie",
-    "Traysize": "Staffelgrote",
-    "Contains alcohol": "Bevat alcohol",
-    "Yes": "Ja",
-    "No": "Nee",
-    "Can induce negative saldo": "Kan saldo negatief maken",
+    "Alcohol percentage": "Alcohol percentage",
     "Picture": "Plaatje",
     "Product picture": "Product plaatje"
   },
@@ -126,8 +120,7 @@
     "name": "Naam",
     "category": "Categorie",
     "price": "Prijs",
-    "alcoholic": "Alcoholisch",
-    "negative": "Negatief",
+    "alcoholic": "Alcohol %",
     "Page": "Pagina",
     "Yes": "Ja",
     "No": "Nee",
@@ -142,7 +135,7 @@
     "until": "tot",
     "value": "Waarde"
   },
-  "socialDrinkCardTable": {
+  "borrelkaartTable": {
     "Add social drink cards": "Borrelkaarten toevoegen",
     "Filter by name": "Filter op naam",
     "Fill in a name": "Vul een naam in",
@@ -190,7 +183,6 @@
   "POSOverview": {
     "my points of sale": "Mijn verkooppunten",
     "requested points of sale": "Aangevraagde verkooppunten",
-    "processed": "Behandeld",
     "ACCEPTED": "Geaccepteerd",
     "OPEN": "Open",
     "REJECTED": "Afgewezen",
@@ -199,8 +191,8 @@
   "socialDrinkCards": {
     "Social drink cards overview": "Borrelkaarten overzicht"
   },
-  "advertisements": {
-    "Advertisements": "Advertenties"
+  "banners": {
+    "Banners": "Banners"
   },
   "saldoCom": {
     "saldo": "saldo",
@@ -210,22 +202,29 @@
     "recent transactions": "recente transacties",
     "all transactions": "alle transacties",
     "when": "Wanneer",
-    "what": "Wat"
+    "what": "Wat",
+    "transaction": "Je hebt in totaal {amount} uitgegeven",
+    "transfer": "Je hebt opgewaardeerd voor {amount}"
   },
-  "advertisementList" : {
+  "bannerTable" : {
     "Add": "Toevoegen",
     "save": "opslaan",
     "cancel": "annuleren",
-    "new advertisement": "nieuwe advertentie",
+    "new banner": "nieuwe banner",
     "Duration": "Duur (in ms)",
     "Active": "Actief",
-    "Advertisement": "Advertentie",
+    "Page": "Pagina",
+    "Banner": "Banner",
     "Confirm deletion": "Bevestig verwijderen",
-    "Please enter": "Voer een nummer in dat groter dan 0 is",
+    "Please enter dur": "Voer een nummer in dat groter dan 0 is",
+    "End date should": "Eind datum moet een waarde hebben die later is dan vandaag",
     "Are you sure": "Weet je zeker dat je deze advertentie wil verwijderen?",
     "Thumbnail": "Thumbnail",
     "Duration (ms)": "Duur (ms)",
-    "Added on": "Toegevoegd op",
+    "Start date": "Start datum",
+    "End date": "Eind datum",
+    "Starts on": "Start op",
+    "Stops on": "Stopt op",
     "Edit": "Aanpassen"
   },
   "fileFormPreview": {
@@ -245,39 +244,37 @@
     "edit container": "bewerk container",
     "add container": "container toevoegen",
     "Name": "Naam",
-    "Open from": "Open van",
-    "Open till": "Tot",
+    "Public": "Publiek",
     "name invalid": "Vul een naam in die langer groter dan 0 tekens is",
-    "openFrom invalid": "Voer alsjeblieft een geldige tijd in",
-    "openTill invalid": "Vul alsjeblieft een geldige tijd in die later is dan open van",
     "added on": "Toegevoegd op",
     "added by": "Toegevoegd door"
   },
   "editProductModal": {
+    "Add existing": "Voeg bestaand product toe",
+    "Add new": "Voeg nieuw product toe",
+    "Product details": "Product details",
+    "Existing products": "Bestaande producten",
     "save": "opslaan",
     "cancel": "annuleren",
     "edit product": "bewerk product",
-    "edit product container": "bewerk product in container",
     "add product": "product toevoegen",
-    "add product container": "product toevoegen in container",
     "Name": "Naam",
     "added on": "Toegevoegd op",
+    "updated on": "Laatst geupdated op",
     "added by": "Toegevoegd door",
-    "container": "container",
-    "Add existing product": "Voeg bestaand product aan container toe",
     "Price": "Prijs",
     "Category": "Categorie",
-    "Traysize": "Staffelgroote",
-    "Alcoholic": "Alcoholisch",
-    "Negative": "Kan saldo negatief maken",
+    "Please select": "Selecteer een product categorie",
+    "Alcohol Percentage": "Alcohol percentage",
     "Picture": "Plaatje",
     "Delete product": "Verwijder product",
     "name invalid": "Voer een correcte naam in van die langer is dan 0 tekens",
-    "category invalid": "Voer een correcte categorie in van die groter dan 0 tekens is",
-    "traysize invalid": "Voer een correcte staffegrote in die groter dan 0 is",
-    "price invalid": "Voer een correcte prijs in die groter of gelijk aan 0 is"
+    "category invalid": "Selecteer een van de product categorien",
+    "price invalid": "Voer een correcte prijs in die groter of gelijk aan 0 is",
+    "picture invalid": "Upload een plaatje"
   },
   "containerComponent": {
+    "Public": "Publiek",
     "Table view": "Tafel modus",
     "new": "Nieuw",
     "Add product": "Voeg nieuw product toe"
@@ -313,7 +310,11 @@
     "What": "Wat",
     "Info": "Info",
     "Page": "Pagina",
-    "Transactions": "Transacties"
+    "Transactions": "Transacties",
+    "transaction": "Je hebt in totaal {amount} uitgegeven",
+    "transactionPutFor": "Je hebt {amount} afgestreept voor {name}",
+    "transactionPutBy": "{name} heeft voor {amount} afgestreept bij jou",
+    "transfer": "Je hebt opgewaardeerd voor {amount}"
   },
   "transactionDetailsModal": {
     "transaction details": "transactie details",
@@ -326,10 +327,16 @@
   "transactionDetails": {
     "Total": "Totaal",
     "Point of sale": "Verkooppunt",
+    "Bought by": "Afgestreept voor",
     "Put in by": "Afgestreept door",
-    "Put in for": "Afgestreept voor",
-    "Activity": "Activiteit",
     "Products": "Producten"
+  },
+  "transferDetails": {
+    "Total": "Totaal",
+    "From": "Van",
+    "To": "Naar",
+    "Type": "Transactie type",
+    "Description": "Beschrijving"
   },
   "profile": {
     "My profile": "Mijn profiel",
@@ -339,9 +346,17 @@
     "Confirm new pin code": "Bevestig nieuwe pincode",
     "Manage NFC devices": "Beheer NFC tokens",
     "Confirm deletion": "Bevestig verwijderen",
-    "Are you sure": "Weet je zeker dat je deze NFC token wil verwijderen?"
+    "Are you sure": "Weet je zeker dat je deze NFC token wil verwijderen?",
+    "Pin code must be 4 digits": "Pincode moet 4 cijferig zijn",
+    "New pin code length must be 4 digits": "Nieuwe pincode moet 4 cijferig zijn",
+    "New pin code must be unique from old pin code": "Nieuwe pincode moet anders zijn dan huidige",
+    "Confirmation does not match pin code": "De pincodes matchen niet met elkaar"
   },
   "signOut": {
     "message": "Je wordt uitgelogd! Hopelijk heb je het naar je zin gehad en zien we je snel weer :)"
+  },
+  "apiError": {
+    "message": "Foutmelding",
+    "Something went wrong": "Er ging iets mis"
   }
 }

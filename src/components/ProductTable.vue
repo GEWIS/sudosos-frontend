@@ -7,11 +7,13 @@
     label-cols-md="2"
     label-cols="12"
   >
-    <b-form-input id="name-filter"
-                  v-model="nameFilter"
-                  type="text"
-                  :placeholder="$t('productTable.Fill in a name')"
-                  trim></b-form-input>
+    <b-form-input
+      id="name-filter"
+      v-model="nameFilter"
+      type="text"
+      :placeholder="$t('productTable.Fill in a name')"
+      trim
+    />
   </b-form-group>
 
   <b-form-group
@@ -21,14 +23,15 @@
     label-cols-md="2"
     label-cols="12"
   >
-    <b-form-input id="page-amount"
-                  v-model="perPage"
-                  type="number"
-                  inputmode="decimal"
-                  min="1"
-                  step="1"
-                  trim>
-    </b-form-input>
+    <b-form-input
+      id="page-amount"
+      v-model="perPage"
+      type="number"
+      inputmode="decimal"
+      min="1"
+      step="1"
+      trim
+    />
   </b-form-group>
 
   <b-table
@@ -58,19 +61,15 @@
     </template>
 
     <template v-slot:cell(category)="data">
-      {{ data.value }}
+      {{ setCapitalLetter(data.value.name) }}
     </template>
 
     <template v-slot:cell(price)="data">
-      {{ dinero({ amount: data.value}).toFormat() }}
+      {{ data.value.toFormat() }}
     </template>
 
-    <template v-slot:cell(isAlcoholic)="data">
-      {{ data.value ? $t('productTable.Yes') : $t('productTable.No') }}
-    </template>
-
-    <template v-slot:cell(negative)="data">
-      {{ data.value ? $t('productTable.Yes') : $t('productTable.No') }}
+    <template v-slot:cell(alcoholPercentage)="data">
+      {{ data.value }}%
     </template>
   </b-table>
 
@@ -91,7 +90,7 @@
       @change="pageClicked"
       aria-controls="transaction-table"
       class="custom-pagination mb-0"
-    ></b-pagination>
+    />
   </div>
 </div>
 </template>
@@ -99,11 +98,12 @@
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator';
 import Sortable from 'sortablejs';
+import { getModule } from 'vuex-module-decorators';
 import eventBus from '@/eventbus';
 import Formatters from '@/mixins/Formatters';
 import { Product } from '@/entities/Product';
+import ProductsModule from '@/store/modules/products';
 
-import FakeProducts from '@/assets/products';
 
   @Component({
     directives: {
@@ -116,11 +116,13 @@ import FakeProducts from '@/assets/products';
     },
   })
 export default class ProductTable extends Formatters {
-    @Prop() private productsProp!: Product[];
+    @Prop() private productsProp?: Product[];
 
     @Prop() enabled: Boolean | undefined;
 
     @Prop({ default: true }) editable!: boolean;
+
+    private productState = getModule(ProductsModule);
 
     nameFilter: string = '';
 
@@ -161,20 +163,16 @@ export default class ProductTable extends Formatters {
         locale_key: 'price',
       },
       {
-        key: 'isAlcoholic',
+        key: 'alcoholPercentage',
         label: this.getTranslation('productTable.alcoholic'),
         locale_key: 'alcoholic',
-      },
-      {
-        key: 'negative',
-        label: this.getTranslation('productTable.negative'),
-        locale_key: 'negative',
       },
     ];
 
     beforeMount() {
       if (this.productsProp === undefined) {
-        this.productList = FakeProducts.fetchProducts();
+        this.productState.fetchProducts();
+        this.productList = this.productState.products as Product[];
       } else {
         this.productList = this.productsProp;
       }
@@ -233,7 +231,7 @@ export default class ProductTable extends Formatters {
     /**
      * Methods that makes sure the pagination functions correctly after sorting
      *
-     * @param socialDrinkCards
+     * @param products
      * @param length
      */
     filterFinished(products: Product[], length: number): void {

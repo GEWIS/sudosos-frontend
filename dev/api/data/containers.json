@@ -1,0 +1,15 @@
+[
+  {
+    "id": 2,
+    "name": "B^x Hamburger tafel",
+    "revision": 0,
+    "owner": {
+      "id": 0,
+      "name": "Ruben Brinkman"
+    },
+    "products": [],
+    "public": false,
+    "createdAt": "2021-01-05T12:38:38.380Z",
+    "updatedAt": "2021-01-05T12:38:38.380Z"
+  }
+]

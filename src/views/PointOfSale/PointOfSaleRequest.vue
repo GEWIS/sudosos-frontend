@@ -1,39 +1,47 @@
 <template>
   <b-container fluid="lg">
     <h1 class="mb-2 mb-sm-2 mb-lg-2">
-        {{ $t('posRequest.Request Point of Sale') }}
+      {{ $t('posRequest.Request Point of Sale') }}
     </h1>
     <hr>
     <b-row class="mx-0">
       <b-col md="3" sm="12" class="mb-4 mb-md-0">
         <h5>{{ $t('posRequest.General') }}</h5>
         <div class="pl-1">
-          <b>{{ $t('posRequest.Title') }}</b>
-          <b-form-input class="my-2" type="text" v-model="requestedPOS.name" />
+          <b-form-group
+            id="name-label"
+            label-cols="12"
+            label-cols-sm="12"
+            :label="$t('posRequest.Title')"
+            label-align="left"
+            label-for="name"
+            :state="nameState"
+            :invalid-feedback="invalidName"
+          >
+            <b-form-input
+              id="name"
+              name="name"
+              type="text"
+              v-model="name"
+              :state="nameState"
+            ></b-form-input>
+          </b-form-group>
           <b>{{ $t('posRequest.Selected containers')}}</b>
           <ul class="pl-4">
-              <li v-for="storage in requestedPOS.storages" v-bind:key="storage.id">
-                  {{ storage.name }}
-              </li>
-          </ul>
-        </div>
-        <h5>{{ $t('posRequest.Management') }}</h5>
-        <div class="pl-1">
-          <b>{{ $t('posRequest.Owner') }}</b>
-          <b-form-select class="my-2" v-model="requestedPOS.ownerId" :options="availableOrgans">
-          </b-form-select>
-          <ul v-if="availableOrgans.find((organ) => organ.value === requestedPOS.ownerId)"
-              class="pl-4">
-            <li v-for="member in
-              availableOrgans.find((organ) => organ.value === requestedPOS.ownerId).members"
-                v-bind:key="member">
-              {{ member }}
+            <li
+              v-for="container in requestContainers"
+              v-bind:key="container.id"
+            >
+              <p class="text-truncate m-0">{{ container.name }}</p>
             </li>
           </ul>
         </div>
-        <b-button class="mt-2" variant="success" @click="requestPOS"
-            :disabled="requestButtonDisabled">
-            {{ $t('posRequest.Request')}}
+        <b-button
+          class="mt-2"
+          variant="success"
+          @click="requestPOS"
+          :disabled="nameState">
+          {{ $t('posRequest.Request')}}
         </b-button>
       </b-col>
 
@@ -45,252 +53,213 @@
             {{ $t('posRequest.add container') }}
           </b-button>
         </div>
-        <Container v-for="storage in standardContainers"
-                   v-bind:key="storage.id"
-                   :container="storage"
-                   :enabled="true"
-                   :editable="false"
-                   @toggled="containerToggled"
-                   v-model="editContainer"
-                   v-on:productDetails="showProductDetails"
+        <ContainerComponent
+          v-for="container in publicContainers"
+          v-bind:key="container.id"
+          :container="container"
+          :enabled="true"
+          :editable="false"
+          @toggled="containerToggled"
+          v-model="editContainer"
+          v-on:productDetails="showProductDetails"
         />
 
-        <Container v-for="storage in addedContainers"
-                   v-bind:key="storage.id"
-                   :container="storage"
-                   :enabled="true"
-                   :editable="true"
-                   @toggled="containerToggled"
-                   v-model="editContainer"
-                   v-on:addProduct="prepAddingProduct"
-                   v-on:editProduct="prepEdittingProduct"
-                   v-on:productDetails="showProductDetails"
+        <ContainerComponent
+          v-for="container in containers"
+          v-bind:key="container.id"
+          :container="container"
+          :enabled="true"
+          :editable="true"
+          @toggled="containerToggled"
+          v-model="editContainer"
+          v-on:addProduct="prepAddingProduct"
+          v-on:editProduct="prepEdittingProduct"
+          v-on:productDetails="showProductDetails"
         />
       </b-col>
     </b-row>
 
-    <EditContainerModal :editContainer="editContainer"
-                        v-on:storageAdded="addStorage"
-                        v-on:storageEdited="editStorage"
+    <EditContainerModal
+      :editContainer="editContainer"
     />
 
-    <EditProductModal :editProduct="editProduct"
-                      :container="addFromContainer"
-                      v-on:productAdded="addProduct"
-                      v-on:productEdited="editExistingProduct"
-                      v-on:productDeleted="deleteProduct"
+    <EditProductModal
+      :editProduct="editProduct"
+      :container="activeContainer"
     />
 
-    <ConfirmationModal :reason="$t('posRequest.are you sure')"
-                       :title="$t('posRequest.confirm')"
-                       v-on:modalConfirmed="confirmStorageDelete"
+    <ConfirmationModal
+      :reason="$t('posRequest.are you sure')"
+      :title="$t('posRequest.confirm')"
+      v-on:modalConfirmed="confirmContainerDelete"
     />
 
-    <ProductInfoModal :product="infoProduct"
-                      v-if="Object.keys(infoProduct).length > 0"
+    <ProductInfoModal
+      :product="infoProduct"
+      v-if="Object.keys(infoProduct).length > 0"
     />
   </b-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Container from '@/components/Container.vue';
-import { Storage } from '@/entities/Storage';
-import { PointOfSale, POSStatus } from '@/entities/PointOfSale';
-import PointsOfSale from '@/assets/pointsOfSale';
+import { getModule } from 'vuex-module-decorators';
+import ContainerComponent from '@/components/ContainerComponent.vue';
 import EditContainerModal from '@/components/EditContainerModal.vue';
 import EditProductModal from '@/components/EditProductModal.vue';
-import { Product } from '@/entities/Product';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
 import ProductInfoModal from '@/components/ProductInfoModal.vue';
+import ContainerModule from '@/store/modules/containers';
+import { Container } from '@/entities/Container';
+import { Product } from '@/entities/Product';
 
-  @Component({
-    components: {
-      Container, EditContainerModal, EditProductModal, ConfirmationModal, ProductInfoModal,
-    },
-  })
-
+@Component({
+  components: {
+    ContainerComponent,
+    EditContainerModal,
+    EditProductModal,
+    ConfirmationModal,
+    ProductInfoModal,
+  },
+})
 export default class PointOfSaleRequest extends Vue {
-    requestedPOS: PointOfSale = {
-      name: '',
-      id: '',
-      ownerId: '',
-      status: POSStatus.OPEN,
-      storages: [],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+  private containerState = getModule(ContainerModule);
 
-    standardContainers: Storage[] = [];
+  name: string | null = null;
 
-    addedContainers: Storage[] = [];
+  requestContainers: Container[] = [];
 
-    availableOrgans: Object = [];
+  containers: Container[] = [];
 
-    editContainer: Storage = {} as Storage;
+  publicContainers: Container[] = [];
 
-    editProduct: Product = {} as Product;
+  editContainer: Container = {} as Container;
 
-    addFromContainer: boolean = false;
+  editProduct: Product = {} as Product;
 
-    addContainerID: string = '';
+  activeContainer: Container = {} as Container;
 
-    infoProduct: Product = {} as Product;
+  infoProduct: Product = {} as Product;
 
-    beforeMount(): void {
-      this.standardContainers = PointsOfSale.getAvailableContainers();
-      this.availableOrgans = PointsOfSale.getAvailableOrgans();
-    }
+  beforeMount(): void {
+    this.containerState.fetchContainers();
+    this.containerState.fetchPublicContainers();
+    this.containers = this.containerState.containers;
+    this.publicContainers = this.containerState.publicContainers;
+  }
 
-    /*
-    Method for adding a new container, makes sure editContainer is an empty Storage object
-     */
-    addContainer(): void {
-      this.editContainer = {} as Storage;
-      this.$bvModal.show('edit-container');
-    }
-
-    /*
-    Method for adding a storage container
-     */
-    addStorage(storage: Storage): void {
-      this.addedContainers.push(storage);
-    }
-
-    /*
-    Method for editting storage container, once finished it's data will be updated everywhere
-     */
-    editStorage(storage: Storage): void {
-      let i = this.addedContainers.findIndex(s => s.id === storage.id);
-
-      if (i > 0) {
-        this.addedContainers[i] = storage;
-      }
-
-      i = this.requestedPOS.storages.findIndex(s => s.id === storage.id);
-
-      if (i > 0) {
-        this.requestedPOS.storages[i] = storage;
-      }
-    }
-
-    /*
-    Method for preparing adding a product
-     */
-    prepAddingProduct(id: string) : void {
-      this.addContainerID = id;
-      this.addFromContainer = id.length > 0;
-      this.editProduct = {} as Product;
-      this.$bvModal.show('edit-product');
-    }
-
-    /*
-    Method for preparing editting an product
-     */
-    prepEdittingProduct(id: string, product: Product): void {
-      this.addContainerID = id;
-      this.editProduct = product;
-      this.$bvModal.show('edit-product');
-    }
-
-    /*
-    Method to add new products to the storage container. If the storage container was already
-    added to the requestedPOS is will be updated there as well.
-    */
-    addProduct(product: Product) : void {
-      const i = this.addedContainers.findIndex(s => s.id === this.addContainerID);
-      this.addedContainers[i].products.push(product);
-      this.editStorage(this.addedContainers[i]);
-    }
-
-    /*
-    Method to edit a currently existing product and updating it's data. Once updated it will also be
-    updated in the requestedPOS if it's storage container was already in there.
-    */
-    editExistingProduct(product: Product): void {
-      const i = this.addedContainers.findIndex(s => s.id === this.addContainerID);
-      const j = this.addedContainers[i].products.findIndex(p => p.id === product.id);
-      this.addedContainers[i].products[j] = product;
-      this.editStorage(this.addedContainers[i]);
-    }
-
-    /*
-    Once deletion of container is confirmed it should be removed from the editted containers as
-    well as the containers that were selected for the requestedPOS
-    */
-    confirmStorageDelete(): void {
-      this.addedContainers = this.addedContainers.filter(s => s.id !== this.editContainer.id);
-      this.requestedPOS.storages = this.requestedPOS.storages.filter(
-        s => s.id !== this.editContainer.id,
+  /**
+   * Method that either deletes or adds a container to the requestedContainers
+   *
+   * @param data: object that contains the container that needs to be added or removed and the
+   * state of the checkbox
+   */
+  containerToggled(data: { container: Container, state: boolean }) {
+    if (data.state) {
+      this.requestContainers.push(data.container);
+    } else {
+      const index = this.requestContainers.findIndex(
+        (cntr: Container) => cntr.id === data.container.id,
       );
+      this.requestContainers.splice(index, 1);
     }
+  }
 
-    /*
-    Method for deleting product from container
-    */
-    deleteProduct(product: Product): void {
-      const i = this.addedContainers.findIndex(s => s.id === this.addContainerID);
-      this.addedContainers[i].products = this.addedContainers[i].products.filter(
-        p => p.id !== product.id,
-      );
-      this.editStorage(this.addedContainers[i]);
-      this.$bvModal.hide('edit-product');
+  /**
+   * Method for adding a new container, makes sure editContainer is an empty Container object
+   */
+  addContainer(): void {
+    this.editContainer = {} as Container;
+    this.$bvModal.show('edit-container');
+  }
+
+  /**
+   * Method for preparing adding a product
+   *
+   * @param container: The container that a product is being added to
+   */
+  prepAddingProduct(container: Container) : void {
+    this.activeContainer = container;
+    this.editProduct = {} as Product;
+    this.$bvModal.show('edit-product');
+  }
+
+  /**
+   * Method for preparing editing an product
+   *
+   * @param container: The container in which a product is being edited
+   * @param product: The product which is being edited in the container
+   */
+  prepEdittingProduct(container: Container, product: Product): void {
+    this.activeContainer = container;
+    this.editProduct = product;
+    this.$bvModal.show('edit-product');
+  }
+
+  /**
+   * Once deletion of container is confirmed it should be removed from
+   * the edited containers as well as the containers that were selected
+   * for the requestedContainers
+  */
+  confirmContainerDelete(): void {
+    const index = this.requestContainers.findIndex(cntnr => cntnr.id === this.editContainer.id);
+    if (index >= 0) {
+      this.requestContainers.splice(index, 1);
     }
+    this.containerState.removeContainer(this.editContainer);
+  }
 
-    /*
-    Method for showing product details
-    */
-    showProductDetails(product: Product): void {
-      this.infoProduct = product;
-      this.$nextTick(() => {
-        this.$bvModal.show('product-info-modal');
-      });
-    }
+  /**
+   * Method for showing product details
+   *
+   * @param product: The product that needs to be shown
+   */
+  showProductDetails(product: Product): void {
+    this.infoProduct = product;
+    this.$nextTick(() => {
+      this.$bvModal.show('product-info-modal');
+    });
+  }
 
-    // eslint-disable-next-line class-methods-use-this
-    requestPOS() {
+  // eslint-disable-next-line class-methods-use-this
+  requestPOS() {
     // TODO: Verwerking data
+  }
+
+  /**
+   * Checks if the name is correctly set, if initialized it won't display an
+   * error because the name is still null
+   *
+   * @return {null | boolean}
+   */
+  get nameState() {
+    return this.name === null ? null : this.name.length > 0;
+  }
+
+  get invalidName() {
+    if (!this.nameState) {
+      return this.$t('posRequest.name invalid').toString();
     }
 
-    /*
-    Method that either deletes or add's selected containers to the requestedPOS
-     */
-    containerToggled(containerData: any) {
-      const containers = this.standardContainers.concat(this.addedContainers);
-
-      const updatedContainer = containers.find(storage => storage.id === containerData.id);
-
-      if (updatedContainer) {
-        if (containerData.state) {
-          this.requestedPOS.storages.push(updatedContainer);
-        } else {
-        // Using a filter to remove items from an object array
-          this.requestedPOS.storages = this.requestedPOS.storages
-            .filter(storage => storage.id !== updatedContainer.id);
-        }
-      }
-    }
-
-    get requestButtonDisabled() {
-      return this.requestedPOS.name.length < 1 || this.requestedPOS.ownerId === '';
-    }
+    return '';
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-  .containers-container{
-    border: 2px solid $gewis-grey-light;
+.containers-container{
+  border: 2px solid $gewis-grey-light;
 
-    .containers-header {
-      color: $gewis-red;
-      font-size: 1em;
-      font-weight: 600;
-      text-transform: uppercase;
-      margin: 1em;
-    }
+  .containers-header {
+    color: $gewis-red;
+    font-size: 1em;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin: 1em;
   }
+}
 
-  .modal {
-
-  }
+#name-label {
+  font-weight: 700;
+}
 </style>

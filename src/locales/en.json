@@ -8,7 +8,7 @@
     "Admin": "Admin",
     "Manage POS": "Manage POS",
     "Screens": "TV Screens",
-    "Advertisements": "Advertisements",
+    "Banners": "Banners",
     "BAC": "BAC",
     "Flagged transactions": "Flagged transactions",
     "Manage products": "Manage products",
@@ -44,9 +44,7 @@
     "Close": "Close",
     "General": "General",
     "Title": "Title",
-    "Management": "Management",
     "Owner": "Owner",
-    "Managers": "Managers",
     "Containers": "Containers",
     "Page": "Page",
     "When": "When",
@@ -75,8 +73,7 @@
     "Containers": "Containers",
     "add container": "Add container",
     "Request": "Request",
-    "Please enter a name for this POS": "Please enter a name for this POS",
-    "Please select an owner for this POS": "Please select an owner for this POS",
+    "name invalid": "Please provide a valid name that is longer than 0 characters",
     "confirm": "Confirm deletion",
     "are you sure": "Are you sure you want to delete this container?"
   },
@@ -84,15 +81,12 @@
     "title": "Product information",
     "Cancel": "Close",
     "Name": "Name",
-    "Put in by": "Put in by",
-    "Put in on": "Put in on",
+    "Added by": "Added by",
+    "Added on": "Added on",
+    "Updated on": "Updated on",
     "Price": "Price",
     "Category": "Category",
-    "Traysize": "Traysize",
-    "Contains alcohol": "Contains alcohol",
-    "Yes": "Yes",
-    "No": "No",
-    "Can induce negative saldo": "Can introduce negative balance",
+    "Alcohol percentage": "Alcohol percentage",
     "Picture": "Picture",
     "Product picture": "Product picture"
   },
@@ -126,8 +120,7 @@
     "name": "Name",
     "category": "Category",
     "price": "Price",
-    "alcoholic": "Alcoholic",
-    "negative": "Negative",
+    "alcoholic": "Alcohol %",
     "Page": "Page",
     "Yes": "Yes",
     "No": "No",
@@ -142,7 +135,7 @@
     "until": "until",
     "value": "Value"
   },
-  "socialDrinkCardTable": {
+  "borrelkaartTable": {
     "Add social drink cards": "Add social drink cards",
     "Filter by name": "Filter by name",
     "Fill in a name": "Fill in a name",
@@ -190,17 +183,16 @@
   "POSOverview": {
     "my points of sale": "My points of sale",
     "requested points of sale": "Requested points of sale",
-    "processed": "Processed",
     "ACCEPTED": "Accepted",
     "OPEN": "Open",
     "REJECTED": "Rejected",
     "Page": "Page"
   },
   "socialDrinkCards": {
-  "Social drink cards overview": "Social drink cards overview"
+    "Social drink cards overview": "Social drink cards overview"
   },
-  "advertisements": {
-    "Advertisements": "Advertisements"
+  "banners": {
+    "Banners": "Banners"
   },
   "saldoCom": {
     "saldo": "balance",
@@ -210,22 +202,29 @@
     "recent transactions": "recent transactions",
     "all transactions": "all transactions",
     "when": "When",
-    "what": "What"
+    "what": "What",
+    "transaction": "You spent a total of {amount}",
+    "transfer": "You topped up with {amount}"
   },
-  "advertisementList" : {
+  "bannerTable" : {
     "Add": "Add",
     "save": "save",
     "cancel": "cancel",
-    "new advertisement": "new advertisement",
+    "new banner": "new banner",
     "Duration": "Duration (in ms)",
     "Active": "Active",
-    "Advertisement": "Advertisement",
+    "Page": "Page",
+    "Banner": "Banner",
     "Confirm deletion": "Confirm deletion",
-    "Please enter": "Please enter a number larger than 0",
+    "Please enter dur": "Please enter a number larger than 0",
+    "End date should": "End date should be set and later than today",
     "Are you sure": "Are you sure you want to delete this advertisement?",
     "Thumbnail": "Thumbnail",
     "Duration (ms)": "Duration (ms)",
-    "Added on": "Added on",
+    "Start date": "Start date",
+    "End date": "End date",
+    "Starts on": "Starts on",
+    "Stops on": "Stops on",
     "Edit": "Edit"
   },
   "fileFormPreview": {
@@ -245,39 +244,37 @@
     "edit container": "edit container",
     "add container": "add container",
     "Name": "Name",
-    "Open from": "Open from",
-    "Open till": "To",
+    "Public": "Public",
     "name invalid": "Please enter a name that is longer than 0 characters",
-    "openFrom invalid": "Please enter a valid time",
-    "openTill invalid": "Please enter a valid time later than open from",
     "added on": "Added on",
     "added by": "Added by"
   },
   "editProductModal": {
+    "Add existing": "Add existing product",
+    "Add new": "Add new product",
+    "Product details": "Product details",
+    "Existing products": "Existing products",
     "save": "save",
     "cancel": "cancel",
     "edit product": "edit product",
-    "edit product container": "edit product in container",
     "add product": "add product",
-    "add product container": "add product in container",
     "Name": "Name",
     "added on": "Added on",
+    "updated on": "Last updated on",
     "added by": "Added by",
-    "container": "container",
-    "Add existing product": "Add existing product to container",
     "Price": "Price",
     "Category": "Category",
-    "Traysize": "Traysize",
-    "Alcoholic": "Alcoholic",
-    "Negative": "Can introduce negative balance",
+    "Please select": "Please select a product category",
+    "Alcohol Percentage": "Alcohol percentage",
     "Picture": "Picture",
     "Delete product": "Delete product",
     "name invalid": "Please provide a valid name that is longer than 0 characters",
-    "category invalid": "Please provide a valid category that is larger than 0 characters",
-    "traysize invalid": "Please provide a valid traysize that is higher than 0",
-    "price invalid": "Please provide a valid price that is higher or equal to 0"
+    "category invalid": "Please select one of the product categories",
+    "price invalid": "Please provide a valid price that is higher or equal to 0",
+    "picture invalid": "Please provide a picture"
   },
   "containerComponent": {
+    "Public": "Public",
     "Table view": "Table view",
     "new": "New",
     "Add product": "Add product"
@@ -313,7 +310,11 @@
     "What": "What",
     "Info": "Info",
     "Page": "Page",
-    "Transactions": "Transactions"
+    "Transactions": "Transactions",
+    "transaction": "You spent a total of {amount}",
+    "transactionPutFor": "You charged {name} for {amount}",
+    "transactionPutBy": "{name} charged you {amount}",
+    "transfer": "You topped up with {amount}"
   },
   "transactionDetailsModal": {
     "transaction details": "transaction details",
@@ -326,10 +327,16 @@
   "transactionDetails": {
     "Total": "Total",
     "Point of sale": "Point of sale",
-    "Put in by": "Bought by",
-    "Put in for": "Bought for",
-    "Activity": "Activity",
+    "Bought by": "Bought by",
+    "Put in by": "Put in by",
     "Products": "Products"
+  },
+  "transferDetails": {
+    "Total": "Total",
+    "From": "From",
+    "To": "To",
+    "Type": "Transaction type",
+    "Description": "Description"
   },
   "profile": {
     "My profile": "My profile",
@@ -339,9 +346,17 @@
     "Confirm new pin code": "Confirm new pin code",
     "Manage NFC devices": "Manage NFC devices",
     "Confirm deletion": "Confirm deletion",
-    "Are you sure": "Are you sure you want to remove this NFC device?"
+    "Are you sure": "Are you sure you want to remove this NFC device?",
+    "Pin code must be 4 digits": "Pin code must be 4 digits",
+    "New pin code length must be 4 digits": "New pin code length must be 4 digits",
+    "New pin code must be unique from old pin code": "New pin code must be unique from old pin code",
+    "Confirmation does not match pin code": "Confirmation does not match pin code"
   },
   "signOut": {
     "message": "Signing you out! Hope you had a nice time :) Be sure to come back soon!"
+  },
+  "apiError": {
+    "message": "Error message",
+    "Something went wrong": "Something went wrong"
   }
 }
