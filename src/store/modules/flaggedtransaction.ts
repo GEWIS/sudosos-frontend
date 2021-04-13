@@ -28,7 +28,7 @@ export default class FlaggedTransactionModule extends VuexModule {
   @Mutation
   removeFlaggedTransaction(flaggedTransaction: FlaggedTransaction) {
     APIHelper.delResource('flaggedTransactions', flaggedTransaction);
-    const index = this.flaggedTransactions.findIndex(trns => trns.id === flaggedTransaction.id);
+    const index = this.flaggedTransactions.findIndex((trns) => trns.id === flaggedTransaction.id);
     this.flaggedTransactions.splice(index, 1);
   }
 
@@ -36,7 +36,7 @@ export default class FlaggedTransactionModule extends VuexModule {
   updateFlaggedTransaction(flaggedTransaction: {}) {
     const response = APIHelper.putResource('flaggedTransactions', flaggedTransaction);
     const flaggedTransactionResponse = FlaggedTransactionTransformer.makeFlaggedTransaction(response);
-    const index = this.flaggedTransactions.findIndex(trns => trns.id === flaggedTransactionResponse.id);
+    const index = this.flaggedTransactions.findIndex((trns) => trns.id === flaggedTransactionResponse.id);
     this.flaggedTransactions.splice(index, 1, flaggedTransactionResponse);
   }
 
@@ -46,7 +46,7 @@ export default class FlaggedTransactionModule extends VuexModule {
   fetchFlaggedTransactions(force: boolean = false) {
     if (this.flaggedTransactions.length === 0 || force) {
       const flaggedTransactionResponse = APIHelper.getResource('flaggedTransactions') as [];
-      const flgd = flaggedTransactionResponse.map(flaggedTransaction => FlaggedTransactionTransformer.makeFlaggedTransaction(flaggedTransaction));
+      const flgd = flaggedTransactionResponse.map((flaggedTransaction) => FlaggedTransactionTransformer.makeFlaggedTransaction(flaggedTransaction));
       this.context.commit('setFlaggedTransactions', flgd);
     }
   }

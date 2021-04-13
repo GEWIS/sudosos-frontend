@@ -28,7 +28,7 @@ export default class TransactionModule extends VuexModule {
   @Mutation
   removeTransaction(transaction: Transaction) {
     APIHelper.delResource('transactions', transaction);
-    const index = this.transactions.findIndex(trns => trns.id === transaction.id);
+    const index = this.transactions.findIndex((trns) => trns.id === transaction.id);
     this.transactions.splice(index, 1);
   }
 
@@ -36,7 +36,7 @@ export default class TransactionModule extends VuexModule {
   updateTransaction(transaction: {}) {
     const response = APIHelper.putResource('transactions', transaction);
     const transactionResponse = TransactionTransformer.makeTransaction(response);
-    const index = this.transactions.findIndex(trns => trns.id === transactionResponse.id);
+    const index = this.transactions.findIndex((trns) => trns.id === transactionResponse.id);
     this.transactions.splice(index, 1, transactionResponse);
   }
 
@@ -46,7 +46,7 @@ export default class TransactionModule extends VuexModule {
   fetchTransactions(force: boolean = false) {
     if (this.transactions.length === 0 || force) {
       const transactionResponse = APIHelper.getResource('transactions') as [];
-      const trans = transactionResponse.map(trns => TransactionTransformer.makeTransaction(trns));
+      const trans = transactionResponse.map((trns) => TransactionTransformer.makeTransaction(trns));
       this.context.commit('setTransactions', trans);
     }
   }
@@ -58,7 +58,7 @@ export default class TransactionModule extends VuexModule {
 
   @Mutation
   updatePOSTransaction(transaction: POSTransaction) {
-    const index = this.posTransactions.findIndex(pos => pos.id === transaction.id);
+    const index = this.posTransactions.findIndex((pos) => pos.id === transaction.id);
     this.posTransactions.splice(index, 1, transaction);
   }
 
@@ -66,12 +66,12 @@ export default class TransactionModule extends VuexModule {
     rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
   })
   fetchPOSTransactions(posID: number, force: boolean = false) {
-    const index = this.posTransactions.findIndex(pos => pos.id === posID);
+    const index = this.posTransactions.findIndex((pos) => pos.id === posID);
 
     // If the transactions for this POS have not been resolved yet resolve them.
     if (index === -1 || force) {
       const transactionResponse = APIHelper.getResource(`transactionPOS?id=${posID}`) as [];
-      const trans = transactionResponse.map(trns => TransactionTransformer.makeTransaction(trns));
+      const trans = transactionResponse.map((trns) => TransactionTransformer.makeTransaction(trns));
 
       this.context.commit('addPOSTransaction', {
         id: posID,

@@ -1,15 +1,14 @@
 import * as dotenv from 'dotenv';
 import eventBus from '@/eventbus';
-import devAPI from '../../dev/api';
 import { ApiError } from '@/entities/ApiError';
 import { ResponseBody } from '@/entities/ResponseBody';
+import devAPI from '../../dev/api';
 
 dotenv.config();
 
 const baseURL = process.env.VUE_APP_API_BASE; // TODO: Set base URL
 const token = ''; // TODO: Make sure we get the token
 const isDev = process.env.VUE_APP_DEVELOP;
-
 
 /**
  * Takes a route string and arguments and converts it into a route that the browser can read
@@ -111,7 +110,6 @@ function fetchResource(route: string, body: ResponseBody) {
 
   return fetchResult;
 }
-
 
 export default {
   getResource(route: string, args = null) {

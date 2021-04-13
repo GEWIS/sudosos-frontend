@@ -34,7 +34,6 @@ import languages from './locales/index';
 
 import 'vue-select/dist/vue-select.css';
 
-
 // Import bootstrap js
 import 'bootstrap';
 
@@ -92,5 +91,5 @@ new Vue({
   router,
   store,
   i18n,
-  render: h => h(App),
+  render: (h) => h(App),
 }).$mount('#app');

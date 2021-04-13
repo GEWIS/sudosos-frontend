@@ -19,7 +19,6 @@ export default {
       products = data.products.map((product: any) => ProductTransformer.makeProduct(product));
     }
 
-
     return {
       ...BaseTransformer.makeBaseEntity(data),
       name: data.name,

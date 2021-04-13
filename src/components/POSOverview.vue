@@ -60,7 +60,6 @@
   </b-card>
 </template>
 
-
 <script lang="ts">
 import {
   Component, Prop, Vue,

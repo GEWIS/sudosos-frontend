@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { ResponseBody } from '@/entities/ResponseBody';
 import Products from './data/products.json';
 import UserProducts from './data/userproducts.json';

@@ -216,13 +216,12 @@ export default class ContainerComponent extends Vue {
    *
    * @param evt Event with all the dragging information
    */
+  // eslint-disable-next-line class-methods-use-this
   dragEnded(evt: any): void {
     const indexOld: number = evt.oldIndex;
     const indexNew: number = evt.newIndex;
 
     // TODO: Make sure index is actually updated somewhere
-
-    this.editable = this.editable;
   }
 
   /**

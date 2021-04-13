@@ -55,7 +55,7 @@ export default class BorrelkaartenPrint extends Formatters {
     beforeMount() {
       this.borrelkaartGroupState.fetchBorrelkaartGroups();
       const kaarten = this.borrelkaartGroupState.borrelkaartGroups;
-      const index = kaarten.findIndex(krt => krt.id === Number(this.id));
+      const index = kaarten.findIndex((krt) => krt.id === Number(this.id));
       this.cardGroup = kaarten[index];
       this.socialDrinkCards = this.cardGroup.borrelkaarten;
     }

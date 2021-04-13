@@ -202,7 +202,7 @@ export default class PointOfSaleRequest extends Vue {
    * for the requestedContainers
   */
   confirmContainerDelete(): void {
-    const index = this.requestContainers.findIndex(cntnr => cntnr.id === this.editContainer.id);
+    const index = this.requestContainers.findIndex((cntnr) => cntnr.id === this.editContainer.id);
     if (index >= 0) {
       this.requestContainers.splice(index, 1);
     }

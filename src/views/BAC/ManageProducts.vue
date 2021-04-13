@@ -86,7 +86,6 @@ import ProductTable from '@/components/ProductTable.vue';
 import ProductsModule from '@/store/modules/products';
 import ContainerModule from '@/store/modules/containers';
 
-
 @Component({
   components: {
     ContainerComponent,

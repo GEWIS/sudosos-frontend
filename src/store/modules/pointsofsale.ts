@@ -29,7 +29,7 @@ export default class PointOfSaleModule extends VuexModule {
   @Mutation
   removePointOfSale(pointOfSale: PointOfSale) {
     APIHelper.delResource('pointOfSale', pointOfSale);
-    const index = this.pointsOfSale.findIndex(pos => pos.id === pointOfSale.id);
+    const index = this.pointsOfSale.findIndex((pos) => pos.id === pointOfSale.id);
     this.pointsOfSale.splice(index, 1);
   }
 
@@ -37,7 +37,7 @@ export default class PointOfSaleModule extends VuexModule {
   updatePointOfSale(pointOfSale: PointOfSale) {
     const response = APIHelper.putResource('pointOfSale', pointOfSale);
     const pointOfSaleResponse = PointOfSaleTransformer.makePointOfSale(response);
-    const index = this.pointsOfSale.findIndex(pos => pos.id === pointOfSaleResponse.id);
+    const index = this.pointsOfSale.findIndex((pos) => pos.id === pointOfSaleResponse.id);
     this.pointsOfSale.splice(index, 1, pointOfSaleResponse as PointOfSale);
   }
 
@@ -47,7 +47,7 @@ export default class PointOfSaleModule extends VuexModule {
   fetchPointsOfSale(force: boolean = false) {
     if (this.pointsOfSale.length === 0 || force) {
       const pointsOfSaleResponse = APIHelper.getResource('pointOfSale') as [];
-      const posResponse = pointsOfSaleResponse.map(pos => PointOfSaleTransformer.makePointOfSale(pos));
+      const posResponse = pointsOfSaleResponse.map((pos) => PointOfSaleTransformer.makePointOfSale(pos));
       this.context.commit('setPointsOfSale', posResponse);
     }
   }

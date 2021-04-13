@@ -29,7 +29,6 @@
         </b-col>
       </b-form-row>
 
-
       <b-form-row v-if="Object.keys(editProduct).length > 0">
         <b-col cols="12" sm="3">
           <span class="font-weight-bold">{{ $t('editProductModal.added by') }}</span>
@@ -356,7 +355,7 @@ export default class EditProductModal extends Formatters {
       },
       price: this.price === null ? 0 : (this.price * 100).toPrecision(2),
       category: this.productCategoryState.productCategories.find(
-        cat => cat.name === this.category,
+        (cat) => cat.name === this.category,
       ),
       picture: this.file !== null ? URL.createObjectURL(this.file) : this.img,
       alcoholPercentage: this.alcoholPercentage === null ? 0 : this.alcoholPercentage,

@@ -90,7 +90,6 @@ import { initFilter, TableFilter } from '@/entities/TableFilter';
 import { Transfer } from '@/entities/Transfer';
 import { TransactionDateRow } from '@/entities/TransactionDateRow';
 
-
 @Component({
   components: {
     TransactionDetailsModal,
@@ -185,7 +184,9 @@ export default class TransactionsTable extends Formatters {
       // First fetch all the transactions for a specific point of sale
       // Then check if this point of sale has any transactions
       this.transactionState.fetchPOSTransactions(this.pointOfSale);
-      const psTr = this.transactionState.posTransactions.find(trns => trns.id === this.pointOfSale);
+      const psTr = this.transactionState.posTransactions.find((trns) => (
+        trns.id === this.pointOfSale
+      ));
       if (psTr !== undefined) {
         this.transList = psTr.transactions;
       }
@@ -195,7 +196,6 @@ export default class TransactionsTable extends Formatters {
 
     // Sort the transactions just in case
     this.transList.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
-
 
     // If the locale is changed make sure the labels are also correctly updated for the b-table
     eventBus.$on('localeUpdated', () => {
@@ -258,7 +258,7 @@ export default class TransactionsTable extends Formatters {
       const newPage = length > 0 && length % this.perPage === 0;
 
       // If this date does not have a dateRow yet or we just went to a new page create a date row
-      if ((!dates.find(d => d === fDate)) || newPage) {
+      if ((!dates.find((d) => d === fDate)) || newPage) {
         const dateRow: TransactionDateRow = {} as TransactionDateRow;
         dates.push(fDate);
         dateRow.formattedDate = fDate;
