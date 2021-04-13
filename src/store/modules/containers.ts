@@ -36,7 +36,7 @@ export default class ContainerModule extends VuexModule {
   }
 
   @Mutation
-  addProduct(data: { container: Container, product: { id: number | null} }) {
+  addProduct(data: { container: Container, product: { id?: number | null} }) {
     let productToAdd = data.product;
 
     // If this is not an existing product yet we need to add it
@@ -53,7 +53,7 @@ export default class ContainerModule extends VuexModule {
   }
 
   @Mutation
-  updateProduct(data: {container: Container, product: { id: number | null } }) {
+  updateProduct(data: {container: Container, product: { id?: number | null } }) {
     let productToEdit = APIHelper.putResource('products', data.product);
     productToEdit = ProductTransformer.makeProduct(productToEdit);
 
@@ -71,7 +71,7 @@ export default class ContainerModule extends VuexModule {
   }
 
   @Mutation
-  removeProduct(data: {container: Container, product: {id: number | null} }) {
+  removeProduct(data: {container: Container, product: {id?: number | null} }) {
     // TODO: Check if this works with real API
     const containerResponse = APIHelper.delResource(`containers/${data.container.id}/product`, data.product);
     // const updatedContainer = ContainerTransformer.makeContainer(containerResponse);

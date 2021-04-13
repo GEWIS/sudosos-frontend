@@ -18,7 +18,7 @@
           </b-button>
         </div>
         <ProductTable
-          :productsProp="products"
+          :productsProp="this.productState.userProducts"
           :editable="true"
           :enabled="true"
           v-on:editProduct="prepEditStandardProduct"
@@ -37,7 +37,7 @@
           </b-button>
         </div>
         <ContainerComponent
-          v-for="container in standardContainers"
+          v-for="container in this.containerState.containers"
           v-bind:key="container.id"
           :container="container"
           :enabled="true"
@@ -102,15 +102,11 @@ export default class ManageProducts extends Vue {
 
   private containerState = getModule(ContainerModule);
 
-  standardContainers: Container[] = [];
-
   editContainer: Container = {} as Container;
 
   editProduct: Product = {} as Product;
 
   infoProduct: Product = {} as Product;
-
-  products: Product[] = [];
 
   activeContainer: Container = {} as Container;
 
@@ -118,8 +114,6 @@ export default class ManageProducts extends Vue {
     this.containerState.fetchContainers();
     this.containerState.fetchPublicContainers();
     this.productState.fetchProducts();
-    this.products = this.productState.userProducts;
-    this.standardContainers = this.containerState.containers;
   }
 
   /**

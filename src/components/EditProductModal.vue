@@ -360,7 +360,7 @@ export default class EditProductModal extends Formatters {
       picture: this.file !== null ? URL.createObjectURL(this.file) : this.img,
       alcoholPercentage: this.alcoholPercentage === null ? 0 : this.alcoholPercentage,
       createdAt: Object.keys(this.editProduct).length > 0 ? this.editProduct.createdAt : null,
-    };
+    } as {id?: number};
 
     if (Object.keys(this.editProduct).length <= 0) {
       delete product.id;

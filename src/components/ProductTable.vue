@@ -96,13 +96,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator';
+import { Component, Prop, Watch } from 'vue-property-decorator';
 import Sortable from 'sortablejs';
-import { getModule } from 'vuex-module-decorators';
 import eventBus from '@/eventbus';
 import Formatters from '@/mixins/Formatters';
 import { Product } from '@/entities/Product';
-import ProductsModule from '@/store/modules/products';
 
   @Component({
     directives: {
@@ -115,13 +113,11 @@ import ProductsModule from '@/store/modules/products';
     },
   })
 export default class ProductTable extends Formatters {
-    @Prop() private productsProp?: Product[];
+    @Prop() productsProp?: Product[];
 
     @Prop() enabled: Boolean | undefined;
 
     @Prop({ default: true }) editable!: boolean;
-
-    private productState = getModule(ProductsModule);
 
     nameFilter: string = '';
 
@@ -169,15 +165,6 @@ export default class ProductTable extends Formatters {
     ];
 
     beforeMount() {
-      if (this.productsProp === undefined) {
-        this.productState.fetchProducts();
-        this.productList = this.productState.products as Product[];
-      } else {
-        this.productList = this.productsProp;
-      }
-
-      this.totalRows = this.productList.length;
-
       // If the locale is changed make sure the labels are also correctly updated for the b-table
       eventBus.$on('localeUpdated', () => {
         this.fields = this.updateTranslations(this.fields, 'productTable');
@@ -235,6 +222,12 @@ export default class ProductTable extends Formatters {
     filterFinished(products: Product[], length: number): void {
       this.currentPage = 1;
       this.totalRows = length;
+    }
+
+    @Watch('productsProp')
+    onProductPropChange() {
+      this.productList = this.productsProp as Product[];
+      this.totalRows = this.productList.length;
     }
 }
 </script>
