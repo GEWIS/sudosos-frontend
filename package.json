@@ -1,5 +1,6 @@
 {
-  "name": "front-end-web",
+  "name": "sudosos-frontend-web",
+  "description": "Website for users of SudoSOS bar system",
   "version": "0.1.0",
   "private": true,
   "main": "out/main.js",
@@ -11,6 +12,7 @@
     "type-check": "tsc",
     "prepare": "husky install"
   },
+  "license": "AGPL-3.0-or-later",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
