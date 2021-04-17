@@ -17,6 +17,7 @@ import PointOfSaleInfo from '@/views/PointOfSale/PointOfSaleInfo.vue';
 import SignOut from '@/views/User/SignOut.vue';
 import BorrelkaartOverview from '@/views/BAC/Borrelkaarten.vue';
 import BorrelkaartenPrint from '@/views/BAC/BorrelkaartenPrint.vue';
+import UserOverview from '@/views/BAC/UserOverview.vue';
 
 Vue.use(VueRouter);
 
@@ -83,6 +84,11 @@ const routes = [
     name: 'flaggedTransactionDetails',
     component: FlaggedTransactionDetails,
     props: true,
+  },
+  {
+    path: '/user-overview',
+    name: 'userOverview',
+    component: UserOverview,
   },
   {
     path: '/manage-products',

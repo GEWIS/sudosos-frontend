@@ -14,11 +14,18 @@ import { NFCDevice } from '@/entities/NFCDevice';
 export default class UserModule extends VuexModule {
   user: User = {} as User;
 
+  allUsers: User[] = [];
+
   permissions: UserPermissions = {} as UserPermissions;
 
   @Mutation
   setUser(user: User) {
     this.user = user;
+  }
+
+  @Mutation
+  setAllUsers(allUsers: User[]) {
+    this.allUsers = allUsers;
   }
 
   @Mutation
@@ -61,6 +68,17 @@ export default class UserModule extends VuexModule {
       this.context.commit('setUser', UserTransformer.makeUser(userResponse));
       const saldoResponse = APIHelper.getResource('saldo') as { saldo: number };
       this.context.commit('updateSaldo', saldoResponse.saldo);
+    }
+  }
+
+  @Action({
+    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+  })
+  fetchAllUsers(force: boolean = false) {
+    if (this.allUsers.length === 0 || force) {
+      const userResponse = APIHelper.getResource('users') as [];
+      const allUsers = userResponse.map((user) => UserTransformer.makeUser(user));
+      this.context.commit('setAllUsers', allUsers);
     }
   }
 }

@@ -13,6 +13,7 @@
     "Flagged transactions": "Gemarkeerde transacties",
     "Manage products": "Beheer producten",
     "Social drink cards": "Borrelkaarten",
+    "User overview": "Gebruikers overzicht",
     "Profile": "Profiel",
     "Sign out": "Uitloggen",
     "Netherlands": "Nederlands",
@@ -135,7 +136,7 @@
     "until": "tot",
     "value": "Waarde"
   },
-  "borrelkaartTable": {
+  "borrelkaartGroupTable": {
     "Add social drink cards": "Borrelkaarten toevoegen",
     "Filter by name": "Filter op naam",
     "Fill in a name": "Vul een naam in",
@@ -351,6 +352,14 @@
     "New pin code length must be 4 digits": "Nieuwe pincode moet 4 cijferig zijn",
     "New pin code must be unique from old pin code": "Nieuwe pincode moet anders zijn dan huidige",
     "Confirmation does not match pin code": "De pincodes matchen niet met elkaar"
+  },
+  "userTable": {
+    "Name": "Naam",
+    "gewisID": "GEWID ID",
+    "Active": "Actief",
+    "Filter by name": "Filter op naam of ID",
+    "Fill in a name": "Vul een naam of ID in",
+    "Page": "Pagina"
   },
   "signOut": {
     "message": "Je wordt uitgelogd! Hopelijk heb je het naar je zin gehad en zien we je snel weer :)"
