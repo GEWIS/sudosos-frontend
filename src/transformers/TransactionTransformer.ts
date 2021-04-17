@@ -23,7 +23,6 @@ export default {
       price = Dinero({ amount: Number(tempPrice), currency: 'EUR' });
     }
 
-
     return {
       ...BaseTransformer.makeBaseEntity(data),
       from: UserTransformer.makeUser(data.from),

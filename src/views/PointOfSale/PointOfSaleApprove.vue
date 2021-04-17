@@ -44,7 +44,6 @@
       </b-col>
     </b-row>
 
-
     <ProductInfoModal :product="infoProduct"
                       v-if="Object.keys(infoProduct).length > 0"
     />

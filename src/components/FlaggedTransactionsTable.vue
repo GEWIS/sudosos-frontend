@@ -226,7 +226,7 @@ export default class TransactionFlagsTable extends Formatters {
    */
   formatTransactionFlags: Function = (
     t: FlaggedTransaction[],
-  ): FlaggedTransaction[] => t.map(flag => ({
+  ): FlaggedTransaction[] => t.map((flag) => ({
     ...flag,
     formattedDate: this.formatDateTime(flag.createdAt as Date, true),
   }));

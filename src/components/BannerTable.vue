@@ -174,7 +174,6 @@ import Formatters from '@/mixins/Formatters';
 import eventBus from '@/eventbus';
 import BannerModule from '@/store/modules/banners';
 
-
 @Component({
   components: { ConfirmationModal, FileFormPreview },
 })
@@ -265,7 +264,6 @@ export default class BannerTable extends Formatters {
     updateCurrBanner(updateBanner: Banner = {} as Banner): void {
       this.currBanner = updateBanner;
     }
-
 
     /**
      * Delete a banner that is currently set

@@ -101,7 +101,7 @@ export default class Formatters extends Vue {
   // eslint-disable-next-line class-methods-use-this
   public setCapitalLetter(sentence: string): string {
     let words = sentence.split(' ');
-    words = words.map(wrd => wrd[0].toUpperCase() + wrd.substring(1));
+    words = words.map((wrd) => wrd[0].toUpperCase() + wrd.substring(1));
     return words.join(' ');
   }
 }

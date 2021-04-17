@@ -26,7 +26,7 @@ export default class TransferModule extends VuexModule {
   @Mutation
   removeTransfer(transfer: Transfer) {
     APIHelper.delResource('transfers', transfer);
-    const index = this.transfers.findIndex(trns => trns.id === transfer.id);
+    const index = this.transfers.findIndex((trns) => trns.id === transfer.id);
     this.transfers.splice(index, 1);
   }
 
@@ -34,7 +34,7 @@ export default class TransferModule extends VuexModule {
   updateTransfer(transfer: {}) {
     const response = APIHelper.putResource('transfers', transfer);
     const transferResponse = TransferTransformer.makeTransfer(response);
-    const index = this.transfers.findIndex(trnsfr => trnsfr.id === transferResponse.id);
+    const index = this.transfers.findIndex((trnsfr) => trnsfr.id === transferResponse.id);
     this.transfers.splice(index, 1, transferResponse);
   }
 
@@ -44,7 +44,7 @@ export default class TransferModule extends VuexModule {
   fetchTransfers(force: boolean = false) {
     if (this.transfers.length === 0 || force) {
       const transferResponse = APIHelper.getResource('transfers') as [];
-      const transfers = transferResponse.map(trnsfr => TransferTransformer.makeTransfer(trnsfr));
+      const transfers = transferResponse.map((trnsfr) => TransferTransformer.makeTransfer(trnsfr));
       this.context.commit('setTransfers', transfers);
     }
   }

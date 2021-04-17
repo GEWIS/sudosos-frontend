@@ -8,7 +8,6 @@ import APIHelper from '@/mixins/APIHelper';
 import UserTransformer from '@/transformers/UserTransformer';
 import { NFCDevice } from '@/entities/NFCDevice';
 
-
 @Module({
   dynamic: true, namespaced: true, store, name: 'UserModule',
 })

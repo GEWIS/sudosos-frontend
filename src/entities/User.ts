@@ -2,20 +2,6 @@ import { Dinero } from 'dinero.js';
 import { BaseEntity } from '@/entities/BaseEntity';
 import { NFCDevice } from '@/entities/NFCDevice';
 
-export interface BaseUser extends BaseEntity {
-  name: string;
-}
-
-export interface User extends BaseUser {
-  gewisID?: number;
-  email?: string;
-  active: boolean;
-  type: UserType;
-  saldo?: Dinero;
-  ean?: string;
-  nfcDevices: NFCDevice[];
-}
-
 export enum UserType {
   MEMBER = 1,
   ORGAN = 2,
@@ -30,6 +16,20 @@ export interface UserPermissions {
   ACCEPT_POS_ENTITY_UPDATES: boolean;
   READ_FINANCIAL_DATA: boolean;
   EDIT_FINANCIAL_DATA: boolean;
+}
+
+export interface BaseUser extends BaseEntity {
+  name: string;
+}
+
+export interface User extends BaseUser {
+  gewisID?: number;
+  email?: string;
+  active: boolean;
+  type: UserType;
+  saldo?: Dinero;
+  ean?: string;
+  nfcDevices: NFCDevice[];
 }
 
 export function checkPermissions(permissions: UserPermissions, type: string) {

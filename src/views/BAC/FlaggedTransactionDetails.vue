@@ -84,9 +84,9 @@
 
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator';
-import Formatters from '../../mixins/Formatters';
 import { FlaggedTransaction } from '@/entities/FlaggedTransaction';
 import TransactionDetails from '@/components/TransactionDetails.vue';
+import Formatters from '../../mixins/Formatters';
 
     @Component({
       components: {

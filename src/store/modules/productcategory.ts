@@ -28,7 +28,7 @@ export default class ProductCategoryModule extends VuexModule {
   @Mutation
   removeProductCategory(productCategory: ProductCategory) {
     APIHelper.delResource('productCategories', productCategory);
-    const index = this.productCategories.findIndex(prdc => prdc.id === productCategory.id);
+    const index = this.productCategories.findIndex((prdc) => prdc.id === productCategory.id);
     this.productCategories.splice(index, 1);
   }
 
@@ -36,7 +36,7 @@ export default class ProductCategoryModule extends VuexModule {
   updateProductCategories(productCategory: {}) {
     const response = APIHelper.putResource('productCategories', productCategory);
     const productCategoryResponse = ProductCategoryTransformer.makeProductCategory(response);
-    const index = this.productCategories.findIndex(prdc => prdc.id === productCategoryResponse.id);
+    const index = this.productCategories.findIndex((prdc) => prdc.id === productCategoryResponse.id);
     this.productCategories.splice(index, 1, productCategoryResponse);
   }
 
@@ -46,7 +46,7 @@ export default class ProductCategoryModule extends VuexModule {
   fetchProductCategories(force: boolean = false) {
     if (this.productCategories.length === 0 || force) {
       const productCategoriesResponse = APIHelper.getResource('productCategories') as [];
-      const ctgrs = productCategoriesResponse.map(productCategory => ProductCategoryTransformer.makeProductCategory(productCategory));
+      const ctgrs = productCategoriesResponse.map((productCategory) => ProductCategoryTransformer.makeProductCategory(productCategory));
       this.context.commit('setProductCategories', ctgrs);
     }
   }
