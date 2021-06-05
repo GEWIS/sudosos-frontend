@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import * as dotenv from 'dotenv';
 import eventBus from '@/eventbus';
 import { ApiError } from '@/entities/ApiError';
