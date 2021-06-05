@@ -125,7 +125,7 @@ export default class UserTable extends Formatters {
 
   // eslint-disable-next-line class-methods-use-this
   rowClicked(item: User, index: number, event: object) {
-    console.log(item);
+    this.$router.push({ name: 'userDetails', params: { id: String(item.id) } });
   }
 
   /**

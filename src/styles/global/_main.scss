@@ -226,7 +226,8 @@ Global style for forms in a card title
     }
 
     .transaction-row,
-    .productRow {
+    .product-row,
+    .user-row {
         cursor: pointer;
     }
 
@@ -234,7 +235,7 @@ Global style for forms in a card title
         background-color: #ffffff;
     }
 
-    .productRow:hover {
+    .product-row:hover {
         background-color: $gewis-grey-light;
     }
 

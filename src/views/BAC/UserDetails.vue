@@ -1,6 +1,5 @@
 <template>
   <b-container fluid="lg">
-
     <ConfirmationModal
       :title="$t('profile.Confirm deletion')"
       :reason="$t('profile.Are you sure')"
@@ -8,6 +7,90 @@
     </ConfirmationModal>
 
     <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('profile.My profile')}}</h1>
+    <b-row class="mb-4">
+      <b-col sm="12" md="6" class="mb-4 mb-md-0">
+        <b-card>
+          <b-card-title>
+            Pas hier je gegevens aan
+          </b-card-title>
+          <b-card-body>
+            <b-form-group
+              id="user-firstname-group"
+              :label="$t('profile.First name')"
+              label-for="new-firstname"
+              :invalid-feedback="firstNameFeedback"
+              :state="validateFirstname"
+            >
+              <b-form-input id="new-firstname" v-model="firstname" type="text" />
+            </b-form-group>
+
+            <b-form-group
+              id="user-lastname-group"
+              :label="$t('profile.Last name')"
+              label-for="new-lastname"
+              :invalid-feedback="lastNameFeedback"
+              :state="validateLastname"
+            >
+              <b-form-input id="new-lastname" v-model="lastname" type="text" />
+            </b-form-group>
+
+            <b-form-group
+              id="user-email-group"
+              :label="$t('profile.Email address')"
+              label-for="new-email"
+              :invalid-feedback="email"
+              :state="validateEmail"
+            >
+              <b-form-input id="new-email" v-model="email" type="email" />
+            </b-form-group>
+
+            <b-form-group
+              id="user-active-group"
+              :label="$t('profile.Active')"
+              label-for="user-active"
+            >
+              <b-form-checkbox
+                id="user-active"
+                v-model="active"
+                name="user-active"
+                value="true"
+                unchecked-value="false"
+              >
+                {{  $t("profile.user is active") }}
+              </b-form-checkbox>
+            </b-form-group>
+          </b-card-body>
+        </b-card>
+      </b-col>
+      <b-col sm="12" md="6">
+        <b-card>
+          <b-card-title>
+              Pas hier nog meer gegevens aan
+          </b-card-title>
+          <b-card-body>
+            <b-form-group
+              id="user-password-group"
+              :label="$t('profile.Password')"
+              label-for="new-password"
+              :invalid-feedback="passwordFeedback"
+              :state="validatePassword"
+            >
+              <b-form-input id="new-password" v-model="password" type="password" />
+            </b-form-group>
+
+            <b-form-group
+              id="user-password-confirm-group"
+              :label="$t('profile.Confirm password')"
+              label-for="new-password-confirm"
+              :invalid-feedback="passwordConfirmFeedback"
+              :state="validateConfirmPassword"
+            >
+              <b-form-input id="new-password-confirm" v-model="confirmPassword" type="password" />
+            </b-form-group>
+          </b-card-body>
+        </b-card>
+      </b-col>
+    </b-row>
     <b-row>
       <b-col sm="12" md="6" class="mb-4 mb-md-0">
         <b-card>
@@ -89,27 +172,35 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
 // eslint-disable-next-line import/no-cycle
 import UserModule from '@/store/modules/user';
 import { NFCDevice } from '@/entities/NFCDevice';
+import { User } from '@/entities/User';
 
 @Component({
   components: {
     ConfirmationModal,
   },
 })
-export default class Profile extends Vue {
+export default class UserDetails extends Vue {
+  @Prop() id!: number;
+
   private userState = getModule(UserModule);
+
+  user: User = {} as User;
+
+  firstname: string = '';
+
+  lastname: string = '';
 
   editDevice: NFCDevice = {} as NFCDevice;
 
   removeDevice: NFCDevice = {} as NFCDevice;
 
   pincode: any = {
-    oldPincode: '',
     newPincode: '',
     confirmPincode: '',
   };
@@ -127,22 +218,9 @@ export default class Profile extends Vue {
     this.userState.removeNFCDevice(this.removeDevice);
   }
 
-  // Validators for the form
-  get validateOldPincode() {
-    return this.pincode.oldPincode.length !== 4;
-  }
-
-  get oldPincodeFeedback() {
-    if (this.pincode.oldPincode.length > 4) {
-      return this.$t('profile.Pin code must be 4 digits').toString();
-    }
-    return '';
-  }
-
   get validateNewPincode() {
     return (
       this.pincode.newPincode.length !== 4
-      && this.pincode.newPincode !== this.pincode.oldPincode
     );
   }
 
@@ -151,8 +229,7 @@ export default class Profile extends Vue {
       return this.$t('profile.New pin code length must be 4 digits').toString();
     }
     if (
-      this.pincode.newPincode === this.pincode.oldPincode
-      && this.pincode.newPincode !== ''
+      this.pincode.newPincode !== ''
     ) {
       return this.$t('profile.New pin code must be unique from old pin code').toString();
     }
@@ -176,7 +253,8 @@ export default class Profile extends Vue {
 @import '~bootstrap/scss/bootstrap';
 @import './src/styles/Card.scss';
 
-input {
+input#new-pincode,
+input#confirm-pincode {
   max-width: 10ch;
 }
 

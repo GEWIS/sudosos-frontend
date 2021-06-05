@@ -36,6 +36,9 @@
               <b-dropdown-item :to="{ name: 'managePointOfSale'}">
                 {{ $t('app.Manage POS') }}
               </b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'userOverview'}">
+                {{ $t('app.User overview') }}
+              </b-dropdown-item>
               <b-dropdown-item :to="{ name: 'flaggedTransactions'}">
                 {{ $t('app.Flagged transactions') }}
               </b-dropdown-item>

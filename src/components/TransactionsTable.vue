@@ -86,7 +86,7 @@ import UserModule from '@/store/modules/user';
 import TransactionDetailsModal from '@/components/TransactionDetailsModal.vue';
 import TransactionTableFilter from '@/components/TransactionTableFilter.vue';
 import { Transaction } from '@/entities/Transaction';
-import { initFilter, TableFilter } from '@/entities/TableFilter';
+import { initFilter, TransactionFilter } from '@/entities/TransactionFilter';
 import { Transfer } from '@/entities/Transfer';
 import { TransactionDateRow } from '@/entities/TransactionDateRow';
 
@@ -148,7 +148,7 @@ export default class TransactionsTable extends Formatters {
   totalRows: number = 0;
 
   // Current filter values
-  filterValues: TableFilter = initFilter();
+  filterValues: TransactionFilter = initFilter();
 
   filterWasUpdated: boolean = true;
 

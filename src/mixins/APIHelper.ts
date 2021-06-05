@@ -1,7 +1,10 @@
+/* eslint-disable no-console */
+
 import * as dotenv from 'dotenv';
 import eventBus from '@/eventbus';
 import { ApiError } from '@/entities/ApiError';
 import { ResponseBody } from '@/entities/ResponseBody';
+// eslint-disable-next-line import/no-cycle
 import router from '@/router';
 import devAPI from '../../dev/api';
 
