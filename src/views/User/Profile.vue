@@ -4,18 +4,18 @@
     <ConfirmationModal
       :title="$t('profile.Confirm deletion')"
       :reason="$t('profile.Are you sure')"
-      @modalConfirmed="confirmModal">
+      @modalConfirmed="removeNFCDevice">
     </ConfirmationModal>
 
     <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('profile.My profile')}}</h1>
     <b-row class="mb-4">
       <b-col sm="12" md="6" class="mb-4 mb-md-0">
-        <b-card>
+        <b-card class="h-100">
           <b-card-title>
             {{ $t('profile.Edit info') }}
           </b-card-title>
           <b-card-body>
-            <b-form>
+            <b-form @submit="updateUserInformation">
               <b-form-group
                 id="user-firstname-group"
                 :label="$t('profile.First name')"
@@ -51,12 +51,12 @@
         </b-card>
       </b-col>
       <b-col sm="12" md="6">
-        <b-card>
+        <b-card class="h-100">
           <b-card-title>
             {{ $t('profile.Change password') }}
           </b-card-title>
           <b-card-body>
-            <b-form>
+            <b-form @submit="updatePassword">
               <b-form-group
                 id="user-password-group"
                 :label="$t('profile.Password')"
@@ -86,7 +86,7 @@
     </b-row>
     <b-row>
       <b-col sm="12" md="6" class="mb-4 mb-md-0">
-        <b-card>
+        <b-card class="h-100">
           <b-card-title>
             {{ $t('profile.Change pin code') }}
           </b-card-title>
@@ -118,7 +118,7 @@
         </b-card>
       </b-col>
       <b-col sm="12" md="6">
-        <b-card>
+        <b-card class="h-100">
           <b-card-title>{{ $t('profile.Manage NFC devices')}}</b-card-title>
           <b-card-body>
             <b-row
@@ -165,8 +165,6 @@
 </template>
 
 <script lang="ts">
-// TODO: Fix data validation
-
 import { Component, Vue } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
@@ -189,18 +187,20 @@ export default class Profile extends Vue {
 
   lastname: string = '';
 
-  email: string = '';
+  email: string | null = null;
 
-  password: string = '';
+  password: string | null = null;
 
-  confirmPassword: string = '';
+  confirmPassword: string | null = null;
 
   pincode: any = {
-    oldPincode: '',
-    newPincode: '',
-    confirmPincode: '',
+    newPincode: null,
+    confirmPincode: null,
   };
 
+  /**
+   * Fetch all the user info that is needed for the profile
+   */
   beforeMount() {
     this.userState.fetchUser();
     this.firstname = this.userState.user.firstname;
@@ -208,24 +208,73 @@ export default class Profile extends Vue {
     this.email = this.userState.user.email || '';
   }
 
-  changePincode() {
-    this.userState.updatePinCode(this.pincode);
+  /**
+   * Change a users pincode
+   */
+  changePincode(event: Event) {
+    event.preventDefault();
+    if (this.validateNewPincode && this.validateConfirmPincode) {
+      this.userState.updatePinCode(this.pincode);
+      this.pincode.newPincode = null;
+      this.pincode.confirmPincode = null;
+    }
   }
 
+  /**
+   * If all the info the user inputted is correct we submit the new values to the server
+   */
+  updateUserInformation(event: Event) {
+    event.preventDefault();
+    if (this.validateEmail && this.validateFirstname) {
+      this.userState.updateUserInformation({
+        id: this.userState.user.id,
+        firstname: this.firstname,
+        lastname: this.lastname,
+        email: this.email || '',
+      });
+    }
+  }
+
+  updatePassword(event: Event) {
+    event.preventDefault();
+    if (this.validatePassword && this.validateConfirmPassword) {
+      this.userState.updatePassword({
+        id: this.userState.user.id,
+        password: this.password || '',
+      });
+      this.password = null;
+      this.confirmPassword = null;
+    }
+  }
+
+  /**
+   * Updates a users NFC device
+   *
+   * @param {NFCDevice} device: The new NFC device
+   */
   updateDevice(device: NFCDevice) {
     this.userState.updateNFCDevice(device);
     this.editDevice = {} as NFCDevice;
   }
 
-  confirmModal() : void {
+  /**
+   * If the deletion of an NFC device is confirmed this will remove it.
+   */
+  removeNFCDevice() {
     this.userState.removeNFCDevice(this.removeDevice);
   }
 
+  /**
+   * Check if the first name has a length longer than 1
+   */
   get validateFirstname() {
     return this.firstname.length > 0;
   }
 
-  firstNameFeedback() {
+  /**
+   * Display an error if the first name field is incorrect
+   */
+  get firstNameFeedback() {
     if (!this.validateFirstname) {
       return this.$t('profile.First name should contain at least 1 character').toString();
     }
@@ -233,64 +282,97 @@ export default class Profile extends Vue {
     return '';
   }
 
-  validateEmail() {
-    return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.email);
+  /**
+   * Check if the email is not null, there is an actual email being inputted and this email
+   * address is of correct form
+   */
+  get validateEmail() {
+    return this.email === null || this.email.length === 0 || /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.email);
   }
 
-  emailFeedback() {
-    if (this.validateEmail()) {
-      this.$t('profile.Email should be correct').toString();
+  /**
+   * If an email is being inputted that is of incorrect form make sure we let the user know.
+   */
+  get emailFeedback() {
+    if (!this.validateEmail) {
+      return this.$t('profile.Email should be correct').toString();
     }
 
     return '';
   }
 
-  validatePassword() {
-    return this.password.length >= 8;
+  /**
+   * Check if the new password is longer than 8 characters
+   */
+  get validatePassword() {
+    return this.password === null || this.password.length >= 8;
   }
 
-  passwordFeedback() {
-    if (!this.validatePassword()) {
-      this.$t('profile.Password should contain at least 8 characters').toString();
+  /**
+   * If the password is < 8 characters display an error message
+   */
+  get passwordFeedback() {
+    if (!this.validatePassword) {
+      return this.$t('profile.Password should').toString();
     }
 
     return '';
   }
 
-  validateConfirmPassword() {
-    if (this.password.length === 0) {
-      return true;
-    }
-    return this.password === this.confirmPassword && this.validatePassword();
+  /**
+   * Check if passwords match (given that both have an input)
+   */
+  get validateConfirmPassword() {
+    return (
+      this.confirmPassword === null
+      || this.password === null
+      || (this.password === this.confirmPassword && this.validatePassword)
+    );
   }
 
-  confirmPasswordFeedback() {
-    if (!this.validateConfirmPassword()) {
+  /**
+   * Show an error if the passwords do not match
+   */
+  get confirmPasswordFeedback() {
+    if (!this.validateConfirmPassword) {
       return this.$t('profile.The passwords to not match up').toString();
     }
 
     return '';
   }
 
+  /**
+   * Check if the new pincode is of length 4
+   */
   get validateNewPincode() {
-    return (
-      this.pincode.newPincode.length !== 4
-      && this.pincode.newPincode !== this.pincode.oldPincode
-    );
+    return this.pincode.newPincode === null || this.pincode.newPincode.length !== 4;
   }
 
+  /**
+   * Display a correct error message if the new pincode does not match the criteria
+   */
   get newPincodeFeedback() {
-    if (this.pincode.newPincode.length !== 4) {
+    if (this.pincode.newPincode !== null && this.pincode.newPincode.length !== 4) {
       return this.$t('profile.New pin code length must be 4 digits').toString();
     }
 
     return '';
   }
 
+  /**
+   * Check if both pincodes match if a pincode has been inputted
+   */
   get validateConfirmPincode() {
-    return this.pincode.newPincode === this.pincode.confirmPincode;
+    return (
+      this.pincode.confirmPincode === null
+      || this.pincode.newPincode === null
+      || this.pincode.newPincode === this.pincode.confirmPincode
+    );
   }
 
+  /**
+   * Display error message if both pincodes do not match
+   */
   get confirmPincodeFeedback() {
     if (!this.validateConfirmPincode) {
       return this.$t('profile.Confirmation does not match pin code').toString();

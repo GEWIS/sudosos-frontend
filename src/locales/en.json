@@ -350,7 +350,7 @@
     "Update user information": "Update user information",
     "Change password": "Change password",
     "Password": "Password",
-    "Password should contain at least 8 characters": "Password should contain at least 8 characters",
+    "Password should": "Password should contain at least 8 characters",
     "Confirm password": "Confirm password",
     "The passwords to not match up": "The passwords to not match up",
     "Update password": "Update password",

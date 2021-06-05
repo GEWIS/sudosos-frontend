@@ -59,6 +59,25 @@ export default class UserModule extends VuexModule {
     this.user.nfcDevices.splice(index, 1);
   }
 
+  @Mutation
+  updateUserInformation(data: {
+    id: number,
+    firstname: string,
+    lastname: string,
+    email: string,
+    }) {
+    const userResponse = APIHelper.putResource('user/updateUserInfo', data);
+    this.user.firstname = data.firstname;
+    this.user.lastname = data.lastname;
+    this.user.email = data.email;
+  }
+
+  @Mutation
+  // eslint-disable-next-line class-methods-use-this
+  updatePassword(data: {id: number, password: string}) {
+    const passwordResponse = APIHelper.putResource('user/password', data);
+  }
+
   @Action({
     rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
   })
