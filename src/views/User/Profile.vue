@@ -8,6 +8,82 @@
     </ConfirmationModal>
 
     <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('profile.My profile')}}</h1>
+    <b-row class="mb-4">
+      <b-col sm="12" md="6" class="mb-4 mb-md-0">
+        <b-card>
+          <b-card-title>
+            {{ $t('profile.Edit info') }}
+          </b-card-title>
+          <b-card-body>
+            <b-form>
+              <b-form-group
+                id="user-firstname-group"
+                :label="$t('profile.First name')"
+                label-for="new-firstname"
+                :invalid-feedback="firstNameFeedback"
+                :state="validateFirstname"
+              >
+                <b-form-input id="new-firstname" v-model="firstname" type="text" />
+              </b-form-group>
+
+              <b-form-group
+                id="user-lastname-group"
+                :label="$t('profile.Last name')"
+                label-for="new-lastname"
+              >
+                <b-form-input id="new-lastname" v-model="lastname" type="text" />
+              </b-form-group>
+
+              <b-form-group
+                id="user-email-group"
+                :label="$t('profile.Email address')"
+                label-for="new-email"
+                :invalid-feedback="emailFeedback"
+                :state="validateEmail"
+              >
+                <b-form-input id="new-email" v-model="email" type="text" />
+              </b-form-group>
+              <b-button type="submit" variant="primary">
+                {{ $t('profile.Update user information')}}
+              </b-button>
+            </b-form>
+          </b-card-body>
+        </b-card>
+      </b-col>
+      <b-col sm="12" md="6">
+        <b-card>
+          <b-card-title>
+            {{ $t('profile.Change password') }}
+          </b-card-title>
+          <b-card-body>
+            <b-form>
+              <b-form-group
+                id="user-password-group"
+                :label="$t('profile.Password')"
+                label-for="new-password"
+                :invalid-feedback="passwordFeedback"
+                :state="validatePassword"
+              >
+                <b-form-input id="new-password" v-model="password" type="password" />
+              </b-form-group>
+
+              <b-form-group
+                id="user-password-confirm-group"
+                :label="$t('profile.Confirm password')"
+                label-for="new-password-confirm"
+                :invalid-feedback="confirmPasswordFeedback"
+                :state="validateConfirmPassword"
+              >
+                <b-form-input id="new-password-confirm" v-model="confirmPassword" type="password" />
+              </b-form-group>
+              <b-button type="submit" variant="primary">
+                {{ $t('profile.Update password')}}
+              </b-button>
+            </b-form>
+          </b-card-body>
+        </b-card>
+      </b-col>
+    </b-row>
     <b-row>
       <b-col sm="12" md="6" class="mb-4 mb-md-0">
         <b-card>
@@ -89,10 +165,11 @@
 </template>
 
 <script lang="ts">
+// TODO: Fix data validation
+
 import { Component, Vue } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
-// eslint-disable-next-line import/no-cycle
 import UserModule from '@/store/modules/user';
 import { NFCDevice } from '@/entities/NFCDevice';
 
@@ -108,11 +185,28 @@ export default class Profile extends Vue {
 
   removeDevice: NFCDevice = {} as NFCDevice;
 
+  firstname: string = '';
+
+  lastname: string = '';
+
+  email: string = '';
+
+  password: string = '';
+
+  confirmPassword: string = '';
+
   pincode: any = {
     oldPincode: '',
     newPincode: '',
     confirmPincode: '',
   };
+
+  beforeMount() {
+    this.userState.fetchUser();
+    this.firstname = this.userState.user.firstname;
+    this.lastname = this.userState.user.lastname;
+    this.email = this.userState.user.email || '';
+  }
 
   changePincode() {
     this.userState.updatePinCode(this.pincode);
@@ -127,15 +221,54 @@ export default class Profile extends Vue {
     this.userState.removeNFCDevice(this.removeDevice);
   }
 
-  // Validators for the form
-  get validateOldPincode() {
-    return this.pincode.oldPincode.length !== 4;
+  get validateFirstname() {
+    return this.firstname.length > 0;
   }
 
-  get oldPincodeFeedback() {
-    if (this.pincode.oldPincode.length > 4) {
-      return this.$t('profile.Pin code must be 4 digits').toString();
+  firstNameFeedback() {
+    if (!this.validateFirstname) {
+      return this.$t('profile.First name should contain at least 1 character').toString();
     }
+
+    return '';
+  }
+
+  validateEmail() {
+    return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.email);
+  }
+
+  emailFeedback() {
+    if (this.validateEmail()) {
+      this.$t('profile.Email should be correct').toString();
+    }
+
+    return '';
+  }
+
+  validatePassword() {
+    return this.password.length >= 8;
+  }
+
+  passwordFeedback() {
+    if (!this.validatePassword()) {
+      this.$t('profile.Password should contain at least 8 characters').toString();
+    }
+
+    return '';
+  }
+
+  validateConfirmPassword() {
+    if (this.password.length === 0) {
+      return true;
+    }
+    return this.password === this.confirmPassword && this.validatePassword();
+  }
+
+  confirmPasswordFeedback() {
+    if (!this.validateConfirmPassword()) {
+      return this.$t('profile.The passwords to not match up').toString();
+    }
+
     return '';
   }
 
@@ -150,12 +283,7 @@ export default class Profile extends Vue {
     if (this.pincode.newPincode.length !== 4) {
       return this.$t('profile.New pin code length must be 4 digits').toString();
     }
-    if (
-      this.pincode.newPincode === this.pincode.oldPincode
-      && this.pincode.newPincode !== ''
-    ) {
-      return this.$t('profile.New pin code must be unique from old pin code').toString();
-    }
+
     return '';
   }
 
@@ -164,7 +292,7 @@ export default class Profile extends Vue {
   }
 
   get confirmPincodeFeedback() {
-    if (this.pincode.confirmPincode.length !== this.pincode.newPincode) {
+    if (!this.validateConfirmPincode) {
       return this.$t('profile.Confirmation does not match pin code').toString();
     }
     return '';
@@ -176,7 +304,8 @@ export default class Profile extends Vue {
 @import '~bootstrap/scss/bootstrap';
 @import './src/styles/Card.scss';
 
-input {
+input#new-pincode,
+input#confirm-pincode {
   max-width: 10ch;
 }
 

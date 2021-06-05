@@ -56,7 +56,7 @@
 
             <b-nav-item-dropdown right>
               <template v-slot:button-content>
-                {{ currentUser.name.substr(0, currentUser.name.indexOf(' ')) }}
+                {{ currentUser.firstname }}
               </template>
               <b-dropdown-item :to="{ name: 'profile'}">{{ $t('app.Profile') }}</b-dropdown-item>
               <b-dropdown-item :to="{ name: 'signOut'}">{{ $t('app.Sign out') }}</b-dropdown-item>

@@ -6,12 +6,12 @@
       @modalConfirmed="confirmModal">
     </ConfirmationModal>
 
-    <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('profile.My profile')}}</h1>
+    <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('profile.Edit profile', { user: user.name })}}</h1>
     <b-row class="mb-4">
       <b-col sm="12" md="6" class="mb-4 mb-md-0">
         <b-card>
           <b-card-title>
-            Pas hier je gegevens aan
+            {{ $t('profile.Edit user info') }}
           </b-card-title>
           <b-card-body>
             <b-form-group
@@ -65,7 +65,7 @@
       <b-col sm="12" md="6">
         <b-card>
           <b-card-title>
-              Pas hier nog meer gegevens aan
+            {{ $t('profile.Change users password') }}
           </b-card-title>
           <b-card-body>
             <b-form-group
@@ -195,6 +195,8 @@ export default class UserDetails extends Vue {
   firstname: string = '';
 
   lastname: string = '';
+
+  email: string = '';
 
   editDevice: NFCDevice = {} as NFCDevice;
 

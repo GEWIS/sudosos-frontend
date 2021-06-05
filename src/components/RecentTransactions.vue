@@ -91,7 +91,7 @@ export default class RecentTransactions extends Formatters {
         && Object.keys(trans.createdBy).length > 0
         && trans.createdBy.id === id
         && trans.from.id !== id) {
-        return this.$t('transactionsComponent.transactionPutFor', { name: trans.from.name, amount: trans.price.toFormat() });
+        return this.$t('transactionsComponent.transactionPutFor', { name: trans.from.firstname, amount: trans.price.toFormat() });
       }
 
       // This is a transaction that was put in for you by someone else
@@ -99,7 +99,7 @@ export default class RecentTransactions extends Formatters {
         && Object.keys(trans.createdBy).length > 0
         && trans.from.id === id
         && trans.createdBy.id !== id) {
-        return this.$t('transactionsComponent.transactionPutBy', { name: trans.createdBy.name, amount: trans.price.toFormat() });
+        return this.$t('transactionsComponent.transactionPutBy', { name: trans.createdBy.firstname, amount: trans.price.toFormat() });
       }
 
       return this.$t('transactionsComponent.transaction', { amount: trans.price.toFormat() });
