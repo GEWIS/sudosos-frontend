@@ -46,7 +46,7 @@
           {{ data.item.name }}
         </template>
         <template v-slot:cell(active)="data">
-          <font-awesome-icon v-if="data.value" icon="check-circle"></font-awesome-icon>
+          <font-awesome-icon :icon="Boolean(data.item.active) ? 'check-circle' : ''" />
         </template>
 
       </b-table>

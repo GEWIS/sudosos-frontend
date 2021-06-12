@@ -2,23 +2,23 @@
   <b-container fluid="lg">
 
     <ConfirmationModal
-      :title="$t('profile.Confirm deletion')"
-      :reason="$t('profile.Are you sure')"
+      :title="$t('userDetails.Confirm deletion')"
+      :reason="$t('userDetails.Are you sure')"
       @modalConfirmed="removeNFCDevice">
     </ConfirmationModal>
 
-    <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('profile.My profile')}}</h1>
+    <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('userDetails.profile', { name: firstname })}}</h1>
     <b-row class="mb-4">
       <b-col sm="12" md="6" class="mb-4 mb-md-0">
         <b-card class="h-100">
           <b-card-title>
-            {{ $t('profile.Edit info') }}
+            {{ $t('userDetails.Edit info') }}
           </b-card-title>
           <b-card-body>
             <b-form @submit="updateUserInformation">
               <b-form-group
                 id="user-firstname-group"
-                :label="$t('profile.First name')"
+                :label="$t('userDetails.First name')"
                 label-for="new-firstname"
                 :invalid-feedback="firstNameFeedback"
                 :state="validateFirstname"
@@ -28,7 +28,7 @@
 
               <b-form-group
                 id="user-lastname-group"
-                :label="$t('profile.Last name')"
+                :label="$t('userDetails.Last name')"
                 label-for="new-lastname"
               >
                 <b-form-input id="new-lastname" v-model="lastname" type="text" />
@@ -36,7 +36,7 @@
 
               <b-form-group
                 id="user-email-group"
-                :label="$t('profile.Email address')"
+                :label="$t('userDetails.Email address')"
                 label-for="new-email"
                 :invalid-feedback="emailFeedback"
                 :state="validateEmail"
@@ -45,21 +45,21 @@
               </b-form-group>
               <b-form-group
                 id="user-active-group"
-                :label="$t('profile.Active')"
+                :label="$t('userDetails.Active')"
                 label-for="user-active"
               >
                 <b-form-checkbox
                   id="user-active"
                   v-model="active"
                   name="user-active"
-                  value="true"
-                  unchecked-value="false"
+                  :value="true"
+                  :unchecked-value="false"
                 >
-                  {{  $t("profile.user is active") }}
+                  {{  $t("userDetails.user is active") }}
                 </b-form-checkbox>
               </b-form-group>
               <b-button type="submit" variant="primary">
-                {{ $t('profile.Update user information')}}
+                {{ $t('userDetails.Update user information')}}
               </b-button>
             </b-form>
           </b-card-body>
@@ -68,13 +68,13 @@
       <b-col sm="12" md="6">
         <b-card class="h-100">
           <b-card-title>
-            {{ $t('profile.Change password') }}
+            {{ $t('userDetails.Change password') }}
           </b-card-title>
           <b-card-body>
             <b-form @submit="updatePassword">
               <b-form-group
                 id="user-password-group"
-                :label="$t('profile.Password')"
+                :label="$t('userDetails.Password')"
                 label-for="new-password"
                 :invalid-feedback="passwordFeedback"
                 :state="validatePassword"
@@ -84,7 +84,7 @@
 
               <b-form-group
                 id="user-password-confirm-group"
-                :label="$t('profile.Confirm password')"
+                :label="$t('userDetails.Confirm password')"
                 label-for="new-password-confirm"
                 :invalid-feedback="confirmPasswordFeedback"
                 :state="validateConfirmPassword"
@@ -92,7 +92,7 @@
                 <b-form-input id="new-password-confirm" v-model="confirmPassword" type="password" />
               </b-form-group>
               <b-button type="submit" variant="primary">
-                {{ $t('profile.Update password')}}
+                {{ $t('userDetails.Update password')}}
               </b-button>
             </b-form>
           </b-card-body>
@@ -103,13 +103,13 @@
       <b-col sm="12" md="6" class="mb-4 mb-md-0">
         <b-card class="h-100">
           <b-card-title>
-            {{ $t('profile.Change pin code') }}
+            {{ $t('userDetails.Change pin code') }}
           </b-card-title>
           <b-card-body>
             <b-form @submit="changePincode">
               <b-form-group
                 id="new-pincode-group"
-                :label="$t('profile.New pin code')"
+                :label="$t('userDetails.New pin code')"
                 label-for="new-pincode"
                 :invalid-feedback="newPincodeFeedback"
                 :state="validateNewPincode"
@@ -118,7 +118,7 @@
               </b-form-group>
               <b-form-group
                 id="confirm-pincode-group"
-                :label="$t('profile.Confirm new pin code')"
+                :label="$t('userDetails.Confirm new pin code')"
                 label-for="confirm-pincode"
                 :invalid-feedback="confirmPincodeFeedback"
                 :state="validateConfirmPincode"
@@ -126,18 +126,18 @@
                 <b-form-input id="confirm-pincode" v-model="pincode.confirmPincode" type="text" />
               </b-form-group>
               <b-button type="submit" variant="primary">
-                {{ $t('profile.Change pin code')}}
+                {{ $t('userDetails.Change pin code')}}
               </b-button>
             </b-form>
           </b-card-body>
         </b-card>
       </b-col>
-      <b-col sm="12" md="6">
+      <b-col v-if="nfcDevices.length > 0" sm="12" md="6">
         <b-card class="h-100">
-          <b-card-title>{{ $t('profile.Manage NFC devices')}}</b-card-title>
+          <b-card-title>{{ $t('userDetails.Manage NFC devices')}}</b-card-title>
           <b-card-body>
             <b-row
-              v-for="device in userState.user.nfcDevices"
+              v-for="device in nfcDevices"
               v-bind:key="device.id"
               class="nfc-device-badge mb-2">
               <span
@@ -199,60 +199,213 @@ export default class UserDetails extends Vue {
 
   private userState = getModule(UserModule);
 
-  user: User = {} as User;
-
-  firstname: string = '';
-
-  lastname: string = '';
-
-  email: string = '';
+  nfcDevices: NFCDevice[] = [];
 
   editDevice: NFCDevice = {} as NFCDevice;
 
   removeDevice: NFCDevice = {} as NFCDevice;
 
+  firstname: string = '';
+
+  lastname: string = '';
+
+  email: string | null = null;
+
+  active: boolean = false;
+
+  password: string | null = null;
+
+  confirmPassword: string | null = null;
+
   pincode: any = {
-    newPincode: '',
-    confirmPincode: '',
+    newPincode: null,
+    confirmPincode: null,
   };
 
-  changePincode() {
-    this.userState.updatePinCode(this.pincode);
+  /**
+   * Fetch all the user info that is needed for the profile
+   */
+  beforeMount() {
+    this.userState.fetchAllUsers();
+    const user = this.userState.allUsers.find((usr) => usr.id === Number(this.id)) as User;
+    this.firstname = user.firstname;
+    this.lastname = user.lastname;
+    this.email = user.email || '';
+    this.active = user.active;
+    this.nfcDevices = user.nfcDevices;
   }
 
+  /**
+   * Change a users pincode
+   */
+  changePincode(event: Event) {
+    event.preventDefault();
+    if (this.validateNewPincode && this.validateConfirmPincode) {
+      this.userState.updateUsersPinCode({ userID: Number(this.id), pincode: this.pincode });
+      this.pincode.newPincode = null;
+      this.pincode.confirmPincode = null;
+    }
+  }
+
+  /**
+   * If all the info the user inputted is correct we submit the new values to the server
+   */
+  updateUserInformation(event: Event) {
+    event.preventDefault();
+    if (this.validateEmail && this.validateFirstname) {
+      this.userState.updateUsersUserInformation({
+        userID: Number(this.id),
+        firstname: this.firstname,
+        lastname: this.lastname,
+        email: this.email || '',
+        active: this.active,
+      });
+    }
+  }
+
+  /**
+   * Updates the users password
+   */
+  updatePassword(event: Event) {
+    event.preventDefault();
+    if (this.validatePassword && this.validateConfirmPassword) {
+      this.userState.updateUsersPassword({
+        userID: Number(this.id),
+        password: this.password || '',
+      });
+      this.password = null;
+      this.confirmPassword = null;
+    }
+  }
+
+  /**
+   * Updates a users NFC device
+   *
+   * @param {NFCDevice} device: The new NFC device
+   */
   updateDevice(device: NFCDevice) {
-    this.userState.updateNFCDevice(device);
+    this.userState.updateUsersNFCDevice({ userID: Number(this.id), id: device.id });
     this.editDevice = {} as NFCDevice;
   }
 
-  confirmModal() : void {
-    this.userState.removeNFCDevice(this.removeDevice);
+  /**
+   * If the deletion of an NFC device is confirmed this will remove it.
+   */
+  removeNFCDevice() {
+    this.userState.removeUsersNFCDevice({ userID: Number(this.id), id: this.removeDevice.id });
   }
 
-  get validateNewPincode() {
-    return (
-      this.pincode.newPincode.length !== 4
-    );
+  /**
+   * Check if the first name has a length longer than 1
+   */
+  get validateFirstname() {
+    return this.firstname.length > 0;
   }
 
-  get newPincodeFeedback() {
-    if (this.pincode.newPincode.length !== 4) {
-      return this.$t('profile.New pin code length must be 4 digits').toString();
+  /**
+   * Display an error if the first name field is incorrect
+   */
+  get firstNameFeedback() {
+    if (!this.validateFirstname) {
+      return this.$t('profile.First name should contain at least 1 character').toString();
     }
-    if (
-      this.pincode.newPincode !== ''
-    ) {
-      return this.$t('profile.New pin code must be unique from old pin code').toString();
-    }
+
     return '';
   }
 
-  get validateConfirmPincode() {
-    return this.pincode.newPincode === this.pincode.confirmPincode;
+  /**
+   * Check if the email is not null, there is an actual email being inputted and this email
+   * address is of correct form
+   */
+  get validateEmail() {
+    return this.email === null || this.email.length === 0 || /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.email);
   }
 
+  /**
+   * If an email is being inputted that is of incorrect form make sure we let the user know.
+   */
+  get emailFeedback() {
+    if (!this.validateEmail) {
+      return this.$t('profile.Email should be correct').toString();
+    }
+
+    return '';
+  }
+
+  /**
+   * Check if the new password is longer than 8 characters
+   */
+  get validatePassword() {
+    return this.password === null || this.password.length >= 8;
+  }
+
+  /**
+   * If the password is < 8 characters display an error message
+   */
+  get passwordFeedback() {
+    if (!this.validatePassword) {
+      return this.$t('profile.Password should').toString();
+    }
+
+    return '';
+  }
+
+  /**
+   * Check if passwords match (given that both have an input)
+   */
+  get validateConfirmPassword() {
+    return (
+      this.confirmPassword === null
+      || this.password === null
+      || (this.password === this.confirmPassword && this.validatePassword)
+    );
+  }
+
+  /**
+   * Show an error if the passwords do not match
+   */
+  get confirmPasswordFeedback() {
+    if (!this.validateConfirmPassword) {
+      return this.$t('profile.The passwords to not match up').toString();
+    }
+
+    return '';
+  }
+
+  /**
+   * Check if the new pincode is of length 4
+   */
+  get validateNewPincode() {
+    return this.pincode.newPincode === null || this.pincode.newPincode.length !== 4;
+  }
+
+  /**
+   * Display a correct error message if the new pincode does not match the criteria
+   */
+  get newPincodeFeedback() {
+    if (this.pincode.newPincode !== null && this.pincode.newPincode.length !== 4) {
+      return this.$t('profile.New pin code length must be 4 digits').toString();
+    }
+
+    return '';
+  }
+
+  /**
+   * Check if both pincodes match if a pincode has been inputted
+   */
+  get validateConfirmPincode() {
+    return (
+      this.pincode.confirmPincode === null
+      || this.pincode.newPincode === null
+      || this.pincode.newPincode === this.pincode.confirmPincode
+    );
+  }
+
+  /**
+   * Display error message if both pincodes do not match
+   */
   get confirmPincodeFeedback() {
-    if (this.pincode.confirmPincode.length !== this.pincode.newPincode) {
+    if (!this.validateConfirmPincode) {
       return this.$t('profile.Confirmation does not match pin code').toString();
     }
     return '';

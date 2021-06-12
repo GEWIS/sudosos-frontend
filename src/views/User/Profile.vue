@@ -117,7 +117,7 @@
           </b-card-body>
         </b-card>
       </b-col>
-      <b-col sm="12" md="6">
+      <b-col v-if="userState.user.nfcDevices.length > 0" sm="12" md="6">
         <b-card class="h-100">
           <b-card-title>{{ $t('profile.Manage NFC devices')}}</b-card-title>
           <b-card-body>
@@ -227,7 +227,7 @@ export default class Profile extends Vue {
     event.preventDefault();
     if (this.validateEmail && this.validateFirstname) {
       this.userState.updateUserInformation({
-        id: this.userState.user.id,
+        userID: this.userState.user.id,
         firstname: this.firstname,
         lastname: this.lastname,
         email: this.email || '',
@@ -235,6 +235,9 @@ export default class Profile extends Vue {
     }
   }
 
+  /**
+   * Updates the users password
+   */
   updatePassword(event: Event) {
     event.preventDefault();
     if (this.validatePassword && this.validateConfirmPassword) {

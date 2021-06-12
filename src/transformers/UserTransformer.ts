@@ -13,6 +13,7 @@ export default {
         ...BaseTransformer.makeBaseEntity(data),
         firstname: data.firstname,
         lastname: data.lastname,
+        name: `${data.firstname} ${data.lastname}`,
       } as BaseUser;
     }
 
@@ -34,6 +35,7 @@ export default {
       ...BaseTransformer.makeBaseEntity(data),
       firstname: data.firstname,
       lastname: data.lastname,
+      name: `${data.firstname} ${data.lastname}`,
       gewisID: data.gewisID,
       email: data.email,
       active: data.active,
