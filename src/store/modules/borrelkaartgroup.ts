@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-
 import {
   Action, Module, Mutation, VuexModule,
 } from 'vuex-module-decorators';
@@ -22,7 +20,9 @@ export default class BorrelkaartGroupModule extends VuexModule {
   @Mutation
   addBorrelkaartGroup(borrelkaartGroup: Object) {
     const borrelkaartGroupResponse = APIHelper.postResource('borrelkaartGroup', borrelkaartGroup);
-    this.borrelkaartGroups.push(BorrelkaartGroupTransformer.makeBorrelkaartGroup(borrelkaartGroupResponse));
+    this.borrelkaartGroups.push(
+      BorrelkaartGroupTransformer.makeBorrelkaartGroup(borrelkaartGroupResponse),
+    );
   }
 
   @Mutation
@@ -36,7 +36,9 @@ export default class BorrelkaartGroupModule extends VuexModule {
   updateBorrelkaartGroup(borrelkaartGroup: {}) {
     const response = APIHelper.putResource('borrelkaartGroups', borrelkaartGroup);
     const borrelkaartGroupResponse = BorrelkaartGroupTransformer.makeBorrelkaartGroup(response);
-    const index = this.borrelkaartGroups.findIndex((brlkrt) => brlkrt.id === borrelkaartGroupResponse.id);
+    const index = this.borrelkaartGroups.findIndex((brlkrt) => (
+      brlkrt.id === borrelkaartGroupResponse.id
+    ));
     this.borrelkaartGroups.splice(index, 1, borrelkaartGroupResponse);
   }
 
@@ -46,7 +48,9 @@ export default class BorrelkaartGroupModule extends VuexModule {
   fetchBorrelkaartGroups(force: boolean = false) {
     if (this.borrelkaartGroups.length === 0 || force) {
       const borrelkaartGroupsResponse = APIHelper.getResource('borrelkaartGroups') as [];
-      const borrelkaartGroupsFormat = borrelkaartGroupsResponse.map((borrelkaartGroup) => BorrelkaartGroupTransformer.makeBorrelkaartGroup(borrelkaartGroup));
+      const borrelkaartGroupsFormat = borrelkaartGroupsResponse.map((borrelkaartGroup) => (
+        BorrelkaartGroupTransformer.makeBorrelkaartGroup(borrelkaartGroup)
+      ));
       this.context.commit('setBorrelkaartGroups', borrelkaartGroupsFormat);
     }
   }

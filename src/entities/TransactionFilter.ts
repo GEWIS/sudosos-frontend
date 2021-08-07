@@ -1,4 +1,4 @@
-export interface TableFilter {
+export interface TransactionFilter {
   selfBought: Boolean,
   putInByYou: Boolean,
   putInForYou: Boolean,
@@ -8,7 +8,7 @@ export interface TableFilter {
   toDate: String,
 }
 
-export function initFilter(): TableFilter {
+export function initFilter(): TransactionFilter {
   return {
     selfBought: false,
     putInByYou: false,

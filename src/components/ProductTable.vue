@@ -48,7 +48,7 @@
     v-on:filtered="filterFinished"
     v-on:row-clicked="productDetails"
     v-sortable="sortableOptions"
-    tbody-tr-class="productRow"
+    tbody-tr-class="product-row"
   >
 
     <!-- Templates for each row cell -->

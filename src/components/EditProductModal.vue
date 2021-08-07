@@ -351,7 +351,8 @@ export default class EditProductModal extends Formatters {
       name: this.name,
       owner: {
         id: this.userState.user.id,
-        name: this.userState.user.name,
+        firstname: this.userState.user.firstname,
+        lastname: this.userState.user.lastname,
       },
       price: this.price === null ? 0 : (this.price * 100).toPrecision(2),
       category: this.productCategoryState.productCategories.find(

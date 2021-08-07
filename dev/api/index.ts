@@ -1,6 +1,5 @@
 /* eslint-disable */
 
-import { ResponseBody } from '@/entities/ResponseBody';
 import Products from './data/products.json';
 import UserProducts from './data/userproducts.json';
 import User from './data/user.json';
@@ -14,8 +13,12 @@ import SocialDrinkCards from './data/socialdrinkcards.json';
 import FlaggedTransactions from './data/flaggedtransactions.json';
 import Transfer from './data/transfer.json';
 import ProductCategories from './data/productcategories.json';
+import Users from './data/users.json';
 
-function setResponse(body: ResponseBody, route: string, type: any, typeName?: string) {
+function setResponse(body: {
+  headers: {};
+  method?: string;
+  body?: string;}, route: string, type: any, typeName?: string) {
   const params = new URLSearchParams(route.split('?')[1]);
 
   if (body.method === 'POST') {
@@ -86,7 +89,11 @@ function setResponse(body: ResponseBody, route: string, type: any, typeName?: st
 
 
 export default {
-  fetchJSON(route: string, body: ResponseBody) {
+  fetchJSON(route: string, body: {
+    headers: {};
+    method?: string;
+    body?: string;
+  }) {
     // eslint-disable-next-line no-param-reassign
     route = route.toLowerCase();
 
@@ -104,6 +111,10 @@ export default {
 
     if (route.includes('product')) {
       return setResponse(body, route, Products, 'products');
+    }
+
+    if (route.includes('users')) {
+      return Users;
     }
 
     if (route.includes('user')) {

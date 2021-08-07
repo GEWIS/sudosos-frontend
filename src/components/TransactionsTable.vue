@@ -86,7 +86,7 @@ import UserModule from '@/store/modules/user';
 import TransactionDetailsModal from '@/components/TransactionDetailsModal.vue';
 import TransactionTableFilter from '@/components/TransactionTableFilter.vue';
 import { Transaction } from '@/entities/Transaction';
-import { initFilter, TableFilter } from '@/entities/TableFilter';
+import { initFilter, TransactionFilter } from '@/entities/TransactionFilter';
 import { Transfer } from '@/entities/Transfer';
 import { TransactionDateRow } from '@/entities/TransactionDateRow';
 
@@ -148,7 +148,7 @@ export default class TransactionsTable extends Formatters {
   totalRows: number = 0;
 
   // Current filter values
-  filterValues: TableFilter = initFilter();
+  filterValues: TransactionFilter = initFilter();
 
   filterWasUpdated: boolean = true;
 
@@ -403,7 +403,7 @@ export default class TransactionsTable extends Formatters {
               && Object.keys(rowItem.createdBy).length > 0
               && rowItem.createdBy.id === id
               && rowItem.from.id !== id) {
-          return this.$t('transactionsComponent.transactionPutFor', { name: rowItem.from.name, amount: rowItem.price.toFormat() });
+          return this.$t('transactionsComponent.transactionPutFor', { name: rowItem.from.firstname, amount: rowItem.price.toFormat() });
         }
 
         // This is a transaction that was put in for you by someone else
@@ -411,7 +411,7 @@ export default class TransactionsTable extends Formatters {
           && Object.keys(rowItem.createdBy).length > 0
           && rowItem.from.id === id
           && rowItem.createdBy.id !== id) {
-          return this.$t('transactionsComponent.transactionPutBy', { name: rowItem.createdBy.name, amount: rowItem.price.toFormat() });
+          return this.$t('transactionsComponent.transactionPutBy', { name: rowItem.createdBy.firstname, amount: rowItem.price.toFormat() });
         }
 
         return this.$t('transactionsComponent.transaction', { amount: rowItem.price.toFormat() });

@@ -36,6 +36,9 @@
               <b-dropdown-item :to="{ name: 'managePointOfSale'}">
                 {{ $t('app.Manage POS') }}
               </b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'userOverview'}">
+                {{ $t('app.User overview') }}
+              </b-dropdown-item>
               <b-dropdown-item :to="{ name: 'flaggedTransactions'}">
                 {{ $t('app.Flagged transactions') }}
               </b-dropdown-item>
@@ -53,7 +56,7 @@
 
             <b-nav-item-dropdown right>
               <template v-slot:button-content>
-                {{ currentUser.name.substr(0, currentUser.name.indexOf(' ')) }}
+                {{ currentUser.firstname }}
               </template>
               <b-dropdown-item :to="{ name: 'profile'}">{{ $t('app.Profile') }}</b-dropdown-item>
               <b-dropdown-item :to="{ name: 'signOut'}">{{ $t('app.Sign out') }}</b-dropdown-item>

@@ -19,6 +19,8 @@ export interface UserPermissions {
 }
 
 export interface BaseUser extends BaseEntity {
+  firstname: string;
+  lastname: string;
   name: string;
 }
 

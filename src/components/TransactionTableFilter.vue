@@ -153,7 +153,7 @@
 import {
   Component, Prop, Vue, Watch,
 } from 'vue-property-decorator';
-import { TableFilter, initFilter } from '@/entities/TableFilter';
+import { TransactionFilter, initFilter } from '@/entities/TransactionFilter';
 
   @Component
 export default class TransactionTableFilter extends Vue {
@@ -178,7 +178,7 @@ export default class TransactionTableFilter extends Vue {
 
     right: boolean = true;
 
-    filterValues: TableFilter = {} as TableFilter;
+    filterValues: TransactionFilter = {} as TransactionFilter;
 
     beforeMount(): void {
       this.filterValues = initFilter();
@@ -223,7 +223,7 @@ export default class TransactionTableFilter extends Vue {
      * @param lastUpdate updated filterString, used for the b-table filter
      */
     filterUpdated(lastUpdate : string) : void {
-      const filterResults: TableFilter = this.filterValues;
+      const filterResults: TransactionFilter = this.filterValues;
 
       // If none of the filters are selected make sure the lastUpdate is null this makes sure the
       // bootstrap table resets the filter and displays all currently available rows

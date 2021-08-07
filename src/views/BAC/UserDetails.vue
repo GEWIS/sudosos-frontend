@@ -2,23 +2,23 @@
   <b-container fluid="lg">
 
     <ConfirmationModal
-      :title="$t('profile.Confirm deletion')"
-      :reason="$t('profile.Are you sure')"
+      :title="$t('userDetails.Confirm deletion')"
+      :reason="$t('userDetails.Are you sure')"
       @modalConfirmed="removeNFCDevice">
     </ConfirmationModal>
 
-    <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('profile.My profile')}}</h1>
+    <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('userDetails.profile', { name: firstname })}}</h1>
     <b-row class="mb-4">
       <b-col sm="12" md="6" class="mb-4 mb-md-0">
         <b-card class="h-100">
           <b-card-title>
-            {{ $t('profile.Edit info') }}
+            {{ $t('userDetails.Edit info') }}
           </b-card-title>
           <b-card-body>
             <b-form @submit="updateUserInformation">
               <b-form-group
                 id="user-firstname-group"
-                :label="$t('profile.First name')"
+                :label="$t('userDetails.First name')"
                 label-for="new-firstname"
                 :invalid-feedback="firstNameFeedback"
                 :state="validateFirstname"
@@ -28,7 +28,7 @@
 
               <b-form-group
                 id="user-lastname-group"
-                :label="$t('profile.Last name')"
+                :label="$t('userDetails.Last name')"
                 label-for="new-lastname"
               >
                 <b-form-input id="new-lastname" v-model="lastname" type="text" />
@@ -36,15 +36,30 @@
 
               <b-form-group
                 id="user-email-group"
-                :label="$t('profile.Email address')"
+                :label="$t('userDetails.Email address')"
                 label-for="new-email"
                 :invalid-feedback="emailFeedback"
                 :state="validateEmail"
               >
                 <b-form-input id="new-email" v-model="email" type="text" />
               </b-form-group>
+              <b-form-group
+                id="user-active-group"
+                :label="$t('userDetails.Active')"
+                label-for="user-active"
+              >
+                <b-form-checkbox
+                  id="user-active"
+                  v-model="active"
+                  name="user-active"
+                  :value="true"
+                  :unchecked-value="false"
+                >
+                  {{  $t("userDetails.user is active") }}
+                </b-form-checkbox>
+              </b-form-group>
               <b-button type="submit" variant="primary">
-                {{ $t('profile.Update user information')}}
+                {{ $t('userDetails.Update user information')}}
               </b-button>
             </b-form>
           </b-card-body>
@@ -53,13 +68,13 @@
       <b-col sm="12" md="6">
         <b-card class="h-100">
           <b-card-title>
-            {{ $t('profile.Change password') }}
+            {{ $t('userDetails.Change password') }}
           </b-card-title>
           <b-card-body>
             <b-form @submit="updatePassword">
               <b-form-group
                 id="user-password-group"
-                :label="$t('profile.Password')"
+                :label="$t('userDetails.Password')"
                 label-for="new-password"
                 :invalid-feedback="passwordFeedback"
                 :state="validatePassword"
@@ -69,7 +84,7 @@
 
               <b-form-group
                 id="user-password-confirm-group"
-                :label="$t('profile.Confirm password')"
+                :label="$t('userDetails.Confirm password')"
                 label-for="new-password-confirm"
                 :invalid-feedback="confirmPasswordFeedback"
                 :state="validateConfirmPassword"
@@ -77,7 +92,7 @@
                 <b-form-input id="new-password-confirm" v-model="confirmPassword" type="password" />
               </b-form-group>
               <b-button type="submit" variant="primary">
-                {{ $t('profile.Update password')}}
+                {{ $t('userDetails.Update password')}}
               </b-button>
             </b-form>
           </b-card-body>
@@ -88,13 +103,13 @@
       <b-col sm="12" md="6" class="mb-4 mb-md-0">
         <b-card class="h-100">
           <b-card-title>
-            {{ $t('profile.Change pin code') }}
+            {{ $t('userDetails.Change pin code') }}
           </b-card-title>
           <b-card-body>
             <b-form @submit="changePincode">
               <b-form-group
                 id="new-pincode-group"
-                :label="$t('profile.New pin code')"
+                :label="$t('userDetails.New pin code')"
                 label-for="new-pincode"
                 :invalid-feedback="newPincodeFeedback"
                 :state="validateNewPincode"
@@ -103,7 +118,7 @@
               </b-form-group>
               <b-form-group
                 id="confirm-pincode-group"
-                :label="$t('profile.Confirm new pin code')"
+                :label="$t('userDetails.Confirm new pin code')"
                 label-for="confirm-pincode"
                 :invalid-feedback="confirmPincodeFeedback"
                 :state="validateConfirmPincode"
@@ -111,18 +126,18 @@
                 <b-form-input id="confirm-pincode" v-model="pincode.confirmPincode" type="text" />
               </b-form-group>
               <b-button type="submit" variant="primary">
-                {{ $t('profile.Change pin code')}}
+                {{ $t('userDetails.Change pin code')}}
               </b-button>
             </b-form>
           </b-card-body>
         </b-card>
       </b-col>
-      <b-col v-if="userState.user.nfcDevices.length > 0" sm="12" md="6">
+      <b-col v-if="nfcDevices.length > 0" sm="12" md="6">
         <b-card class="h-100">
-          <b-card-title>{{ $t('profile.Manage NFC devices')}}</b-card-title>
+          <b-card-title>{{ $t('userDetails.Manage NFC devices')}}</b-card-title>
           <b-card-body>
             <b-row
-              v-for="device in userState.user.nfcDevices"
+              v-for="device in nfcDevices"
               v-bind:key="device.id"
               class="nfc-device-badge mb-2">
               <span
@@ -165,19 +180,26 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+// TODO: Fix methods for data validation + update translations + update user store
+
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
 import UserModule from '@/store/modules/user';
 import { NFCDevice } from '@/entities/NFCDevice';
+import { User } from '@/entities/User';
 
 @Component({
   components: {
     ConfirmationModal,
   },
 })
-export default class Profile extends Vue {
+export default class UserDetails extends Vue {
+  @Prop() id!: number;
+
   private userState = getModule(UserModule);
+
+  nfcDevices: NFCDevice[] = [];
 
   editDevice: NFCDevice = {} as NFCDevice;
 
@@ -188,6 +210,8 @@ export default class Profile extends Vue {
   lastname: string = '';
 
   email: string | null = null;
+
+  active: boolean = false;
 
   password: string | null = null;
 
@@ -202,10 +226,13 @@ export default class Profile extends Vue {
    * Fetch all the user info that is needed for the profile
    */
   beforeMount() {
-    this.userState.fetchUser();
-    this.firstname = this.userState.user.firstname;
-    this.lastname = this.userState.user.lastname;
-    this.email = this.userState.user.email || '';
+    this.userState.fetchAllUsers();
+    const user = this.userState.allUsers.find((usr) => usr.id === Number(this.id)) as User;
+    this.firstname = user.firstname;
+    this.lastname = user.lastname;
+    this.email = user.email || '';
+    this.active = user.active;
+    this.nfcDevices = user.nfcDevices;
   }
 
   /**
@@ -214,7 +241,7 @@ export default class Profile extends Vue {
   changePincode(event: Event) {
     event.preventDefault();
     if (this.validateNewPincode && this.validateConfirmPincode) {
-      this.userState.updatePinCode(this.pincode);
+      this.userState.updateUsersPinCode({ userID: Number(this.id), pincode: this.pincode });
       this.pincode.newPincode = null;
       this.pincode.confirmPincode = null;
     }
@@ -226,11 +253,12 @@ export default class Profile extends Vue {
   updateUserInformation(event: Event) {
     event.preventDefault();
     if (this.validateEmail && this.validateFirstname) {
-      this.userState.updateUserInformation({
-        userID: this.userState.user.id,
+      this.userState.updateUsersUserInformation({
+        userID: Number(this.id),
         firstname: this.firstname,
         lastname: this.lastname,
         email: this.email || '',
+        active: this.active,
       });
     }
   }
@@ -241,8 +269,8 @@ export default class Profile extends Vue {
   updatePassword(event: Event) {
     event.preventDefault();
     if (this.validatePassword && this.validateConfirmPassword) {
-      this.userState.updatePassword({
-        id: this.userState.user.id,
+      this.userState.updateUsersPassword({
+        userID: Number(this.id),
         password: this.password || '',
       });
       this.password = null;
@@ -256,7 +284,7 @@ export default class Profile extends Vue {
    * @param {NFCDevice} device: The new NFC device
    */
   updateDevice(device: NFCDevice) {
-    this.userState.updateNFCDevice(device);
+    this.userState.updateUsersNFCDevice({ userID: Number(this.id), id: device.id });
     this.editDevice = {} as NFCDevice;
   }
 
@@ -264,7 +292,7 @@ export default class Profile extends Vue {
    * If the deletion of an NFC device is confirmed this will remove it.
    */
   removeNFCDevice() {
-    this.userState.removeNFCDevice(this.removeDevice);
+    this.userState.removeUsersNFCDevice({ userID: Number(this.id), id: this.removeDevice.id });
   }
 
   /**
