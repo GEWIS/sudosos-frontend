@@ -9,9 +9,13 @@ export default {
     let price;
 
     if (typeof data.price === 'object') {
-      // This is to satisfy ESLint, yay
-      const dineroPrice = data.price;
-      price = dineroPrice;
+      if (data.price.amount !== undefined) {
+        price = Dinero({ amount: Number(data.price.amount), currency: 'EUR' });
+      } else {
+        // This is to satisfy ESLint, yay
+        const dineroPrice = data.price;
+        price = dineroPrice;
+      }
     } else {
       price = Dinero({ amount: Number(product.price.getAmount() * data.amount), currency: 'EUR' });
     }

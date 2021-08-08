@@ -42,7 +42,7 @@ function setResponse(body: ResponseBody, route: string, type: any, typeName?: st
       }
     }
 
-    if (typeName === 'flaggedtransaction') {
+    if (typeName === 'flaggedTransactions') {
       response.status = 1;
       response.flaggedBy = {
         id: 0,

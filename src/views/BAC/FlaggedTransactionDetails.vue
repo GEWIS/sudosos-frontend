@@ -71,10 +71,6 @@
         </b-button>
         <b-button variant="success" class="mr-3 mt-2">
           <font-awesome-icon icon="check"></font-awesome-icon>
-          {{ $t('flaggedDetails.accept auto') }}
-        </b-button>
-        <b-button variant="success" class="mr-3 mt-2">
-          <font-awesome-icon icon="check"></font-awesome-icon>
           {{ $t('flaggedDetails.accept manual') }}
         </b-button>
       </b-col>
@@ -86,25 +82,32 @@
 import { Component, Prop } from 'vue-property-decorator';
 import { FlaggedTransaction } from '@/entities/FlaggedTransaction';
 import TransactionDetails from '@/components/TransactionDetails.vue';
+import { getModule } from 'vuex-module-decorators';
+import FlaggedTransactionModule from '@/store/modules/flaggedtransaction';
 import Formatters from '../../mixins/Formatters';
 
-    @Component({
-      components: {
-        TransactionDetails,
-      },
-    })
+@Component({
+  components: {
+    TransactionDetails,
+  },
+})
 export default class FlaggedTransactionDetails extends Formatters {
-    @Prop() private transactionID!: number;
+    @Prop() transactionID!: number;
+
+    flaggedTransactionModule = getModule(FlaggedTransactionModule)
 
     flaggedTransaction: FlaggedTransaction = {} as FlaggedTransaction;
 
     flagReasonText: string = '';
 
-  // beforeMount() {
-  //   const flgd = flaggedTransactionStore.flaggedTransactions;
-  //   const index = flgd.findIndex(flg => flg.id === this.transactionID);
-  //   this.flaggedTransaction = flaggedTransactionStore.flaggedTransactions[index];
-  // }
+    beforeMount() {
+      const id = Number(this.$route.params.id) || this.transactionID;
+
+      const index = this.flaggedTransactionModule.flaggedTransactions.findIndex(
+        (flg) => flg.id === id,
+      );
+      this.flaggedTransaction = this.flaggedTransactionModule.flaggedTransactions[index];
+    }
 }
 </script>
 
