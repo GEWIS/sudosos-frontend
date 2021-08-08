@@ -99,7 +99,7 @@ import eventBus from '@/eventbus';
 import TransactionTableFilter from '@/components/TransactionTableFilter.vue';
 import { Transaction } from '@/entities/Transaction';
 import { FlaggedTransaction, FlagStatus } from '@/entities/FlaggedTransaction';
-import { initFilter, TableFilter } from '@/entities/TableFilter';
+import { initFilter, TransactionFilter } from '@/entities/TransactionFilter';
 import FlaggedTransactionModule from '@/store/modules/flaggedtransaction';
 
 @Component({
@@ -139,7 +139,7 @@ export default class TransactionFlagsTable extends Formatters {
 
   totalRows : number = 0;
 
-  filterValues: TableFilter = {} as TableFilter;
+  filterValues: TransactionFilter = {} as TransactionFilter;
 
   /**
    * Fields that should be shown from the transactionFlagList

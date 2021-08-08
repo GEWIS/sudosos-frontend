@@ -4,17 +4,17 @@
       {{ $t('socialDrinkCards.Social drink cards overview') }}
     </h1>
     <b-card>
-    <BorrelkaartTable/>
+    <BorrelkaartGroupTable />
     </b-card>
   </b-container>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import BorrelkaartTable from '@/components/BorrelkaartTable.vue';
+import BorrelkaartGroupTable from '@/components/BorrelkaartGroupTable.vue';
 
   @Component({
-    components: { BorrelkaartTable },
+    components: { BorrelkaartGroupTable },
   })
 export default class BorrelkaartOverview extends Vue {
 

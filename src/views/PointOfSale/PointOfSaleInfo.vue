@@ -20,7 +20,7 @@
         <b>{{ $t('posInfo.Title') }}</b>
         <p>{{ infoPOS.name }}</p>
         <b>{{ $t('posInfo.Owner') }}</b>
-        <p>{{ infoPOS.owner.name }}</p>
+        <p>{{ infoPOS.owner.first }}</p>
       </b-col>
       <b-col md="9" sm="12" class="containers-container">
         <p class="containers-header">{{ $t('posInfo.Containers') }}</p>

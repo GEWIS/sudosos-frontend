@@ -1,6 +1,7 @@
 {
   "id": 0,
-  "name": "Ruben Brinkman",
+  "firstname": "Ruben",
+  "lastname": "Brinkman",
   "gewisID": 8073,
   "email": "rubenjulianbrinkman@gmail.com",
   "active": true,
