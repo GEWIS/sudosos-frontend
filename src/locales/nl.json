@@ -104,8 +104,8 @@
     "reason": "Reden",
     "comment placeholder": "Geef een reden indien nodig",
     "reject": "Afwijzen",
-    "accept auto": "Accept (automagisch oplossen)",
-    "accept manual": "Accept (handmatig oplossen)"
+    "accept manual": "Accept (handmatig oplossen)",
+    "Edit transaction": "Bewerk transactie"
   },
   "manageProducts": {
     "Manage all products and default containers": "Beheer alle producten en standaard containers",

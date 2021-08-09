@@ -3,11 +3,15 @@
     "id": 0,
     "from": {
       "id": 0,
+      "firstname": "Ruben",
+      "lastname": "Brinkman",
       "name": "Ruben Brinkman"
     },
     "createdBy": {
       "id": 1,
-      "name": "BAr Commissie"
+      "name": "BAr Commissie",
+      "firstname": "BAr",
+      "lastname": "Commissie"
     },
     "pointOfSale": {
       "id": 0,
@@ -18,7 +22,9 @@
         "id": 0,
         "to": {
           "id": 1,
-          "name": "BAr Commissie"
+          "name": "BAr Commissie",
+          "firstname": "BAr",
+          "lastname": "Commissie"
         },
         "container": {
           "id": 0,
@@ -34,7 +40,9 @@
               "price": 110,
               "owner": {
                 "id": 1,
-                "name": "BAr Commissie"
+                "name": "BAr Commissie",
+                "firstname": "BAr",
+                "lastname": "Commissie"
               },
               "category": {
                 "id": 0,
@@ -56,7 +64,9 @@
               "price": 150,
               "owner": {
                 "id": 1,
-                "name": "BAr Commissie"
+                "name": "BAr Commissie",
+                "firstname": "BAr",
+                "lastname": "Commissie"
               },
               "category": {
                 "id": 0,
@@ -75,7 +85,9 @@
         "id": 1,
         "to": {
           "id": 1,
-          "name": "BAr Commissie"
+          "name": "BAr Commissie",
+          "firstname": "BAr",
+          "lastname": "Commissie"
         },
         "container": {
           "id": 1,
@@ -90,7 +102,9 @@
               "price": 70,
               "owner": {
                 "id": 1,
-                "name": "BAr Commissie"
+                "name": "BAr Commissie",
+                "firstname": "BAr",
+                "lastname": "Commissie"
               },
               "category": {
                 "id": 1,
@@ -113,7 +127,9 @@
     "id": 1,
     "from": {
       "id": 0,
-      "name": "Ruben Brinkman"
+      "name": "Ruben Brinkman",
+      "firstname": "Ruben",
+      "lastname": "Ruben"
     },
     "pointOfSale": {
       "id": 1,
@@ -124,7 +140,9 @@
         "id": 2,
         "to": {
           "id": 1,
-          "name": "BAr Commissie"
+          "name": "BAr Commissie",
+          "firstname": "BAr",
+          "lastname": "Commissie"
         },
         "container": {
           "id": 0,
@@ -140,7 +158,9 @@
               "price": 110,
               "owner": {
                 "id": 1,
-                "name": "BAr Commissie"
+                "name": "BAr Commissie",
+                "firstname": "BAr",
+                "lastname": "Commissie"
               },
               "category": {
                 "id": 0,
@@ -162,7 +182,9 @@
               "price": 150,
               "owner": {
                 "id": 1,
-                "name": "BAr Commissie"
+                "name": "BAr Commissie",
+                "firstname": "BAr",
+                "lastname": "Commissie"
               },
               "category": {
                 "id": 0,
@@ -181,7 +203,9 @@
         "id": 3,
         "to": {
           "id": 1,
-          "name": "BAr Commissie"
+          "name": "BAr Commissie",
+          "firstname": "BAr",
+          "lastname": "Commissie"
         },
         "container": {
           "id": 1,
@@ -220,7 +244,9 @@
     "id": 2,
     "from": {
       "id": 0,
-      "name": "Ruben Brinkman"
+      "name": "Ruben Brinkman",
+      "firstname": "Ruben",
+      "lastname": "Brinkman"
     },
     "pointOfSale": {
       "id": 1,
@@ -231,7 +257,9 @@
         "id": 4,
         "to": {
           "id": 1,
-          "name": "BAr Commissie"
+          "name": "BAr Commissie",
+          "firstname": "BAr",
+          "lastname": "Commissie"
         },
         "container": {
           "id": 1,
@@ -247,7 +275,9 @@
               "price": 70,
               "owner": {
                 "id": 1,
-                "name": "BAr Commissie"
+                "name": "BAr Commissie",
+                "firstname": "BAr",
+                "lastname": "Commissie"
               },
               "category": {
                 "id": 1,
@@ -270,11 +300,15 @@
     "id": 3,
     "from": {
       "id": 1,
-      "name": "BAr Commissie"
+      "name": "BAr Commissie",
+      "firstname": "BAr",
+      "lastname": "Commissie"
     },
     "createdBy": {
       "id": 0,
-      "name": "Ruben Brinkman"
+      "name": "Ruben Brinkman",
+      "firstname": "Ruben",
+      "lastname": "Brinkman"
     },
     "pointOfSale": {
       "id": 1,
@@ -285,7 +319,9 @@
         "id": 5,
         "to": {
           "id": 1,
-          "name": "BAr Commissie"
+          "name": "BAr Commissie",
+          "firstname": "BAr",
+          "lastname": "Commissie"
         },
         "container": {
           "id": 1,
@@ -301,7 +337,9 @@
               "price": 70,
               "owner": {
                 "id": 1,
-                "name": "BAr Commissie"
+                "name": "BAr Commissie",
+                "firstname": "BAr",
+                "lastname": "Commissie"
               },
               "category": {
                 "id": 1,
@@ -324,11 +362,15 @@
   "id": 4,
   "from": {
     "id": 0,
-    "name": "Ruben Brinkman"
+    "name": "Ruben Brinkman",
+    "firstname": "Ruben",
+    "lastname": "Brinkman"
   },
   "createdBy": {
     "id": 1,
-    "name": "BAr Commissie"
+    "name": "BAr Commissie",
+    "firstname": "BAr",
+    "lastname": "Commissie"
   },
   "pointOfSale": {
     "id": 0,
@@ -339,7 +381,9 @@
       "id": 6,
       "to": {
         "id": 1,
-        "name": "BAr Commissie"
+        "name": "BAr Commissie",
+        "firstname": "BAr",
+        "lastname": "Commissie"
       },
       "container": {
         "id": 0,
@@ -355,7 +399,9 @@
             "price": 110,
             "owner": {
               "id": 1,
-              "name": "BAr Commissie"
+              "name": "BAr Commissie",
+              "firstname": "BAr",
+              "lastname": "Commissie"
             },
             "category": {
               "id": 0,
@@ -377,7 +423,9 @@
             "price": 150,
             "owner": {
               "id": 1,
-              "name": "BAr Commissie"
+              "name": "BAr Commissie",
+              "firstname": "BAr",
+              "lastname": "Commissie"
             },
             "category": {
               "id": 0,
@@ -396,7 +444,9 @@
       "id": 7,
       "to": {
         "id": 1,
-        "name": "BAr Commissie"
+        "name": "BAr Commissie",
+        "firstname": "BAr",
+        "lastname": "Commissie"
       },
       "container": {
         "id": 1,
@@ -411,7 +461,9 @@
             "price": 70,
             "owner": {
               "id": 1,
-              "name": "BAr Commissie"
+              "name": "BAr Commissie",
+              "firstname": "BAr",
+              "lastname": "Commissie"
             },
             "category": {
               "id": 1,
