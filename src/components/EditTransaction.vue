@@ -45,48 +45,72 @@
         <b-row
           v-for="(subTransaction, subTransIndex) in transactionEdits"
           v-bind:key="`subtransaction_${subTransIndex}`"
+          :class="subTransIndex < transactionEdits.length - 1 ? 'mb-3' : ''"
         >
-          <p>{{ subTransaction.container.name }}</p>
-          <b-col cols="5" sm="6">
-          <input
-            type="number"
-            v-model="subTransaction.amount"
-            @input="updateTransactionEdit($event, subTransIndex)"
+          <b-col class="mb-3 text-truncate" cols="9">
+            Product container: {{ subTransaction.container.name }}
+          </b-col>
+          <b-col cols="3" class="mb-3 text-right">
+            <b-button
+              @click="deleteTransactionEdit(subTransIndex)"
+              variant="danger"
+              size="sm"
+            >
+              Delete product
+            </b-button>
+          </b-col>
+          <b-col cols="9" class="mb-2">
+            <v-select
+              :options="posProducts"
+              :selectable="posProduct => posProduct.group === null"
+              v-model="subTransaction.product"
+              :getOptionLabel="posProduct => posProduct.product"
+              :reduce="posProduct => posProduct.product"
+              @input="updateTransactionEdit($event, subTransIndex)"
+            >
+              <template v-slot:selected-option="product">
+                <template v-if="product.hasOwnProperty('product')">
+                  <img :src="product.product.picture" alt="product image">
+                  {{ product.product.name }}
+                </template>
+                <template v-else>
+                  <img :src="product.picture">
+                  {{ product.name }}
+                </template>
+              </template>
+              <template v-slot:option="{ group, product }">
+                <template v-if="group !== null" class="product-opt-group">
+                  {{ group }}
+                </template>
+                <template v-else>
+                  <img :src="product.picture" alt="product image">
+                  {{ product.name }}
+                </template>
+              </template>
+            </v-select>
+          </b-col>
+          <b-col cols="3" class="mb-2">
+            <input
+              type="number"
+              class="product-amount-input"
+              min="1"
+              v-model="subTransaction.amount"
+              @input="updateTransactionEdit($event, subTransIndex)"
+            >
+          </b-col>
+          <b-col
+            v-if="subTransaction.product.price !== undefined"
+            cols="12"
+            sm="12"
+            class="text-right product-price"
           >
-          <v-select
-            :options="posProducts"
-            :selectable="posProduct => posProduct.group === null"
-            v-model="subTransaction.product"
-            :getOptionLabel="posProduct => posProduct.product"
-            :reduce="posProduct => posProduct.product"
-            @input="updateTransactionEdit($event, subTransIndex)"
-          >
-            <template v-slot:selected-option="product">
-              <template v-if="product.hasOwnProperty('product')">
-                <img :src="product.product.picture" alt="product image">
-                {{ product.product.name }}
-              </template>
-              <template v-else>
-                <img :src="product.picture" alt="product image">
-                {{ product.name }}
-              </template>
-            </template>
-            <template v-slot:option="{ group, product }">
-              <template v-if="group !== null" class="product-opt-group">
-                {{ group }}
-              </template>
-              <template v-else>
-                <img :src="product.picture" alt="product image">
-                {{ product.name }}
-              </template>
-            </template>
-          </v-select>
-        </b-col>
-          <b-col cols="7" sm="6" class="text-right">
-            <p>
-              {{ `( ${ subTransaction.product.price.toFormat() } ) ` +
+              {{ `( ${subTransaction.amount} x ${ subTransaction.product.price.toFormat() } ) ` +
             `= ${ subTransaction.totalPrice.toFormat()}` }}
-            </p>
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col cols="12">
+            <b-button @click="addTransactionEdit" variant="success">Add product</b-button>
           </b-col>
         </b-row>
         <hr>
@@ -99,7 +123,7 @@
         </b-row>
       </b-col>
     </b-row>
-    <b-button class="mr-3 mt-2" variant="success">Save</b-button>
+    <b-button :disabled="!canSaveTransaction" class="mr-3 mt-2" variant="success">Save</b-button>
     <b-button class="mr-3 mt-2" variant="danger">Delete</b-button>
   </div>
 </template>
@@ -121,10 +145,6 @@ import { Container } from '@/entities/Container';
 // TODO: Fix that the containers are actually the containers from the POS revision
 // TODO: Fix that the products are actually products that are in the selected container
 
-/** TODO: Fix container not being updated when TransactionEdit is updated from v-select, the
-  * container should be updated as well but that is currently not being done.
-  */
-
 @Component
 export default class EditTransaction extends Vue {
   @Prop() transaction!: Transaction;
@@ -138,10 +158,10 @@ export default class EditTransaction extends Vue {
   transactionEdits: TransactionEdit[] = [];
 
   posProducts: {
-      product: Product | null,
-      group: string | null,
-      container: Container | null
-    }[] = [];
+    product: Product | null,
+    group: string | null,
+    container: Container | null
+  }[] = [];
 
   totalTransactionPrice: any;
 
@@ -157,6 +177,10 @@ export default class EditTransaction extends Vue {
     this.createProductList();
   }
 
+  /**
+   * Combines containers and products into one list such that we have "subgroups" in the product
+   * overview per container (makes everything looks nice)
+   */
   createProductList() {
     [...this.containerState.containers, ...this.containerState.publicContainers].forEach(
       (container) => {
@@ -181,18 +205,70 @@ export default class EditTransaction extends Vue {
     );
   }
 
+  addTransactionEdit() {
+    this.transactionEdits.push({
+      product: {} as Product,
+      container: {} as Container,
+      amount: 1,
+      totalPrice: {},
+    } as TransactionEdit);
+  }
+
+  deleteTransactionEdit(index: number) {
+    const editTrans = this.transactionEdits.splice(index, 1);
+    if (Object.keys(editTrans[0].totalPrice).length > 0) {
+      let totalTransAmount = this.totalTransactionPrice.getAmount();
+      totalTransAmount -= editTrans[0].totalPrice.getAmount();
+      this.totalTransactionPrice = Dinero({ amount: totalTransAmount, currency: 'EUR' });
+    }
+  }
+
+  /**
+   * Updates the editTransaction with a new product or new amount, if a new product is selected the
+   * respective container is also updated.
+   *
+   * @param event event that triggers the update, either contains a product or an input event
+   * @param {number} subTransIndex the index of the current subtransaction we are editing
+   */
   updateTransactionEdit(event: any, subTransIndex: number) {
-    const editTrans = this.transactionEdits[subTransIndex];
-    const previousAmount = editTrans.totalPrice.getAmount();
-    const amount = editTrans.product.price.getAmount() * editTrans.amount;
+    const currentTransaction = this.transactionEdits[subTransIndex];
+
     let totalTransAmount = this.totalTransactionPrice.getAmount();
-    editTrans.totalPrice = Dinero({ amount });
-    this.transactionEdits.splice(subTransIndex, 1, editTrans);
+    let previousAmount = 0;
+    let amount = 0;
 
-    console.log(JSON.stringify(editTrans));
+    if (Object.keys(currentTransaction.totalPrice).length > 0) {
+      previousAmount = currentTransaction.totalPrice.getAmount();
+      amount = currentTransaction.product.price.getAmount() * currentTransaction.amount;
+      totalTransAmount = totalTransAmount - previousAmount + amount;
+    } else {
+      totalTransAmount += event.price.getAmount();
+      amount = event.price.getAmount();
+    }
 
-    totalTransAmount = totalTransAmount - previousAmount + amount;
     this.totalTransactionPrice = Dinero({ amount: totalTransAmount, currency: 'EUR' });
+    currentTransaction.totalPrice = Dinero({ amount });
+
+    if (event.type !== 'input') {
+      const newTransaction = this.posProducts.find((trans) => trans.product === event);
+      if (newTransaction !== undefined) {
+        currentTransaction.container = newTransaction.container as Container;
+      }
+    }
+
+    this.transactionEdits.splice(subTransIndex, 1, currentTransaction);
+  }
+
+  get canSaveTransaction() {
+    let allProductSet = true;
+
+    this.transactionEdits.forEach((trans) => {
+      if (Object.keys(trans.product).length === 0) {
+        allProductSet = false;
+      }
+    });
+
+    return this.transactionEdits.length > 0 && allProductSet;
   }
 }
 </script>
@@ -206,5 +282,17 @@ export default class EditTransaction extends Vue {
     height: auto;
     margin-right: 1rem;
   }
+}
+
+.product-price {
+  line-height: 30px;
+}
+
+.product-amount-input {
+  border: 1px solid rgba(60,60,60,.26);
+  border-radius: 4px;
+  padding: 0 .5rem;
+  height: 100%;
+  width: 100%;
 }
 </style>
