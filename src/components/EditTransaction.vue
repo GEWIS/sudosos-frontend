@@ -5,7 +5,7 @@
         <p class="font-weight-bold">{{ $t('transactionDetails.Total') }}</p>
       </b-col>
       <b-col cols="6" sm="8" class="text-right text-sm-left">
-        <p>{{ transaction.price.toFormat() }}</p>
+        <p>{{ totalTransactionPrice.toFormat() }}</p>
       </b-col>
     </b-row>
     <b-row>
@@ -48,7 +48,7 @@
           :class="subTransIndex < transactionEdits.length - 1 ? 'mb-3' : ''"
         >
           <b-col class="mb-3 text-truncate" cols="9">
-            Product container: {{ subTransaction.container.name }}
+            {{ $t("transactionEdit.Product container") }}: {{ subTransaction.container.name }}
           </b-col>
           <b-col cols="3" class="mb-3 text-right">
             <b-button
@@ -56,7 +56,7 @@
               variant="danger"
               size="sm"
             >
-              Delete product
+              {{ $t("transactionEdit.Delete product") }}
             </b-button>
           </b-col>
           <b-col cols="9" class="mb-2">
@@ -110,7 +110,9 @@
         </b-row>
         <b-row>
           <b-col cols="12">
-            <b-button @click="addTransactionEdit" variant="success">Add product</b-button>
+            <b-button @click="addTransactionEdit" variant="success">
+              {{ $t("transactionEdit.Add product") }}
+            </b-button>
           </b-col>
         </b-row>
         <hr>
@@ -123,8 +125,12 @@
         </b-row>
       </b-col>
     </b-row>
-    <b-button :disabled="!canSaveTransaction" class="mr-3 mt-2" variant="success">Save</b-button>
-    <b-button class="mr-3 mt-2" variant="danger">Delete</b-button>
+    <b-button :disabled="!canSaveTransaction" class="mr-3 mt-2" variant="success">
+      {{ $t("transactionEdit.Save") }}
+    </b-button>
+    <b-button class="mr-3 mt-2" variant="danger">
+      {{ $t("transactionEdit.Delete") }}
+    </b-button>
   </div>
 </template>
 
