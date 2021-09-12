@@ -104,8 +104,15 @@
     "reason": "Reason",
     "comment placeholder": "Provide a comment if needed",
     "reject": "Reject",
-    "accept auto": "Accept (fix automatically)",
-    "accept manual": "Accept (fix manual)"
+    "accept manual": "Accept (fix manual)",
+    "Edit transaction": "Edit transaction"
+  },
+  "transactionEdit": {
+    "Product container": "Product container",
+    "Delete product": "Delete product",
+    "Add product": "Add product",
+    "Save": "Save",
+    "Delete": "Delete"
   },
   "manageProducts": {
     "Manage all products and default containers": "Manage all products and default containers",

@@ -54,7 +54,6 @@
           id="flag-reason"
           label-for="reason-input"
         >
-
           <b-form-textarea
             id="flag-reason-text"
             v-model="flagReasonText"
@@ -71,11 +70,11 @@
         </b-button>
         <b-button variant="success" class="mr-3 mt-2">
           <font-awesome-icon icon="check"></font-awesome-icon>
-          {{ $t('flaggedDetails.accept auto') }}
-        </b-button>
-        <b-button variant="success" class="mr-3 mt-2">
-          <font-awesome-icon icon="check"></font-awesome-icon>
           {{ $t('flaggedDetails.accept manual') }}
+        </b-button>
+        <b-button @click="editTransaction" variant="success" class="mr-3 mt-2">
+          <font-awesome-icon icon="pencil"></font-awesome-icon>
+          {{ $t('flaggedDetails.Edit transaction') }}
         </b-button>
       </b-col>
     </b-row>
@@ -83,28 +82,41 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 import { FlaggedTransaction } from '@/entities/FlaggedTransaction';
 import TransactionDetails from '@/components/TransactionDetails.vue';
+import { getModule } from 'vuex-module-decorators';
+import FlaggedTransactionModule from '@/store/modules/flaggedtransaction';
 import Formatters from '../../mixins/Formatters';
 
-    @Component({
-      components: {
-        TransactionDetails,
-      },
-    })
+@Component({
+  components: {
+    TransactionDetails,
+  },
+})
 export default class FlaggedTransactionDetails extends Formatters {
-    @Prop() private transactionID!: number;
+    flaggedTransactionModule = getModule(FlaggedTransactionModule)
 
     flaggedTransaction: FlaggedTransaction = {} as FlaggedTransaction;
 
     flagReasonText: string = '';
 
-  // beforeMount() {
-  //   const flgd = flaggedTransactionStore.flaggedTransactions;
-  //   const index = flgd.findIndex(flg => flg.id === this.transactionID);
-  //   this.flaggedTransaction = flaggedTransactionStore.flaggedTransactions[index];
-  // }
+    beforeMount() {
+      this.flaggedTransactionModule.fetchFlaggedTransactions();
+      const id = Number(this.$route.params.id);
+
+      const index = this.flaggedTransactionModule.flaggedTransactions.findIndex(
+        (flg) => flg.id === id,
+      );
+      this.flaggedTransaction = this.flaggedTransactionModule.flaggedTransactions[index];
+    }
+
+    /**
+     * Gets the correct ID for the transaction and sends you to the edit page
+     */
+    editTransaction() {
+      this.$router.push({ name: 'transactionEditor', params: { id: this.flaggedTransaction.transaction.id.toString() } });
+    }
 }
 </script>
 

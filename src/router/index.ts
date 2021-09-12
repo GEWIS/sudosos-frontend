@@ -17,6 +17,7 @@ import PointOfSaleInfo from '@/views/PointOfSale/PointOfSaleInfo.vue';
 import SignOut from '@/views/User/SignOut.vue';
 import BorrelkaartOverview from '@/views/BAC/Borrelkaarten.vue';
 import BorrelkaartenPrint from '@/views/BAC/BorrelkaartenPrint.vue';
+import TransactionEditor from '@/views/BAC/TransactionEditor.vue';
 import UserOverview from '@/views/BAC/UserOverview.vue';
 import UserDetails from '@/views/BAC/UserDetails.vue';
 
@@ -111,6 +112,12 @@ const routes = [
     path: '/borrelkaarten-overview/cards/:id',
     name: 'borrelkaartenPrint',
     component: BorrelkaartenPrint,
+    props: true,
+  },
+  {
+    path: '/transaction/:id',
+    name: 'transactionEditor',
+    component: TransactionEditor,
     props: true,
   },
   {
