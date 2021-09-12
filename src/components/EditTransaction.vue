@@ -205,6 +205,9 @@ export default class EditTransaction extends Vue {
     );
   }
 
+  /**
+   * Add a new transaction
+   */
   addTransactionEdit() {
     this.transactionEdits.push({
       product: {} as Product,
@@ -214,6 +217,9 @@ export default class EditTransaction extends Vue {
     } as TransactionEdit);
   }
 
+  /**
+   * Delete a transaction and remove it's price from the total
+   */
   deleteTransactionEdit(index: number) {
     const editTrans = this.transactionEdits.splice(index, 1);
     if (Object.keys(editTrans[0].totalPrice).length > 0) {
@@ -237,6 +243,8 @@ export default class EditTransaction extends Vue {
     let previousAmount = 0;
     let amount = 0;
 
+    // If an existing product is begin editted simply add the total amount otherwise add for the
+    // new product
     if (Object.keys(currentTransaction.totalPrice).length > 0) {
       previousAmount = currentTransaction.totalPrice.getAmount();
       amount = currentTransaction.product.price.getAmount() * currentTransaction.amount;
@@ -259,6 +267,11 @@ export default class EditTransaction extends Vue {
     this.transactionEdits.splice(subTransIndex, 1, currentTransaction);
   }
 
+  /**
+   * Checks if there are any rows in transactionEdits and if each row has a product set
+   *
+   * @return {boolean} true if you can save the products in current setup
+   */
   get canSaveTransaction() {
     let allProductSet = true;
 
