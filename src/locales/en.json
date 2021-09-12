@@ -1,4 +1,12 @@
 {
+  "login": {
+    "SudoSOS Login": "SudoSOS Login",
+    "Login": "Login",
+    "Username": "Username",
+    "Enter username": "Enter username",
+    "Password": "Password",
+    "Enter password": "Enter password"
+  },
   "app": {
     "Transactions": "Transactions",
     "Saldo": "Balance",

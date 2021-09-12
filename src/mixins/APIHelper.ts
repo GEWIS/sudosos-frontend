@@ -78,13 +78,13 @@ function checkResponse(fetchResponse: Response) {
 function fetchResource(route: string, body: ResponseBody) {
   let fetchResult = {};
 
-  if (token === '' && !isDev) {
-    // @ts-ignore
-    const currentPath = this.$router.currentRoute;
-    // @ts-ignore
-    this.$router.push(`/login?next=${currentPath}`);
-    return null;
-  }
+  // if (token === '' && !isDev) {
+  //   // @ts-ignore
+  //   const currentPath = this.$router.currentRoute;
+  //   // @ts-ignore
+  //   this.$router.push(`/login?next=${currentPath}`);
+  //   return null;
+  // }
 
   // If we are currently in development mode get data from the Fake API
   if (isDev) {
