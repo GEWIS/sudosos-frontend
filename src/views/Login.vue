@@ -22,6 +22,7 @@
             id="password-group"
             :label="$t('login.Password')"
             label-for="password"
+            class="mt-2"
           >
             <b-form-input
               id="password"
@@ -32,6 +33,11 @@
           </b-form-group>
 
           <b-button @click="login" variant="primary">{{ $t('login.Login') }}</b-button>
+
+          <b-button @click="loginViaGEWIS" variant="success">
+            <img src="./../assets/img/gewis-branding.svg" />
+            {{ $t("login.Login via GEWIS") }}
+          </b-button>
         </b-form>
       </b-col>
     </b-row>
@@ -39,23 +45,75 @@
 </template>
 
 <script lang="ts">
+import * as dotenv from 'dotenv';
 import { Component, Vue } from 'vue-property-decorator';
 import APIHelper from '@/mixins/APIHelper';
+import { getModule } from 'vuex-module-decorators';
+import UserModule from '@/store/modules/user';
+import { v4 as uuid } from 'uuid';
+import { LoginResponse } from '@/entities/APIResponses';
+import UserTransformer from '@/transformers/UserTransformer';
+import { User } from '@/entities/User';
+
+dotenv.config();
 
 @Component
 export default class Login extends Vue {
+  private userState = getModule(UserModule);
+
   username: string = '';
 
   password: string = '';
 
-  // eslint-disable-next-line class-methods-use-this
+  /**
+   * If we are being redirected from the GEWIS webserver with a login token we need to use that
+   * to directly login
+   */
+  beforeMount() {
+    if (this.$route.query.token !== undefined) {
+      const { token } = this.$route.query;
+      APIHelper.postResource('authentication/gewisweb', {
+        token,
+        nonce: uuid(),
+      })
+        .then((res: LoginResponse) => {
+          this.loginSuccesful(res);
+        });
+    }
+  }
+
+  /**
+   * If the user logs in via entering a username/password combo we need to send a
+   * different request the API
+   */
   login() {
-    console.log('hi');
-    const x = APIHelper.postResource('authentication/mock', {
+    // TODO: Make sure this uses the correct data
+    APIHelper.postResource('authentication/mock', {
       userId: 0,
-      nonce: '',
+      nonce: uuid(),
+    }).then((res: LoginResponse) => {
+      this.loginSuccesful(res);
     });
-    console.log(x);
+  }
+
+  /**
+   * If the API has succesfully logged in the user we need to store the returned
+   * user data and token at the right place. It's also nice to send them to the homepage
+   */
+  loginSuccesful(info: LoginResponse) {
+    const user = UserTransformer.makeUser(info.user) as User;
+    this.userState.setUser(user);
+    this.userState.setUserRoles(info.roles);
+    APIHelper.setToken(info.token);
+    this.$router.push({ name: 'home' });
+  }
+
+  /**
+   * Redirects to the GEWIS app such that users can login with their GEWIS credentials for SudoSOS
+   */
+  // eslint-disable-next-line class-methods-use-this
+  loginViaGEWIS() {
+    window.location.href = `https://gewis.nl/token/${process.env.VUE_APP_GEWIS_TOKEN}`;
   }
 }
 </script>
@@ -72,9 +130,28 @@ img {
   }
 
   > button {
-    margin: 1rem 0;
+    margin: 1rem auto;
     width: 100%;
     float: initial;
+    max-height: 38px;
+    display: block;
+
+    > img {
+      max-height: 24px;
+      margin-top: -4px;
+      margin-right: 1rem;
+    }
+  }
+
+  > button:hover {
+    > img {
+      filter: invert(15%)
+              sepia(16%)
+              saturate(1327%)
+              hue-rotate(42deg)
+              brightness(86%)
+              contrast(83%);
+    }
   }
 }
 </style>

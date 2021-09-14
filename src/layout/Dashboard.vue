@@ -56,16 +56,16 @@
 
             <b-nav-item-dropdown right>
               <template v-slot:button-content>
-                {{ currentUser.firstname }}
+                {{ userState.user.firstname }}
               </template>
               <b-dropdown-item :to="{ name: 'profile'}">{{ $t('app.Profile') }}</b-dropdown-item>
-              <b-dropdown-item :to="{ name: 'signOut'}">{{ $t('app.Sign out') }}</b-dropdown-item>
+              <b-dropdown-item @click="logout">{{ $t('app.Sign out') }}</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item
-              v-if="currentUser.saldo"
+              v-if="userState.user.saldo"
               class="d-none d-md-inline"
               :to="{ name: 'saldo'}">
-              {{ currentUser.saldo.toFormat() }}
+              {{ userState.user.saldo.toFormat() }}
             </b-nav-item>
             <b-nav-item-dropdown right>
               <template v-slot:button-content>
@@ -89,7 +89,12 @@
       </b-container>
     </b-navbar>
     <main>
-      <router-view />
+      <transition
+        name="fade"
+        mode="out-in"
+      >
+        <router-view/>
+      </transition>
     </main>
     <footer class="footer">
       <b-container fluid="md">
@@ -105,22 +110,28 @@ import eventBus from '@/eventbus';
 import { getModule } from 'vuex-module-decorators';
 import UserModule from '@/store/modules/user';
 import { User } from '@/entities/User';
+import APIHelper from '@/mixins/APIHelper';
 
 @Component
 export default class Dashboard extends Vue {
-  private userState = getModule(UserModule);
+  userState = getModule(UserModule);
 
-  currentUser: User = {} as User;
-
-  beforeMount() {
-    this.userState.fetchUser();
-    this.currentUser = this.userState.user;
-  }
-
+  /**
+   * If the locale is changed make sure this is emitted via the eventBus, this ensures everything
+   * that has a fixed locale will also correctly update
+   */
   localeChange(value: string): void {
     this.$root.$i18n.locale = value;
 
     eventBus.$emit('localeUpdated');
+  }
+
+  /**
+   * Clears the JWT token and forwards the user to the login page
+   */
+  logout() {
+    APIHelper.clearToken();
+    this.$router.push({ name: 'login' });
   }
 }
 </script>

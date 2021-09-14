@@ -14,7 +14,7 @@ import { NFCDevice } from '@/entities/NFCDevice';
 export default class UserModule extends VuexModule {
   user: User = {} as User;
 
-  token: string = '';
+  userRoles: string[] = [];
 
   allUsers: User[] = [];
 
@@ -31,9 +31,8 @@ export default class UserModule extends VuexModule {
   }
 
   @Mutation
-  setToken(token: string) {
-    this.token = token;
-    APIHelper.token = token;
+  setUserRoles(roles: string[]) {
+    this.userRoles = roles;
   }
 
   @Mutation

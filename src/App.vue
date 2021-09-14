@@ -16,6 +16,10 @@ import './styles/Footer.scss';
 @Component
 export default class App extends Formatters {
   beforeMount() {
+    if (this.$route.name === undefined) {
+      this.$router.push({ name: 'home' });
+    }
+
     eventBus.$on('apiError', (error: ApiError) => {
       // Create the body for the toast error message, first make a div
       // then create three paragraph elements with the error messages
@@ -25,12 +29,6 @@ export default class App extends Formatters {
           this.$createElement('p',
             { class: ['mb-2'] },
             `${String(this.$t(error.message))}`),
-          this.$createElement('p',
-            { class: ['mb-0'] },
-            `${String(this.$t('apiError.message'))}:`),
-          this.$createElement('p',
-            { class: ['mb-0', 'small'] },
-            `${error.error}`),
         ]);
 
       // Show the toast for 5 seconds
@@ -48,6 +46,18 @@ export default class App extends Formatters {
 <style lang="scss">
 .router-link-active {
   opacity: 0.5;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition-duration: 0.125s;
+  transition-property: opacity;
+  transition-timing-function: ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0
 }
 
 @media print {

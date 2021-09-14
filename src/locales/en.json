@@ -1,6 +1,7 @@
 {
   "login": {
     "SudoSOS Login": "SudoSOS Login",
+    "Login via GEWIS": "Login via GEWIS",
     "Login": "Login",
     "Username": "Username",
     "Enter username": "Enter username",
@@ -423,6 +424,10 @@
   },
   "apiError": {
     "message": "Error message",
-    "Something went wrong": "Something went wrong"
+    "Something went wrong": "Something went wrong",
+    "401": "You don't have the rights to access this data",
+    "403": "You cannot access this data",
+    "404": "This data does not seem to exist",
+    "500": "Something is going wrong, please contact the SudoSOS team"
   }
 }

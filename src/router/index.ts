@@ -18,13 +18,13 @@ import ManageProducts from '@/views/BAC/ManageProducts.vue';
 import Profile from '@/views/User/Profile.vue';
 import FlaggedTransactionDetails from '@/views/BAC/FlaggedTransactionDetails.vue';
 import PointOfSaleInfo from '@/views/PointOfSale/PointOfSaleInfo.vue';
-import SignOut from '@/views/User/SignOut.vue';
 import BorrelkaartOverview from '@/views/BAC/Borrelkaarten.vue';
 import BorrelkaartenPrint from '@/views/BAC/BorrelkaartenPrint.vue';
 import TransactionEditor from '@/views/BAC/TransactionEditor.vue';
 import UserOverview from '@/views/BAC/UserOverview.vue';
 import UserDetails from '@/views/BAC/UserDetails.vue';
 import Login from '@/views/Login.vue';
+import APIHelper from '@/mixins/APIHelper';
 
 Vue.use(VueRouter);
 
@@ -146,11 +146,6 @@ const routes = [
         name: 'profile',
         component: Profile,
       },
-      {
-        path: '/sign-out',
-        name: 'signOut',
-        component: SignOut,
-      },
     ],
   },
   // {
@@ -170,7 +165,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'login') {
+  if (to.name !== 'login' && APIHelper.getToken() === null) {
     next({ name: 'login' });
   } else {
     next();
