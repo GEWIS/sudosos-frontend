@@ -43,7 +43,7 @@ export default class BorrelkaartGroupModule extends VuexModule {
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchBorrelkaartGroups(force: boolean = false) {
     if (this.borrelkaartGroups.length === 0 || force) {

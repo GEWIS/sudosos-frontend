@@ -41,7 +41,7 @@ export default class TransactionModule extends VuexModule {
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchTransactions(force: boolean = false) {
     if (this.transactions.length === 0 || force) {
@@ -63,7 +63,7 @@ export default class TransactionModule extends VuexModule {
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchPOSTransactions(posID: number, force: boolean = false) {
     const index = this.posTransactions.findIndex((pos) => pos.id === posID);

@@ -39,7 +39,7 @@ export default class BannerModule extends VuexModule {
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchBanners(force: boolean = false) {
     if (this.banners.length === 0 || force) {

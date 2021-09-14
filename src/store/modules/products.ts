@@ -47,7 +47,7 @@ export default class ProductsModule extends VuexModule {
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchProducts(force: boolean = false) {
     if (this.products.length === 0 || force) {
@@ -58,7 +58,7 @@ export default class ProductsModule extends VuexModule {
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchUserProducts(force: boolean = false) {
     if (this.userProducts.length === 0 || force) {

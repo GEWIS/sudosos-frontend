@@ -39,7 +39,7 @@ export default class TransferModule extends VuexModule {
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchTransfers(force: boolean = false) {
     if (this.transfers.length === 0 || force) {

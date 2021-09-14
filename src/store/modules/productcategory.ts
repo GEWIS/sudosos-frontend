@@ -43,7 +43,7 @@ export default class ProductCategoryModule extends VuexModule {
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchProductCategories(force: boolean = false) {
     if (this.productCategories.length === 0 || force) {

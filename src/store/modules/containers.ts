@@ -99,7 +99,7 @@ export default class ContainerModule extends VuexModule {
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchContainers(force: boolean = false) {
     if (this.containers.length === 0 || force) {
@@ -110,7 +110,7 @@ export default class ContainerModule extends VuexModule {
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchPublicContainers(force: boolean = false) {
     if (this.publicContainers.length === 0 || force) {

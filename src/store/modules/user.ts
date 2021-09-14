@@ -14,6 +14,8 @@ import { NFCDevice } from '@/entities/NFCDevice';
 export default class UserModule extends VuexModule {
   user: User = {} as User;
 
+  token: string = '';
+
   allUsers: User[] = [];
 
   permissions: UserPermissions = {} as UserPermissions;
@@ -26,6 +28,12 @@ export default class UserModule extends VuexModule {
   @Mutation
   setAllUsers(allUsers: User[]) {
     this.allUsers = allUsers;
+  }
+
+  @Mutation
+  setToken(token: string) {
+    this.token = token;
+    APIHelper.token = token;
   }
 
   @Mutation
@@ -154,7 +162,7 @@ export default class UserModule extends VuexModule {
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchUser(force: boolean = false) {
     if (this.user.id === undefined || force) {
@@ -166,7 +174,7 @@ export default class UserModule extends VuexModule {
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchAllUsers(force: boolean = false) {
     if (this.allUsers.length === 0 || force) {

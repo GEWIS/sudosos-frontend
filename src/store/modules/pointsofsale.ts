@@ -40,7 +40,7 @@ export default class PointOfSaleModule extends VuexModule {
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchPointsOfSale(force: boolean = false) {
     if (this.pointsOfSale.length === 0 || force) {
