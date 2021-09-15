@@ -21,8 +21,10 @@
       </b-card-body>
     </b-card>
     <b-card-footer>
-      <router-link id="TransactionLink" to="/transactions">
-        {{ $t('recentTrans.all transactions') }}
+      <router-link id="TransactionLink" to="/transactions" custom v-slot="{ navigate }">
+        <span @click="navigate" @keypress.enter="navigate" role="link">
+              {{ $t('recentTrans.all transactions') }}
+        </span>
       </router-link>
     </b-card-footer>
   </div>

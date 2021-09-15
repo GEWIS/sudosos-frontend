@@ -172,6 +172,17 @@ export default class UserModule extends VuexModule {
   @Action({
     rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
+  fetchBalance(force: boolean = false) {
+    if (this.user.saldo === undefined || force) {
+      APIHelper.getResource('balances').then((saldoResponse) => {
+        this.context.commit('updateSaldo', saldoResponse);
+      });
+    }
+  }
+
+  @Action({
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
+  })
   fetchUser(force: boolean = false) {
     if (this.user.id === undefined || force) {
       const token = jwtDecode(APIHelper.getToken().jwtToken as string) as any;

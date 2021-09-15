@@ -14,7 +14,11 @@
       </b-card-body>
     </b-card>
     <b-card-footer>
-      <router-link to="/saldo">{{ $t('saldoCom.upgrade online') }}</router-link>
+      <router-link to="/saldo" custom v-slot="{ navigate }">
+        <span @click="navigate" @keypress.enter="navigate" role="link">
+          {{ $t('saldoCom.upgrade online') }}
+        </span>
+      </router-link>
     </b-card-footer>
   </div>
 </template>
@@ -22,7 +26,6 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
-import { User } from '@/entities/User';
 import Formatters from '@/mixins/Formatters';
 import UserModule from '@/store/modules/user';
 
@@ -31,7 +34,7 @@ export default class CurrentSaldo extends Formatters {
   private userState = getModule(UserModule);
 
   beforeMount() {
-    this.userState.fetchUser();
+    this.userState.fetchBalance();
   }
 }
 </script>
