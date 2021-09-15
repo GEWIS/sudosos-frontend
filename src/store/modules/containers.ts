@@ -20,6 +20,12 @@ export default class ContainerModule extends VuexModule {
   publicContainers: Container[] = [];
 
   @Mutation
+  reset() {
+    this.containers = [];
+    this.publicContainers = [];
+  }
+
+  @Mutation
   setContainers(containers: Container[]) {
     this.containers = containers;
   }

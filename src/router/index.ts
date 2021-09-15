@@ -25,6 +25,7 @@ import UserOverview from '@/views/BAC/UserOverview.vue';
 import UserDetails from '@/views/BAC/UserDetails.vue';
 import Login from '@/views/Login.vue';
 import APIHelper from '@/mixins/APIHelper';
+import Logout from '@/mixins/Logout';
 
 Vue.use(VueRouter);
 
@@ -164,9 +165,22 @@ const router = new VueRouter({
   routes,
 });
 
+let previousFrom: string | null | undefined = '';
+
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'login' && APIHelper.getToken() === null) {
-    next({ name: 'login' });
+  const token = APIHelper.getToken();
+  const notToLogin = to.name !== 'login';
+  const jwtIsNull = token.jwtToken === null;
+  const jwtIsExpired = new Date(Number(token.jwtExpires) * 1000) < new Date();
+
+  if (from.name === previousFrom) {
+    Logout.logout(next);
+  }
+
+  previousFrom = from.name;
+
+  if ((notToLogin && jwtIsNull) || (!jwtIsNull && jwtIsExpired)) {
+    Logout.logout(next);
   } else {
     next();
   }

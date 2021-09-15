@@ -15,6 +15,12 @@ export default class TransactionModule extends VuexModule {
   posTransactions: POSTransaction[] = [];
 
   @Mutation
+  reset() {
+    this.transactions = [];
+    this.posTransactions = [];
+  }
+
+  @Mutation
   setTransactions(transactions: Transaction[]) {
     this.transactions = transactions;
   }

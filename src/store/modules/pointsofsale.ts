@@ -13,6 +13,11 @@ export default class PointOfSaleModule extends VuexModule {
   pointsOfSale: PointOfSale[] = [];
 
   @Mutation
+  reset() {
+    this.pointsOfSale = [];
+  }
+
+  @Mutation
   setPointsOfSale(pointsOfSale: PointOfSale[]) {
     this.pointsOfSale = pointsOfSale;
   }

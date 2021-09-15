@@ -13,6 +13,11 @@ export default class TransferModule extends VuexModule {
   transfers: Transfer[] = [];
 
   @Mutation
+  reset() {
+    this.transfers = [];
+  }
+
+  @Mutation
   setTransfers(transfers: Transfer[]) {
     this.transfers = transfers;
   }

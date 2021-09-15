@@ -13,6 +13,11 @@ export default class ProductCategoryModule extends VuexModule {
   productCategories: ProductCategory[] = [];
 
   @Mutation
+  reset() {
+    this.productCategories = [];
+  }
+
+  @Mutation
   setProductCategories(productCategories: ProductCategory[]) {
     this.productCategories = productCategories;
   }

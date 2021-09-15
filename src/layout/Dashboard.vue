@@ -109,8 +109,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import eventBus from '@/eventbus';
 import { getModule } from 'vuex-module-decorators';
 import UserModule from '@/store/modules/user';
-import { User } from '@/entities/User';
-import APIHelper from '@/mixins/APIHelper';
+import Logout from '@/mixins/Logout';
 
 @Component
 export default class Dashboard extends Vue {
@@ -126,12 +125,8 @@ export default class Dashboard extends Vue {
     eventBus.$emit('localeUpdated');
   }
 
-  /**
-   * Clears the JWT token and forwards the user to the login page
-   */
   logout() {
-    APIHelper.clearToken();
-    this.$router.push({ name: 'login' });
+    Logout.logout(undefined, this.$router);
   }
 }
 </script>

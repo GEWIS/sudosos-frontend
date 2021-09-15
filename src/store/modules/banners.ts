@@ -13,6 +13,11 @@ export default class BannerModule extends VuexModule {
   banners: Banner[] = [];
 
   @Mutation
+  reset() {
+    this.banners = [];
+  }
+
+  @Mutation
   setBanners(banners: Banner[]) {
     this.banners = banners;
   }

@@ -4,6 +4,7 @@ import * as dotenv from 'dotenv';
 import eventBus from '@/eventbus';
 import { ApiError } from '@/entities/ApiError';
 import { ResponseBody } from '@/entities/ResponseBody';
+import jwtDecode, { JwtPayload } from 'jwt-decode';
 import devAPI from '../../dev/api';
 
 dotenv.config();
@@ -123,10 +124,14 @@ function fetchResource(route: string, body: ResponseBody) {
 
 export default {
   getToken() {
-    return localStorage.getItem('jwt_token');
+    return {
+      jwtToken: localStorage.getItem('jwt_token'),
+      jwtExpires: localStorage.getItem('jwt_expires'),
+    };
   },
 
   setToken(jwtToken: string) {
+    localStorage.setItem('jwt_expires', String(jwtDecode<JwtPayload>(jwtToken).exp));
     localStorage.setItem('jwt_token', jwtToken);
     token = jwtToken;
   },

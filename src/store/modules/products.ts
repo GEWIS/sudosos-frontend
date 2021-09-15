@@ -15,6 +15,12 @@ export default class ProductsModule extends VuexModule {
   userProducts: Product[] = [];
 
   @Mutation
+  reset() {
+    this.products = [];
+    this.userProducts = [];
+  }
+
+  @Mutation
   setProducts(products: Product[]) {
     this.products = products;
   }

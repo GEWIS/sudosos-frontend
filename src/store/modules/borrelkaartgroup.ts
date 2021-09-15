@@ -13,6 +13,11 @@ export default class BorrelkaartGroupModule extends VuexModule {
   borrelkaartGroups: BorrelkaartGroup[] = [];
 
   @Mutation
+  reset() {
+    this.borrelkaartGroups = [];
+  }
+
+  @Mutation
   setBorrelkaartGroups(borrelkaartGroups: BorrelkaartGroup[]) {
     this.borrelkaartGroups = borrelkaartGroups;
   }

@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import dinero from 'dinero.js';
-import { Transaction } from '@/entities/Transaction';
 
 @Component
 export default class Formatters extends Vue {

@@ -13,6 +13,11 @@ export default class BorrelkaartModule extends VuexModule {
   borrelkaarten: User[] = [];
 
   @Mutation
+  reset() {
+    this.borrelkaarten = [];
+  }
+
+  @Mutation
   setBorrelkaarten(borrelkaarten: User[]) {
     this.borrelkaarten = borrelkaarten;
   }

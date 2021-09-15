@@ -13,6 +13,11 @@ export default class FlaggedTransactionModule extends VuexModule {
   flaggedTransactions: FlaggedTransaction[] = [];
 
   @Mutation
+  reset() {
+    this.flaggedTransactions = [];
+  }
+
+  @Mutation
   setFlaggedTransactions(flaggedTransactions: FlaggedTransaction[]) {
     this.flaggedTransactions = flaggedTransactions;
   }

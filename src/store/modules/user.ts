@@ -21,6 +21,14 @@ export default class UserModule extends VuexModule {
   permissions: UserPermissions = {} as UserPermissions;
 
   @Mutation
+  reset() {
+    this.user = {} as User;
+    this.userRoles = [];
+    this.allUsers = [];
+    this.permissions = {} as UserPermissions;
+  }
+
+  @Mutation
   setUser(user: User) {
     this.user = user;
   }
