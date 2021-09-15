@@ -5,9 +5,12 @@
         {{ $t('saldoCom.saldo') }}
       </b-card-title>
       <b-card-body>
-        <p id="saldo-text" class="lead">
-          {{ currentUser.saldo.toFormat() }}
+        <p v-if="userState.user.saldo !== undefined" id="saldo-text" class="lead">
+          {{ userState.user.saldo.toFormat() }}
         </p>
+        <div v-else class="text-center">
+          <b-spinner variant="primary" id="saldo-spinner"></b-spinner>
+        </div>
       </b-card-body>
     </b-card>
     <b-card-footer>
@@ -27,11 +30,8 @@ import UserModule from '@/store/modules/user';
 export default class CurrentSaldo extends Formatters {
   private userState = getModule(UserModule);
 
-  public currentUser: User = {} as User;
-
   beforeMount() {
     this.userState.fetchUser();
-    this.currentUser = this.userState.user;
   }
 }
 </script>
@@ -46,5 +46,11 @@ export default class CurrentSaldo extends Formatters {
 #saldo-text {
   font-size: 50px;
   text-align: center;
+}
+
+#saldo-spinner {
+  height: 70px;
+  width: 70px;
+  margin-bottom: 1rem;
 }
 </style>

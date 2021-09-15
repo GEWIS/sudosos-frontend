@@ -88,8 +88,9 @@ export default class Login extends Vue {
    */
   login() {
     // TODO: Make sure this uses the correct data
+    const id = this.username !== '' ? Number(this.username) : 13;
     APIHelper.postResource('authentication/mock', {
-      userId: 0,
+      userId: id,
       nonce: uuid(),
     }).then((res: LoginResponse) => {
       this.loginSuccesful(res);

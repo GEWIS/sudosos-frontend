@@ -124,6 +124,8 @@ function fetchResource(route: string, body: ResponseBody) {
 
 export default {
   getToken() {
+    token = localStorage.getItem('jwt_token') as string;
+
     return {
       jwtToken: localStorage.getItem('jwt_token'),
       jwtExpires: localStorage.getItem('jwt_expires'),

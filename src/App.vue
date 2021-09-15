@@ -12,6 +12,7 @@ import Formatters from '@/mixins/Formatters';
 
 import './styles/Navbar.scss';
 import './styles/Footer.scss';
+import Logout from '@/mixins/Logout';
 
 @Component
 export default class App extends Formatters {

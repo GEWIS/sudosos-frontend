@@ -110,10 +110,18 @@ import eventBus from '@/eventbus';
 import { getModule } from 'vuex-module-decorators';
 import UserModule from '@/store/modules/user';
 import Logout from '@/mixins/Logout';
+import APIHelper from '@/mixins/APIHelper';
 
 @Component
 export default class Dashboard extends Vue {
   userState = getModule(UserModule);
+
+  beforeMount() {
+    APIHelper.getToken();
+    if (Object.keys(this.userState.user).length <= 0) {
+      this.userState.fetchUser(true);
+    }
+  }
 
   /**
    * If the locale is changed make sure this is emitted via the eventBus, this ensures everything

@@ -7,6 +7,7 @@ import { User, UserPermissions } from '@/entities/User';
 import APIHelper from '@/mixins/APIHelper';
 import UserTransformer from '@/transformers/UserTransformer';
 import { NFCDevice } from '@/entities/NFCDevice';
+import jwtDecode from 'jwt-decode';
 
 @Module({
   dynamic: true, namespaced: true, store, name: 'UserModule',
@@ -173,10 +174,14 @@ export default class UserModule extends VuexModule {
   })
   fetchUser(force: boolean = false) {
     if (this.user.id === undefined || force) {
-      const userResponse = APIHelper.getResource('user') as {};
-      this.context.commit('setUser', UserTransformer.makeUser(userResponse));
-      const saldoResponse = APIHelper.getResource('saldo') as { saldo: number };
-      this.context.commit('updateSaldo', saldoResponse.saldo);
+      const token = jwtDecode(APIHelper.getToken().jwtToken as string) as any;
+
+      APIHelper.getResource(`users/${token.user.id}`).then((userResponse) => {
+        this.context.commit('setUser', UserTransformer.makeUser(userResponse));
+      });
+      APIHelper.getResource('balances').then((saldoResponse) => {
+        this.context.commit('updateSaldo', saldoResponse);
+      });
     }
   }
 
@@ -185,9 +190,10 @@ export default class UserModule extends VuexModule {
   })
   fetchAllUsers(force: boolean = false) {
     if (this.allUsers.length === 0 || force) {
-      const userResponse = APIHelper.getResource('users') as [];
-      const allUsers = userResponse.map((user) => UserTransformer.makeUser(user));
-      this.context.commit('setAllUsers', allUsers);
+      APIHelper.getResource('users').then((userResponse) => {
+        const allUsers = userResponse.map((user: any) => UserTransformer.makeUser(user));
+        this.context.commit('setAllUsers', allUsers);
+      });
     }
   }
 }
