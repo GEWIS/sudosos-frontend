@@ -174,9 +174,9 @@ export default class TransactionsTable extends Formatters {
   ];
 
   beforeMount() {
-    this.transactionState.fetchTransactions();
-    this.transferState.fetchTransfers();
     this.userState.fetchUser();
+    this.transactionState.fetchUsersTransactions(this.userState.user.id);
+    this.transferState.fetchTransfers();
 
     // Check if we need to grab all transaction that are related to a specific point of sale
     // if not just grab all transactions for this user
@@ -191,7 +191,7 @@ export default class TransactionsTable extends Formatters {
         this.transList = psTr.transactions;
       }
     } else {
-      this.transList = [...this.transactionState.transactions, ...this.transferState.transfers];
+      this.transList = [...this.transactionState.userTransactions, ...this.transferState.transfers];
     }
 
     // Sort the transactions just in case

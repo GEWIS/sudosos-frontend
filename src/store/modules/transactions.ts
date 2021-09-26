@@ -10,50 +10,53 @@ import TransactionTransformer from '@/transformers/TransactionTransformer';
   dynamic: true, namespaced: true, store, name: 'TransactionModule',
 })
 export default class TransactionModule extends VuexModule {
-  transactions: Transaction[] = [];
+  userTransactions: Transaction[] = [];
 
   posTransactions: POSTransaction[] = [];
 
   @Mutation
   reset() {
-    this.transactions = [];
+    this.userTransactions = [];
     this.posTransactions = [];
   }
 
   @Mutation
   setTransactions(transactions: Transaction[]) {
-    this.transactions = transactions;
+    this.userTransactions = transactions;
   }
 
   @Mutation
   addTransaction(transaction: Transaction) {
     const transactionResponse = APIHelper.postResource('transactions', transaction);
-    this.transactions.push(TransactionTransformer.makeTransaction(transactionResponse));
+    this.userTransactions.push(TransactionTransformer.makeTransaction(transactionResponse));
   }
 
   @Mutation
   removeTransaction(transaction: Transaction) {
     APIHelper.delResource('transactions', transaction);
-    const index = this.transactions.findIndex((trns) => trns.id === transaction.id);
-    this.transactions.splice(index, 1);
+    const index = this.userTransactions.findIndex((trns) => trns.id === transaction.id);
+    this.userTransactions.splice(index, 1);
   }
 
   @Mutation
   updateTransaction(transaction: {}) {
     const response = APIHelper.putResource('transactions', transaction);
     const transactionResponse = TransactionTransformer.makeTransaction(response);
-    const index = this.transactions.findIndex((trns) => trns.id === transactionResponse.id);
-    this.transactions.splice(index, 1, transactionResponse);
+    const index = this.userTransactions.findIndex((trns) => trns.id === transactionResponse.id);
+    this.userTransactions.splice(index, 1, transactionResponse);
   }
 
   @Action({
     rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
-  fetchTransactions(force: boolean = false) {
-    if (this.transactions.length === 0 || force) {
-      const transactionResponse = APIHelper.getResource('transactions') as [];
-      const trans = transactionResponse.map((trns) => TransactionTransformer.makeTransaction(trns));
-      this.context.commit('setTransactions', trans);
+  fetchUsersTransactions(userID: number, force: boolean = false) {
+    if (this.userTransactions.length === 0 || force) {
+      APIHelper.getResource(`users/${userID}/transactions`).then((transResponse) => {
+        const trans = transResponse.map(
+          (trns: any) => TransactionTransformer.makeTransaction(trns),
+        );
+        this.context.commit('setTransactions', trans);
+      });
     }
   }
 
@@ -76,13 +79,16 @@ export default class TransactionModule extends VuexModule {
 
     // If the transactions for this POS have not been resolved yet resolve them.
     if (index === -1 || force) {
-      const transactionResponse = APIHelper.getResource(`transactionPOS?id=${posID}`) as [];
-      const trans = transactionResponse.map((trns) => TransactionTransformer.makeTransaction(trns));
+      APIHelper.getResource(`transactionPOS?id=${posID}`).then((transactionResponse) => {
+        const trans = transactionResponse.map(
+          (trns: any) => TransactionTransformer.makeTransaction(trns),
+        );
 
-      this.context.commit('addPOSTransaction', {
-        id: posID,
-        transactions: trans,
-      } as POSTransaction);
+        this.context.commit('addPOSTransaction', {
+          id: posID,
+          transactions: trans,
+        } as POSTransaction);
+      });
     }
   }
 }

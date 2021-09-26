@@ -66,10 +66,10 @@ export default class RecentTransactions extends Formatters {
   ];
 
   beforeMount() {
-    this.transactionState.fetchTransactions();
     this.userState.fetchUser();
+    this.transactionState.fetchUsersTransactions(this.userState.user.id);
     this.transferState.fetchTransfers();
-    this.transList = [...this.transactionState.transactions, ...this.transferState.transfers];
+    this.transList = [...this.transactionState.userTransactions, ...this.transferState.transfers];
     this.transList.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
 
     // If the locale is changed make sure the labels are also correctly updated for the b-table

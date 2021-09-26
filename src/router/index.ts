@@ -165,7 +165,7 @@ const router = new VueRouter({
   routes,
 });
 
-let previousFrom: string | null | undefined = '';
+let previousFrom: string | null | undefined = null;
 
 router.beforeEach((to, from, next) => {
   const token = APIHelper.getToken();
@@ -173,8 +173,9 @@ router.beforeEach((to, from, next) => {
   const jwtIsNull = token.jwtToken === null;
   const jwtIsExpired = new Date(Number(token.jwtExpires) * 1000) < new Date();
 
-  if (from.name === previousFrom) {
+  if (from.name === previousFrom && to.name !== 'login') {
     Logout.logout(next);
+    return;
   }
 
   previousFrom = from.name;
