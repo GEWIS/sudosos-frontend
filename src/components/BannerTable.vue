@@ -17,7 +17,7 @@
           small
           borderless
           thead-class="table-header table-header-6"
-          :items="banners"
+          :items="bannerState.banners"
           :fields="fields"
           per-page="perPage"
           :current-page="currentPage"
@@ -46,13 +46,13 @@
       </b-card-body>
     </b-card>
 
-    <b-card-footer v-if="banners.length > perPage" class="d-flex">
+    <b-card-footer v-if="bannerState.banners.length > perPage" class="d-flex">
       <p class="my-auto h-100">
         {{ $t('bannerTable.Page') }}:
       </p>
       <b-pagination
         v-model="currentPage"
-        :total-rows="banners.length"
+        :total-rows="bannerState.banners.length"
         :per-page="perPage"
         limit="1"
         next-class="nextButton"
@@ -83,6 +83,24 @@
       hide-header-close
       centered>
       <div id="add-modal-input">
+        <b-form-group
+          label-cols="12"
+          label-cols-sm="3"
+          :label="$t('bannerTable.Name')"
+          label-align="left"
+          label-for="name"
+          :state="nameState"
+          :invalid-feedback="nameInvalid"
+        >
+          <b-form-input
+            id="name"
+            name="name"
+            type="text"
+            v-model="currBanner.name"
+            :state="nameState"
+          />
+        </b-form-group>
+
         <b-form-group
           label-cols="12"
           label-cols-sm="3"
@@ -180,9 +198,6 @@ import BannerModule from '@/store/modules/banners';
 export default class BannerTable extends Formatters {
     private bannerState = getModule(BannerModule)
 
-    // List of banners
-    banners: Banner[] = [];
-
     // Variable that holds all information for adding a banner
     currBanner: Banner = {} as Banner;
 
@@ -233,7 +248,6 @@ export default class BannerTable extends Formatters {
 
     beforeMount() {
       this.bannerState.fetchBanners();
-      this.banners = this.bannerState.banners;
 
       // If the locale is changed make sure the labels are also correctly updated for the b-table
       eventBus.$on('localeUpdated', () => {
@@ -246,14 +260,16 @@ export default class BannerTable extends Formatters {
      * will update a currently existing banner otherwise it will create a new one.
      */
     setBanner() {
-      // TODO: If something goes wrong show message and do not reset banner
+      this.currBanner.duration = Number(this.currBanner.duration);
+      // TODO: Remove once we have real file upload
+      this.currBanner.picture = URL.createObjectURL(this.file);
+
       if (this.currBanner.id === undefined) {
         this.bannerState.addBanner(this.currBanner);
       } else {
         this.bannerState.updateBanner(this.currBanner);
       }
       this.currBanner = {} as Banner;
-      this.banners = this.bannerState.banners;
       this.$bvModal.hide('modal-add');
     }
 
@@ -261,8 +277,8 @@ export default class BannerTable extends Formatters {
      * Sets this.currBanner to banner given to the function
      * @param updateBanner: banner that needs to be set to currBanner
      */
-    updateCurrBanner(updateBanner: Banner = {} as Banner): void {
-      this.currBanner = updateBanner;
+    updateCurrBanner(updateBanner: any): void {
+      this.currBanner = updateBanner.item;
     }
 
     /**
@@ -270,7 +286,21 @@ export default class BannerTable extends Formatters {
      */
     deleteBanner() {
       this.bannerState.removeBanner(this.currBanner);
-      this.banners = this.bannerState.banners;
+    }
+
+    /**
+     * Check if the name has been set
+     */
+    get nameState() {
+      return this.currBanner.name !== undefined && this.currBanner.name.length > 0;
+    }
+
+    get nameInvalid() {
+      if (!this.nameState) {
+        return this.$t('bannerTable.Please enter name').toString();
+      }
+
+      return '';
     }
 
     /**
@@ -294,7 +324,8 @@ export default class BannerTable extends Formatters {
      * Check if the endDate is set and later than today
      */
     get endDateState(): boolean {
-      return this.currBanner.endDate > new Date() && this.currBanner.endDate !== undefined;
+      return new Date(this.currBanner.endDate) > new Date()
+        && this.currBanner.endDate !== undefined;
     }
 
     /**
@@ -315,7 +346,7 @@ export default class BannerTable extends Formatters {
      */
     pageClicked(page: number) : void {
       if (this.previousPage < page
-        && page >= (Math.ceil(this.banners.length / this.perPage) - 2)) {
+        && page >= (Math.ceil(this.bannerState.banners.length / this.perPage) - 2)) {
       // TODO: Grab new data
       }
 

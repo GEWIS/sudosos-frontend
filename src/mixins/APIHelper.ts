@@ -47,7 +47,14 @@ function makeRoute(route: string, args: any = null) {
  */
 function checkResponse(fetchResponse: Response) {
   if (fetchResponse.status !== 200) {
-    if (fetchResponse.status === 401) {
+    if (fetchResponse.status === 400) {
+      console.warn('400 - Bad request');
+      const body = {
+        status: fetchResponse.status,
+        message: 'apiError.400',
+      } as ApiError;
+      eventBus.$emit('apiError', body);
+    } else if (fetchResponse.status === 401) {
       console.warn('401 - Unauthorized');
       const body = {
         status: fetchResponse.status,

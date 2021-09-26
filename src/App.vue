@@ -1,6 +1,11 @@
 <template>
 <div id="app">
-  <router-view />
+  <transition
+    name="fade"
+    mode="out-in"
+  >
+    <router-view/>
+  </transition>
 </div>
 </template>
 
@@ -12,7 +17,6 @@ import Formatters from '@/mixins/Formatters';
 
 import './styles/Navbar.scss';
 import './styles/Footer.scss';
-import Logout from '@/mixins/Logout';
 
 @Component
 export default class App extends Formatters {

@@ -236,6 +236,8 @@
     "Please enter dur": "Voer een nummer in dat groter dan 0 is",
     "End date should": "Eind datum moet een waarde hebben die later is dan vandaag",
     "Are you sure": "Weet je zeker dat je deze advertentie wil verwijderen?",
+    "Please enter name": "Voor een naam in",
+    "Name": "Naam",
     "Thumbnail": "Thumbnail",
     "Duration (ms)": "Duur (ms)",
     "Start date": "Start datum",
@@ -425,6 +427,7 @@
   "apiError": {
     "message": "Foutmelding",
     "Something went wrong": "Er ging iets mis",
+    "400": "Er is iets mis met het verzoek wat je probeerd te maken",
     "401": "Je hebt niet de juist rechten om deze data op te vragen",
     "403": "Je hebt mag deze data niet opvragen",
     "404": "Deze data lijkt niet te bestaan",
