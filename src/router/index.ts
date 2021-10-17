@@ -20,7 +20,7 @@ import FlaggedTransactionDetails from '@/views/BAC/FlaggedTransactionDetails.vue
 import PointOfSaleInfo from '@/views/PointOfSale/PointOfSaleInfo.vue';
 import BorrelkaartOverview from '@/views/BAC/Borrelkaarten.vue';
 import BorrelkaartenPrint from '@/views/BAC/BorrelkaartenPrint.vue';
-import TransactionEditor from '@/views/BAC/TransactionEditor.vue';
+import TransactionEditPage from '@/views/BAC/TransactionEditPage.vue';
 import UserOverview from '@/views/BAC/UserOverview.vue';
 import UserDetails from '@/views/BAC/UserDetails.vue';
 import Login from '@/views/Login.vue';
@@ -138,8 +138,8 @@ const routes = [
       },
       {
         path: '/transaction/:id',
-        name: 'transactionEditor',
-        component: TransactionEditor,
+        name: 'transactionEditPage',
+        component: TransactionEditPage,
         props: true,
       },
       {

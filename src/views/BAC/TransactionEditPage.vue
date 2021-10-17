@@ -17,7 +17,7 @@ import UserModule from '@/store/modules/user';
     TransactionEditor,
   },
 })
-export default class TransactionEditor extends Vue {
+export default class TransactionEditPage extends Vue {
   transactionState = getModule(TransactionModule);
 
   userState = getModule(UserModule);
