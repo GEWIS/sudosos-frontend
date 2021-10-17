@@ -48,7 +48,7 @@
           :class="subTransIndex < transactionEdits.length - 1 ? 'mb-3' : ''"
         >
           <b-col class="mb-3 text-truncate" cols="9">
-            {{ $t("transactionEdit.Product container") }}: {{ subTransaction.container.name }}
+            {{ $t("transactionEditor.Product container") }}: {{ subTransaction.container.name }}
           </b-col>
           <b-col cols="3" class="mb-3 text-right">
             <b-button
@@ -56,7 +56,7 @@
               variant="danger"
               size="sm"
             >
-              {{ $t("transactionEdit.Delete product") }}
+              {{ $t("transactionEditor.Delete product") }}
             </b-button>
           </b-col>
           <b-col cols="9" class="mb-2">
@@ -111,7 +111,7 @@
         <b-row>
           <b-col cols="12">
             <b-button @click="addTransactionEdit" variant="success">
-              {{ $t("transactionEdit.Add product") }}
+              {{ $t("transactionEditor.Add product") }}
             </b-button>
           </b-col>
         </b-row>
@@ -126,10 +126,10 @@
       </b-col>
     </b-row>
     <b-button :disabled="!canSaveTransaction" class="mr-3 mt-2" variant="success">
-      {{ $t("transactionEdit.Save") }}
+      {{ $t("transactionEditor.Save") }}
     </b-button>
     <b-button class="mr-3 mt-2" variant="danger">
-      {{ $t("transactionEdit.Delete") }}
+      {{ $t("transactionEditor.Delete") }}
     </b-button>
   </div>
 </template>
@@ -152,7 +152,7 @@ import { Container } from '@/entities/Container';
 // TODO: Fix that the products are actually products that are in the selected container
 
 @Component
-export default class EditTransaction extends Vue {
+export default class TransactionEditor extends Vue {
   @Prop() transaction!: Transaction;
 
   userState = getModule(UserModule);

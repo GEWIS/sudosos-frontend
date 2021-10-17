@@ -6,7 +6,7 @@
         <CurrentSaldo></CurrentSaldo>
       </b-col>
       <b-col cols="12" lg="9">
-        <RecentTransactions></RecentTransactions>
+        <RecentTransactionsTable></RecentTransactionsTable>
       </b-col>
     </b-row>
   </b-container>
@@ -14,12 +14,12 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import RecentTransactions from '@/components/RecentTransactions.vue';
+import RecentTransactionsTable from '@/components/RecentTransactionsTable.vue';
 import CurrentSaldo from '@/components/CurrentSaldo.vue';
 
   @Component({
     components: {
-      RecentTransactions, CurrentSaldo,
+      RecentTransactionsTable, CurrentSaldo,
     },
   })
 export default class Home extends Vue {

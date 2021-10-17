@@ -1,11 +1,11 @@
 <template>
   <b-container fluid="lg">
-    <EditTransaction :transaction="transaction"></EditTransaction>
+    <TransactionEditor :transaction="transaction"></TransactionEditor>
   </b-container>
 </template>
 
 <script lang="ts">
-import EditTransaction from '@/components/EditTransaction.vue';
+import TransactionEditor from '@/components/TransactionEditor.vue';
 import { Vue, Component } from 'vue-property-decorator';
 import { Transaction } from '@/entities/Transaction';
 import { getModule } from 'vuex-module-decorators';
@@ -14,7 +14,7 @@ import UserModule from '@/store/modules/user';
 
 @Component({
   components: {
-    EditTransaction,
+    TransactionEditor,
   },
 })
 export default class TransactionEditor extends Vue {

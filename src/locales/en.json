@@ -116,7 +116,7 @@
     "accept manual": "Accept (fix manual)",
     "Edit transaction": "Edit transaction"
   },
-  "transactionEdit": {
+  "transactionEditor": {
     "Product container": "Product container",
     "Delete product": "Delete product",
     "Add product": "Add product",
@@ -215,7 +215,7 @@
     "saldo": "balance",
     "upgrade online": "increase online"
   },
-  "recentTrans": {
+  "recentTransactionsTable": {
     "recent transactions": "recent transactions",
     "all transactions": "all transactions",
     "when": "When",
@@ -257,7 +257,7 @@
   "containersOverview": {
     "Containers": "Containers"
   },
-  "editContainerModal": {
+  "containerEditModal": {
     "save": "save",
     "cancel": "cancel",
     "edit container": "edit container",
@@ -268,7 +268,7 @@
     "added on": "Added on",
     "added by": "Added by"
   },
-  "editProductModal": {
+  "productEditModal": {
     "Add existing": "Add existing product",
     "Add new": "Add new product",
     "Product details": "Product details",

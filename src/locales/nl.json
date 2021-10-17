@@ -116,7 +116,7 @@
     "accept manual": "Accept (handmatig oplossen)",
     "Edit transaction": "Bewerk transactie"
   },
-  "transactionEdit": {
+  "transactionEditor": {
     "Product container": "Product container",
     "Delete product": "Verwijder product",
     "Add product": "Voeg product toe",
@@ -215,7 +215,7 @@
     "saldo": "saldo",
     "upgrade online": "online opwaarderen"
   },
-  "recentTrans": {
+  "recentTransactionsTable": {
     "recent transactions": "recente transacties",
     "all transactions": "alle transacties",
     "when": "Wanneer",
@@ -257,7 +257,7 @@
   "containersOverview": {
     "Containers": "Containers"
   },
-  "editContainerModal": {
+  "containerEditModal": {
     "save": "opslaan",
     "cancel": "annuleren",
     "edit container": "bewerk container",
@@ -268,7 +268,7 @@
     "added on": "Toegevoegd op",
     "added by": "Toegevoegd door"
   },
-  "editProductModal": {
+  "productEditModal": {
     "Add existing": "Voeg bestaand product toe",
     "Add new": "Voeg nieuw product toe",
     "Product details": "Product details",

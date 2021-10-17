@@ -2,7 +2,7 @@
   <div>
     <b-card>
       <b-card-title>
-        {{ $t('recentTrans.recent transactions') }}
+        {{ $t('recentTransactionsTable.recent transactions') }}
       </b-card-title>
       <b-card-body>
         <b-table
@@ -31,7 +31,7 @@
     <b-card-footer>
       <router-link id="TransactionLink" to="/transactions" custom v-slot="{ navigate }">
         <span @click="navigate" @keypress.enter="navigate" role="link">
-              {{ $t('recentTrans.all transactions') }}
+              {{ $t('recentTransactionsTable.all transactions') }}
         </span>
       </router-link>
     </b-card-footer>
@@ -50,7 +50,7 @@ import TransferModule from '@/store/modules/transfers';
 import UserModule from '@/store/modules/user';
 
 @Component
-export default class RecentTransactions extends Formatters {
+export default class RecentTransactionsTable extends Formatters {
   private transactionState = getModule(TransactionModule);
 
   private transferState = getModule(TransferModule);
@@ -62,13 +62,13 @@ export default class RecentTransactions extends Formatters {
   fields: Object[] = [
     {
       key: 'updatedAt',
-      label: this.getTranslation('recentTrans.when'),
+      label: this.getTranslation('recentTransactionsTable.when'),
       formatter: (value: Date) => this.formatDateTime(value, undefined, true),
       locale_key: 'when',
     },
     {
       key: 'id',
-      label: this.getTranslation('recentTrans.what'),
+      label: this.getTranslation('recentTransactionsTable.what'),
       locale_key: 'what',
     },
   ];
@@ -82,7 +82,7 @@ export default class RecentTransactions extends Formatters {
 
     // If the locale is changed make sure the labels are also correctly updated for the b-table
     eventBus.$on('localeUpdated', () => {
-      this.fields = this.updateTranslations(this.fields, 'recentTrans');
+      this.fields = this.updateTranslations(this.fields, 'recentTransactionsTable');
     });
   }
 
@@ -119,7 +119,7 @@ export default class RecentTransactions extends Formatters {
       return trans.description;
     }
 
-    return this.$t('recentTrans.transfer', { amount: trans.amount.toFormat() });
+    return this.$t('recentTransactionsTable.transfer', { amount: trans.amount.toFormat() });
   }
 }
 

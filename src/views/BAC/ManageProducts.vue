@@ -50,11 +50,11 @@
       </b-col>
     </b-row>
 
-    <EditContainerModal
+    <ContainerEditModal
       :editContainer="editContainer"
     />
 
-    <EditProductModal
+    <ProductEditModal
       :editProduct="editProduct"
       :container="activeContainer"
     />
@@ -76,8 +76,8 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import ContainerComponent from '@/components/ContainerComponent.vue';
-import EditContainerModal from '@/components/EditContainerModal.vue';
-import EditProductModal from '@/components/EditProductModal.vue';
+import ContainerEditModal from '@/components/ContainerEditModal.vue';
+import ProductEditModal from '@/components/ProductEditModal.vue';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
 import ProductInfoModal from '@/components/ProductInfoModal.vue';
 import { Container } from '@/entities/Container';
@@ -89,8 +89,8 @@ import ContainerModule from '@/store/modules/containers';
 @Component({
   components: {
     ContainerComponent,
-    EditContainerModal,
-    EditProductModal,
+    ContainerEditModal,
+    ProductEditModal,
     ConfirmationModal,
     ProductInfoModal,
     ProductTable,

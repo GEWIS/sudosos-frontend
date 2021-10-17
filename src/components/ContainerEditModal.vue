@@ -1,18 +1,18 @@
 <template>
   <b-modal
     id="edit-container"
-    :ok-title="$t('editContainerModal.save')"
-    :cancel-title="$t('editContainerModal.cancel')"
+    :ok-title="$t('containerEditModal.save')"
+    :cancel-title="$t('containerEditModal.cancel')"
     :title="Object.keys(editContainer).length > 0 ?
-    $t('editContainerModal.edit container') :
-    $t('editContainerModal.add container')"
+    $t('containerEditModal.edit container') :
+    $t('containerEditModal.add container')"
     size="lg"
     hide-header-close
     centered>
     <div id="edit-container-input">
       <b-form-row v-if="Object.keys(editContainer).length > 0">
         <b-col cols="12" sm="3">
-          <span class="font-weight-bold">{{ $t('editContainerModal.added on')}}</span>
+          <span class="font-weight-bold">{{ $t('containerEditModal.added on')}}</span>
         </b-col>
         <b-col cols="12" sm="9">
           {{ formatDateTime(editContainer.createdAt, true) }}
@@ -21,7 +21,7 @@
 
       <b-form-row v-if="Object.keys(editContainer).length > 0">
         <b-col cols="12" sm="3">
-          <span class="font-weight-bold">{{ $t('editContainerModal.added by')}}</span>
+          <span class="font-weight-bold">{{ $t('containerEditModal.added by')}}</span>
         </b-col>
         <b-col cols="12" sm="9">
           {{ editContainer.owner.name }}
@@ -31,7 +31,7 @@
       <b-form-group
         label-cols="12"
         label-cols-sm="3"
-        :label="$t('editContainerModal.Name')"
+        :label="$t('containerEditModal.Name')"
         label-align="left"
         label-for="name"
         :state="nameState"
@@ -49,7 +49,7 @@
       <b-form-group
         label-cols="12"
         label-cols-sm="3"
-        :label="$t('editContainerModal.Public')"
+        :label="$t('containerEditModal.Public')"
         label-align="left"
         label-for="public"
       >
@@ -68,13 +68,13 @@
         variant="primary"
         class="btn-empty"
         @click="cancel()"
-      >{{ $t('editContainerModal.cancel') }}
+      >{{ $t('containerEditModal.cancel') }}
       </b-button>
       <b-button
         variant="primary"
         class="btn-empty"
         @click="save">
-        {{ $t('editContainerModal.save') }}
+        {{ $t('containerEditModal.save') }}
       </b-button>
     </template>
   </b-modal>
@@ -90,7 +90,7 @@ import { Container } from '@/entities/Container';
 import ContainerModule from '@/store/modules/containers';
 
   @Component
-export default class EditContainerModal extends Formatters {
+export default class ContainerEditModal extends Formatters {
     @Prop() private editContainer! : Container;
 
     private containerState = getModule(ContainerModule);
@@ -139,7 +139,7 @@ export default class EditContainerModal extends Formatters {
     // Return appropriate validating message for name
     get invalidName(): string {
       if (!this.nameState) {
-        return this.$t('editContainerModal.name invalid').toString();
+        return this.$t('containerEditModal.name invalid').toString();
       }
 
       return '';
