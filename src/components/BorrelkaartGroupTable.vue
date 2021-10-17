@@ -52,6 +52,7 @@
       striped
       thead-class="table-header table-header-5 align-last-right"
       :items="borrelkaarten"
+      :busy="borrelkaarten.length === 0"
       :fields="fields"
       :filter="nameFilter"
       :filter-included-fields="['name']"
@@ -59,6 +60,13 @@
       :current-page="currentPage"
       v-on:filtered="filterFinished"
     >
+      <!-- If the table data is still loading display something nice -->
+      <template #table-busy>
+        <div class="text-center text-muted mt-5 mb-3">
+          <b-spinner class="align-middle"></b-spinner>
+        </div>
+      </template>
+
       <!-- Templates for each row cell -->
       <template v-slot:cell(name)="data">
         {{ data.item.name }}

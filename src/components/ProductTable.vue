@@ -37,6 +37,7 @@
   <b-table
     :fields="fields"
     :items="productList"
+    :busy="productList.length === 0"
     stacked="sm"
     small
     borderless
@@ -50,6 +51,12 @@
     v-sortable="sortableOptions"
     tbody-tr-class="product-row"
   >
+    <!-- If the table data is still loading display something nice -->
+    <template #table-busy>
+      <div class="text-center text-muted mt-5 mb-3">
+        <b-spinner class="align-middle"></b-spinner>
+      </div>
+    </template>
 
     <!-- Templates for each row cell -->
     <template v-slot:cell(picture)="data">

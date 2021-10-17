@@ -22,6 +22,7 @@
           borderless
           thead-class="table-header"
           :items="transactionFlagList"
+          :busy="transactionFlagList.length === 0"
           :fields="fields"
           tbody-tr-class="transaction-flag-row"
           :per-page="perPage"
@@ -32,6 +33,12 @@
           v-on:filtered="filterDone"
           v-on:row-clicked="rowClicked"
         >
+          <!-- If the table data is still loading display something nice -->
+          <template #table-busy>
+            <div class="text-center text-muted mt-5 mb-3">
+              <b-spinner class="align-middle"></b-spinner>
+            </div>
+          </template>
 
           <!-- Templates for each row cell -->
           <template v-slot:cell(updatedAt)="data">

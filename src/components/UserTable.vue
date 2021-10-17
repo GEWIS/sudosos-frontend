@@ -31,12 +31,19 @@
         :filter="filter"
         :filter-included-fields="['name', 'gewisID']"
         :items="userState.allUsers"
+        :busy="userState.allUsers.length === 0"
         :fields="fields"
         :per-page="perPage"
         v-on:filtered="filterFinished"
         :current-page="currentPage"
         v-on:row-clicked="rowClicked"
       >
+        <!-- If the table data is still loading display something nice -->
+        <template #table-busy>
+          <div class="text-center text-muted mt-5 mb-3">
+            <b-spinner class="align-middle"></b-spinner>
+          </div>
+        </template>
 
         <!-- Templates for each row cell -->
         <template v-slot:cell(gewisID)="data">
