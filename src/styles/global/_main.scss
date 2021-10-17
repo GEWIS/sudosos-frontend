@@ -316,6 +316,7 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
     }
 }
 
+// Some icons needs extra aligning if they're small, this utility class aligns the icons correctly
 .fa-sm-mb {
     margin-bottom: 2.5px;
 }
