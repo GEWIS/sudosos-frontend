@@ -34,9 +34,6 @@ import languages from './locales/index';
 
 import 'vue-select/dist/vue-select.css';
 
-// Import bootstrap js
-import 'bootstrap';
-
 // Import the BootstrapVue style
 import './styles/global/_main.scss';
 
