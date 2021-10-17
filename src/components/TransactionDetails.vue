@@ -2,7 +2,7 @@
   <div>
     <b-row>
       <b-col cols="6" sm="4">
-        <p class="font-weight-bold">{{ $t('transactionDetails.Total') }}</p>
+        <p class="font-weight-bold">{{ $t('c_transactionDetails.Total') }}</p>
       </b-col>
       <b-col cols="6" sm="8" class="text-right text-sm-left">
         <p>{{ transaction.price.toFormat() }}</p>
@@ -10,7 +10,7 @@
     </b-row>
     <b-row>
       <b-col cols="6" sm="4">
-        <p class="font-weight-bold">{{ $t('transactionDetails.Point of sale') }}</p>
+        <p class="font-weight-bold">{{ $t('c_transactionDetails.Point of sale') }}</p>
       </b-col>
       <b-col cols="6" sm="8" class="text-right text-sm-left">
         <p>{{ transaction.pointOfSale.name }}</p>
@@ -18,7 +18,7 @@
     </b-row>
     <b-row>
       <b-col cols="6" sm="4">
-        <p class="font-weight-bold">{{ $t('transactionDetails.Bought by') }}</p>
+        <p class="font-weight-bold">{{ $t('c_transactionDetails.Bought by') }}</p>
       </b-col>
       <b-col cols="6" sm="8" class="text-right text-sm-left">
         <p>{{ transaction.from.name }}</p>
@@ -26,7 +26,7 @@
     </b-row>
     <b-row v-if="Object.keys(transaction.createdBy).length !== 0">
       <b-col cols="6" sm="4">
-        <p class="font-weight-bold">{{ $t('transactionDetails.Put in by') }}</p>
+        <p class="font-weight-bold">{{ $t('c_transactionDetails.Put in by') }}</p>
       </b-col>
       <b-col cols="6" sm="8" class="text-right text-sm-left">
         <p>{{ transaction.createdBy.name }}</p>
@@ -34,7 +34,7 @@
     </b-row>
     <b-row>
       <b-col cols="12" sm="4">
-        <p class="font-weight-bold">{{ $t('transactionDetails.Products') }}</p>
+        <p class="font-weight-bold">{{ $t('c_transactionDetails.Products') }}</p>
       </b-col>
       <b-col cols="12" sm="8" class="total-price">
         <div
@@ -60,7 +60,7 @@
         <b-row>
           <b-col cols="12" class="text-right">
             <p>
-              <i class="mr-1">{{ $t('transactionDetails.Total') }} </i>
+              <i class="mr-1">{{ $t('c_transactionDetails.Total') }} </i>
               {{ transaction.price.toFormat() }}</p>
           </b-col>
         </b-row>

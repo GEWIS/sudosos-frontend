@@ -4,7 +4,7 @@
     <template v-slot:header>
       <b-form-group
         id="name-filter-group"
-        :label="$t('userTable.Filter by name')"
+        :label="$t('c_userTable.Filter by name')"
         label-for="filter"
         label-cols-md="2"
         label-cols="12"
@@ -13,7 +13,7 @@
           id="filter"
           v-model="filter"
           type="text"
-          :placeholder="$t('userTable.Fill in a name')"
+          :placeholder="$t('c_userTable.Fill in a name')"
           trim
         />
       </b-form-group>
@@ -62,7 +62,7 @@
 
   <b-card-footer v-if="totalRows > perPage" class="d-flex">
     <p class="my-auto h-100">
-      {{ $t('userTable.Page') }}:
+      {{ $t('c_userTable.Page') }}:
     </p>
     <b-pagination
       v-model="currentPage"
@@ -105,17 +105,17 @@ export default class UserTable extends Formatters {
   fields: Object[] = [
     {
       key: 'gewisID',
-      label: this.getTranslation('userTable.gewisID'),
+      label: this.getTranslation('c_userTable.gewisID'),
       locale_key: 'gewisID',
     },
     {
       key: 'name',
-      label: this.getTranslation('userTable.Name'),
+      label: this.getTranslation('c_userTable.Name'),
       locale_key: 'Name',
     },
     {
       key: 'active',
-      label: this.getTranslation('userTable.Active'),
+      label: this.getTranslation('c_userTable.Active'),
       locale_key: 'Active',
     },
   ]
@@ -126,7 +126,7 @@ export default class UserTable extends Formatters {
 
     // If the locale is changed make sure the labels are also correctly updated for the b-table
     eventBus.$on('localeUpdated', () => {
-      this.fields = this.updateTranslations(this.fields, 'userTable');
+      this.fields = this.updateTranslations(this.fields, 'c_userTable');
     });
   }
 

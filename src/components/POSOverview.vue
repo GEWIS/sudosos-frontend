@@ -4,8 +4,8 @@
     <b-card-title class="mb-3 mb-lg-5">
       <b-form-row class="mx-0">
         <b-col cols="12">
-          <span v-if="requested">{{ $t('POSOverview.requested points of sale') }}</span>
-          <span v-else>{{ $t('POSOverview.my points of sale') }}</span>
+          <span v-if="requested">{{ $t('c_POSOverview.requested points of sale') }}</span>
+          <span v-else>{{ $t('c_POSOverview.my points of sale') }}</span>
         </b-col>
       </b-form-row>
     </b-card-title>
@@ -40,7 +40,7 @@
 
     <b-card-footer v-if="perPage < pointsOfSale.length" class="d-flex">
       <p class="my-auto h-100">
-        {{ $t('POSOverview.Page') }}:
+        {{ $t('c_POSOverview.Page') }}:
       </p>
       <b-pagination
         v-model="currentPage"

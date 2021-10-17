@@ -76,7 +76,7 @@
     </b-card>
     <b-card-footer class="d-flex" v-if="totalRows > perPage">
       <p class="my-auto h-100">
-        {{ $t('transactionFlagsComponent.Page') }}:
+        {{ $t('c_transactionFlagsComponent.Page') }}:
       </p>
       <b-pagination
         v-model="currentPage"
@@ -154,28 +154,28 @@ export default class TransactionFlagsTable extends Formatters {
   fields: Object[] = [
     {
       key: 'updatedAt',
-      label: this.getTranslation('transactionFlagsComponent.When'),
+      label: this.getTranslation('c_transactionFlagsComponent.When'),
       locale_key: 'When',
     },
     {
       key: 'flaggedBy',
-      label: this.getTranslation('transactionFlagsComponent.Who'),
+      label: this.getTranslation('c_transactionFlagsComponent.Who'),
       locale_key: 'Who',
     },
     {
       key: 'status',
-      label: this.getTranslation('transactionFlagsComponent.Status'),
+      label: this.getTranslation('c_transactionFlagsComponent.Status'),
       locale_key: 'Status',
     },
     {
       key: 'reason',
-      label: this.getTranslation('transactionFlagsComponent.Reason'),
+      label: this.getTranslation('c_transactionFlagsComponent.Reason'),
       locale_key: 'Reason',
       tdClass: 'cell-reason',
     },
     {
       key: 'id',
-      label: this.getTranslation('transactionFlagsComponent.Info'),
+      label: this.getTranslation('c_transactionFlagsComponent.Info'),
       locale_key: 'Info',
     },
   ];
@@ -189,7 +189,7 @@ export default class TransactionFlagsTable extends Formatters {
 
     // If the locale is changed make sure the labels are also correctly updated for the b-table
     eventBus.$on('localeUpdated', () => {
-      this.fields = this.updateTranslations(this.fields, 'transactionFlagsComponent');
+      this.fields = this.updateTranslations(this.fields, 'c_transactionFlagsComponent');
     });
   }
 

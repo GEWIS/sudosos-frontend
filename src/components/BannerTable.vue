@@ -9,7 +9,7 @@
           v-b-modal.modal-add
         >
           <font-awesome-icon icon="plus" size="sm" class="mr-2 fa-sm-mb" />
-          {{ $t('bannerTable.Add') }}
+          {{ $t('c_bannerTable.Add') }}
         </b-button>
       </template>
       <b-card-body>
@@ -56,7 +56,7 @@
 
     <b-card-footer v-if="bannerState.banners.length > perPage" class="d-flex">
       <p class="my-auto h-100">
-        {{ $t('bannerTable.Page') }}:
+        {{ $t('c_bannerTable.Page') }}:
       </p>
       <b-pagination
         v-model="currentPage"
@@ -76,17 +76,17 @@
 
     <!--  Modal to ask if user really wants to delete something  -->
     <ConfirmationModal
-      :title="$t('bannerTable.Confirm deletion')"
-      :reason="$t('bannerTable.Are you sure')"
+      :title="$t('c_bannerTable.Confirm deletion')"
+      :reason="$t('c_bannerTable.Are you sure')"
       @modalConfirmed="deleteBanner">
     </ConfirmationModal>
 
     <!--  Modal for adding new banners  -->
     <b-modal
       id="modal-add"
-      :ok-title="$t('bannerTable.save')"
-      :cancel-title="$t('bannerTable.cancel')"
-      :title="$t('bannerTable.new banner')"
+      :ok-title="$t('c_bannerTable.save')"
+      :cancel-title="$t('c_bannerTable.cancel')"
+      :title="$t('c_bannerTable.new banner')"
       size="lg"
       hide-header-close
       centered>
@@ -94,7 +94,7 @@
         <b-form-group
           label-cols="12"
           label-cols-sm="3"
-          :label="$t('bannerTable.Name')"
+          :label="$t('c_bannerTable.Name')"
           label-align="left"
           label-for="name"
           :state="nameState"
@@ -112,7 +112,7 @@
         <b-form-group
           label-cols="12"
           label-cols-sm="3"
-          :label="$t('bannerTable.Duration')"
+          :label="$t('c_bannerTable.Duration')"
           label-align="left"
           label-for="duration"
           :state="durationState"
@@ -131,7 +131,7 @@
         <b-form-group
           label-cols="12"
           label-cols-sm="3"
-          :label="$t('bannerTable.Start date')"
+          :label="$t('c_bannerTable.Start date')"
           label-align="left"
           label-for="start-date"
         >
@@ -146,7 +146,7 @@
         <b-form-group
           label-cols="12"
           label-cols-sm="3"
-          :label="$t('bannerTable.End date')"
+          :label="$t('c_bannerTable.End date')"
           label-align="left"
           label-for="end-date"
           :state="endDateState"
@@ -164,7 +164,7 @@
         <b-form-group
           label-cols="12"
           label-cols-sm="3"
-          :label="$t('bannerTable.Banner')"
+          :label="$t('c_bannerTable.Banner')"
           label-align="left"
           label-for="ad-file"
         >
@@ -177,13 +177,13 @@
           variant="primary"
           class="btn-empty"
           @click="cancel()"
-        >{{ $t('bannerTable.cancel') }}
+        >{{ $t('c_bannerTable.cancel') }}
         </b-button>
         <b-button
           variant="primary"
           class="btn-empty"
           @click="setBanner">
-          {{ $t('bannerTable.save') }}
+          {{ $t('c_bannerTable.save') }}
         </b-button>
       </template>
     </b-modal>
@@ -222,34 +222,34 @@ export default class BannerTable extends Formatters {
     fields: Object[] = [
       {
         key: 'picture',
-        label: this.getTranslation('bannerTable.Thumbnail'),
+        label: this.getTranslation('c_bannerTable.Thumbnail'),
         locale_key: 'Thumbnail',
       },
       {
         key: 'duration',
-        label: this.getTranslation('bannerTable.Duration (ms)'),
+        label: this.getTranslation('c_bannerTable.Duration (ms)'),
         locale_key: 'Duration (ms)',
       },
       {
         key: 'active',
-        label: this.getTranslation('bannerTable.Active'),
+        label: this.getTranslation('c_bannerTable.Active'),
         locale_key: 'Active',
       },
       {
         key: 'startDate',
-        label: this.getTranslation('bannerTable.Starts on'),
+        label: this.getTranslation('c_bannerTable.Starts on'),
         locale_key: 'Starts on',
         formatter: (value: Date) => this.formatDateTime(value, undefined, true),
       },
       {
         key: 'endDate',
-        label: this.getTranslation('bannerTable.Stops on'),
+        label: this.getTranslation('c_bannerTable.Stops on'),
         locale_key: 'Stops on',
         formatter: (value: Date) => this.formatDateTime(value, undefined, true),
       },
       {
         key: 'id',
-        label: this.getTranslation('bannerTable.Edit'),
+        label: this.getTranslation('c_bannerTable.Edit'),
         locale_key: 'Edit',
       },
     ];
@@ -259,7 +259,7 @@ export default class BannerTable extends Formatters {
 
       // If the locale is changed make sure the labels are also correctly updated for the b-table
       eventBus.$on('localeUpdated', () => {
-        this.fields = this.updateTranslations(this.fields, 'bannerTable');
+        this.fields = this.updateTranslations(this.fields, 'c_bannerTable');
       });
     }
 
@@ -305,7 +305,7 @@ export default class BannerTable extends Formatters {
 
     get nameInvalid() {
       if (!this.nameState) {
-        return this.$t('bannerTable.Please enter name').toString();
+        return this.$t('c_bannerTable.Please enter name').toString();
       }
 
       return '';
@@ -323,7 +323,7 @@ export default class BannerTable extends Formatters {
      */
     get durationInvalid(): string {
       if (!this.durationState) {
-        return this.$t('bannerTable.Please enter dur').toString();
+        return this.$t('c_bannerTable.Please enter dur').toString();
       }
       return '';
     }
@@ -341,7 +341,7 @@ export default class BannerTable extends Formatters {
      */
     get endDateInvalid(): string {
       if (!this.endDateState) {
-        return this.$t('bannerTable.End date should').toString();
+        return this.$t('c_bannerTable.End date should').toString();
       }
       return '';
     }

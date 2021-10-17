@@ -1,8 +1,8 @@
 <template>
   <b-modal
     id="edit-product"
-    :ok-title="$t('productEditModal.save')"
-    :cancel-title="$t('productEditModal.cancel')"
+    :ok-title="$t('c_productEditModal.save')"
+    :cancel-title="$t('c_productEditModal.cancel')"
     :title="modalTitle"
     v-on:shown="setProduct"
     size="lg"
@@ -13,7 +13,7 @@
       <!--  If a product is being editted we show some extra info  -->
       <b-form-row v-if="Object.keys(editProduct).length > 0">
         <b-col cols="12" sm="3">
-          <span class="font-weight-bold">{{ $t('productEditModal.added on') }}</span>
+          <span class="font-weight-bold">{{ $t('c_productEditModal.added on') }}</span>
         </b-col>
         <b-col cols="12" sm="3">
           {{ formatDateTime(editProduct.createdAt, true) }}
@@ -22,7 +22,7 @@
 
       <b-form-row v-if="Object.keys(editProduct).length > 0">
         <b-col cols="12" sm="3">
-          <span class="font-weight-bold">{{ $t('productEditModal.updated on') }}</span>
+          <span class="font-weight-bold">{{ $t('c_productEditModal.updated on') }}</span>
         </b-col>
         <b-col cols="12" sm="3">
           {{ formatDateTime(editProduct.updatedAt, true) }}
@@ -31,7 +31,7 @@
 
       <b-form-row v-if="Object.keys(editProduct).length > 0">
         <b-col cols="12" sm="3">
-          <span class="font-weight-bold">{{ $t('productEditModal.added by') }}</span>
+          <span class="font-weight-bold">{{ $t('c_productEditModal.added by') }}</span>
         </b-col>
         <b-col cols="12" sm="3">
           {{ editProduct.owner.name }}
@@ -43,12 +43,12 @@
       <div v-if="Object.keys(container).length > 0
         && Object.keys(editProduct).length === 0
         && products.length > 0">
-        <h6>{{ $t('productEditModal.Add existing') }}</h6>
+        <h6>{{ $t('c_productEditModal.Add existing') }}</h6>
 
         <b-form-group
           label-cols="12"
           label-cols-sm="3"
-          :label="$t('productEditModal.Existing products')"
+          :label="$t('c_productEditModal.Existing products')"
           label-align="left"
           label-for="select"
         >
@@ -78,7 +78,7 @@
       <b-form-group
         label-cols="12"
         label-cols-sm="3"
-        :label="$t('productEditModal.Name')"
+        :label="$t('c_productEditModal.Name')"
         label-align="left"
         label-for="name"
         :state="nameState"
@@ -97,7 +97,7 @@
       <b-form-group
         label-cols="12"
         label-cols-sm="3"
-        :label="$t('productEditModal.Category')"
+        :label="$t('c_productEditModal.Category')"
         label-align="left"
         label-for="product-category"
         :state="categoryState"
@@ -114,7 +114,7 @@
         >
           <template #first>
             <b-form-select-option value="null" disabled>
-              {{ $t('productEditModal.Please select') }}
+              {{ $t('c_productEditModal.Please select') }}
             </b-form-select-option>
           </template>
         </b-form-select>
@@ -123,7 +123,7 @@
       <b-form-group
         label-cols="12"
         label-cols-sm="3"
-        :label="$t('productEditModal.Alcohol Percentage')"
+        :label="$t('c_productEditModal.Alcohol Percentage')"
         label-align="left"
         label-for="alcohol"
         v-if="category === 'Alcoholic'"
@@ -142,7 +142,7 @@
       <b-form-group
         label-cols="12"
         label-cols-sm="3"
-        :label="$t('productEditModal.Price')"
+        :label="$t('c_productEditModal.Price')"
         label-align="left"
         label-for="price"
         :state="priceState"
@@ -163,7 +163,7 @@
       <b-form-group
         label-cols="12"
         label-cols-sm="3"
-        :label="$t('productEditModal.Picture')"
+        :label="$t('c_productEditModal.Picture')"
         label-align="left"
         label-for="ad-file"
         v-if="selectedProduct === null"
@@ -186,19 +186,19 @@
         variant="primary"
         class="btn-primary mr-auto"
         v-on:click="deleteProduct"
-      >{{ $t('productEditModal.Delete product') }}
+      >{{ $t('c_productEditModal.Delete product') }}
       </b-button>
       <b-button
         variant="primary"
         class="btn-empty"
         @click="cancelAdding"
-      >{{ $t('productEditModal.cancel') }}
+      >{{ $t('c_productEditModal.cancel') }}
       </b-button>
       <b-button
         variant="primary"
         class="btn-empty"
         @click="save">
-        {{ $t('productEditModal.save') }}
+        {{ $t('c_productEditModal.save') }}
       </b-button>
     </template>
   </b-modal>
@@ -429,7 +429,7 @@ export default class ProductEditModal extends Formatters {
   // Return appropriate validating message for name
   get invalidName() {
     if (!this.nameState && this.nameState !== null) {
-      return this.$t('productEditModal.name invalid').toString();
+      return this.$t('c_productEditModal.name invalid').toString();
     }
 
     return '';
@@ -443,7 +443,7 @@ export default class ProductEditModal extends Formatters {
   // Return appropriate validating message for category
   get invalidProductCategory() {
     if (!this.categoryState && this.categoryState !== null) {
-      return this.$t('productEditModal.category invalid').toString();
+      return this.$t('c_productEditModal.category invalid').toString();
     }
 
     return '';
@@ -458,7 +458,7 @@ export default class ProductEditModal extends Formatters {
   // Return appropriate validating message for price
   get invalidPrice() {
     if (!this.priceState && this.priceState !== null) {
-      return this.$t('productEditModal.price invalid').toString();
+      return this.$t('c_productEditModal.price invalid').toString();
     }
 
     return '';
@@ -479,7 +479,7 @@ export default class ProductEditModal extends Formatters {
   // Return appropriate validating message for picture
   get invalidPicture() {
     if (!this.pictureState && this.pictureState !== null) {
-      return this.$t('productEditModal.picture invalid').toString();
+      return this.$t('c_productEditModal.picture invalid').toString();
     }
 
     return '';
@@ -493,9 +493,9 @@ export default class ProductEditModal extends Formatters {
   get modalTitle() {
     // Check if we are editting a product
     if (Object.keys(this.editProduct).length > 0) {
-      return this.$t('productEditModal.edit product').toString();
+      return this.$t('c_productEditModal.edit product').toString();
     }
-    return this.$t('productEditModal.add product').toString();
+    return this.$t('c_productEditModal.add product').toString();
   }
 
   /**
@@ -506,10 +506,10 @@ export default class ProductEditModal extends Formatters {
    */
   get addNewTitle() {
     if (this.selectedProduct !== null) {
-      return this.$t('productEditModal.Product details').toString();
+      return this.$t('c_productEditModal.Product details').toString();
     }
 
-    return this.$t('productEditModal.Add new').toString();
+    return this.$t('c_productEditModal.Add new').toString();
   }
 
   /**

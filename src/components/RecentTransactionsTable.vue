@@ -2,7 +2,7 @@
   <div>
     <b-card>
       <b-card-title>
-        {{ $t('recentTransactionsTable.recent transactions') }}
+        {{ $t('c_recentTransactionsTable.recent transactions') }}
       </b-card-title>
       <b-card-body>
         <b-table
@@ -31,7 +31,7 @@
     <b-card-footer>
       <router-link id="TransactionLink" to="/transactions" custom v-slot="{ navigate }">
         <span @click="navigate" @keypress.enter="navigate" role="link">
-              {{ $t('recentTransactionsTable.all transactions') }}
+              {{ $t('c_recentTransactionsTable.all transactions') }}
         </span>
       </router-link>
     </b-card-footer>
@@ -62,13 +62,13 @@ export default class RecentTransactionsTable extends Formatters {
   fields: Object[] = [
     {
       key: 'updatedAt',
-      label: this.getTranslation('recentTransactionsTable.when'),
+      label: this.getTranslation('c_recentTransactionsTable.when'),
       formatter: (value: Date) => this.formatDateTime(value, undefined, true),
       locale_key: 'when',
     },
     {
       key: 'id',
-      label: this.getTranslation('recentTransactionsTable.what'),
+      label: this.getTranslation('c_recentTransactionsTable.what'),
       locale_key: 'what',
     },
   ];
@@ -82,7 +82,7 @@ export default class RecentTransactionsTable extends Formatters {
 
     // If the locale is changed make sure the labels are also correctly updated for the b-table
     eventBus.$on('localeUpdated', () => {
-      this.fields = this.updateTranslations(this.fields, 'recentTransactionsTable');
+      this.fields = this.updateTranslations(this.fields, 'c_recentTransactionsTable');
     });
   }
 
@@ -101,7 +101,7 @@ export default class RecentTransactionsTable extends Formatters {
         && Object.keys(trans.createdBy).length > 0
         && trans.createdBy.id === id
         && trans.from.id !== id) {
-        return this.$t('transactionsComponent.transactionPutFor', { name: trans.from.firstname, amount: trans.price.toFormat() });
+        return this.$t('c_transactionsTable.transactionPutFor', { name: trans.from.firstname, amount: trans.price.toFormat() });
       }
 
       // This is a transaction that was put in for you by someone else
@@ -109,17 +109,17 @@ export default class RecentTransactionsTable extends Formatters {
         && Object.keys(trans.createdBy).length > 0
         && trans.from.id === id
         && trans.createdBy.id !== id) {
-        return this.$t('transactionsComponent.transactionPutBy', { name: trans.createdBy.firstname, amount: trans.price.toFormat() });
+        return this.$t('c_transactionsTable.transactionPutBy', { name: trans.createdBy.firstname, amount: trans.price.toFormat() });
       }
 
-      return this.$t('transactionsComponent.transaction', { amount: trans.price.toFormat() });
+      return this.$t('c_transactionsTable.transaction', { amount: trans.price.toFormat() });
     }
 
     if (trans.description !== undefined) {
       return trans.description;
     }
 
-    return this.$t('recentTransactionsTable.transfer', { amount: trans.amount.toFormat() });
+    return this.$t('c_recentTransactionsTable.transfer', { amount: trans.amount.toFormat() });
   }
 }
 

@@ -7,14 +7,14 @@
            class="mb-2 mb-xl-0">
       <b-form-group
         id="from"
-        :label="$t('transactionTableFilter.from')"
+        :label="$t('c_transactionTableFilter.from')"
         label-cols="3"
       >
         <b-form-datepicker
           id="from-date"
           v-model="filterValues.fromDate"
           locale="en-NL"
-          :placeholder="$t('transactionTableFilter.placeholder')"
+          :placeholder="$t('c_transactionTableFilter.placeholder')"
           :right="right"
           no-flip
           :date-format-options="{year: 'numeric', month: 'long', day: 'numeric'}"
@@ -28,7 +28,7 @@
            class="mb-2 mb-xl-0">
       <b-form-group
         id="to"
-        :label="$t('transactionTableFilter.to')"
+        :label="$t('c_transactionTableFilter.to')"
         label-cols-sm="2"
         label-cols="3"
       >
@@ -36,7 +36,7 @@
           id="to-date"
           v-model="filterValues.toDate"
           locale="en-NL"
-          :placeholder="$t('transactionTableFilter.placeholder')"
+          :placeholder="$t('c_transactionTableFilter.placeholder')"
           :right="right"
           no-flip
           :date-format-options="{year: 'numeric', month: 'long', day: 'numeric'}"
@@ -63,7 +63,7 @@
             :value="true"
             :unchecked-value="false"
           >
-            {{ $t('transactionTableFilter.Self Bought') }}
+            {{ $t('c_transactionTableFilter.Self Bought') }}
           </b-form-checkbox>
         </b-form-group>
 
@@ -80,7 +80,7 @@
             :value="true"
             :unchecked-value="false"
           >
-            {{ $t('transactionTableFilter.Put in for others') }}
+            {{ $t('c_transactionTableFilter.Put in for others') }}
           </b-form-checkbox>
         </b-form-group>
 
@@ -97,7 +97,7 @@
             :value="true"
             :unchecked-value="false"
           >
-            {{ $t('transactionTableFilter.Put in for you') }}
+            {{ $t('c_transactionTableFilter.Put in for you') }}
           </b-form-checkbox>
         </b-form-group>
 
@@ -114,7 +114,7 @@
             :value="true"
             :unchecked-value="false"
           >
-            {{ $t('transactionTableFilter.Hide handled') }}
+            {{ $t('c_transactionTableFilter.Hide handled') }}
           </b-form-checkbox>
         </b-form-group>
       </b-form-row>
@@ -130,7 +130,7 @@
             v-on:click="$emit('csv')"
           >
             <font-awesome-icon icon="file-export" size="sm" class="mr-2 fa-sm-mb" />
-            {{ $t('transactionTableFilter.Export to CSV') }}
+            {{ $t('c_transactionTableFilter.Export to CSV') }}
           </b-button>
         </div>
         <div class="mr-0 mr-sm-2 mt-2 mt-sm-0 button"
@@ -141,7 +141,7 @@
             v-on:click="resetFilters"
           >
             <font-awesome-icon icon="times-circle" size="sm" class="mr-2 fa-sm-mb" />
-            {{ $t('transactionTableFilter.Reset filter') }}
+            {{ $t('c_transactionTableFilter.Reset filter') }}
           </b-button>
         </div>
       </b-form-row>

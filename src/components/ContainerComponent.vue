@@ -14,7 +14,7 @@
           />
           <span class="text-truncate">{{ container.name }}</span>
           <span v-if="container.public" class="text-muted small ml-3">
-            {{ $t('containerComponent.Public') }}
+            {{ $t('c_containerComponent.Public') }}
           </span>
 
 <!--      TODO Fix these:-->
@@ -66,7 +66,7 @@
             name="check-button"
             switch
           >
-            {{ $t('containerComponent.Table view') }}
+            {{ $t('c_containerComponent.Table view') }}
           </b-form-checkbox>
         </div>
       </b-col>
@@ -109,7 +109,7 @@
             <div>
               <font-awesome-icon icon="plus" class="h-100"/>
             </div>
-            <p class="w-100 product-name mb-0">{{ $t('containerComponent.new') }}</p>
+            <p class="w-100 product-name mb-0">{{ $t('c_containerComponent.new') }}</p>
           </div>
         </b-col>
       </b-row>
@@ -126,7 +126,7 @@
               v-on:click="$emit('addProduct', container)"
             >
               <font-awesome-icon icon="plus" size="sm" class="mr-2" />
-              {{ $t('containerComponent.Add product') }}
+              {{ $t('c_containerComponent.Add product') }}
             </b-button>
           </div>
           <ProductTable

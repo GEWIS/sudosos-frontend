@@ -2,7 +2,7 @@
   <div>
     <b-modal
       id="details-modal"
-      :title="$t('transactionDetailsModal.transaction details')"
+      :title="$t('c_transactionDetailsModal.transaction details')"
       hide-header-close
       centered
       size="lg"
@@ -21,21 +21,21 @@
           variant="primary"
           id="details-cancel"
           @click="cancel()"
-        >{{ $t('transactionDetailsModal.Cancel') }}
+        >{{ $t('c_transactionDetailsModal.Cancel') }}
         </b-button>
         <b-button
           v-if="'pointOfSale' in trans"
           variant="primary"
           class="btn-empty"
           v-b-modal.flag-modal
-        >{{ $t('transactionDetailsModal.Flag transaction') }}
+        >{{ $t('c_transactionDetailsModal.Flag transaction') }}
         </b-button>
       </template>
     </b-modal>
 
     <b-modal
       id="flag-modal"
-      :title="$t('transactionDetailsModal.Flag transaction')"
+      :title="$t('c_transactionDetailsModal.Flag transaction')"
       hide-header-close
       centered
       size="lg"
@@ -44,7 +44,7 @@
 
       <b-form-group
         id="flag-reason"
-        :label="$t('transactionDetailsModal.flag reason')"
+        :label="$t('c_transactionDetailsModal.flag reason')"
         label-for="reason-input"
         :invalid-feedback="flagReasonValid"
         :state="flagReasonState"
@@ -53,7 +53,7 @@
         <b-form-textarea
           id="flag-reason-text"
           v-model="flagReasonText"
-          :placeholder="$t('transactionDetailsModal.reason placeholder')"
+          :placeholder="$t('c_transactionDetailsModal.reason placeholder')"
           rows="3"
           max-rows="6"
           no-resize
@@ -65,13 +65,13 @@
           variant="primary"
           id="flag-cancel"
           @click="cancel()"
-        >{{ $t('transactionDetailsModal.Cancel') }}
+        >{{ $t('c_transactionDetailsModal.Cancel') }}
         </b-button>
         <b-button
           variant="primary"
           class="btn-empty"
           @click="saveFlaggedTransaction"
-        >{{ $t('transactionDetailsModal.Flag transaction') }}
+        >{{ $t('c_transactionDetailsModal.Flag transaction') }}
         </b-button>
       </template>
     </b-modal>
@@ -120,7 +120,7 @@ export default class TransactionDetailsModal extends Formatters {
 
   get flagReasonValid(): string {
     if (!this.flagReasonState) {
-      return this.$t('transactionDetailsModal.flag invalid').toString();
+      return this.$t('c_transactionDetailsModal.flag invalid').toString();
     }
 
     return '';

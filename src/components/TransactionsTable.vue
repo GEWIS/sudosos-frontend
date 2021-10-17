@@ -58,7 +58,7 @@
 
     <b-card-footer v-if="totalRows > perPage" class="d-flex">
       <p class="my-auto h-100">
-        {{ $t('transactionsComponent.Page') }}:
+        {{ $t('c_transactionsTable.Page') }}:
       </p>
       <b-pagination
         v-model="currentPage"
@@ -165,17 +165,17 @@ export default class TransactionsTable extends Formatters {
   fields: Object[] = [
     {
       key: 'updatedAt',
-      label: this.getTranslation('transactionsComponent.When'),
+      label: this.getTranslation('c_transactionsTable.When'),
       locale_key: 'When',
     },
     {
       key: 'createdAt',
-      label: this.getTranslation('transactionsComponent.What'),
+      label: this.getTranslation('c_transactionsTable.What'),
       locale_key: 'What',
     },
     {
       key: 'id',
-      label: this.getTranslation('transactionsComponent.Info'),
+      label: this.getTranslation('c_transactionsTable.Info'),
       locale_key: 'Info',
     },
   ];
@@ -206,7 +206,7 @@ export default class TransactionsTable extends Formatters {
 
     // If the locale is changed make sure the labels are also correctly updated for the b-table
     eventBus.$on('localeUpdated', () => {
-      this.fields = this.updateTranslations(this.fields, 'transactionsComponent');
+      this.fields = this.updateTranslations(this.fields, 'c_transactionsTable');
     });
   }
 
@@ -410,7 +410,7 @@ export default class TransactionsTable extends Formatters {
               && Object.keys(rowItem.createdBy).length > 0
               && rowItem.createdBy.id === id
               && rowItem.from.id !== id) {
-          return this.$t('transactionsComponent.transactionPutFor', { name: rowItem.from.firstname, amount: rowItem.price.toFormat() });
+          return this.$t('c_transactionsTable.transactionPutFor', { name: rowItem.from.firstname, amount: rowItem.price.toFormat() });
         }
 
         // This is a transaction that was put in for you by someone else
@@ -418,17 +418,17 @@ export default class TransactionsTable extends Formatters {
           && Object.keys(rowItem.createdBy).length > 0
           && rowItem.from.id === id
           && rowItem.createdBy.id !== id) {
-          return this.$t('transactionsComponent.transactionPutBy', { name: rowItem.createdBy.firstname, amount: rowItem.price.toFormat() });
+          return this.$t('c_transactionsTable.transactionPutBy', { name: rowItem.createdBy.firstname, amount: rowItem.price.toFormat() });
         }
 
-        return this.$t('transactionsComponent.transaction', { amount: rowItem.price.toFormat() });
+        return this.$t('c_transactionsTable.transaction', { amount: rowItem.price.toFormat() });
       }
 
       if (rowItem.description !== undefined) {
         return rowItem.description;
       }
 
-      return this.$t('transactionsComponent.transfer', { amount: rowItem.amount.toFormat() });
+      return this.$t('c_transactionsTable.transfer', { amount: rowItem.amount.toFormat() });
     }
     return '';
   }
@@ -484,7 +484,7 @@ export default class TransactionsTable extends Formatters {
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(csvFile);
     link.style.display = 'none';
-    link.download = `${this.$t('transactionsComponent.Transactions')}.csv`;
+    link.download = `${this.$t('c_transactionsTable.Transactions')}.csv`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

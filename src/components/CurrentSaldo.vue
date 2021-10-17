@@ -2,7 +2,7 @@
   <div id="saldo-box"> <!-- to be replaced by card component -->
     <b-card>
       <b-card-title>
-        {{ $t('saldoCom.saldo') }}
+        {{ $t('c_currentSaldo.saldo') }}
       </b-card-title>
       <b-card-body>
         <p v-if="userState.user.saldo !== undefined" id="saldo-text" class="lead">
@@ -16,7 +16,7 @@
     <b-card-footer>
       <router-link to="/saldo" custom v-slot="{ navigate }">
         <span @click="navigate" @keypress.enter="navigate" role="link">
-          {{ $t('saldoCom.upgrade online') }}
+          {{ $t('c_currentSaldo.upgrade online') }}
         </span>
       </router-link>
     </b-card-footer>

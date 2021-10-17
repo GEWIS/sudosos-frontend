@@ -87,7 +87,7 @@
     "confirm": "Bevestig verwijderen",
     "are you sure": "Weet je zeker dat je deze container wil verwijderen?"
   },
-  "productInfoModal": {
+  "c_productInfoModal": {
     "title": "Product informatie",
     "Cancel": "Sluiten",
     "Name": "Naam",
@@ -116,12 +116,13 @@
     "accept manual": "Accept (handmatig oplossen)",
     "Edit transaction": "Bewerk transactie"
   },
-  "transactionEditor": {
+  "c_transactionEditor": {
     "Product container": "Product container",
     "Delete product": "Verwijder product",
     "Add product": "Voeg product toe",
     "Save": "Opslaan",
-    "Delete": "Verwijderen"
+    "Delete": "Verwijderen",
+    "Total": "Totaal"
   },
   "manageProducts": {
     "Manage all products and default containers": "Beheer alle producten en standaard containers",
@@ -132,7 +133,7 @@
     "Are you sure": "Weet je zeker dat je de container wil verwijderen?",
     "Confirm": "Bevestig verwijderen"
   },
-  "productTable": {
+  "c_productTable": {
     "picture": "Plaatje",
     "name": "Naam",
     "category": "Categorie",
@@ -152,7 +153,7 @@
     "until": "tot",
     "value": "Waarde"
   },
-  "borrelkaartGroupTable": {
+  "c_borrelkaartGroupTable": {
     "Add social drink cards": "Borrelkaarten toevoegen",
     "Filter by name": "Filter op naam",
     "Fill in a name": "Vul een naam in",
@@ -197,7 +198,7 @@
   "managePOS": {
     "Manage points of sale": "Beheer verkooppunten"
   },
-  "POSOverview": {
+  "c_POSOverview": {
     "my points of sale": "Mijn verkooppunten",
     "requested points of sale": "Aangevraagde verkooppunten",
     "ACCEPTED": "Geaccepteerd",
@@ -211,11 +212,11 @@
   "banners": {
     "Banners": "Banners"
   },
-  "saldoCom": {
+  "c_currentSaldo": {
     "saldo": "saldo",
     "upgrade online": "online opwaarderen"
   },
-  "recentTransactionsTable": {
+  "c_recentTransactionsTable": {
     "recent transactions": "recente transacties",
     "all transactions": "alle transacties",
     "when": "Wanneer",
@@ -223,7 +224,7 @@
     "transaction": "Je hebt in totaal {amount} uitgegeven",
     "transfer": "Je hebt opgewaardeerd voor {amount}"
   },
-  "bannerTable" : {
+  "c_bannerTable" : {
     "Add": "Toevoegen",
     "save": "opslaan",
     "cancel": "annuleren",
@@ -246,18 +247,18 @@
     "Stops on": "Stopt op",
     "Edit": "Aanpassen"
   },
-  "fileFormPreview": {
+  "c_fileFormPreview": {
     "Choose image drop": "Kies een plaatje of zet neer...",
     "Drop file": "Zet bestand hier neer..."
   },
-  "confirmationModal": {
+  "c_confirmationModal": {
     "Cancel": "Annuleren",
     "Confirm": "Bevestigen"
   },
   "containersOverview": {
     "Containers": "Containers"
   },
-  "containerEditModal": {
+  "c_containerEditModal": {
     "save": "opslaan",
     "cancel": "annuleren",
     "edit container": "bewerk container",
@@ -268,7 +269,7 @@
     "added on": "Toegevoegd op",
     "added by": "Toegevoegd door"
   },
-  "productEditModal": {
+  "c_productEditModal": {
     "Add existing": "Voeg bestaand product toe",
     "Add new": "Voeg nieuw product toe",
     "Product details": "Product details",
@@ -292,7 +293,7 @@
     "price invalid": "Voer een correcte prijs in die groter of gelijk aan 0 is",
     "picture invalid": "Upload een plaatje"
   },
-  "containerComponent": {
+  "c_containerComponent": {
     "Public": "Publiek",
     "Table view": "Tafel modus",
     "new": "Nieuw",
@@ -305,7 +306,7 @@
     "Hide handled": "Verberg afgehandeld",
     "Reset filter": "Herstel filter"
   },
-  "transactionFlagsComponent": {
+  "c_transactionFlagsComponent": {
     "When": "Wanneer",
     "Who": "Wie",
     "Status": "Status",
@@ -313,7 +314,7 @@
     "Info": "Info",
     "Page": "Pagina"
   },
-  "transactionTableFilter": {
+  "c_transactionTableFilter": {
     "from": "van",
     "placeholder": "Selecteer een datum",
     "to": "tot",
@@ -324,7 +325,7 @@
     "Export to CSV": "Exporteren naar CSV",
     "Reset filter": "Herstel filter"
   },
-  "transactionsComponent": {
+  "c_transactionsTable": {
     "When": "Wanneer",
     "What": "Wat",
     "Info": "Info",
@@ -335,7 +336,7 @@
     "transactionPutBy": "{name} heeft voor {amount} afgestreept bij jou",
     "transfer": "Je hebt opgewaardeerd voor {amount}"
   },
-  "transactionDetailsModal": {
+  "c_transactionDetailsModal": {
     "transaction details": "transactie details",
     "Cancel": "Sluiten",
     "Flag transaction": "Markeer transactie",
@@ -343,14 +344,14 @@
     "reason placeholder": "Geef een reden",
     "flag invalid": "Geef alsjeblieft een reden"
   },
-  "transactionDetails": {
+  "c_transactionDetails": {
     "Total": "Totaal",
     "Point of sale": "Verkooppunt",
     "Bought by": "Afgestreept voor",
     "Put in by": "Afgestreept door",
     "Products": "Producten"
   },
-  "transferDetails": {
+  "c_transferDetails": {
     "Total": "Totaal",
     "From": "Van",
     "To": "Naar",
@@ -413,7 +414,7 @@
     "New pin code must be unique from old pin code": "Nieuwe pincode moet anders zijn dan huidige",
     "Confirmation does not match pin code": "De pincodes matchen niet met elkaar"
   },
-  "userTable": {
+  "c_userTable": {
     "Name": "Naam",
     "gewisID": "GEWID ID",
     "Active": "Actief",

@@ -2,7 +2,7 @@
 <div>
   <b-form-group
     id="name-filter-group"
-    :label="$t('productTable.Filter by name')"
+    :label="$t('c_productTable.Filter by name')"
     label-for="name-filter"
     label-cols-md="2"
     label-cols="12"
@@ -11,14 +11,14 @@
       id="name-filter"
       v-model="nameFilter"
       type="text"
-      :placeholder="$t('productTable.Fill in a name')"
+      :placeholder="$t('c_productTable.Fill in a name')"
       trim
     />
   </b-form-group>
 
   <b-form-group
     id="page-amount-group"
-    :label="$t('productTable.Products per page')"
+    :label="$t('c_productTable.Products per page')"
     label-for="page-amount"
     label-cols-md="2"
     label-cols="12"
@@ -82,7 +82,7 @@
 
   <div class="d-flex pageination py-3" v-if="totalRows > perPage">
     <p class="my-auto h-100">
-      {{ $t('productTable.Page') }}:
+      {{ $t('c_productTable.Page') }}:
     </p>
     <b-pagination
       v-model="currentPage"
@@ -146,27 +146,27 @@ export default class ProductTable extends Formatters {
     fields : Object[] = [
       {
         key: 'picture',
-        label: this.getTranslation('productTable.picture'),
+        label: this.getTranslation('c_productTable.picture'),
         locale_key: 'picture',
       },
       {
         key: 'name',
-        label: this.getTranslation('productTable.name'),
+        label: this.getTranslation('c_productTable.name'),
         locale_key: 'name',
       },
       {
         key: 'category',
-        label: this.getTranslation('productTable.category'),
+        label: this.getTranslation('c_productTable.category'),
         locale_key: 'category',
       },
       {
         key: 'price',
-        label: this.getTranslation('productTable.price'),
+        label: this.getTranslation('c_productTable.price'),
         locale_key: 'price',
       },
       {
         key: 'alcoholPercentage',
-        label: this.getTranslation('productTable.alcoholic'),
+        label: this.getTranslation('c_productTable.alcoholic'),
         locale_key: 'alcoholic',
       },
     ];
@@ -174,7 +174,7 @@ export default class ProductTable extends Formatters {
     beforeMount() {
       // If the locale is changed make sure the labels are also correctly updated for the b-table
       eventBus.$on('localeUpdated', () => {
-        this.fields = this.updateTranslations(this.fields, 'productTable');
+        this.fields = this.updateTranslations(this.fields, 'c_productTable');
       });
     }
 
