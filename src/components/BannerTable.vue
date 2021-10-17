@@ -8,7 +8,8 @@
           id="add"
           v-b-modal.modal-add
         >
-          <font-awesome-icon icon="plus" /> {{ $t('bannerTable.Add') }}
+          <font-awesome-icon icon="plus" size="sm" class="mr-2 fa-sm-mb" />
+          {{ $t('bannerTable.Add') }}
         </b-button>
       </template>
       <b-card-body>

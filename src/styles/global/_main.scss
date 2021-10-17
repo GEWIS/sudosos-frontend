@@ -316,6 +316,10 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
     }
 }
 
+.fa-sm-mb {
+    margin-bottom: 2.5px;
+}
+
 // To make sure that the view always has a certain height and the footer stays away from the content
 main {
     margin: 1.5rem 0 #{60 + 1.5 * 16}px 0;

@@ -125,7 +125,7 @@
               variant="success"
               v-on:click="$emit('addProduct', container)"
             >
-              <font-awesome-icon icon="plus"/>
+              <font-awesome-icon icon="plus" size="sm" class="mr-2" />
               {{ $t('containerComponent.Add product') }}
             </b-button>
           </div>

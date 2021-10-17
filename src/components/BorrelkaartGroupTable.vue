@@ -6,7 +6,7 @@
         id="add"
         class=""
         v-b-modal.modal-add>
-        <font-awesome-icon icon="plus"></font-awesome-icon>
+        <font-awesome-icon icon="plus" size="sm" class="mr-2" />
         {{ $t('borrelkaartGroupTable.Add social drink cards') }}
       </b-button>
     </div>

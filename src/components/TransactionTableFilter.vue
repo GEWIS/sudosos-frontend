@@ -129,7 +129,7 @@
             id="export"
             v-on:click="$emit('csv')"
           >
-            <font-awesome-icon icon="file-export"></font-awesome-icon>
+            <font-awesome-icon icon="file-export" size="sm" class="mr-2 fa-sm-mb" />
             {{ $t('transactionTableFilter.Export to CSV') }}
           </b-button>
         </div>
@@ -140,7 +140,7 @@
             id="reset"
             v-on:click="resetFilters"
           >
-            <font-awesome-icon icon="times-circle"></font-awesome-icon>
+            <font-awesome-icon icon="times-circle" size="sm" class="mr-2 fa-sm-mb" />
             {{ $t('transactionTableFilter.Reset filter') }}
           </b-button>
         </div>

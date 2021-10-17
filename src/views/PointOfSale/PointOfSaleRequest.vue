@@ -49,7 +49,7 @@
         <div class="d-flex justify-content-between align-items-center">
           <p class="containers-header">{{ $t('posRequest.Containers') }}</p>
           <b-button class="my-2 text-truncate" variant="success" v-on:click="addContainer">
-            <font-awesome-icon icon="plus" />
+            <font-awesome-icon icon="plus" size="sm" class="mr-2" />
             {{ $t('posRequest.add container') }}
           </b-button>
         </div>
