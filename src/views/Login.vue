@@ -1,8 +1,9 @@
 <template>
   <b-container fluid="md">
+    <BeerMugs />
     <b-row class="vh-100 text-center" align-v="center">
       <b-col>
-        <img class="m-4" src="./../assets/img/bier.png" />
+        <img id="login-image" class="m-4" src="./../assets/img/bier.png" alt="Logo" />
         <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('login.SudoSOS Login') }}</h1>
         <b-form class="login-form">
           <b-form-group
@@ -54,10 +55,15 @@ import { v4 as uuid } from 'uuid';
 import { LoginResponse } from '@/entities/APIResponses';
 import UserTransformer from '@/transformers/UserTransformer';
 import { User } from '@/entities/User';
+import BeerMugs from '@/components/BeerMugs.vue';
 
 dotenv.config();
 
-@Component
+@Component({
+  components: {
+    BeerMugs,
+  },
+})
 export default class Login extends Vue {
   private userState = getModule(UserModule);
 
@@ -120,7 +126,7 @@ export default class Login extends Vue {
 </script>
 
 <style scoped lang="scss">
-img {
+#login-image {
   max-height: 150px;
 }
 

@@ -56,6 +56,9 @@
 
             <b-nav-item-dropdown right>
               <template v-slot:button-content>
+                <!-- TODO: Make sure only SUDOSOS workgroup members have this -->
+                <img id="beerIcon" src="../assets/img/bier.png" alt="beer">
+
                 {{ userState.user.firstname }}
               </template>
               <b-dropdown-item :to="{ name: 'profile'}">{{ $t('app.Profile') }}</b-dropdown-item>
@@ -161,6 +164,10 @@ export default class Dashboard extends Vue {
 
 #english {
   background-image: url('./../assets/img/en.svg');
+}
+
+#beerIcon {
+  height: 12px;
 }
 
 @media print {
