@@ -76,6 +76,10 @@
     "Request Point of Sale": "Aanvraag verkooppunt",
     "General": "Algemeen",
     "Title": "POS Naam",
+    "Use authentication": "Gebruikers moeten altijd inloggen op het verkooppunt",
+    "Start date": "Verkooppunt start datum",
+    "End date": "Verkooppunt eind datum",
+    "Pick date": "Kies een datum",
     "Selected containers": "Geselecteerde containers",
     "Management": "Beheer",
     "Owner": "Eigenaar",
@@ -84,6 +88,8 @@
     "add container": "Container toevoegen",
     "Request": "Vraag aan",
     "name invalid": "Voer een correcte naam in van die langer is dan 0 tekens",
+    "Start invalid": "Voer een start datum in die vroeger is dan de eind datum",
+    "End invalid": "Voer een eind datum in later dan vandaag",
     "confirm": "Bevestig verwijderen",
     "are you sure": "Weet je zeker dat je deze container wil verwijderen?"
   },
@@ -201,6 +207,8 @@
   "c_POSOverview": {
     "my points of sale": "Mijn verkooppunten",
     "requested points of sale": "Aangevraagde verkooppunten",
+    "POS Name": "Naam",
+    "POS Owner": "Eigenaar",
     "ACCEPTED": "Geaccepteerd",
     "OPEN": "Open",
     "REJECTED": "Afgewezen",

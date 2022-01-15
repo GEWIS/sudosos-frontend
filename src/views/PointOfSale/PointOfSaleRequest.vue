@@ -11,7 +11,6 @@
           <b-form-group
             id="name-label"
             label-cols="12"
-            label-cols-sm="12"
             :label="$t('posRequest.Title')"
             label-align="left"
             label-for="name"
@@ -24,8 +23,59 @@
               type="text"
               v-model="name"
               :state="nameState"
-            ></b-form-input>
+            />
           </b-form-group>
+
+          <b-form-group
+            label-for="authentication"
+          >
+            <b-form-checkbox
+              id="authentication"
+              v-model="useAuthentication"
+              name="authentication"
+            >
+              {{ $t('posRequest.Use authentication') }}
+            </b-form-checkbox>
+          </b-form-group>
+
+          <b-form-group
+            id="start"
+            :label="$t('posRequest.Start date')"
+            label-cols="12"
+            label-for="start-date"
+            :state="startDateState"
+            :invalid-feedback="invalidStartDate"
+          >
+            <b-form-datepicker
+              id="start-date"
+              v-model="startDate"
+              :state="startDateState"
+              locale="en-NL"
+              :placeholder="$t('posRequest.Pick date')"
+              no-flip
+              :date-format-options="{year: 'numeric', month: 'long', day: 'numeric'}"
+            ></b-form-datepicker>
+          </b-form-group>
+
+          <b-form-group
+            id="end"
+            :label="$t('posRequest.End date')"
+            label-cols="12"
+            label-for="end-date"
+            :state="endDateState"
+            :invalid-feedback="invalidEndDate"
+          >
+            <b-form-datepicker
+              id="end-date"
+              v-model="endDate"
+              :state="endDateState"
+              locale="en-NL"
+              :placeholder="$t('posRequest.Pick date')"
+              no-flip
+              :date-format-options="{year: 'numeric', month: 'long', day: 'numeric'}"
+            ></b-form-datepicker>
+          </b-form-group>
+
           <b>{{ $t('posRequest.Selected containers')}}</b>
           <ul class="pl-4">
             <li
@@ -112,6 +162,8 @@ import ProductInfoModal from '@/components/ProductInfoModal.vue';
 import ContainerModule from '@/store/modules/containers';
 import { Container } from '@/entities/Container';
 import { Product } from '@/entities/Product';
+import UserModule from '@/store/modules/user';
+import PointOfSaleModule from '@/store/modules/pointsofsale';
 
 @Component({
   components: {
@@ -123,9 +175,19 @@ import { Product } from '@/entities/Product';
   },
 })
 export default class PointOfSaleRequest extends Vue {
+  private pointOfSaleState = getModule(PointOfSaleModule);
+
   private containerState = getModule(ContainerModule);
 
+  private userState = getModule(UserModule);
+
   name: string | null = null;
+
+  useAuthentication: boolean = false;
+
+  startDate: string | null = null;
+
+  endDate: string | null = null;
 
   requestContainers: Container[] = [];
 
@@ -221,9 +283,33 @@ export default class PointOfSaleRequest extends Vue {
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   requestPOS() {
-    // TODO: Verwerking data
+    if (!this.nameState) {
+      this.name = '';
+    }
+
+    if (!this.startDateState) {
+      this.startDate = '';
+    }
+
+    if (!this.endDateState) {
+      this.endDate = '';
+    }
+
+    if (this.nameState && this.startDateState && this.endDateState) {
+      const pointOfSale = {
+        ownerId: this.userState.user.id,
+        update: {
+          name: this.name,
+          startDate: this.startDate,
+          endDate: this.endDate,
+          containers: this.requestContainers,
+          useAuthentication: this.useAuthentication,
+        },
+      };
+
+      this.pointOfSaleState.postPointOfSale(pointOfSale);
+    }
   }
 
   /**
@@ -239,6 +325,48 @@ export default class PointOfSaleRequest extends Vue {
   get invalidName() {
     if (!this.nameState) {
       return this.$t('posRequest.name invalid').toString();
+    }
+
+    return '';
+  }
+
+  get startDateState() {
+    if (this.startDate === null) {
+      return null;
+    }
+
+    if (this.endDate !== null && this.endDate.length > 0) {
+      const start = new Date(this.startDate);
+      const end = new Date(this.endDate);
+
+      return end > start;
+    }
+
+    return true;
+  }
+
+  get invalidStartDate() {
+    if (!this.startDateState) {
+      return this.$t('posRequest.Start invalid').toString();
+    }
+
+    return '';
+  }
+
+  get endDateState() {
+    if (this.endDate === null) {
+      return null;
+    }
+
+    const end = new Date(this.endDate);
+    const now = new Date();
+
+    return end > now;
+  }
+
+  get invalidEndDate() {
+    if (!this.endDateState) {
+      return this.$t('posRequest.End invalid').toString();
     }
 
     return '';

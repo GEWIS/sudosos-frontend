@@ -171,12 +171,13 @@ router.beforeEach((to, from, next) => {
   const token = APIHelper.getToken();
   const notToLogin = to.name !== 'login';
   const jwtIsNull = token.jwtToken === null;
-  const jwtIsExpired = new Date(Number(token.jwtExpires) * 1000) < new Date();
+  const jwtIsExpired = new Date(Number(token.jwtExpires)) < new Date();
 
-  if (from.name === previousFrom && to.name !== 'login') {
-    Logout.logout(next);
-    return;
-  }
+  // if (from.name === previousFrom && to.name !== 'login') {
+  //   console.warn('previousFrom');
+  //   Logout.logout(next);
+  //   return;
+  // }
 
   previousFrom = from.name;
 

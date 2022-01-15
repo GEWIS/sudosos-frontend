@@ -7,7 +7,7 @@
         </h1>
       </b-col>
       <b-col class="approve-reject-buttons" lg="2" cols="12">
-        <b-button variant="danger" @click="$router.push({ name: 'pointOfSale' })">
+        <b-button variant="primary" @click="$router.push({ name: 'pointOfSale' })">
           <font-awesome-icon icon="times" />
           {{ $t('posInfo.Close')}}
         </b-button>
@@ -20,7 +20,7 @@
         <b>{{ $t('posInfo.Title') }}</b>
         <p>{{ infoPOS.name }}</p>
         <b>{{ $t('posInfo.Owner') }}</b>
-        <p>{{ infoPOS.owner.first }}</p>
+        <p>{{ infoPOS.owner.name }}</p>
       </b-col>
       <b-col md="9" sm="12" class="containers-container">
         <p class="containers-header">{{ $t('posInfo.Containers') }}</p>
@@ -74,15 +74,51 @@ export default class PointOfSaleInfo extends Formatters {
 
   private pointOfSaleState = getModule(PointOfSaleModule);
 
-  infoPOS: PointOfSale = {} as PointOfSale;
-
   infoProduct: Product = {} as Product;
 
+  // TODO: If POS niet bestaat in store, ophalen en toevoegen
+  // TODO: Gebruik maken van own query daarvoor
+
   beforeMount() {
-    this.pointOfSaleState.fetchPointsOfSale();
-    const pos = this.pointOfSaleState.pointsOfSale;
-    const index = pos.findIndex((ps) => Number(ps.id) === Number(this.id));
-    this.infoPOS = pos[index];
+    if (this.$route.query.update) {
+      this.pointOfSaleState.fetchRequestedPointOfSale(this.id);
+    } else {
+      this.pointOfSaleState.fetchPointOfSale(this.id);
+    }
+  }
+
+  get infoPOS() {
+    if (this.$route.query.update) {
+      let index = this.pointOfSaleState.userRequestedPointsOfSale.findIndex(
+        (pos) => Number(pos.id) === Number(this.id),
+      );
+      if (index >= 0) {
+        return this.pointOfSaleState.userRequestedPointsOfSale[index];
+      }
+
+      index = this.pointOfSaleState.requestedPointsOfSale.findIndex(
+        (pos) => Number(pos.id) === Number(this.id),
+      );
+      if (index >= 0) {
+        return this.pointOfSaleState.requestedPointsOfSale[index];
+      }
+    } else {
+      let index = this.pointOfSaleState.userPointsOfSale.findIndex(
+        (pos) => Number(pos.id) === Number(this.id),
+      );
+      if (index >= 0) {
+        return this.pointOfSaleState.userPointsOfSale[index];
+      }
+
+      index = this.pointOfSaleState.pointsOfSale.findIndex(
+        (pos) => Number(pos.id) === Number(this.id),
+      );
+      if (index >= 0) {
+        return this.pointOfSaleState.pointsOfSale[index];
+      }
+    }
+
+    return {} as PointOfSale;
   }
 
   /**

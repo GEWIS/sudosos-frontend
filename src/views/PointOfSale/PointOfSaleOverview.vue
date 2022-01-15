@@ -3,11 +3,11 @@
     <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('pointOfSaleOverview.Point of sale overview') }}</h1>
     <b-row>
       <b-col cols="12" md="6" class="mb-md-0 mb-3">
-        <POSOverview></POSOverview>
+        <POSOverview />
       </b-col>
 
       <b-col cols="12" md="6">
-        <POSOverview :filter="true" :full="true" :requested="true"></POSOverview>
+        <POSOverview :requested="true" />
       </b-col>
     </b-row>
     </b-container>

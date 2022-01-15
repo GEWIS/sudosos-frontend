@@ -1,5 +1,4 @@
 <template>
-  <!-- TODO: Add separate call for POSs that have not yet been approved -->
   <b-card class="container-card">
     <b-card-title class="mb-3 mb-lg-5">
       <b-form-row class="mx-0">
@@ -11,13 +10,30 @@
     </b-card-title>
 
     <b-card-body>
+      <b-form-row v-if="full" class="pos-info-bar mx-2">
+        <b-col
+          cols="6" lg="5"
+          class="order-0 font-weight-bold overflow-hidden pos-name"
+        >
+          {{ $t("c_POSOverview.POS Name") }}:
+        </b-col>
+        <b-col
+          cols="6"
+          lg="7"
+          class="smaller order-3 order-lg-2 overflow-hidden pos-owner"
+        >
+          {{ $t("c_POSOverview.POS Owner") }}:
+        </b-col>
+      </b-form-row>
       <b-form-row
         class="point-of-sale"
-        v-for="pos in shownPointsOfSale"
+        v-for="pos in pointsOfSale"
         :key="pos.id"
         @click="$router.push({
-        name: full ? 'pointOfSaleApprove' : 'pointOfSaleInfo',
-        params: {id: pos.id} })">
+          name: full ? 'pointOfSaleApprove' : 'pointOfSaleInfo',
+          params: { id: pos.id },
+          query: { update: requested, own: !showAll }
+        })">
         <b-col
           :cols="full ? 6 : 10" :lg="full ? 5 : 11"
           class="order-0 font-weight-bold overflow-hidden pos-name"
@@ -67,19 +83,22 @@ import {
 import { getModule } from 'vuex-module-decorators';
 import { PointOfSale } from '@/entities/PointOfSale';
 import PointOfSaleModule from '@/store/modules/pointsofsale';
+import UserModule from '@/store/modules/user';
 
 @Component
 export default class POSOverview extends Vue {
   // If true all information about POS will show
   @Prop() private full!: boolean;
 
-  // If true the title will be for requested pos's otherwise for your own pos's
+  // If true we want the requested points of sale
   @Prop() private requested!: boolean;
+
+  // If true all the points of sale will be shown instead of the users
+  @Prop({ default: false }) private showAll!: boolean;
 
   private pointOfSaleState = getModule(PointOfSaleModule);
 
-  // All the points of sale that will be displayed on the current page
-  pointsOfSale: PointOfSale[] = [];
+  private userState = getModule(UserModule);
 
   shownPointsOfSale: PointOfSale[] = [];
 
@@ -90,10 +109,15 @@ export default class POSOverview extends Vue {
   perPage: number = 1;
 
   beforeMount() {
-    this.pointOfSaleState.fetchPointsOfSale();
-    this.pointsOfSale = this.pointOfSaleState.pointsOfSale;
-
-    this.shownPointsOfSale = this.pointsOfSale.slice(0, this.perPage);
+    if (this.showAll && this.requested) {
+      this.pointOfSaleState.fetchRequestedPointsOfSale();
+    } else if (this.showAll) {
+      this.pointOfSaleState.fetchPointsOfSale();
+    } else if (this.requested) {
+      this.pointOfSaleState.fetchUserRequestedPointsOfSale(this.userState.user.id);
+    } else {
+      this.pointOfSaleState.fetchUserPointsOfSale(this.userState.user.id);
+    }
   }
 
   /**
@@ -111,6 +135,22 @@ export default class POSOverview extends Vue {
     this.shownPointsOfSale = this.pointsOfSale.slice(start, start + this.perPage);
 
     this.previousPage = page;
+  }
+
+  get pointsOfSale() {
+    if (this.showAll && this.requested) {
+      return this.pointOfSaleState.requestedPointsOfSale;
+    }
+
+    if (this.showAll) {
+      return this.pointOfSaleState.pointsOfSale;
+    }
+
+    if (this.requested) {
+      return this.pointOfSaleState.userRequestedPointsOfSale;
+    }
+
+    return this.pointOfSaleState.userPointsOfSale;
   }
 }
 </script>
@@ -170,5 +210,11 @@ export default class POSOverview extends Vue {
 
 #processed {
   color: black;
+}
+
+@include media-breakpoint-down(md) {
+  .pos-info-bar {
+    display: none;
+  }
 }
 </style>

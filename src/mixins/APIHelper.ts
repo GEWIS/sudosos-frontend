@@ -140,7 +140,7 @@ export default {
   },
 
   setToken(jwtToken: string) {
-    localStorage.setItem('jwt_expires', String(jwtDecode<JwtPayload>(jwtToken).exp));
+    localStorage.setItem('jwt_expires', String(Number(jwtDecode<JwtPayload>(jwtToken).exp) * 1000));
     localStorage.setItem('jwt_token', jwtToken);
     token = jwtToken;
   },
@@ -191,7 +191,7 @@ export default {
     return fetchResource(constructedRoute, putBody);
   },
 
-  postResource(route: string, data: any, args = null) {
+  postResource(route: string, data: any = {}, args = null) {
     const constructedRoute = makeRoute(route, args);
 
     const postBody = {

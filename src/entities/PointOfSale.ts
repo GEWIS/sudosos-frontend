@@ -5,14 +5,14 @@ import { ProductOrder } from '@/entities/ProductOrder';
 
 export interface BasePointOfSale extends BaseEntity {
   name: string;
+  owner: BaseUser | User;
+  startDate: Date;
+  endDate: Date;
+  useAuthentication: boolean;
 }
 
 export interface PointOfSale extends BasePointOfSale {
   revision?: number;
-  owner: BaseUser | User;
-  startDate: Date;
-  endDate: Date;
   containers: BaseContainer[] | Container[];
   productOrder?: ProductOrder[];
-  useAuthentication: boolean;
 }
