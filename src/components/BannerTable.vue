@@ -27,7 +27,7 @@
         >
           <!-- If the table data is still loading display something nice -->
           <template #table-busy>
-            <div class="text-center text-muted mt-5 mb-3">
+            <div class="text-center text-muted mt-3 mb-3">
               <b-spinner class="align-middle"></b-spinner>
             </div>
           </template>
