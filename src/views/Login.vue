@@ -6,6 +6,13 @@
         <img id="login-image" class="m-4" src="./../assets/img/bier.png" alt="Logo" />
         <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('login.SudoSOS Login') }}</h1>
         <b-form class="login-form">
+          <b-button @click="loginViaGEWIS" variant="success">
+            <img src="./../assets/img/gewis-branding.svg" />
+            {{ $t("login.Login via GEWIS") }}
+          </b-button>
+
+          <hr class="mt-5 mb-4">
+
           <b-form-group
             id="username-group"
             :label="$t('login.Username')"
@@ -34,11 +41,6 @@
           </b-form-group>
 
           <b-button @click="login" variant="primary">{{ $t('login.Login') }}</b-button>
-
-          <b-button @click="loginViaGEWIS" variant="success">
-            <img src="./../assets/img/gewis-branding.svg" />
-            {{ $t("login.Login via GEWIS") }}
-          </b-button>
         </b-form>
       </b-col>
     </b-row>
