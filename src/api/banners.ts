@@ -31,7 +31,7 @@ export function getActiveBanners(take: number | null = null, skip: number | null
 }
 
 export function postFullBanner(banner: any, image: FormData) {
-  APIHelper.postResource('banners', banner).then((response) => APIHelper.postFile(`banners/${response.id}/image`, image));
+  return APIHelper.postResource('banners', banner).then((response) => APIHelper.postFile(`banners/${response.id}/image`, image));
 }
 
 export function getBanner(id: Number) {

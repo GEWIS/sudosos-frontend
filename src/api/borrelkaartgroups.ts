@@ -19,7 +19,7 @@ export function getBorrelkaartGroups(take: number | null = null, skip: number | 
 }
 
 export function postBorrelKaartGroup(bkg: any) {
-  APIHelper.postResource('borrelkaartgroups', bkg);
+  return APIHelper.postResource('borrelkaartgroups', bkg).then((response) => BorrelkaartGroupTransformer.makeBorrelkaartGroup(response));
 }
 
 export function getBorrelKaartGroup(id: number) {
@@ -27,7 +27,7 @@ export function getBorrelKaartGroup(id: number) {
 }
 
 export function patchBorrelkaartGroup(id: number, bkg: any) {
-  return APIHelper.patchResource(`borrelkaartgroups/${id}`, bkg);
+  return APIHelper.patchResource(`borrelkaartgroups/${id}`, bkg).then((response) => BorrelkaartGroupTransformer.makeBorrelkaartGroup(response));
 }
 
 export function deleteBorrelkaartGroups(id: number) {

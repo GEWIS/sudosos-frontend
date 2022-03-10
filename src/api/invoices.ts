@@ -23,7 +23,7 @@ export function getInvoices(
 }
 
 export function postInvoice(invoice: any) {
-  APIHelper.postResource('invoices', invoice);
+  return APIHelper.postResource('invoices', invoice).then((response) => InvoiceTransformer.makeInvoice(response));
 }
 
 export function getInvoice(id: number) {
@@ -31,7 +31,7 @@ export function getInvoice(id: number) {
 }
 
 export function patchInvoice(id: number, invoice: any) {
-  return APIHelper.patchResource(`invoices/${id}`, invoice);
+  return APIHelper.patchResource(`invoices/${id}`, invoice).then((response) => InvoiceTransformer.makeInvoice(response));
 }
 
 export function deleteInvoice(id: number) {

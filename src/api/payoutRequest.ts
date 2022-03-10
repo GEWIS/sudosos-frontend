@@ -23,7 +23,7 @@ export function getPayoutRequests(
 }
 
 export function postPayoutRequest(request: any) {
-  APIHelper.postResource('payoutrequests', request);
+  return APIHelper.postResource('payoutrequests', request).then((response) => PayoutRequestTransformer.makePayoutRequest(response));
 }
 
 export function getPayoutRequest(id: number) {

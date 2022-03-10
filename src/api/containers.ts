@@ -20,7 +20,7 @@ export function getContainers(take: number | null = null, skip: number | null = 
 }
 
 export function postContainer(container: any) {
-  APIHelper.postResource('containers', container);
+  return APIHelper.postResource('containers', container).then((response) => ContainerTransformer.makeContainer(response));
 }
 
 export function getContainer(id: number) {
@@ -28,7 +28,7 @@ export function getContainer(id: number) {
 }
 
 export function patchContainer(id: number, container: any) {
-  return APIHelper.patchResource(`containers/${id}`, container);
+  return APIHelper.patchResource(`containers/${id}`, container).then((response) => ContainerTransformer.makeContainer(response));
 }
 
 export function getContainerProducts(
@@ -50,7 +50,7 @@ export function getContainerProducts(
 }
 
 export function approveContainer(id: number) {
-  APIHelper.postResource(`containers/${id}/approve`, {});
+  return APIHelper.postResource(`containers/${id}/approve`, {}).then((response) => ContainerTransformer.makeContainer(response));
 }
 
 export function getPublicContainers(take: number | null = null, skip: number | null = null) {
