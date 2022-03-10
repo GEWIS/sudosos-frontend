@@ -55,4 +55,8 @@ export default {
       address: data.address,
     };
   },
+
+  makeSaldo(data: any) {
+    return dinero({ amount: data, currency: 'EUR' });
+  },
 };

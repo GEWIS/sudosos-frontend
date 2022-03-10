@@ -30,7 +30,7 @@ export default class TransferModule extends VuexModule {
 
   @Mutation
   removeTransfer(transfer: Transfer) {
-    APIHelper.delResource('transfers', transfer);
+    APIHelper.delResource('transfers');
     const index = this.transfers.findIndex((trns) => trns.id === transfer.id);
     this.transfers.splice(index, 1);
   }
