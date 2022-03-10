@@ -85,7 +85,7 @@ import { PointOfSale } from '@/entities/PointOfSale';
 import UserModule from '@/store/modules/user';
 import {
   getAllPointsOfSale,
-  getRequestedPointsOfSale, getUserPointsOfSale,
+  getPointsOfSaleUpdates, getUserPointsOfSale,
   getUserRequestedPointsOfSale,
 } from '@/api/pointOfSale';
 import { Pagination } from '@/entities/Pagination';
@@ -121,7 +121,7 @@ export default class POSOverview extends Vue {
 
   async fetchData(take: number | null = null, skip: number | null = null) {
     if (this.showAll && this.requested) {
-      this.pointsOfSale = await getRequestedPointsOfSale(take, skip);
+      this.pointsOfSale = await getPointsOfSaleUpdates(take, skip);
     } else if (this.showAll) {
       this.pointsOfSale = await getAllPointsOfSale(take, skip);
     } else if (this.requested) {
