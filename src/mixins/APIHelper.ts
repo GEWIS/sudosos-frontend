@@ -24,6 +24,18 @@ const isDev = (process.env.VUE_APP_DEVELOP === 'true');
 function makeRoute(route: string, args: any = null) {
   let newRoute = route;
 
+  const queries = new URLSearchParams(window.location.search);
+
+  if (args === null || (!('skip' in args) || !('take' in args))) {
+    if (queries.has('skip')) {
+      args.skip = queries.get('skip');
+    }
+
+    if (queries.has('take')) {
+      args.take = queries.get('take');
+    }
+  }
+
   // Convert the arguments to a query string
   if (args !== null) {
     let argsString = '?';
@@ -149,7 +161,7 @@ export default {
     localStorage.clear();
   },
 
-  getResource(route: string, args = null) {
+  getResource(route: string, args: Object | null = null) {
     const constructedRoute = makeRoute(route, args);
 
     const getBody = {
@@ -206,11 +218,10 @@ export default {
     return fetchResource(constructedRoute, postBody);
   },
 
-  delResource(route: string, data: any, args = null) {
+  delResource(route: string, args = null) {
     const constructedRoute = makeRoute(route, args);
 
     const delBody = {
-      body: JSON.stringify(data),
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,
