@@ -60,6 +60,7 @@ import ProductInfoModal from '@/components/ProductInfoModal.vue';
 import { PointOfSale } from '@/entities/PointOfSale';
 import { Product } from '@/entities/Product';
 import PointOfSaleModule from '@/store/modules/pointsofsale';
+import { getPointOfSale, getPointOfSaleUpdate } from '@/api/pointOfSale';
 
 @Component({
   components: {
@@ -72,53 +73,16 @@ import PointOfSaleModule from '@/store/modules/pointsofsale';
 export default class PointOfSaleInfo extends Formatters {
   @Prop() id!: number;
 
-  private pointOfSaleState = getModule(PointOfSaleModule);
-
   infoProduct: Product = {} as Product;
 
-  // TODO: If POS niet bestaat in store, ophalen en toevoegen
-  // TODO: Gebruik maken van own query daarvoor
+  infoPOS: PointOfSale = {} as PointOfSale;
 
-  beforeMount() {
+  async beforeMount() {
     if (this.$route.query.update) {
-      this.pointOfSaleState.fetchRequestedPointOfSale(this.id);
+      this.infoPOS = await getPointOfSaleUpdate(this.id);
     } else {
-      this.pointOfSaleState.fetchPointOfSale(this.id);
+      this.infoPOS = await getPointOfSale(this.id);
     }
-  }
-
-  get infoPOS() {
-    if (this.$route.query.update) {
-      let index = this.pointOfSaleState.userRequestedPointsOfSale.findIndex(
-        (pos) => Number(pos.id) === Number(this.id),
-      );
-      if (index >= 0) {
-        return this.pointOfSaleState.userRequestedPointsOfSale[index];
-      }
-
-      index = this.pointOfSaleState.requestedPointsOfSale.findIndex(
-        (pos) => Number(pos.id) === Number(this.id),
-      );
-      if (index >= 0) {
-        return this.pointOfSaleState.requestedPointsOfSale[index];
-      }
-    } else {
-      let index = this.pointOfSaleState.userPointsOfSale.findIndex(
-        (pos) => Number(pos.id) === Number(this.id),
-      );
-      if (index >= 0) {
-        return this.pointOfSaleState.userPointsOfSale[index];
-      }
-
-      index = this.pointOfSaleState.pointsOfSale.findIndex(
-        (pos) => Number(pos.id) === Number(this.id),
-      );
-      if (index >= 0) {
-        return this.pointOfSaleState.pointsOfSale[index];
-      }
-    }
-
-    return {} as PointOfSale;
   }
 
   /**

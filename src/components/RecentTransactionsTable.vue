@@ -48,6 +48,8 @@ import eventBus from '@/eventbus';
 import TransactionModule from '@/store/modules/transactions';
 import TransferModule from '@/store/modules/transfers';
 import UserModule from '@/store/modules/user';
+import { getUserTransactions } from '@/api/transactions';
+import { getUserTransfers } from '@/api/transfers';
 
 @Component
 export default class RecentTransactionsTable extends Formatters {
@@ -73,11 +75,24 @@ export default class RecentTransactionsTable extends Formatters {
     },
   ];
 
-  beforeMount() {
+  async beforeMount() {
     this.userState.fetchUser();
-    this.transactionState.fetchUsersTransactions(this.userState.user.id);
-    this.transferState.fetchTransfers();
-    this.transList = [...this.transactionState.userTransactions, ...this.transferState.transfers];
+
+    const transactions = await getUserTransactions(this.userState.user.id, {
+      skip: 0,
+      take: 10,
+    });
+    // const transfers = await getUserTransfers(this.userState.user.id, {
+    //   skip: 0,
+    //   take: 10,
+    // });
+
+    const transfers = {
+      _pagination: {},
+      records: [],
+    };
+
+    this.transList = [...transactions.records, ...transfers.records];
     this.transList.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
 
     // If the locale is changed make sure the labels are also correctly updated for the b-table

@@ -27,12 +27,12 @@
       </b-form-row>
       <b-form-row
         class="point-of-sale"
-        v-for="pos in pointsOfSale"
+        v-for="pos in pointsOfSale.records"
         :key="pos.id"
         @click="$router.push({
           name: full ? 'pointOfSaleApprove' : 'pointOfSaleInfo',
           params: { id: pos.id },
-          query: { update: requested, own: !showAll }
+          query: { update: requested }
         })">
         <b-col
           :cols="full ? 6 : 10" :lg="full ? 5 : 11"
@@ -54,13 +54,13 @@
       </b-form-row>
     </b-card-body>
 
-    <b-card-footer v-if="perPage < pointsOfSale.length" class="d-flex">
+    <b-card-footer v-if="perPage < pointsOfSale._pagination.count" class="d-flex">
       <p class="my-auto h-100">
         {{ $t('c_POSOverview.Page') }}:
       </p>
       <b-pagination
         v-model="currentPage"
-        :total-rows="pointsOfSale.length"
+        :total-rows="pointsOfSale._pagination.count"
         :per-page="perPage"
         limit="1"
         next-class="nextButton"
@@ -82,8 +82,13 @@ import {
 } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import { PointOfSale } from '@/entities/PointOfSale';
-import PointOfSaleModule from '@/store/modules/pointsofsale';
 import UserModule from '@/store/modules/user';
+import {
+  getAllPointsOfSale,
+  getRequestedPointsOfSale, getUserPointsOfSale,
+  getUserRequestedPointsOfSale,
+} from '@/api/pointOfSale';
+import { Pagination } from '@/entities/Pagination';
 
 @Component
 export default class POSOverview extends Vue {
@@ -96,27 +101,33 @@ export default class POSOverview extends Vue {
   // If true all the points of sale will be shown instead of the users
   @Prop({ default: false }) private showAll!: boolean;
 
-  private pointOfSaleState = getModule(PointOfSaleModule);
-
   private userState = getModule(UserModule);
-
-  shownPointsOfSale: PointOfSale[] = [];
-
-  previousPage: number = 1;
 
   currentPage: number = 1;
 
   perPage: number = 1;
 
+  pointsOfSale: {
+    _pagination: Pagination,
+    records: PointOfSale[],
+  } = {} as {
+    _pagination: Pagination,
+    records: PointOfSale[],
+  };
+
   beforeMount() {
+    this.fetchData(this.perPage);
+  }
+
+  async fetchData(take: number | null = null, skip: number | null = null) {
     if (this.showAll && this.requested) {
-      this.pointOfSaleState.fetchRequestedPointsOfSale();
+      this.pointsOfSale = await getRequestedPointsOfSale(take, skip);
     } else if (this.showAll) {
-      this.pointOfSaleState.fetchPointsOfSale();
+      this.pointsOfSale = await getAllPointsOfSale(take, skip);
     } else if (this.requested) {
-      this.pointOfSaleState.fetchUserRequestedPointsOfSale(this.userState.user.id);
+      this.pointsOfSale = await getUserRequestedPointsOfSale(this.userState.user.id, take, skip);
     } else {
-      this.pointOfSaleState.fetchUserPointsOfSale(this.userState.user.id);
+      this.pointsOfSale = await getUserPointsOfSale(this.userState.user.id, take, skip);
     }
   }
 
@@ -126,43 +137,11 @@ export default class POSOverview extends Vue {
    * @param page = page that is being navigated to
    */
   pageClicked(page: number): void {
-    if (this.previousPage < page
-      && page >= (Math.ceil(this.pointsOfSale.length / this.perPage) - 2)) {
-      // TODO: Grab new data
-    }
-
-    const start = (page - 1) * this.perPage;
-    this.shownPointsOfSale = this.pointsOfSale.slice(start, start + this.perPage);
-
-    this.previousPage = page;
-  }
-
-  get pointsOfSale() {
-    if (this.showAll && this.requested) {
-      return this.pointOfSaleState.requestedPointsOfSale;
-    }
-
-    if (this.showAll) {
-      return this.pointOfSaleState.pointsOfSale;
-    }
-
-    if (this.requested) {
-      return this.pointOfSaleState.userRequestedPointsOfSale;
-    }
-
-    return this.pointOfSaleState.userPointsOfSale;
+    const skip = (page - 1) * this.perPage;
+    this.fetchData(this.perPage, skip);
   }
 }
 </script>
-
-<style lang="scss">
-.container-card {
-  .custom-control-label::before,
-  .custom-control-label::after {
-    top: 1px !important;
-  }
-}
-</style>
 
 <style scoped lang="scss">
 @import "~bootstrap/scss/bootstrap";
