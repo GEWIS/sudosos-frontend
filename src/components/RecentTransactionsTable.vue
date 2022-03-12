@@ -141,7 +141,8 @@ export default class RecentTransactionsTable extends Formatters {
       return this.$t('c_transactionsTable.transaction', { amount: trans.price.toFormat() });
     }
 
-    if (trans.description !== undefined) {
+    // This is a transfer
+    if (trans.description !== undefined && trans.description.length > 0) {
       return trans.description;
     }
 
