@@ -3,6 +3,7 @@ import { BaseUser, User } from '@/entities/User';
 import { BaseEntity } from '@/entities/BaseEntity';
 import { BasePointOfSale, PointOfSale } from '@/entities/PointOfSale';
 import { SubTransaction } from '@/entities/SubTransaction';
+import { Pagination } from '@/entities/Pagination';
 
 export interface Transaction extends BaseEntity {
   from: BaseUser | User;
@@ -10,6 +11,11 @@ export interface Transaction extends BaseEntity {
   pointOfSale: BasePointOfSale | PointOfSale;
   subTransactions: SubTransaction[];
   price: Dinero;
+}
+
+export interface TransactionList {
+  _pagination: Pagination,
+  records: Transaction[],
 }
 
 export interface POSTransaction {

@@ -7,6 +7,7 @@ import APIHelper from '@/mixins/APIHelper';
 import UserTransformer from '@/transformers/UserTransformer';
 import { NFCDevice } from '@/entities/NFCDevice';
 import jwtDecode from 'jwt-decode';
+import Dinero from 'dinero.js';
 
 @Module({
   dynamic: true, namespaced: true, store, name: 'UserModule',
@@ -33,6 +34,11 @@ export default class UserModule extends VuexModule {
   @Mutation
   setUserRoles(roles: string[]) {
     this.userRoles = roles;
+  }
+
+  @Mutation
+  updateSaldo(newSaldo: number) {
+    this.user.saldo = Dinero({ amount: newSaldo, currency: 'EUR' });
   }
 
   @Mutation

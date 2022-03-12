@@ -1,12 +1,13 @@
 <template>
   <div>
-    <b-card>
+    <b-card no-body>
       <b-card-title>
         {{ $t('c_recentTransactionsTable.recent transactions') }}
       </b-card-title>
       <b-card-body>
         <b-table
           stacked="sm"
+          class="mb-0"
           small
           borderless
           thead-class="table-header"
@@ -39,27 +40,25 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
+import { Component, Watch } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
-import { Transaction } from '@/entities/Transaction';
-import { Transfer } from '@/entities/Transfer';
+import { Transaction, TransactionFilter, TransactionList } from '@/entities/Transaction';
+import { Transfer, TransferFilter, TransferList } from '@/entities/Transfer';
 import Formatters from '@/mixins/Formatters';
 import eventBus from '@/eventbus';
-import TransactionModule from '@/store/modules/transactions';
-import TransferModule from '@/store/modules/transfers';
 import UserModule from '@/store/modules/user';
 import { getUserTransactions } from '@/api/transactions';
 import { getUserTransfers } from '@/api/transfers';
 
 @Component
 export default class RecentTransactionsTable extends Formatters {
-  private transactionState = getModule(TransactionModule);
-
-  private transferState = getModule(TransferModule);
-
   private userState = getModule(UserModule)
 
   transList: (Transaction | Transfer)[] = [];
+
+  transfers: TransferList = {} as TransferList;
+
+  transactions: TransactionList = {} as TransactionList;
 
   fields: Object[] = [
     {
@@ -78,27 +77,39 @@ export default class RecentTransactionsTable extends Formatters {
   async beforeMount() {
     this.userState.fetchUser();
 
-    const transactions = await getUserTransactions(this.userState.user.id, {
-      skip: 0,
-      take: 10,
-    });
-    // const transfers = await getUserTransfers(this.userState.user.id, {
-    //   skip: 0,
-    //   take: 10,
-    // });
+    this.transactions = await getUserTransactions(
+      this.userState.user.id,
+      {} as TransactionFilter,
+      10,
+      0,
+    );
 
-    const transfers = {
-      _pagination: {},
-      records: [],
-    };
-
-    this.transList = [...transactions.records, ...transfers.records];
-    this.transList.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
+    this.transfers = await getUserTransfers(
+      this.userState.user.id,
+      {} as TransferFilter,
+      10,
+      0,
+    );
 
     // If the locale is changed make sure the labels are also correctly updated for the b-table
     eventBus.$on('localeUpdated', () => {
       this.fields = this.updateTranslations(this.fields, 'c_recentTransactionsTable');
     });
+  }
+
+  @Watch('transactions')
+  onTransactionsChanged(value: any) {
+    this.transList = [...value.records, ...this.transfers.records];
+    this.transList.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
+    this.transList = this.transList.slice(0, 10);
+    console.log(this.transList);
+  }
+
+  @Watch('transfers')
+  onTransfersChanged(value: any) {
+    this.transList = [...value.records, ...this.transactions.records];
+    this.transList.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
+    this.transList = this.transList.slice(0, 10);
   }
 
   /**

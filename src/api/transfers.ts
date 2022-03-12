@@ -28,9 +28,10 @@ export function getTransfer(id: number) {
 }
 
 export function getUserTransfers(
-  filter: TransferFilter, id: number, take: number | null = null, skip: number | null = null,
+  id: number, filter: TransferFilter, take: number | null = null, skip: number | null = null,
 ) {
   const body = {
+    ...filter,
     ...take && { take },
     ...skip && { skip },
   };
