@@ -38,10 +38,21 @@ export function deleteTransaction(id: number) {
   return APIHelper.delResource(`transactions/${id}`);
 }
 
-export function getUserTransactions(id: number, args: Object | null = null) {
-  return APIHelper.getResource(`users/${id}/transactions`, args).then((transResponse) => {
-    transResponse.records.map(
+export function getUserTransactions(
+  id: number, filter: TransactionFilter, take: number | null = null, skip: number | null = null,
+) {
+  const body = {
+    ...filter,
+    ...take && { take },
+    ...skip && { skip },
+  };
+
+  return APIHelper.getResource(`users/${id}/transactions`, body).then((response) => {
+    response._pagination = PaginationTransformer.makePagination(response._pagination);
+    response.records = response.records.map(
       (transaction: any) => TransactionTransformer.makeTransaction(transaction),
     );
+
+    return response;
   });
 }

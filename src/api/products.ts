@@ -61,3 +61,39 @@ export function getUpdatedProduct(id: number) {
 export function postProductImage(id: number, image: FormData) {
   return APIHelper.postFile(`products/${id}/image`, image).then((response) => ProductTransformer.makeProduct(response));
 }
+
+export function getUserProducts(
+  id: number, take: number | null = null, skip: number | null = null,
+) {
+  const body = {
+    ...take && { take },
+    ...skip && { skip },
+  };
+
+  return APIHelper.getResource(`users/${id}/products`, body).then((response) => {
+    response._pagination = PaginationTransformer.makePagination(response._pagination);
+    response.records = response.records.map(
+      (product: any) => ProductTransformer.makeProduct(product),
+    );
+
+    return response;
+  });
+}
+
+export function getUserUpdatedProducts(
+  id: number, take: number | null = null, skip: number | null = null,
+) {
+  const body = {
+    ...take && { take },
+    ...skip && { skip },
+  };
+
+  return APIHelper.getResource(`users/${id}/products/updated`, body).then((response) => {
+    response._pagination = PaginationTransformer.makePagination(response._pagination);
+    response.records = response.records.map(
+      (product: any) => ProductTransformer.makeProduct(product),
+    );
+
+    return response;
+  });
+}

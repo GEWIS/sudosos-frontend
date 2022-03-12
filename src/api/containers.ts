@@ -88,3 +88,39 @@ export function getUpdatedContainers(take: number | null = null, skip: number | 
 export function getUpdatedContainer(id: number) {
   return APIHelper.getResource(`containers/${id}/update`).then((response) => ContainerTransformer.makeContainer(response));
 }
+
+export function getUserContainers(
+  id: number, take: number | null = null, skip: number | null = null,
+) {
+  const body = {
+    ...take && { take },
+    ...skip && { skip },
+  };
+
+  return APIHelper.getResource(`users/${id}/containers`, body).then((response) => {
+    response._pagination = PaginationTransformer.makePagination(response._pagination);
+    response.records = response.records.map(
+      (container: any) => ContainerTransformer.makeContainer(container),
+    );
+
+    return response;
+  });
+}
+
+export function getUserUpdatedContainers(
+  id: number, take: number | null = null, skip: number | null = null,
+) {
+  const body = {
+    ...take && { take },
+    ...skip && { skip },
+  };
+
+  return APIHelper.getResource(`users/${id}/containers/updated`, body).then((response) => {
+    response._pagination = PaginationTransformer.makePagination(response._pagination);
+    response.records = response.records.map(
+      (container: any) => ContainerTransformer.makeContainer(container),
+    );
+
+    return response;
+  });
+}

@@ -15,3 +15,9 @@ export interface Transfer extends BaseEntity {
   type: TransferType
   description?: string;
 }
+
+export interface TransferFilter {
+  fromId: number,
+  toId: number,
+  id: number,
+}
