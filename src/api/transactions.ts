@@ -1,9 +1,13 @@
 import APIHelper from '@/mixins/APIHelper';
 import TransactionTransformer from '@/transformers/TransactionTransformer';
 import PaginationTransformer from '@/transformers/PaginationTransformer';
+import { TransactionFilter } from '@/entities/Transaction';
 
-export function getTransactions(take: number | null = null, skip: number | null = null) {
+export function getTransactions(
+  filter: TransactionFilter, take: number | null = null, skip: number | null = null,
+) {
   const body = {
+    ...filter,
     ...take && { take },
     ...skip && { skip },
   };

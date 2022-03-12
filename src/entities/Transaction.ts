@@ -16,3 +16,14 @@ export interface POSTransaction {
   id: number;
   transactions: Transaction[];
 }
+
+export interface TransactionFilter {
+  fromId: number,
+  createdById: number,
+  toId: number,
+  pointOfSaleId: number,
+  productId: number,
+  productRevision: number,
+  fromDate: string,
+  tillDate: string,
+}
