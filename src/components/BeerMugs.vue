@@ -25,14 +25,14 @@ export default class Login extends Vue {
   top: 0;
   display: none;
 
-.beerMug {
-  position: fixed;
-  user-select: none;
-  pointer-events: none;
-  width: 50px;
-  height: 50px;
-  background-image: url("~@/assets/img/bier.png");
-  background-size: 100%;
-}
+  .beerMug {
+    position: fixed;
+    user-select: none;
+    pointer-events: none;
+    width: 50px;
+    height: 50px;
+    background-image: url("~@/assets/img/bier.png");
+    background-size: 100%;
+  }
 }
 </style>
