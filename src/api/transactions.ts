@@ -1,14 +1,37 @@
 import APIHelper from '@/mixins/APIHelper';
 import TransactionTransformer from '@/transformers/TransactionTransformer';
+import PaginationTransformer from '@/transformers/PaginationTransformer';
 
-export function getTransactions(args: Object | null = null) {
-  return APIHelper.getResource('transactions', args).then((transResponse) => {
-    transResponse.records.map(
+export function getTransactions(take: number | null = null, skip: number | null = null) {
+  const body = {
+    ...take && { take },
+    ...skip && { skip },
+  };
+
+  return APIHelper.getResource('transactions', body).then((response) => {
+    response._pagination = PaginationTransformer.makePagination(response._pagination);
+    response.records = response.records.map(
       (transaction: any) => TransactionTransformer.makeTransaction(transaction),
     );
 
-    return transResponse;
+    return response;
   });
+}
+
+export function postTransaction(transaction: any) {
+  return APIHelper.postResource('transactions', transaction).then((response) => TransactionTransformer.makeTransaction(response));
+}
+
+export function getTransaction(id: number) {
+  return APIHelper.getResource(`transactions/${id}`).then((response) => TransactionTransformer.makeTransaction(response));
+}
+
+export function patchTransaction(id: number, transaction: any) {
+  return APIHelper.patchResource(`transactions/${id}`, transaction).then((response) => TransactionTransformer.makeTransaction(response));
+}
+
+export function deleteTransaction(id: number) {
+  return APIHelper.delResource(`transactions/${id}`);
 }
 
 export function getUserTransactions(id: number, args: Object | null = null) {
@@ -17,8 +40,4 @@ export function getUserTransactions(id: number, args: Object | null = null) {
       (transaction: any) => TransactionTransformer.makeTransaction(transaction),
     );
   });
-}
-
-export function getTransaction(id: number) {
-  return APIHelper.getResource(`transactions/${id}`).then((transactionResponse) => TransactionTransformer.makeTransaction(transactionResponse));
 }
