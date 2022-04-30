@@ -41,23 +41,21 @@
 
 <script lang="ts">
 import { Component, Watch } from 'vue-property-decorator';
-import { getModule } from 'vuex-module-decorators';
 import { Transaction, TransactionFilter, TransactionList } from '@/entities/Transaction';
 import { Transfer, TransferFilter, TransferList } from '@/entities/Transfer';
 import Formatters from '@/mixins/Formatters';
 import eventBus from '@/eventbus';
-import UserModule from '@/store/modules/user';
 import { getUserTransactions } from '@/api/transactions';
 import { getUserTransfers } from '@/api/transfers';
 
 @Component
 export default class RecentTransactionsTable extends Formatters {
-  private userState = getModule(UserModule)
-
   transList: (Transaction | Transfer)[] = [];
 
+  // List with all transfers and pagination information
   transfers: TransferList = {} as TransferList;
 
+  // List with all transactions and pagination information
   transactions: TransactionList = {} as TransactionList;
 
   fields: Object[] = [
@@ -97,56 +95,20 @@ export default class RecentTransactionsTable extends Formatters {
     });
   }
 
-  @Watch('transactions')
-  onTransactionsChanged(value: any) {
-    this.transList = [...value.records, ...this.transfers.records];
-    this.transList.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
-    this.transList = this.transList.slice(0, 10);
-    console.log(this.transList);
+  @Watch('transactions', { deep: true })
+  onTransactionsChanged() {
+    this.setTransList();
   }
 
-  @Watch('transfers')
-  onTransfersChanged(value: any) {
-    this.transList = [...value.records, ...this.transactions.records];
-    this.transList.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
-    this.transList = this.transList.slice(0, 10);
+  @Watch('transfers', { deep: true })
+  onTransfersChanged() {
+    this.setTransList();
   }
 
-  /**
-   * Sets the correct translation for what happened with the transaction
-   *
-   * @param {Transaction} trans : Transaction or transfer that we need description for
-   */
-  setDescription(trans: Transaction | Transfer) {
-    // We have a transactions
-    if ('pointOfSale' in trans) {
-      const { id } = this.userState.user;
-
-      // This is a transaction you put in for someone else
-      if (trans.createdBy !== undefined
-        && Object.keys(trans.createdBy).length > 0
-        && trans.createdBy.id === id
-        && trans.from.id !== id) {
-        return this.$t('c_transactionsTable.transactionPutFor', { name: trans.from.firstname, amount: trans.price.toFormat() });
-      }
-
-      // This is a transaction that was put in for you by someone else
-      if (trans.createdBy !== undefined
-        && Object.keys(trans.createdBy).length > 0
-        && trans.from.id === id
-        && trans.createdBy.id !== id) {
-        return this.$t('c_transactionsTable.transactionPutBy', { name: trans.createdBy.firstname, amount: trans.price.toFormat() });
-      }
-
-      return this.$t('c_transactionsTable.transaction', { amount: trans.price.toFormat() });
-    }
-
-    // This is a transfer
-    if (trans.description !== undefined && trans.description.length > 0) {
-      return trans.description;
-    }
-
-    return this.$t('c_recentTransactionsTable.transfer', { amount: trans.amount.toFormat() });
+  setTransList() {
+    this.transList = this.concat(this.transactions.records, this.transfers.records);
+    this.transList.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
+    this.transList = this.transList.slice(0, 10);
   }
 }
 

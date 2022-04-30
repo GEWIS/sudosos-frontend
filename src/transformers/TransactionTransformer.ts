@@ -10,35 +10,21 @@ import { SubTransactionRow } from '@/entities/SubTransactionRow';
 
 export default {
   makeTransaction(data: any) : Transaction {
-    let subTransactions = null;
+    let subTransactions;
+    let price = Dinero(data.value);
 
     if ('subTransactions' in data) {
       subTransactions = data.subTransactions.map((subTrans: any) => SubTransactionTransformer.makeSubTransaction(subTrans));
+      price = Dinero(data.price);
     }
-
-    let price;
-    //
-    // if (typeof data.price === 'object') {
-    //   if (data.price.amount !== undefined) {
-    //     price = Dinero({ amount: Number(data.price.amount), currency: 'EUR' });
-    //   } else {
-    //     // This is to satisfy ESLint, yay
-    //     const dineroPrice = data.price;
-    //     price = dineroPrice;
-    //   }
-    // } else if (subTransactions !== null) {
-    //   let tempPrice = 0;
-    //   subTransactions.forEach((subTrans: SubTransaction) => { tempPrice += subTrans.price.getAmount(); });
-    //   price = Dinero({ amount: Number(tempPrice), currency: 'EUR' });
-    // }
 
     return {
       ...BaseTransformer.makeBaseEntity(data),
       from: UserTransformer.makeUser(data.from),
       createdBy: UserTransformer.makeUser(data.createdBy),
       pointOfSale: PointOfSaleTransformer.makePointOfSale(data.pointOfSale),
-      ...subTransactions,
-      price: Dinero(data.value),
+      subTransactions,
+      price,
     } as Transaction;
   },
 };

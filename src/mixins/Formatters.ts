@@ -1,9 +1,19 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import dinero from 'dinero.js';
+import { Transaction } from '@/entities/Transaction';
+import { Transfer } from '@/entities/Transfer';
+import { getModule } from 'vuex-module-decorators';
+import UserModule from '@/store/modules/user';
 
 @Component
 export default class Formatters extends Vue {
+  userState = getModule(UserModule);
+
+  beforeMount() {
+    this.userState.fetchUser();
+  }
+
   /**
    * Can format date object into multiple time formats depending on what parameters you set if none
    * are set just the time in format `hh:mm`
@@ -102,5 +112,53 @@ export default class Formatters extends Vue {
     let words = sentence.split(' ');
     words = words.map((wrd) => wrd[0].toUpperCase() + wrd.substring(1));
     return words.join(' ');
+  }
+
+  /**
+   * Given a set of arrays as parameters, combines all the arrays that are non-null
+   *
+   * @param {any} arrays: a set of multiple arrays
+   * @return {any[]}: A combined array of all non-null arrays that were given as parameters
+   */
+  // eslint-disable-next-line class-methods-use-this
+  concat(...arrays: any) {
+    return [].concat(...arrays.filter(Array.isArray));
+  }
+
+  /**
+   * Sets the correct translation for what happened with the transaction
+   *
+   * @param {Transaction} trans : Transaction or transfer that we need description for
+   */
+  setDescription(trans: Transaction | Transfer) {
+    // We have a transactions
+    if ('pointOfSale' in trans) {
+      const { id } = this.userState.user;
+
+      // This is a transaction you put in for someone else
+      if (trans.createdBy !== undefined
+        && Object.keys(trans.createdBy).length > 0
+        && trans.createdBy.id === id
+        && trans.from.id !== id) {
+        return this.$t('c_transactionsTable.transactionPutFor', { name: trans.from.firstname, amount: trans.price.toFormat() });
+      }
+
+      // This is a transaction that was put in for you by someone else
+      if (trans.createdBy !== undefined
+        && Object.keys(trans.createdBy).length > 0
+        && trans.from.id === id
+        && trans.createdBy.id !== id) {
+        return this.$t('c_transactionsTable.transactionPutBy', { name: trans.createdBy.firstname, amount: trans.price.toFormat() });
+      }
+
+      return this.$t('c_transactionsTable.transaction', { amount: trans.price.toFormat() });
+    }
+
+    // This is a transfer
+    if (trans.description !== undefined && trans.description.length > 0) {
+      return trans.description;
+    }
+
+    return this.$t('c_recentTransactionsTable.transfer', { amount: trans.amount.toFormat() });
   }
 }

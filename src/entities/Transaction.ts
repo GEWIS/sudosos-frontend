@@ -11,6 +11,8 @@ export interface Transaction extends BaseEntity {
   pointOfSale: BasePointOfSale | PointOfSale;
   subTransactions: SubTransaction[];
   price: Dinero;
+  _showDetails?: boolean;
+  nextCategory?: string;
 }
 
 export interface TransactionList {

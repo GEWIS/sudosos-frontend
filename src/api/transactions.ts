@@ -27,7 +27,11 @@ export function postTransaction(transaction: any) {
 }
 
 export function getTransaction(id: number) {
-  return APIHelper.getResource(`transactions/${id}`).then((response) => TransactionTransformer.makeTransaction(response));
+  return APIHelper.getResource(`transactions/${id}`).then((response) => {
+    const trans = TransactionTransformer.makeTransaction(response);
+
+    return trans;
+  });
 }
 
 export function patchTransaction(id: number, transaction: any) {

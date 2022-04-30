@@ -15,6 +15,8 @@ export interface Transfer extends BaseEntity {
   amount: Dinero;
   type: TransferType
   description?: string;
+  _showDetails?: boolean;
+  nextCategory?: string;
 }
 
 export interface TransferList {

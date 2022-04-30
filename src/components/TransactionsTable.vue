@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card>
+    <b-card no-body>
       <template v-slot:header>
         <TransactionTableFilter
           v-model="filterValues"
@@ -16,7 +16,7 @@
           v-on:csv="downloadCSV"
         />
       </template>
-      <b-card-body>
+      <b-card-body class="mb-0">
 
         <!-- Table that will display the transactions -->
         <b-table
@@ -25,14 +25,14 @@
           borderless
           thead-class="table-header table-header-3"
           id="transaction-table"
-          :items="transProvider"
+          class="mb-0"
+          :items="transList"
           :fields="fields"
           :filter="filterValues"
-          :tbody-tr-class="setRowClass"
           :per-page="perPage"
           :current-page="currentPage"
           v-on:row-clicked="rowClicked"
-          :busy="formattedTransList.length === 0"
+          :busy="transList.length === 0"
         >
           <!-- If the table data is still loading display something nice -->
           <template #table-busy>
@@ -40,9 +40,23 @@
               <b-spinner class="align-middle"></b-spinner>
             </div>
           </template>
+
+          <!-- Columns that are used for daterows -->
+          <template v-slot:top-row="{ columns }">
+            <td :colspan="columns" class="date-row">
+              {{ formatDateTime(transList[0].updatedAt, true) }}
+            </td>
+          </template>
+
+          <template v-slot:row-details="{ item }">
+            <div class="date-row">
+              {{ item.nextCategory }}
+            </div>
+          </template>
+
           <!-- Templates for each row cell -->
           <template v-slot:cell(updatedAt)="data">
-            {{ setDate(data.item) }}
+            {{ formatDateTime(data.item.updatedAt) }}
           </template>
           <template v-slot:cell(createdAt)="data">
             {{ setDescription(data.item) }}
@@ -64,6 +78,7 @@
         v-model="currentPage"
         :total-rows="totalRows"
         :per-page="perPage"
+        @page-click="fetchNewItems"
         limit="1"
         next-class="nextButton"
         prev-class="prevButton"
@@ -84,18 +99,16 @@
 
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator';
-import { getModule } from 'vuex-module-decorators';
 import eventBus from '@/eventbus';
 import Formatters from '@/mixins/Formatters';
-import TransactionModule from '@/store/modules/transactions';
-import TransferModule from '@/store/modules/transfers';
-import UserModule from '@/store/modules/user';
 import TransactionDetailsModal from '@/components/TransactionDetailsModal.vue';
 import TransactionTableFilter from '@/components/TransactionTableFilter.vue';
-import { Transaction } from '@/entities/Transaction';
-import { initFilter, TransactionFilter } from '@/entities/TransactionFilter';
-import { Transfer } from '@/entities/Transfer';
+import { Transaction, TransactionFilter, TransactionList } from '@/entities/Transaction';
+import { initFilter } from '@/entities/TransactionFilter';
+import { Transfer, TransferFilter, TransferList } from '@/entities/Transfer';
 import { TransactionDateRow } from '@/entities/TransactionDateRow';
+import { getTransaction, getUserTransactions } from '@/api/transactions';
+import { getTransfer, getUserTransfers } from '@/api/transfers';
 
 @Component({
   components: {
@@ -122,16 +135,17 @@ export default class TransactionsTable extends Formatters {
 
   @Prop({ default: true, type: Boolean }) private csv!: boolean;
 
+  // If this prop is set all the transactions of a certain POS are being looked at
   @Prop() private pointOfSale: number | undefined;
 
-  private transactionState = getModule(TransactionModule);
+  // List with all transfers and pagination information
+  transfers: TransferList = {} as TransferList;
 
-  private transferState = getModule(TransferModule);
-
-  private userState = getModule(UserModule);
+  // List with all transactions and pagination information
+  transactions: TransactionList = {} as TransactionList;
 
   // Transaction this is displayed in the details modal
-  modalTransaction: Transaction = {} as Transaction;
+  modalTransaction: Transaction | Transfer = {} as Transaction;
 
   // List of all the transactions and transfers
   transList: (Transaction | Transfer)[] = [];
@@ -139,25 +153,23 @@ export default class TransactionsTable extends Formatters {
   // List of all the filtered transactions and transfers (used for csv download)
   filteredTransList: (Transaction | Transfer)[] = [];
 
-  // Formatted list with transactions and transfer
-  formattedTransList: (Transaction | Transfer | TransactionDateRow)[] = [];
-
   // Amount of items that is being displayed per page
-  perPage: number = 3;
+  perPage: number = 10;
 
   // The current active page
   currentPage: number = 1;
 
-  // The previous page (currentpage +/- 1)
-  previousPage: number = 1;
+  // The maximum page
+  maxPage: number = 1;
 
   // Contains the total amount of rows that are in the transaction list
   totalRows: number = 0;
 
   // Current filter values
-  filterValues: TransactionFilter = initFilter();
+  filterValues = initFilter();
 
-  filterWasUpdated: boolean = true;
+  // Current transaction filter
+  transactionFilter: TransactionFilter = {} as TransactionFilter;
 
   /**
    * Fields that should be shown from the transList
@@ -180,29 +192,9 @@ export default class TransactionsTable extends Formatters {
     },
   ];
 
-  beforeMount() {
+  async beforeMount() {
     this.userState.fetchUser();
-    this.transactionState.fetchUsersTransactions(this.userState.user.id);
-    this.transferState.fetchTransfers();
-
-    // Check if we need to grab all transaction that are related to a specific point of sale
-    // if not just grab all transactions for this user
-    if (this.pointOfSale !== undefined) {
-      // First fetch all the transactions for a specific point of sale
-      // Then check if this point of sale has any transactions
-      this.transactionState.fetchPOSTransactions(this.pointOfSale);
-      const psTr = this.transactionState.posTransactions.find((trns) => (
-        trns.id === this.pointOfSale
-      ));
-      if (psTr !== undefined) {
-        this.transList = psTr.transactions;
-      }
-    } else {
-      this.transList = [...this.transactionState.userTransactions, ...this.transferState.transfers];
-    }
-
-    // Sort the transactions just in case
-    this.transList.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
+    await this.fetchNewData();
 
     // If the locale is changed make sure the labels are also correctly updated for the b-table
     eventBus.$on('localeUpdated', () => {
@@ -210,252 +202,109 @@ export default class TransactionsTable extends Formatters {
     });
   }
 
-  /**
-   * A items provider function for the b-table. This inserts the needed dateRows
-   * into the items such that formatting is clear
-   */
-  transProvider(ctx: any) {
-    // Check if the filter has not changed, if not we can simply return the next/previous
-    if (!this.filterWasUpdated) {
-      const start = (ctx.currentPage - 1) * this.perPage;
+  @Watch('transactions')
+  onTransactionsChanged() {
+    this.transList = this.concat(this.transList, this.transactions.records);
+    this.transactions.records = [];
+    this.setTransList();
+  }
 
-      this.previousPage = this.currentPage;
-      return this.formattedTransList.slice(start, start + this.perPage);
+  @Watch('transfers')
+  onTransfersChanged() {
+    this.transList = this.concat(this.transList, this.transfers.records);
+    this.transfers.records = [];
+    this.setTransList();
+  }
 
-      // TODO: Implement some way of fetching more data :)
-    }
-
-    // If the filter has changed we need to re-filter the original
-    this.filterWasUpdated = false;
-    this.previousPage = 1;
+  @Watch('filterValues.lastUpdate')
+  onFilterValuesChanged() {
+    this.maxPage = 1;
     this.currentPage = 1;
+    this.transList = [];
 
-    // Filter the list based on the original transList, then add the dateRows
-    this.filteredTransList = this.filterTransList(this.transList);
-    this.formattedTransList = this.addDateRows(this.filteredTransList);
-    this.totalRows = this.formattedTransList.length;
+    if (this.filterValues.fromDate.length > 0) {
+      this.transactionFilter.fromDate = this.filterValues.fromDate.toString();
+    }
 
-    // Sort the whole thing just in case
-    this.formattedTransList.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
+    if (this.filterValues.toDate.length > 0) {
+      this.transactionFilter.tillDate = this.filterValues.toDate.toString();
+    }
+    if (this.filterValues.putInByYou) {
+      this.transactionFilter.createdById = this.userState.user.id;
+    }
 
-    return this.formattedTransList.slice(0, this.perPage);
+    if (this.filterValues.putInForYou) {
+      this.transactionFilter.fromId = this.userState.user.id;
+    }
+
+    if (this.filterValues.selfBought) {
+      this.transactionFilter.createdById = this.userState.user.id;
+      this.transactionFilter.fromId = this.userState.user.id;
+    }
+
+    this.fetchNewData();
   }
 
-  /**
-   * This function adds so called dateRows to the table. These rows are "super" rows that
-   * show the date for all the transactions that have been done on that day. The transactions
-   * beneath this row will only show the time on which they occured. To make this a bit more
-   * user friendly we also add a date row if the transaction for a day carry over a page.
-   * If a DateRow would be added as the last row on a page we insert a filler row before it.
-   * This filler row is invisible to the user but makes sure that the formatting is nicely.
-   *
-   * This took me longer than I'm willing to admit, if it ever breaks GL.
-   */
-  addDateRows(transList: (Transaction | Transfer)[]) {
-    const dates: String[] = [];
-    const transDateRowList: (Transaction | Transfer | TransactionDateRow)[] = [];
-
-    // First create dateRows for each transaction
-    transList.forEach((trans) => {
-      // Create formatted date and time for each transaction
-      const fDate = this.formatDateTime(trans.createdAt, true);
-      const { length } = transDateRowList;
-
-      // Check if we have just entered a new page
-      const newPage = length > 0 && length % this.perPage === 0;
-
-      // If this date does not have a dateRow yet or we just went to a new page create a date row
-      if ((!dates.find((d) => d === fDate)) || newPage) {
-        const dateRow: TransactionDateRow = {} as TransactionDateRow;
-        dates.push(fDate);
-        dateRow.formattedDate = fDate;
-        dateRow.createdAt = new Date(trans.createdAt.getTime() - 1);
-        dateRow.updatedAt = new Date(trans.updatedAt.getTime() - 1);
-        transDateRowList.push(dateRow);
-
-        // If the daterow we just made happens to be the last row on the current page
-        // insert a filler row just before it
-        if ((length + 1) % this.perPage === 0 && length > 1) {
-          const fillerRow: TransactionDateRow = {} as TransactionDateRow;
-          fillerRow.createdAt = new Date(dateRow.createdAt.getTime() - 1);
-          fillerRow.updatedAt = new Date(dateRow.updatedAt.getTime() - 1);
-          fillerRow.formattedDate = '';
-          fillerRow.fillerRow = true;
-          transDateRowList.push(fillerRow);
+  setTransList() {
+    this.transList.forEach((item, index) => {
+      if (this.transList[index + 1] !== undefined) {
+        const currentDate = this.formatDateTime(item.updatedAt, true);
+        const nextDate = this.formatDateTime(this.transList[index + 1].updatedAt, true);
+        if (currentDate !== nextDate) {
+          item._showDetails = true;
+          item.nextCategory = nextDate;
         }
       }
-
-      // Push the transaction or transfer
-      transDateRowList.push(trans);
     });
+    this.transList.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
+    this.totalRows = 0;
 
-    return transDateRowList;
-  }
-
-  /**
-   * Filters a list of transactions and transfers based on the TransitionTableFilter
-   */
-  filterTransList(transList: (Transaction | Transfer)[]) {
-    return transList.filter((trans) => {
-      const { id } = this.userState.user;
-
-      let date: boolean = true;
-      let selfBought: boolean = false;
-      let putInByYou: boolean = false;
-      let putInForYou: boolean = false;
-
-      // Since no filters are active we just return everything
-      if (!(this.filterValues.selfBought
-        || this.filterValues.putInForYou
-        || this.filterValues.putInByYou
-        || this.filterValues.fromDate !== ''
-        || this.filterValues.toDate !== '')) {
-        return true;
-      }
-
-      /**
-       * First check if the date filters are enabled, based on that check if date constraints
-       * are met.
-       */
-      if (this.filterValues.fromDate !== '' && this.filterValues.toDate !== '') {
-        const dateFromDate = new Date(`${this.filterValues.fromDate} 00:00:00`);
-        const dateToDate = new Date(`${this.filterValues.toDate} 23:59:59`);
-
-        date = trans.updatedAt >= dateFromDate && trans.updatedAt <= dateToDate;
-      } else if (this.filterValues.fromDate !== '' || this.filterValues.toDate !== '') {
-        const dateFromDate = new Date(`${this.filterValues.fromDate} 00:00:00`);
-        const dateToDate = new Date(`${this.filterValues.toDate} 23:59:59`);
-
-        date = trans.updatedAt >= dateFromDate || trans.updatedAt <= dateToDate;
-      }
-
-      /**
-       * Next we check for transactions that have been put into the system by the user
-       * for him/herself. A transfer is always shown in this case, if createdBy is empty
-       * we assume the transaction was made by the user on their own account.
-       */
-      if (this.filterValues.selfBought) {
-        selfBought = ('amount' in trans
-          || Object.keys(trans.createdBy as {}).length === 0
-          || (trans.from.id === id
-            && trans.createdBy !== undefined
-            && trans.createdBy.id === id))
-          && date;
-      }
-
-      /**
-       * Here we filter out transaction that have been put into the system by you. But are
-       * not for bought by yourself
-       */
-      if (this.filterValues.putInByYou) {
-        putInByYou = !('amount' in trans)
-          && trans.createdBy !== undefined
-          && Object.keys(trans.createdBy).length > 0
-          && trans.createdBy.id === id
-          && trans.from.id !== id
-          && date;
-      }
-
-      /**
-       * Last but certainly not least we check for transactions that are for you but
-       * have been put into the system by another account
-       */
-      if (this.filterValues.putInForYou) {
-        putInForYou = !('amount' in trans)
-          && trans.createdBy !== undefined
-          && Object.keys(trans.createdBy).length > 0
-          && trans.from.id === id
-          && trans.createdBy.id !== id
-          && date;
-      }
-
-      /**
-       * Now if any of the tickboxes have been set we can check whether this row
-       * has been set to true by any of them.
-       */
-      if (this.filterValues.selfBought
-        || this.filterValues.putInByYou
-        || this.filterValues.putInForYou) {
-        return selfBought || putInByYou || putInForYou;
-      }
-
-      return date;
-    });
-  }
-
-  /**
-   * If this is a dateRow the formatted date will be displayed otherwise just
-   * the time
-   */
-  setDate(rowItem: Transaction | Transfer | TransactionDateRow) {
-    if ('formattedDate' in rowItem) {
-      return this.formatDateTime(rowItem.updatedAt, true);
+    if (this.transfers._pagination !== undefined) {
+      this.totalRows += this.transfers._pagination.count;
     }
 
-    return this.formatDateTime(rowItem.updatedAt);
+    if (this.transactions._pagination !== undefined) {
+      this.totalRows += this.transactions._pagination.count;
+    }
   }
 
-  /**
-   * Depending on the type of rowItem we have a description is needed. This sets
-   * the description according to the the type of the row
-   */
-  setDescription(rowItem: Transaction | Transfer | TransactionDateRow) {
-    if (!('formattedDate' in rowItem) && !('fillerRow' in rowItem)) {
-      // Ladies and gentlemen, we have a transactions, we gottem
-      if ('pointOfSale' in rowItem) {
-        const { id } = this.userState.user;
-
-        // This is a transaction you put in for someone else
-        if (rowItem.createdBy !== undefined
-              && Object.keys(rowItem.createdBy).length > 0
-              && rowItem.createdBy.id === id
-              && rowItem.from.id !== id) {
-          return this.$t('c_transactionsTable.transactionPutFor', { name: rowItem.from.firstname, amount: rowItem.price.toFormat() });
-        }
-
-        // This is a transaction that was put in for you by someone else
-        if (rowItem.createdBy !== undefined
-          && Object.keys(rowItem.createdBy).length > 0
-          && rowItem.from.id === id
-          && rowItem.createdBy.id !== id) {
-          return this.$t('c_transactionsTable.transactionPutBy', { name: rowItem.createdBy.firstname, amount: rowItem.price.toFormat() });
-        }
-
-        return this.$t('c_transactionsTable.transaction', { amount: rowItem.price.toFormat() });
-      }
-
-      if (rowItem.description !== undefined) {
-        return rowItem.description;
-      }
-
-      return this.$t('c_transactionsTable.transfer', { amount: rowItem.amount.toFormat() });
+  fetchNewItems(event: any, page: number) {
+    if (page > this.maxPage) {
+      this.fetchNewData(page);
+      this.maxPage = page;
     }
-    return '';
   }
 
-  /**
-   * setRowClass gives a date row a date-row class and a transaction/transfer
-   * row a transaction-row class
-   *
-   * If the item has an id (i.e. is a transaction or transfer) it is given
-   * said class.
-   *
-   * @param item The transaction that makes up this row
-   * @param type The type of field this is (should be a row)
-   */
-  setRowClass = (item: Transaction | Transfer | TransactionDateRow, type: string): String => {
-    if (type === 'row') {
-      if ('id' in item) {
-        return 'transaction-row';
-      }
-      if ('fillerRow' in item && item.fillerRow !== undefined) {
-        return 'filler-row';
-      }
-      return 'date-row';
+  // Grabs the latest items depending on the current page
+  async fetchNewData(page = this.currentPage) {
+    const transFilter = this.transactionFilter;
+    let skip = (page - 1) * this.perPage;
+    let take = this.perPage;
+
+    if (Math.abs(this.maxPage - page) > 1) {
+      skip = 0;
+      take = Math.max(this.maxPage, page) * this.perPage;
+      this.transList = [];
     }
 
-    return '';
-  };
+    if (this.pointOfSale !== undefined) {
+      transFilter.pointOfSaleId = this.pointOfSale;
+    }
+
+    this.transactions = await getUserTransactions(
+      this.userState.user.id,
+      transFilter,
+      take,
+      skip,
+    );
+
+    this.transfers = await getUserTransfers(
+      this.userState.user.id,
+      {} as TransferFilter,
+      take,
+      skip,
+    );
+  }
 
   /**
    * Method that takes the current data rows and outputs a downloadable csv file
@@ -497,19 +346,16 @@ export default class TransactionsTable extends Formatters {
    * @param index Index of the row in the current view
    * @param event Click event of the row
    */
-  rowClicked(item: Transaction, index: Number, event: object): void {
-    if (!('formattedDate' in item)) {
-      this.modalTransaction = item;
-
-      this.$nextTick(() => {
-        this.$bvModal.show('details-modal');
-      });
+  async rowClicked(item: Transaction | Transfer, index: Number, event: object) {
+    if ('pointOfSale' in item) {
+      this.modalTransaction = await getTransaction(item.id);
+    } else {
+      this.modalTransaction = await getTransfer(item.id);
     }
-  }
 
-  @Watch('filterValues.lastUpdate')
-  onFilterValuesChanged(oldValue: any, newValue: any) {
-    this.filterWasUpdated = true;
+    this.$nextTick(() => {
+      this.$bvModal.show('details-modal');
+    });
   }
 }
 </script>
