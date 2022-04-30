@@ -17,12 +17,10 @@
             {{ $t('c_containerComponent.Public') }}
           </span>
 
-<!--      TODO Fix these:-->
-
           <!--  Container edit button    -->
           <span
             class="ml-3 mr-2"
-            v-show="canEdit && enabled && editable"
+            v-show="enabled && editable"
             v-on:click.stop=""
             v-on:click="$emit('input', container)"
             v-b-modal.edit-container>
@@ -32,7 +30,7 @@
           <!--   Container delete button   -->
           <span
             class="ml-2 mr-3"
-            v-show="canEdit && enabled && editable"
+            v-show="enabled && editable"
             v-on:click.stop=""
             v-on:click="$emit('input', container)"
             v-b-modal.confirmation>
@@ -89,7 +87,7 @@
           cols="6" sm="4" md="3" lg="2"
           v-on:click="productDetails(item)"
         >
-          <div class="product" :class="{'add': canEdit && enabled && editable}">
+          <div class="product" :class="{'add': enabled && editable}">
             <img :src="item.picture" :alt="item.name"/>
             <p
               class="w-100 px-1 product-name mb-0 text-truncate"
@@ -100,7 +98,7 @@
 
         <!-- Add new product card -->
         <b-col
-          v-if="canEdit && enabled && editable"
+          v-if="enabled && editable"
           class="text-center product-card product-card-add px-2"
           cols="6" sm="4" md="3" lg="2"
           v-on:click="$emit('addProduct', container)"
@@ -118,7 +116,7 @@
       <b-row v-show="tableView">
         <b-col cols="12" class="containers-container">
           <div
-            v-if="canEdit && enabled && editable"
+            v-if="enabled && editable"
             class="d-flex justify-content-between align-items-center">
             <b-button
               class="my-2 text-truncate"
@@ -203,7 +201,7 @@ export default class ContainerComponent extends Vue {
    * @param product Product that is being clicked
    */
   productDetails(product: Product) {
-    if (this.canEdit && this.enabled && this.editable) {
+    if (this.enabled && this.editable) {
       this.$emit('editProduct', this.container, product);
     } else {
       this.$emit('productDetails', product);
@@ -231,17 +229,6 @@ export default class ContainerComponent extends Vue {
    */
   checkBoxChanged(event: any) {
     this.$emit('toggled', { container: this.container, state: event as boolean });
-  }
-
-  /**
-   * Check if current user has the rights to edit this storage container
-   */
-  get canEdit() {
-    const { user } = this.userState;
-    const owner = this.container.owner.id === user.id;
-    const hasPermission = checkPermissions(this.userState.permissions, 'container');
-
-    return owner || hasPermission;
   }
 }
 </script>

@@ -91,7 +91,8 @@
     "Start invalid": "Voer een start datum in die vroeger is dan de eind datum",
     "End invalid": "Voer een eind datum in later dan vandaag",
     "confirm": "Bevestig verwijderen",
-    "are you sure": "Weet je zeker dat je deze container wil verwijderen?"
+    "are you sure": "Weet je zeker dat je deze container wil verwijderen?",
+    "No containers": "Geen containers geselecteerd"
   },
   "c_productInfoModal": {
     "title": "Product informatie",

@@ -91,7 +91,8 @@
     "Start invalid": "Please pick a start date earlier than the end date",
     "End invalid": "Please pick an end date later than the end date and later than now",
     "confirm": "Confirm deletion",
-    "are you sure": "Are you sure you want to delete this container?"
+    "are you sure": "Are you sure you want to delete this container?",
+    "No containers": "No containers selected"
   },
   "c_productInfoModal": {
     "title": "Product information",

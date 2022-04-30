@@ -26,58 +26,8 @@
             />
           </b-form-group>
 
-          <b-form-group
-            label-for="authentication"
-          >
-            <b-form-checkbox
-              id="authentication"
-              v-model="useAuthentication"
-              name="authentication"
-            >
-              {{ $t('posRequest.Use authentication') }}
-            </b-form-checkbox>
-          </b-form-group>
-
-          <b-form-group
-            id="start"
-            :label="$t('posRequest.Start date')"
-            label-cols="12"
-            label-for="start-date"
-            :state="startDateState"
-            :invalid-feedback="invalidStartDate"
-          >
-            <b-form-datepicker
-              id="start-date"
-              v-model="startDate"
-              :state="startDateState"
-              locale="en-NL"
-              :placeholder="$t('posRequest.Pick date')"
-              no-flip
-              :date-format-options="{year: 'numeric', month: 'long', day: 'numeric'}"
-            ></b-form-datepicker>
-          </b-form-group>
-
-          <b-form-group
-            id="end"
-            :label="$t('posRequest.End date')"
-            label-cols="12"
-            label-for="end-date"
-            :state="endDateState"
-            :invalid-feedback="invalidEndDate"
-          >
-            <b-form-datepicker
-              id="end-date"
-              v-model="endDate"
-              :state="endDateState"
-              locale="en-NL"
-              :placeholder="$t('posRequest.Pick date')"
-              no-flip
-              :date-format-options="{year: 'numeric', month: 'long', day: 'numeric'}"
-            ></b-form-datepicker>
-          </b-form-group>
-
           <b>{{ $t('posRequest.Selected containers')}}</b>
-          <ul class="pl-4">
+          <ul v-if="requestContainers.length > 0"  class="pl-4">
             <li
               v-for="container in requestContainers"
               v-bind:key="container.id"
@@ -85,6 +35,9 @@
               <p class="text-truncate m-0">{{ container.name }}</p>
             </li>
           </ul>
+          <span class="d-block" v-else>
+            {{ $t('posRequest.No containers')}}
+          </span>
         </div>
         <b-button
           class="mt-2"
@@ -103,23 +56,27 @@
             {{ $t('posRequest.add container') }}
           </b-button>
         </div>
+        <h6 v-if="publicContainers.records.length > 0" class="ml-3">Public containers</h6>
         <ContainerComponent
-          v-for="container in publicContainers"
+          v-for="container in publicContainers.records"
           v-bind:key="container.id"
           :container="container"
           :enabled="true"
-          :editable="false"
+          :editable="container.owner.id === userState.user.id"
           @toggled="containerToggled"
           v-model="editContainer"
           v-on:productDetails="showProductDetails"
         />
 
+        <hr v-if="publicContainers.records.length > 0">
+        <h6 v-if="containers.records.length > 0" class="ml-3">Own containers</h6>
+
         <ContainerComponent
-          v-for="container in containers"
+          v-for="container in containers.records"
           v-bind:key="container.id"
           :container="container"
           :enabled="true"
-          :editable="true"
+          :editable="container.owner.id === userState.user.id"
           @toggled="containerToggled"
           v-model="editContainer"
           v-on:addProduct="prepAddingProduct"
@@ -139,8 +96,8 @@
     />
 
     <ConfirmationModal
-      :reason="$t('posRequest.are you sure')"
-      :title="$t('posRequest.confirm')"
+      :reason="$t('posRequest.are you sure').toString()"
+      :title="$t('posRequest.confirm').toString()"
       v-on:modalConfirmed="confirmContainerDelete"
     />
 
@@ -152,18 +109,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import ContainerComponent from '@/components/ContainerComponent.vue';
 import ContainerEditModal from '@/components/ContainerEditModal.vue';
 import ProductEditModal from '@/components/ProductEditModal.vue';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
 import ProductInfoModal from '@/components/ProductInfoModal.vue';
-import ContainerModule from '@/store/modules/containers';
-import { Container } from '@/entities/Container';
+import { Container, ContainerList } from '@/entities/Container';
 import { Product } from '@/entities/Product';
 import UserModule from '@/store/modules/user';
-import PointOfSaleModule from '@/store/modules/pointsofsale';
+
+import { getContainers, getPublicContainers, getUserContainers } from '@/api/containers';
 
 @Component({
   components: {
@@ -175,10 +132,6 @@ import PointOfSaleModule from '@/store/modules/pointsofsale';
   },
 })
 export default class PointOfSaleRequest extends Vue {
-  private pointOfSaleState = getModule(PointOfSaleModule);
-
-  private containerState = getModule(ContainerModule);
-
   private userState = getModule(UserModule);
 
   name: string | null = null;
@@ -191,9 +144,9 @@ export default class PointOfSaleRequest extends Vue {
 
   requestContainers: Container[] = [];
 
-  containers: Container[] = [];
+  containers: ContainerList = {} as ContainerList;
 
-  publicContainers: Container[] = [];
+  publicContainers: ContainerList = {} as ContainerList;
 
   editContainer: Container = {} as Container;
 
@@ -203,11 +156,19 @@ export default class PointOfSaleRequest extends Vue {
 
   infoProduct: Product = {} as Product;
 
-  beforeMount(): void {
-    this.containerState.fetchContainers();
-    this.containerState.fetchPublicContainers();
-    this.containers = this.containerState.containers;
-    this.publicContainers = this.containerState.publicContainers;
+  async beforeMount() {
+    this.userState.fetchUser();
+
+    this.containers = await getUserContainers(this.userState.user.id, 999);
+    this.publicContainers = await getPublicContainers(999);
+  }
+
+  @Watch('publicContainers')
+  onTransactionsChanged() {
+    const userId = this.userState.user.id;
+    this.publicContainers.records = this.publicContainers.records.filter(
+      (container) => container.owner.id !== userId,
+    );
   }
 
   /**
@@ -268,7 +229,7 @@ export default class PointOfSaleRequest extends Vue {
     if (index >= 0) {
       this.requestContainers.splice(index, 1);
     }
-    this.containerState.removeContainer(this.editContainer);
+    // this.containerState.removeContainer(this.editContainer);
   }
 
   /**
@@ -308,7 +269,7 @@ export default class PointOfSaleRequest extends Vue {
         },
       };
 
-      this.pointOfSaleState.postPointOfSale(pointOfSale);
+      // this.pointOfSaleState.postPointOfSale(pointOfSale);
     }
   }
 
