@@ -28,14 +28,14 @@
           </span>
 
           <!--   Container delete button   -->
-          <span
-            class="ml-2 mr-3"
-            v-show="enabled && editable"
-            v-on:click.stop=""
-            v-on:click="$emit('input', container)"
-            v-b-modal.confirmation>
-            <font-awesome-icon icon="trash"/>
-          </span>
+<!--          <span-->
+<!--            class="ml-2 mr-3"-->
+<!--            v-show="enabled && editable"-->
+<!--            v-on:click.stop=""-->
+<!--            v-on:click="$emit('input', container)"-->
+<!--            v-b-modal.confirmation>-->
+<!--            <font-awesome-icon icon="trash"/>-->
+<!--          </span>-->
         </b-input-group>
       </b-col>
 
@@ -81,7 +81,7 @@
       <!--  Card view for products   -->
       <b-row v-show="!tableView" class="mx-0">
         <b-col
-          v-for="item in container.products"
+          v-for="item in containerProducts.records"
           :key="item.id"
           class="text-center product-card px-2"
           cols="6" sm="4" md="3" lg="2"
@@ -128,7 +128,7 @@
             </b-button>
           </div>
           <ProductTable
-            :productsProp="container.products"
+            :productsProp="containerProducts.records"
             :editable="true"
             :enabled="true"
             v-on:editProduct="productDetails"
@@ -147,8 +147,9 @@ import { getModule } from 'vuex-module-decorators';
 import UserModule from '@/store/modules/user';
 import ProductTable from '@/components/ProductTable.vue';
 import { Container } from '@/entities/Container';
-import { Product } from '@/entities/Product';
+import { Product, ProductList } from '@/entities/Product';
 import { checkPermissions } from '@/entities/User';
+import { getContainerProducts } from '@/api/containers';
 
 @Component({
   directives: {
@@ -178,6 +179,8 @@ export default class ContainerComponent extends Vue {
 
   tableView: Boolean = false;
 
+  containerProducts: ProductList = {} as ProductList;
+
   sortableOptions: Object = {
     chosenClass: 'is-selected',
     filter: '.product-card-add',
@@ -189,8 +192,12 @@ export default class ContainerComponent extends Vue {
     this.selected = !this.enabled || false;
   }
 
-  collapseContainer() {
+  async collapseContainer() {
     this.isOpen = !this.isOpen;
+
+    if (this.isOpen && this.containerProducts.records?.length !== 0) {
+      this.containerProducts = await getContainerProducts(this.container.id, 500);
+    }
 
     this.$root.$emit('bv::toggle:collapse', `container_${this.container.id}`);
   }

@@ -36,7 +36,7 @@ export default {
       price,
       owner: UserTransformer.makeUser(data.owner),
       category: ProductCategoryTransformer.makeProductCategory(data.category),
-      picture: data.picture,
+      picture: data.image,
       alcoholPercentage: data.alcoholPercentage,
       updatePending: data.updatePending,
     } as Product;

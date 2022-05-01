@@ -34,7 +34,7 @@
     </b-col>
   </b-row>
 
-  <b-row>
+  <b-row v-if="product.updatedAt">
     <b-col cols="6" sm="4">
       <p class="font-weight-bold">{{ $t('c_productInfoModal.Updated on') }}</p>
     </b-col>

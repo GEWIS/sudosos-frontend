@@ -120,7 +120,7 @@ import { Container, ContainerList } from '@/entities/Container';
 import { Product } from '@/entities/Product';
 import UserModule from '@/store/modules/user';
 
-import { getContainers, getPublicContainers, getUserContainers } from '@/api/containers';
+import { getPublicContainers, getUserContainers } from '@/api/containers';
 
 @Component({
   components: {

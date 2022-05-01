@@ -84,16 +84,14 @@
 import {
   Component, Prop, Watch,
 } from 'vue-property-decorator';
-import { getModule } from 'vuex-module-decorators';
 import Formatters from '@/mixins/Formatters';
 import { Container } from '@/entities/Container';
-import ContainerModule from '@/store/modules/containers';
+
+import { patchContainer } from '@/api/containers';
 
   @Component
 export default class ContainerEditModal extends Formatters {
     @Prop() private editContainer! : Container;
-
-    private containerState = getModule(ContainerModule);
 
     containerName: string | null = null;
 
@@ -112,21 +110,13 @@ export default class ContainerEditModal extends Formatters {
      * else make sure the storage we were editing gets updated correctly.
      */
     save(): void {
-      if (this.nameState === null || !this.nameState) {
-        this.containerName = null;
-        this.containerPublic = false;
-      } else if (Object.keys(this.editContainer).length === 0) {
-        this.containerState.addContainer({
-          name: this.containerName,
-          public: this.containerPublic,
-        });
-      } else {
-        const updatedContainer = this.editContainer;
-        updatedContainer.name = this.containerName as string;
-        updatedContainer.public = this.containerPublic;
+      if (this.nameState === null) return;
+      const updatedContainer = {} as Container;
+      updatedContainer.name = this.containerName as string;
+      updatedContainer.public = this.containerPublic;
+      updatedContainer.products = [];
 
-        this.containerState.updateContainer(updatedContainer);
-      }
+      patchContainer(this.editContainer.id, updatedContainer);
 
       this.$bvModal.hide('edit-container');
     }

@@ -15,16 +15,16 @@
         <b-col cols="12" sm="3">
           <span class="font-weight-bold">{{ $t('c_productEditModal.added on') }}</span>
         </b-col>
-        <b-col cols="12" sm="3">
+        <b-col cols="12" sm="9">
           {{ formatDateTime(editProduct.createdAt, true) }}
         </b-col>
       </b-form-row>
 
-      <b-form-row v-if="Object.keys(editProduct).length > 0">
+      <b-form-row v-if="Object.keys(editProduct).length > 0 && 'updatedAt' in editProduct">
         <b-col cols="12" sm="3">
           <span class="font-weight-bold">{{ $t('c_productEditModal.updated on') }}</span>
         </b-col>
-        <b-col cols="12" sm="3">
+        <b-col cols="12" sm="9">
           {{ formatDateTime(editProduct.updatedAt, true) }}
         </b-col>
       </b-form-row>
@@ -33,7 +33,7 @@
         <b-col cols="12" sm="3">
           <span class="font-weight-bold">{{ $t('c_productEditModal.added by') }}</span>
         </b-col>
-        <b-col cols="12" sm="3">
+        <b-col cols="12" sm="9">
           {{ editProduct.owner.name }}
         </b-col>
       </b-form-row>
@@ -42,7 +42,7 @@
       <!--  product from here to add it    -->
       <div v-if="Object.keys(container).length > 0
         && Object.keys(editProduct).length === 0
-        && products.length > 0">
+        && products.records.length > 0">
         <h6>{{ $t('c_productEditModal.Add existing') }}</h6>
 
         <b-form-group
@@ -53,7 +53,7 @@
           label-for="select"
         >
           <v-select
-            :options="products"
+            :options="products.records"
             :getOptionLabel="option => option.name"
             v-model="selectedProduct"
           >
@@ -109,7 +109,7 @@
           value-field="text"
           v-model="category"
           :disabled="selectedProduct !== null"
-          :options="productCategoryState.productCategories"
+          :options="productCategories.records"
           :state="categoryState"
         >
           <template #first>
@@ -179,15 +179,14 @@
       </b-form-group>
     </div>
 
-    <!-- TODO: Fix product delete   -->
     <template v-slot:modal-footer="{ }">
-      <b-button
-        v-if="Object.keys(editProduct).length > 0"
-        variant="primary"
-        class="btn-primary mr-auto"
-        v-on:click="deleteProduct"
-      >{{ $t('c_productEditModal.Delete product') }}
-      </b-button>
+<!--      <b-button-->
+<!--        v-if="Object.keys(editProduct).length > 0"-->
+<!--        variant="primary"-->
+<!--        class="btn-primary mr-auto"-->
+<!--        v-on:click="deleteProduct"-->
+<!--      >{{ $t('c_productEditModal.Delete product') }}-->
+<!--      </b-button>-->
       <b-button
         variant="primary"
         class="btn-empty"
@@ -209,14 +208,15 @@ import {
   Component, Prop, Watch,
 } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
-import { Product } from '@/entities/Product';
+import { Product, ProductList } from '@/entities/Product';
 import FileFormPreview from '@/components/FileFormPreview.vue';
 import Formatters from '@/mixins/Formatters';
 import { Container } from '@/entities/Container';
 import ProductsModule from '@/store/modules/products';
 import ContainerModule from '@/store/modules/containers';
-import UserModule from '@/store/modules/user';
-import ProductCategoryModule from '@/store/modules/productcategory';
+import { ProductCategoryList } from '@/entities/ProductCategory';
+import { getProductCategories } from '@/api/productCategories';
+import { getUserProducts } from '@/api/products';
 
 @Component({
   components: {
@@ -232,9 +232,7 @@ export default class ProductEditModal extends Formatters {
 
   private containerState = getModule(ContainerModule);
 
-  private productCategoryState = getModule(ProductCategoryModule);
-
-  private userState = getModule(UserModule);
+  productCategories: ProductCategoryList = {} as ProductCategoryList;
 
   name: string | null = null;
 
@@ -248,14 +246,14 @@ export default class ProductEditModal extends Formatters {
 
   file: File | null = null;
 
-  products: Product[] = [];
+  products: ProductList = {} as ProductList;
 
   selectedProduct: Product | null = null;
 
-  beforeMount() {
-    this.productState.fetchUserProducts();
-    this.productCategoryState.fetchProductCategories();
-    this.products = this.productState.userProducts;
+  async beforeMount() {
+    this.userState.fetchUser();
+    this.products = await getUserProducts(this.userState.user.id, 999);
+    this.productCategories = await getProductCategories(999);
   }
 
   setProduct() {
@@ -387,7 +385,7 @@ export default class ProductEditModal extends Formatters {
       this.category = this.setCapitalLetter(product.category.name);
       this.price = Number((product.price.getAmount() / 100).toPrecision(2));
       this.alcoholPercentage = product.alcoholPercentage;
-      this.img = product.picture;
+      this.img = product.picture || '';
     }
   }
 
