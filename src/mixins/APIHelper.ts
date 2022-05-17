@@ -9,8 +9,9 @@ import devAPI from '../../dev/api';
 
 dotenv.config();
 
+type Token = {token: string, expires: string};
+
 const baseURL = process.env.VUE_APP_API_BASE;
-let token = '';
 const isDev = (process.env.VUE_APP_DEVELOP === 'true');
 
 /**
@@ -143,18 +144,54 @@ function fetchResource(route: string, body: ResponseBody) {
 
 export default {
   getToken() {
-    token = localStorage.getItem('jwt_token') as string;
+    const tokens = this.getTokens();
+    const token = tokens[tokens.length - 1] ?? {};
 
     return {
-      jwtToken: localStorage.getItem('jwt_token'),
-      jwtExpires: localStorage.getItem('jwt_expires'),
+      jwtToken: token.token,
+      jwtExpires: token.expires,
     };
   },
 
+  getTokens(): Token[] {
+    const tokens = localStorage.getItem('jwt_token') as string;
+    if (tokens == null) return [];
+    return JSON.parse(tokens);
+  },
+
+  popToken(): Token | undefined {
+    const tokens = this.getTokens();
+    const token = tokens.pop();
+    this.setTokens(tokens);
+    return token;
+  },
+
+  setTokens(tokens: Token[]) {
+    localStorage.setItem('jwt_token', JSON.stringify(tokens));
+  },
+
+  hasPreviousToken(): boolean {
+    return this.getTokens().length > 1;
+  },
+
+  getPreviousToken(): Token | undefined {
+    const tokens = this.getTokens();
+    return this.hasPreviousToken() ? tokens[tokens.length - 2] : undefined;
+  },
+
+  parseToken(rawToken: string): Token {
+    const expires = String(Number(jwtDecode<JwtPayload>(rawToken).exp) * 1000);
+    return { token: rawToken, expires };
+  },
+
   setToken(jwtToken: string) {
-    localStorage.setItem('jwt_expires', String(Number(jwtDecode<JwtPayload>(jwtToken).exp) * 1000));
-    localStorage.setItem('jwt_token', jwtToken);
-    token = jwtToken;
+    this.setTokens([this.parseToken(jwtToken)]);
+  },
+
+  addToken(jwtToken: string) {
+    const tokens = this.getTokens();
+    tokens.push(this.parseToken(jwtToken));
+    this.setTokens(tokens);
   },
 
   clearToken() {
@@ -166,7 +203,7 @@ export default {
 
     const getBody = {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${this.getToken().jwtToken}`,
       },
     } as ResponseBody;
 
@@ -178,7 +215,7 @@ export default {
 
     const patchBody = {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${this.getToken().jwtToken}`,
         'content-type': 'application/json',
       },
       method: 'PATCH',
@@ -195,7 +232,7 @@ export default {
       body: JSON.stringify(data),
       method: 'PUT',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${this.getToken().jwtToken}`,
         'content-type': 'application/json',
       },
     } as ResponseBody;
@@ -210,7 +247,7 @@ export default {
       body: JSON.stringify(data),
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${this.getToken().jwtToken}`,
         'content-type': 'application/json',
       },
     } as ResponseBody;
@@ -224,7 +261,7 @@ export default {
     const delBody = {
       method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${this.getToken().jwtToken}`,
         'content-type': 'application/json',
       },
     } as ResponseBody;
@@ -239,7 +276,7 @@ export default {
       body: data,
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${this.getToken().jwtToken}`,
         'cache-control': 'no-store',
         pragma: 'no-cache',
       },

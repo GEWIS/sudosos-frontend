@@ -109,9 +109,10 @@ export default class ContainerModule extends VuexModule {
   })
   fetchContainers(force: boolean = false) {
     if (this.containers.length === 0 || force) {
-      const containersResponse = APIHelper.getResource('containers') as [];
-      const cntrs = containersResponse.map((cntr) => ContainerTransformer.makeContainer(cntr));
-      this.context.commit('setContainers', cntrs);
+      (APIHelper.getResource('containers') as Promise<{records: any[]}>).then((res) => {
+        const cntrs = res.records.map((cntr) => ContainerTransformer.makeContainer(cntr));
+        this.context.commit('setContainers', cntrs);
+      });
     }
   }
 
@@ -120,9 +121,10 @@ export default class ContainerModule extends VuexModule {
   })
   fetchPublicContainers(force: boolean = false) {
     if (this.publicContainers.length === 0 || force) {
-      const containersResponse = APIHelper.getResource('publiccontainer') as [];
-      const cntrs = containersResponse.map((cntr) => ContainerTransformer.makeContainer(cntr));
-      this.context.commit('setPublicContainers', cntrs);
+      (APIHelper.getResource('containers/public') as Promise<{records: any[]}>).then((res) => {
+        const cntrs = res.records.map((cntr) => ContainerTransformer.makeContainer(cntr));
+        this.context.commit('setPublicContainers', cntrs);
+      });
     }
   }
 }

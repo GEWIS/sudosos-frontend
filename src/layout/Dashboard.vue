@@ -62,6 +62,13 @@
                 {{ userState.user.firstname }}
               </template>
               <b-dropdown-item :to="{ name: 'profile'}">{{ $t('app.Profile') }}</b-dropdown-item>
+              <b-dropdown-item @click="switchContext(user)"
+                               v-for="user in userState.memberships" :key="user.id">
+                {{ user.name }}
+              </b-dropdown-item>
+              <b-dropdown-item v-if="hasPreviousUser()" @click="popContext()">
+                {{ getPreviousUser().firstname }}
+              </b-dropdown-item>
               <b-dropdown-item @click="logout">{{ $t('app.Sign out') }}</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item
@@ -114,6 +121,10 @@ import { getModule } from 'vuex-module-decorators';
 import UserModule from '@/store/modules/user';
 import Logout from '@/mixins/Logout';
 import APIHelper from '@/mixins/APIHelper';
+import { LoginResponse } from '@/entities/APIResponses';
+import UserTransformer from '@/transformers/UserTransformer';
+import { User } from '@/entities/User';
+import jwtDecode, { JwtPayload } from 'jwt-decode';
 
 @Component
 export default class Dashboard extends Vue {
@@ -121,6 +132,7 @@ export default class Dashboard extends Vue {
 
   beforeMount() {
     APIHelper.getToken();
+    this.userState.fetchMemberships(true);
     if (Object.keys(this.userState.user).length <= 0) {
       this.userState.fetchUser(true);
     }
@@ -139,7 +151,38 @@ export default class Dashboard extends Vue {
   logout() {
     Logout.logout(undefined, this.$router);
   }
+
+  // eslint-disable-next-line class-methods-use-this
+  switchContext(user: any): void {
+    APIHelper.postResource(`users/${user.id}/authenticate`, {
+      id: user.id,
+    }).then((res: LoginResponse) => {
+      const newUser = UserTransformer.makeUser(res.user) as User;
+      this.userState.setUser(newUser);
+      this.userState.setUserRoles(res.roles);
+      APIHelper.addToken(res.token);
+      this.$router.go(0);
+    });
+  }
+
+  popContext() {
+    APIHelper.popToken();
+    this.$router.go(0);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  hasPreviousUser() {
+    return APIHelper.hasPreviousToken();
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  getPreviousUser() {
+    const token = APIHelper.getPreviousToken();
+    if (!token) return undefined;
+    return UserTransformer.makeUser((jwtDecode<JwtPayload>(token.token) as any).user);
+  }
 }
+
 </script>
 
 <style lang="scss">

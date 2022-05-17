@@ -15,6 +15,8 @@ import Dinero from 'dinero.js';
 export default class UserModule extends VuexModule {
   user: User = {} as User;
 
+  memberships: User[] = [];
+
   userRoles: string[] = [];
 
   permissions: UserPermissions = {} as UserPermissions;
@@ -23,12 +25,18 @@ export default class UserModule extends VuexModule {
   reset() {
     this.user = {} as User;
     this.userRoles = [];
+    this.memberships = [];
     this.permissions = {} as UserPermissions;
   }
 
   @Mutation
   setUser(user: User) {
     this.user = user;
+  }
+
+  @Mutation
+  setMemberships(users: User[]) {
+    this.memberships = users;
   }
 
   @Mutation
@@ -84,6 +92,20 @@ export default class UserModule extends VuexModule {
       });
       APIHelper.getResource('balances').then((saldoResponse) => {
         this.context.commit('updateSaldo', saldoResponse);
+      });
+    }
+  }
+
+  @Action({
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
+  })
+  fetchMemberships(force: boolean = false) {
+    if (this.memberships.length === 0 || force) {
+      const token = jwtDecode(APIHelper.getToken().jwtToken as string) as any;
+
+      APIHelper.getResource(`users/${token.user.id}/authenticate`).then((userResponses: any[]) => {
+        const users = userResponses.map((cntr) => UserTransformer.makeUser(cntr));
+        this.context.commit('setMemberships', users);
       });
     }
   }

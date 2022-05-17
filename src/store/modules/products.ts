@@ -57,9 +57,10 @@ export default class ProductsModule extends VuexModule {
   })
   fetchProducts(force: boolean = false) {
     if (this.products.length === 0 || force) {
-      const productsResponse = APIHelper.getResource('products') as [];
-      const products = productsResponse.map((product) => ProductTransformer.makeProduct(product));
-      this.context.commit('setProducts', products);
+      (APIHelper.getResource('products') as Promise<{ records: any[]}>).then((res) => {
+        const products = res.records.map((product) => ProductTransformer.makeProduct(product));
+        this.context.commit('setProducts', products);
+      });
     }
   }
 
@@ -68,9 +69,10 @@ export default class ProductsModule extends VuexModule {
   })
   fetchUserProducts(force: boolean = false) {
     if (this.userProducts.length === 0 || force) {
-      const productsResponse = APIHelper.getResource('userproducts') as [];
-      const products = productsResponse.map((product) => ProductTransformer.makeProduct(product));
-      this.context.commit('setUserProducts', products);
+      (APIHelper.getResource('userproducts') as Promise<{ records: any[]}>).then((res) => {
+        const products = res.records.map((product) => ProductTransformer.makeProduct(product));
+        this.context.commit('setUserProducts', products);
+      });
     }
   }
 }
