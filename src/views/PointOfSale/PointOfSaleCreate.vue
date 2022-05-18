@@ -1,7 +1,7 @@
 <template>
   <b-container fluid="lg">
     <h1 class="mb-2 mb-sm-2 mb-lg-2">
-      {{ $t('posRequest.Request Point of Sale') }}
+      {{ $t('posRequest.Create Point of Sale') }}
     </h1>
     <hr>
     <b-row class="mx-0">
@@ -43,8 +43,8 @@
           class="mt-2"
           variant="success"
           @click="requestPOS"
-          :disabled="nameState">
-          {{ $t('posRequest.Request')}}
+          :disabled="!nameState">
+          {{ $t('posRequest.Create')}}
         </b-button>
       </b-col>
 
@@ -121,6 +121,7 @@ import { Product } from '@/entities/Product';
 import UserModule from '@/store/modules/user';
 
 import { getPublicContainers, getUserContainers } from '@/api/containers';
+import PointOfSaleModule from '@/store/modules/pointsofsale';
 
 @Component({
   components: {
@@ -133,6 +134,8 @@ import { getPublicContainers, getUserContainers } from '@/api/containers';
 })
 export default class PointOfSaleRequest extends Vue {
   private userState = getModule(UserModule);
+
+  private pointOfSaleState = getModule(PointOfSaleModule);
 
   name: string | null = null;
 
@@ -249,27 +252,14 @@ export default class PointOfSaleRequest extends Vue {
       this.name = '';
     }
 
-    if (!this.startDateState) {
-      this.startDate = '';
-    }
-
-    if (!this.endDateState) {
-      this.endDate = '';
-    }
-
-    if (this.nameState && this.startDateState && this.endDateState) {
+    if (this.nameState) {
       const pointOfSale = {
         ownerId: this.userState.user.id,
-        update: {
-          name: this.name,
-          startDate: this.startDate,
-          endDate: this.endDate,
-          containers: this.requestContainers,
-          useAuthentication: this.useAuthentication,
-        },
+        name: this.name,
+        containers: this.requestContainers.map((c) => c.id),
       };
 
-      // this.pointOfSaleState.postPointOfSale(pointOfSale);
+      this.pointOfSaleState.postPointOfSale(pointOfSale);
     }
   }
 

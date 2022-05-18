@@ -13,7 +13,7 @@
     "Saldo": "Balance",
     "Points of Sale": "Points of Sale",
     "Overview": "POS Overview",
-    "Request": "Request",
+    "Create": "Create",
     "Admin": "Admin",
     "Manage POS": "Manage POS",
     "Screens": "TV Screens",
@@ -73,7 +73,7 @@
     "Containers": "Containers"
   },
   "posRequest": {
-    "Request Point of Sale": "Request Point of Sale",
+    "Create Point of Sale": "Create Point of Sale",
     "General": "General",
     "Title": "POS Name",
     "Use authentication": "Always have user login on point of sale",
@@ -86,7 +86,7 @@
     "Managers": "Managers",
     "Containers": "Containers",
     "add container": "Add container",
-    "Request": "Request",
+    "Create": "Create",
     "name invalid": "Please provide a valid name that is longer than 0 characters",
     "Start invalid": "Please pick a start date earlier than the end date",
     "End invalid": "Please pick an end date later than the end date and later than now",

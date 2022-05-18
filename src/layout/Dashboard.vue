@@ -13,12 +13,13 @@
           <b-navbar-nav>
             <b-nav-item :to="{ name: 'transactions'}">{{ $t('app.Transactions') }}</b-nav-item>
             <b-nav-item :to="{ name: 'saldo'}">{{ $t('app.Saldo') }}</b-nav-item>
-            <b-nav-item-dropdown :text="$t('app.Points of Sale')">
+            <b-nav-item-dropdown :text="$t('app.Points of Sale')"
+                                 v-if="sellerRole">
               <b-dropdown-item :to="{ name: 'pointOfSale'}">
                 {{ $t('app.Overview') }}
               </b-dropdown-item>
               <b-dropdown-item :to="{ name: 'pointOfSaleRequest'}">
-                {{ $t('app.Request') }}
+                {{ $t('app.Create') }}
               </b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item-dropdown :text="$t('app.Admin')">
@@ -55,9 +56,10 @@
           <b-navbar-nav class="ml-auto">
 
             <b-nav-item-dropdown right>
-              <template v-slot:button-content>
+              <template v-slot:button-content >
                 <!-- TODO: Make sure only SUDOSOS workgroup members have this -->
-                <img id="beerIcon" src="../assets/img/bier.png" alt="beer">
+                <img id="beerIcon" src="../assets/img/bier.png" alt="beer"
+                     :key="userState.user.firstname">
 
                 {{ userState.user.firstname }}
               </template>
@@ -130,6 +132,18 @@ import jwtDecode, { JwtPayload } from 'jwt-decode';
 export default class Dashboard extends Vue {
   userState = getModule(UserModule);
 
+  get sellerRole() {
+    return this.userState.userRoles.indexOf(this.userState.types.SELLER) !== -1;
+  }
+
+  get adminRole() {
+    return this.userState.userRoles.indexOf(this.userState.types.SELLER) !== -1;
+  }
+
+  get BACRole() {
+    return this.userState.userRoles.indexOf(this.userState.types.SELLER) !== -1;
+  }
+
   beforeMount() {
     APIHelper.getToken();
     this.userState.fetchMemberships(true);
@@ -161,13 +175,21 @@ export default class Dashboard extends Vue {
       this.userState.setUser(newUser);
       this.userState.setUserRoles(res.roles);
       APIHelper.addToken(res.token);
-      this.$router.go(0);
+      this.userState.clearMemberships();
+      this.$forceUpdate();
     });
   }
 
   popContext() {
-    APIHelper.popToken();
-    this.$router.go(0);
+    const token = APIHelper.popToken();
+    if (token) {
+      const res = jwtDecode<JwtPayload>(token.token) as any;
+      const user = UserTransformer.makeUser(res.user) as User;
+      this.userState.setUser(user);
+      this.userState.fetchMemberships(true);
+      this.userState.setUserRoles(res.roles);
+      this.$forceUpdate();
+    }
   }
 
   // eslint-disable-next-line class-methods-use-this

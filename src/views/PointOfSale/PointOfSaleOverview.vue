@@ -5,10 +5,6 @@
       <b-col cols="12" md="6" class="mb-md-0 mb-3">
         <POSOverview />
       </b-col>
-
-      <b-col cols="12" md="6">
-        <POSOverview :requested="true" />
-      </b-col>
     </b-row>
     </b-container>
 </template>

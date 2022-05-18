@@ -15,11 +15,23 @@ import Dinero from 'dinero.js';
 export default class UserModule extends VuexModule {
   user: User = {} as User;
 
+  types = {
+    SELLER: 'Seller',
+    BOARD: 'SudoSOS - Board',
+    BAC: 'SudoSOS - BAC',
+  };
+
   memberships: User[] = [];
 
   userRoles: string[] = [];
 
   permissions: UserPermissions = {} as UserPermissions;
+
+  @Action
+  hasRole(role: string) {
+    const result = this.userRoles.indexOf(role) !== -1;
+    return result;
+  }
 
   @Mutation
   reset() {
@@ -40,7 +52,13 @@ export default class UserModule extends VuexModule {
   }
 
   @Mutation
+  clearMemberships() {
+    this.memberships = [];
+  }
+
+  @Mutation
   setUserRoles(roles: string[]) {
+    console.error(roles);
     this.userRoles = roles;
   }
 

@@ -3,8 +3,7 @@
     <b-card-title class="mb-3 mb-lg-5">
       <b-form-row class="mx-0">
         <b-col cols="12">
-          <span v-if="requested">{{ $t('c_POSOverview.requested points of sale') }}</span>
-          <span v-else>{{ $t('c_POSOverview.my points of sale') }}</span>
+          <span>{{ $t('c_POSOverview.my points of sale') }}</span>
         </b-col>
       </b-form-row>
     </b-card-title>
@@ -32,7 +31,6 @@
         @click="$router.push({
           name: full ? 'pointOfSaleApprove' : 'pointOfSaleInfo',
           params: { id: pos.id },
-          query: { update: requested }
         })">
         <b-col
           :cols="full ? 6 : 10" :lg="full ? 5 : 11"
@@ -95,9 +93,6 @@ export default class POSOverview extends Vue {
   // If true all information about POS will show
   @Prop() private full!: boolean;
 
-  // If true we want the requested points of sale
-  @Prop() private requested!: boolean;
-
   // If true all the points of sale will be shown instead of the users
   @Prop({ default: false }) private showAll!: boolean;
 
@@ -120,12 +115,8 @@ export default class POSOverview extends Vue {
   }
 
   async fetchData(take: number | null = null, skip: number | null = null) {
-    if (this.showAll && this.requested) {
-      this.pointsOfSale = await getPointsOfSaleUpdates(take, skip);
-    } else if (this.showAll) {
+    if (this.showAll) {
       this.pointsOfSale = await getAllPointsOfSale(take, skip);
-    } else if (this.requested) {
-      this.pointsOfSale = await getUserRequestedPointsOfSale(this.userState.user.id, take, skip);
     } else {
       this.pointsOfSale = await getUserPointsOfSale(this.userState.user.id, take, skip);
     }

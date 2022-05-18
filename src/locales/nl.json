@@ -13,7 +13,7 @@
     "Saldo": "Saldo",
     "Points of Sale": "Verkooppunten",
     "Overview": "Overzicht POS",
-    "Request": "Aanvraag",
+    "Create": "Aanmaken",
     "Admin": "Beheer",
     "Manage POS": "Beheer verkooppunten",
     "Screens": "TV Schermen",
@@ -73,7 +73,7 @@
     "Containers": "Containers"
   },
   "posRequest": {
-    "Request Point of Sale": "Aanvraag verkooppunt",
+    "Create Point of Sale": "Aanmaken verkooppunt",
     "General": "Algemeen",
     "Title": "POS Naam",
     "Use authentication": "Gebruikers moeten altijd inloggen op het verkooppunt",
@@ -86,7 +86,7 @@
     "Managers": "Beheerders",
     "Containers": "Containers",
     "add container": "Container toevoegen",
-    "Request": "Vraag aan",
+    "Create": "Aanmaken",
     "name invalid": "Voer een correcte naam in van die langer is dan 0 tekens",
     "Start invalid": "Voer een start datum in die vroeger is dan de eind datum",
     "End invalid": "Voer een eind datum in later dan vandaag",

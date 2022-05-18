@@ -5,6 +5,8 @@ import eventBus from '@/eventbus';
 import { ApiError } from '@/entities/ApiError';
 import { ResponseBody } from '@/entities/ResponseBody';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
+import UserTransformer from '@/transformers/UserTransformer';
+import { User } from '@/entities/User';
 import devAPI from '../../dev/api';
 
 dotenv.config();
@@ -153,6 +155,12 @@ export default {
     };
   },
 
+  getTokenUser() {
+    const token = this.getToken();
+    const rawUser = (jwtDecode<JwtPayload>(token.jwtToken) as any);
+    return UserTransformer.makeUser(rawUser.user) as User;
+  },
+
   getTokens(): Token[] {
     const tokens = localStorage.getItem('jwt_token') as string;
     if (tokens == null) return [];
@@ -162,8 +170,8 @@ export default {
   popToken(): Token | undefined {
     const tokens = this.getTokens();
     const token = tokens.pop();
-    this.setTokens(tokens);
-    return token;
+    if (token) this.setTokens(tokens);
+    return tokens[tokens.length - 1];
   },
 
   setTokens(tokens: Token[]) {

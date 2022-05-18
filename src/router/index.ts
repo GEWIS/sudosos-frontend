@@ -9,7 +9,7 @@ import Saldo from '@/views/Saldo.vue';
 import Transactions from '@/views/Transactions.vue';
 import PointOfSaleOverview from '@/views/PointOfSale/PointOfSaleOverview.vue';
 import PointOfSaleApprove from '@/views/PointOfSale/PointOfSaleApprove.vue';
-import PointOfSaleRequest from '@/views/PointOfSale/PointOfSaleRequest.vue';
+import PointOfSaleRequest from '@/views/PointOfSale/PointOfSaleCreate.vue';
 import ManagePointOfSale from '@/views/Admin/ManagePointOfSale.vue';
 import Screens from '@/views/Admin/Screens.vue';
 import Banners from '@/views/Admin/Banners.vue';

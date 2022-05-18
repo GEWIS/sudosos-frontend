@@ -38,6 +38,7 @@ export default class ContainerModule extends VuexModule {
   @Mutation
   addContainer(container: any) {
     const containerResponse = APIHelper.postResource('containers', container);
+    if (!this.containers) this.containers = [];
     this.containers.push(ContainerTransformer.makeContainer(containerResponse) as Container);
   }
 
