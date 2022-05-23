@@ -106,8 +106,7 @@ import TransactionTableFilter from '@/components/TransactionTableFilter.vue';
 import { Transaction, TransactionFilter, TransactionList } from '@/entities/Transaction';
 import { initFilter } from '@/entities/TransactionFilter';
 import { Transfer, TransferFilter, TransferList } from '@/entities/Transfer';
-import { TransactionDateRow } from '@/entities/TransactionDateRow';
-import { getTransaction, getUserTransactions } from '@/api/transactions';
+import { getTransaction, getTransactions, getUserTransactions } from '@/api/transactions';
 import { getTransfer, getUserTransfers } from '@/api/transfers';
 
 @Component({
@@ -289,21 +288,22 @@ export default class TransactionsTable extends Formatters {
 
     if (this.pointOfSale !== undefined) {
       transFilter.pointOfSaleId = this.pointOfSale;
+      this.transactions = await getTransactions(transFilter, take, skip);
+    } else {
+      this.transactions = await getUserTransactions(
+        this.userState.user.id,
+        transFilter,
+        take,
+        skip,
+      );
+
+      this.transfers = await getUserTransfers(
+        this.userState.user.id,
+        {} as TransferFilter,
+        take,
+        skip,
+      );
     }
-
-    this.transactions = await getUserTransactions(
-      this.userState.user.id,
-      transFilter,
-      take,
-      skip,
-    );
-
-    this.transfers = await getUserTransfers(
-      this.userState.user.id,
-      {} as TransferFilter,
-      take,
-      skip,
-    );
   }
 
   /**

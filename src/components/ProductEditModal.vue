@@ -180,13 +180,13 @@
     </div>
 
     <template v-slot:modal-footer="{ }">
-<!--      <b-button-->
-<!--        v-if="Object.keys(editProduct).length > 0"-->
-<!--        variant="primary"-->
-<!--        class="btn-primary mr-auto"-->
-<!--        v-on:click="deleteProduct"-->
-<!--      >{{ $t('c_productEditModal.Delete product') }}-->
-<!--      </b-button>-->
+      <b-button
+        v-show="Object.keys(editProduct).length > 0"
+        variant="primary"
+        class="btn-primary mr-auto"
+        v-on:click="deleteProduct"
+      >{{ $t('c_productEditModal.Delete product') }}
+      </b-button>
       <b-button
         variant="primary"
         class="btn-empty"
@@ -195,7 +195,7 @@
       </b-button>
       <b-button
         variant="primary"
-        class="btn-empty"
+        class="btn-primary"
         @click="save">
         {{ $t('c_productEditModal.save') }}
       </b-button>
@@ -217,6 +217,7 @@ import ContainerModule from '@/store/modules/containers';
 import { ProductCategoryList } from '@/entities/ProductCategory';
 import { getProductCategories } from '@/api/productCategories';
 import { getUserProducts } from '@/api/products';
+import ProductCategoryModule from '@/store/modules/productcategory';
 
 @Component({
   components: {
@@ -296,6 +297,7 @@ export default class ProductEditModal extends Formatters {
             product,
           });
         } else {
+          delete product.owner;
           this.containerState.addProduct({
             container: this.container,
             product,
@@ -309,10 +311,11 @@ export default class ProductEditModal extends Formatters {
     } else if (this.nameState && this.categoryState && this.priceState && this.pictureState) {
       // Construct the new product property
       const product = this.constructProduct();
+      console.error(product);
 
-      // Check if a product is being added or being editted
+      // Check if a product is being added or being edited
       if (Object.keys(this.editProduct).length > 0) {
-        this.productState.updateProduct(product);
+        this.productState.updateProduct(product as Product);
       } else {
         this.productState.addProduct(product);
       }
@@ -352,13 +355,16 @@ export default class ProductEditModal extends Formatters {
         firstname: this.userState.user.firstname,
         lastname: this.userState.user.lastname,
       },
-      price: this.price === null ? 0 : (this.price * 100).toPrecision(2),
-      category: this.productCategoryState.productCategories.find(
+      price: {
+        amount: this.price === null ? 0 : Math.round(this.price * 100),
+        currency: 'EUR',
+        precision: 2,
+      },
+      category: this.productCategories.records.find(
         (cat) => cat.name === this.category,
-      ),
-      picture: this.file !== null ? URL.createObjectURL(this.file) : this.img,
-      alcoholPercentage: this.alcoholPercentage === null ? 0 : this.alcoholPercentage,
-      createdAt: Object.keys(this.editProduct).length > 0 ? this.editProduct.createdAt : null,
+      )?.id,
+      // picture: this.file !== null ? URL.createObjectURL(this.file) : this.img,
+      alcoholPercentage: this.alcoholPercentage === null ? 0 : Number(this.alcoholPercentage),
     } as {id?: number};
 
     if (Object.keys(this.editProduct).length <= 0) {

@@ -1,7 +1,7 @@
 <template>
   <b-container fluid="lg">
     <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('managePOS.Manage points of sale') }}</h1>
-    <POSOverview :full="true" :requested="true" :show-all="true"></POSOverview>
+    <POSOverview :full="true" :show-all="true"></POSOverview>
   </b-container>
 </template>
 

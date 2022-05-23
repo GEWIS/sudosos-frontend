@@ -32,6 +32,7 @@ export default class ProductsModule extends VuexModule {
 
   @Mutation
   addProduct(product: {}) {
+    console.log(product);
     const productResponse = APIHelper.postResource('products', product);
     const productToAdd = ProductTransformer.makeProduct(productResponse) as Product;
     this.userProducts.push(productToAdd);
@@ -45,8 +46,8 @@ export default class ProductsModule extends VuexModule {
   }
 
   @Mutation
-  updateProduct(product: {}) {
-    const response = APIHelper.putResource('products', product);
+  updateProduct(product: Product) {
+    const response = APIHelper.patchResource(`products/${product.id}`, product);
     const productResponse = ProductTransformer.makeProduct(response);
     const index = this.userProducts.findIndex((prd) => prd.id === productResponse.id);
     this.userProducts.splice(index, 1, productResponse as Product);

@@ -18,7 +18,7 @@
           </b-button>
         </div>
         <ProductTable
-          :productsProp="this.productState.userProducts"
+          :productsProp="this.productState.products"
           :editable="true"
           :enabled="true"
           v-on:editProduct="prepEditStandardProduct"

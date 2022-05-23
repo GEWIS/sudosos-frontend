@@ -29,7 +29,7 @@
         v-for="pos in pointsOfSale.records"
         :key="pos.id"
         @click="$router.push({
-          name: full ? 'pointOfSaleApprove' : 'pointOfSaleInfo',
+          name: 'pointOfSaleInfo',
           params: { id: pos.id },
         })">
         <b-col

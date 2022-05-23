@@ -22,7 +22,7 @@
                 {{ $t('app.Create') }}
               </b-dropdown-item>
             </b-nav-item-dropdown>
-            <b-nav-item-dropdown :text="$t('app.Admin')">
+            <b-nav-item-dropdown :text="$t('app.Admin')" v-if="adminRole">
               <b-dropdown-item :to="{ name: 'managePointOfSale'}">
                 {{ $t('app.Manage POS') }}
               </b-dropdown-item>
@@ -33,7 +33,7 @@
                 {{ $t('app.Banners') }}
               </b-dropdown-item>
             </b-nav-item-dropdown>
-            <b-nav-item-dropdown :text="$t('app.BAC')">
+            <b-nav-item-dropdown :text="$t('app.BAC')" v-if="BACRole">
               <b-dropdown-item :to="{ name: 'managePointOfSale'}">
                 {{ $t('app.Manage POS') }}
               </b-dropdown-item>
@@ -137,11 +137,11 @@ export default class Dashboard extends Vue {
   }
 
   get adminRole() {
-    return this.userState.userRoles.indexOf(this.userState.types.SELLER) !== -1;
+    return this.userState.userRoles.indexOf(this.userState.types.BOARD) !== -1;
   }
 
   get BACRole() {
-    return this.userState.userRoles.indexOf(this.userState.types.SELLER) !== -1;
+    return this.userState.userRoles.indexOf(this.userState.types.BAC) !== -1;
   }
 
   beforeMount() {

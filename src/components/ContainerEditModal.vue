@@ -87,7 +87,8 @@ import {
 import Formatters from '@/mixins/Formatters';
 import { Container } from '@/entities/Container';
 
-import { patchContainer } from '@/api/containers';
+import { getContainerProducts, patchContainer } from '@/api/containers';
+import { Product } from '@/entities/Product';
 
   @Component
 export default class ContainerEditModal extends Formatters {
@@ -97,7 +98,9 @@ export default class ContainerEditModal extends Formatters {
 
     containerPublic: boolean = false;
 
-    beforeMount() {
+    containerProducts: Product[] = [];
+
+    async beforeMount() {
       if (Object.keys(this.editContainer).length > 0) {
         this.containerName = this.editContainer.name;
         this.containerPublic = this.editContainer.public as boolean;
@@ -114,7 +117,7 @@ export default class ContainerEditModal extends Formatters {
       const updatedContainer = {} as Container;
       updatedContainer.name = this.containerName as string;
       updatedContainer.public = this.containerPublic;
-      updatedContainer.products = [];
+      updatedContainer.products = this.containerProducts;
 
       patchContainer(this.editContainer.id, updatedContainer);
 
@@ -136,8 +139,11 @@ export default class ContainerEditModal extends Formatters {
     }
 
     @Watch('editContainer')
-    onEditContainerChange(value: Container, old: Container) : void {
+    async onEditContainerChange(value: Container, old: Container) : Promise<void> {
       if (Object.keys(value).length > 0) {
+        this.containerProducts = ((await getContainerProducts(this.editContainer.id) as any)
+          .records).map((p: Product) => p.id);
+        console.error(this.containerProducts);
         this.containerName = value.name;
         this.containerPublic = value.public as boolean;
       } else {
