@@ -1,5 +1,13 @@
 import APIHelper from '@/mixins/APIHelper';
 
-export default function stripeDeposit(deposit: any) {
-  return APIHelper.postResource('strip/deposit', deposit).then((response) => response);
+export interface Deposit {
+  amount : {
+    amount: number,
+    precision: number,
+    currency: string,
+  }
+}
+
+export default function stripeDeposit(deposit: Deposit) {
+  return APIHelper.postResource('stripe/deposit', deposit).then((response) => response);
 }
