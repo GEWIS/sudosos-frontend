@@ -23,7 +23,8 @@
                 :invalid-feedback="firstNameFeedback"
                 :state="validateFirstname"
               >
-                <b-form-input id="new-firstname" v-model="firstname" type="text" />
+                <b-form-input :disabled="!isLocal"
+                              id="new-firstname" v-model="firstname" type="text" />
               </b-form-group>
 
               <b-form-group
@@ -31,7 +32,8 @@
                 :label="$t('profile.Last name')"
                 label-for="new-lastname"
               >
-                <b-form-input id="new-lastname" v-model="lastname" type="text" />
+                <b-form-input :disabled="!isLocal"
+                              id="new-lastname" v-model="lastname" type="text" />
               </b-form-group>
 
               <b-form-group
@@ -64,7 +66,8 @@
                 :invalid-feedback="passwordFeedback"
                 :state="validatePassword"
               >
-                <b-form-input id="new-password" v-model="password" type="password" />
+                <b-form-input id="new-password"
+                              :disabled="!isLocal" v-model="password" type="password" />
               </b-form-group>
 
               <b-form-group
@@ -74,9 +77,10 @@
                 :invalid-feedback="confirmPasswordFeedback"
                 :state="validateConfirmPassword"
               >
-                <b-form-input id="new-password-confirm" v-model="confirmPassword" type="password" />
+                <b-form-input id="new-password-confirm"
+                              :disabled="!isLocal" v-model="confirmPassword" type="password" />
               </b-form-group>
-              <b-button type="submit" variant="primary">
+              <b-button type="submit" variant="primary" :disabled="!isLocal">
                 {{ $t('profile.Update password')}}
               </b-button>
             </b-form>
@@ -198,6 +202,8 @@ export default class Profile extends Vue {
     confirmPincode: null,
   };
 
+  isLocal = false;
+
   /**
    * Fetch all the user info that is needed for the profile
    */
@@ -206,6 +212,7 @@ export default class Profile extends Vue {
     this.firstname = this.userState.user.firstname;
     this.lastname = this.userState.user.lastname;
     this.email = this.userState.user.email || '';
+    this.userState.hasRole('LOCAL_USER').then((res) => { this.isLocal = res; });
   }
 
   /**
@@ -213,8 +220,8 @@ export default class Profile extends Vue {
    */
   changePincode(event: Event) {
     event.preventDefault();
-    if (this.validateNewPincode && this.validateConfirmPincode) {
-      this.userState.updatePinCode(this.pincode);
+    if (!this.validateNewPincode && this.validateConfirmPincode) {
+      this.userState.updatePinCode(this.pincode.newPincode);
       this.pincode.newPincode = null;
       this.pincode.confirmPincode = null;
     }

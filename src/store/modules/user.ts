@@ -9,6 +9,13 @@ import { NFCDevice } from '@/entities/NFCDevice';
 import jwtDecode from 'jwt-decode';
 import Dinero from 'dinero.js';
 
+interface UpdateUserInfo {
+  userID: number,
+  firstname: string,
+  lastname: string,
+  email: string,
+}
+
 @Module({
   dynamic: true, namespaced: true, store, name: 'UserModule',
 })
@@ -19,6 +26,7 @@ export default class UserModule extends VuexModule {
     SELLER: 'Seller',
     BOARD: 'SudoSOS - Board',
     BAC: 'SudoSOS - BAC',
+    LOCAL: 'LOCAL_USER',
   };
 
   memberships: User[] = [];
@@ -28,7 +36,7 @@ export default class UserModule extends VuexModule {
   permissions: UserPermissions = {} as UserPermissions;
 
   @Action
-  hasRole(role: string) {
+  async hasRole(role: string) {
     const result = this.userRoles.indexOf(role) !== -1;
     return result;
   }
@@ -58,7 +66,6 @@ export default class UserModule extends VuexModule {
 
   @Mutation
   setUserRoles(roles: string[]) {
-    console.error(roles);
     this.userRoles = roles;
   }
 
@@ -96,6 +103,23 @@ export default class UserModule extends VuexModule {
         this.context.commit('updateSaldo', saldoResponse);
       });
     }
+  }
+
+  @Action
+  async updatePinCode(pin: string) {
+    const result = await APIHelper.putResource(`users/${this.user.id}/pin`, { pin });
+  }
+
+  @Action
+  // eslint-disable-next-line class-methods-use-this
+  async updatePassword(password: { id: number, password: string }) {
+    // pass
+  }
+
+  @Action
+  // eslint-disable-next-line class-methods-use-this
+  async updateUserInformation(information: UpdateUserInfo) {
+    // pass
   }
 
   @Action({

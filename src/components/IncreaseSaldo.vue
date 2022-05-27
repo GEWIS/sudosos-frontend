@@ -1,26 +1,55 @@
 <template>
-  <!--  <div v-if="elementsOptions.clientSecret">-->
-  <div>
-    <div class="form-row">
-      <!--
-        Using a label with a for attribute that matches the ID of the
-        Element container enables the Element to automatically gain focus
-        when the customer clicks on the label.
-      -->
-      <label for="ideal-bank-element">
-        iDEAL Bank
-      </label>.
-      <div id="ideal-bank-element">
-        <!-- A Stripe Element will be inserted here. -->
-      </div>
-    </div>
-
-    <button @click="pay">Submit Payment</button>
+  <div id="saldo-box"> <!-- to be replaced by card component -->
+    <b-card>
+      <b-card-title>
+        Increase saldo
+<!--        {{ $t('c_currentSaldo.saldo') }}-->
+      </b-card-title>
+      <b-card-body class="mb-0">
+        <p class="mb-2">
+          It is no longer possible to increase your balance in cash during the 'borrel'.</p>
+        <b-row class="mb-3">
+          <b-col class="font-weight-bold">
+            Balance Increase amount:
+            <b-input-group size="sm" prepend="€" class="input-group">
+              <b-form-input v-model="whole" placeholder="00" type="number" min="0"></b-form-input>
+              <b-form-input v-model="decimal" placeholder="00" type="number" min="0"></b-form-input>
+            </b-input-group>
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col class="font-weight-bold">
+            <!--
+              Using a label with a for attribute that matches the ID of the
+              Element container enables the Element to automatically gain focus
+              when the customer clicks on the label.
+            -->
+            <label for="ideal-bank-element">
+              iDEAL Bank
+            </label>.
+            <div ref="bank" id="ideal-bank-element">
+              <!-- A Stripe Element will be inserted here. -->
+            </div>
+          </b-col>
+        </b-row>
+        <b-row class="mt-3">
+          <b-col>
+          <b-button
+            variant="primary"
+            id="confirmBorrelModeTime"
+            class="mx-1 my-1 my-sm-0"
+            v-on:click="pay">
+            Increase Balance
+          </b-button>
+          </b-col>
+        </b-row>
+      </b-card-body>
+    </b-card>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import stripeDeposit from '@/api/stripe';
 
 @Component
@@ -29,13 +58,13 @@ export default class IncreaseSaldo extends Vue {
 
   private pk = 'pk_test_51L2gp5Dc07FvE4beZcK9p6086vtUEtemNfBntoGXoeKDWRLdmgRp4aighjD8R6b9e4hsNiucz7sNXhB6XEEL2IUy00LPiofvlm';
 
+  whole = 0;
+
+  decimal = 0;
+
   private elementsOptions = {
     clientSecret: undefined,
     appearance: {}, // appearance options
-  };
-
-  private confirmParams = {
-    return_url: 'http://localhost:8080/', // success url
   };
 
   get stripeElements() {
@@ -48,7 +77,7 @@ export default class IncreaseSaldo extends Vue {
       style: {
         base: {
           padding: '10px 12px',
-          color: '#32325d',
+          color: '#d40000',
           fontSize: '16px',
           '::placeholder': {
             color: '#aab7c4',
@@ -56,28 +85,28 @@ export default class IncreaseSaldo extends Vue {
         },
       },
     };
-    await this.generatePaymentIntent();
-    this.idealBank = this.stripeElements.create('idealBank', options);
+    this.idealBank = await this.stripeElements.create('idealBank', options);
     this.idealBank.mount('#ideal-bank-element');
-    console.error(this.idealBank);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   async generatePaymentIntent() {
+    console.error('');
+  }
+
+  async pay() {
+    const amount = Number(this.whole) * 100 + Number(this.decimal);
     const deposit = {
       amount: {
-        amount: 2000,
+        amount,
         precision: 2,
         currency: 'EUR',
       },
     };
     const paymentIntent = await stripeDeposit(deposit);
-    this.elementsOptions.clientSecret = paymentIntent.clientSecret;
-  }
-
-  pay() {
     // Redirects away from the client
     this.$stripe.confirmIdealPayment(
-      this.elementsOptions.clientSecret,
+      paymentIntent.clientSecret,
       {
         payment_method: {
           ideal: this.idealBank,
@@ -93,9 +122,14 @@ export default class IncreaseSaldo extends Vue {
 </script>
 
 <style scoped lang="scss">
+@import './src/styles/Card.scss';
 
 #ideal-bank-element {
-  min-width: 500px;
+  max-width: 200px;
+}
+
+.input-group {
+  max-width: 200px;
 }
 
 input,

@@ -75,8 +75,9 @@ export default class PointOfSaleApprove extends Vue {
     infoProduct: Product = {} as Product;
 
     beforeMount() {
-      const pos = this.pointOfSaleState.getPointsOfSale;
-      const index = pos.findIndex((ps) => ps.id === this.id);
+      this.pointOfSaleState.fetchPointsOfSale();
+      const pos = this.pointOfSaleState.pointsOfSale;
+      const index = pos.findIndex((ps: any) => ps.id === this.id);
       this.requestedPOS = pos[index];
     }
 

@@ -32,7 +32,7 @@
           :per-page="perPage"
           :current-page="currentPage"
           v-on:row-clicked="rowClicked"
-          :busy="transList.length === 0"
+          :busy="!loaded"
         >
           <!-- If the table data is still loading display something nice -->
           <template #table-busy>
@@ -170,6 +170,8 @@ export default class TransactionsTable extends Formatters {
   // Current transaction filter
   transactionFilter: TransactionFilter = {} as TransactionFilter;
 
+  loaded = false;
+
   /**
    * Fields that should be shown from the transList
    */
@@ -276,6 +278,7 @@ export default class TransactionsTable extends Formatters {
 
   // Grabs the latest items depending on the current page
   async fetchNewData(page = this.currentPage) {
+    this.loaded = false;
     const transFilter = this.transactionFilter;
     let skip = (page - 1) * this.perPage;
     let take = this.perPage;
@@ -304,6 +307,7 @@ export default class TransactionsTable extends Formatters {
         skip,
       );
     }
+    this.loaded = true;
   }
 
   /**

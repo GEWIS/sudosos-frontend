@@ -86,7 +86,7 @@ Vue.config.productionTip = false;
 Vue.config.devtools = true;
 
 const options = {
-  pk: 'pk_test_51L2gp5Dc07FvE4beZcK9p6086vtUEtemNfBntoGXoeKDWRLdmgRp4aighjD8R6b9e4hsNiucz7sNXhB6XEEL2IUy00LPiofvlm',
+  pk: process.env.STRIPE_PUBLISHABLE_KEY,
   // stripeAccount: process.env.STRIPE_ACCOUNT,
   // apiVersion: process.env.API_VERSION,
   // locale: process.env.LOCALE,

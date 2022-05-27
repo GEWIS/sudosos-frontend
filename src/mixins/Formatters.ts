@@ -156,7 +156,8 @@ export default class Formatters extends Vue {
 
     // This is a transfer
     if (trans.description !== undefined && trans.description.length > 0) {
-      return trans.description;
+      return this.$t('c_transactionsTable.transfer', { amount: trans.amount.toFormat() });
+      // return trans.description;
     }
 
     return this.$t('c_recentTransactionsTable.transfer', { amount: trans.amount.toFormat() });
