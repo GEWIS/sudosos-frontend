@@ -4,7 +4,7 @@ WORKDIR /app
 COPY ./package.json ./package-lock.json ./
 RUN npm install
 COPY ./ ./
-RUN npm run build
+RUN cp .env.example .env && npm run build
 
 # The target image that will be run
 FROM nginx:alpine as target
