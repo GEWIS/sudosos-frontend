@@ -82,6 +82,7 @@
 </template>
 
 <script lang="ts">
+/* eslint-disable */
 import { Component } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import UserModule from '@/store/modules/user';

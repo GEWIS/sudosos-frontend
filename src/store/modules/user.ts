@@ -33,12 +33,13 @@ export default class UserModule extends VuexModule {
 
   userRoles: string[] = [];
 
+  allUsers: User[] = [];
+
   permissions: UserPermissions = {} as UserPermissions;
 
   @Action
   async hasRole(role: string) {
-    const result = this.userRoles.indexOf(role) !== -1;
-    return result;
+    return this.userRoles.indexOf(role) !== -1;
   }
 
   @Mutation
@@ -112,13 +113,37 @@ export default class UserModule extends VuexModule {
 
   @Action
   // eslint-disable-next-line class-methods-use-this
+  async updateUsersPinCode(update: { userID: number, pin: string }) {
+    const result = await APIHelper.putResource(`users/${update.userID}/pin`, { pin: update.pin });
+  }
+
+  @Action
+  // eslint-disable-next-line class-methods-use-this
   async updatePassword(password: { id: number, password: string }) {
     // pass
   }
 
   @Action
   // eslint-disable-next-line class-methods-use-this
+  async updateUsersPassword(password: { userID: number, password: string }) {
+    // pass
+  }
+
+  @Action
+  // eslint-disable-next-line class-methods-use-this
   async updateUserInformation(information: UpdateUserInfo) {
+    // pass
+  }
+
+  @Action
+  // eslint-disable-next-line class-methods-use-this
+  async updateUsersUserInformation(information: any) {
+    // pass
+  }
+
+  @Action
+  // eslint-disable-next-line class-methods-use-this
+  async fetchAllUsers() {
     // pass
   }
 

@@ -147,7 +147,9 @@ function fetchResource(route: string, body: ResponseBody) {
 export default {
   getToken() {
     const tokens = this.getTokens();
-    const token = tokens[tokens.length - 1] ?? {};
+    const token = tokens[tokens.length - 1] ?? undefined;
+
+    if (!token) return null;
 
     return {
       jwtToken: token.token,
@@ -218,7 +220,7 @@ export default {
     return fetchResource(constructedRoute, getBody);
   },
 
-  patchResource(route: string, data: any, args = null) {
+  patchResource(route: string, data: any, args = null as any) {
     const constructedRoute = makeRoute(route, args);
 
     const patchBody = {
@@ -233,7 +235,7 @@ export default {
     return fetchResource(constructedRoute, patchBody);
   },
 
-  putResource(route: string, data: any, args = null) {
+  putResource(route: string, data: any, args = null as any) {
     const constructedRoute = makeRoute(route, args);
 
     const putBody = {
@@ -248,7 +250,7 @@ export default {
     return fetchResource(constructedRoute, putBody);
   },
 
-  postResource(route: string, data: any = {}, args = null) {
+  postResource(route: string, data: any = {}, args = null as any) {
     const constructedRoute = makeRoute(route, args);
 
     const postBody = {
@@ -263,7 +265,7 @@ export default {
     return fetchResource(constructedRoute, postBody);
   },
 
-  delResource(route: string, args = null) {
+  delResource(route: string, args = null as any) {
     const constructedRoute = makeRoute(route, args);
 
     const delBody = {
@@ -277,7 +279,7 @@ export default {
     return fetchResource(constructedRoute, delBody);
   },
 
-  postFile(route: string, data: any, args = null) {
+  postFile(route: string, data: any, args = null as any) {
     const constructedRoute = makeRoute(route, args);
 
     const postFileBody = {

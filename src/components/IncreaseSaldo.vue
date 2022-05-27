@@ -54,18 +54,13 @@ import stripeDeposit from '@/api/stripe';
 
 @Component
 export default class IncreaseSaldo extends Vue {
-  private idealBank = null;
-
-  private pk = 'pk_test_51L2gp5Dc07FvE4beZcK9p6086vtUEtemNfBntoGXoeKDWRLdmgRp4aighjD8R6b9e4hsNiucz7sNXhB6XEEL2IUy00LPiofvlm';
+  private idealBank: any = null;
 
   whole = 0;
 
   decimal = 0;
 
-  private elementsOptions = {
-    clientSecret: undefined,
-    appearance: {}, // appearance options
-  };
+  $stripe: any;
 
   get stripeElements() {
     return this.$stripe.elements();

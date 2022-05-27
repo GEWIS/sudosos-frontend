@@ -241,7 +241,7 @@ export default class UserDetails extends Vue {
   changePincode(event: Event) {
     event.preventDefault();
     if (this.validateNewPincode && this.validateConfirmPincode) {
-      this.userState.updateUsersPinCode({ userID: Number(this.id), pincode: this.pincode });
+      this.userState.updateUsersPinCode({ userID: Number(this.id), pin: this.pincode });
       this.pincode.newPincode = null;
       this.pincode.confirmPincode = null;
     }

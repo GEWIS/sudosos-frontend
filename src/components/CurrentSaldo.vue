@@ -31,7 +31,7 @@ import UserModule from '@/store/modules/user';
 
 @Component
 export default class CurrentSaldo extends Formatters {
-  private userState = getModule(UserModule);
+  userState = getModule(UserModule);
 
   beforeMount() {
     this.userState.fetchBalance();

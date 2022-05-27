@@ -194,7 +194,7 @@ export default class TransactionEditor extends Vue {
           const group = {
             group: container.name,
             product: {} as Product,
-            container: null,
+            container: null as any,
           };
           this.posProducts.push(group);
 
@@ -202,7 +202,7 @@ export default class TransactionEditor extends Vue {
             const prod = {
               product,
               container,
-              group: null,
+              group: null as any,
             };
             this.posProducts.push(prod);
           });

@@ -297,7 +297,7 @@ export default class ProductEditModal extends Formatters {
             product,
           });
         } else {
-          delete product.owner;
+          delete (product as any).owner;
           this.containerState.addProduct({
             container: this.container,
             product,
