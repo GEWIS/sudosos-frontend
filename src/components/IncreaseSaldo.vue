@@ -104,7 +104,7 @@ export default class IncreaseSaldo extends Vue {
           //   name: accountholderName.value,
           // },
         },
-        return_url: 'http://localhost:8080/',
+        return_url: process.env.VUE_APP_STRIPE_RETURN_URL,
       },
     );
   }
