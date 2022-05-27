@@ -92,7 +92,7 @@ import { Product } from '@/entities/Product';
 
 @Component
 export default class UserTable extends Formatters {
-  private userState = getModule(UserModule)
+  userState = getModule(UserModule)
 
   perPage = 2;
 

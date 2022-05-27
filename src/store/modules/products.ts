@@ -32,7 +32,6 @@ export default class ProductsModule extends VuexModule {
 
   @Mutation
   addProduct(product: {}) {
-    console.log(product);
     const productResponse = APIHelper.postResource('products', product);
     const productToAdd = ProductTransformer.makeProduct(productResponse) as Product;
     this.userProducts.push(productToAdd);

@@ -284,15 +284,16 @@ export default class UserDetails extends Vue {
    * @param {NFCDevice} device: The new NFC device
    */
   updateDevice(device: NFCDevice) {
-    this.userState.updateUsersNFCDevice({ userID: Number(this.id), id: device.id });
+    // this.userState.updateUsersNFCDevice({ userID: Number(this.id), id: device.id });
     this.editDevice = {} as NFCDevice;
   }
 
   /**
    * If the deletion of an NFC device is confirmed this will remove it.
    */
+  // eslint-disable-next-line class-methods-use-this
   removeNFCDevice() {
-    this.userState.removeUsersNFCDevice({ userID: Number(this.id), id: this.removeDevice.id });
+    // this.userState.removeUsersNFCDevice({ userID: Number(this.id), id: this.removeDevice.id });
   }
 
   /**

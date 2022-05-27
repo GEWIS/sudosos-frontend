@@ -89,11 +89,6 @@ export default class IncreaseSaldo extends Vue {
     this.idealBank.mount('#ideal-bank-element');
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  async generatePaymentIntent() {
-    console.error('');
-  }
-
   async pay() {
     const amount = Number(this.whole) * 100 + Number(this.decimal);
     const deposit = {
