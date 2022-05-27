@@ -147,10 +147,7 @@ function fetchResource(route: string, body: ResponseBody) {
 export default {
   getToken() {
     const tokens = this.getTokens();
-    const token = tokens[tokens.length - 1] ?? undefined;
-
-    if (!token) return null;
-
+    const token = tokens[tokens.length - 1] ?? {} as any;
     return {
       jwtToken: token.token,
       jwtExpires: token.expires,

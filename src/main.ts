@@ -86,7 +86,7 @@ Vue.config.productionTip = false;
 Vue.config.devtools = true;
 
 const options = {
-  pk: process.env.STRIPE_PUBLISHABLE_KEY,
+  pk: process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY,
   // stripeAccount: process.env.STRIPE_ACCOUNT,
   // apiVersion: process.env.API_VERSION,
   // locale: process.env.LOCALE,
