@@ -22,3 +22,15 @@ export interface ProductList {
   _pagination: Pagination;
   records: Product[];
 }
+
+export interface ProductRequest {
+  ownerId: number,
+  name: string,
+  price: {
+    amount: number,
+    currency: string,
+    precision: number,
+  },
+  category: number,
+  alcoholPercentage: number,
+}

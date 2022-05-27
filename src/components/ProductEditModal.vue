@@ -208,7 +208,7 @@ import {
   Component, Prop, Watch,
 } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
-import { Product, ProductList } from '@/entities/Product';
+import { Product, ProductList, ProductRequest } from '@/entities/Product';
 import FileFormPreview from '@/components/FileFormPreview.vue';
 import Formatters from '@/mixins/Formatters';
 import { Container } from '@/entities/Container';
@@ -314,9 +314,13 @@ export default class ProductEditModal extends Formatters {
 
       // Check if a product is being added or being edited
       if (Object.keys(this.editProduct).length > 0) {
-        this.productState.updateProduct(product as Product);
+        this.productState.updateProduct(product);
       } else {
-        this.productState.addProduct(product);
+        this.productState.addProduct(product).then((productResponse: Product) => {
+          if (this.file) {
+            this.productState.setProductImage(productResponse.id, this.file);
+          }
+        });
       }
       this.$bvModal.hide('edit-product');
     } else {
@@ -345,15 +349,11 @@ export default class ProductEditModal extends Formatters {
   /**
    * Makes a product object based on the set inputs and returns it.
    */
-  constructProduct() {
+  constructProduct(): ProductRequest {
     const product = {
       id: Object.keys(this.editProduct).length > 0 ? this.editProduct.id : null,
       name: this.name,
-      owner: {
-        id: this.userState.user.id,
-        firstname: this.userState.user.firstname,
-        lastname: this.userState.user.lastname,
-      },
+      ownerId: this.userState.user.id,
       price: {
         amount: this.price === null ? 0 : Math.round(this.price * 100),
         currency: 'EUR',
@@ -362,9 +362,8 @@ export default class ProductEditModal extends Formatters {
       category: this.productCategories.records.find(
         (cat) => cat.name === this.category,
       )?.id,
-      // picture: this.file !== null ? URL.createObjectURL(this.file) : this.img,
       alcoholPercentage: this.alcoholPercentage === null ? 0 : Number(this.alcoholPercentage),
-    } as {id?: number};
+    };
 
     if (Object.keys(this.editProduct).length <= 0) {
       delete product.id;

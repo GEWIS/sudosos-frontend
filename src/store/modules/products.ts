@@ -3,7 +3,7 @@ import {
 } from 'vuex-module-decorators';
 import store from '@/store';
 import APIHelper from '@/mixins/APIHelper';
-import { Product } from '@/entities/Product';
+import { Product, ProductRequest } from '@/entities/Product';
 import ProductTransformer from '@/transformers/ProductTransformer';
 
 @Module({
@@ -31,10 +31,19 @@ export default class ProductsModule extends VuexModule {
   }
 
   @Mutation
-  addProduct(product: {}) {
-    const productResponse = APIHelper.postResource('products', product);
+  async addProduct(product: ProductRequest) {
+    const productResponse = await APIHelper.postResource('products', product);
     const productToAdd = ProductTransformer.makeProduct(productResponse) as Product;
     this.userProducts.push(productToAdd);
+    return productToAdd;
+  }
+
+  @Mutation
+  // eslint-disable-next-line class-methods-use-this
+  setProductImage(productId: number, file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+    APIHelper.postResource(`/products/${productId}/image`, formData);
   }
 
   @Mutation

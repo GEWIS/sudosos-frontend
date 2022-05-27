@@ -22,7 +22,7 @@
                 {{ $t('app.Create') }}
               </b-dropdown-item>
             </b-nav-item-dropdown>
-            <b-nav-item-dropdown :text="$t('app.Admin')" v-if="adminRole">
+            <b-nav-item-dropdown :text="$t('app.Admin')" v-if="sellerRole">
               <b-dropdown-item :to="{ name: 'managePointOfSale'}">
                 {{ $t('app.Manage POS') }}
               </b-dropdown-item>
@@ -33,7 +33,7 @@
                 {{ $t('app.Banners') }}
               </b-dropdown-item>
             </b-nav-item-dropdown>
-            <b-nav-item-dropdown :text="$t('app.BAC')" v-if="BACRole">
+            <b-nav-item-dropdown :text="$t('app.BAC')" v-if="sellerRole">
               <b-dropdown-item :to="{ name: 'managePointOfSale'}">
                 {{ $t('app.Manage POS') }}
               </b-dropdown-item>

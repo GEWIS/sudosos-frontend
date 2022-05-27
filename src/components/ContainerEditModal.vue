@@ -87,7 +87,7 @@ import {
 import Formatters from '@/mixins/Formatters';
 import { Container } from '@/entities/Container';
 
-import { getContainerProducts, patchContainer } from '@/api/containers';
+import { getContainerProducts, patchContainer, postContainer } from '@/api/containers';
 import { Product } from '@/entities/Product';
 
   @Component
@@ -116,10 +116,14 @@ export default class ContainerEditModal extends Formatters {
       if (this.nameState === null) return;
       const updatedContainer = {} as Container;
       updatedContainer.name = this.containerName as string;
-      updatedContainer.public = this.containerPublic;
+      updatedContainer.public = !!this.containerPublic;
       updatedContainer.products = this.containerProducts;
 
-      patchContainer(this.editContainer.id, updatedContainer);
+      if (this.editContainer.id) {
+        patchContainer(this.editContainer.id, updatedContainer);
+      } else {
+        postContainer(updatedContainer);
+      }
 
       this.$bvModal.hide('edit-container');
     }

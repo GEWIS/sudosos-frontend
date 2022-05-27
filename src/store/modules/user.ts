@@ -67,6 +67,7 @@ export default class UserModule extends VuexModule {
 
   @Mutation
   setUserRoles(roles: string[]) {
+    console.error(roles);
     this.userRoles = roles;
   }
 
