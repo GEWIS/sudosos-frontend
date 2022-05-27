@@ -31,9 +31,10 @@ export default class BannerModule extends VuexModule {
 
   @Mutation
   removeBanner(banner: Banner) {
-    APIHelper.delResource(`banners/${banner.id}`, banner);
-    const index = this.banners.findIndex((bnr) => bnr.id === banner.id);
-    this.banners.splice(index, 1);
+    APIHelper.delResource(`banners/${banner.id}`).then(() => {
+      const index = this.banners.findIndex((bnr) => bnr.id === banner.id);
+      this.banners.splice(index, 1);
+    });
   }
 
   @Mutation

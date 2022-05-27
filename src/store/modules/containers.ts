@@ -48,8 +48,10 @@ export default class ContainerModule extends VuexModule {
 
     // If this is not an existing product yet we need to add it
     if (!('id' in data.product) || data.product.id === null) {
-      productToAdd = APIHelper.postResource('products', data.product) as Product;
-      productState.addProduct(data.product);
+      APIHelper.postResource('products', data.product).then((product: Product) => {
+        productToAdd = product;
+        productState.addProduct(data.product);
+      });
     }
 
     // TODO: Check if this works with real API
@@ -61,26 +63,27 @@ export default class ContainerModule extends VuexModule {
 
   @Mutation
   updateProduct(data: {container: Container, product: { id?: number | null } }) {
-    let productToEdit = APIHelper.putResource('products', data.product);
-    productToEdit = ProductTransformer.makeProduct(productToEdit);
+    APIHelper.putResource('products', data.product).then((product: Product) => {
+      const productToEdit = ProductTransformer.makeProduct(product) as Product;
 
-    productState.updateProduct(productToEdit);
+      productState.updateProduct(productToEdit);
 
-    // TODO: Check if this works with real API
-    const containerResponse = APIHelper.putResource(`containers/${data.container.id}/product`, productToEdit);
-    // const updatedContainer = ContainerTransformer.makeContainer(containerResponse);
-    const index = this.containers.findIndex((cntnr) => cntnr.id === data.container.id);
-    const prdIndex = this.containers[index].products.findIndex((prod) => (
-      prod.id === data.product.id
-    ));
+      // TODO: Check if this works with real API
+      const containerResponse = APIHelper.putResource(`containers/${data.container.id}/product`, productToEdit);
+      // const updatedContainer = ContainerTransformer.makeContainer(containerResponse);
+      const index = this.containers.findIndex((cntnr) => cntnr.id === data.container.id);
+      const prdIndex = this.containers[index].products.findIndex((prod) => (
+        prod.id === data.product.id
+      ));
 
-    this.containers[index].products.splice(prdIndex, 1, productToEdit as Product);
+      this.containers[index].products.splice(prdIndex, 1, productToEdit as Product);
+    });
   }
 
   @Mutation
   removeProduct(data: {container: Container, product: {id?: number | null} }) {
     // TODO: Check if this works with real API
-    const containerResponse = APIHelper.delResource(`containers/${data.container.id}/product`, data.product);
+    const containerResponse = APIHelper.delResource(`containers/${data.container.id}/product`);
     // const updatedContainer = ContainerTransformer.makeContainer(containerResponse);
     const index = this.containers.findIndex((cntnr) => cntnr.id === data.container.id);
     const prdIndex = this.containers[index].products.findIndex((prod) => (

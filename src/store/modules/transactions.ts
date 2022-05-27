@@ -33,9 +33,10 @@ export default class TransactionModule extends VuexModule {
 
   @Mutation
   removeTransaction(transaction: Transaction) {
-    APIHelper.delResource('transactions', transaction);
-    const index = this.userTransactions.findIndex((trns) => trns.id === transaction.id);
-    this.userTransactions.splice(index, 1);
+    APIHelper.delResource('transactions').then(() => {
+      const index = this.userTransactions.findIndex((trns) => trns.id === transaction.id);
+      this.userTransactions.splice(index, 1);
+    });
   }
 
   @Mutation

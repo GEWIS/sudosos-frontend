@@ -40,9 +40,10 @@ export default class ProductsModule extends VuexModule {
 
   @Mutation
   removeProduct(product: Product) {
-    APIHelper.delResource('products', product);
-    const index = this.products.findIndex((prd) => prd.id === product.id);
-    this.userProducts.splice(index, 1);
+    APIHelper.delResource('products').then(() => {
+      const index = this.products.findIndex((prd) => prd.id === product.id);
+      this.userProducts.splice(index, 1);
+    });
   }
 
   @Mutation

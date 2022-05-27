@@ -48,9 +48,12 @@ export default class TransferModule extends VuexModule {
   })
   fetchTransfers(force: boolean = false) {
     if (this.transfers.length === 0 || force) {
-      const transferResponse = APIHelper.getResource('transfers') as [];
-      const transfers = transferResponse.map((trnsfr) => TransferTransformer.makeTransfer(trnsfr));
-      this.context.commit('setTransfers', transfers);
+      APIHelper.getResource('transfers').then((transferResponse: Transfer[]) => {
+        const transfers = transferResponse.map(
+          (trnsfr) => TransferTransformer.makeTransfer(trnsfr),
+        );
+        this.context.commit('setTransfers', transfers);
+      });
     }
   }
 }
