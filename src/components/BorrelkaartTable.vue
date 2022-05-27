@@ -132,7 +132,7 @@ export default class UserTable extends Formatters {
 
   // eslint-disable-next-line class-methods-use-this
   rowClicked(item: User, index: number, event: object) {
-    console.log(item);
+    // console.log(item);
   }
 
   /**

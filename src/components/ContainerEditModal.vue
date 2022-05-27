@@ -143,7 +143,6 @@ export default class ContainerEditModal extends Formatters {
       if (Object.keys(value).length > 0) {
         this.containerProducts = ((await getContainerProducts(this.editContainer.id) as any)
           .records).map((p: Product) => p.id);
-        console.error(this.containerProducts);
         this.containerName = value.name;
         this.containerPublic = value.public as boolean;
       } else {

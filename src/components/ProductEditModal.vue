@@ -311,7 +311,6 @@ export default class ProductEditModal extends Formatters {
     } else if (this.nameState && this.categoryState && this.priceState && this.pictureState) {
       // Construct the new product property
       const product = this.constructProduct();
-      console.error(product);
 
       // Check if a product is being added or being edited
       if (Object.keys(this.editProduct).length > 0) {
