@@ -38,7 +38,7 @@
           </template>
 
           <template v-slot:cell(picture)="data">
-            <img class="thumbnail" :src="data.value" alt="Thumbnail">
+            <img class="thumbnail" :src="`/static/products/${data.picture}`" alt="Thumbnail">
           </template>
 
           <template v-slot:cell(id)="data">

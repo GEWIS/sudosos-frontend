@@ -16,6 +16,7 @@ export interface Product extends BaseProduct {
   picture: string;
   alcoholPercentage: number;
   updatePending?: boolean;
+  vat: number,
 }
 
 export interface ProductList {
@@ -23,14 +24,22 @@ export interface ProductList {
   records: Product[];
 }
 
-export interface ProductRequest {
-  ownerId: number,
+interface BaseProductRequest {
   name: string,
-  price: {
+  priceInclVat: {
     amount: number,
     currency: string,
     precision: number,
   },
+  vat: number,
   category: number,
   alcoholPercentage: number,
+}
+
+export interface UpdateProductRequest extends BaseProductRequest{
+  id: number,
+}
+
+export interface CreateProductRequest extends BaseProductRequest {
+  ownerId: number,
 }

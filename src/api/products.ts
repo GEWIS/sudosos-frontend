@@ -38,6 +38,10 @@ export function approveProduct(id: number) {
   return APIHelper.postResource(`products/${id}/approve`, {}).then((response) => ProductTransformer.makeProduct(response));
 }
 
+export async function setProductImage(productId: number, file: File) {
+  await APIHelper.uploadResource(`products/${productId}/image`, file);
+}
+
 export function getUpdatedProducts(take: number | null = null, skip: number | null = null) {
   const body = {
     ...take && { take },

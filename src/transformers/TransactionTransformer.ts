@@ -15,7 +15,7 @@ export default {
 
     if ('subTransactions' in data) {
       subTransactions = data.subTransactions.map((subTrans: any) => SubTransactionTransformer.makeSubTransaction(subTrans));
-      price = Dinero(data.price);
+      price = Dinero(data.totalPriceInclVat);
     }
 
     return {

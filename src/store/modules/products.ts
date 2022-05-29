@@ -3,8 +3,9 @@ import {
 } from 'vuex-module-decorators';
 import store from '@/store';
 import APIHelper from '@/mixins/APIHelper';
-import { Product, ProductRequest } from '@/entities/Product';
+import { Product, CreateProductRequest, UpdateProductRequest } from '@/entities/Product';
 import ProductTransformer from '@/transformers/ProductTransformer';
+import { setProductImage } from '@/api/products';
 
 @Module({
   dynamic: true, namespaced: true, store, name: 'ProductsModule',
@@ -31,19 +32,12 @@ export default class ProductsModule extends VuexModule {
   }
 
   @Mutation
-  async addProduct(product: ProductRequest) {
+  async addProduct(product: CreateProductRequest, image?: File) {
     const productResponse = await APIHelper.postResource('products', product);
+    if (image) await setProductImage(productResponse.id, image);
     const productToAdd = ProductTransformer.makeProduct(productResponse) as Product;
     this.userProducts.push(productToAdd);
     return productToAdd;
-  }
-
-  @Mutation
-  // eslint-disable-next-line class-methods-use-this
-  setProductImage(productId: number, file: File) {
-    const formData = new FormData();
-    formData.append('file', file);
-    APIHelper.postResource(`/products/${productId}/image`, formData);
   }
 
   @Mutation
@@ -55,9 +49,15 @@ export default class ProductsModule extends VuexModule {
   }
 
   @Mutation
-  updateProduct(product: Product) {
-    const response = APIHelper.patchResource(`products/${product.id}`, product);
+  async updateProduct(product: UpdateProductRequest) {
+    const updateRequest = {
+      ...product,
+    };
+    delete updateRequest.id;
+
+    const response = await APIHelper.patchResource(`products/${product.id}`, updateRequest);
     const productResponse = ProductTransformer.makeProduct(response);
+
     const index = this.userProducts.findIndex((prd) => prd.id === productResponse.id);
     this.userProducts.splice(index, 1, productResponse as Product);
   }

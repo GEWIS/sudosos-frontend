@@ -247,6 +247,20 @@ export default {
     return fetchResource(constructedRoute, putBody);
   },
 
+  uploadResource(route: string, file: File) {
+    const constructedRoute = makeRoute(route, null);
+
+    const postBody: ResponseBody = {
+      body: file,
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${this.getToken().jwtToken}`,
+      },
+    };
+
+    return fetchResource(constructedRoute, postBody);
+  },
+
   postResource(route: string, data: any = {}, args = null as any) {
     const constructedRoute = makeRoute(route, args);
 

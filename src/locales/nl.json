@@ -105,7 +105,8 @@
     "Category": "Categorie",
     "Alcohol percentage": "Alcohol percentage",
     "Picture": "Plaatje",
-    "Product picture": "Product plaatje"
+    "Product picture": "Product plaatje",
+    "VAT": "BTW"
   },
   "flagged": {
     "Flagged transactions": "Gemarkeerde transacties"
@@ -276,7 +277,8 @@
     "Public": "Publiek",
     "name invalid": "Vul een naam in die langer groter dan 0 tekens is",
     "added on": "Toegevoegd op",
-    "added by": "Toegevoegd door"
+    "added by": "Toegevoegd door",
+    "owner": "Eigenaar"
   },
   "c_productEditModal": {
     "Add existing": "Voeg bestaand product toe",
@@ -300,7 +302,8 @@
     "name invalid": "Voer een correcte naam in van die langer is dan 0 tekens",
     "category invalid": "Selecteer een van de product categorien",
     "price invalid": "Voer een correcte prijs in die groter of gelijk aan 0 is",
-    "picture invalid": "Upload een plaatje"
+    "picture invalid": "Upload een plaatje",
+    "VAT": "BTW (in %)"
   },
   "c_containerComponent": {
     "Public": "Publiek",

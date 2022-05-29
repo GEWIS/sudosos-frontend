@@ -3,11 +3,12 @@ import {
 } from 'vuex-module-decorators';
 import store from '@/store';
 import APIHelper from '@/mixins/APIHelper';
-import { Product } from '@/entities/Product';
+import { CreateProductRequest, Product, UpdateProductRequest } from '@/entities/Product';
 import { Container } from '@/entities/Container';
 import ProductTransformer from '@/transformers/ProductTransformer';
 import ContainerTransformer from '@/transformers/ContainerTransformer';
 import ProductsModule from '@/store/modules/products';
+import { postProductImage, setProductImage } from '@/api/products';
 
 const productState = getModule(ProductsModule);
 
@@ -43,40 +44,29 @@ export default class ContainerModule extends VuexModule {
   }
 
   @Mutation
-  addProduct(data: { container: Container, product: { id?: number | null} }) {
+  async addProduct(data: { container: Container, product:
+      CreateProductRequest | UpdateProductRequest}, image?: File) {
     let productToAdd = data.product;
 
     // If this is not an existing product yet we need to add it
     if (!('id' in data.product) || data.product.id === null) {
-      APIHelper.postResource('products', data.product).then((product: Product) => {
-        productToAdd = product;
-        productState.addProduct(data.product);
+      await APIHelper.postResource('products', data.product).then((product: Product) => {
+        productToAdd = product as any;
+        if (image) setProductImage(product.id, image);
       });
     }
 
-    // TODO: Check if this works with real API
-    const containerResponse = APIHelper.postResource(`containers/${data.container.id}/product`, productToAdd);
-    // const updatedContainer = ContainerTransformer.makeContainer(containerResponse);
-    const index = this.containers.findIndex((cntnr) => cntnr.id === data.container.id);
-    this.containers[index].products.push(ProductTransformer.makeProduct(productToAdd) as Product);
-  }
-
-  @Mutation
-  updateProduct(data: {container: Container, product: { id?: number | null } }) {
-    APIHelper.putResource('products', data.product).then((product: Product) => {
-      const productToEdit = ProductTransformer.makeProduct(product) as Product;
-
-      productState.updateProduct(productToEdit);
-
-      // TODO: Check if this works with real API
-      const containerResponse = APIHelper.putResource(`containers/${data.container.id}/product`, productToEdit);
-      // const updatedContainer = ContainerTransformer.makeContainer(containerResponse);
+    APIHelper.getResource(`containers/${data.container.id}`).then((containerResponse: Container) => {
+      const products = containerResponse.products.map((p) => p.id);
+      products.push((productToAdd as UpdateProductRequest).id);
+      const containerUpdate = {
+        name: containerResponse.name,
+        public: containerResponse.public,
+        products,
+      };
+      APIHelper.patchResource(`containers/${data.container.id}`, containerUpdate);
       const index = this.containers.findIndex((cntnr) => cntnr.id === data.container.id);
-      const prdIndex = this.containers[index].products.findIndex((prod) => (
-        prod.id === data.product.id
-      ));
-
-      this.containers[index].products.splice(prdIndex, 1, productToEdit as Product);
+      this.containers[index].products.push(ProductTransformer.makeProduct(productToAdd) as Product);
     });
   }
 

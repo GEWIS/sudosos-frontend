@@ -105,7 +105,8 @@
     "Category": "Category",
     "Alcohol percentage": "Alcohol percentage",
     "Picture": "Picture",
-    "Product picture": "Product picture"
+    "Product picture": "Product picture",
+    "VAT": "VAT"
   },
   "flagged": {
     "Flagged transactions": "Flagged transactions"
@@ -276,7 +277,8 @@
     "Public": "Public",
     "name invalid": "Please enter a name that is longer than 0 characters",
     "added on": "Added on",
-    "added by": "Added by"
+    "added by": "Added by",
+    "owner": "Owner"
   },
   "c_productEditModal": {
     "Add existing": "Add existing product",
@@ -300,7 +302,8 @@
     "name invalid": "Please provide a valid name that is longer than 0 characters",
     "category invalid": "Please select one of the product categories",
     "price invalid": "Please provide a valid price that is higher or equal to 0",
-    "picture invalid": "Please provide a picture"
+    "picture invalid": "Please provide a picture",
+    "VAT": "VAT (in %)"
   },
   "c_containerComponent": {
     "Public": "Public",

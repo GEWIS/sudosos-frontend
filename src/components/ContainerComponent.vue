@@ -88,7 +88,7 @@
           v-on:click="productDetails(item)"
         >
           <div class="product" :class="{'add': enabled && editable}">
-            <img :src="item.picture" :alt="item.name"/>
+            <img :src="`/static/products/${item.picture}`" :alt="item.name"/>
             <p
               class="w-100 px-1 product-name mb-0 text-truncate"
               :class="{'update': item.updatePending}"

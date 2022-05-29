@@ -18,3 +18,10 @@ export interface ContainerList {
   _pagination: Pagination,
   records: Container[];
 }
+
+export interface CreateContainerRequest {
+  name: string,
+  products: number[],
+  public: boolean,
+  ownerId?: number,
+}

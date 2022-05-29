@@ -2,10 +2,15 @@ import UserTransformer from '@/transformers/UserTransformer';
 import PaginationTransformer from '@/transformers/PaginationTransformer';
 import APIHelper from '@/mixins/APIHelper';
 
-export function getUsers(take: number | null = null, skip: number | null = null) {
+export interface UserQueryParameters {
+  take?: number,
+  skip?: number,
+  type?: string,
+}
+
+export function getUsers(queryParameters: UserQueryParameters = {}) {
   const body = {
-    ...take && { take },
-    ...skip && { skip },
+    ...queryParameters,
   };
 
   return APIHelper.getResource('users', body).then((response) => {

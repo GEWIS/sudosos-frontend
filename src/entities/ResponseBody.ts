@@ -1,5 +1,5 @@
 export interface ResponseBody {
   headers: {};
   method?: string;
-  body?: string;
+  body?: string | File;
 }

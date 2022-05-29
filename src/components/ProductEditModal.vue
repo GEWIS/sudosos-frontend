@@ -58,11 +58,11 @@
             v-model="selectedProduct"
           >
             <template v-slot:selected-option="product">
-              <img :src="product.picture" alt="product image">
+              <img :src="`/static/products/${product.picture}`" alt="product image">
               {{ product.name }}
             </template>
             <template v-slot:option="product">
-              <img :src="product.picture" alt="product image">
+              <img :src="`/static/products/${product.picture}`" alt="product image">
               {{ product.name }}
             </template>
           </v-select>
@@ -111,6 +111,7 @@
           :disabled="selectedProduct !== null"
           :options="productCategories.records"
           :state="categoryState"
+          @change="onCategoryChange"
         >
           <template #first>
             <b-form-select-option value="null" disabled>
@@ -118,6 +119,16 @@
             </b-form-select-option>
           </template>
         </b-form-select>
+      </b-form-group>
+
+      <b-form-group
+        label-cols="12"
+        label-cols-sm="3"
+        :label="$t('c_productEditModal.VAT')"
+        label-align="left"
+        label-for="name">
+        <b-form-select v-model="vatGroup" :options="vatGroups"
+               :disabled="selectedProduct !== null" @change="setVatOverride"></b-form-select>
       </b-form-group>
 
       <b-form-group
@@ -208,7 +219,9 @@ import {
   Component, Prop, Watch,
 } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
-import { Product, ProductList, ProductRequest } from '@/entities/Product';
+import {
+  CreateProductRequest, Product, ProductList, UpdateProductRequest,
+} from '@/entities/Product';
 import FileFormPreview from '@/components/FileFormPreview.vue';
 import Formatters from '@/mixins/Formatters';
 import { Container } from '@/entities/Container';
@@ -216,8 +229,8 @@ import ProductsModule from '@/store/modules/products';
 import ContainerModule from '@/store/modules/containers';
 import { ProductCategoryList } from '@/entities/ProductCategory';
 import { getProductCategories } from '@/api/productCategories';
-import { getUserProducts } from '@/api/products';
-import ProductCategoryModule from '@/store/modules/productcategory';
+import { getProducts, setProductImage } from '@/api/products';
+import getVatGroups from '@/api/vatGroups';
 
 @Component({
   components: {
@@ -235,6 +248,8 @@ export default class ProductEditModal extends Formatters {
 
   productCategories: ProductCategoryList = {} as ProductCategoryList;
 
+  vatGroups: {value: number, text: string}[] = [];
+
   name: string | null = null;
 
   category: string | null = null;
@@ -242,6 +257,8 @@ export default class ProductEditModal extends Formatters {
   price: number | null = null;
 
   alcoholPercentage: number | null = null;
+
+  vatGroup: number | null = null;
 
   img: string = '';
 
@@ -251,10 +268,14 @@ export default class ProductEditModal extends Formatters {
 
   selectedProduct: Product | null = null;
 
+  overrideVat: boolean = false;
+
   async beforeMount() {
     this.userState.fetchUser();
-    this.products = await getUserProducts(this.userState.user.id, 999);
+    this.products = await getProducts(999);
     this.productCategories = await getProductCategories(999);
+    this.vatGroups = (await getVatGroups(999))
+      .records.map((group) => ({ value: group.id, text: String(group.percentage) }));
   }
 
   setProduct() {
@@ -279,7 +300,7 @@ export default class ProductEditModal extends Formatters {
       if (this.selectedProduct !== null) {
         this.containerState.addProduct({
           container: this.container,
-          product: this.selectedProduct,
+          product: this.selectedProduct as any,
         });
         this.setProductProperties();
         this.$bvModal.hide('edit-product');
@@ -292,16 +313,15 @@ export default class ProductEditModal extends Formatters {
 
         // Check if a product is being added or being editted
         if (Object.keys(this.editProduct).length > 0) {
-          this.containerState.updateProduct({
-            container: this.container,
-            product,
-          });
+          const update = product as UpdateProductRequest;
+          this.productState.updateProduct(update);
+          if (this.file) setProductImage(update.id, this.file);
         } else {
           delete (product as any).owner;
           this.containerState.addProduct({
             container: this.container,
             product,
-          });
+          }, this.file);
         }
         this.$bvModal.hide('edit-product');
       } else {
@@ -314,17 +334,25 @@ export default class ProductEditModal extends Formatters {
 
       // Check if a product is being added or being edited
       if (Object.keys(this.editProduct).length > 0) {
-        this.productState.updateProduct(product);
+        this.productState.updateProduct(product as UpdateProductRequest);
+        if (this.file) setProductImage((product as any).id, this.file);
       } else {
-        this.productState.addProduct(product).then((productResponse: Product) => {
-          if (this.file) {
-            this.productState.setProductImage(productResponse.id, this.file);
-          }
-        });
+        this.productState.addProduct(product as any, this.file);
       }
       this.$bvModal.hide('edit-product');
     } else {
       this.setInvalidStates();
+    }
+  }
+
+  setVatOverride() {
+    this.overrideVat = true;
+  }
+
+  onCategoryChange() {
+    if (!this.overrideVat) {
+      if (this.category === 'Alcoholic') this.vatGroup = this.vatGroups.find((group) => group.text === '21').value;
+      else this.vatGroup = this.vatGroups.find((group) => group.text === '9').value;
     }
   }
 
@@ -343,18 +371,19 @@ export default class ProductEditModal extends Formatters {
    */
   cancelAdding() {
     this.setProductProperties();
+    this.overrideVat = false;
     this.$bvModal.hide('edit-product');
   }
 
   /**
    * Makes a product object based on the set inputs and returns it.
    */
-  constructProduct(): ProductRequest {
+  constructProduct(): UpdateProductRequest | CreateProductRequest {
     const product = {
       id: Object.keys(this.editProduct).length > 0 ? this.editProduct.id : null,
       name: this.name,
       ownerId: this.userState.user.id,
-      price: {
+      priceInclVat: {
         amount: this.price === null ? 0 : Math.round(this.price * 100),
         currency: 'EUR',
         precision: 2,
@@ -363,10 +392,13 @@ export default class ProductEditModal extends Formatters {
         (cat) => cat.name === this.category,
       )?.id,
       alcoholPercentage: this.alcoholPercentage === null ? 0 : Number(this.alcoholPercentage),
+      vat: this.vatGroup,
     };
 
     if (Object.keys(this.editProduct).length <= 0) {
       delete product.id;
+    } else {
+      delete product.ownerId;
     }
 
     return product;
@@ -384,10 +416,12 @@ export default class ProductEditModal extends Formatters {
       this.alcoholPercentage = null;
       this.img = '';
       this.file = null;
+      this.vatGroup = null;
     } else {
       this.name = product.name;
       this.category = this.setCapitalLetter(product.category.name);
       this.price = Number((product.price.getAmount() / 100).toPrecision(2));
+      this.vatGroup = this.vatGroups.find((group) => group.text === String(product.vat)).value;
       this.alcoholPercentage = product.alcoholPercentage;
       this.img = product.picture || '';
     }

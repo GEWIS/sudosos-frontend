@@ -170,7 +170,7 @@ let previousFrom: string | null | undefined = null;
 router.beforeEach((to, from, next) => {
   const token = APIHelper.getToken();
   const notToLogin = to.name !== 'login';
-  const jwtIsNull = token.jwtToken === null;
+  const jwtIsNull = token.jwtToken === undefined;
   const jwtIsExpired = new Date(Number(token.jwtExpires)) < new Date();
 
   // if (from.name === previousFrom && to.name !== 'login') {

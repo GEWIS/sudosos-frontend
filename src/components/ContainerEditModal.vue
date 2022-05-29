@@ -47,6 +47,16 @@
       </b-form-group>
 
       <b-form-group
+        v-if="Object.keys(editContainer).length === 0"
+        label-cols="12"
+        label-cols-sm="3"
+        :label="$t('c_containerEditModal.owner')"
+        label-align="left"
+        label-for="name">
+        <b-form-select v-model="containerOwnerId" :options="organs"></b-form-select>
+      </b-form-group>
+
+      <b-form-group
         label-cols="12"
         label-cols-sm="3"
         :label="$t('c_containerEditModal.Public')"
@@ -85,10 +95,12 @@ import {
   Component, Prop, Watch,
 } from 'vue-property-decorator';
 import Formatters from '@/mixins/Formatters';
-import { Container } from '@/entities/Container';
+import { Container, CreateContainerRequest } from '@/entities/Container';
 
 import { getContainerProducts, patchContainer, postContainer } from '@/api/containers';
 import { Product } from '@/entities/Product';
+import { User } from '@/entities/User';
+import { getUsers } from '@/api/users';
 
   @Component
 export default class ContainerEditModal extends Formatters {
@@ -98,9 +110,16 @@ export default class ContainerEditModal extends Formatters {
 
     containerPublic: boolean = false;
 
+    containerOwnerId: number = null;
+
     containerProducts: Product[] = [];
 
+    organs: {value: number, text: string}[] = [];
+
     async beforeMount() {
+      const { records } = await getUsers({ take: 100, skip: 0, type: 'ORGAN' });
+      this.organs = records.map((user: User) => ({ value: user.id, text: user.firstname }));
+      this.containerOwnerId = this.organs[0].value;
       if (Object.keys(this.editContainer).length > 0) {
         this.containerName = this.editContainer.name;
         this.containerPublic = this.editContainer.public as boolean;
@@ -114,10 +133,11 @@ export default class ContainerEditModal extends Formatters {
      */
     save(): void {
       if (this.nameState === null) return;
-      const updatedContainer = {} as Container;
+      const updatedContainer = {} as CreateContainerRequest;
       updatedContainer.name = this.containerName as string;
       updatedContainer.public = !!this.containerPublic;
-      updatedContainer.products = this.containerProducts;
+      updatedContainer.products = this.containerProducts.map((p) => p.id);
+      updatedContainer.ownerId = this.containerOwnerId;
 
       if (this.editContainer.id) {
         patchContainer(this.editContainer.id, updatedContainer);
