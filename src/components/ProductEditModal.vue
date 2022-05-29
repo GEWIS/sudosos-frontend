@@ -183,7 +183,7 @@
       >
         <FileFormPreview
           v-model="file"
-          :img="img.length > 0 ? img : undefined"
+          :img="img.length > 0 ? `/static/products/${img}` : undefined"
           :disabled="selectedProduct !== null"
           :state="pictureState"
         ></FileFormPreview>

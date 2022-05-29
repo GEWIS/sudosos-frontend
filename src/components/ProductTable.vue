@@ -60,7 +60,7 @@
 
     <!-- Templates for each row cell -->
     <template v-slot:cell(picture)="data">
-      <img class="thumbnail" :src="`/static/products/${data.picture}`" alt="">
+      <img class="thumbnail" :src="`/static/products/${data.value}`" :alt="data.value">
     </template>
 
     <template v-slot:cell(name)="data">
