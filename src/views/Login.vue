@@ -37,6 +37,7 @@
               v-model="password"
               type="password"
               :placeholder="$t('login.Enter password')"
+              v-on:keydown.enter="login"
             ></b-form-input>
           </b-form-group>
 
@@ -95,7 +96,6 @@ export default class Login extends Vue {
    * different request the API
    */
   login() {
-    // TODO: Make sure this uses the correct data
     APIHelper.postResource('authentication/GEWIS/LDAP', {
       accountName: this.username,
       password: this.password,
