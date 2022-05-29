@@ -361,7 +361,7 @@ export default class ProductEditModal extends Formatters {
 
     this.containerState.removeProduct({
       container: this.container,
-      product,
+      product: product as UpdateProductRequest,
     });
     this.$bvModal.hide('edit-product');
   }
