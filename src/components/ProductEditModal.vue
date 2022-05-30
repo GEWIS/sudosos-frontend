@@ -187,6 +187,7 @@
           :disabled="selectedProduct !== null"
           :state="pictureState"
         ></FileFormPreview>
+        {{ file }}
       </b-form-group>
     </div>
 
@@ -318,10 +319,12 @@ export default class ProductEditModal extends Formatters {
           if (this.file) setProductImage(update.id, this.file);
         } else {
           delete (product as any).owner;
+          console.error(this.file);
           this.containerState.addProduct({
             container: this.container,
             product,
-          }, this.file);
+            file: this.file,
+          });
         }
         this.$bvModal.hide('edit-product');
       } else {

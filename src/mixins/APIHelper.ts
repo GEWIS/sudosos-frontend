@@ -249,9 +249,10 @@ export default {
 
   uploadResource(route: string, file: File) {
     const constructedRoute = makeRoute(route, null);
-
+    const data = new FormData();
+    data.append('file', file);
     const postBody: ResponseBody = {
-      body: file,
+      body: data,
       method: 'POST',
       headers: {
         Authorization: `Bearer ${this.getToken().jwtToken}`,

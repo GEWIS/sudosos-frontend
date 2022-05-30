@@ -45,14 +45,16 @@ export default class ContainerModule extends VuexModule {
 
   @Mutation
   async addProduct(data: { container: Container, product:
-      CreateProductRequest | UpdateProductRequest}, image?: File) {
+      CreateProductRequest | UpdateProductRequest, file?: File}) {
     let productToAdd = data.product;
+    console.error(data.file);
 
     // If this is not an existing product yet we need to add it
     if (!('id' in data.product) || data.product.id === null) {
-      await APIHelper.postResource('products', data.product).then((product: Product) => {
+      await APIHelper.postResource('products', data.product).then(async (product: Product) => {
         productToAdd = product as any;
-        if (image) setProductImage(product.id, image);
+        console.error(data.file);
+        if (data.file) await setProductImage(product.id, data.file);
       });
     }
 

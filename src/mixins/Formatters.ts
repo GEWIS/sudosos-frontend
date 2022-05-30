@@ -6,6 +6,18 @@ import { Transfer } from '@/entities/Transfer';
 import { getModule } from 'vuex-module-decorators';
 import UserModule from '@/store/modules/user';
 
+function byYou(trans: Transaction, id: number) {
+  return trans.createdBy.id === id;
+}
+
+function forYou(trans: Transaction, id: number) {
+  return trans.from.id === id;
+}
+
+function samePerson(trans: Transaction) {
+  return trans.from.id === trans.createdBy.id;
+}
+
 @Component
 export default class Formatters extends Vue {
   userState = getModule(UserModule);
@@ -27,13 +39,13 @@ export default class Formatters extends Vue {
     full?: Boolean,
     partial?: Boolean) : string {
     const weekDays: String[] = [
+      this.$t('formatters.Sunday').toString(),
       this.$t('formatters.Monday').toString(),
       this.$t('formatters.Tuesday').toString(),
       this.$t('formatters.Wednesday').toString(),
       this.$t('formatters.Thursday').toString(),
       this.$t('formatters.Friday').toString(),
       this.$t('formatters.Saturday').toString(),
-      this.$t('formatters.Sunday').toString(),
     ];
 
     const parseDate = new Date(date);
@@ -135,23 +147,20 @@ export default class Formatters extends Vue {
     if ('pointOfSale' in trans) {
       const { id } = this.userState.user;
 
-      // This is a transaction you put in for someone else
-      if (trans.createdBy !== undefined
-        && Object.keys(trans.createdBy).length > 0
-        && trans.createdBy.id === id
-        && trans.from.id !== id) {
-        return this.$t('c_transactionsTable.transactionPutFor', { name: trans.from.firstname, amount: trans.price.toFormat() });
+      // This is a transaction put in for someone else
+      if (byYou(trans, id)) {
+        if (forYou(trans, id)) {
+          return this.$t('c_transactionsTable.transaction', { person: 'You', amount: trans.price.toFormat() });
+        }
+        return this.$t('c_transactionsTable.transactionPutFor', { person: 'You', name: trans.from.firstname, amount: trans.price.toFormat() });
       }
-
-      // This is a transaction that was put in for you by someone else
-      if (trans.createdBy !== undefined
-        && Object.keys(trans.createdBy).length > 0
-        && trans.from.id === id
-        && trans.createdBy.id !== id) {
-        return this.$t('c_transactionsTable.transactionPutBy', { name: trans.createdBy.firstname, amount: trans.price.toFormat() });
+      if (forYou(trans, id)) {
+        return this.$t('c_transactionsTable.transactionPutForSelf', { person: trans.createdBy.firstname, name: 'You', amount: trans.price.toFormat() });
       }
-
-      return this.$t('c_transactionsTable.transaction', { amount: trans.price.toFormat() });
+      if (samePerson(trans)) {
+        return this.$t('c_transactionsTable.transaction', { person: trans.from.firstname, amount: trans.price.toFormat() });
+      }
+      return this.$t('c_transactionsTable.transactionPutFor', { person: trans.createdBy.firstname, name: trans.from.firstname, amount: trans.price.toFormat() });
     }
 
     // This is a transfer
