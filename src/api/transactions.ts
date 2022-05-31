@@ -26,6 +26,22 @@ export function postTransaction(transaction: any) {
   return APIHelper.postResource('transactions', transaction).then((response) => TransactionTransformer.makeTransaction(response));
 }
 
+export function getPOSTransactions(pointOfSaleId: number, take: number | null = null,
+  skip: number | null = null) {
+  const body = {
+    ...take && { take },
+    ...skip && { skip },
+  };
+  return APIHelper.getResource(`pointsofsale/${pointOfSaleId}/transactions`, body).then((response) => {
+    response._pagination = PaginationTransformer.makePagination(response._pagination);
+    response.records = response.records.map(
+      (transaction: any) => TransactionTransformer.makeTransaction(transaction),
+    );
+
+    return response;
+  });
+}
+
 export function getTransaction(id: number) {
   return APIHelper.getResource(`transactions/${id}`).then((response) => {
     const trans = TransactionTransformer.makeTransaction(response);

@@ -342,6 +342,7 @@
     "What": "What",
     "Info": "Info",
     "Page": "Page",
+    "You": "You",
     "Transactions": "Transactions",
     "transaction": "{person} spent a total of {amount}",
     "transactionPutFor": "{person} charged {name} for {amount}",

@@ -342,11 +342,12 @@
     "What": "Wat",
     "Info": "Info",
     "Page": "Pagina",
+    "You": "Jij",
     "Transactions": "Transacties",
-    "transaction": "Je hebt in totaal {amount} uitgegeven",
-    "transactionPutFor": "Je hebt {amount} afgestreept voor {name}",
+    "transaction": "{person} hebt in totaal {amount} uitgegeven",
+    "transactionPutFor": "{person} hebt {amount} afgestreept voor {name}",
     "transactionPutBy": "{name} heeft voor {amount} afgestreept bij jou",
-    "transfer": "Je hebt opgewaardeerd voor {amount}"
+    "transfer": "{person} hebt opgewaardeerd voor {amount}"
   },
   "c_transactionDetailsModal": {
     "transaction details": "transactie details",

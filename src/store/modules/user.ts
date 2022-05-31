@@ -28,7 +28,7 @@ export default class UserModule extends VuexModule {
   user: User = {} as User;
 
   types = {
-    SELLER: 'SELLER',
+    SELLER: 'Seller',
     BOARD: 'SudoSOS - Board',
     BAC: 'SudoSOS - BAC',
     LOCAL: 'LOCAL_USER',
@@ -51,8 +51,10 @@ export default class UserModule extends VuexModule {
   extractResponse(response: LoginResponse) {
     this.user = UserTransformer.makeUser(response.user) as User;
     this.userRoles = response.roles;
+    console.error(this.userRoles);
     this.organs = response.organs.map((organ: any) => UserTransformer.makeUser(organ) as User);
     this.organsList = this.organs.map((user: User) => ({ value: user.id, text: user.firstname }));
+    console.error(this.organsList);
   }
 
   @Action

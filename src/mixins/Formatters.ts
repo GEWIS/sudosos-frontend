@@ -143,19 +143,18 @@ export default class Formatters extends Vue {
    * @param {Transaction} trans : Transaction or transfer that we need description for
    */
   setDescription(trans: Transaction | Transfer) {
+    const { id } = this.userState.user;
     // We have a transactions
     if ('pointOfSale' in trans) {
-      const { id } = this.userState.user;
-
       // This is a transaction put in for someone else
       if (byYou(trans, id)) {
         if (forYou(trans, id)) {
-          return this.$t('c_transactionsTable.transaction', { person: 'You', amount: trans.price.toFormat() });
+          return this.$t('c_transactionsTable.transaction', { person: this.$t('c_transactionsTable.You'), amount: trans.price.toFormat() });
         }
-        return this.$t('c_transactionsTable.transactionPutFor', { person: 'You', name: trans.from.firstname, amount: trans.price.toFormat() });
+        return this.$t('c_transactionsTable.transactionPutFor', { person: this.$t('c_transactionsTable.You'), name: trans.from.firstname, amount: trans.price.toFormat() });
       }
       if (forYou(trans, id)) {
-        return this.$t('c_transactionsTable.transactionPutForSelf', { person: trans.createdBy.firstname, name: 'You', amount: trans.price.toFormat() });
+        return this.$t('c_transactionsTable.transactionPutFor', { person: trans.createdBy.firstname, name: this.$t('c_transactionsTable.You'), amount: trans.price.toFormat() });
       }
       if (samePerson(trans)) {
         return this.$t('c_transactionsTable.transaction', { person: trans.from.firstname, amount: trans.price.toFormat() });
@@ -165,7 +164,8 @@ export default class Formatters extends Vue {
 
     // This is a transfer
     if (trans.description !== undefined && trans.description.length > 0) {
-      return this.$t('c_transactionsTable.transfer', { amount: trans.amount.toFormat() });
+      if (trans.to.id === id) return this.$t('c_transactionsTable.transfer', { person: this.$t('c_transactionsTable.You'), amount: trans.amount.toFormat() });
+      return this.$t('c_transactionsTable.transfer', { person: trans.to.firstname, amount: trans.amount.toFormat() });
       // return trans.description;
     }
 
