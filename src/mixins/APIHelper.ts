@@ -147,8 +147,10 @@ function fetchResource(route: string, body: ResponseBody) {
 
 export default {
   getToken() {
-    const tokens = this.getTokens();
-    const token = tokens[tokens.length - 1] ?? {} as any;
+    const rawToken = localStorage.getItem('jwt_token') as string;
+    let token = {} as Token;
+    if (rawToken !== null) token = JSON.parse(rawToken);
+
     return {
       jwtToken: token.token,
       jwtExpires: token.expires,
@@ -161,45 +163,13 @@ export default {
     return UserTransformer.makeUser(rawUser.user) as User;
   },
 
-  getTokens(): Token[] {
-    const tokens = localStorage.getItem('jwt_token') as string;
-    if (tokens == null) return [];
-    return JSON.parse(tokens);
-  },
-
-  popToken(): Token | undefined {
-    const tokens = this.getTokens();
-    const token = tokens.pop();
-    if (token) this.setTokens(tokens);
-    return tokens[tokens.length - 1];
-  },
-
-  setTokens(tokens: Token[]) {
-    localStorage.setItem('jwt_token', JSON.stringify(tokens));
-  },
-
-  hasPreviousToken(): boolean {
-    return this.getTokens().length > 1;
-  },
-
-  getPreviousToken(): Token | undefined {
-    const tokens = this.getTokens();
-    return this.hasPreviousToken() ? tokens[tokens.length - 2] : undefined;
-  },
-
   parseToken(rawToken: string): Token {
     const expires = String(Number(jwtDecode<JwtPayload>(rawToken).exp) * 1000);
     return { token: rawToken, expires };
   },
 
   setToken(jwtToken: string) {
-    this.setTokens([this.parseToken(jwtToken)]);
-  },
-
-  addToken(jwtToken: string) {
-    const tokens = this.getTokens();
-    tokens.push(this.parseToken(jwtToken));
-    this.setTokens(tokens);
+    localStorage.setItem('jwt_token', JSON.stringify(this.parseToken(jwtToken)));
   },
 
   clearToken() {

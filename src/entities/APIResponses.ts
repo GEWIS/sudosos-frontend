@@ -4,4 +4,5 @@ export interface LoginResponse {
   user: User,
   token: string,
   roles: string[]
+  organs: User[],
 }

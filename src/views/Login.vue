@@ -109,9 +109,7 @@ export default class Login extends Vue {
    * user data and token at the right place. It's also nice to send them to the homepage
    */
   loginSuccesful(info: LoginResponse) {
-    const user = UserTransformer.makeUser(info.user) as User;
-    this.userState.setUser(user);
-    this.userState.setUserRoles(info.roles);
+    this.userState.extractResponse(info);
     APIHelper.setToken(info.token);
     this.$router.push({ name: 'home' });
   }

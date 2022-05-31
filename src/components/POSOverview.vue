@@ -3,7 +3,11 @@
     <b-card-title class="mb-3 mb-lg-5">
       <b-form-row class="mx-0">
         <b-col cols="12">
-          <span>{{ $t('c_POSOverview.my points of sale') }}</span>
+          <span>
+            {{ showAll ? $t('c_POSOverview.all points of sale') :
+            'VIEWING POINTS OF SALE OF '.concat(organsList[0].text)}}
+<!--            <b-form-select v-model="posOwnerId" :options="organsList"></b-form-select>-->
+          </span>
         </b-col>
       </b-form-row>
     </b-card-title>
@@ -110,7 +114,13 @@ export default class POSOverview extends Vue {
     records: PointOfSale[],
   };
 
+  organsList: {value: number, text: string}[] = [];
+
+  posOwnerId: number = null;
+
   beforeMount() {
+    this.organsList = this.userState.organsList;
+    this.posOwnerId = this.organsList[0].value;
     this.fetchData(this.perPage);
   }
 
@@ -118,7 +128,7 @@ export default class POSOverview extends Vue {
     if (this.showAll) {
       this.pointsOfSale = await getAllPointsOfSale(take, skip);
     } else {
-      this.pointsOfSale = await getUserPointsOfSale(this.userState.user.id, take, skip);
+      this.pointsOfSale = await getUserPointsOfSale(this.posOwnerId, take, skip);
     }
   }
 

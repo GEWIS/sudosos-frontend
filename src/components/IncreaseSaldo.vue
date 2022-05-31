@@ -17,20 +17,20 @@
             </b-input-group>
           </b-col>
         </b-row>
-        <b-row>
-          <b-col class="font-weight-bold">
-            <form id="payment-form">
-              <div id="payment-element">
-                <!--Stripe.js injects the Payment Element-->
-              </div>
-              <button id="submit">
-                <div class="spinner hidden" id="spinner"></div>
-                <span id="button-text">Pay now</span>
-              </button>
-              <div id="payment-message" class="hidden"></div>
-            </form>
-          </b-col>
-        </b-row>
+<!--        <b-row>-->
+<!--          <b-col class="font-weight-bold">-->
+<!--            <form id="payment-form">-->
+<!--              <div id="payment-element">-->
+<!--                &lt;!&ndash;Stripe.js injects the Payment Element&ndash;&gt;-->
+<!--              </div>-->
+<!--              <button id="submit">-->
+<!--                <div class="spinner hidden" id="spinner"></div>-->
+<!--                <span id="button-text">Pay now</span>-->
+<!--              </button>-->
+<!--              <div id="payment-message" class="hidden"></div>-->
+<!--            </form>-->
+<!--          </b-col>-->
+<!--        </b-row>-->
         <b-row class="mt-3">
           <b-col>
           <b-button
@@ -65,6 +65,7 @@ export default class IncreaseSaldo extends Vue {
     return this.$stripe.elements();
   }
 
+  // eslint-disable-next-line class-methods-use-this
   async beforeMount() {
     const options = {
       // Custom styling can be passed to options when creating an Element
@@ -93,6 +94,11 @@ export default class IncreaseSaldo extends Vue {
       },
     };
     const paymentIntent = await stripeDeposit(deposit);
+    //
+    // const elements = this.$stripe.elements({ clientSecret: paymentIntent.clientSecret });
+    // const paymentElement = elements.create('payment');
+    // paymentElement.mount('#payment-element');
+
     // Redirects away from the client
     this.$stripe.confirmIdealPayment(
       paymentIntent.clientSecret,

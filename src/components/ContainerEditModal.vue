@@ -53,7 +53,7 @@
         :label="$t('c_containerEditModal.owner')"
         label-align="left"
         label-for="name">
-        <b-form-select v-model="containerOwnerId" :options="organs"></b-form-select>
+        <b-form-select v-model="containerOwnerId" :options="organsList"></b-form-select>
       </b-form-group>
 
       <b-form-group
@@ -114,12 +114,11 @@ export default class ContainerEditModal extends Formatters {
 
     containerProducts: Product[] = [];
 
-    organs: {value: number, text: string}[] = [];
+    organsList: {value: number, text: string}[] = [];
 
     async beforeMount() {
-      const { records } = await getUsers({ take: 100, skip: 0, type: 'ORGAN' });
-      this.organs = records.map((user: User) => ({ value: user.id, text: user.firstname }));
-      this.containerOwnerId = this.organs[0].value;
+      this.organsList = this.userState.organsList;
+      this.containerOwnerId = this.organsList[0].value;
       if (Object.keys(this.editContainer).length > 0) {
         this.containerName = this.editContainer.name;
         this.containerPublic = this.editContainer.public as boolean;

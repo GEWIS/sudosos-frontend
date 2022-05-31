@@ -64,13 +64,6 @@
                 {{ userState.user.firstname }}
               </template>
               <b-dropdown-item :to="{ name: 'profile'}">{{ $t('app.Profile') }}</b-dropdown-item>
-              <b-dropdown-item @click="switchContext(user)"
-                               v-for="user in userState.memberships" :key="user.id">
-                {{ user.name }}
-              </b-dropdown-item>
-              <b-dropdown-item v-if="hasPreviousUser()" @click="popContext()">
-                {{ getPreviousUser().firstname }}
-              </b-dropdown-item>
               <b-dropdown-item @click="logout">{{ $t('app.Sign out') }}</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item
@@ -166,43 +159,6 @@ export default class Dashboard extends Vue {
     Logout.logout(undefined, this.$router);
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  switchContext(user: any): void {
-    APIHelper.postResource(`users/${user.id}/authenticate`, {
-      id: user.id,
-    }).then((res: LoginResponse) => {
-      const newUser = UserTransformer.makeUser(res.user) as User;
-      this.userState.setUser(newUser);
-      this.userState.setUserRoles(res.roles);
-      APIHelper.addToken(res.token);
-      this.userState.clearMemberships();
-      this.$forceUpdate();
-    });
-  }
-
-  popContext() {
-    const token = APIHelper.popToken();
-    if (token) {
-      const res = jwtDecode<JwtPayload>(token.token) as any;
-      const user = UserTransformer.makeUser(res.user) as User;
-      this.userState.setUser(user);
-      this.userState.fetchMemberships(true);
-      this.userState.setUserRoles(res.roles);
-      this.$forceUpdate();
-    }
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  hasPreviousUser() {
-    return APIHelper.hasPreviousToken();
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  getPreviousUser() {
-    const token = APIHelper.getPreviousToken();
-    if (!token) return undefined;
-    return UserTransformer.makeUser((jwtDecode<JwtPayload>(token.token) as any).user);
-  }
 }
 
 </script>

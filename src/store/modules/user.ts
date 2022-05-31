@@ -6,14 +6,19 @@ import { User, UserPermissions } from '@/entities/User';
 import APIHelper from '@/mixins/APIHelper';
 import UserTransformer from '@/transformers/UserTransformer';
 import { NFCDevice } from '@/entities/NFCDevice';
-import jwtDecode from 'jwt-decode';
+import jwtDecode, { JwtPayload } from 'jwt-decode';
 import Dinero from 'dinero.js';
+import { LoginResponse } from '@/entities/APIResponses';
 
 interface UpdateUserInfo {
   userID: number,
   firstname: string,
   lastname: string,
   email: string,
+}
+
+interface TokenContent {
+  user: User,
 }
 
 @Module({
@@ -23,7 +28,7 @@ export default class UserModule extends VuexModule {
   user: User = {} as User;
 
   types = {
-    SELLER: 'Seller',
+    SELLER: 'SELLER',
     BOARD: 'SudoSOS - Board',
     BAC: 'SudoSOS - BAC',
     LOCAL: 'LOCAL_USER',
@@ -35,7 +40,20 @@ export default class UserModule extends VuexModule {
 
   allUsers: User[] = [];
 
+  organs: User[] = [];
+
+  // Used for dropdowns
+  organsList: {value: number, text: string}[] = [];
+
   permissions: UserPermissions = {} as UserPermissions;
+
+  @Mutation
+  extractResponse(response: LoginResponse) {
+    this.user = UserTransformer.makeUser(response.user) as User;
+    this.userRoles = response.roles;
+    this.organs = response.organs.map((organ: any) => UserTransformer.makeUser(organ) as User);
+    this.organsList = this.organs.map((user: User) => ({ value: user.id, text: user.firstname }));
+  }
 
   @Action
   async hasRole(role: string) {
