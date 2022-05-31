@@ -137,6 +137,7 @@ function fetchResource(route: string, body: ResponseBody) {
       })
       .then((data: any) => data)
       .catch((error) => {
+        console.error(route, body);
         console.error(error);
       });
   }

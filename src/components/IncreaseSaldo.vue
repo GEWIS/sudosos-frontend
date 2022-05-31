@@ -19,17 +19,16 @@
         </b-row>
         <b-row>
           <b-col class="font-weight-bold">
-            <!--
-              Using a label with a for attribute that matches the ID of the
-              Element container enables the Element to automatically gain focus
-              when the customer clicks on the label.
-            -->
-            <label for="ideal-bank-element">
-              iDEAL Bank
-            </label>.
-            <div ref="bank" id="ideal-bank-element">
-              <!-- A Stripe Element will be inserted here. -->
-            </div>
+            <form id="payment-form">
+              <div id="payment-element">
+                <!--Stripe.js injects the Payment Element-->
+              </div>
+              <button id="submit">
+                <div class="spinner hidden" id="spinner"></div>
+                <span id="button-text">Pay now</span>
+              </button>
+              <div id="payment-message" class="hidden"></div>
+            </form>
           </b-col>
         </b-row>
         <b-row class="mt-3">

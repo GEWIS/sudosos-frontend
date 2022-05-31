@@ -103,7 +103,8 @@
                 :invalid-feedback="newPincodeFeedback"
                 :state="validateNewPincode"
               >
-                <b-form-input id="new-pincode" v-model="pincode.newPincode" type="text" />
+                <b-form-input id="new-pincode" :formatter="formatPin"
+                  v-model="pincode.newPincode" type="password" />
               </b-form-group>
               <b-form-group
                 id="confirm-pincode-group"
@@ -112,7 +113,8 @@
                 :invalid-feedback="confirmPincodeFeedback"
                 :state="validateConfirmPincode"
               >
-                <b-form-input id="confirm-pincode" v-model="pincode.confirmPincode" type="text" />
+                <b-form-input id="confirm-pincode" :formatter="formatPin"
+                  v-model="pincode.confirmPincode" type="password" />
               </b-form-group>
               <b-button type="submit" variant="primary">
                 {{ $t('profile.Change pin code')}}
@@ -182,6 +184,11 @@ import { NFCDevice } from '@/entities/NFCDevice';
 })
 export default class Profile extends Vue {
   private userState = getModule(UserModule);
+
+  // eslint-disable-next-line class-methods-use-this
+  formatPin(e: any) {
+    return String(e).substring(0, 4);
+  }
 
   editDevice: NFCDevice = {} as NFCDevice;
 
