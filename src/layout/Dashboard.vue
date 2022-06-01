@@ -158,7 +158,6 @@ export default class Dashboard extends Vue {
   logout() {
     Logout.logout(undefined, this.$router);
   }
-
 }
 
 </script>
