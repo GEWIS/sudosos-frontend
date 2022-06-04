@@ -87,7 +87,7 @@ export default class Login extends Vue {
       })
         .then((res: LoginResponse) => {
           this.loginSuccesful(res);
-        });
+        }).catch((e) => console.error(e));
     }
   }
 
