@@ -187,6 +187,7 @@ import { getModule } from 'vuex-module-decorators';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
 import UserModule from '@/store/modules/user';
 import { NFCDevice } from '@/entities/NFCDevice';
+import { getUser } from '@/api/users';
 import { User } from '@/entities/User';
 
 @Component({
@@ -225,9 +226,8 @@ export default class UserDetails extends Vue {
   /**
    * Fetch all the user info that is needed for the profile
    */
-  beforeMount() {
-    this.userState.fetchAllUsers();
-    const user = this.userState.allUsers.find((usr) => usr.id === Number(this.id)) as User;
+  async beforeMount() {
+    const user = (await getUser(this.id)) as User;
     this.firstname = user.firstname;
     this.lastname = user.lastname;
     this.email = user.email || '';
