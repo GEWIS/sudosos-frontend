@@ -110,7 +110,7 @@ export default class ManageProducts extends Vue {
 
   activeContainer: Container = {} as Container;
 
-  beforeMount() {
+  async beforeMount() {
     this.containerState.fetchContainers();
     this.containerState.fetchPublicContainers();
     this.productState.fetchProducts();
