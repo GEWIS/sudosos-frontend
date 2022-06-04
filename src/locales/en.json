@@ -347,7 +347,8 @@
     "transaction": "{person} spent a total of {amount}",
     "transactionPutFor": "{person} charged {name} for {amount}",
     "transactionPutBy": "{name} charged you {amount}",
-    "transfer": "{person} topped up with {amount}"
+    "transfer": "{person} topped up with {amount}",
+    "Empty": "No transactions found."
   },
   "c_transactionDetailsModal": {
     "transaction details": "transaction details",

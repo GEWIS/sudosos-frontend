@@ -33,6 +33,7 @@
           :current-page="currentPage"
           v-on:row-clicked="rowClicked"
           :busy="!loaded"
+          show-empty
         >
           <!-- If the table data is still loading display something nice -->
           <template #table-busy>
@@ -41,8 +42,14 @@
             </div>
           </template>
 
+          <template #empty>
+            <div class="text-center text-muted mt-5 mb-3">
+              {{ $t('c_transactionsTable.Empty') }}
+            </div>
+          </template>
+
           <!-- Columns that are used for daterows -->
-          <template v-slot:top-row="{ columns }">
+          <template v-slot:top-row="{ columns }" v-if="transList.length > 0">
             <td :colspan="columns" class="date-row">
               {{ formatDateTime(transList[0].updatedAt, true) }}
             </td>
@@ -311,6 +318,7 @@ export default class TransactionsTable extends Formatters {
         skip,
       );
     }
+
     this.loaded = true;
   }
 

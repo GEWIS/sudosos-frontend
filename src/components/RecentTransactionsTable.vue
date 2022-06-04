@@ -12,13 +12,20 @@
           borderless
           thead-class="table-header"
           :items="transList"
-          :busy="transList.length === 0"
+          :busy="!loaded"
           :fields="fields"
+          show-empty
         >
           <!-- If the table data is still loading display something nice -->
           <template #table-busy>
             <div class="text-center text-muted mt-5 mb-3">
               <b-spinner class="align-middle"></b-spinner>
+            </div>
+          </template>
+
+          <template #empty>
+            <div class="text-center text-muted mt-5 mb-3">
+              {{ $t('c_transactionsTable.Empty') }}
             </div>
           </template>
 
@@ -58,6 +65,8 @@ export default class RecentTransactionsTable extends Formatters {
   // List with all transactions and pagination information
   transactions: TransactionList = {} as TransactionList;
 
+  loaded = false;
+
   fields: Object[] = [
     {
       key: 'updatedAt',
@@ -73,8 +82,8 @@ export default class RecentTransactionsTable extends Formatters {
   ];
 
   async beforeMount() {
+    this.loaded = false;
     this.userState.fetchUser();
-    console.error(this.userState.user.id);
     this.transactions = await getUserTransactions(
       this.userState.user.id,
       {} as TransactionFilter,
@@ -88,6 +97,7 @@ export default class RecentTransactionsTable extends Formatters {
       10,
       0,
     );
+    this.loaded = true;
 
     // If the locale is changed make sure the labels are also correctly updated for the b-table
     eventBus.$on('localeUpdated', () => {

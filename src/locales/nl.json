@@ -347,7 +347,8 @@
     "transaction": "{person} hebt in totaal {amount} uitgegeven",
     "transactionPutFor": "{person} hebt {amount} afgestreept voor {name}",
     "transactionPutBy": "{name} heeft voor {amount} afgestreept bij jou",
-    "transfer": "{person} hebt opgewaardeerd voor {amount}"
+    "transfer": "{person} hebt opgewaardeerd voor {amount}",
+    "Empty": "Geen transacties gevonden."
   },
   "c_transactionDetailsModal": {
     "transaction details": "transactie details",
