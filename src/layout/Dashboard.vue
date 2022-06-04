@@ -137,12 +137,12 @@ export default class Dashboard extends Vue {
     return this.userState.userRoles.indexOf(this.userState.types.BAC) !== -1;
   }
 
-  beforeMount() {
+  async beforeMount() {
     APIHelper.getToken();
-    this.userState.fetchMemberships(true);
     if (Object.keys(this.userState.user).length <= 0) {
-      this.userState.fetchUser(true);
+      await this.userState.fetchUser(true);
     }
+    await this.userState.fetchMemberships(true);
   }
 
   /**

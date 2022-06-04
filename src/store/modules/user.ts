@@ -51,10 +51,8 @@ export default class UserModule extends VuexModule {
   extractResponse(response: LoginResponse) {
     this.user = UserTransformer.makeUser(response.user) as User;
     this.userRoles = response.roles;
-    console.error(this.userRoles);
     this.organs = response.organs.map((organ: any) => UserTransformer.makeUser(organ) as User);
     this.organsList = this.organs.map((user: User) => ({ value: user.id, text: user.firstname }));
-    console.error(this.organsList);
   }
 
   @Action
@@ -171,14 +169,15 @@ export default class UserModule extends VuexModule {
   @Action({
     rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
-  fetchUser(force: boolean = false) {
+  async fetchUser(force: boolean = false) {
     if (this.user.id === undefined || force) {
       const token = jwtDecode(APIHelper.getToken().jwtToken as string) as any;
+      this.extractResponse(token);
 
-      APIHelper.getResource(`users/${token.user.id}`).then((userResponse) => {
+      await APIHelper.getResource(`users/${token.user.id}`).then((userResponse) => {
         this.context.commit('setUser', UserTransformer.makeUser(userResponse));
       });
-      APIHelper.getResource('balances').then((saldoResponse) => {
+      await APIHelper.getResource('balances').then((saldoResponse) => {
         this.context.commit('updateSaldo', saldoResponse);
       });
     }

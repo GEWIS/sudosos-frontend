@@ -83,7 +83,8 @@ export default class RecentTransactionsTable extends Formatters {
 
   async beforeMount() {
     this.loaded = false;
-    this.userState.fetchUser();
+    await this.userState.fetchUser();
+    console.error(this.userState.user);
     this.transactions = await getUserTransactions(
       this.userState.user.id,
       {} as TransactionFilter,
