@@ -88,13 +88,13 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
         }
     }
 
-    .b-table-has-details {
-        background-color: rgba(0, 0, 0, 0.1) !important;
-        transition: background-color 0.3s;
+    .b-table-details {
+        background-color: #f2f2f2;
+    }
 
-        > td {
-            padding: .75rem .3rem;
-            transition: padding 0.2s;
+    tr:last-of-type {
+        &.b-table-details {
+            display: none;
         }
     }
 
