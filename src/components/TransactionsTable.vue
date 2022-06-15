@@ -269,7 +269,7 @@ export default class TransactionsTable extends Formatters {
         }
       }
     });
-    this.transList.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
+    this.transList.sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime());
     this.totalRows = 0;
 
     if (this.transfers._pagination !== undefined) {

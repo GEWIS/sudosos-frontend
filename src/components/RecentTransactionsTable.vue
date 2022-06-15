@@ -11,9 +11,11 @@
           small
           borderless
           thead-class="table-header"
-          :items="transList"
+          :items="mutations.records"
           :busy="!loaded"
           :fields="fields"
+          sort-by="createdAt"
+          :sort-desc="true"
           show-empty
         >
           <!-- If the table data is still loading display something nice -->
@@ -47,23 +49,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Watch } from 'vue-property-decorator';
-import { Transaction, TransactionFilter, TransactionList } from '@/entities/Transaction';
-import { Transfer, TransferFilter, TransferList } from '@/entities/Transfer';
+import { Component } from 'vue-property-decorator';
 import Formatters from '@/mixins/Formatters';
 import eventBus from '@/eventbus';
-import { getUserTransactions } from '@/api/transactions';
-import { getUserTransfers } from '@/api/transfers';
+import getUserFinancialMutations from '@/api/financialMutations';
+import { FinancialMutationList } from '@/entities/FinancialMutation';
 
 @Component
 export default class RecentTransactionsTable extends Formatters {
-  transList: (Transaction | Transfer)[] = [];
-
-  // List with all transfers and pagination information
-  transfers: TransferList = {} as TransferList;
-
-  // List with all transactions and pagination information
-  transactions: TransactionList = {} as TransactionList;
+  mutations: FinancialMutationList = {} as FinancialMutationList;
 
   loaded = false;
 
@@ -84,42 +78,20 @@ export default class RecentTransactionsTable extends Formatters {
   async beforeMount() {
     this.loaded = false;
     await this.userState.fetchUser();
-    console.error(this.userState.user);
-    this.transactions = await getUserTransactions(
+    this.mutations = await getUserFinancialMutations(
       this.userState.user.id,
-      {} as TransactionFilter,
+      // {} as TransactionFilter,
       10,
       0,
     );
+    console.error(this.mutations);
 
-    this.transfers = await getUserTransfers(
-      this.userState.user.id,
-      {} as TransferFilter,
-      10,
-      0,
-    );
     this.loaded = true;
 
     // If the locale is changed make sure the labels are also correctly updated for the b-table
     eventBus.$on('localeUpdated', () => {
       this.fields = this.updateTranslations(this.fields, 'c_recentTransactionsTable');
     });
-  }
-
-  @Watch('transactions', { deep: true })
-  onTransactionsChanged() {
-    this.setTransList();
-  }
-
-  @Watch('transfers', { deep: true })
-  onTransfersChanged() {
-    this.setTransList();
-  }
-
-  setTransList() {
-    this.transList = this.concat(this.transactions.records, this.transfers.records);
-    this.transList.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
-    this.transList = this.transList.slice(0, 10);
   }
 }
 
