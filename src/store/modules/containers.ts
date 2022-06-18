@@ -12,10 +12,6 @@ import { postProductImage, setProductImage } from '@/api/products';
 
 const productState = getModule(ProductsModule);
 
-export interface ContainerStorage {
-  [key: number]: Container;
-}
-
 @Module({
   dynamic: true, namespaced: true, store, name: 'ContainerModule',
 })
