@@ -187,17 +187,16 @@
           :disabled="selectedProduct !== null"
           :state="pictureState"
         ></FileFormPreview>
-        {{ file }}
       </b-form-group>
     </div>
 
     <template v-slot:modal-footer="{ }">
       <b-button
-        v-show="Object.keys(editProduct).length > 0"
+        v-show="Object.keys(container).length > 0"
         variant="primary"
         class="btn-primary mr-auto"
         v-on:click="deleteProduct"
-      >{{ $t('c_productEditModal.Delete product') }}
+      >Delete from Container
       </b-button>
       <b-button
         variant="primary"

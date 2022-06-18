@@ -37,7 +37,7 @@
           </b-button>
         </div>
         <ContainerComponent
-          v-for="container in this.containerState.containers"
+          v-for="container in this.containerState.containerMapping.values()"
           v-bind:key="container.id"
           :container="container"
           :enabled="true"
@@ -155,7 +155,7 @@ export default class ManageProducts extends Vue {
    * for the requestedContainers
    */
   confirmContainerDelete(): void {
-    this.containerState.removeContainer(this.editContainer);
+    this.containerState.removeContainer(this.editContainer.id);
   }
 
   /**

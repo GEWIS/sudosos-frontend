@@ -188,8 +188,9 @@ export default class TransactionEditor extends Vue {
    * overview per container (makes everything looks nice)
    */
   createProductList() {
-    [...this.containerState.containers, ...this.containerState.publicContainers].forEach(
-      (container) => {
+    [...this.containerState.containerMapping.values(),
+      ...this.containerState.publicContainers].forEach(
+      (container: Container) => {
         if (container.products.length > 0) {
           const group = {
             group: container.name,

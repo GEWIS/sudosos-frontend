@@ -172,7 +172,7 @@ export default class ProductTable extends Formatters {
 
     beforeMount() {
       this.productList = this.productsProp;
-      this.totalRows = this.productList.length;
+      this.totalRows = this.productList?.length;
       // If the locale is changed make sure the labels are also correctly updated for the b-table
       eventBus.$on('localeUpdated', () => {
         this.fields = this.updateTranslations(this.fields, 'c_productTable');
