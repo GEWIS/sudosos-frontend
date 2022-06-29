@@ -1,5 +1,5 @@
 # Build in a different image to keep the target image clean
-FROM node:12 as build
+FROM node:14 as build
 WORKDIR /app
 COPY ./package.json ./package-lock.json ./
 RUN npm install
