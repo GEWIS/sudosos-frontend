@@ -26,6 +26,8 @@ import UserDetails from '@/views/BAC/UserDetails.vue';
 import Login from '@/views/Login.vue';
 import APIHelper from '@/mixins/APIHelper';
 import Logout from '@/mixins/Logout';
+import TermsOfService from '@/views/TermsOfService.vue';
+import { TermsOfServiceStatus } from '@/entities/User';
 
 Vue.use(VueRouter);
 
@@ -39,6 +41,11 @@ const routes = [
         path: '/login',
         component: Login,
         name: 'login',
+      },
+      {
+        path: '/tos',
+        component: TermsOfService,
+        name: 'termsOfService',
       },
     ],
   },
@@ -170,8 +177,10 @@ let previousFrom: string | null | undefined = null;
 router.beforeEach((to, from, next) => {
   const token = APIHelper.getToken();
   const notToLogin = to.name !== 'login';
-  const jwtIsNull = token.jwtToken === undefined;
-  const jwtIsExpired = new Date(Number(token.jwtExpires)) < new Date();
+  const jwtIsNull = token === undefined
+    || token.jwtToken === undefined
+    || token.jwtExpires === undefined;
+  const jwtIsExpired = new Date(Number(token?.jwtExpires)) < new Date();
 
   // if (from.name === previousFrom && to.name !== 'login') {
   //   console.warn('previousFrom');
@@ -179,10 +188,18 @@ router.beforeEach((to, from, next) => {
   //   return;
   // }
 
+  const notToAcceptToS = to.name !== 'termsOfService';
+  const user = APIHelper.getTokenUser();
+  const acceptedToS = user !== undefined
+    && (user.acceptedToS === TermsOfServiceStatus.ACCEPTED
+      || user.acceptedToS === TermsOfServiceStatus.NOT_REQUIRED);
+
   previousFrom = from.name;
 
   if ((notToLogin && jwtIsNull) || (!jwtIsNull && jwtIsExpired)) {
     Logout.logout(next);
+  } else if (user !== undefined && notToAcceptToS && !acceptedToS) {
+    next({ name: 'termsOfService' });
   } else {
     next();
   }

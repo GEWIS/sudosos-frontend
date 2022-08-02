@@ -2,6 +2,12 @@ import { Dinero } from 'dinero.js';
 import { BaseEntity } from '@/entities/BaseEntity';
 import { NFCDevice } from '@/entities/NFCDevice';
 
+export enum TermsOfServiceStatus {
+  ACCEPTED = 'ACCEPTED',
+  NOT_ACCEPTED = 'NOT_ACCEPTED',
+  NOT_REQUIRED = 'NOT_REQUIRED',
+}
+
 export enum UserType {
   MEMBER = 1,
   ORGAN = 2,
@@ -32,6 +38,8 @@ export interface User extends BaseUser {
   type: UserType;
   saldo?: Dinero;
   ean?: string;
+  acceptedToS: TermsOfServiceStatus;
+  extensiveDataProcessing: boolean;
   nfcDevices: NFCDevice[];
 }
 

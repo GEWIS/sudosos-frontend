@@ -157,8 +157,11 @@ export default {
     };
   },
 
-  getTokenUser() {
+  getTokenUser(): User | undefined {
     const token = this.getToken();
+    if (token === undefined
+      || token.jwtToken === undefined
+      || token.jwtExpires === undefined) return undefined;
     const rawUser = (jwtDecode<JwtPayload>(token.jwtToken) as any);
     return UserTransformer.makeUser(rawUser.user) as User;
   },
