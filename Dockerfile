@@ -2,10 +2,10 @@
 FROM node:14 as build
 WORKDIR /app
 COPY ./package.json ./package-lock.json ./
-COPY ./.env* ./
 RUN npm install
 COPY ./ ./
 RUN npm run build
+RUM less ./env
 
 # The target image that will be run
 FROM nginx:alpine as target
