@@ -5,7 +5,7 @@ COPY ./package.json ./package-lock.json ./
 RUN npm install
 COPY ./ ./
 RUN npm run build
-RUM less ./env
+RUN less ./env
 
 # The target image that will be run
 FROM nginx:alpine as target
