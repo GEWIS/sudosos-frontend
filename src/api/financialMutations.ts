@@ -16,8 +16,9 @@ export default function getUserFinancialMutations(
     response._pagination = PaginationTransformer.makePagination(response._pagination);
     response.records = response.records.map(
       (transaction: any) => {
-        if (Object.prototype.hasOwnProperty.call(transaction, 'to')) return TransferTransformer.makeTransfer(transaction);
-        return TransactionTransformer.makeTransaction(transaction);
+        if (transaction.type === 'transaction') return TransactionTransformer.makeTransaction(transaction.mutation);
+        if (transaction.type === 'transfer') return TransferTransformer.makeTransfer(transaction.mutation);
+        return undefined;
       },
     );
 
