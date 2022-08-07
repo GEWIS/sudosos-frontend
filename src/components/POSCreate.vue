@@ -297,6 +297,7 @@ export default class POSCreate extends Vue {
       const { organsList } = this.userState;
 
       const pointOfSale = {
+        id: 0,
         // TODO: Needs to be fixed to correct ID (e.g. org ID instead of users own ID)
         ownerId: organsList[0].value,
         name: this.name,
@@ -305,6 +306,7 @@ export default class POSCreate extends Vue {
 
       // TODO: Redirect afterwards??
       if (this.posID === undefined) {
+        delete pointOfSale.id;
         await postPointOfSale(pointOfSale);
       } else {
         delete pointOfSale.ownerId;
