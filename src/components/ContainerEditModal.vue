@@ -118,6 +118,7 @@ export default class ContainerEditModal extends Formatters {
 
     async beforeMount() {
       this.organsList = this.userState.organsList;
+      // TODO: Fix to actual current value
       this.containerOwnerId = this.organsList[0].value;
       if (Object.keys(this.editContainer).length > 0) {
         this.containerName = this.editContainer.name;
@@ -139,9 +140,13 @@ export default class ContainerEditModal extends Formatters {
       updatedContainer.ownerId = this.containerOwnerId;
 
       if (this.editContainer.id) {
-        patchContainer(this.editContainer.id, updatedContainer);
+        patchContainer(this.editContainer.id, updatedContainer).then((data) => {
+          this.$emit('updatedContainer', data);
+        });
       } else {
-        postContainer(updatedContainer);
+        postContainer(updatedContainer).then((data) => {
+          this.$emit('addedContainer', data);
+        });
       }
 
       this.$bvModal.hide('edit-container');

@@ -51,6 +51,7 @@
   },
   "posInfo": {
     "POS": "Verkooppunt",
+    "Edit": "Bewerken",
     "Close": "Sluiten",
     "General": "Algemeen",
     "Title": "Titel",
@@ -72,8 +73,9 @@
     "Managers": "Beheerders",
     "Containers": "Containers"
   },
-  "posRequest": {
-    "Create Point of Sale": "Aanmaken verkooppunt",
+  "c_POSCreate": {
+    "Create Point of Sale": "Verkooppunt aanmaken",
+    "Edit Point of Sale": "Verkooppunt wijzigen",
     "General": "Algemeen",
     "Title": "POS Naam",
     "Use authentication": "Gebruikers moeten altijd inloggen op het verkooppunt",
@@ -87,12 +89,15 @@
     "Containers": "Containers",
     "add container": "Container toevoegen",
     "Create": "Aanmaken",
+    "Edit": "Bewerken",
     "name invalid": "Voer een correcte naam in van die langer is dan 0 tekens",
     "Start invalid": "Voer een start datum in die vroeger is dan de eind datum",
     "End invalid": "Voer een eind datum in later dan vandaag",
     "confirm": "Bevestig verwijderen",
     "are you sure": "Weet je zeker dat je deze container wil verwijderen?",
-    "No containers": "Geen containers geselecteerd"
+    "No containers": "Geen containers geselecteerd",
+    "Public containers": "Publieke containers",
+    "Own containers": "Eigen containers"
   },
   "c_productInfoModal": {
     "title": "Product informatie",

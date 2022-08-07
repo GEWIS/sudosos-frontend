@@ -171,6 +171,8 @@ export default class ContainerComponent extends Vue {
 
   @Prop({ default: true }) editable!: boolean;
 
+  @Prop({ default: false }) alreadySelected?: boolean;
+
   private userState = getModule(UserModule);
 
   isOpen: Boolean = false;
@@ -189,7 +191,7 @@ export default class ContainerComponent extends Vue {
 
   beforeMount() {
     this.userState.fetchUser();
-    this.selected = !this.enabled || false;
+    this.selected = this.alreadySelected;
   }
 
   async collapseContainer() {

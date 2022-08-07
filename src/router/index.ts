@@ -26,6 +26,7 @@ import UserDetails from '@/views/BAC/UserDetails.vue';
 import Login from '@/views/Login.vue';
 import APIHelper from '@/mixins/APIHelper';
 import Logout from '@/mixins/Logout';
+import PointOfSaleEdit from '@/views/PointOfSale/PointOfSaleEdit.vue';
 
 Vue.use(VueRouter);
 
@@ -62,12 +63,12 @@ const routes = [
         component: Saldo,
       },
       {
-        path: '/point-of-sale-overview',
+        path: '/point-of-sale/overview',
         name: 'pointOfSale',
         component: PointOfSaleOverview,
       },
       {
-        path: '/point-of-sale-request',
+        path: '/point-of-sale/request',
         name: 'pointOfSaleRequest',
         component: PointOfSaleRequest,
       },
@@ -81,6 +82,12 @@ const routes = [
         path: '/point-of-sale/info/:id',
         name: 'pointOfSaleInfo',
         component: PointOfSaleInfo,
+        props: true,
+      },
+      {
+        path: '/point-of-sale/edit/:id',
+        name: 'pointOfSaleEdit',
+        component: PointOfSaleEdit,
         props: true,
       },
       {
