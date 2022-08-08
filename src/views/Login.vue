@@ -96,12 +96,25 @@ export default class Login extends Vue {
    * different request the API
    */
   login() {
-    APIHelper.postResource('authentication/GEWIS/LDAP', {
-      accountName: this.username,
-      password: this.password,
-    }).then((res: LoginResponse) => {
-      this.loginSuccesful(res);
-    });
+    // If the username is an email, it is an external account
+    // and we authenticate using the local account database
+    if (this.username.includes('@')) {
+      APIHelper.postResource('authentication/local', {
+        accountMail: this.username,
+        password: this.password,
+      })
+        .then((res: LoginResponse) => {
+          this.loginSuccesful(res);
+        });
+    } else {
+      APIHelper.postResource('authentication/GEWIS/LDAP', {
+        accountName: this.username,
+        password: this.password,
+      })
+        .then((res: LoginResponse) => {
+          this.loginSuccesful(res);
+        });
+    }
   }
 
   /**
