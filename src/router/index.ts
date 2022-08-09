@@ -24,6 +24,7 @@ import TransactionEditPage from '@/views/BAC/TransactionEditPage.vue';
 import UserOverview from '@/views/BAC/UserOverview.vue';
 import UserDetails from '@/views/BAC/UserDetails.vue';
 import Login from '@/views/Login.vue';
+import PasswordReset from '@/views/PasswordReset.vue';
 import APIHelper from '@/mixins/APIHelper';
 import Logout from '@/mixins/Logout';
 import PointOfSaleEdit from '@/views/PointOfSale/PointOfSaleEdit.vue';
@@ -47,6 +48,11 @@ const routes = [
         path: '/tos',
         component: TermsOfService,
         name: 'termsOfService',
+      },
+      {
+        path: '/passwordreset',
+        component: PasswordReset,
+        name: 'passwordReset',
       },
     ],
   },
@@ -183,7 +189,7 @@ let previousFrom: string | null | undefined = null;
 
 router.beforeEach((to, from, next) => {
   const token = APIHelper.getToken();
-  const notToLogin = to.name !== 'login';
+  const notToLogin = to.name !== 'login' && to.name !== 'passwordReset';
   const jwtIsNull = token === undefined
     || token.jwtToken === undefined
     || token.jwtExpires === undefined;

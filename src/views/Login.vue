@@ -42,6 +42,10 @@
           </b-form-group>
 
           <b-button @click="login" variant="primary">{{ $t('login.Login') }}</b-button>
+          <div
+            class="password-reset"
+            @click="resetPassword"
+          >{{ $t('login.Password reset') }}</div>
         </b-form>
       </b-col>
     </b-row>
@@ -56,8 +60,6 @@ import { getModule } from 'vuex-module-decorators';
 import UserModule from '@/store/modules/user';
 import { v4 as uuid } from 'uuid';
 import { LoginResponse } from '@/entities/APIResponses';
-import UserTransformer from '@/transformers/UserTransformer';
-import { User } from '@/entities/User';
 import BeerMugs from '@/components/BeerMugs.vue';
 
 dotenv.config();
@@ -134,6 +136,10 @@ export default class Login extends Vue {
   loginViaGEWIS() {
     window.location.href = `https://gewis.nl/token/${process.env.VUE_APP_GEWIS_TOKEN}`;
   }
+
+  resetPassword() {
+    this.$router.push({ name: 'passwordReset' });
+  }
 }
 </script>
 
@@ -143,6 +149,14 @@ export default class Login extends Vue {
 }
 
 .login-form {
+  .password-reset {
+    text-decoration: underline;
+  }
+
+  .password-reset:hover {
+    cursor: pointer;
+  }
+
   > * {
     max-width: 350px;
     margin: 0 auto;

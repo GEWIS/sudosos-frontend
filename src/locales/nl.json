@@ -6,7 +6,18 @@
     "Username": "Gebruikersnaam",
     "Enter username": "Voer je gebruikersnaam in",
     "Password": "Wachtwoord",
-    "Enter password": "Voer je wachtwoord in"
+    "Enter password": "Voer je wachtwoord in",
+    "Password reset": "Reset wachtwoord (alleen externe accounts)",
+    "Back to login": "Terug gaan naar login",
+    "Email": "Email",
+    "Enter email": "Voer email in",
+    "Reset": "Reset wachtwoord",
+    "Email sent": "Als er een account bestaat met dit email adres is er een email gestuurt naar {email} met instructies voor het resetten van uw wachtwoord.",
+    "Set new password": "Verander wachtwoord",
+    "New password": "Nieuw wachtwoord",
+    "Confirm password": "Bevestig new wachtwoord",
+    "Enter password again": "Voer wachtwoord opnieuw in",
+    "Reset the password for": "Reset the password for {email}"
   },
   "app": {
     "Transactions": "Transacties",
