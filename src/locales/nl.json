@@ -37,6 +37,13 @@
     "Saturday": "Zaterdag",
     "Sunday": "Zondag"
   },
+  "termsOfService": {
+    "acceptFirst": "Accepteer de Voorwaarden",
+    "description": "Voordat je SudoSOS kunt gebruiken, dien je de voorwaarden te accepteren. Je kunt de inhoud van de voorwaarden hieronder lezen.",
+    "extensiveDataProcessing": "SudoSOS kan je meer inzicht geven in je persoonlijke data, zowel voor jezelf als voor andere gebruikers. Als je de checkbox hieronder aanvinkt, zet je deze functionaliteit aan en kun je ook uitgebreidere statistieken van anderen zien. Deze functionaliteit is optioneel.",
+    "agreeData": "Ik ga akkoord met uitgebreidere dataverwerking voor mijn account (optioneel).",
+    "agreeToS": "Ik ga akkoord met de voorwaarden"
+  },
   "home": {
     "Overview": "Overzicht"
   },

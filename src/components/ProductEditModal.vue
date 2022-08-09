@@ -188,6 +188,19 @@
           :state="pictureState"
         ></FileFormPreview>
       </b-form-group>
+
+      <b-form-group
+        v-if="Object.keys(editProduct).length === 0"
+        label-cols="12"
+        label-cols-sm="3"
+        :label="$t('c_containerEditModal.owner')"
+        label-align="left"
+        label-for="name">
+        <b-form-select v-model="productOwnerId"
+                       :options="organsList"
+                       :disabled="selectedProduct !== null">
+        </b-form-select>
+      </b-form-group>
     </div>
 
     <template v-slot:modal-footer="{ }">
@@ -266,12 +279,18 @@ export default class ProductEditModal extends Formatters {
 
   products: ProductList = {} as ProductList;
 
+  productOwnerId: number = null;
+
   selectedProduct: Product | null = null;
 
   overrideVat: boolean = false;
 
+  organsList: {value: number, text: string}[] = [];
+
   async beforeMount() {
     this.userState.fetchUser();
+    this.organsList = this.userState.organsList;
+    this.productOwnerId = this.organsList[0].value;
     this.products = await getProducts(999);
     this.productCategories = await getProductCategories(999);
     this.vatGroups = (await getVatGroups(999))
@@ -384,7 +403,7 @@ export default class ProductEditModal extends Formatters {
     const product = {
       id: Object.keys(this.editProduct).length > 0 ? this.editProduct.id : null,
       name: this.name,
-      ownerId: this.userState.user.id,
+      ownerId: this.productOwnerId,
       priceInclVat: {
         amount: this.price === null ? 0 : Math.round(this.price * 100),
         currency: 'EUR',
