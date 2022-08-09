@@ -11,9 +11,10 @@ export default {
     if (!Object.keys(data).includes('active')) {
       return {
         ...BaseTransformer.makeBaseEntity(data),
-        firstname: data.firstname,
-        lastname: data.lastname,
-        name: `${data.firstname} ${data.lastname}`,
+        firstname: data.firstName,
+        lastname: data.lastName,
+        name: `${data.firstName} ${data.lastName}`,
+        deleted: data.deleted,
       } as BaseUser;
     }
 
@@ -33,13 +34,14 @@ export default {
 
     return {
       ...BaseTransformer.makeBaseEntity(data),
-      firstname: data.firstname,
-      lastname: data.lastname,
-      name: `${data.firstname} ${data.lastname}`,
+      firstname: data.firstName,
+      lastname: data.lastName,
+      name: `${data.firstName} ${data.lastName}`,
       gewisID: data.gewisID,
       email: data.email,
       active: data.active,
       type: data.type,
+      deleted: data.deleted,
       saldo,
       ean,
       nfcDevices,
@@ -52,5 +54,9 @@ export default {
       name: data.name,
       address: data.address,
     };
+  },
+
+  makeSaldo(data: any) {
+    return dinero({ amount: data, currency: 'EUR' });
   },
 };

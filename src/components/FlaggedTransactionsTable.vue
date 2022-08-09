@@ -22,6 +22,7 @@
           borderless
           thead-class="table-header"
           :items="transactionFlagList"
+          :busy="transactionFlagList.length === 0"
           :fields="fields"
           tbody-tr-class="transaction-flag-row"
           :per-page="perPage"
@@ -32,6 +33,12 @@
           v-on:filtered="filterDone"
           v-on:row-clicked="rowClicked"
         >
+          <!-- If the table data is still loading display something nice -->
+          <template #table-busy>
+            <div class="text-center text-muted mt-5 mb-3">
+              <b-spinner class="align-middle"></b-spinner>
+            </div>
+          </template>
 
           <!-- Templates for each row cell -->
           <template v-slot:cell(updatedAt)="data">
@@ -69,7 +76,7 @@
     </b-card>
     <b-card-footer class="d-flex" v-if="totalRows > perPage">
       <p class="my-auto h-100">
-        {{ $t('transactionFlagsComponent.Page') }}:
+        {{ $t('c_transactionFlagsComponent.Page') }}:
       </p>
       <b-pagination
         v-model="currentPage"
@@ -147,28 +154,28 @@ export default class TransactionFlagsTable extends Formatters {
   fields: Object[] = [
     {
       key: 'updatedAt',
-      label: this.getTranslation('transactionFlagsComponent.When'),
+      label: this.getTranslation('c_transactionFlagsComponent.When'),
       locale_key: 'When',
     },
     {
       key: 'flaggedBy',
-      label: this.getTranslation('transactionFlagsComponent.Who'),
+      label: this.getTranslation('c_transactionFlagsComponent.Who'),
       locale_key: 'Who',
     },
     {
       key: 'status',
-      label: this.getTranslation('transactionFlagsComponent.Status'),
+      label: this.getTranslation('c_transactionFlagsComponent.Status'),
       locale_key: 'Status',
     },
     {
       key: 'reason',
-      label: this.getTranslation('transactionFlagsComponent.Reason'),
+      label: this.getTranslation('c_transactionFlagsComponent.Reason'),
       locale_key: 'Reason',
       tdClass: 'cell-reason',
     },
     {
       key: 'id',
-      label: this.getTranslation('transactionFlagsComponent.Info'),
+      label: this.getTranslation('c_transactionFlagsComponent.Info'),
       locale_key: 'Info',
     },
   ];
@@ -182,7 +189,7 @@ export default class TransactionFlagsTable extends Formatters {
 
     // If the locale is changed make sure the labels are also correctly updated for the b-table
     eventBus.$on('localeUpdated', () => {
-      this.fields = this.updateTranslations(this.fields, 'transactionFlagsComponent');
+      this.fields = this.updateTranslations(this.fields, 'c_transactionFlagsComponent');
     });
   }
 

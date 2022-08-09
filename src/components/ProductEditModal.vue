@@ -1,8 +1,8 @@
 <template>
   <b-modal
     id="edit-product"
-    :ok-title="$t('editProductModal.save')"
-    :cancel-title="$t('editProductModal.cancel')"
+    :ok-title="$t('c_productEditModal.save')"
+    :cancel-title="$t('c_productEditModal.cancel')"
     :title="modalTitle"
     v-on:shown="setProduct"
     size="lg"
@@ -13,27 +13,27 @@
       <!--  If a product is being editted we show some extra info  -->
       <b-form-row v-if="Object.keys(editProduct).length > 0">
         <b-col cols="12" sm="3">
-          <span class="font-weight-bold">{{ $t('editProductModal.added on') }}</span>
+          <span class="font-weight-bold">{{ $t('c_productEditModal.added on') }}</span>
         </b-col>
-        <b-col cols="12" sm="3">
+        <b-col cols="12" sm="9">
           {{ formatDateTime(editProduct.createdAt, true) }}
         </b-col>
       </b-form-row>
 
-      <b-form-row v-if="Object.keys(editProduct).length > 0">
+      <b-form-row v-if="Object.keys(editProduct).length > 0 && 'updatedAt' in editProduct">
         <b-col cols="12" sm="3">
-          <span class="font-weight-bold">{{ $t('editProductModal.updated on') }}</span>
+          <span class="font-weight-bold">{{ $t('c_productEditModal.updated on') }}</span>
         </b-col>
-        <b-col cols="12" sm="3">
+        <b-col cols="12" sm="9">
           {{ formatDateTime(editProduct.updatedAt, true) }}
         </b-col>
       </b-form-row>
 
       <b-form-row v-if="Object.keys(editProduct).length > 0">
         <b-col cols="12" sm="3">
-          <span class="font-weight-bold">{{ $t('editProductModal.added by') }}</span>
+          <span class="font-weight-bold">{{ $t('c_productEditModal.added by') }}</span>
         </b-col>
-        <b-col cols="12" sm="3">
+        <b-col cols="12" sm="9">
           {{ editProduct.owner.name }}
         </b-col>
       </b-form-row>
@@ -42,27 +42,27 @@
       <!--  product from here to add it    -->
       <div v-if="Object.keys(container).length > 0
         && Object.keys(editProduct).length === 0
-        && products.length > 0">
-        <h6>{{ $t('editProductModal.Add existing') }}</h6>
+        && products.records.length > 0">
+        <h6>{{ $t('c_productEditModal.Add existing') }}</h6>
 
         <b-form-group
           label-cols="12"
           label-cols-sm="3"
-          :label="$t('editProductModal.Existing products')"
+          :label="$t('c_productEditModal.Existing products')"
           label-align="left"
           label-for="select"
         >
           <v-select
-            :options="products"
+            :options="products.records"
             :getOptionLabel="option => option.name"
             v-model="selectedProduct"
           >
             <template v-slot:selected-option="product">
-              <img :src="product.picture" alt="product image">
+              <img :src="`/static/products/${product.picture}`" alt="product image">
               {{ product.name }}
             </template>
             <template v-slot:option="product">
-              <img :src="product.picture" alt="product image">
+              <img :src="`/static/products/${product.picture}`" alt="product image">
               {{ product.name }}
             </template>
           </v-select>
@@ -78,7 +78,7 @@
       <b-form-group
         label-cols="12"
         label-cols-sm="3"
-        :label="$t('editProductModal.Name')"
+        :label="$t('c_productEditModal.Name')"
         label-align="left"
         label-for="name"
         :state="nameState"
@@ -97,7 +97,7 @@
       <b-form-group
         label-cols="12"
         label-cols-sm="3"
-        :label="$t('editProductModal.Category')"
+        :label="$t('c_productEditModal.Category')"
         label-align="left"
         label-for="product-category"
         :state="categoryState"
@@ -109,12 +109,13 @@
           value-field="text"
           v-model="category"
           :disabled="selectedProduct !== null"
-          :options="productCategoryState.productCategories"
+          :options="productCategories.records"
           :state="categoryState"
+          @change="onCategoryChange"
         >
           <template #first>
             <b-form-select-option value="null" disabled>
-              {{ $t('editProductModal.Please select') }}
+              {{ $t('c_productEditModal.Please select') }}
             </b-form-select-option>
           </template>
         </b-form-select>
@@ -123,7 +124,17 @@
       <b-form-group
         label-cols="12"
         label-cols-sm="3"
-        :label="$t('editProductModal.Alcohol Percentage')"
+        :label="$t('c_productEditModal.VAT')"
+        label-align="left"
+        label-for="name">
+        <b-form-select v-model="vatGroup" :options="vatGroups"
+               :disabled="selectedProduct !== null" @change="setVatOverride"></b-form-select>
+      </b-form-group>
+
+      <b-form-group
+        label-cols="12"
+        label-cols-sm="3"
+        :label="$t('c_productEditModal.Alcohol Percentage')"
         label-align="left"
         label-for="alcohol"
         v-if="category === 'Alcoholic'"
@@ -142,7 +153,7 @@
       <b-form-group
         label-cols="12"
         label-cols-sm="3"
-        :label="$t('editProductModal.Price')"
+        :label="$t('c_productEditModal.Price')"
         label-align="left"
         label-for="price"
         :state="priceState"
@@ -163,7 +174,7 @@
       <b-form-group
         label-cols="12"
         label-cols-sm="3"
-        :label="$t('editProductModal.Picture')"
+        :label="$t('c_productEditModal.Picture')"
         label-align="left"
         label-for="ad-file"
         v-if="selectedProduct === null"
@@ -172,33 +183,32 @@
       >
         <FileFormPreview
           v-model="file"
-          :img="img.length > 0 ? img : undefined"
+          :img="img.length > 0 ? `/static/products/${img}` : undefined"
           :disabled="selectedProduct !== null"
           :state="pictureState"
         ></FileFormPreview>
       </b-form-group>
     </div>
 
-    <!-- TODO: Fix product delete   -->
     <template v-slot:modal-footer="{ }">
       <b-button
-        v-if="Object.keys(editProduct).length > 0"
+        v-show="Object.keys(container).length > 0"
         variant="primary"
         class="btn-primary mr-auto"
         v-on:click="deleteProduct"
-      >{{ $t('editProductModal.Delete product') }}
+      >Delete from Container
       </b-button>
       <b-button
         variant="primary"
         class="btn-empty"
         @click="cancelAdding"
-      >{{ $t('editProductModal.cancel') }}
+      >{{ $t('c_productEditModal.cancel') }}
       </b-button>
       <b-button
         variant="primary"
-        class="btn-empty"
+        class="btn-primary"
         @click="save">
-        {{ $t('editProductModal.save') }}
+        {{ $t('c_productEditModal.save') }}
       </b-button>
     </template>
   </b-modal>
@@ -209,21 +219,25 @@ import {
   Component, Prop, Watch,
 } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
-import { Product } from '@/entities/Product';
+import {
+  CreateProductRequest, Product, ProductList, UpdateProductRequest,
+} from '@/entities/Product';
 import FileFormPreview from '@/components/FileFormPreview.vue';
 import Formatters from '@/mixins/Formatters';
 import { Container } from '@/entities/Container';
 import ProductsModule from '@/store/modules/products';
 import ContainerModule from '@/store/modules/containers';
-import UserModule from '@/store/modules/user';
-import ProductCategoryModule from '@/store/modules/productcategory';
+import { ProductCategoryList } from '@/entities/ProductCategory';
+import { getProductCategories } from '@/api/productCategories';
+import { getProducts, setProductImage } from '@/api/products';
+import getVatGroups from '@/api/vatGroups';
 
 @Component({
   components: {
     FileFormPreview,
   },
 })
-export default class EditProductModal extends Formatters {
+export default class ProductEditModal extends Formatters {
   @Prop() private editProduct!: Product;
 
   @Prop() private container!: Container;
@@ -232,9 +246,9 @@ export default class EditProductModal extends Formatters {
 
   private containerState = getModule(ContainerModule);
 
-  private productCategoryState = getModule(ProductCategoryModule);
+  productCategories: ProductCategoryList = {} as ProductCategoryList;
 
-  private userState = getModule(UserModule);
+  vatGroups: {value: number, text: string}[] = [];
 
   name: string | null = null;
 
@@ -244,18 +258,24 @@ export default class EditProductModal extends Formatters {
 
   alcoholPercentage: number | null = null;
 
+  vatGroup: number | null = null;
+
   img: string = '';
 
   file: File | null = null;
 
-  products: Product[] = [];
+  products: ProductList = {} as ProductList;
 
   selectedProduct: Product | null = null;
 
-  beforeMount() {
-    this.productState.fetchUserProducts();
-    this.productCategoryState.fetchProductCategories();
-    this.products = this.productState.userProducts;
+  overrideVat: boolean = false;
+
+  async beforeMount() {
+    this.userState.fetchUser();
+    this.products = await getProducts(999);
+    this.productCategories = await getProductCategories(999);
+    this.vatGroups = (await getVatGroups(999))
+      .records.map((group) => ({ value: group.id, text: String(group.percentage) }));
   }
 
   setProduct() {
@@ -280,7 +300,7 @@ export default class EditProductModal extends Formatters {
       if (this.selectedProduct !== null) {
         this.containerState.addProduct({
           container: this.container,
-          product: this.selectedProduct,
+          product: this.selectedProduct as any,
         });
         this.setProductProperties();
         this.$bvModal.hide('edit-product');
@@ -293,14 +313,16 @@ export default class EditProductModal extends Formatters {
 
         // Check if a product is being added or being editted
         if (Object.keys(this.editProduct).length > 0) {
-          this.containerState.updateProduct({
-            container: this.container,
-            product,
-          });
+          const update = product as UpdateProductRequest;
+          this.productState.updateProduct(update);
+          if (this.file) setProductImage(update.id, this.file);
         } else {
+          delete (product as any).owner;
+          console.error(this.file);
           this.containerState.addProduct({
             container: this.container,
             product,
+            file: this.file,
           });
         }
         this.$bvModal.hide('edit-product');
@@ -312,15 +334,27 @@ export default class EditProductModal extends Formatters {
       // Construct the new product property
       const product = this.constructProduct();
 
-      // Check if a product is being added or being editted
+      // Check if a product is being added or being edited
       if (Object.keys(this.editProduct).length > 0) {
-        this.productState.updateProduct(product);
+        this.productState.updateProduct(product as UpdateProductRequest);
+        if (this.file) setProductImage((product as any).id, this.file);
       } else {
-        this.productState.addProduct(product);
+        this.productState.addProduct(product as any, this.file);
       }
       this.$bvModal.hide('edit-product');
     } else {
       this.setInvalidStates();
+    }
+  }
+
+  setVatOverride() {
+    this.overrideVat = true;
+  }
+
+  onCategoryChange() {
+    if (!this.overrideVat) {
+      if (this.category === 'Alcoholic') this.vatGroup = this.vatGroups.find((group) => group.text === '21').value;
+      else this.vatGroup = this.vatGroups.find((group) => group.text === '9').value;
     }
   }
 
@@ -329,7 +363,7 @@ export default class EditProductModal extends Formatters {
 
     this.containerState.removeProduct({
       container: this.container,
-      product,
+      product: product as UpdateProductRequest,
     });
     this.$bvModal.hide('edit-product');
   }
@@ -339,32 +373,34 @@ export default class EditProductModal extends Formatters {
    */
   cancelAdding() {
     this.setProductProperties();
+    this.overrideVat = false;
     this.$bvModal.hide('edit-product');
   }
 
   /**
    * Makes a product object based on the set inputs and returns it.
    */
-  constructProduct() {
+  constructProduct(): UpdateProductRequest | CreateProductRequest {
     const product = {
       id: Object.keys(this.editProduct).length > 0 ? this.editProduct.id : null,
       name: this.name,
-      owner: {
-        id: this.userState.user.id,
-        firstname: this.userState.user.firstname,
-        lastname: this.userState.user.lastname,
+      ownerId: this.userState.user.id,
+      priceInclVat: {
+        amount: this.price === null ? 0 : Math.round(this.price * 100),
+        currency: 'EUR',
+        precision: 2,
       },
-      price: this.price === null ? 0 : (this.price * 100).toPrecision(2),
-      category: this.productCategoryState.productCategories.find(
+      category: this.productCategories.records.find(
         (cat) => cat.name === this.category,
-      ),
-      picture: this.file !== null ? URL.createObjectURL(this.file) : this.img,
-      alcoholPercentage: this.alcoholPercentage === null ? 0 : this.alcoholPercentage,
-      createdAt: Object.keys(this.editProduct).length > 0 ? this.editProduct.createdAt : null,
-    } as {id?: number};
+      )?.id,
+      alcoholPercentage: this.alcoholPercentage === null ? 0 : Number(this.alcoholPercentage),
+      vat: this.vatGroup,
+    };
 
     if (Object.keys(this.editProduct).length <= 0) {
       delete product.id;
+    } else {
+      delete product.ownerId;
     }
 
     return product;
@@ -382,12 +418,14 @@ export default class EditProductModal extends Formatters {
       this.alcoholPercentage = null;
       this.img = '';
       this.file = null;
+      this.vatGroup = null;
     } else {
       this.name = product.name;
       this.category = this.setCapitalLetter(product.category.name);
       this.price = Number((product.price.getAmount() / 100).toPrecision(2));
+      this.vatGroup = this.vatGroups.find((group) => group.text === String(product.vat)).value;
       this.alcoholPercentage = product.alcoholPercentage;
-      this.img = product.picture;
+      this.img = product.picture || '';
     }
   }
 
@@ -429,7 +467,7 @@ export default class EditProductModal extends Formatters {
   // Return appropriate validating message for name
   get invalidName() {
     if (!this.nameState && this.nameState !== null) {
-      return this.$t('editProductModal.name invalid').toString();
+      return this.$t('c_productEditModal.name invalid').toString();
     }
 
     return '';
@@ -443,7 +481,7 @@ export default class EditProductModal extends Formatters {
   // Return appropriate validating message for category
   get invalidProductCategory() {
     if (!this.categoryState && this.categoryState !== null) {
-      return this.$t('editProductModal.category invalid').toString();
+      return this.$t('c_productEditModal.category invalid').toString();
     }
 
     return '';
@@ -458,7 +496,7 @@ export default class EditProductModal extends Formatters {
   // Return appropriate validating message for price
   get invalidPrice() {
     if (!this.priceState && this.priceState !== null) {
-      return this.$t('editProductModal.price invalid').toString();
+      return this.$t('c_productEditModal.price invalid').toString();
     }
 
     return '';
@@ -479,7 +517,7 @@ export default class EditProductModal extends Formatters {
   // Return appropriate validating message for picture
   get invalidPicture() {
     if (!this.pictureState && this.pictureState !== null) {
-      return this.$t('editProductModal.picture invalid').toString();
+      return this.$t('c_productEditModal.picture invalid').toString();
     }
 
     return '';
@@ -493,9 +531,9 @@ export default class EditProductModal extends Formatters {
   get modalTitle() {
     // Check if we are editting a product
     if (Object.keys(this.editProduct).length > 0) {
-      return this.$t('editProductModal.edit product').toString();
+      return this.$t('c_productEditModal.edit product').toString();
     }
-    return this.$t('editProductModal.add product').toString();
+    return this.$t('c_productEditModal.add product').toString();
   }
 
   /**
@@ -506,10 +544,10 @@ export default class EditProductModal extends Formatters {
    */
   get addNewTitle() {
     if (this.selectedProduct !== null) {
-      return this.$t('editProductModal.Product details').toString();
+      return this.$t('c_productEditModal.Product details').toString();
     }
 
-    return this.$t('editProductModal.Add new').toString();
+    return this.$t('c_productEditModal.Add new').toString();
   }
 
   /**

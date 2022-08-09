@@ -13,6 +13,11 @@ export default class FlaggedTransactionModule extends VuexModule {
   flaggedTransactions: FlaggedTransaction[] = [];
 
   @Mutation
+  reset() {
+    this.flaggedTransactions = [];
+  }
+
+  @Mutation
   setFlaggedTransactions(flaggedTransactions: FlaggedTransaction[]) {
     this.flaggedTransactions = flaggedTransactions;
   }
@@ -27,9 +32,10 @@ export default class FlaggedTransactionModule extends VuexModule {
 
   @Mutation
   removeFlaggedTransaction(flaggedTransaction: FlaggedTransaction) {
-    APIHelper.delResource('flaggedTransactions', flaggedTransaction);
-    const index = this.flaggedTransactions.findIndex((trns) => trns.id === flaggedTransaction.id);
-    this.flaggedTransactions.splice(index, 1);
+    APIHelper.delResource('flaggedTransactions').then(() => {
+      const index = this.flaggedTransactions.findIndex((trns) => trns.id === flaggedTransaction.id);
+      this.flaggedTransactions.splice(index, 1);
+    });
   }
 
   @Mutation
@@ -45,15 +51,16 @@ export default class FlaggedTransactionModule extends VuexModule {
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchFlaggedTransactions(force: boolean = false) {
     if (this.flaggedTransactions.length === 0 || force) {
-      const flaggedTransactionResponse = APIHelper.getResource('flaggedTransactions') as [];
-      const flgd = flaggedTransactionResponse.map((flaggedTransaction) => (
-        FlaggedTransactionTransformer.makeFlaggedTransaction(flaggedTransaction)
-      ));
-      this.context.commit('setFlaggedTransactions', flgd);
+      APIHelper.getResource('flaggedTransactions').then((flaggedTransactionResponse: FlaggedTransaction[]) => {
+        const flgd = flaggedTransactionResponse.map((flaggedTransaction) => (
+          FlaggedTransactionTransformer.makeFlaggedTransaction(flaggedTransaction)
+        ));
+        this.context.commit('setFlaggedTransactions', flgd);
+      });
     }
   }
 }

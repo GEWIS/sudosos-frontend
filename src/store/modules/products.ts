@@ -3,8 +3,9 @@ import {
 } from 'vuex-module-decorators';
 import store from '@/store';
 import APIHelper from '@/mixins/APIHelper';
-import { Product } from '@/entities/Product';
+import { Product, CreateProductRequest, UpdateProductRequest } from '@/entities/Product';
 import ProductTransformer from '@/transformers/ProductTransformer';
+import { setProductImage } from '@/api/products';
 
 @Module({
   dynamic: true, namespaced: true, store, name: 'ProductsModule',
@@ -13,6 +14,12 @@ export default class ProductsModule extends VuexModule {
   products: Product[] = [];
 
   userProducts: Product[] = [];
+
+  @Mutation
+  reset() {
+    this.products = [];
+    this.userProducts = [];
+  }
 
   @Mutation
   setProducts(products: Product[]) {
@@ -25,46 +32,57 @@ export default class ProductsModule extends VuexModule {
   }
 
   @Mutation
-  addProduct(product: {}) {
-    const productResponse = APIHelper.postResource('products', product);
+  async addProduct(product: CreateProductRequest, image?: File) {
+    const productResponse = await APIHelper.postResource('products', product);
+    if (image) await setProductImage(productResponse.id, image);
     const productToAdd = ProductTransformer.makeProduct(productResponse) as Product;
     this.userProducts.push(productToAdd);
+    return productToAdd;
   }
 
   @Mutation
   removeProduct(product: Product) {
-    APIHelper.delResource('products', product);
-    const index = this.products.findIndex((prd) => prd.id === product.id);
-    this.userProducts.splice(index, 1);
+    APIHelper.delResource('products').then(() => {
+      const index = this.products.findIndex((prd) => prd.id === product.id);
+      this.userProducts.splice(index, 1);
+    });
   }
 
   @Mutation
-  updateProduct(product: {}) {
-    const response = APIHelper.putResource('products', product);
+  async updateProduct(product: UpdateProductRequest) {
+    const updateRequest = {
+      ...product,
+    };
+    delete updateRequest.id;
+
+    const response = await APIHelper.patchResource(`products/${product.id}`, updateRequest);
     const productResponse = ProductTransformer.makeProduct(response);
+
     const index = this.userProducts.findIndex((prd) => prd.id === productResponse.id);
     this.userProducts.splice(index, 1, productResponse as Product);
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchProducts(force: boolean = false) {
     if (this.products.length === 0 || force) {
-      const productsResponse = APIHelper.getResource('products') as [];
-      const products = productsResponse.map((product) => ProductTransformer.makeProduct(product));
-      this.context.commit('setProducts', products);
+      (APIHelper.getResource('products') as Promise<{ records: any[]}>).then((res) => {
+        const products = res.records.map((product) => ProductTransformer.makeProduct(product));
+        this.context.commit('setProducts', products);
+      });
     }
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchUserProducts(force: boolean = false) {
     if (this.userProducts.length === 0 || force) {
-      const productsResponse = APIHelper.getResource('userproducts') as [];
-      const products = productsResponse.map((product) => ProductTransformer.makeProduct(product));
-      this.context.commit('setUserProducts', products);
+      (APIHelper.getResource('userproducts') as Promise<{ records: any[]}>).then((res) => {
+        const products = res.records.map((product) => ProductTransformer.makeProduct(product));
+        this.context.commit('setUserProducts', products);
+      });
     }
   }
 }

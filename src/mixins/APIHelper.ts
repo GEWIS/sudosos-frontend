@@ -4,13 +4,17 @@ import * as dotenv from 'dotenv';
 import eventBus from '@/eventbus';
 import { ApiError } from '@/entities/ApiError';
 import { ResponseBody } from '@/entities/ResponseBody';
+import jwtDecode, { JwtPayload } from 'jwt-decode';
+import UserTransformer from '@/transformers/UserTransformer';
+import { User } from '@/entities/User';
 import devAPI from '../../dev/api';
 
 dotenv.config();
 
-const baseURL = process.env.VUE_APP_API_BASE; // TODO: Set base URL
-const token = ''; // TODO: Make sure we get the token
-const isDev = process.env.VUE_APP_DEVELOP;
+type Token = {token: string, expires: string};
+
+const baseURL = process.env.VUE_APP_API_BASE;
+const isDev = (process.env.VUE_APP_DEVELOP === 'true');
 
 /**
  * Takes a route string and arguments and converts it into a route that the browser can read
@@ -22,6 +26,18 @@ const isDev = process.env.VUE_APP_DEVELOP;
  */
 function makeRoute(route: string, args: any = null) {
   let newRoute = route;
+
+  const queries = new URLSearchParams(window.location.search);
+
+  if (args === null || (!('skip' in args) || !('take' in args))) {
+    if (queries.has('skip')) {
+      args.skip = queries.get('skip');
+    }
+
+    if (queries.has('take')) {
+      args.take = queries.get('take');
+    }
+  }
 
   // Convert the arguments to a query string
   if (args !== null) {
@@ -46,26 +62,45 @@ function makeRoute(route: string, args: any = null) {
  */
 function checkResponse(fetchResponse: Response) {
   if (fetchResponse.status !== 200) {
-    if (fetchResponse.status === 401) {
-      console.warn('401 - Unauthorized');
-      // TODO : Reroute / give visual warning
-
-      // TODO: Test if below works
+    if (fetchResponse.status === 400) {
+      console.warn('400 - Bad request');
       const body = {
         status: fetchResponse.status,
-        message: 'apiError.test',
+        message: 'apiError.400',
+      } as ApiError;
+      eventBus.$emit('apiError', body);
+    } else if (fetchResponse.status === 401) {
+      console.warn('401 - Unauthorized');
+      const body = {
+        status: fetchResponse.status,
+        message: 'apiError.401',
       } as ApiError;
       eventBus.$emit('apiError', body);
     } else if (fetchResponse.status === 403) {
       console.warn('403 - Forbidden');
-      // TODO : Reroute / give visual warning
+      const body = {
+        status: fetchResponse.status,
+        message: 'apiError.403',
+      } as ApiError;
+      eventBus.$emit('apiError', body);
+    } else if (fetchResponse.status === 404) {
+      console.warn('404 - Not found');
+      const body = {
+        status: fetchResponse.status,
+        message: 'apiError.404',
+      } as ApiError;
+      eventBus.$emit('apiError', body);
     } else if (fetchResponse.status === 500) {
       console.warn('500 - Internal Server Error');
-      // TODO : Reroute / give visual warning
+      const body = {
+        status: fetchResponse.status,
+        message: 'apiError.500',
+      } as ApiError;
+      eventBus.$emit('apiError', body);
     } else if (fetchResponse.status === 9999) {
       console.warn('This local file cannot be found by the dev API');
     }
-    console.log(JSON.stringify(fetchResponse));
+    // console.log(JSON.stringify(fetchResponse));
   }
 }
 
@@ -76,62 +111,89 @@ function checkResponse(fetchResponse: Response) {
  * @param body: body that has all the correct info for the fetch
  */
 function fetchResource(route: string, body: ResponseBody) {
-  let fetchResult = {};
-
-  if (token === '' && !isDev) {
-    // @ts-ignore
-    const currentPath = this.$router.currentRoute;
-    // @ts-ignore
-    this.$router.push(`/login?next=${currentPath}`);
-    return null;
-  }
+  let fetchResult: Promise<any> = new Promise<any>((resolve) => {
+    resolve({});
+  });
 
   // If we are currently in development mode get data from the Fake API
   if (isDev) {
     try {
-      fetchResult = devAPI.fetchJSON(route, body);
+      fetchResult = new Promise((resolve) => {
+        resolve(devAPI.fetchJSON(route, body));
+      });
     } catch (e) {
       const reponseBody = {
         status: 404,
         message: 'apiError.Something went wrong',
-        error: e,
       } as ApiError;
       eventBus.$emit('apiError', reponseBody);
       console.error(e);
     }
+  } else {
+    fetchResult = fetch(route, body)
+      .then((response) => {
+        checkResponse(response);
+        return response.json();
+      })
+      .then((data: any) => data)
+      .catch((error) => {
+        console.error(route, body);
+        console.error(error);
+      });
   }
-
-  fetch(route, body)
-    .then((fetchResponse) => {
-      checkResponse(fetchResponse);
-      fetchResult = fetchResponse.json();
-    })
-    .catch((error) => {
-      console.error(error);
-    });
 
   return fetchResult;
 }
 
 export default {
-  getResource(route: string, args = null) {
+  getToken() {
+    const rawToken = localStorage.getItem('jwt_token') as string;
+    let token = {} as Token;
+    if (rawToken !== null) token = JSON.parse(rawToken);
+
+    return {
+      jwtToken: token.token,
+      jwtExpires: token.expires,
+    };
+  },
+
+  getTokenUser() {
+    const token = this.getToken();
+    const rawUser = (jwtDecode<JwtPayload>(token.jwtToken) as any);
+    return UserTransformer.makeUser(rawUser.user) as User;
+  },
+
+  parseToken(rawToken: string): Token {
+    const expires = String(Number(jwtDecode<JwtPayload>(rawToken).exp) * 1000);
+    return { token: rawToken, expires };
+  },
+
+  setToken(jwtToken: string) {
+    localStorage.setItem('jwt_token', JSON.stringify(this.parseToken(jwtToken)));
+  },
+
+  clearToken() {
+    localStorage.clear();
+  },
+
+  getResource(route: string, args: Object | null = null) {
     const constructedRoute = makeRoute(route, args);
 
     const getBody = {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${this.getToken().jwtToken}`,
       },
     } as ResponseBody;
 
     return fetchResource(constructedRoute, getBody);
   },
 
-  patchResource(route: string, data: any, args = null) {
+  patchResource(route: string, data: any, args = null as any) {
     const constructedRoute = makeRoute(route, args);
 
     const patchBody = {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${this.getToken().jwtToken}`,
         'content-type': 'application/json',
       },
       method: 'PATCH',
@@ -141,14 +203,14 @@ export default {
     return fetchResource(constructedRoute, patchBody);
   },
 
-  putResource(route: string, data: any, args = null) {
+  putResource(route: string, data: any, args = null as any) {
     const constructedRoute = makeRoute(route, args);
 
     const putBody = {
       body: JSON.stringify(data),
       method: 'PUT',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${this.getToken().jwtToken}`,
         'content-type': 'application/json',
       },
     } as ResponseBody;
@@ -156,14 +218,29 @@ export default {
     return fetchResource(constructedRoute, putBody);
   },
 
-  postResource(route: string, data: any, args = null) {
+  uploadResource(route: string, file: File) {
+    const constructedRoute = makeRoute(route, null);
+    const data = new FormData();
+    data.append('file', file);
+    const postBody: ResponseBody = {
+      body: data,
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${this.getToken().jwtToken}`,
+      },
+    };
+
+    return fetchResource(constructedRoute, postBody);
+  },
+
+  postResource(route: string, data: any = {}, args = null as any) {
     const constructedRoute = makeRoute(route, args);
 
     const postBody = {
       body: JSON.stringify(data),
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${this.getToken().jwtToken}`,
         'content-type': 'application/json',
       },
     } as ResponseBody;
@@ -171,14 +248,13 @@ export default {
     return fetchResource(constructedRoute, postBody);
   },
 
-  delResource(route: string, data: any, args = null) {
+  delResource(route: string, args = null as any) {
     const constructedRoute = makeRoute(route, args);
 
     const delBody = {
-      body: JSON.stringify(data),
       method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${this.getToken().jwtToken}`,
         'content-type': 'application/json',
       },
     } as ResponseBody;
@@ -186,14 +262,14 @@ export default {
     return fetchResource(constructedRoute, delBody);
   },
 
-  postFile(route: string, data: any, args = null) {
+  postFile(route: string, data: any, args = null as any) {
     const constructedRoute = makeRoute(route, args);
 
     const postFileBody = {
       body: data,
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${this.getToken().jwtToken}`,
         'cache-control': 'no-store',
         pragma: 'no-cache',
       },

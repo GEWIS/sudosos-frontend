@@ -2,7 +2,7 @@
   <div>
     <b-row>
       <b-col cols="6" sm="4">
-        <p class="font-weight-bold">{{ $t('transactionDetails.Total') }}</p>
+        <p class="font-weight-bold">{{ $t('c_transactionDetails.Total') }}</p>
       </b-col>
       <b-col cols="6" sm="8" class="text-right text-sm-left">
         <p>{{ totalTransactionPrice.toFormat() }}</p>
@@ -10,7 +10,7 @@
     </b-row>
     <b-row>
       <b-col cols="6" sm="4">
-        <p class="font-weight-bold">{{ $t('transactionDetails.Point of sale') }}</p>
+        <p class="font-weight-bold">{{ $t('c_transactionDetails.Point of sale') }}</p>
       </b-col>
       <b-col cols="6" sm="8" class="text-right text-sm-left">
         <p>{{ transaction.pointOfSale.name }}</p>
@@ -18,7 +18,7 @@
     </b-row>
     <b-row>
       <b-col cols="6" sm="4">
-        <p class="font-weight-bold">{{ $t('transactionDetails.Bought by') }}</p>
+        <p class="font-weight-bold">{{ $t('c_transactionDetails.Bought by') }}</p>
       </b-col>
       <b-col cols="6" sm="8" class="text-right text-sm-left mb-3">
         <v-select
@@ -31,7 +31,7 @@
     </b-row>
     <b-row v-if="Object.keys(transaction.createdBy).length !== 0">
       <b-col cols="6" sm="4">
-        <p class="font-weight-bold">{{ $t('transactionDetails.Put in by') }}</p>
+        <p class="font-weight-bold">{{ $t('c_transactionDetails.Put in by') }}</p>
       </b-col>
       <b-col cols="6" sm="8" class="text-right text-sm-left">
         <p>{{ transaction.createdBy.name }}</p>
@@ -39,7 +39,7 @@
     </b-row>
     <b-row>
       <b-col cols="12" sm="4">
-        <p class="font-weight-bold">{{ $t('transactionDetails.Products') }}</p>
+        <p class="font-weight-bold">{{ $t('c_transactionDetails.Products') }}</p>
       </b-col>
       <b-col cols="12" sm="8" class="total-price">
         <b-row
@@ -48,7 +48,7 @@
           :class="subTransIndex < transactionEdits.length - 1 ? 'mb-3' : ''"
         >
           <b-col class="mb-3 text-truncate" cols="9">
-            {{ $t("transactionEdit.Product container") }}: {{ subTransaction.container.name }}
+            {{ $t("c_transactionEditor.Product container") }}: {{ subTransaction.container.name }}
           </b-col>
           <b-col cols="3" class="mb-3 text-right">
             <b-button
@@ -56,7 +56,7 @@
               variant="danger"
               size="sm"
             >
-              {{ $t("transactionEdit.Delete product") }}
+              {{ $t("c_transactionEditor.Delete product") }}
             </b-button>
           </b-col>
           <b-col cols="9" class="mb-2">
@@ -70,11 +70,11 @@
             >
               <template v-slot:selected-option="product">
                 <template v-if="product.hasOwnProperty('product')">
-                  <img :src="product.product.picture" alt="product image">
+                  <img :src="`/static/products/${product.picture}`" alt="product image">
                   {{ product.product.name }}
                 </template>
                 <template v-else>
-                  <img :src="product.picture">
+                  <img :src="`/static/products/${product.picture}`">
                   {{ product.name }}
                 </template>
               </template>
@@ -83,7 +83,7 @@
                   {{ group }}
                 </template>
                 <template v-else>
-                  <img :src="product.picture" alt="product image">
+                  <img :src="`/static/products/${product.picture}`" alt="product image">
                   {{ product.name }}
                 </template>
               </template>
@@ -111,7 +111,7 @@
         <b-row>
           <b-col cols="12">
             <b-button @click="addTransactionEdit" variant="success">
-              {{ $t("transactionEdit.Add product") }}
+              {{ $t("c_transactionEditor.Add product") }}
             </b-button>
           </b-col>
         </b-row>
@@ -119,17 +119,17 @@
         <b-row>
           <b-col cols="12" class="text-right">
             <p>
-              <i class="mr-1">{{ $t('transactionDetails.Total') }} </i>
+              <i class="mr-1">{{ $t('c_transactionEditor.Total') }} </i>
               {{ totalTransactionPrice.toFormat() }}</p>
           </b-col>
         </b-row>
       </b-col>
     </b-row>
     <b-button :disabled="!canSaveTransaction" class="mr-3 mt-2" variant="success">
-      {{ $t("transactionEdit.Save") }}
+      {{ $t("c_transactionEditor.Save") }}
     </b-button>
     <b-button class="mr-3 mt-2" variant="danger">
-      {{ $t("transactionEdit.Delete") }}
+      {{ $t("c_transactionEditor.Delete") }}
     </b-button>
   </div>
 </template>
@@ -152,7 +152,7 @@ import { Container } from '@/entities/Container';
 // TODO: Fix that the products are actually products that are in the selected container
 
 @Component
-export default class EditTransaction extends Vue {
+export default class TransactionEditor extends Vue {
   @Prop() transaction!: Transaction;
 
   userState = getModule(UserModule);
@@ -188,13 +188,14 @@ export default class EditTransaction extends Vue {
    * overview per container (makes everything looks nice)
    */
   createProductList() {
-    [...this.containerState.containers, ...this.containerState.publicContainers].forEach(
-      (container) => {
+    [...this.containerState.containerMapping.values(),
+      ...this.containerState.publicContainers].forEach(
+      (container: Container) => {
         if (container.products.length > 0) {
           const group = {
             group: container.name,
             product: {} as Product,
-            container: null,
+            container: null as any,
           };
           this.posProducts.push(group);
 
@@ -202,7 +203,7 @@ export default class EditTransaction extends Vue {
             const prod = {
               product,
               container,
-              group: null,
+              group: null as any,
             };
             this.posProducts.push(prod);
           });

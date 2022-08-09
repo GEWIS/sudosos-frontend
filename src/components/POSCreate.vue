@@ -1,18 +1,19 @@
 <template>
   <b-container fluid="lg">
-    <h1 class="mb-2 mb-sm-2 mb-lg-2">
-      {{ $t('posRequest.Request Point of Sale') }}
+    <h1 class="mb-2">
+      {{ posID === undefined ?
+      $t('c_POSCreate.Create Point of Sale')
+      : $t('c_POSCreate.Edit Point of Sale') }}
     </h1>
     <hr>
     <b-row class="mx-0">
       <b-col md="3" sm="12" class="mb-4 mb-md-0">
-        <h5>{{ $t('posRequest.General') }}</h5>
+        <h5>{{ $t('c_POSCreate.General') }}</h5>
         <div class="pl-1">
           <b-form-group
             id="name-label"
             label-cols="12"
-            label-cols-sm="12"
-            :label="$t('posRequest.Title')"
+            :label="$t('c_POSCreate.Title')"
             label-align="left"
             label-for="name"
             :state="nameState"
@@ -24,10 +25,11 @@
               type="text"
               v-model="name"
               :state="nameState"
-            ></b-form-input>
+            />
           </b-form-group>
-          <b>{{ $t('posRequest.Selected containers')}}</b>
-          <ul class="pl-4">
+
+          <b>{{ $t('c_POSCreate.Selected containers')}}</b>
+          <ul v-if="requestContainers.length > 0"  class="pl-4">
             <li
               v-for="container in requestContainers"
               v-bind:key="container.id"
@@ -35,41 +37,60 @@
               <p class="text-truncate m-0">{{ container.name }}</p>
             </li>
           </ul>
+          <span class="d-block" v-else>
+            {{ $t('c_POSCreate.No containers') }}
+          </span>
         </div>
         <b-button
           class="mt-2"
           variant="success"
           @click="requestPOS"
-          :disabled="nameState">
-          {{ $t('posRequest.Request')}}
+          :disabled="!nameState">
+          {{ posID === undefined ? $t('c_POSCreate.Create') : $t('c_POSCreate.Edit') }}
         </b-button>
       </b-col>
 
       <b-col md="9" sm="12" class="containers-container">
         <div class="d-flex justify-content-between align-items-center">
-          <p class="containers-header">{{ $t('posRequest.Containers') }}</p>
+          <p class="containers-header">{{ $t('c_POSCreate.Containers') }}</p>
           <b-button class="my-2 text-truncate" variant="success" v-on:click="addContainer">
-            <font-awesome-icon icon="plus" />
-            {{ $t('posRequest.add container') }}
+            <font-awesome-icon icon="plus" size="sm" class="mr-2" />
+            {{ $t('c_POSCreate.add container') }}
           </b-button>
         </div>
+        <h6
+          v-if="publicContainers.records && publicContainers.records.length > 0"
+          class="ml-3">
+          {{ $t('c_POSCreate.Public containers') }}
+        </h6>
         <ContainerComponent
-          v-for="container in publicContainers"
+          v-for="container in publicContainers.records"
           v-bind:key="container.id"
           :container="container"
           :enabled="true"
-          :editable="false"
+          :editable="container.owner.id === userState.user.id"
+          :already-selected="checkIfSelected(container.id)"
           @toggled="containerToggled"
           v-model="editContainer"
           v-on:productDetails="showProductDetails"
         />
 
+        <hr v-if="publicContainers.records &&
+                  publicContainers.records.length > 0 &&
+                  containers.records &&
+                  containers.records.length > 0"
+        >
+
+        <h6 v-if="containers.records && containers.records.length > 0" class="ml-3">
+          {{ $t('c_POSCreate.Own containers') }}
+        </h6>
         <ContainerComponent
-          v-for="container in containers"
+          v-for="container in containers.records"
           v-bind:key="container.id"
           :container="container"
           :enabled="true"
-          :editable="true"
+          :editable="container.owner.id === userState.user.id"
+          :already-selected="checkIfSelected(container.id)"
           @toggled="containerToggled"
           v-model="editContainer"
           v-on:addProduct="prepAddingProduct"
@@ -79,18 +100,20 @@
       </b-col>
     </b-row>
 
-    <EditContainerModal
+    <ContainerEditModal
       :editContainer="editContainer"
+      @updatedContainer="getContainerData"
+      @addedContainer="getContainerData"
     />
 
-    <EditProductModal
+    <ProductEditModal
       :editProduct="editProduct"
       :container="activeContainer"
     />
 
     <ConfirmationModal
-      :reason="$t('posRequest.are you sure')"
-      :title="$t('posRequest.confirm')"
+      :reason="$t('c_POSCreate.are you sure').toString()"
+      :title="$t('c_POSCreate.confirm').toString()"
       v-on:modalConfirmed="confirmContainerDelete"
     />
 
@@ -102,36 +125,46 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import {
+  Component, Prop, Vue, Watch,
+} from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import ContainerComponent from '@/components/ContainerComponent.vue';
-import EditContainerModal from '@/components/EditContainerModal.vue';
-import EditProductModal from '@/components/EditProductModal.vue';
+import ContainerEditModal from '@/components/ContainerEditModal.vue';
+import ProductEditModal from '@/components/ProductEditModal.vue';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
 import ProductInfoModal from '@/components/ProductInfoModal.vue';
-import ContainerModule from '@/store/modules/containers';
-import { Container } from '@/entities/Container';
+import { Container, ContainerList } from '@/entities/Container';
 import { Product } from '@/entities/Product';
+import UserModule from '@/store/modules/user';
+
+import { getPublicContainers, getUserContainers } from '@/api/containers';
+import { getPointOfSale, patchPointOfSale, postPointOfSale } from '@/api/pointOfSale';
+import { PointOfSale } from '@/entities/PointOfSale';
 
 @Component({
   components: {
     ContainerComponent,
-    EditContainerModal,
-    EditProductModal,
+    ContainerEditModal,
+    ProductEditModal,
     ConfirmationModal,
     ProductInfoModal,
   },
 })
-export default class PointOfSaleRequest extends Vue {
-  private containerState = getModule(ContainerModule);
+export default class POSCreate extends Vue {
+  @Prop() posID?: number;
+
+  private userState = getModule(UserModule);
 
   name: string | null = null;
 
+  editPOS: PointOfSale = {} as PointOfSale;
+
   requestContainers: Container[] = [];
 
-  containers: Container[] = [];
+  containers: ContainerList = {} as ContainerList;
 
-  publicContainers: Container[] = [];
+  publicContainers: ContainerList = {} as ContainerList;
 
   editContainer: Container = {} as Container;
 
@@ -141,11 +174,34 @@ export default class PointOfSaleRequest extends Vue {
 
   infoProduct: Product = {} as Product;
 
-  beforeMount(): void {
-    this.containerState.fetchContainers();
-    this.containerState.fetchPublicContainers();
-    this.containers = this.containerState.containers;
-    this.publicContainers = this.containerState.publicContainers;
+  async beforeMount() {
+    await this.userState.fetchUser();
+
+    if (this.posID) {
+      await getPointOfSale(this.posID).then((data: PointOfSale) => {
+        this.name = data.name;
+        this.requestContainers = data.containers as Container[];
+        this.editPOS = data;
+      });
+    }
+
+    await this.getContainerData();
+  }
+
+  /**
+   * Grabs all the container data
+   */
+  async getContainerData() {
+    await getUserContainers(this.userState.user.id, 999).then((data: ContainerList) => {
+      this.containers = data;
+    });
+
+    await getPublicContainers(999).then((data: ContainerList) => {
+      // TODO: Change to correct owner ID
+      const userId = this.userState.user.id;
+      data.records = data.records.filter((container: Container) => container.owner.id !== userId);
+      this.publicContainers = data;
+    });
   }
 
   /**
@@ -163,6 +219,18 @@ export default class PointOfSaleRequest extends Vue {
       );
       this.requestContainers.splice(index, 1);
     }
+  }
+
+  /**
+   * Check if a container (by ID) is already selected (needed when updating a POS)
+   *
+   * @param {number} id ID of the container you want to check
+   * @returns {boolean} true if the container has already been selected
+   */
+  checkIfSelected(id: number) {
+    const selectedIDs = this.requestContainers.map((c) => Number(c.id));
+
+    return selectedIDs.indexOf(id) >= 0;
   }
 
   /**
@@ -200,13 +268,12 @@ export default class PointOfSaleRequest extends Vue {
    * Once deletion of container is confirmed it should be removed from
    * the edited containers as well as the containers that were selected
    * for the requestedContainers
-  */
+   */
   confirmContainerDelete(): void {
     const index = this.requestContainers.findIndex((cntnr) => cntnr.id === this.editContainer.id);
     if (index >= 0) {
       this.requestContainers.splice(index, 1);
     }
-    this.containerState.removeContainer(this.editContainer);
   }
 
   /**
@@ -221,9 +288,33 @@ export default class PointOfSaleRequest extends Vue {
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  requestPOS() {
-    // TODO: Verwerking data
+  async requestPOS() {
+    if (!this.nameState) {
+      this.name = '';
+    }
+
+    if (this.nameState) {
+      const { organsList } = this.userState;
+
+      const pointOfSale = {
+        id: 0,
+        // TODO: Needs to be fixed to correct ID (e.g. org ID instead of users own ID)
+        ownerId: organsList[0].value,
+        name: this.name,
+        containers: this.requestContainers.map((c) => c.id),
+      };
+
+      // TODO: Redirect afterwards??
+      if (this.posID === undefined) {
+        delete pointOfSale.id;
+        await postPointOfSale(pointOfSale);
+      } else {
+        delete pointOfSale.ownerId;
+        pointOfSale.id = Number(this.posID);
+
+        await patchPointOfSale(this.posID, pointOfSale);
+      }
+    }
   }
 
   /**
@@ -238,7 +329,7 @@ export default class PointOfSaleRequest extends Vue {
 
   get invalidName() {
     if (!this.nameState) {
-      return this.$t('posRequest.name invalid').toString();
+      return this.$t('c_POSCreate.name invalid').toString();
     }
 
     return '';

@@ -1,20 +1,20 @@
 <template>
-  <b-container fluid="lg">
-  <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('saldo.Saldo') }}</h1>
-  </b-container>
+    <b-container fluid="lg">
+      <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('app.Saldo') }}</h1>
+      <IncreaseSaldo />
+    </b-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import CurrentSaldo from '@/components/CurrentSaldo.vue';
+import IncreaseSaldo from '@/components/IncreaseSaldo.vue';
 
-  @Component({
-    components: {},
-  })
-
-export default class Saldo extends Vue {
+@Component({
+  components: {
+    IncreaseSaldo, CurrentSaldo,
+  },
+})
+export default class Home extends Vue {
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

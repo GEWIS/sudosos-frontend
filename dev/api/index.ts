@@ -14,15 +14,13 @@ import FlaggedTransactions from './data/flaggedtransactions.json';
 import Transfer from './data/transfer.json';
 import ProductCategories from './data/productcategories.json';
 import Users from './data/users.json';
+import {ResponseBody} from "@/entities/ResponseBody";
 
-function setResponse(body: {
-  headers: {};
-  method?: string;
-  body?: string;}, route: string, type: any, typeName?: string) {
+function setResponse(body: ResponseBody, route: string, type: any, typeName?: string) {
   const params = new URLSearchParams(route.split('?')[1]);
 
   if (body.method === 'POST') {
-    const response = JSON.parse(body.body || '');
+    const response = JSON.parse(<string>body.body || '');
     response.id = Number(Math.random() * 1000000).toFixed();
     response.createdAt = new Date();
     response.updatedAt = response.createdAt;
@@ -65,7 +63,7 @@ function setResponse(body: {
   }
 
   if (body.method === 'PUT' || body.method === 'PATCH') {
-    const response = JSON.parse(body.body || '');
+    const response = JSON.parse(<string>body.body || '');
     response.updatedAt = new Date();
 
     if (typeName === 'products') {
@@ -89,11 +87,7 @@ function setResponse(body: {
 
 
 export default {
-  fetchJSON(route: string, body: {
-    headers: {};
-    method?: string;
-    body?: string;
-  }) {
+  fetchJSON(route: string, body: ResponseBody) {
     // eslint-disable-next-line no-param-reassign
     route = route.toLowerCase();
 

@@ -2,7 +2,7 @@
   <div>
     <b-modal
       id="details-modal"
-      :title="$t('transactionDetailsModal.transaction details')"
+      :title="$t('c_transactionDetailsModal.transaction details')"
       hide-header-close
       centered
       size="lg"
@@ -21,21 +21,21 @@
           variant="primary"
           id="details-cancel"
           @click="cancel()"
-        >{{ $t('transactionDetailsModal.Cancel') }}
+        >{{ $t('c_transactionDetailsModal.Cancel') }}
         </b-button>
-        <b-button
-          v-if="'pointOfSale' in trans"
-          variant="primary"
-          class="btn-empty"
-          v-b-modal.flag-modal
-        >{{ $t('transactionDetailsModal.Flag transaction') }}
-        </b-button>
+<!--        <b-button-->
+<!--          v-if="'pointOfSale' in trans"-->
+<!--          variant="primary"-->
+<!--          class="btn-empty"-->
+<!--          v-b-modal.flag-modal-->
+<!--        >{{ $t('c_transactionDetailsModal.Flag transaction') }}-->
+<!--        </b-button>-->
       </template>
     </b-modal>
 
     <b-modal
       id="flag-modal"
-      :title="$t('transactionDetailsModal.Flag transaction')"
+      :title="$t('c_transactionDetailsModal.Flag transaction')"
       hide-header-close
       centered
       size="lg"
@@ -44,7 +44,7 @@
 
       <b-form-group
         id="flag-reason"
-        :label="$t('transactionDetailsModal.flag reason')"
+        :label="$t('c_transactionDetailsModal.flag reason')"
         label-for="reason-input"
         :invalid-feedback="flagReasonValid"
         :state="flagReasonState"
@@ -53,7 +53,7 @@
         <b-form-textarea
           id="flag-reason-text"
           v-model="flagReasonText"
-          :placeholder="$t('transactionDetailsModal.reason placeholder')"
+          :placeholder="$t('c_transactionDetailsModal.reason placeholder')"
           rows="3"
           max-rows="6"
           no-resize
@@ -65,13 +65,13 @@
           variant="primary"
           id="flag-cancel"
           @click="cancel()"
-        >{{ $t('transactionDetailsModal.Cancel') }}
+        >{{ $t('c_transactionDetailsModal.Cancel') }}
         </b-button>
         <b-button
           variant="primary"
           class="btn-empty"
           @click="saveFlaggedTransaction"
-        >{{ $t('transactionDetailsModal.Flag transaction') }}
+        >{{ $t('c_transactionDetailsModal.Flag transaction') }}
         </b-button>
       </template>
     </b-modal>
@@ -82,13 +82,11 @@
 import {
   Component, Prop,
 } from 'vue-property-decorator';
-import { getModule } from 'vuex-module-decorators';
 import Formatters from '@/mixins/Formatters';
 import { Transaction } from '@/entities/Transaction';
 import { Transfer } from '@/entities/Transfer';
 import TransactionDetails from '@/components/TransactionDetails.vue';
 import TransferDetails from '@/components/TransferDetails.vue';
-import FlaggedTransactionModule from '@/store/modules/flaggedtransaction';
 
 @Component({
   components: {
@@ -99,35 +97,35 @@ import FlaggedTransactionModule from '@/store/modules/flaggedtransaction';
 export default class TransactionDetailsModal extends Formatters {
   @Prop() trans!: Transaction | Transfer;
 
-  private flaggedTransactionState = getModule(FlaggedTransactionModule);
-
-  flagReasonText: string = '';
-
-  beforeMount() {
-    this.flaggedTransactionState.fetchFlaggedTransactions();
-  }
+  flagReasonText: string | null = null;
 
   saveFlaggedTransaction() {
-    if (this.flagReasonState) {
+    if (this.flagReasonState !== null) {
       const flagTrans = {
         reason: this.flagReasonText,
         transaction: this.trans,
       };
-      this.flaggedTransactionState.addFlaggedTransaction(flagTrans);
+      // this.flaggedTransactionState.addFlaggedTransaction(flagTrans);
       this.$bvModal.hide('flag-modal');
+    } else {
+      this.flagReasonText = '';
     }
   }
 
   get flagReasonValid(): string {
     if (!this.flagReasonState) {
-      return this.$t('transactionDetailsModal.flag invalid').toString();
+      return this.$t('c_transactionDetailsModal.flag invalid').toString();
     }
 
     return '';
   }
 
-  get flagReasonState(): boolean {
-    return this.flagReasonText !== '';
+  get flagReasonState(): boolean | null {
+    if (this.flagReasonText === null) {
+      return null;
+    }
+
+    return this.flagReasonText.length > 0;
   }
 }
 </script>

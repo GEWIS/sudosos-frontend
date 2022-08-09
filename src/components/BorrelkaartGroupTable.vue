@@ -6,14 +6,14 @@
         id="add"
         class=""
         v-b-modal.modal-add>
-        <font-awesome-icon icon="plus"></font-awesome-icon>
-        {{ $t('borrelkaartGroupTable.Add social drink cards') }}
+        <font-awesome-icon icon="plus" size="sm" class="mr-2" />
+        {{ $t('c_borrelkaartGroupTable.Add social drink cards') }}
       </b-button>
     </div>
 
     <b-form-group
       id="name-filter-group"
-      :label="$t('borrelkaartGroupTable.Filter by name')"
+      :label="$t('c_borrelkaartGroupTable.Filter by name')"
       label-for="name-filter"
       label-cols-md="3"
       label-cols="12"
@@ -22,14 +22,14 @@
         id="name-filter"
         v-model="nameFilter"
         type="text"
-        :placeholder="$t('borrelkaartGroupTable.Fill in a name')"
+        :placeholder="$t('c_borrelkaartGroupTable.Fill in a name')"
         trim
       />
     </b-form-group>
 
     <b-form-group
       id="page-amount-group"
-      :label="$t('borrelkaartGroupTable.Social drink cards per page')"
+      :label="$t('c_borrelkaartGroupTable.Social drink cards per page')"
       label-for="page-amount"
       label-cols-md="3"
       label-cols="12"
@@ -52,6 +52,7 @@
       striped
       thead-class="table-header table-header-5 align-last-right"
       :items="borrelkaarten"
+      :busy="borrelkaarten.length === 0"
       :fields="fields"
       :filter="nameFilter"
       :filter-included-fields="['name']"
@@ -59,6 +60,13 @@
       :current-page="currentPage"
       v-on:filtered="filterFinished"
     >
+      <!-- If the table data is still loading display something nice -->
+      <template #table-busy>
+        <div class="text-center text-muted mt-5 mb-3">
+          <b-spinner class="align-middle"></b-spinner>
+        </div>
+      </template>
+
       <!-- Templates for each row cell -->
       <template v-slot:cell(name)="data">
         {{ data.item.name }}
@@ -70,13 +78,13 @@
 
       <template v-slot:cell(validDates)="data">
       <span v-if="data.item.validDates">
-        {{ $t('borrelkaartGroupTable.From') }}
+        {{ $t('c_borrelkaartGroupTable.From') }}
         {{ formatDateTime(data.item.validDates.activeStartDate, true) }} <br>
-        {{ $t('borrelkaartGroupTable.Till') }}
+        {{ $t('c_borrelkaartGroupTable.Till') }}
         {{ formatDateTime(data.item.validDates.activeEndDate, true) }}
       </span>
         <span v-else>
-        {{ $t('borrelkaartGroupTable.Forever') }}
+        {{ $t('c_borrelkaartGroupTable.Forever') }}
       </span>
       </template>
 
@@ -122,7 +130,7 @@
     <!--  Pagination  -->
     <div class="d-flex pageination" v-if="totalRows > perPage">
       <p class="my-auto h-100">
-        {{ $t('borrelkaartGroupTable.Page') }}:
+        {{ $t('c_borrelkaartGroupTable.Page') }}:
       </p>
       <b-pagination
         v-model="currentPage"
@@ -143,9 +151,9 @@
     <!--  Adding more Social drink cards modal  -->
     <b-modal
       id="modal-add"
-      :ok-title="$t('borrelkaartGroupTable.save')"
-      :cancel-title="$t('borrelkaartGroupTable.cancel')"
-      :title="$t('borrelkaartGroupTable.new social drink cards')"
+      :ok-title="$t('c_borrelkaartGroupTable.save')"
+      :cancel-title="$t('c_borrelkaartGroupTable.cancel')"
+      :title="$t('c_borrelkaartGroupTable.new social drink cards')"
       size="lg"
       hide-header-close
       centered>
@@ -153,7 +161,7 @@
         <b-form-group
           label-cols="12"
           label-cols-sm="3"
-          :label="$t('borrelkaartGroupTable.Name')"
+          :label="$t('c_borrelkaartGroupTable.Name')"
           label-align="left"
           label-for="name"
           :state="newCardNameState"
@@ -171,7 +179,7 @@
         <b-form-group
           label-cols="12"
           label-cols-sm="3"
-          :label="$t('borrelkaartGroupTable.Amount of cards')"
+          :label="$t('c_borrelkaartGroupTable.Amount of cards')"
           label-align="left"
           label-for="amount"
           :state="newCardAmountState"
@@ -192,7 +200,7 @@
         <b-form-group
           label-cols="12"
           label-cols-sm="3"
-          :label="$t('borrelkaartGroupTable.Initial value')"
+          :label="$t('c_borrelkaartGroupTable.Initial value')"
           label-align="left"
           label-for="initial"
           :state="newCardInitialValueState"
@@ -213,7 +221,7 @@
         <b-form-group
           label-cols="12"
           label-cols-sm="3"
-          :label="$t('borrelkaartGroupTable.Valid from')"
+          :label="$t('c_borrelkaartGroupTable.Valid from')"
           label-align="left"
           label-for="date-from"
           :state="newCardFromDateState"
@@ -230,7 +238,7 @@
         <b-form-group
           label-cols="12"
           label-cols-sm="3"
-          :label="$t('borrelkaartGroupTable.Valid till')"
+          :label="$t('c_borrelkaartGroupTable.Valid till')"
           label-align="left"
           label-for="date-till"
           :state="newCardToDateState"
@@ -251,13 +259,13 @@
           variant="primary"
           class="btn-empty"
           @click="cancelAdding"
-        >{{ $t('borrelkaartGroupTable.cancel') }}
+        >{{ $t('c_borrelkaartGroupTable.cancel') }}
         </b-button>
         <b-button
           variant="primary"
           class="btn-empty"
           @click="addNewCards">
-          {{ $t('borrelkaartGroupTable.save') }}
+          {{ $t('c_borrelkaartGroupTable.save') }}
         </b-button>
       </template>
     </b-modal>
@@ -301,22 +309,22 @@ export default class BorrelkaartGroupTable extends Formatters {
   fields: Object[] = [
     {
       key: 'name',
-      label: this.getTranslation('borrelkaartGroupTable.Name'),
+      label: this.getTranslation('c_borrelkaartGroupTable.Name'),
       locale_key: 'Name',
     },
     {
       key: 'id',
-      label: this.getTranslation('borrelkaartGroupTable.Total amount'),
+      label: this.getTranslation('c_borrelkaartGroupTable.Total amount'),
       locale_key: 'Total amount',
     },
     {
       key: 'validDates',
-      label: this.getTranslation('borrelkaartGroupTable.Validity'),
+      label: this.getTranslation('c_borrelkaartGroupTable.Validity'),
       locale_key: 'Validity',
     },
     {
       key: 'owner',
-      label: this.getTranslation('borrelkaartGroupTable.Info'),
+      label: this.getTranslation('c_borrelkaartGroupTable.Info'),
       locale_key: 'Info',
     },
   ];
@@ -324,17 +332,17 @@ export default class BorrelkaartGroupTable extends Formatters {
   detailFields: Object[] = [
     {
       key: 'ean',
-      label: this.getTranslation('borrelkaartGroupTable.Barcode'),
+      label: this.getTranslation('c_borrelkaartGroupTable.Barcode'),
       locale_key: 'Barcode',
     },
     {
       key: 'active',
-      label: this.getTranslation('borrelkaartGroupTable.Active'),
+      label: this.getTranslation('c_borrelkaartGroupTable.Active'),
       locale_key: 'Active',
     },
     {
       key: 'saldo',
-      label: this.getTranslation('borrelkaartGroupTable.Current value'),
+      label: this.getTranslation('c_borrelkaartGroupTable.Current value'),
       locale_key: 'Current value',
     },
   ];
@@ -347,8 +355,8 @@ export default class BorrelkaartGroupTable extends Formatters {
 
     // If the locale is changed make sure the labels are also correctly updated for the b-table
     eventBus.$on('localeUpdated', () => {
-      this.fields = this.updateTranslations(this.fields, 'borrelkaartGroupTable');
-      this.detailFields = this.updateTranslations(this.detailFields, 'borrelkaartGroupTable');
+      this.fields = this.updateTranslations(this.fields, 'c_borrelkaartGroupTable');
+      this.detailFields = this.updateTranslations(this.detailFields, 'c_borrelkaartGroupTable');
     });
   }
 
@@ -426,7 +434,7 @@ export default class BorrelkaartGroupTable extends Formatters {
 
   get newCardNameInvalid(): String {
     if (!this.newCardNameState) {
-      return this.$t('borrelkaartGroupTable.Name need to be larger than 0 characters').toString();
+      return this.$t('c_borrelkaartGroupTable.Name need to be larger than 0 characters').toString();
     }
 
     return '';
@@ -438,7 +446,7 @@ export default class BorrelkaartGroupTable extends Formatters {
 
   get newCardAmountInvalid(): String {
     if (!this.newCardAmountState) {
-      return this.$t('borrelkaartGroupTable.Amount of cards needs to be larger than 0').toString();
+      return this.$t('c_borrelkaartGroupTable.Amount of cards needs to be larger than 0').toString();
     }
 
     return '';
@@ -450,7 +458,7 @@ export default class BorrelkaartGroupTable extends Formatters {
 
   get newCardInitialValueInvalid(): String {
     if (!this.newCardInitialValueState) {
-      return this.$t('borrelkaartGroupTable.Initial value needs to be 0 or larger').toString();
+      return this.$t('c_borrelkaartGroupTable.Initial value needs to be 0 or larger').toString();
     }
 
     return '';
@@ -471,7 +479,7 @@ export default class BorrelkaartGroupTable extends Formatters {
 
   get newCardFromDateInvalid(): String {
     if (!this.newCardFromDateState) {
-      return this.$t('borrelkaartGroupTable.From date needs a date earlier than till date').toString();
+      return this.$t('c_borrelkaartGroupTable.From date needs a date earlier than till date').toString();
     }
 
     return '';
@@ -492,7 +500,7 @@ export default class BorrelkaartGroupTable extends Formatters {
 
   get newCardToDateInvalid(): String {
     if (!this.newCardToDateState) {
-      return this.$t('borrelkaartGroupTable.Till date needs a date later than from date').toString();
+      return this.$t('c_borrelkaartGroupTable.Till date needs a date later than from date').toString();
     }
 
     return '';

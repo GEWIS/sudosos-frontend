@@ -1,10 +1,19 @@
 {
+  "login": {
+    "SudoSOS Login": "SudoSOS Login",
+    "Login via GEWIS": "Login via GEWIS",
+    "Login": "Login",
+    "Username": "Username",
+    "Enter username": "Enter username",
+    "Password": "Password",
+    "Enter password": "Enter password"
+  },
   "app": {
     "Transactions": "Transactions",
     "Saldo": "Balance",
     "Points of Sale": "Points of Sale",
     "Overview": "POS Overview",
-    "Request": "Request",
+    "Create": "Create",
     "Admin": "Admin",
     "Manage POS": "Manage POS",
     "Screens": "TV Screens",
@@ -42,6 +51,7 @@
   },
   "posInfo": {
     "POS": "POS",
+    "Edit": "Edit",
     "Close": "Close",
     "General": "General",
     "Title": "Title",
@@ -63,22 +73,33 @@
     "Managers": "Managers",
     "Containers": "Containers"
   },
-  "posRequest": {
-    "Request Point of Sale": "Request Point of Sale",
+  "c_POSCreate": {
+    "Create Point of Sale": "Create Point of Sale",
+    "Edit Point of Sale": "Edit Point of Sale",
     "General": "General",
     "Title": "POS Name",
+    "Use authentication": "Always have user login on point of sale",
+    "Start date": "Point of sale start date",
+    "End date": "Point of sale start date",
+    "Pick date": "Pick a date",
     "Selected containers": "Selected containers",
     "Management": "Management",
     "Owner": "Owner",
     "Managers": "Managers",
     "Containers": "Containers",
     "add container": "Add container",
-    "Request": "Request",
+    "Create": "Create",
+    "Edit": "Edit",
     "name invalid": "Please provide a valid name that is longer than 0 characters",
+    "Start invalid": "Please pick a start date earlier than the end date",
+    "End invalid": "Please pick an end date later than the end date and later than now",
     "confirm": "Confirm deletion",
-    "are you sure": "Are you sure you want to delete this container?"
+    "are you sure": "Are you sure you want to delete this container?",
+    "No containers": "No containers selected",
+    "Public containers": "Public containers",
+    "Own containers": "Own containers"
   },
-  "productInfoModal": {
+  "c_productInfoModal": {
     "title": "Product information",
     "Cancel": "Close",
     "Name": "Name",
@@ -89,7 +110,8 @@
     "Category": "Category",
     "Alcohol percentage": "Alcohol percentage",
     "Picture": "Picture",
-    "Product picture": "Product picture"
+    "Product picture": "Product picture",
+    "VAT": "VAT"
   },
   "flagged": {
     "Flagged transactions": "Flagged transactions"
@@ -107,12 +129,13 @@
     "accept manual": "Accept (fix manual)",
     "Edit transaction": "Edit transaction"
   },
-  "transactionEdit": {
+  "c_transactionEditor": {
     "Product container": "Product container",
     "Delete product": "Delete product",
     "Add product": "Add product",
     "Save": "Save",
-    "Delete": "Delete"
+    "Delete": "Delete",
+    "Total": "Total"
   },
   "manageProducts": {
     "Manage all products and default containers": "Manage all products and default containers",
@@ -123,7 +146,7 @@
     "Are you sure": "Are you sure you want to delete this container?",
     "Confirm": "Confirm deletion"
   },
-  "productTable": {
+  "c_productTable": {
     "picture": "Picture",
     "name": "Name",
     "category": "Category",
@@ -143,7 +166,7 @@
     "until": "until",
     "value": "Value"
   },
-  "borrelkaartGroupTable": {
+  "c_borrelkaartGroupTable": {
     "Add social drink cards": "Add social drink cards",
     "Filter by name": "Filter by name",
     "Fill in a name": "Fill in a name",
@@ -188,9 +211,11 @@
   "managePOS": {
     "Manage points of sale": "Manage points of sale"
   },
-  "POSOverview": {
-    "my points of sale": "My points of sale",
+  "c_POSOverview": {
+    "all points of sale": "All points of sale",
     "requested points of sale": "Requested points of sale",
+    "POS Name": "Name",
+    "POS Owner": "Owner",
     "ACCEPTED": "Accepted",
     "OPEN": "Open",
     "REJECTED": "Rejected",
@@ -202,11 +227,11 @@
   "banners": {
     "Banners": "Banners"
   },
-  "saldoCom": {
+  "c_currentSaldo": {
     "saldo": "balance",
     "upgrade online": "increase online"
   },
-  "recentTrans": {
+  "c_recentTransactionsTable": {
     "recent transactions": "recent transactions",
     "all transactions": "all transactions",
     "when": "When",
@@ -214,7 +239,7 @@
     "transaction": "You spent a total of {amount}",
     "transfer": "You topped up with {amount}"
   },
-  "bannerTable" : {
+  "c_bannerTable" : {
     "Add": "Add",
     "save": "save",
     "cancel": "cancel",
@@ -227,6 +252,8 @@
     "Please enter dur": "Please enter a number larger than 0",
     "End date should": "End date should be set and later than today",
     "Are you sure": "Are you sure you want to delete this advertisement?",
+    "Please enter name": "Please enter a name",
+    "Name": "Name",
     "Thumbnail": "Thumbnail",
     "Duration (ms)": "Duration (ms)",
     "Start date": "Start date",
@@ -235,18 +262,18 @@
     "Stops on": "Stops on",
     "Edit": "Edit"
   },
-  "fileFormPreview": {
+  "c_fileFormPreview": {
     "Choose image drop": "Choose image or drop here...",
     "Drop file": "Drop file here..."
   },
-  "confirmationModal": {
+  "c_confirmationModal": {
     "Cancel": "Cancel",
     "Confirm": "Confirm"
   },
   "containersOverview": {
     "Containers": "Containers"
   },
-  "editContainerModal": {
+  "c_containerEditModal": {
     "save": "save",
     "cancel": "cancel",
     "edit container": "edit container",
@@ -255,9 +282,10 @@
     "Public": "Public",
     "name invalid": "Please enter a name that is longer than 0 characters",
     "added on": "Added on",
-    "added by": "Added by"
+    "added by": "Added by",
+    "owner": "Owner"
   },
-  "editProductModal": {
+  "c_productEditModal": {
     "Add existing": "Add existing product",
     "Add new": "Add new product",
     "Product details": "Product details",
@@ -270,7 +298,7 @@
     "added on": "Added on",
     "updated on": "Last updated on",
     "added by": "Added by",
-    "Price": "Price",
+    "Price": "Price (in €)",
     "Category": "Category",
     "Please select": "Please select a product category",
     "Alcohol Percentage": "Alcohol percentage",
@@ -279,9 +307,10 @@
     "name invalid": "Please provide a valid name that is longer than 0 characters",
     "category invalid": "Please select one of the product categories",
     "price invalid": "Please provide a valid price that is higher or equal to 0",
-    "picture invalid": "Please provide a picture"
+    "picture invalid": "Please provide a picture",
+    "VAT": "VAT (in %)"
   },
-  "containerComponent": {
+  "c_containerComponent": {
     "Public": "Public",
     "Table view": "Table view",
     "new": "New",
@@ -294,7 +323,7 @@
     "Hide handled": "Hide handled",
     "Reset filter": "Reset filter"
   },
-  "transactionFlagsComponent": {
+  "c_transactionFlagsComponent": {
     "When": "When",
     "Who": "Who",
     "Status": "Status",
@@ -302,7 +331,7 @@
     "Info": "Info",
     "Page": "Page"
   },
-  "transactionTableFilter": {
+  "c_transactionTableFilter": {
     "from": "from",
     "placeholder": "Select a date",
     "to": "to",
@@ -313,18 +342,20 @@
     "Export to CSV": "Export to CSV",
     "Reset filter": "Reset filter"
   },
-  "transactionsComponent": {
+  "c_transactionsTable": {
     "When": "When",
     "What": "What",
     "Info": "Info",
     "Page": "Page",
+    "You": "You",
     "Transactions": "Transactions",
-    "transaction": "You spent a total of {amount}",
-    "transactionPutFor": "You charged {name} for {amount}",
+    "transaction": "{person} spent a total of {amount}",
+    "transactionPutFor": "{person} charged {name} for {amount}",
     "transactionPutBy": "{name} charged you {amount}",
-    "transfer": "You topped up with {amount}"
+    "transfer": "{person} topped up with {amount}",
+    "Empty": "No transactions found."
   },
-  "transactionDetailsModal": {
+  "c_transactionDetailsModal": {
     "transaction details": "transaction details",
     "Cancel": "Close",
     "Flag transaction": "Flag transaction",
@@ -332,14 +363,14 @@
     "reason placeholder": "Provide a reason",
     "flag invalid": "Please provide a reason"
   },
-  "transactionDetails": {
+  "c_transactionDetails": {
     "Total": "Total",
     "Point of sale": "Point of sale",
     "Bought by": "Bought by",
     "Put in by": "Put in by",
     "Products": "Products"
   },
-  "transferDetails": {
+  "c_transferDetails": {
     "Total": "Total",
     "From": "From",
     "To": "To",
@@ -402,7 +433,7 @@
     "New pin code must be unique from old pin code": "New pin code must be unique from old pin code",
     "Confirmation does not match pin code": "Confirmation does not match pin code"
   },
-  "userTable": {
+  "c_userTable": {
     "Name": "Name",
     "gewisID": "GEWIS ID",
     "Active": "Active",
@@ -415,6 +446,11 @@
   },
   "apiError": {
     "message": "Error message",
-    "Something went wrong": "Something went wrong"
+    "Something went wrong": "Something went wrong",
+    "400": "There is something wrong with the request you are trying to make",
+    "401": "You don't have the rights to access this data",
+    "403": "You cannot access this data",
+    "404": "This data does not seem to exist",
+    "500": "Something is going wrong, please contact the SudoSOS team"
   }
 }

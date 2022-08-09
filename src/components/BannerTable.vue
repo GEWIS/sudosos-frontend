@@ -8,7 +8,8 @@
           id="add"
           v-b-modal.modal-add
         >
-          <font-awesome-icon icon="plus" /> {{ $t('bannerTable.Add') }}
+          <font-awesome-icon icon="plus" size="sm" class="mr-2 fa-sm-mb" />
+          {{ $t('c_bannerTable.Add') }}
         </b-button>
       </template>
       <b-card-body>
@@ -17,12 +18,19 @@
           small
           borderless
           thead-class="table-header table-header-6"
-          :items="banners"
+          :items="bannerState.banners"
+          :busy="bannerState.banners.length === 0"
           :fields="fields"
           per-page="perPage"
           :current-page="currentPage"
           class="table-striped"
         >
+          <!-- If the table data is still loading display something nice -->
+          <template #table-busy>
+            <div class="text-center text-muted mt-3 mb-3">
+              <b-spinner class="align-middle"></b-spinner>
+            </div>
+          </template>
 
           <!-- Templates for each row cell -->
           <template v-slot:cell(active)="data">
@@ -30,7 +38,7 @@
           </template>
 
           <template v-slot:cell(picture)="data">
-            <img class="thumbnail" :src="data.value" alt="Thumbnail">
+            <img class="thumbnail" :src="`/static/products/${data.picture}`" alt="Thumbnail">
           </template>
 
           <template v-slot:cell(id)="data">
@@ -46,13 +54,13 @@
       </b-card-body>
     </b-card>
 
-    <b-card-footer v-if="banners.length > perPage" class="d-flex">
+    <b-card-footer v-if="bannerState.banners.length > perPage" class="d-flex">
       <p class="my-auto h-100">
-        {{ $t('bannerTable.Page') }}:
+        {{ $t('c_bannerTable.Page') }}:
       </p>
       <b-pagination
         v-model="currentPage"
-        :total-rows="banners.length"
+        :total-rows="bannerState.banners.length"
         :per-page="perPage"
         limit="1"
         next-class="nextButton"
@@ -68,17 +76,17 @@
 
     <!--  Modal to ask if user really wants to delete something  -->
     <ConfirmationModal
-      :title="$t('bannerTable.Confirm deletion')"
-      :reason="$t('bannerTable.Are you sure')"
+      :title="$t('c_bannerTable.Confirm deletion')"
+      :reason="$t('c_bannerTable.Are you sure')"
       @modalConfirmed="deleteBanner">
     </ConfirmationModal>
 
     <!--  Modal for adding new banners  -->
     <b-modal
       id="modal-add"
-      :ok-title="$t('bannerTable.save')"
-      :cancel-title="$t('bannerTable.cancel')"
-      :title="$t('bannerTable.new banner')"
+      :ok-title="$t('c_bannerTable.save')"
+      :cancel-title="$t('c_bannerTable.cancel')"
+      :title="$t('c_bannerTable.new banner')"
       size="lg"
       hide-header-close
       centered>
@@ -86,7 +94,25 @@
         <b-form-group
           label-cols="12"
           label-cols-sm="3"
-          :label="$t('bannerTable.Duration')"
+          :label="$t('c_bannerTable.Name')"
+          label-align="left"
+          label-for="name"
+          :state="nameState"
+          :invalid-feedback="nameInvalid"
+        >
+          <b-form-input
+            id="name"
+            name="name"
+            type="text"
+            v-model="currBanner.name"
+            :state="nameState"
+          />
+        </b-form-group>
+
+        <b-form-group
+          label-cols="12"
+          label-cols-sm="3"
+          :label="$t('c_bannerTable.Duration')"
           label-align="left"
           label-for="duration"
           :state="durationState"
@@ -105,7 +131,7 @@
         <b-form-group
           label-cols="12"
           label-cols-sm="3"
-          :label="$t('bannerTable.Start date')"
+          :label="$t('c_bannerTable.Start date')"
           label-align="left"
           label-for="start-date"
         >
@@ -120,7 +146,7 @@
         <b-form-group
           label-cols="12"
           label-cols-sm="3"
-          :label="$t('bannerTable.End date')"
+          :label="$t('c_bannerTable.End date')"
           label-align="left"
           label-for="end-date"
           :state="endDateState"
@@ -138,7 +164,7 @@
         <b-form-group
           label-cols="12"
           label-cols-sm="3"
-          :label="$t('bannerTable.Banner')"
+          :label="$t('c_bannerTable.Banner')"
           label-align="left"
           label-for="ad-file"
         >
@@ -151,13 +177,13 @@
           variant="primary"
           class="btn-empty"
           @click="cancel()"
-        >{{ $t('bannerTable.cancel') }}
+        >{{ $t('c_bannerTable.cancel') }}
         </b-button>
         <b-button
           variant="primary"
           class="btn-empty"
           @click="setBanner">
-          {{ $t('bannerTable.save') }}
+          {{ $t('c_bannerTable.save') }}
         </b-button>
       </template>
     </b-modal>
@@ -180,9 +206,6 @@ import BannerModule from '@/store/modules/banners';
 export default class BannerTable extends Formatters {
     private bannerState = getModule(BannerModule)
 
-    // List of banners
-    banners: Banner[] = [];
-
     // Variable that holds all information for adding a banner
     currBanner: Banner = {} as Banner;
 
@@ -199,45 +222,44 @@ export default class BannerTable extends Formatters {
     fields: Object[] = [
       {
         key: 'picture',
-        label: this.getTranslation('bannerTable.Thumbnail'),
+        label: this.getTranslation('c_bannerTable.Thumbnail'),
         locale_key: 'Thumbnail',
       },
       {
         key: 'duration',
-        label: this.getTranslation('bannerTable.Duration (ms)'),
+        label: this.getTranslation('c_bannerTable.Duration (ms)'),
         locale_key: 'Duration (ms)',
       },
       {
         key: 'active',
-        label: this.getTranslation('bannerTable.Active'),
+        label: this.getTranslation('c_bannerTable.Active'),
         locale_key: 'Active',
       },
       {
         key: 'startDate',
-        label: this.getTranslation('bannerTable.Starts on'),
+        label: this.getTranslation('c_bannerTable.Starts on'),
         locale_key: 'Starts on',
         formatter: (value: Date) => this.formatDateTime(value, undefined, true),
       },
       {
         key: 'endDate',
-        label: this.getTranslation('bannerTable.Stops on'),
+        label: this.getTranslation('c_bannerTable.Stops on'),
         locale_key: 'Stops on',
         formatter: (value: Date) => this.formatDateTime(value, undefined, true),
       },
       {
         key: 'id',
-        label: this.getTranslation('bannerTable.Edit'),
+        label: this.getTranslation('c_bannerTable.Edit'),
         locale_key: 'Edit',
       },
     ];
 
     beforeMount() {
       this.bannerState.fetchBanners();
-      this.banners = this.bannerState.banners;
 
       // If the locale is changed make sure the labels are also correctly updated for the b-table
       eventBus.$on('localeUpdated', () => {
-        this.fields = this.updateTranslations(this.fields, 'bannerTable');
+        this.fields = this.updateTranslations(this.fields, 'c_bannerTable');
       });
     }
 
@@ -246,14 +268,16 @@ export default class BannerTable extends Formatters {
      * will update a currently existing banner otherwise it will create a new one.
      */
     setBanner() {
-      // TODO: If something goes wrong show message and do not reset banner
+      this.currBanner.duration = Number(this.currBanner.duration);
+      // TODO: Remove once we have real file upload
+      this.currBanner.picture = URL.createObjectURL(this.file);
+
       if (this.currBanner.id === undefined) {
         this.bannerState.addBanner(this.currBanner);
       } else {
         this.bannerState.updateBanner(this.currBanner);
       }
       this.currBanner = {} as Banner;
-      this.banners = this.bannerState.banners;
       this.$bvModal.hide('modal-add');
     }
 
@@ -261,8 +285,8 @@ export default class BannerTable extends Formatters {
      * Sets this.currBanner to banner given to the function
      * @param updateBanner: banner that needs to be set to currBanner
      */
-    updateCurrBanner(updateBanner: Banner = {} as Banner): void {
-      this.currBanner = updateBanner;
+    updateCurrBanner(updateBanner: any): void {
+      this.currBanner = updateBanner.item;
     }
 
     /**
@@ -270,7 +294,21 @@ export default class BannerTable extends Formatters {
      */
     deleteBanner() {
       this.bannerState.removeBanner(this.currBanner);
-      this.banners = this.bannerState.banners;
+    }
+
+    /**
+     * Check if the name has been set
+     */
+    get nameState() {
+      return this.currBanner.name !== undefined && this.currBanner.name.length > 0;
+    }
+
+    get nameInvalid() {
+      if (!this.nameState) {
+        return this.$t('c_bannerTable.Please enter name').toString();
+      }
+
+      return '';
     }
 
     /**
@@ -285,7 +323,7 @@ export default class BannerTable extends Formatters {
      */
     get durationInvalid(): string {
       if (!this.durationState) {
-        return this.$t('bannerTable.Please enter dur').toString();
+        return this.$t('c_bannerTable.Please enter dur').toString();
       }
       return '';
     }
@@ -294,7 +332,8 @@ export default class BannerTable extends Formatters {
      * Check if the endDate is set and later than today
      */
     get endDateState(): boolean {
-      return this.currBanner.endDate > new Date() && this.currBanner.endDate !== undefined;
+      return new Date(this.currBanner.endDate) > new Date()
+        && this.currBanner.endDate !== undefined;
     }
 
     /**
@@ -302,7 +341,7 @@ export default class BannerTable extends Formatters {
      */
     get endDateInvalid(): string {
       if (!this.endDateState) {
-        return this.$t('bannerTable.End date should').toString();
+        return this.$t('c_bannerTable.End date should').toString();
       }
       return '';
     }
@@ -315,7 +354,7 @@ export default class BannerTable extends Formatters {
      */
     pageClicked(page: number) : void {
       if (this.previousPage < page
-        && page >= (Math.ceil(this.banners.length / this.perPage) - 2)) {
+        && page >= (Math.ceil(this.bannerState.banners.length / this.perPage) - 2)) {
       // TODO: Grab new data
       }
 

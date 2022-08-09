@@ -2,7 +2,7 @@
   <div>
     <b-row>
       <b-col cols="6" sm="4">
-        <p class="font-weight-bold">{{ $t('transferDetails.Total') }}</p>
+        <p class="font-weight-bold">{{ $t('c_transferDetails.Total') }}</p>
       </b-col>
       <b-col cols="6" sm="8" class="text-right text-sm-left">
         <p>{{ transfer.amount.toFormat() }}</p>
@@ -10,7 +10,7 @@
     </b-row>
     <b-row v-if="Object.keys(transfer.from).length !== 0">
       <b-col cols="6" sm="4">
-        <p class="font-weight-bold">{{ $t('transferDetails.From') }}</p>
+        <p class="font-weight-bold">{{ $t('c_transferDetails.From') }}</p>
       </b-col>
       <b-col cols="6" sm="8" class="text-right text-sm-left">
         <p>{{ transfer.from.name }}</p>
@@ -18,7 +18,7 @@
     </b-row>
     <b-row v-if="Object.keys(transfer.to).length !== 0">
       <b-col cols="6" sm="4">
-        <p class="font-weight-bold">{{ $t('transferDetails.To') }}</p>
+        <p class="font-weight-bold">{{ $t('c_transferDetails.To') }}</p>
       </b-col>
       <b-col cols="6" sm="8" class="text-right text-sm-left">
         <p>{{ transfer.to.name }}</p>
@@ -26,7 +26,7 @@
     </b-row>
     <b-row>
       <b-col cols="6" sm="4">
-        <p class="font-weight-bold">{{ $t('transferDetails.Type') }}</p>
+        <p class="font-weight-bold">{{ $t('c_transferDetails.Type') }}</p>
       </b-col>
       <b-col cols="6" sm="8" class="text-right text-sm-left">
         <p>{{ transfer.type }}</p>
@@ -34,7 +34,7 @@
     </b-row>
     <b-row v-if="transfer.description !== undefined">
       <b-col cols="6" sm="4">
-        <p class="font-weight-bold">{{ $t('transferDetails.Description') }}</p>
+        <p class="font-weight-bold">{{ $t('c_transferDetails.Description') }}</p>
       </b-col>
       <b-col cols="6" sm="8" class="text-right text-sm-left">
         <p>{{ transfer.description }}</p>

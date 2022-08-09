@@ -1,23 +1,41 @@
 <template>
-  <!-- TODO: Add separate call for POSs that have not yet been approved -->
   <b-card class="container-card">
     <b-card-title class="mb-3 mb-lg-5">
       <b-form-row class="mx-0">
         <b-col cols="12">
-          <span v-if="requested">{{ $t('POSOverview.requested points of sale') }}</span>
-          <span v-else>{{ $t('POSOverview.my points of sale') }}</span>
+          <span>
+            {{ showAll ? $t('c_POSOverview.all points of sale') :
+            'VIEWING POINTS OF SALE OF '.concat(organsList[0].text)}}
+<!--            <b-form-select v-model="posOwnerId" :options="organsList"></b-form-select>-->
+          </span>
         </b-col>
       </b-form-row>
     </b-card-title>
 
     <b-card-body>
+      <b-form-row v-if="full" class="pos-info-bar mx-2">
+        <b-col
+          cols="6" lg="5"
+          class="order-0 font-weight-bold overflow-hidden pos-name"
+        >
+          {{ $t("c_POSOverview.POS Name") }}:
+        </b-col>
+        <b-col
+          cols="6"
+          lg="7"
+          class="smaller order-3 order-lg-2 overflow-hidden pos-owner"
+        >
+          {{ $t("c_POSOverview.POS Owner") }}:
+        </b-col>
+      </b-form-row>
       <b-form-row
         class="point-of-sale"
-        v-for="pos in shownPointsOfSale"
+        v-for="pos in pointsOfSale.records"
         :key="pos.id"
         @click="$router.push({
-        name: full ? 'pointOfSaleApprove' : 'pointOfSaleInfo',
-        params: {id: pos.id} })">
+          name: 'pointOfSaleInfo',
+          params: { id: pos.id },
+        })">
         <b-col
           :cols="full ? 6 : 10" :lg="full ? 5 : 11"
           class="order-0 font-weight-bold overflow-hidden pos-name"
@@ -38,13 +56,13 @@
       </b-form-row>
     </b-card-body>
 
-    <b-card-footer v-if="perPage < pointsOfSale.length" class="d-flex">
+    <b-card-footer v-if="perPage < pointsOfSale._pagination.count" class="d-flex">
       <p class="my-auto h-100">
-        {{ $t('POSOverview.Page') }}:
+        {{ $t('c_POSOverview.Page') }}:
       </p>
       <b-pagination
         v-model="currentPage"
-        :total-rows="pointsOfSale.length"
+        :total-rows="pointsOfSale._pagination.count"
         :per-page="perPage"
         limit="1"
         next-class="nextButton"
@@ -65,35 +83,43 @@ import {
   Component, Prop, Vue,
 } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
-import { PointOfSale } from '@/entities/PointOfSale';
-import PointOfSaleModule from '@/store/modules/pointsofsale';
+import { PointOfSaleList } from '@/entities/PointOfSale';
+import UserModule from '@/store/modules/user';
+import { getAllPointsOfSale, getUserPointsOfSale } from '@/api/pointOfSale';
 
 @Component
 export default class POSOverview extends Vue {
   // If true all information about POS will show
   @Prop() private full!: boolean;
 
-  // If true the title will be for requested pos's otherwise for your own pos's
-  @Prop() private requested!: boolean;
+  // If true all the points of sale will be shown instead of the users
+  @Prop({ default: false }) private showAll!: boolean;
 
-  private pointOfSaleState = getModule(PointOfSaleModule);
-
-  // All the points of sale that will be displayed on the current page
-  pointsOfSale: PointOfSale[] = [];
-
-  shownPointsOfSale: PointOfSale[] = [];
-
-  previousPage: number = 1;
+  private userState = getModule(UserModule);
 
   currentPage: number = 1;
 
-  perPage: number = 1;
+  perPage: number = 15;
+
+  pointsOfSale: PointOfSaleList = {} as PointOfSaleList;
+
+  organsList: {value: number, text: string}[] = [];
+
+  posOwnerId: number = null;
 
   beforeMount() {
-    this.pointOfSaleState.fetchPointsOfSale();
-    this.pointsOfSale = this.pointOfSaleState.pointsOfSale;
+    // TODO: Needs to be become correct owner ID instead of just the first one
+    this.organsList = this.userState.organsList;
+    this.posOwnerId = this.organsList[0].value;
+    this.fetchData(this.perPage);
+  }
 
-    this.shownPointsOfSale = this.pointsOfSale.slice(0, this.perPage);
+  async fetchData(take: number | null = null, skip: number | null = null) {
+    if (this.showAll) {
+      this.pointsOfSale = await getAllPointsOfSale(take, skip);
+    } else {
+      this.pointsOfSale = await getUserPointsOfSale(this.posOwnerId, take, skip);
+    }
   }
 
   /**
@@ -102,27 +128,11 @@ export default class POSOverview extends Vue {
    * @param page = page that is being navigated to
    */
   pageClicked(page: number): void {
-    if (this.previousPage < page
-      && page >= (Math.ceil(this.pointsOfSale.length / this.perPage) - 2)) {
-      // TODO: Grab new data
-    }
-
-    const start = (page - 1) * this.perPage;
-    this.shownPointsOfSale = this.pointsOfSale.slice(start, start + this.perPage);
-
-    this.previousPage = page;
+    const skip = (page - 1) * this.perPage;
+    this.fetchData(this.perPage, skip);
   }
 }
 </script>
-
-<style lang="scss">
-.container-card {
-  .custom-control-label::before,
-  .custom-control-label::after {
-    top: 1px !important;
-  }
-}
-</style>
 
 <style scoped lang="scss">
 @import "~bootstrap/scss/bootstrap";
@@ -170,5 +180,11 @@ export default class POSOverview extends Vue {
 
 #processed {
   color: black;
+}
+
+@include media-breakpoint-down(md) {
+  .pos-info-bar {
+    display: none;
+  }
 }
 </style>

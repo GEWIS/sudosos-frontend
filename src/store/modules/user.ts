@@ -1,12 +1,25 @@
 import {
   Action, Module, Mutation, VuexModule,
 } from 'vuex-module-decorators';
-import Dinero from 'dinero.js';
 import store from '@/store';
 import { User, UserPermissions } from '@/entities/User';
 import APIHelper from '@/mixins/APIHelper';
 import UserTransformer from '@/transformers/UserTransformer';
 import { NFCDevice } from '@/entities/NFCDevice';
+import jwtDecode, { JwtPayload } from 'jwt-decode';
+import Dinero from 'dinero.js';
+import { LoginResponse } from '@/entities/APIResponses';
+
+interface UpdateUserInfo {
+  userID: number,
+  firstname: string,
+  lastname: string,
+  email: string,
+}
+
+interface TokenContent {
+  user: User,
+}
 
 @Module({
   dynamic: true, namespaced: true, store, name: 'UserModule',
@@ -14,9 +27,46 @@ import { NFCDevice } from '@/entities/NFCDevice';
 export default class UserModule extends VuexModule {
   user: User = {} as User;
 
+  types = {
+    SELLER: 'Seller',
+    BOARD: 'SudoSOS - Board',
+    BAC: 'SudoSOS - BAC',
+    LOCAL: 'LOCAL_USER',
+  };
+
+  memberships: User[] = [];
+
+  userRoles: string[] = [];
+
   allUsers: User[] = [];
 
+  organs: User[] = [];
+
+  // Used for dropdowns
+  organsList: {value: number, text: string}[] = [];
+
   permissions: UserPermissions = {} as UserPermissions;
+
+  @Mutation
+  extractResponse(response: LoginResponse) {
+    this.user = UserTransformer.makeUser(response.user) as User;
+    this.userRoles = response.roles;
+    this.organs = response.organs.map((organ: any) => UserTransformer.makeUser(organ) as User);
+    this.organsList = this.organs.map((user: User) => ({ value: user.id, text: user.firstname }));
+  }
+
+  @Action
+  async hasRole(role: string) {
+    return this.userRoles.indexOf(role) !== -1;
+  }
+
+  @Mutation
+  reset() {
+    this.user = {} as User;
+    this.userRoles = [];
+    this.memberships = [];
+    this.permissions = {} as UserPermissions;
+  }
 
   @Mutation
   setUser(user: User) {
@@ -24,8 +74,19 @@ export default class UserModule extends VuexModule {
   }
 
   @Mutation
-  setAllUsers(allUsers: User[]) {
-    this.allUsers = allUsers;
+  setMemberships(users: User[]) {
+    this.memberships = users;
+  }
+
+  @Mutation
+  clearMemberships() {
+    this.memberships = [];
+  }
+
+  @Mutation
+  setUserRoles(roles: string[]) {
+    console.error(roles);
+    this.userRoles = roles;
   }
 
   @Mutation
@@ -34,34 +95,9 @@ export default class UserModule extends VuexModule {
   }
 
   @Mutation
-  updatePinCode(data: {}) {
-    APIHelper.putResource('user/pincode', data);
-    this.fetchUser(true);
-  }
-
-  @Mutation
-  updateUsersPinCode(data: {}) {
-    APIHelper.putResource('user/pincode', data);
-    this.fetchAllUsers(true);
-  }
-
-  @Mutation
   addNFCDevice(data: {}) {
     const nfcResponse = APIHelper.postResource('user/nfcdevice', data);
     this.user.nfcDevices.splice(0, 0, UserTransformer.makeNFCDevice(nfcResponse));
-  }
-
-  @Mutation
-  addUsersNFCDevice(data: {
-    userID: number;
-  }) {
-    const nfcResponse = APIHelper.postResource('user/nfcdevice', data);
-    const index = this.allUsers.findIndex((user) => user.id === data.userID);
-    const user = this.allUsers[index];
-
-    user.nfcDevices.splice(0, 0, UserTransformer.makeNFCDevice(nfcResponse));
-
-    this.allUsers.splice(index, 1, user);
   }
 
   @Mutation
@@ -72,107 +108,92 @@ export default class UserModule extends VuexModule {
   }
 
   @Mutation
-  updateUsersNFCDevice(data: {id : number, userID: number}) {
-    const nfcResponse = APIHelper.putResource('user/nfcdevice', data);
-    const userIndex = this.allUsers.findIndex((user) => user.id === data.userID);
-    const user = this.allUsers[userIndex];
-    const index = user.nfcDevices.findIndex(
-      (nfc: NFCDevice) => nfc.id === data.id,
-    );
-
-    user.nfcDevices.splice(
-      index, 1, UserTransformer.makeNFCDevice(nfcResponse),
-    );
-
-    this.allUsers.splice(userIndex, 1, user);
-  }
-
-  @Mutation
   removeNFCDevice(data: {id: number}) {
-    const nfcResponse = APIHelper.delResource('user/nfcdevice', data);
+    const nfcResponse = APIHelper.delResource('user/nfcdevice');
     const index = this.user.nfcDevices.findIndex((nfc: NFCDevice) => nfc.id === data.id);
     this.user.nfcDevices.splice(index, 1);
   }
 
-  @Mutation
-  removeUsersNFCDevice(data: {id: number, userID: number}) {
-    const nfcResponse = APIHelper.delResource('user/nfcdevice', data);
-    const userIndex = this.allUsers.findIndex((user) => user.id === data.userID);
-    const user = this.allUsers[userIndex];
-    const index = user.nfcDevices.findIndex(
-      (nfc: NFCDevice) => nfc.id === data.id,
-    );
-
-    user.nfcDevices.splice(index, 1);
-    this.allUsers.splice(userIndex, 1, user);
+  @Action({
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
+  })
+  fetchBalance(force: boolean = false) {
+    if (this.user.saldo === undefined || force) {
+      APIHelper.getResource('balances').then((saldoResponse) => {
+        this.context.commit('updateSaldo', saldoResponse);
+      });
+    }
   }
 
-  @Mutation
-  updateUserInformation(data: {
-    userID: number,
-    firstname: string,
-    lastname: string,
-    email: string,
-    }) {
-    const userResponse = APIHelper.putResource('user/updateUserInfo', data);
-    this.user.firstname = data.firstname;
-    this.user.lastname = data.lastname;
-    this.user.email = data.email;
+  @Action
+  async updatePinCode(pin: string) {
+    const result = await APIHelper.putResource(`users/${this.user.id}/pin`, { pin });
   }
 
-  @Mutation
-  updateUsersUserInformation(data: {
-    userID: number,
-    firstname: string,
-    lastname: string,
-    email: string,
-    active: boolean,
-  }) {
-    const userResponse = APIHelper.putResource('user/updateUserInfo', data);
-    const userIndex = this.allUsers.findIndex((user) => user.id === data.userID);
-    const user = this.allUsers[userIndex];
-
-    user.firstname = data.firstname;
-    user.lastname = data.lastname;
-    user.name = `${data.firstname} ${data.lastname}`;
-    user.email = data.email;
-    user.active = data.active;
-
-    this.allUsers.splice(userIndex, 1, user);
-  }
-
-  @Mutation
+  @Action
   // eslint-disable-next-line class-methods-use-this
-  updatePassword(data: {id: number, password: string}) {
-    const passwordResponse = APIHelper.putResource('user/password', data);
+  async updateUsersPinCode(update: { userID: number, pin: string }) {
+    const result = await APIHelper.putResource(`users/${update.userID}/pin`, { pin: update.pin });
   }
 
-  @Mutation
+  @Action
   // eslint-disable-next-line class-methods-use-this
-  updateUsersPassword(data: {userID: number, password: string}) {
-    const passwordResponse = APIHelper.putResource('user/password', data);
+  async updatePassword(password: { id: number, password: string }) {
+    // pass
+  }
+
+  @Action
+  // eslint-disable-next-line class-methods-use-this
+  async updateUsersPassword(password: { userID: number, password: string }) {
+    // pass
+  }
+
+  @Action
+  // eslint-disable-next-line class-methods-use-this
+  async updateUserInformation(information: UpdateUserInfo) {
+    // pass
+  }
+
+  @Action
+  // eslint-disable-next-line class-methods-use-this
+  async updateUsersUserInformation(information: any) {
+    // pass
+  }
+
+  @Action
+  // eslint-disable-next-line class-methods-use-this
+  async fetchAllUsers() {
+    // pass
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
-  fetchUser(force: boolean = false) {
+  async fetchUser(force: boolean = false) {
     if (this.user.id === undefined || force) {
-      const userResponse = APIHelper.getResource('user') as {};
-      this.context.commit('setUser', UserTransformer.makeUser(userResponse));
-      const saldoResponse = APIHelper.getResource('saldo') as { saldo: number };
-      this.context.commit('updateSaldo', saldoResponse.saldo);
+      const token = jwtDecode(APIHelper.getToken().jwtToken as string) as any;
+      this.extractResponse(token);
+
+      await APIHelper.getResource(`users/${token.user.id}`).then((userResponse) => {
+        this.context.commit('setUser', UserTransformer.makeUser(userResponse));
+      });
+      await APIHelper.getResource('balances').then((saldoResponse) => {
+        this.context.commit('updateSaldo', saldoResponse);
+      });
     }
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
-  fetchAllUsers(force: boolean = false) {
-    if (this.allUsers.length === 0 || force) {
-      const userResponse = APIHelper.getResource('users') as [];
-      const allUsers = userResponse.map((user) => UserTransformer.makeUser(user));
-      this.context.commit('setAllUsers', allUsers);
+  fetchMemberships(force: boolean = false) {
+    if (this.memberships.length === 0 || force) {
+      const token = jwtDecode(APIHelper.getToken().jwtToken as string) as any;
+
+      APIHelper.getResource(`users/${token.user.id}/authenticate`).then((userResponses: any[]) => {
+        const users = userResponses.map((cntr) => UserTransformer.makeUser(cntr));
+        this.context.commit('setMemberships', users);
+      });
     }
   }
 }

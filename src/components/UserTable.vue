@@ -4,7 +4,7 @@
     <template v-slot:header>
       <b-form-group
         id="name-filter-group"
-        :label="$t('userTable.Filter by name')"
+        :label="$t('c_userTable.Filter by name')"
         label-for="filter"
         label-cols-md="2"
         label-cols="12"
@@ -13,7 +13,7 @@
           id="filter"
           v-model="filter"
           type="text"
-          :placeholder="$t('userTable.Fill in a name')"
+          :placeholder="$t('c_userTable.Fill in a name')"
           trim
         />
       </b-form-group>
@@ -30,13 +30,19 @@
         tbody-tr-class="user-row"
         :filter="filter"
         :filter-included-fields="['name', 'gewisID']"
-        :items="userState.allUsers"
+        :items="users"
+        :busy="!loaded"
         :fields="fields"
         :per-page="perPage"
         v-on:filtered="filterFinished"
-        :current-page="currentPage"
         v-on:row-clicked="rowClicked"
       >
+        <!-- If the table data is still loading display something nice -->
+        <template #table-busy>
+          <div class="text-center text-muted mt-5 mb-3">
+            <b-spinner class="align-middle"></b-spinner>
+          </div>
+        </template>
 
         <!-- Templates for each row cell -->
         <template v-slot:cell(gewisID)="data">
@@ -55,13 +61,14 @@
 
   <b-card-footer v-if="totalRows > perPage" class="d-flex">
     <p class="my-auto h-100">
-      {{ $t('userTable.Page') }}:
+      {{ $t('c_userTable.Page') }}:
     </p>
     <b-pagination
       v-model="currentPage"
       :total-rows="totalRows"
       :per-page="perPage"
       limit="1"
+      @page-click="fetchNewItems"
       next-class="nextButton"
       prev-class="prevButton"
       page-class="pageButton"
@@ -82,12 +89,18 @@ import Formatters from '@/mixins/Formatters';
 import { User } from '@/entities/User';
 import eventBus from '@/eventbus';
 import { Product } from '@/entities/Product';
+import { getPOSTransactions, getUserTransactions } from '@/api/transactions';
+import { getUserTransfers } from '@/api/transfers';
+import { TransferFilter } from '@/entities/Transfer';
+import { getUsers } from '@/api/users';
 
 @Component
 export default class UserTable extends Formatters {
-  private userState = getModule(UserModule)
+  // userState = getModule(UserModule)
 
-  perPage = 2;
+  users: User[] = [];
+
+  perPage = 10;
 
   currentPage = 1;
 
@@ -95,37 +108,55 @@ export default class UserTable extends Formatters {
 
   filter: string = '';
 
+  loaded = false;
+
   fields: Object[] = [
     {
       key: 'gewisID',
-      label: this.getTranslation('userTable.gewisID'),
+      label: this.getTranslation('c_userTable.gewisID'),
       locale_key: 'gewisID',
     },
     {
       key: 'name',
-      label: this.getTranslation('userTable.Name'),
+      label: this.getTranslation('c_userTable.Name'),
       locale_key: 'Name',
     },
     {
       key: 'active',
-      label: this.getTranslation('userTable.Active'),
+      label: this.getTranslation('c_userTable.Active'),
       locale_key: 'Active',
     },
   ]
 
   beforeMount() {
-    this.userState.fetchAllUsers();
+    this.fetchNewData();
     this.totalRows = this.userState.allUsers.length;
 
     // If the locale is changed make sure the labels are also correctly updated for the b-table
     eventBus.$on('localeUpdated', () => {
-      this.fields = this.updateTranslations(this.fields, 'userTable');
+      this.fields = this.updateTranslations(this.fields, 'c_userTable');
     });
   }
 
   // eslint-disable-next-line class-methods-use-this
   rowClicked(item: User, index: number, event: object) {
     this.$router.push({ name: 'userDetails', params: { id: String(item.id) } });
+  }
+
+  fetchNewItems(event: any, page: number) {
+    this.fetchNewData(page);
+  }
+
+  async fetchNewData(page = this.currentPage) {
+    this.loaded = false;
+    const skip = (page - 1) * this.perPage;
+    const take = this.perPage;
+
+    const { records, _pagination } = (await getUsers({ take, skip }));
+    this.users = records;
+
+    this.totalRows = _pagination.count;
+    this.loaded = true;
   }
 
   /**

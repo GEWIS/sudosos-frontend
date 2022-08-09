@@ -1,12 +1,9 @@
 @import "variables.scss";
-
-$primary: $gewis-red !default;
-$secondary: $gewis-grey !default;
-$success: $gewis-green !default;
+@import "animations.scss";
 
 // Imports
 @import "~bootstrap/scss/bootstrap";
-@import "~bootstrap-vue";
+@import "~bootstrap-vue/src/index";
 @import url('https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Raleway:500,500i,700,700i&display=swap');
 
@@ -22,76 +19,8 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
     font-weight: 500;
 }
 
-/*
-    General button styles
- */
-.btn.btn-primary {
-    background-color: $gewis-red;
-    float: right;
-    border-color: $gewis-red;
-    border-radius: $border-radius;
-}
-
-.btn.btn-primary:hover {
-    border-color: $gewis-red;
-    color: $gewis-red;
-    background-color: $text-primary;
-}
-
-.btn.btn-primary:focus,
-.btn.btn-primary:active:focus {
-    background-color: $gewis-red;
-    border-color: $gewis-red;
-    color: $text-primary;
-    box-shadow: 0 0 0 0.2rem $gewis-red-shadow !important;
-}
-
-.btn.btn-primary:active {
-    background-color: $gewis-red !important;
-    border-color: $gewis-red !important;
-}
-
-.btn.btn-secondary {
-    background-color: $gewis-grey;
-    float: right;
-    border-color: $gewis-grey;
-    border-radius: $border-radius;
-}
-
-.btn.btn-secondary:hover {
-    border-color: $gewis-grey;
-    color: $gewis-grey;
-    background-color: $text-primary;
-}
-
-.btn.btn-secondary:focus,
-.btn.btn-secondary:active:focus {
-    background-color: $gewis-grey;
-    border-color: $gewis-grey;
-    color: $text-primary;
-    box-shadow: 0 0 0 0.2rem $gewis-grey-shadow !important;
-}
-
-.btn.btn-secondary:active {
-    background-color: $gewis-grey !important;
-    border-color: $gewis-grey !important;
-}
-
-.btn.btn-success {
-    color: white;
-    background-color: $gewis-green;
-    border-color: $gewis-green;
-}
-
-.btn.btn-success:hover {
-    background-color: $white;
-    color: $gewis-green;
-    border-color: $gewis-green;
-}
-
-
-/*
-Global style for forms in a card title
+/**
+ * Global style for forms in a card title
  */
 .title-form {
     text-transform: uppercase;
@@ -144,8 +73,8 @@ Global style for forms in a card title
     }
 }
 
-/*
-    Some General styles for tables, some classes here need to be specifically added (will be listed)
+/**
+ * Some General styles for tables, some classes here need to be specifically added (will be listed)
  */
 .b-table {
 
@@ -159,24 +88,26 @@ Global style for forms in a card title
         }
     }
 
-    .b-table-has-details {
-        background-color: rgba(0, 0, 0, 0.1) !important;
-        transition: background-color 0.3s;
+    &#transaction-table {
+        > tbody {
+            tr[role='row']:not(.b-table-top-row):not(.b-table-details) {
+                cursor: pointer;
 
-        > td {
-            padding: .75rem .3rem;
-            transition: padding 0.2s;
+                &:hover {
+                    background-color: #ffffff;
+                }
+            }
         }
+    }
 
-        //> td:first-of-type {
-        //    padding-left: 0.75rem;
-        //    transition: padding-left 0.2s;
-        //}
-        //
-        //>td:last-of-type {
-        //    padding-right: 0.75rem;
-        //    transition: padding-right 0.2s;
-        //}
+    .b-table-details {
+        background-color: #f2f2f2;
+    }
+
+    tr:last-of-type {
+        &.b-table-details {
+            display: none;
+        }
     }
 
     // Use this as table header style to make sure table has the correctly styled headers
@@ -221,10 +152,6 @@ Global style for forms in a card title
         }
     }
 
-    .filler-row {
-        display: none;
-    }
-
     .transaction-row,
     .product-row,
     .user-row {
@@ -245,8 +172,8 @@ Global style for forms in a card title
     }
 }
 
-/*
- Global style for pagination
+/**
+ * Global style for pagination
  */
 .custom-pagination {
     .nextButton,
@@ -291,10 +218,9 @@ Global style for forms in a card title
     }
 }
 
-/*
- Global styles to change modals
+/**
+ * Global styles to change modals
  */
-
 .modal {
     .modal-content {
         border-radius: 0;
@@ -366,10 +292,9 @@ Global style for forms in a card title
     }
 }
 
-/*
-    Global v-select styles
+/**
+ * Global v-select styles
  */
-
 .v-select {
     .vs__dropdown-toggle {
         padding: 0;
@@ -391,6 +316,19 @@ Global style for forms in a card title
     }
 }
 
+// Make sure that things that are links actually show the correct cursor and fade a bit when hovered
+[role="link"] {
+    &:hover {
+        cursor: pointer;
+        opacity: 0.5;
+    }
+}
+
+// Some icons needs extra aligning if they're small, this utility class aligns the icons correctly
+.fa-sm-mb {
+    margin-bottom: 2.5px;
+}
+
 // To make sure that the view always has a certain height and the footer stays away from the content
 main {
     margin: 1.5rem 0 #{60 + 1.5 * 16}px 0;
@@ -407,7 +345,6 @@ h1 {
     }
 
     .b-table {
-
         &.details-table {
             .details-table-tr:not(:first-of-type) {
                 border-top: none;

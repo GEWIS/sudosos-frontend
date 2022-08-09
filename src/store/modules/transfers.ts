@@ -13,6 +13,11 @@ export default class TransferModule extends VuexModule {
   transfers: Transfer[] = [];
 
   @Mutation
+  reset() {
+    this.transfers = [];
+  }
+
+  @Mutation
   setTransfers(transfers: Transfer[]) {
     this.transfers = transfers;
   }
@@ -25,7 +30,7 @@ export default class TransferModule extends VuexModule {
 
   @Mutation
   removeTransfer(transfer: Transfer) {
-    APIHelper.delResource('transfers', transfer);
+    APIHelper.delResource('transfers');
     const index = this.transfers.findIndex((trns) => trns.id === transfer.id);
     this.transfers.splice(index, 1);
   }
@@ -39,13 +44,16 @@ export default class TransferModule extends VuexModule {
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchTransfers(force: boolean = false) {
     if (this.transfers.length === 0 || force) {
-      const transferResponse = APIHelper.getResource('transfers') as [];
-      const transfers = transferResponse.map((trnsfr) => TransferTransformer.makeTransfer(trnsfr));
-      this.context.commit('setTransfers', transfers);
+      APIHelper.getResource('transfers').then((transferResponse: Transfer[]) => {
+        const transfers = transferResponse.map(
+          (trnsfr) => TransferTransformer.makeTransfer(trnsfr),
+        );
+        this.context.commit('setTransfers', transfers);
+      });
     }
   }
 }

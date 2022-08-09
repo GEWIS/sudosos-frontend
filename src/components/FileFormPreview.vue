@@ -4,8 +4,8 @@
     name="ad-file"
     v-model="file"
     accept="image/*"
-    :placeholder="$t('fileFormPreview.Choose image drop')"
-    :drop-placeholder="$t('fileFormPreview.Drop file')"
+    :placeholder="$t('c_fileFormPreview.Choose image drop')"
+    :drop-placeholder="$t('c_fileFormPreview.Drop file')"
     :disabled="disabled"
     :state="state"
   ></b-form-file>

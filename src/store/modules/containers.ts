@@ -3,11 +3,12 @@ import {
 } from 'vuex-module-decorators';
 import store from '@/store';
 import APIHelper from '@/mixins/APIHelper';
-import { Product } from '@/entities/Product';
+import { CreateProductRequest, Product, UpdateProductRequest } from '@/entities/Product';
 import { Container } from '@/entities/Container';
 import ProductTransformer from '@/transformers/ProductTransformer';
 import ContainerTransformer from '@/transformers/ContainerTransformer';
 import ProductsModule from '@/store/modules/products';
+import { postProductImage, setProductImage } from '@/api/products';
 
 const productState = getModule(ProductsModule);
 
@@ -15,13 +16,21 @@ const productState = getModule(ProductsModule);
   dynamic: true, namespaced: true, store, name: 'ContainerModule',
 })
 export default class ContainerModule extends VuexModule {
-  containers: Container[] = [];
+  containerMapping = new Map();
 
   publicContainers: Container[] = [];
 
   @Mutation
+  reset() {
+    this.containerMapping = new Map();
+    this.publicContainers = [];
+  }
+
+  @Mutation
   setContainers(containers: Container[]) {
-    this.containers = containers;
+    containers.forEach((c) => {
+      this.containerMapping.set(c.id, c);
+    });
   }
 
   @Mutation
@@ -32,91 +41,86 @@ export default class ContainerModule extends VuexModule {
   @Mutation
   addContainer(container: any) {
     const containerResponse = APIHelper.postResource('containers', container);
-    this.containers.push(ContainerTransformer.makeContainer(containerResponse) as Container);
+    const newContainer = ContainerTransformer.makeContainer(containerResponse) as Container;
+    this.containerMapping.set(newContainer.id, newContainer);
   }
 
   @Mutation
-  addProduct(data: { container: Container, product: { id?: number | null} }) {
+  async addProduct(data: { container: Container, product:
+      CreateProductRequest | UpdateProductRequest, file?: File}) {
     let productToAdd = data.product;
 
     // If this is not an existing product yet we need to add it
     if (!('id' in data.product) || data.product.id === null) {
-      productToAdd = APIHelper.postResource('products', data.product) as Product;
-      productState.addProduct(data.product);
+      await APIHelper.postResource('products', data.product).then(async (product: Product) => {
+        productToAdd = product as any;
+        if (data.file) await setProductImage(product.id, data.file);
+      });
     }
 
-    // TODO: Check if this works with real API
-    const containerResponse = APIHelper.postResource(`containers/${data.container.id}/product`, productToAdd);
-    // const updatedContainer = ContainerTransformer.makeContainer(containerResponse);
-    const index = this.containers.findIndex((cntnr) => cntnr.id === data.container.id);
-    this.containers[index].products.push(ProductTransformer.makeProduct(productToAdd) as Product);
+    APIHelper.getResource(`containers/${data.container.id}`).then((containerResponse: Container) => {
+      const products = containerResponse.products.map((p) => p.id);
+      products.push((productToAdd as UpdateProductRequest).id);
+      const containerUpdate = {
+        name: containerResponse.name,
+        public: containerResponse.public,
+        products,
+      };
+      APIHelper.patchResource(`containers/${data.container.id}`, containerUpdate);
+      const newProduct = ProductTransformer.makeProduct(productToAdd) as Product;
+      this.containerMapping.get(data.container.id).products.push(newProduct);
+    });
   }
 
   @Mutation
-  updateProduct(data: {container: Container, product: { id?: number | null } }) {
-    let productToEdit = APIHelper.putResource('products', data.product);
-    productToEdit = ProductTransformer.makeProduct(productToEdit);
-
-    productState.updateProduct(productToEdit);
-
-    // TODO: Check if this works with real API
-    const containerResponse = APIHelper.putResource(`containers/${data.container.id}/product`, productToEdit);
-    // const updatedContainer = ContainerTransformer.makeContainer(containerResponse);
-    const index = this.containers.findIndex((cntnr) => cntnr.id === data.container.id);
-    const prdIndex = this.containers[index].products.findIndex((prod) => (
-      prod.id === data.product.id
-    ));
-
-    this.containers[index].products.splice(prdIndex, 1, productToEdit as Product);
-  }
-
-  @Mutation
+  // eslint-disable-next-line class-methods-use-this
   removeProduct(data: {container: Container, product: {id?: number | null} }) {
-    // TODO: Check if this works with real API
-    const containerResponse = APIHelper.delResource(`containers/${data.container.id}/product`, data.product);
-    // const updatedContainer = ContainerTransformer.makeContainer(containerResponse);
-    const index = this.containers.findIndex((cntnr) => cntnr.id === data.container.id);
-    const prdIndex = this.containers[index].products.findIndex((prod) => (
-      prod.id === data.product.id
-    ));
-
-    this.containers[index].products.splice(prdIndex, 1);
+    APIHelper.getResource(`containers/${data.container.id}`).then((containerResponse: Container) => {
+      const products = containerResponse.products.map((p) => p.id);
+      const remaining = products.filter((p) => p !== data.product.id);
+      const containerUpdate = {
+        name: containerResponse.name,
+        public: containerResponse.public,
+        products: remaining,
+      };
+      APIHelper.patchResource(`containers/${data.container.id}`, containerUpdate);
+    });
   }
 
   @Mutation
-  removeContainer(container: any) {
-    APIHelper.delResource('containers', container);
-    const index = this.containers.findIndex((cntnr) => cntnr.id === container.id);
-    this.containers.splice(index, 1);
+  removeContainer(containerId: number) {
+    APIHelper.delResource(`containers/${containerId}`);
+    this.containerMapping.delete(containerId);
   }
 
   @Mutation
   updateContainer(container: any) {
     const response = APIHelper.putResource('containers', container);
-    const containerResponse = ContainerTransformer.makeContainer(response);
-    const index = this.containers.findIndex((cntnr) => cntnr.id === containerResponse.id);
-    this.containers.splice(index, 1, containerResponse as Container);
+    const containerResponse = ContainerTransformer.makeContainer(response) as Container;
+    this.containerMapping.set(containerResponse.id, containerResponse);
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchContainers(force: boolean = false) {
-    if (this.containers.length === 0 || force) {
-      const containersResponse = APIHelper.getResource('containers') as [];
-      const cntrs = containersResponse.map((cntr) => ContainerTransformer.makeContainer(cntr));
-      this.context.commit('setContainers', cntrs);
+    if (Object.keys(this.containerMapping).length === 0 || force) {
+      (APIHelper.getResource('containers') as Promise<{records: any[]}>).then((res) => {
+        const cntrs = res.records.map((cntr) => ContainerTransformer.makeContainer(cntr));
+        this.context.commit('setContainers', cntrs);
+      });
     }
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchPublicContainers(force: boolean = false) {
     if (this.publicContainers.length === 0 || force) {
-      const containersResponse = APIHelper.getResource('publiccontainer') as [];
-      const cntrs = containersResponse.map((cntr) => ContainerTransformer.makeContainer(cntr));
-      this.context.commit('setPublicContainers', cntrs);
+      (APIHelper.getResource('containers/public') as Promise<{records: any[]}>).then((res) => {
+        const cntrs = res.records.map((cntr) => ContainerTransformer.makeContainer(cntr));
+        this.context.commit('setPublicContainers', cntrs);
+      });
     }
   }
 }

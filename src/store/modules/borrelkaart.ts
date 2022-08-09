@@ -13,6 +13,11 @@ export default class BorrelkaartModule extends VuexModule {
   borrelkaarten: User[] = [];
 
   @Mutation
+  reset() {
+    this.borrelkaarten = [];
+  }
+
+  @Mutation
   setBorrelkaarten(borrelkaarten: User[]) {
     this.borrelkaarten = borrelkaarten;
   }
@@ -25,9 +30,10 @@ export default class BorrelkaartModule extends VuexModule {
 
   @Mutation
   removeBorrelkaart(borrelkaart: User) {
-    APIHelper.delResource('borrelkaarten', borrelkaart);
-    const index = this.borrelkaarten.findIndex((brlkrt) => brlkrt.id === borrelkaart.id);
-    this.borrelkaarten.splice(index, 1);
+    APIHelper.delResource('borrelkaarten').then(() => {
+      const index = this.borrelkaarten.findIndex((brlkrt) => brlkrt.id === borrelkaart.id);
+      this.borrelkaarten.splice(index, 1);
+    });
   }
 
   @Mutation
@@ -39,15 +45,16 @@ export default class BorrelkaartModule extends VuexModule {
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchBorrelkaarten(force: boolean = false) {
     if (this.borrelkaarten.length === 0 || force) {
-      const borrelkaartenResponse = APIHelper.getResource('borrelkaarten') as [];
-      const borrelkaartenFormat = borrelkaartenResponse.map((borrelkaart) => (
-        UserTransformer.makeUser(borrelkaart)
-      ));
-      this.context.commit('setBorrelkaarten', borrelkaartenFormat);
+      APIHelper.getResource('borrelkaarten').then((borrelkaartenResponse: User[]) => {
+        const borrelkaartenFormat = borrelkaartenResponse.map(
+          (borrelkaart) => (UserTransformer.makeUser(borrelkaart)),
+        );
+        this.context.commit('setBorrelkaarten', borrelkaartenFormat);
+      });
     }
   }
 }

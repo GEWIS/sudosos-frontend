@@ -1,10 +1,10 @@
 # Build in a different image to keep the target image clean
-FROM node:12 as build
+FROM node:14 as build
 WORKDIR /app
 COPY ./package.json ./package-lock.json ./
 RUN npm install
 COPY ./ ./
-RUN cp .env.example .env && npm run build
+RUN npm run build
 
 # The target image that will be run
 FROM nginx:alpine as target

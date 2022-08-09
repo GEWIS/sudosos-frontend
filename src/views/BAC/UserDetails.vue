@@ -187,6 +187,7 @@ import { getModule } from 'vuex-module-decorators';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
 import UserModule from '@/store/modules/user';
 import { NFCDevice } from '@/entities/NFCDevice';
+import { getUser } from '@/api/users';
 import { User } from '@/entities/User';
 
 @Component({
@@ -225,9 +226,8 @@ export default class UserDetails extends Vue {
   /**
    * Fetch all the user info that is needed for the profile
    */
-  beforeMount() {
-    this.userState.fetchAllUsers();
-    const user = this.userState.allUsers.find((usr) => usr.id === Number(this.id)) as User;
+  async beforeMount() {
+    const user = (await getUser(this.id)) as User;
     this.firstname = user.firstname;
     this.lastname = user.lastname;
     this.email = user.email || '';
@@ -241,7 +241,7 @@ export default class UserDetails extends Vue {
   changePincode(event: Event) {
     event.preventDefault();
     if (this.validateNewPincode && this.validateConfirmPincode) {
-      this.userState.updateUsersPinCode({ userID: Number(this.id), pincode: this.pincode });
+      this.userState.updateUsersPinCode({ userID: Number(this.id), pin: this.pincode });
       this.pincode.newPincode = null;
       this.pincode.confirmPincode = null;
     }
@@ -284,15 +284,16 @@ export default class UserDetails extends Vue {
    * @param {NFCDevice} device: The new NFC device
    */
   updateDevice(device: NFCDevice) {
-    this.userState.updateUsersNFCDevice({ userID: Number(this.id), id: device.id });
+    // this.userState.updateUsersNFCDevice({ userID: Number(this.id), id: device.id });
     this.editDevice = {} as NFCDevice;
   }
 
   /**
    * If the deletion of an NFC device is confirmed this will remove it.
    */
+  // eslint-disable-next-line class-methods-use-this
   removeNFCDevice() {
-    this.userState.removeUsersNFCDevice({ userID: Number(this.id), id: this.removeDevice.id });
+    // this.userState.removeUsersNFCDevice({ userID: Number(this.id), id: this.removeDevice.id });
   }
 
   /**

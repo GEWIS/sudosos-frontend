@@ -14,15 +14,13 @@
           />
           <span class="text-truncate">{{ container.name }}</span>
           <span v-if="container.public" class="text-muted small ml-3">
-            {{ $t('containerComponent.Public') }}
+            {{ $t('c_containerComponent.Public') }}
           </span>
-
-<!--      TODO Fix these:-->
 
           <!--  Container edit button    -->
           <span
             class="ml-3 mr-2"
-            v-show="canEdit && enabled && editable"
+            v-show="enabled && editable"
             v-on:click.stop=""
             v-on:click="$emit('input', container)"
             v-b-modal.edit-container>
@@ -30,14 +28,14 @@
           </span>
 
           <!--   Container delete button   -->
-          <span
-            class="ml-2 mr-3"
-            v-show="canEdit && enabled && editable"
-            v-on:click.stop=""
-            v-on:click="$emit('input', container)"
-            v-b-modal.confirmation>
-            <font-awesome-icon icon="trash"/>
-          </span>
+<!--          <span-->
+<!--            class="ml-2 mr-3"-->
+<!--            v-show="enabled && editable"-->
+<!--            v-on:click.stop=""-->
+<!--            v-on:click="$emit('input', container)"-->
+<!--            v-b-modal.confirmation>-->
+<!--            <font-awesome-icon icon="trash"/>-->
+<!--          </span>-->
         </b-input-group>
       </b-col>
 
@@ -66,7 +64,7 @@
             name="check-button"
             switch
           >
-            {{ $t('containerComponent.Table view') }}
+            {{ $t('c_containerComponent.Table view') }}
           </b-form-checkbox>
         </div>
       </b-col>
@@ -83,14 +81,14 @@
       <!--  Card view for products   -->
       <b-row v-show="!tableView" class="mx-0">
         <b-col
-          v-for="item in container.products"
+          v-for="item in containerProducts.records"
           :key="item.id"
           class="text-center product-card px-2"
           cols="6" sm="4" md="3" lg="2"
           v-on:click="productDetails(item)"
         >
-          <div class="product" :class="{'add': canEdit && enabled && editable}">
-            <img :src="item.picture" :alt="item.name"/>
+          <div class="product" :class="{'add': enabled && editable}">
+            <img :src="`/static/products/${item.picture}`" :alt="item.name"/>
             <p
               class="w-100 px-1 product-name mb-0 text-truncate"
               :class="{'update': item.updatePending}"
@@ -100,7 +98,7 @@
 
         <!-- Add new product card -->
         <b-col
-          v-if="canEdit && enabled && editable"
+          v-if="enabled && editable"
           class="text-center product-card product-card-add px-2"
           cols="6" sm="4" md="3" lg="2"
           v-on:click="$emit('addProduct', container)"
@@ -109,7 +107,7 @@
             <div>
               <font-awesome-icon icon="plus" class="h-100"/>
             </div>
-            <p class="w-100 product-name mb-0">{{ $t('containerComponent.new') }}</p>
+            <p class="w-100 product-name mb-0">{{ $t('c_containerComponent.new') }}</p>
           </div>
         </b-col>
       </b-row>
@@ -118,19 +116,19 @@
       <b-row v-show="tableView">
         <b-col cols="12" class="containers-container">
           <div
-            v-if="canEdit && enabled && editable"
+            v-if="enabled && editable"
             class="d-flex justify-content-between align-items-center">
             <b-button
               class="my-2 text-truncate"
               variant="success"
               v-on:click="$emit('addProduct', container)"
             >
-              <font-awesome-icon icon="plus"/>
-              {{ $t('containerComponent.Add product') }}
+              <font-awesome-icon icon="plus" size="sm" class="mr-2" />
+              {{ $t('c_containerComponent.Add product') }}
             </b-button>
           </div>
           <ProductTable
-            :productsProp="container.products"
+            :productsProp="containerProducts.records"
             :editable="true"
             :enabled="true"
             v-on:editProduct="productDetails"
@@ -149,8 +147,9 @@ import { getModule } from 'vuex-module-decorators';
 import UserModule from '@/store/modules/user';
 import ProductTable from '@/components/ProductTable.vue';
 import { Container } from '@/entities/Container';
-import { Product } from '@/entities/Product';
+import { Product, ProductList } from '@/entities/Product';
 import { checkPermissions } from '@/entities/User';
+import { getContainerProducts } from '@/api/containers';
 
 @Component({
   directives: {
@@ -172,6 +171,8 @@ export default class ContainerComponent extends Vue {
 
   @Prop({ default: true }) editable!: boolean;
 
+  @Prop({ default: false }) alreadySelected?: boolean;
+
   private userState = getModule(UserModule);
 
   isOpen: Boolean = false;
@@ -179,6 +180,8 @@ export default class ContainerComponent extends Vue {
   selected: Boolean = false;
 
   tableView: Boolean = false;
+
+  containerProducts: ProductList = {} as ProductList;
 
   sortableOptions: Object = {
     chosenClass: 'is-selected',
@@ -188,11 +191,15 @@ export default class ContainerComponent extends Vue {
 
   beforeMount() {
     this.userState.fetchUser();
-    this.selected = !this.enabled || false;
+    this.selected = this.alreadySelected;
   }
 
-  collapseContainer() {
+  async collapseContainer() {
     this.isOpen = !this.isOpen;
+
+    if (this.isOpen && this.containerProducts.records?.length !== 0) {
+      this.containerProducts = await getContainerProducts(this.container.id, 500);
+    }
 
     this.$root.$emit('bv::toggle:collapse', `container_${this.container.id}`);
   }
@@ -203,7 +210,7 @@ export default class ContainerComponent extends Vue {
    * @param product Product that is being clicked
    */
   productDetails(product: Product) {
-    if (this.canEdit && this.enabled && this.editable) {
+    if (this.enabled && this.editable) {
       this.$emit('editProduct', this.container, product);
     } else {
       this.$emit('productDetails', product);
@@ -231,17 +238,6 @@ export default class ContainerComponent extends Vue {
    */
   checkBoxChanged(event: any) {
     this.$emit('toggled', { container: this.container, state: event as boolean });
-  }
-
-  /**
-   * Check if current user has the rights to edit this storage container
-   */
-  get canEdit() {
-    const { user } = this.userState;
-    const owner = this.container.owner.id === user.id;
-    const hasPermission = checkPermissions(this.userState.permissions, 'container');
-
-    return owner || hasPermission;
   }
 }
 </script>

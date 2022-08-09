@@ -27,15 +27,13 @@ import {
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import vSelect from 'vue-select';
+import { StripePlugin } from '@vue-stripe/vue-stripe';
 import App from './App.vue';
 import router from './router';
 import store from './store';
 import languages from './locales/index';
 
 import 'vue-select/dist/vue-select.css';
-
-// Import bootstrap js
-import 'bootstrap';
 
 // Import the BootstrapVue style
 import './styles/global/_main.scss';
@@ -86,6 +84,15 @@ const i18n = new VueI18n({
 
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
+
+const options = {
+  pk: process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY,
+  // stripeAccount: process.env.STRIPE_ACCOUNT,
+  // apiVersion: process.env.API_VERSION,
+  // locale: process.env.LOCALE,
+};
+
+Vue.use(StripePlugin, options);
 
 new Vue({
   router,

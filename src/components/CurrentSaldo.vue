@@ -2,16 +2,23 @@
   <div id="saldo-box"> <!-- to be replaced by card component -->
     <b-card>
       <b-card-title>
-        {{ $t('saldoCom.saldo') }}
+        {{ $t('c_currentSaldo.saldo') }}
       </b-card-title>
       <b-card-body>
-        <p id="saldo-text" class="lead">
-          {{ currentUser.saldo.toFormat() }}
+        <p v-if="userState.user.saldo !== undefined" id="saldo-text" class="lead">
+          {{ userState.user.saldo.toFormat() }}
         </p>
+        <div v-else class="text-center">
+          <b-spinner variant="primary" id="saldo-spinner"></b-spinner>
+        </div>
       </b-card-body>
     </b-card>
     <b-card-footer>
-      <router-link to="/saldo">{{ $t('saldoCom.upgrade online') }}</router-link>
+      <router-link to="/saldo" custom v-slot="{ navigate }">
+        <span @click="navigate" @keypress.enter="navigate" role="link">
+          {{ $t('c_currentSaldo.upgrade online') }}
+        </span>
+      </router-link>
     </b-card-footer>
   </div>
 </template>
@@ -19,19 +26,15 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
-import { User } from '@/entities/User';
 import Formatters from '@/mixins/Formatters';
 import UserModule from '@/store/modules/user';
 
 @Component
 export default class CurrentSaldo extends Formatters {
-  private userState = getModule(UserModule);
-
-  public currentUser: User = {} as User;
+  userState = getModule(UserModule);
 
   beforeMount() {
-    this.userState.fetchUser();
-    this.currentUser = this.userState.user;
+    this.userState.fetchBalance();
   }
 }
 </script>
@@ -46,5 +49,11 @@ export default class CurrentSaldo extends Formatters {
 #saldo-text {
   font-size: 50px;
   text-align: center;
+}
+
+#saldo-spinner {
+  height: 70px;
+  width: 70px;
+  margin-bottom: 1rem;
 }
 </style>

@@ -13,39 +13,49 @@ export default class BannerModule extends VuexModule {
   banners: Banner[] = [];
 
   @Mutation
+  reset() {
+    this.banners = [];
+  }
+
+  @Mutation
   setBanners(banners: Banner[]) {
     this.banners = banners;
   }
 
   @Mutation
   addBanner(banner: Banner) {
-    const bannerResponse = APIHelper.postResource('banner', banner);
-    this.banners.push(BannerTransformer.makeBanner(bannerResponse));
+    APIHelper.postResource('banners', banner).then((bannerResponse) => {
+      this.banners.push(BannerTransformer.makeBanner(bannerResponse));
+    });
   }
 
   @Mutation
   removeBanner(banner: Banner) {
-    APIHelper.delResource('banners', banner);
-    const index = this.banners.findIndex((bnr) => bnr.id === banner.id);
-    this.banners.splice(index, 1);
+    APIHelper.delResource(`banners/${banner.id}`).then(() => {
+      const index = this.banners.findIndex((bnr) => bnr.id === banner.id);
+      this.banners.splice(index, 1);
+    });
   }
 
   @Mutation
-  updateBanner(banner: {}) {
-    const response = APIHelper.putResource('banners', banner);
+  updateBanner(banner: Banner) {
+    const response = APIHelper.patchResource(`banners/${banner.id}`, banner);
     const bannerResponse = BannerTransformer.makeBanner(response);
     const index = this.banners.findIndex((bnr) => bnr.id === bannerResponse.id);
     this.banners.splice(index, 1, bannerResponse);
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchBanners(force: boolean = false) {
     if (this.banners.length === 0 || force) {
-      const bannersResponse = APIHelper.getResource('banners') as [];
-      const bnrs = bannersResponse.map((banner) => BannerTransformer.makeBanner(banner));
-      this.context.commit('setBanners', bnrs);
+      APIHelper.getResource('banners').then((bannersResponse) => {
+        const banners = bannersResponse.map(
+          (banner: any) => BannerTransformer.makeBanner(banner),
+        );
+        this.context.commit('setBanners', banners);
+      });
     }
   }
 }

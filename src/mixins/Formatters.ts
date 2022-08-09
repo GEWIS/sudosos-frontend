@@ -2,9 +2,30 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import dinero from 'dinero.js';
 import { Transaction } from '@/entities/Transaction';
+import { Transfer } from '@/entities/Transfer';
+import { getModule } from 'vuex-module-decorators';
+import UserModule from '@/store/modules/user';
+
+function byYou(trans: Transaction, id: number) {
+  return trans.createdBy.id === id;
+}
+
+function forYou(trans: Transaction, id: number) {
+  return trans.from.id === id;
+}
+
+function samePerson(trans: Transaction) {
+  return trans.from.id === trans.createdBy.id;
+}
 
 @Component
 export default class Formatters extends Vue {
+  userState = getModule(UserModule);
+
+  beforeMount() {
+    this.userState.fetchUser();
+  }
+
   /**
    * Can format date object into multiple time formats depending on what parameters you set if none
    * are set just the time in format `hh:mm`
@@ -18,13 +39,13 @@ export default class Formatters extends Vue {
     full?: Boolean,
     partial?: Boolean) : string {
     const weekDays: String[] = [
+      this.$t('formatters.Sunday').toString(),
       this.$t('formatters.Monday').toString(),
       this.$t('formatters.Tuesday').toString(),
       this.$t('formatters.Wednesday').toString(),
       this.$t('formatters.Thursday').toString(),
       this.$t('formatters.Friday').toString(),
       this.$t('formatters.Saturday').toString(),
-      this.$t('formatters.Sunday').toString(),
     ];
 
     const parseDate = new Date(date);
@@ -103,5 +124,51 @@ export default class Formatters extends Vue {
     let words = sentence.split(' ');
     words = words.map((wrd) => wrd[0].toUpperCase() + wrd.substring(1));
     return words.join(' ');
+  }
+
+  /**
+   * Given a set of arrays as parameters, combines all the arrays that are non-null
+   *
+   * @param {any} arrays: a set of multiple arrays
+   * @return {any[]}: A combined array of all non-null arrays that were given as parameters
+   */
+  // eslint-disable-next-line class-methods-use-this
+  concat(...arrays: any) {
+    return [].concat(...arrays.filter(Array.isArray));
+  }
+
+  /**
+   * Sets the correct translation for what happened with the transaction
+   *
+   * @param {Transaction} trans : Transaction or transfer that we need description for
+   */
+  setDescription(trans: Transaction | Transfer) {
+    const { id } = this.userState.user;
+    // We have a transactions
+    if ('pointOfSale' in trans) {
+      // This is a transaction put in for someone else
+      if (byYou(trans, id)) {
+        if (forYou(trans, id)) {
+          return this.$t('c_transactionsTable.transaction', { person: this.$t('c_transactionsTable.You'), amount: trans.price.toFormat() });
+        }
+        return this.$t('c_transactionsTable.transactionPutFor', { person: this.$t('c_transactionsTable.You'), name: trans.from.firstname, amount: trans.price.toFormat() });
+      }
+      if (forYou(trans, id)) {
+        return this.$t('c_transactionsTable.transactionPutFor', { person: trans.createdBy.firstname, name: this.$t('c_transactionsTable.You'), amount: trans.price.toFormat() });
+      }
+      if (samePerson(trans)) {
+        return this.$t('c_transactionsTable.transaction', { person: trans.from.firstname, amount: trans.price.toFormat() });
+      }
+      return this.$t('c_transactionsTable.transactionPutFor', { person: trans.createdBy.firstname, name: trans.from.firstname, amount: trans.price.toFormat() });
+    }
+
+    // This is a transfer
+    if (trans.description !== undefined && trans.description.length > 0) {
+      if (trans.to.id === id) return this.$t('c_transactionsTable.transfer', { person: this.$t('c_transactionsTable.You'), amount: trans.amount.toFormat() });
+      return this.$t('c_transactionsTable.transfer', { person: trans.to.firstname, amount: trans.amount.toFormat() });
+      // return trans.description;
+    }
+
+    return this.$t('c_recentTransactionsTable.transfer', { amount: trans.amount.toFormat() });
   }
 }

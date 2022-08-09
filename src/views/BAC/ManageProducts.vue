@@ -13,12 +13,12 @@
             variant="success"
             v-on:click="prepAddingProduct({})"
           >
-            <font-awesome-icon icon="plus" />
+            <font-awesome-icon icon="plus" size="sm" class="mr-2" />
             {{ $t('manageProducts.Add product') }}
           </b-button>
         </div>
         <ProductTable
-          :productsProp="this.productState.userProducts"
+          :productsProp="this.productState.products"
           :editable="true"
           :enabled="true"
           v-on:editProduct="prepEditStandardProduct"
@@ -32,12 +32,12 @@
         <div class="d-flex justify-content-between align-items-center">
           <p class="containers-header">{{ $t('manageProducts.Default containers') }}</p>
           <b-button class="my-2 text-truncate" variant="success" v-on:click="addContainer">
-            <font-awesome-icon icon="plus" />
+            <font-awesome-icon icon="plus" size="sm" class="mr-2" />
             {{ $t('manageProducts.Add container') }}
           </b-button>
         </div>
         <ContainerComponent
-          v-for="container in this.containerState.containers"
+          v-for="container in this.containerState.containerMapping.values()"
           v-bind:key="container.id"
           :container="container"
           :enabled="true"
@@ -50,11 +50,11 @@
       </b-col>
     </b-row>
 
-    <EditContainerModal
+    <ContainerEditModal
       :editContainer="editContainer"
     />
 
-    <EditProductModal
+    <ProductEditModal
       :editProduct="editProduct"
       :container="activeContainer"
     />
@@ -76,8 +76,8 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import ContainerComponent from '@/components/ContainerComponent.vue';
-import EditContainerModal from '@/components/EditContainerModal.vue';
-import EditProductModal from '@/components/EditProductModal.vue';
+import ContainerEditModal from '@/components/ContainerEditModal.vue';
+import ProductEditModal from '@/components/ProductEditModal.vue';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
 import ProductInfoModal from '@/components/ProductInfoModal.vue';
 import { Container } from '@/entities/Container';
@@ -89,8 +89,8 @@ import ContainerModule from '@/store/modules/containers';
 @Component({
   components: {
     ContainerComponent,
-    EditContainerModal,
-    EditProductModal,
+    ContainerEditModal,
+    ProductEditModal,
     ConfirmationModal,
     ProductInfoModal,
     ProductTable,
@@ -110,7 +110,7 @@ export default class ManageProducts extends Vue {
 
   activeContainer: Container = {} as Container;
 
-  beforeMount() {
+  async beforeMount() {
     this.containerState.fetchContainers();
     this.containerState.fetchPublicContainers();
     this.productState.fetchProducts();
@@ -155,7 +155,7 @@ export default class ManageProducts extends Vue {
    * for the requestedContainers
    */
   confirmContainerDelete(): void {
-    this.containerState.removeContainer(this.editContainer);
+    this.containerState.removeContainer(this.editContainer.id);
   }
 
   /**

@@ -13,6 +13,11 @@ export default class BorrelkaartGroupModule extends VuexModule {
   borrelkaartGroups: BorrelkaartGroup[] = [];
 
   @Mutation
+  reset() {
+    this.borrelkaartGroups = [];
+  }
+
+  @Mutation
   setBorrelkaartGroups(borrelkaartGroups: BorrelkaartGroup[]) {
     this.borrelkaartGroups = borrelkaartGroups;
   }
@@ -27,9 +32,10 @@ export default class BorrelkaartGroupModule extends VuexModule {
 
   @Mutation
   removeBorrelkaartGroup(borrelkaartGroup: BorrelkaartGroup) {
-    APIHelper.delResource('borrelkaartGroups', borrelkaartGroup);
-    const index = this.borrelkaartGroups.findIndex((brlkrt) => brlkrt.id === borrelkaartGroup.id);
-    this.borrelkaartGroups.splice(index, 1);
+    APIHelper.delResource('borrelkaartGroups').then(() => {
+      const index = this.borrelkaartGroups.findIndex((brlkrt) => brlkrt.id === borrelkaartGroup.id);
+      this.borrelkaartGroups.splice(index, 1);
+    });
   }
 
   @Mutation
@@ -43,15 +49,16 @@ export default class BorrelkaartGroupModule extends VuexModule {
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchBorrelkaartGroups(force: boolean = false) {
     if (this.borrelkaartGroups.length === 0 || force) {
-      const borrelkaartGroupsResponse = APIHelper.getResource('borrelkaartGroups') as [];
-      const borrelkaartGroupsFormat = borrelkaartGroupsResponse.map((borrelkaartGroup) => (
-        BorrelkaartGroupTransformer.makeBorrelkaartGroup(borrelkaartGroup)
-      ));
-      this.context.commit('setBorrelkaartGroups', borrelkaartGroupsFormat);
+      APIHelper.getResource('borrelkaartGroups').then((borrelkaartGroupsResponse: BorrelkaartGroup[]) => {
+        const borrelkaartGroupsFormat = borrelkaartGroupsResponse.map((borrelkaartGroup) => (
+          BorrelkaartGroupTransformer.makeBorrelkaartGroup(borrelkaartGroup)
+        ));
+        this.context.commit('setBorrelkaartGroups', borrelkaartGroupsFormat);
+      });
     }
   }
 }

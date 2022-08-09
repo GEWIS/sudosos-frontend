@@ -8,10 +8,14 @@ import BaseTransformer from '@/transformers/BaseTransformer';
 
 export default {
   makePointOfSale(data: any): BasePointOfSale | PointOfSale {
-    if (!Object.keys(data).includes('owner')) {
+    if (!Object.keys(data).includes('containers')) {
       return {
         ...BaseTransformer.makeBaseEntity(data),
         name: data.name,
+        owner: UserTransformer.makeUser(data.owner),
+        startDate: new Date(data.startDate),
+        endDate: new Date(data.endDate),
+        useAuthentication: data.useAuthentication,
       } as BasePointOfSale;
     }
 

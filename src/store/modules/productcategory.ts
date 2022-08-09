@@ -13,6 +13,11 @@ export default class ProductCategoryModule extends VuexModule {
   productCategories: ProductCategory[] = [];
 
   @Mutation
+  reset() {
+    this.productCategories = [];
+  }
+
+  @Mutation
   setProductCategories(productCategories: ProductCategory[]) {
     this.productCategories = productCategories;
   }
@@ -27,9 +32,10 @@ export default class ProductCategoryModule extends VuexModule {
 
   @Mutation
   removeProductCategory(productCategory: ProductCategory) {
-    APIHelper.delResource('productCategories', productCategory);
-    const index = this.productCategories.findIndex((prdc) => prdc.id === productCategory.id);
-    this.productCategories.splice(index, 1);
+    APIHelper.delResource('productCategories').then(() => {
+      const index = this.productCategories.findIndex((prdc) => prdc.id === productCategory.id);
+      this.productCategories.splice(index, 1);
+    });
   }
 
   @Mutation
@@ -43,15 +49,16 @@ export default class ProductCategoryModule extends VuexModule {
   }
 
   @Action({
-    rawError: Boolean(process.env.VUE_APP_DEBUG_STORES),
+    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchProductCategories(force: boolean = false) {
     if (this.productCategories.length === 0 || force) {
-      const productCategoriesResponse = APIHelper.getResource('productCategories') as [];
-      const ctgrs = productCategoriesResponse.map((productCategory) => (
-        ProductCategoryTransformer.makeProductCategory(productCategory)
-      ));
-      this.context.commit('setProductCategories', ctgrs);
+      APIHelper.getResource('productCategories').then((productCategoriesResponse: ProductCategory[]) => {
+        const ctgrs = productCategoriesResponse.map((productCategory) => (
+          ProductCategoryTransformer.makeProductCategory(productCategory)
+        ));
+        this.context.commit('setProductCategories', ctgrs);
+      });
     }
   }
 }

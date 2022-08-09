@@ -115,7 +115,7 @@ export default class FlaggedTransactionDetails extends Formatters {
      * Gets the correct ID for the transaction and sends you to the edit page
      */
     editTransaction() {
-      this.$router.push({ name: 'transactionEditor', params: { id: this.flaggedTransaction.transaction.id.toString() } });
+      this.$router.push({ name: 'transactionEditPage', params: { id: this.flaggedTransaction.transaction.id.toString() } });
     }
 }
 </script>
