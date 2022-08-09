@@ -83,14 +83,9 @@ import {
   Component, Prop, Vue,
 } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
-import { PointOfSale } from '@/entities/PointOfSale';
+import { PointOfSaleList } from '@/entities/PointOfSale';
 import UserModule from '@/store/modules/user';
-import {
-  getAllPointsOfSale,
-  getPointsOfSaleUpdates, getUserPointsOfSale,
-  getUserRequestedPointsOfSale,
-} from '@/api/pointOfSale';
-import { Pagination } from '@/entities/Pagination';
+import { getAllPointsOfSale, getUserPointsOfSale } from '@/api/pointOfSale';
 
 @Component
 export default class POSOverview extends Vue {
@@ -104,21 +99,16 @@ export default class POSOverview extends Vue {
 
   currentPage: number = 1;
 
-  perPage: number = 1;
+  perPage: number = 15;
 
-  pointsOfSale: {
-    _pagination: Pagination,
-    records: PointOfSale[],
-  } = {} as {
-    _pagination: Pagination,
-    records: PointOfSale[],
-  };
+  pointsOfSale: PointOfSaleList = {} as PointOfSaleList;
 
   organsList: {value: number, text: string}[] = [];
 
   posOwnerId: number = null;
 
   beforeMount() {
+    // TODO: Needs to be become correct owner ID instead of just the first one
     this.organsList = this.userState.organsList;
     this.posOwnerId = this.organsList[0].value;
     this.fetchData(this.perPage);

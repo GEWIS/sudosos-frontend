@@ -1,16 +1,25 @@
 <template>
   <b-container fluid="lg">
     <b-row>
-      <b-col lg="10" cols="12">
+      <b-col lg="9" cols="12">
         <h1 class="mb-2 mb-sm-2 mb-lg-2 text-truncate">
           {{ $t('posInfo.POS') }}: {{ infoPOS.name }}
         </h1>
       </b-col>
-      <b-col class="approve-reject-buttons" lg="2" cols="12">
-        <b-button variant="primary" @click="$router.push({ name: 'pointOfSale' })">
-          <font-awesome-icon icon="times" />
-          {{ $t('posInfo.Close')}}
-        </b-button>
+      <b-col class="approve-reject-buttons" lg="3" cols="12">
+        <div class="d-flex justify-content-end">
+          <b-button
+            variant="secondary"
+            @click="$router.push({ name: 'pointOfSaleEdit', params: { id: infoPOS.id.toString() }})"
+          >
+            <font-awesome-icon icon="pen-alt"/>
+            {{ $t('posInfo.Edit') }}
+          </b-button>
+          <b-button variant="primary" @click="$router.push({ name: 'pointOfSale' })">
+            <font-awesome-icon icon="times"/>
+            {{ $t('posInfo.Close') }}
+          </b-button>
+        </div>
       </b-col>
     </b-row>
     <hr>
@@ -20,7 +29,7 @@
         <b>{{ $t('posInfo.Title') }}</b>
         <p>{{ infoPOS.name }}</p>
         <b>{{ $t('posInfo.Owner') }}</b>
-        <p>{{ infoPOS.owner.name }}</p>
+        <p v-if="infoPOS.owner">{{ infoPOS.owner.name }}</p>
       </b-col>
       <b-col md="9" sm="12" class="containers-container">
         <p class="containers-header">{{ $t('posInfo.Containers') }}</p>
@@ -123,7 +132,7 @@ export default class PointOfSaleInfo extends Formatters {
   }
 }
 
-.containers-container{
+.containers-container {
   border: 2px solid $gewis-grey-light;
 
   .containers-header {

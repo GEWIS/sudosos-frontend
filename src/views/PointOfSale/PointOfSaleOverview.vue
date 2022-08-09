@@ -2,11 +2,11 @@
   <b-container fluid="lg">
     <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('pointOfSaleOverview.Point of sale overview') }}</h1>
     <b-row>
-      <b-col cols="12" md="6" class="mb-md-0 mb-3">
-        <POSOverview />
+      <b-col cols="12" class="mb-md-0 mb-3">
+        <POSOverview/>
       </b-col>
     </b-row>
-    </b-container>
+  </b-container>
 </template>
 
 <script lang="ts">

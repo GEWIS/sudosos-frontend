@@ -58,6 +58,7 @@
   },
   "posInfo": {
     "POS": "POS",
+    "Edit": "Edit",
     "Close": "Close",
     "General": "General",
     "Title": "Title",
@@ -79,8 +80,9 @@
     "Managers": "Managers",
     "Containers": "Containers"
   },
-  "posRequest": {
+  "c_POSCreate": {
     "Create Point of Sale": "Create Point of Sale",
+    "Edit Point of Sale": "Edit Point of Sale",
     "General": "General",
     "Title": "POS Name",
     "Use authentication": "Always have user login on point of sale",
@@ -94,12 +96,15 @@
     "Containers": "Containers",
     "add container": "Add container",
     "Create": "Create",
+    "Edit": "Edit",
     "name invalid": "Please provide a valid name that is longer than 0 characters",
     "Start invalid": "Please pick a start date earlier than the end date",
     "End invalid": "Please pick an end date later than the end date and later than now",
     "confirm": "Confirm deletion",
     "are you sure": "Are you sure you want to delete this container?",
-    "No containers": "No containers selected"
+    "No containers": "No containers selected",
+    "Public containers": "Public containers",
+    "Own containers": "Own containers"
   },
   "c_productInfoModal": {
     "title": "Product information",
