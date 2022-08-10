@@ -88,6 +88,18 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
         }
     }
 
+    &#transaction-table {
+        > tbody {
+            tr[role='row']:not(.b-table-top-row):not(.b-table-details) {
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #ffffff;
+                }
+            }
+        }
+    }
+
     .b-table-details {
         background-color: #f2f2f2;
     }
