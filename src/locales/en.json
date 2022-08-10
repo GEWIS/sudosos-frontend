@@ -18,7 +18,8 @@
     "Confirm password": "Confirm new password",
     "Enter password again": "Enter password again",
     "Reset the password for": "Reset the password for {email}",
-    "Passwords not equal": "Passwords are not equal"
+    "Passwords not equal": "Passwords are not equal",
+    "Password not strong": "Password needs to be longer than 8 characters and needs a lower- and uppercase letter, number and a special character"
   },
   "app": {
     "Transactions": "Transactions",

@@ -6,7 +6,7 @@
         <img id="login-image" class="m-4" src="~@/assets/img/bier.png" alt="Logo" />
         <h1 class="mb-1 mb-sm-2 mb-lg-3">{{ $t('login.SudoSOS Login') }}</h1>
 
-        <b-form v-if="passwordResetMode === 0" class="login-form">
+        <b-form v-if="passwordResetMode === 0" class="login-form" @submit="resetPasswordRequest">
           <b-form-group
             id="email-group"
             :label="$t('login.Email')"
@@ -20,8 +20,8 @@
             ></b-form-input>
           </b-form-group>
           <b-button
-            @click="resetPasswordRequest"
             variant="primary"
+            type="submit"
           >{{ $t('login.Reset') }}</b-button>
           <div
             class="password-reset-toggle"
@@ -35,13 +35,15 @@
             @click="hidePasswordReset"
           >{{ $t('login.Back to login') }}</div>
         </div>
-        <b-form v-else class="login-form">
+        <b-form v-else class="login-form" @submit="setNewPassword">
           <h2 class="mb-2 mb-sm-3 mb-lg-4"><small>{{
               $t('login.Reset the password for', {email: this.email})
             }}</small></h2>
           <b-form-group
             id="password-group"
             :label="$t('login.New password')"
+            :state="strongPassword"
+            :invalid-feedback="weakPassword"
             label-for="password"
           >
             <b-form-input
@@ -54,8 +56,8 @@
           <b-form-group
             id="password-2-group"
             :label="$t('login.Confirm password')"
-            :state="nameState"
-            :invalid-feedback="invalidName"
+            :state="equalPassword"
+            :invalid-feedback="unequalPassword"
             label-for="password-2"
             class="mt-2"
           >
@@ -67,8 +69,8 @@
             ></b-form-input>
           </b-form-group>
           <b-button
-            @click="setNewPassword"
             variant="primary"
+            type="submit"
           >{{ $t('login.Set new password') }}</b-button>
           <div
             class="password-reset-toggle"
@@ -83,6 +85,7 @@
 <script lang="ts">
 import * as dotenv from 'dotenv';
 import { Component, Vue } from 'vue-property-decorator';
+import isStrongPassword from 'validator/lib/isStrongPassword';
 import APIHelper from '@/mixins/APIHelper';
 import BeerMugs from '@/components/BeerMugs.vue';
 
@@ -105,7 +108,7 @@ export default class Login extends Vue {
   /**
    * 0 -> Entering email
    * 1 -> Confirmation message
-   * 2 -> providing new password
+   * 2 -> providing new password with token in URL
    */
   passwordResetMode: number = 0;
 
@@ -127,7 +130,8 @@ export default class Login extends Vue {
   }
 
   // Request password reset token, and email it to the email
-  resetPasswordRequest() {
+  resetPasswordRequest(event: Event) {
+    event.preventDefault();
     APIHelper.postResource('authentication/local/reset', {
       accountMail: this.email,
     })
@@ -136,9 +140,10 @@ export default class Login extends Vue {
       });
   }
 
-  setNewPassword() {
+  setNewPassword(event: Event) {
+    event.preventDefault();
     // Check if valid passwords were entered
-    if (this.nameState) {
+    if (this.equalPassword && this.strongPassword) {
       APIHelper.putResource('authentication/local', {
         accountMail: this.email,
         token: this.token,
@@ -146,19 +151,37 @@ export default class Login extends Vue {
       })
         .then(() => {
           this.$router.push({ name: 'login' });
+        })
+        .catch((err) => {
+          console.error(err);
         });
     }
   }
 
-  // Check if password are unequal
-  get nameState() {
+  // Check if password is strong enough
+  get strongPassword() {
+    return this.password === '' ? null : isStrongPassword(this.password);
+  }
+
+  // Display a message about a weak password
+  get weakPassword() {
+    if (this.password !== '' && !this.strongPassword) {
+      return this.$t('login.Password not strong')
+        .toString();
+    }
+    return '';
+  }
+
+  // Check if password are equal
+  get equalPassword() {
     return this.password2 === '' ? null : this.password === this.password2;
   }
 
-  // Return appropriate validating message for name
-  get invalidName() {
-    if (!this.nameState && this.nameState !== null) {
-      return this.$t('login.Passwords not equal').toString();
+  // Return appropriate validating message for an unequal password
+  get unequalPassword() {
+    if (this.password2 !== '' && !this.equalPassword) {
+      return this.$t('login.Passwords not equal')
+        .toString();
     }
 
     return '';
