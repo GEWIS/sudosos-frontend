@@ -9,11 +9,11 @@ export enum TermsOfServiceStatus {
 }
 
 export enum UserType {
-  MEMBER = 1,
-  ORGAN = 2,
-  BORRELKAART = 3,
-  LOCAL_USER = 4,
-  LOCAL_ADMIN = 5,
+  MEMBER = 'MEMBER',
+  ORGAN = 'ORGAN',
+  BORRELKAART = 'BORRELKAART',
+  LOCAL_USER = 'LOCAL_USER',
+  LOCAL_ADMIN = 'LOCAL_ADMIN',
 }
 
 export interface UserPermissions {
