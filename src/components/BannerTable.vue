@@ -206,8 +206,7 @@ import { Banner } from '@/entities/Banner';
 import Formatters from '@/mixins/Formatters';
 import eventBus from '@/eventbus';
 import BannerModule from '@/store/modules/banners';
-import APIHelper from '@/mixins/APIHelper';
-import BannerTransformer from '@/transformers/BannerTransformer';
+import { setBannerImage } from '@/api/banners';
 
 @Component({
   components: { ConfirmationModal, FileFormPreview },
@@ -283,9 +282,12 @@ export default class BannerTable extends Formatters {
     setBanner() {
       this.currBanner.duration = Number(this.currBanner.duration);
       if (this.currBanner.id === undefined) {
-        this.bannerState.addBanner(this.currBanner).then((banner) => APIHelper.postResource(`banners/${banner.id}/image`, this.file));
+        this.bannerState.addBanner(this.currBanner).then(
+          (banner) => setBannerImage(banner.id, this.file),
+        );
       } else {
         this.bannerState.updateBanner(this.currBanner);
+        if (this.file) setBannerImage(this.currBanner.id, this.file);
       }
       this.currBanner = {} as Banner;
       this.$bvModal.hide('modal-add');

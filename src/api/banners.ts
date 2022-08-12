@@ -38,6 +38,10 @@ export function postBannerImage(id: number, image: FormData) {
   return APIHelper.postFile(`banners/${id}/image`, image).then((response) => BannerTransformer.makeBanner(response));
 }
 
+export async function setBannerImage(id: number, image: File) {
+  await APIHelper.uploadResource(`banners/${id}/image`, image);
+}
+
 export function getBanner(id: Number) {
   return APIHelper.getResource(`banners/${id}`).then((response) => BannerTransformer.makeBanner(response));
 }
