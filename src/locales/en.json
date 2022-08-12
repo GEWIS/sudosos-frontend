@@ -267,7 +267,8 @@
     "End date": "End date",
     "Starts on": "Starts on",
     "Stops on": "Stops on",
-    "Edit": "Edit"
+    "Edit": "Edit",
+    "Empty": "No banners found"
   },
   "c_fileFormPreview": {
     "Choose image drop": "Choose image or drop here...",

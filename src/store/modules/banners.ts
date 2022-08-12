@@ -24,8 +24,10 @@ export default class BannerModule extends VuexModule {
 
   @Mutation
   addBanner(banner: Banner) {
-    APIHelper.postResource('banners', banner).then((bannerResponse) => {
-      this.banners.push(BannerTransformer.makeBanner(bannerResponse));
+    return APIHelper.postResource('banners', banner).then((bannerResponse) => {
+      const response = BannerTransformer.makeBanner(bannerResponse);
+      this.banners.push(response);
+      return response;
     });
   }
 
@@ -39,10 +41,18 @@ export default class BannerModule extends VuexModule {
 
   @Mutation
   updateBanner(banner: Banner) {
-    const response = APIHelper.patchResource(`banners/${banner.id}`, banner);
-    const bannerResponse = BannerTransformer.makeBanner(response);
-    const index = this.banners.findIndex((bnr) => bnr.id === bannerResponse.id);
-    this.banners.splice(index, 1, bannerResponse);
+    const update = {
+      name: banner.name,
+      duration: banner.duration,
+      active: banner.active,
+      startDate: banner.startDate,
+      endDate: banner.endDate,
+    };
+    APIHelper.patchResource(`banners/${banner.id}`, update).then((response) => {
+      const bannerResponse = BannerTransformer.makeBanner(response);
+      const index = this.banners.findIndex((bnr) => bnr.id === bannerResponse.id);
+      this.banners.splice(index, 1, bannerResponse);
+    });
   }
 
   @Action({
@@ -50,7 +60,7 @@ export default class BannerModule extends VuexModule {
   })
   fetchBanners(force: boolean = false) {
     if (this.banners.length === 0 || force) {
-      APIHelper.getResource('banners').then((bannersResponse) => {
+      APIHelper.readPagination('banners').then((bannersResponse) => {
         const banners = bannersResponse.map(
           (banner: any) => BannerTransformer.makeBanner(banner),
         );
