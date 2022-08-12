@@ -8,6 +8,10 @@ export interface UserQueryParameters {
   type?: string,
 }
 
+export interface AcceptTosRequest {
+  extensiveDataProcessing: boolean;
+}
+
 export function getUsers(queryParameters: UserQueryParameters = {}) {
   const body = {
     ...queryParameters,
@@ -37,4 +41,8 @@ export function patchUser(id: number, user: any) {
 
 export function deleteUser(id: number) {
   return APIHelper.delResource(`users/${id}`);
+}
+
+export function acceptToS(params: AcceptTosRequest) {
+  return APIHelper.postResource('users/acceptTos', params);
 }

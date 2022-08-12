@@ -13,7 +13,7 @@ export default {
         ...BaseTransformer.makeBaseEntity(data),
         firstname: data.firstName,
         lastname: data.lastName,
-        name: `${data.firstName} ${data.lastName}`,
+        name: `${data.firstName} ${data.lastName}`.trim(),
         deleted: data.deleted,
       } as BaseUser;
     }
@@ -42,6 +42,8 @@ export default {
       active: data.active,
       type: data.type,
       deleted: data.deleted,
+      acceptedToS: data.acceptedToS,
+      extensiveDataProcessing: data.extensiveDataProcessing,
       saldo,
       ean,
       nfcDevices,

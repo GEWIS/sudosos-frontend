@@ -7,7 +7,7 @@ import APIHelper from '@/mixins/APIHelper';
 import UserTransformer from '@/transformers/UserTransformer';
 import { NFCDevice } from '@/entities/NFCDevice';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
-import Dinero from 'dinero.js';
+import Dinero, { DineroObject } from 'dinero.js';
 import { LoginResponse } from '@/entities/APIResponses';
 
 interface UpdateUserInfo {
@@ -90,8 +90,8 @@ export default class UserModule extends VuexModule {
   }
 
   @Mutation
-  updateSaldo(newSaldo: number) {
-    this.user.saldo = Dinero({ amount: newSaldo, currency: 'EUR' });
+  updateSaldo(newSaldo: { amount: DineroObject }) {
+    this.user.saldo = Dinero({ ...newSaldo.amount });
   }
 
   @Mutation
@@ -127,13 +127,13 @@ export default class UserModule extends VuexModule {
 
   @Action
   async updatePinCode(pin: string) {
-    const result = await APIHelper.putResource(`users/${this.user.id}/pin`, { pin });
+    const result = await APIHelper.putResource(`users/${this.user.id}/authenticator/pin`, { pin });
   }
 
   @Action
   // eslint-disable-next-line class-methods-use-this
   async updateUsersPinCode(update: { userID: number, pin: string }) {
-    const result = await APIHelper.putResource(`users/${update.userID}/pin`, { pin: update.pin });
+    const result = await APIHelper.putResource(`users/${update.userID}/authenticator/pin`, { pin: update.pin });
   }
 
   @Action
