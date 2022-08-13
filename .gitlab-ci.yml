@@ -10,7 +10,6 @@ dockerize-master:
     - echo "VUE_APP_GEWIS_TOKEN='$VUE_APP_GEWIS_TOKEN'" >> .env
     - echo "VUE_APP_STRIPE_PUBLISHABLE_KEY='$VUE_APP_STRIPE_PUBLISHABLE_KEY'" >> .env
     - echo "VUE_APP_STRIPE_RETURN_URL='$VUE_APP_STRIPE_RETURN_URL'" >> .env
-    - cp ./.env ./sudosos-front-end/.env
   script:
     - docker build --pull -t "$CI_REGISTRY_IMAGE" .
     - docker push "$CI_REGISTRY_IMAGE"
@@ -29,7 +28,6 @@ dockerize:
     - echo "VUE_APP_GEWIS_TOKEN='$VUE_APP_GEWIS_TOKEN'" >> .env
     - echo "VUE_APP_STRIPE_PUBLISHABLE_KEY='$VUE_APP_STRIPE_PUBLISHABLE_KEY'" >> .env
     - echo "VUE_APP_STRIPE_RETURN_URL='$VUE_APP_STRIPE_RETURN_URL'" >> .env
-    - cp ./.env ./sudosos-front-end/.env
   script:
     - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
