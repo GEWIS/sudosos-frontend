@@ -39,7 +39,7 @@ export default {
       vat: data.vat.percentage,
       owner: UserTransformer.makeUser(data.owner),
       category: ProductCategoryTransformer.makeProductCategory(data.category),
-      picture: data.image,
+      image: data.image,
       alcoholPercentage: data.alcoholPercentage,
       updatePending: data.updatePending,
     } as Product;

@@ -70,11 +70,11 @@
             >
               <template v-slot:selected-option="product">
                 <template v-if="product.hasOwnProperty('product')">
-                  <img :src="`/static/products/${product.picture}`" alt="product image">
+                  <img :src="`/static/products/${product.image}`" alt="product image">
                   {{ product.product.name }}
                 </template>
                 <template v-else>
-                  <img :src="`/static/products/${product.picture}`">
+                  <img :src="`/static/products/${product.image}`">
                   {{ product.name }}
                 </template>
               </template>
@@ -83,7 +83,7 @@
                   {{ group }}
                 </template>
                 <template v-else>
-                  <img :src="`/static/products/${product.picture}`" alt="product image">
+                  <img :src="`/static/products/${product.image}`" alt="product image">
                   {{ product.name }}
                 </template>
               </template>

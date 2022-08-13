@@ -81,14 +81,14 @@
       <!--  Card view for products   -->
       <b-row v-show="!tableView" class="mx-0">
         <b-col
-          v-for="item in containerProducts.records"
+          v-for="item in products"
           :key="item.id"
           class="text-center product-card px-2"
           cols="6" sm="4" md="3" lg="2"
           v-on:click="productDetails(item)"
         >
           <div class="product" :class="{'add': enabled && editable}">
-            <img :src="`/static/products/${item.picture}`" :alt="item.name"/>
+            <img :src="`/static/products/${item.image}`" :alt="item.name"/>
             <p
               class="w-100 px-1 product-name mb-0 text-truncate"
               :class="{'update': item.updatePending}"
@@ -128,7 +128,7 @@
             </b-button>
           </div>
           <ProductTable
-            :productsProp="containerProducts.records"
+            :productsProp="products"
             :editable="true"
             :enabled="true"
             v-on:editProduct="productDetails"
@@ -150,6 +150,8 @@ import { Container } from '@/entities/Container';
 import { Product, ProductList } from '@/entities/Product';
 import { checkPermissions } from '@/entities/User';
 import { getContainerProducts } from '@/api/containers';
+import ProductsModule from '@/store/modules/products';
+import ContainerModule from '@/store/modules/containers';
 
 @Component({
   directives: {
@@ -176,13 +178,15 @@ export default class ContainerComponent extends Vue {
 
   private userState = getModule(UserModule);
 
+  private productState = getModule(ProductsModule);
+
+  private containerState = getModule(ContainerModule);
+
   isOpen: Boolean = false;
 
   selected: Boolean = false;
 
   tableView: Boolean = false;
-
-  containerProducts: ProductList = {} as ProductList;
 
   sortableOptions: Object = {
     chosenClass: 'is-selected',
@@ -195,11 +199,15 @@ export default class ContainerComponent extends Vue {
     this.selected = this.alreadySelected;
   }
 
+  get products() {
+    return this.container.products;
+  }
+
   async collapseContainer() {
     this.isOpen = !this.isOpen;
 
-    if (this.isOpen && this.containerProducts.records?.length !== 0) {
-      this.containerProducts = await getContainerProducts(this.container.id, 500);
+    if (this.container.products.length === 0) {
+      await this.containerState.fetchContainerProducts(this.container.id);
     }
 
     this.$root.$emit('bv::toggle:collapse', `container_${this.container.id}`);

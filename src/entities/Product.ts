@@ -13,7 +13,7 @@ export interface Product extends BaseProduct {
   revision?: number;
   owner: BaseUser | User;
   category: ProductCategory;
-  picture: string;
+  image: string;
   alcoholPercentage: number;
   updatePending?: boolean;
   vat: number,
