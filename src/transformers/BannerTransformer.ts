@@ -10,6 +10,7 @@ export default {
       active: data.active,
       startDate: new Date(data.startDate),
       endDate: new Date(data.endDate),
+      picture: data.image,
     } as Banner;
   },
 };

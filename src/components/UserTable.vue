@@ -45,8 +45,8 @@
         </template>
 
         <!-- Templates for each row cell -->
-        <template v-slot:cell(gewisID)="data">
-          {{ data.item.gewisID }}
+        <template v-slot:cell(gewisId)="data">
+          {{ data.item.gewisId }}
         </template>
         <template v-slot:cell(name)="data">
           {{ data.item.name }}
@@ -112,7 +112,7 @@ export default class UserTable extends Formatters {
 
   fields: Object[] = [
     {
-      key: 'gewisID',
+      key: 'gewisId',
       label: this.getTranslation('c_userTable.gewisID'),
       locale_key: 'gewisID',
     },

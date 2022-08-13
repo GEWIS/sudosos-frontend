@@ -267,7 +267,8 @@
     "End date": "Eind datum",
     "Starts on": "Start op",
     "Stops on": "Stopt op",
-    "Edit": "Aanpassen"
+    "Edit": "Aanpassen",
+    "Empty": "Geen Banners gevonden"
   },
   "c_fileFormPreview": {
     "Choose image drop": "Kies een plaatje of zet neer...",

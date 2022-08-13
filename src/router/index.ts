@@ -26,9 +26,9 @@ import UserDetails from '@/views/BAC/UserDetails.vue';
 import Login from '@/views/Login.vue';
 import APIHelper from '@/mixins/APIHelper';
 import Logout from '@/mixins/Logout';
+import PointOfSaleEdit from '@/views/PointOfSale/PointOfSaleEdit.vue';
 import TermsOfService from '@/views/TermsOfService.vue';
 import { TermsOfServiceStatus } from '@/entities/User';
-import PointOfSaleEdit from '@/views/PointOfSale/PointOfSaleEdit.vue';
 
 Vue.use(VueRouter);
 

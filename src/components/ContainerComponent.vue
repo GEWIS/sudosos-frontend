@@ -156,7 +156,8 @@ import { getContainerProducts } from '@/api/containers';
     sortable: {
       bind(el: any, binding: any, vnode: any) {
         const container = el;
-        container._sortable = Sortable.create(container.querySelector('.row'), { ...binding.value, vnode });
+        // eslint-disable-next-line max-len
+        // container._sortable = Sortable.create(container.querySelector('.row'), { ...binding.value, vnode });
       },
     },
   },

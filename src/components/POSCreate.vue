@@ -27,7 +27,26 @@
               :state="nameState"
             />
           </b-form-group>
+          <b-form-group
+            class="thicc-label"
+            label-cols="12"
+            :label="$t('c_containerEditModal.owner')"
+            label-align="left"
+            label-for="name">
+            <b-form-select v-model="posOwnerId" :options="organsList"></b-form-select>
+          </b-form-group>
 
+          <b-form-group>
+            <b-form-checkbox
+              id="authentication"
+              v-model="useAuthentication"
+              name="authentication"
+              :value="true"
+              :unchecked-value="false"
+            >
+              Use Authentication
+            </b-form-checkbox>
+          </b-form-group>
           <b>{{ $t('c_POSCreate.Selected containers')}}</b>
           <ul v-if="requestContainers.length > 0"  class="pl-4">
             <li
@@ -158,7 +177,11 @@ export default class POSCreate extends Vue {
 
   name: string | null = null;
 
+  useAuthentication: boolean = true;
+
   editPOS: PointOfSale = {} as PointOfSale;
+
+  posOwnerId: number = null;
 
   requestContainers: Container[] = [];
 
@@ -174,8 +197,12 @@ export default class POSCreate extends Vue {
 
   infoProduct: Product = {} as Product;
 
+  organsList: {value: number, text: string}[] = [];
+
   async beforeMount() {
     await this.userState.fetchUser();
+    this.organsList = this.userState.organsList;
+    this.posOwnerId = this.userState.organsList[0].value;
 
     if (this.posID) {
       await getPointOfSale(this.posID).then((data: PointOfSale) => {
@@ -298,16 +325,17 @@ export default class POSCreate extends Vue {
 
       const pointOfSale = {
         id: 0,
-        // TODO: Needs to be fixed to correct ID (e.g. org ID instead of users own ID)
-        ownerId: organsList[0].value,
+        ownerId: this.posOwnerId,
         name: this.name,
         containers: this.requestContainers.map((c) => c.id),
+        useAuthentication: this.useAuthentication,
       };
 
       // TODO: Redirect afterwards??
       if (this.posID === undefined) {
         delete pointOfSale.id;
         await postPointOfSale(pointOfSale);
+        await this.$router.push({ name: 'pointOfSale' });
       } else {
         delete pointOfSale.ownerId;
         pointOfSale.id = Number(this.posID);
@@ -348,6 +376,10 @@ export default class POSCreate extends Vue {
     text-transform: uppercase;
     margin: 1em;
   }
+}
+
+.thicc-label {
+  font-weight: 700;
 }
 
 #name-label {

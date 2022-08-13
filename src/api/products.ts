@@ -39,7 +39,6 @@ export function approveProduct(id: number) {
 }
 
 export async function setProductImage(productId: number, file: File) {
-  console.error(file);
   await APIHelper.uploadResource(`products/${productId}/image`, file);
 }
 
