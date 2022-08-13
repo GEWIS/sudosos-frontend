@@ -294,8 +294,12 @@ export default class ProductEditModal extends Formatters {
   }
 
   get products() {
-    console.log(this.productState.products);
-    return this.productState.products;
+    let prods = this.productState.products;
+    if (Object.keys(this.container).length > 0) {
+      const prodIdsInContainer = this.container.products.map((p) => p.id);
+      prods = prods.filter((p) => !prodIdsInContainer.includes(p.id));
+    }
+    return prods;
   }
 
   setProduct() {
