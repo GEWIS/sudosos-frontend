@@ -1,5 +1,5 @@
 import dinero from 'dinero.js';
-import { BaseUser, User } from '@/entities/User';
+import { BaseUser, User, UserType } from '@/entities/User';
 import BaseTransformer from '@/transformers/BaseTransformer';
 
 export default {
@@ -37,10 +37,10 @@ export default {
       firstname: data.firstName,
       lastname: data.lastName,
       name: `${data.firstName} ${data.lastName}`,
-      gewisID: data.gewisID,
+      gewisId: data.gewisId,
       email: data.email,
       active: data.active,
-      type: data.type,
+      type: UserType[data.type as UserType],
       deleted: data.deleted,
       acceptedToS: data.acceptedToS,
       extensiveDataProcessing: data.extensiveDataProcessing,

@@ -5,6 +5,11 @@ dockerize-master:
     - docker:19.03-dind
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - echo "VUE_APP_API_BASE='$VUE_APP_API_BASE'" >> .env
+    - echo "VUE_APP_DEVELOP='$VUE_APP_DEVELOP'" >> .env
+    - echo "VUE_APP_GEWIS_TOKEN='$VUE_APP_GEWIS_TOKEN'" >> .env
+    - echo "VUE_APP_STRIPE_PUBLISHABLE_KEY='$VUE_APP_STRIPE_PUBLISHABLE_KEY'" >> .env
+    - echo "VUE_APP_STRIPE_RETURN_URL='$VUE_APP_STRIPE_RETURN_URL'" >> .env
   script:
     - docker build --pull -t "$CI_REGISTRY_IMAGE" .
     - docker push "$CI_REGISTRY_IMAGE"
@@ -18,6 +23,11 @@ dockerize:
     - docker:19.03-dind
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - echo "VUE_APP_API_BASE='$VUE_APP_API_BASE'" >> .env
+    - echo "VUE_APP_DEVELOP='$VUE_APP_DEVELOP'" >> .env
+    - echo "VUE_APP_GEWIS_TOKEN='$VUE_APP_GEWIS_TOKEN'" >> .env
+    - echo "VUE_APP_STRIPE_PUBLISHABLE_KEY='$VUE_APP_STRIPE_PUBLISHABLE_KEY'" >> .env
+    - echo "VUE_APP_STRIPE_RETURN_URL='$VUE_APP_STRIPE_RETURN_URL'" >> .env
   script:
     - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"

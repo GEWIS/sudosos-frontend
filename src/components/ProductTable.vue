@@ -113,7 +113,8 @@ import { Product } from '@/entities/Product';
       sortable: {
         bind(el: any, binding: any, vnode: any) {
           const table = el;
-          table._sortable = Sortable.create(table.querySelector('tbody'), { ...binding.value, vnode });
+          // eslint-disable-next-line max-len
+          // table._sortable = Sortable.create(table.querySelector('tbody'), { ...binding.value, vnode });
         },
       },
     },

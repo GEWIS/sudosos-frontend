@@ -7,6 +7,7 @@ import { ResponseBody } from '@/entities/ResponseBody';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 import UserTransformer from '@/transformers/UserTransformer';
 import { User } from '@/entities/User';
+import PaginationTransformer from '@/transformers/PaginationTransformer';
 import devAPI from '../../dev/api';
 
 dotenv.config();
@@ -177,6 +178,20 @@ export default {
 
   clearToken() {
     localStorage.clear();
+  },
+
+  async readPagination(route: string, step = 100, args: Object | null = null) {
+    let response = await this.getResource(route, { take: step });
+    const { records } = response;
+    let totalTaken = response._pagination.take;
+    // Pagination is a thing, so we need to do multiple requests to fetch everything
+    while (totalTaken < response._pagination.count) {
+    // eslint-disable-next-line no-await-in-loop
+      response = await this.getResource(route, { take: step, skip: totalTaken });
+      records.push(...response.records);
+      totalTaken += response._pagination.take;
+    }
+    return records;
   },
 
   getResource(route: string, args: Object | null = null) {

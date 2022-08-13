@@ -15,6 +15,9 @@
             {{ $t('userDetails.Edit info') }}
           </b-card-title>
           <b-card-body>
+            <p v-if="!isLocal">
+              This account is not managed through SudoSOS.
+            </p>
             <b-form @submit="updateUserInformation">
               <b-form-group
                 id="user-firstname-group"
@@ -23,7 +26,8 @@
                 :invalid-feedback="firstNameFeedback"
                 :state="validateFirstname"
               >
-                <b-form-input id="new-firstname" v-model="firstname" type="text" />
+                <b-form-input id="new-firstname"
+                              v-model="firstname" type="text" :disabled="!isLocal"/>
               </b-form-group>
 
               <b-form-group
@@ -31,7 +35,8 @@
                 :label="$t('userDetails.Last name')"
                 label-for="new-lastname"
               >
-                <b-form-input id="new-lastname" v-model="lastname" type="text" />
+                <b-form-input id="new-lastname"
+                              v-model="lastname" type="text" :disabled="!isLocal"/>
               </b-form-group>
 
               <b-form-group
@@ -41,7 +46,7 @@
                 :invalid-feedback="emailFeedback"
                 :state="validateEmail"
               >
-                <b-form-input id="new-email" v-model="email" type="text" />
+                <b-form-input id="new-email" v-model="email" type="text" :disabled="!isLocal"/>
               </b-form-group>
               <b-form-group
                 id="user-active-group"
@@ -66,7 +71,7 @@
         </b-card>
       </b-col>
       <b-col sm="12" md="6">
-        <b-card class="h-100">
+        <b-card class="h-100" v-if="isLocal">
           <b-card-title>
             {{ $t('userDetails.Change password') }}
           </b-card-title>
@@ -100,38 +105,6 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col sm="12" md="6" class="mb-4 mb-md-0">
-        <b-card class="h-100">
-          <b-card-title>
-            {{ $t('userDetails.Change pin code') }}
-          </b-card-title>
-          <b-card-body>
-            <b-form @submit="changePincode">
-              <b-form-group
-                id="new-pincode-group"
-                :label="$t('userDetails.New pin code')"
-                label-for="new-pincode"
-                :invalid-feedback="newPincodeFeedback"
-                :state="validateNewPincode"
-              >
-                <b-form-input id="new-pincode" v-model="pincode.newPincode" type="text" />
-              </b-form-group>
-              <b-form-group
-                id="confirm-pincode-group"
-                :label="$t('userDetails.Confirm new pin code')"
-                label-for="confirm-pincode"
-                :invalid-feedback="confirmPincodeFeedback"
-                :state="validateConfirmPincode"
-              >
-                <b-form-input id="confirm-pincode" v-model="pincode.confirmPincode" type="text" />
-              </b-form-group>
-              <b-button type="submit" variant="primary">
-                {{ $t('userDetails.Change pin code')}}
-              </b-button>
-            </b-form>
-          </b-card-body>
-        </b-card>
-      </b-col>
       <b-col v-if="nfcDevices.length > 0" sm="12" md="6">
         <b-card class="h-100">
           <b-card-title>{{ $t('userDetails.Manage NFC devices')}}</b-card-title>
@@ -188,7 +161,7 @@ import ConfirmationModal from '@/components/ConfirmationModal.vue';
 import UserModule from '@/store/modules/user';
 import { NFCDevice } from '@/entities/NFCDevice';
 import { getUser } from '@/api/users';
-import { User } from '@/entities/User';
+import { User, UserType } from '@/entities/User';
 
 @Component({
   components: {
@@ -218,6 +191,8 @@ export default class UserDetails extends Vue {
 
   confirmPassword: string | null = null;
 
+  isLocal: boolean = false;
+
   pincode: any = {
     newPincode: null,
     confirmPincode: null,
@@ -233,18 +208,8 @@ export default class UserDetails extends Vue {
     this.email = user.email || '';
     this.active = user.active;
     this.nfcDevices = user.nfcDevices;
-  }
-
-  /**
-   * Change a users pincode
-   */
-  changePincode(event: Event) {
-    event.preventDefault();
-    if (this.validateNewPincode && this.validateConfirmPincode) {
-      this.userState.updateUsersPinCode({ userID: Number(this.id), pin: this.pincode });
-      this.pincode.newPincode = null;
-      this.pincode.confirmPincode = null;
-    }
+    console.error(user.type);
+    if (user.type === UserType.LOCAL_USER) this.isLocal = true;
   }
 
   /**

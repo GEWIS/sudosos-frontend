@@ -19,7 +19,8 @@
           borderless
           thead-class="table-header table-header-6"
           :items="bannerState.banners"
-          :busy="bannerState.banners.length === 0"
+          :busy="!loaded"
+          show-empty
           :fields="fields"
           per-page="perPage"
           :current-page="currentPage"
@@ -27,8 +28,14 @@
         >
           <!-- If the table data is still loading display something nice -->
           <template #table-busy>
-            <div class="text-center text-muted mt-3 mb-3">
+            <div class="text-center text-muted mt-5 mb-3">
               <b-spinner class="align-middle"></b-spinner>
+            </div>
+          </template>
+
+          <template #empty>
+            <div class="text-center text-muted mt-5 mb-3">
+              {{ $t('c_bannerTable.Empty') }}
             </div>
           </template>
 
@@ -38,7 +45,7 @@
           </template>
 
           <template v-slot:cell(picture)="data">
-            <img class="thumbnail" :src="`/static/products/${data.picture}`" alt="Thumbnail">
+            <img class="thumbnail" :src="`/static/banners/${data.item.picture}`" alt="Thumbnail">
           </template>
 
           <template v-slot:cell(id)="data">
@@ -135,7 +142,7 @@
           label-align="left"
           label-for="start-date"
         >
-          <b-form-input
+          <b-form-datepicker
             id="start-date"
             name="start-date"
             type="date"
@@ -152,7 +159,7 @@
           :state="endDateState"
           :invalid-feedback="endDateInvalid"
         >
-          <b-form-input
+          <b-form-datepicker
             id="start-date"
             name="start-date"
             type="date"
@@ -199,6 +206,7 @@ import { Banner } from '@/entities/Banner';
 import Formatters from '@/mixins/Formatters';
 import eventBus from '@/eventbus';
 import BannerModule from '@/store/modules/banners';
+import { setBannerImage } from '@/api/banners';
 
 @Component({
   components: { ConfirmationModal, FileFormPreview },
@@ -208,6 +216,8 @@ export default class BannerTable extends Formatters {
 
     // Variable that holds all information for adding a banner
     currBanner: Banner = {} as Banner;
+
+    loaded = false;
 
     // File that user uploads
     file: File = new File([], '');
@@ -255,7 +265,9 @@ export default class BannerTable extends Formatters {
     ];
 
     beforeMount() {
+      this.loaded = false;
       this.bannerState.fetchBanners();
+      this.loaded = true;
 
       // If the locale is changed make sure the labels are also correctly updated for the b-table
       eventBus.$on('localeUpdated', () => {
@@ -269,13 +281,13 @@ export default class BannerTable extends Formatters {
      */
     setBanner() {
       this.currBanner.duration = Number(this.currBanner.duration);
-      // TODO: Remove once we have real file upload
-      this.currBanner.picture = URL.createObjectURL(this.file);
-
       if (this.currBanner.id === undefined) {
-        this.bannerState.addBanner(this.currBanner);
+        this.bannerState.addBanner(this.currBanner).then(
+          (banner) => setBannerImage(banner.id, this.file),
+        );
       } else {
         this.bannerState.updateBanner(this.currBanner);
+        if (this.file) setBannerImage(this.currBanner.id, this.file);
       }
       this.currBanner = {} as Banner;
       this.$bvModal.hide('modal-add');
