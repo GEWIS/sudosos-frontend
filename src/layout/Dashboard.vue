@@ -59,18 +59,18 @@
               <template v-slot:button-content >
                 <!-- TODO: Make sure only SUDOSOS workgroup members have this -->
                 <img id="beerIcon" src="../assets/img/bier.png" alt="beer"
-                     :key="userState.user.firstname">
+                     :key="userState.self.firstname">
 
-                {{ userState.user.firstname }}
+                {{ userState.self.firstname }}
               </template>
               <b-dropdown-item :to="{ name: 'profile'}">{{ $t('app.Profile') }}</b-dropdown-item>
               <b-dropdown-item @click="logout">{{ $t('app.Sign out') }}</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item
-              v-if="userState.user.saldo"
+              v-if="userState.self.saldo"
               class="d-none d-md-inline"
               :to="{ name: 'saldo'}">
-              {{ userState.user.saldo.toFormat() }}
+              {{ userState.self.saldo.toFormat() }}
             </b-nav-item>
             <b-nav-item-dropdown right>
               <template v-slot:button-content>
@@ -139,10 +139,9 @@ export default class Dashboard extends Vue {
 
   async beforeMount() {
     APIHelper.getToken();
-    if (Object.keys(this.userState.user).length <= 0) {
+    if (Object.keys(this.userState.self).length <= 0) {
       await this.userState.fetchUser(true);
     }
-    await this.userState.fetchMemberships(true);
   }
 
   /**

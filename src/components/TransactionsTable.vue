@@ -243,16 +243,16 @@ export default class TransactionsTable extends Formatters {
       this.transactionFilter.tillDate = this.filterValues.toDate.toString();
     }
     if (this.filterValues.putInByYou) {
-      this.transactionFilter.createdById = this.userState.user.id;
+      this.transactionFilter.createdById = this.userState.self.id;
     }
 
     if (this.filterValues.putInForYou) {
-      this.transactionFilter.fromId = this.userState.user.id;
+      this.transactionFilter.fromId = this.userState.self.id;
     }
 
     if (this.filterValues.selfBought) {
-      this.transactionFilter.createdById = this.userState.user.id;
-      this.transactionFilter.fromId = this.userState.user.id;
+      this.transactionFilter.createdById = this.userState.self.id;
+      this.transactionFilter.fromId = this.userState.self.id;
     }
 
     this.fetchNewData();
@@ -305,14 +305,14 @@ export default class TransactionsTable extends Formatters {
       this.transactions = await getPOSTransactions(this.pointOfSale, take, skip);
     } else {
       this.transactions = await getUserTransactions(
-        this.userState.user.id,
+        this.userState.self.id,
         transFilter,
         take,
         skip,
       );
 
       this.transfers = await getUserTransfers(
-        this.userState.user.id,
+        this.userState.self.id,
         {} as TransferFilter,
         take,
         skip,

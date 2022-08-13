@@ -48,7 +48,7 @@ export default class TermsOfService extends Vue {
   private loading: boolean = false;
 
   beforeMount() {
-    this.extensiveDataProcessing = this.userState.user.extensiveDataProcessing;
+    this.extensiveDataProcessing = this.userState.self.extensiveDataProcessing;
   }
 
   signOut() {

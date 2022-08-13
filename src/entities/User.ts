@@ -14,6 +14,8 @@ export enum UserType {
   BORRELKAART = 'BORRELKAART',
   LOCAL_USER = 'LOCAL_USER',
   LOCAL_ADMIN = 'LOCAL_ADMIN',
+  INVOICE = 'INVOICE',
+  AUTOMATIC_INVOICE = 'AUTOMATIC_INVOICE',
 }
 
 export interface UserPermissions {

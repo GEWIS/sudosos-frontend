@@ -87,7 +87,7 @@
           v-bind:key="container.id"
           :container="container"
           :enabled="true"
-          :editable="container.owner.id === userState.user.id"
+          :editable="container.owner.id === userState.self.id"
           :already-selected="checkIfSelected(container.id)"
           @toggled="containerToggled"
           v-model="editContainer"
@@ -108,7 +108,7 @@
           v-bind:key="container.id"
           :container="container"
           :enabled="true"
-          :editable="container.owner.id === userState.user.id"
+          :editable="container.owner.id === userState.self.id"
           :already-selected="checkIfSelected(container.id)"
           @toggled="containerToggled"
           v-model="editContainer"
@@ -219,13 +219,13 @@ export default class POSCreate extends Vue {
    * Grabs all the container data
    */
   async getContainerData() {
-    await getUserContainers(this.userState.user.id, 999).then((data: ContainerList) => {
+    await getUserContainers(this.userState.self.id, 999).then((data: ContainerList) => {
       this.containers = data;
     });
 
     await getPublicContainers(999).then((data: ContainerList) => {
       // TODO: Change to correct owner ID
-      const userId = this.userState.user.id;
+      const userId = this.userState.self.id;
       data.records = data.records.filter((container: Container) => container.owner.id !== userId);
       this.publicContainers = data;
     });

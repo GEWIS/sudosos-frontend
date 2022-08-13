@@ -5,8 +5,8 @@
         {{ $t('c_currentSaldo.saldo') }}
       </b-card-title>
       <b-card-body>
-        <p v-if="userState.user.saldo !== undefined" id="saldo-text" class="lead">
-          {{ userState.user.saldo.toFormat() }}
+        <p v-if="userState.self.saldo !== undefined" id="saldo-text" class="lead">
+          {{ userState.self.saldo.toFormat() }}
         </p>
         <div v-else class="text-center">
           <b-spinner variant="primary" id="saldo-spinner"></b-spinner>

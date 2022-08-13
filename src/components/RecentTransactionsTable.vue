@@ -79,7 +79,7 @@ export default class RecentTransactionsTable extends Formatters {
     this.loaded = false;
     await this.userState.fetchUser();
     this.mutations = await getUserFinancialMutations(
-      this.userState.user.id,
+      this.userState.self.id,
       // {} as TransactionFilter,
       10,
       0,
