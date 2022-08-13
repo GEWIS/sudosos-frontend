@@ -167,7 +167,7 @@
     "Confirm": "Confirm deletion"
   },
   "c_productTable": {
-    "picture": "Picture",
+    "image": "Image",
     "name": "Name",
     "category": "Category",
     "price": "Price",
@@ -313,6 +313,7 @@
     "Existing products": "Existing products",
     "save": "save",
     "cancel": "cancel",
+    "Delete from container": "Delete from container",
     "edit product": "edit product",
     "add product": "add product",
     "Name": "Name",
@@ -323,7 +324,7 @@
     "Category": "Category",
     "Please select": "Please select a product category",
     "Alcohol Percentage": "Alcohol percentage",
-    "Picture": "Picture",
+    "Image": "Image",
     "Delete product": "Delete product",
     "name invalid": "Please provide a valid name that is longer than 0 characters",
     "category invalid": "Please select one of the product categories",

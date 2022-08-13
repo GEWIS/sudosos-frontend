@@ -42,7 +42,7 @@
       <!--  product from here to add it    -->
       <div v-if="Object.keys(container).length > 0
         && Object.keys(editProduct).length === 0
-        && products.records.length > 0">
+        && products.length > 0">
         <h6>{{ $t('c_productEditModal.Add existing') }}</h6>
 
         <b-form-group
@@ -53,16 +53,16 @@
           label-for="select"
         >
           <v-select
-            :options="products.records"
+            :options="products"
             :getOptionLabel="option => option.name"
             v-model="selectedProduct"
           >
             <template v-slot:selected-option="product">
-              <img :src="`/static/products/${product.picture}`" alt="product image">
+              <img :src="`/static/products/${product.image}`" alt="product image">
               {{ product.name }}
             </template>
             <template v-slot:option="product">
-              <img :src="`/static/products/${product.picture}`" alt="product image">
+              <img :src="`/static/products/${product.image}`" alt="product image">
               {{ product.name }}
             </template>
           </v-select>
@@ -174,7 +174,7 @@
       <b-form-group
         label-cols="12"
         label-cols-sm="3"
-        :label="$t('c_productEditModal.Picture')"
+        :label="$t('c_productEditModal.Image')"
         label-align="left"
         label-for="ad-file"
         v-if="selectedProduct === null"
@@ -205,11 +205,11 @@
 
     <template v-slot:modal-footer="{ }">
       <b-button
-        v-show="Object.keys(container).length > 0"
+        v-show="Object.keys(container).length > 0 && Object.keys(editProduct).length > 0"
         variant="primary"
         class="btn-primary mr-auto"
         v-on:click="deleteProduct"
-      >Delete from Container
+      >{{ $t('c_productEditModal.Delete from container') }}
       </b-button>
       <b-button
         variant="primary"
@@ -233,7 +233,7 @@ import {
 } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import {
-  CreateProductRequest, Product, ProductList, UpdateProductRequest,
+  CreateProductRequest, Product, UpdateProductRequest,
 } from '@/entities/Product';
 import FileFormPreview from '@/components/FileFormPreview.vue';
 import Formatters from '@/mixins/Formatters';
@@ -242,7 +242,6 @@ import ProductsModule from '@/store/modules/products';
 import ContainerModule from '@/store/modules/containers';
 import { ProductCategoryList } from '@/entities/ProductCategory';
 import { getProductCategories } from '@/api/productCategories';
-import { getProducts, setProductImage } from '@/api/products';
 import getVatGroups from '@/api/vatGroups';
 
 @Component({
@@ -277,8 +276,6 @@ export default class ProductEditModal extends Formatters {
 
   file: File | null = null;
 
-  products: ProductList = {} as ProductList;
-
   productOwnerId: number = null;
 
   selectedProduct: Product | null = null;
@@ -291,10 +288,18 @@ export default class ProductEditModal extends Formatters {
     this.userState.fetchUser();
     this.organsList = this.userState.organsList;
     this.productOwnerId = this.organsList[0].value;
-    this.products = await getProducts(999);
     this.productCategories = await getProductCategories(999);
     this.vatGroups = (await getVatGroups(999))
       .records.map((group) => ({ value: group.id, text: String(group.percentage) }));
+  }
+
+  get products() {
+    let prods = this.productState.products;
+    if (Object.keys(this.container).length > 0) {
+      const prodIdsInContainer = this.container.products.map((p) => p.id);
+      prods = prods.filter((p) => !prodIdsInContainer.includes(p.id));
+    }
+    return prods;
   }
 
   setProduct() {
@@ -311,13 +316,14 @@ export default class ProductEditModal extends Formatters {
    * API calls are made. If a product does not have all needed info set the user will
    * be notified of this.
    */
-  save(): void {
+  async save(): Promise<void> {
     // First check if we are adding a product to a container directly
     if (Object.keys(this.container).length > 0) {
       // If a product is selected we are adding that to the container meaning we do not
       // also have to create a new product
       if (this.selectedProduct !== null) {
-        this.containerState.addProduct({
+        console.log('selectedProduct', this.selectedProduct);
+        await this.containerState.addProduct({
           container: this.container,
           product: this.selectedProduct as any,
         });
@@ -333,14 +339,12 @@ export default class ProductEditModal extends Formatters {
         // Check if a product is being added or being editted
         if (Object.keys(this.editProduct).length > 0) {
           const update = product as UpdateProductRequest;
-          this.productState.updateProduct(update);
-          if (this.file) setProductImage(update.id, this.file);
+          await this.productState.updateProduct({ product: update, image: this.file });
         } else {
           delete (product as any).owner;
-          console.error(this.file);
-          this.containerState.addProduct({
+          await this.containerState.addProduct({
             container: this.container,
-            product,
+            product: product as CreateProductRequest,
             file: this.file,
           });
         }
@@ -355,10 +359,11 @@ export default class ProductEditModal extends Formatters {
 
       // Check if a product is being added or being edited
       if (Object.keys(this.editProduct).length > 0) {
-        this.productState.updateProduct(product as UpdateProductRequest);
-        if (this.file) setProductImage((product as any).id, this.file);
+        await this.productState.updateProduct({
+          product: product as UpdateProductRequest, image: this.file,
+        });
       } else {
-        this.productState.addProduct(product as any, this.file);
+        await this.productState.addProduct(product as any, this.file);
       }
       this.$bvModal.hide('edit-product');
     } else {
@@ -444,7 +449,7 @@ export default class ProductEditModal extends Formatters {
       this.price = Number((product.price.getAmount() / 100).toPrecision(2));
       this.vatGroup = this.vatGroups.find((group) => group.text === String(product.vat)).value;
       this.alcoholPercentage = product.alcoholPercentage;
-      this.img = product.picture || '';
+      this.img = product.image || '';
     }
   }
 

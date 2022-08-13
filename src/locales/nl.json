@@ -167,7 +167,7 @@
     "Confirm": "Bevestig verwijderen"
   },
   "c_productTable": {
-    "picture": "Plaatje",
+    "image": "Plaatje",
     "name": "Naam",
     "category": "Categorie",
     "price": "Prijs",
@@ -313,6 +313,7 @@
     "Existing products": "Bestaande producten",
     "save": "opslaan",
     "cancel": "annuleren",
+    "Delete from container": "Verwijderen uit container",
     "edit product": "bewerk product",
     "add product": "product toevoegen",
     "Name": "Naam",
@@ -323,7 +324,7 @@
     "Category": "Categorie",
     "Please select": "Selecteer een product categorie",
     "Alcohol Percentage": "Alcohol percentage",
-    "Picture": "Plaatje",
+    "Image": "Plaatje",
     "Delete product": "Verwijder product",
     "name invalid": "Voer een correcte naam in van die langer is dan 0 tekens",
     "category invalid": "Selecteer een van de product categorien",

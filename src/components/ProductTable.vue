@@ -58,7 +58,7 @@
     </template>
 
     <!-- Templates for each row cell -->
-    <template v-slot:cell(picture)="data">
+    <template v-slot:cell(image)="data">
       <img class="thumbnail" :src="`/static/products/${data.value}`" :alt="data.value">
     </template>
 
@@ -145,9 +145,9 @@ export default class ProductTable extends Formatters {
 
     fields : Object[] = [
       {
-        key: 'picture',
-        label: this.getTranslation('c_productTable.picture'),
-        locale_key: 'picture',
+        key: 'image',
+        label: this.getTranslation('c_productTable.image'),
+        locale_key: 'image',
       },
       {
         key: 'name',

@@ -77,7 +77,7 @@
       <p class="font-weight-bold">{{ $t('c_productInfoModal.Picture') }}</p>
     </b-col>
     <b-col cols="6" sm="8" class="text-right text-sm-left">
-      <img :src="`/static/products/${product.picture}`"
+      <img :src="`/static/products/${product.image}`"
            :alt="$t('c_productInfoModal.Product picture')"/>
     </b-col>
   </b-row>

@@ -13,12 +13,9 @@ import { setProductImage } from '@/api/products';
 export default class ProductsModule extends VuexModule {
   products: Product[] = [];
 
-  userProducts: Product[] = [];
-
   @Mutation
   reset() {
     this.products = [];
-    this.userProducts = [];
   }
 
   @Mutation
@@ -27,62 +24,82 @@ export default class ProductsModule extends VuexModule {
   }
 
   @Mutation
-  setUserProducts(products: Product[]) {
-    this.userProducts = products;
+  addProductToState(product: Product) {
+    console.log('add product to state', product);
+    this.products.push(product);
   }
 
   @Mutation
+  updateProductInState(product: Product) {
+    const index = this.products.findIndex((prd) => prd.id === product.id);
+    if (index < 0) {
+      this.context.commit('addProductToState', product);
+      return;
+    }
+    this.products.splice(index, 1, product);
+  }
+
+  @Mutation
+  removeProductFromState(product: Product) {
+    const index = this.products.findIndex((prd) => prd.id === product.id);
+    if (index >= 0) this.products.splice(index, 1);
+  }
+
+  @Action
   async addProduct(product: CreateProductRequest, image?: File) {
-    const productResponse = await APIHelper.postResource('products', product);
+    let productResponse = await APIHelper.postResource('products', product);
     if (image) await setProductImage(productResponse.id, image);
+    productResponse = await APIHelper.getResource(`products/${productResponse.id}`);
     const productToAdd = ProductTransformer.makeProduct(productResponse) as Product;
-    this.userProducts.push(productToAdd);
-    return productToAdd;
+    this.context.commit('addProductToState', productToAdd);
   }
 
-  @Mutation
-  removeProduct(product: Product) {
-    APIHelper.delResource('products').then(() => {
-      const index = this.products.findIndex((prd) => prd.id === product.id);
-      this.userProducts.splice(index, 1);
-    });
+  @Action
+  async removeProduct(product: Product) {
+    await APIHelper.delResource('products');
+    this.context.commit('removeProductFromState', product);
   }
 
-  @Mutation
-  async updateProduct(product: UpdateProductRequest) {
+  @Action
+  async updateProduct(data: { product: UpdateProductRequest, image?: File }) {
+    const { product, image } = data;
     const updateRequest = {
       ...product,
     };
     delete updateRequest.id;
 
-    const response = await APIHelper.patchResource(`products/${product.id}`, updateRequest);
+    await APIHelper.patchResource(`products/${product.id}`, updateRequest);
+    if (image) {
+      console.log('update image');
+      await setProductImage((product as any).id, image);
+    }
+    const response = await APIHelper.getResource(`products/${product.id}`);
     const productResponse = ProductTransformer.makeProduct(response);
 
-    const index = this.userProducts.findIndex((prd) => prd.id === productResponse.id);
-    this.userProducts.splice(index, 1, productResponse as Product);
+    this.context.commit('updateProductInState', productResponse);
+    this.context.commit('ContainerModule/updateContainerProductInAllContainers', productResponse, { root: true });
   }
 
   @Action({
     rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
-  fetchProducts(force: boolean = false) {
+  async fetchProducts(force: boolean = false) {
     if (this.products.length === 0 || force) {
-      (APIHelper.getResource('products') as Promise<{ records: any[]}>).then((res) => {
-        const products = res.records.map((product) => ProductTransformer.makeProduct(product));
-        this.context.commit('setProducts', products);
-      });
+      const res = await APIHelper.getResource('products');
+      const products = res.records.map((product: any) => ProductTransformer.makeProduct(product));
+      this.context.commit('setProducts', products);
     }
   }
 
-  @Action({
-    rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
-  })
-  fetchUserProducts(force: boolean = false) {
-    if (this.userProducts.length === 0 || force) {
-      (APIHelper.getResource('userproducts') as Promise<{ records: any[]}>).then((res) => {
-        const products = res.records.map((product) => ProductTransformer.makeProduct(product));
-        this.context.commit('setUserProducts', products);
-      });
-    }
-  }
+  // @Action({
+  //   rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
+  // })
+  // fetchUserProducts(force: boolean = false) {
+  //   if (this.userProducts.length === 0 || force) {
+  //     (APIHelper.getResource('userproducts') as Promise<{ records: any[]}>).then((res) => {
+  //       const products = res.records.map((product) => ProductTransformer.makeProduct(product));
+  //       this.context.commit('setUserProducts', products);
+  //     });
+  //   }
+  // }
 }
