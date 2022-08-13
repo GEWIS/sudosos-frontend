@@ -32,6 +32,7 @@
     "jwt-decode": "^3.1.2",
     "sortablejs": "^1.10.2",
     "uuid": "^3.4.0",
+    "validator": "^13.7.0",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
     "vue-i18n": "^8.24.3",
@@ -44,6 +45,7 @@
   },
   "devDependencies": {
     "@types/uuid": "^8.3.1",
+    "@types/validator": "^13.7.5",
     "@typescript-eslint/eslint-plugin": "^4.4.0",
     "@typescript-eslint/parser": "^4.26.0",
     "@vue/cli-plugin-babel": "^4.1.0",
