@@ -21,7 +21,6 @@
     "@types/dinero.js": "^1.6.2",
     "@types/sortablejs": "^1.10.4",
     "@types/vue-select": "^3.11.1",
-    "@vue-stripe/vue-stripe": "^4.4.2",
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.8.0",
     "core-js": "^3.4.4",
