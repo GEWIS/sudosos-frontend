@@ -101,11 +101,7 @@
         <router-view/>
       </transition>
     </main>
-    <footer class="footer">
-      <b-container fluid="md">
-        <b>&copy; {{ new Date().getFullYear() }} GEWIS</b>
-      </b-container>
-    </footer>
+    <page-footer />
   </div>
 </template>
 
@@ -120,8 +116,11 @@ import { LoginResponse } from '@/entities/APIResponses';
 import UserTransformer from '@/transformers/UserTransformer';
 import { User } from '@/entities/User';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
+import PageFooter from '@/components/PageFooter.vue';
 
-@Component
+@Component({
+  components: { PageFooter },
+})
 export default class Dashboard extends Vue {
   userState = getModule(UserModule);
 
