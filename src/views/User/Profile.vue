@@ -14,6 +14,9 @@
           <b-card-title>
             {{ $t('profile.Edit info') }}
           </b-card-title>
+          <p v-if="!isLocal" class="warning">
+            {{ $t('userDetails.Not local') }}
+          </p>
           <b-card-body>
             <b-form @submit="updateUserInformation">
               <b-form-group
@@ -43,9 +46,10 @@
                 :invalid-feedback="emailFeedback"
                 :state="validateEmail"
               >
-                <b-form-input id="new-email" v-model="email" type="text" />
+                <b-form-input :disabled="!isLocal"
+                  id="new-email" v-model="email" type="text" />
               </b-form-group>
-              <b-button type="submit" variant="primary">
+              <b-button type="submit" :disabled="!isLocal" variant="primary">
                 {{ $t('profile.Update user information')}}
               </b-button>
             </b-form>
@@ -123,12 +127,12 @@
           </b-card-body>
         </b-card>
       </b-col>
-      <b-col v-if="userState.user.nfcDevices.length > 0" sm="12" md="6">
+      <b-col v-if="userState.self.nfcDevices.length > 0" sm="12" md="6">
         <b-card class="h-100">
           <b-card-title>{{ $t('profile.Manage NFC devices')}}</b-card-title>
           <b-card-body>
             <b-row
-              v-for="device in userState.user.nfcDevices"
+              v-for="device in userState.self.nfcDevices"
               v-bind:key="device.id"
               class="nfc-device-badge mb-2">
               <span
@@ -176,6 +180,9 @@ import { getModule } from 'vuex-module-decorators';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
 import UserModule from '@/store/modules/user';
 import { NFCDevice } from '@/entities/NFCDevice';
+import Validators from '@/mixins/Validators';
+import eventBus from '@/eventbus';
+import { requestPasswordReset } from '@/api/users';
 
 @Component({
   components: {
@@ -215,10 +222,10 @@ export default class Profile extends Vue {
    * Fetch all the user info that is needed for the profile
    */
   beforeMount() {
-    this.userState.fetchUser();
-    this.firstname = this.userState.user.firstname;
-    this.lastname = this.userState.user.lastname;
-    this.email = this.userState.user.email || '';
+    this.userState.fetchSelf(true);
+    this.firstname = this.userState.self.firstname;
+    this.lastname = this.userState.self.lastname;
+    this.email = this.userState.self.email || '';
     this.userState.hasRole('LOCAL_USER').then((res) => { this.isLocal = res; });
   }
 
@@ -227,8 +234,16 @@ export default class Profile extends Vue {
    */
   changePincode(event: Event) {
     event.preventDefault();
-    if (!this.validateNewPincode && this.validateConfirmPincode) {
-      this.userState.updatePinCode(this.pincode.newPincode);
+    if (this.validateNewPincode && this.validateConfirmPincode
+      && this.pincode.newPincode !== '') {
+      this.userState.updatePinCode(this.pincode.newPincode).then(() => {
+        eventBus.$emit('success', {
+          message: String(this.$t('profile.Pin code updated')),
+          title: 'Success',
+        });
+      }).catch(() => {
+        // pass
+      });
       this.pincode.newPincode = null;
       this.pincode.confirmPincode = null;
     }
@@ -241,10 +256,12 @@ export default class Profile extends Vue {
     event.preventDefault();
     if (this.validateEmail && this.validateFirstname) {
       this.userState.updateUserInformation({
-        userID: this.userState.user.id,
-        firstname: this.firstname,
-        lastname: this.lastname,
-        email: this.email || '',
+        id: this.userState.self.id,
+        user: {
+          firstName: this.firstname,
+          lastName: this.lastname,
+          email: this.email,
+        },
       });
     }
   }
@@ -256,7 +273,7 @@ export default class Profile extends Vue {
     event.preventDefault();
     if (this.validatePassword && this.validateConfirmPassword) {
       this.userState.updatePassword({
-        id: this.userState.user.id,
+        id: this.userState.self.id,
         password: this.password || '',
       });
       this.password = null;
@@ -281,11 +298,8 @@ export default class Profile extends Vue {
     this.userState.removeNFCDevice(this.removeDevice);
   }
 
-  /**
-   * Check if the first name has a length longer than 1
-   */
   get validateFirstname() {
-    return this.firstname.length > 0;
+    return Validators.firstName(this.firstname);
   }
 
   /**
@@ -299,12 +313,8 @@ export default class Profile extends Vue {
     return '';
   }
 
-  /**
-   * Check if the email is not null, there is an actual email being inputted and this email
-   * address is of correct form
-   */
   get validateEmail() {
-    return this.email === null || this.email.length === 0 || /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.email);
+    return Validators.email(this.email);
   }
 
   /**
@@ -322,7 +332,7 @@ export default class Profile extends Vue {
    * Check if the new password is longer than 8 characters
    */
   get validatePassword() {
-    return this.password === null || this.password.length >= 8;
+    return Validators.password(this.password);
   }
 
   /**
@@ -340,11 +350,7 @@ export default class Profile extends Vue {
    * Check if passwords match (given that both have an input)
    */
   get validateConfirmPassword() {
-    return (
-      this.confirmPassword === null
-      || this.password === null
-      || (this.password === this.confirmPassword && this.validatePassword)
-    );
+    return Validators.confirmPassword(this.password, this.confirmPassword);
   }
 
   /**
@@ -362,14 +368,14 @@ export default class Profile extends Vue {
    * Check if the new pincode is of length 4
    */
   get validateNewPincode() {
-    return this.pincode.newPincode === null || this.pincode.newPincode.length !== 4;
+    return Validators.pincode(this.pincode);
   }
 
   /**
    * Display a correct error message if the new pincode does not match the criteria
    */
   get newPincodeFeedback() {
-    if (this.pincode.newPincode !== null && this.pincode.newPincode.length !== 4) {
+    if (!this.validateNewPincode) {
       return this.$t('profile.New pin code length must be 4 digits').toString();
     }
 
@@ -380,11 +386,7 @@ export default class Profile extends Vue {
    * Check if both pincodes match if a pincode has been inputted
    */
   get validateConfirmPincode() {
-    return (
-      this.pincode.confirmPincode === null
-      || this.pincode.newPincode === null
-      || this.pincode.newPincode === this.pincode.confirmPincode
-    );
+    return Validators.confirmPincode(this.pincode);
   }
 
   /**
@@ -410,6 +412,10 @@ input#confirm-pincode {
 
 button {
   float: left !important;
+}
+
+.warning {
+  color: rgba(255, 0, 0, 0.73);
 }
 
 .nfc-device-badge {

@@ -2,6 +2,13 @@ import dinero from 'dinero.js';
 import { BaseUser, User, UserType } from '@/entities/User';
 import BaseTransformer from '@/transformers/BaseTransformer';
 
+export interface BalanceResponse {
+  id: number,
+  amount: dinero.DineroObject,
+  lastTransactionId: number,
+  lastTransferId:number
+}
+
 export default {
   makeUser(data: any) : BaseUser | User {
     if (data === undefined) {
@@ -58,7 +65,8 @@ export default {
     };
   },
 
-  makeSaldo(data: any) {
-    return dinero({ amount: data, currency: 'EUR' });
+  makeSaldo(data: BalanceResponse): dinero.Dinero {
+    const { amount, currency, precision } = data.amount;
+    return dinero({ amount, currency, precision });
   },
 };

@@ -14,7 +14,13 @@ export enum UserType {
   BORRELKAART = 'BORRELKAART',
   LOCAL_USER = 'LOCAL_USER',
   LOCAL_ADMIN = 'LOCAL_ADMIN',
+  INVOICE = 'INVOICE',
+  AUTOMATIC_INVOICE = 'AUTOMATIC_INVOICE',
 }
+
+export const LOCAL_USER_TYPES = [
+  UserType.LOCAL_USER, UserType.LOCAL_ADMIN, UserType.INVOICE, UserType.AUTOMATIC_INVOICE,
+];
 
 export interface UserPermissions {
   EDIT_OWN_POS_ENTITIES: boolean;

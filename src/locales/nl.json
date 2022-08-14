@@ -424,7 +424,8 @@
     "Pin code must be 4 digits": "Pincode moet 4 cijferig zijn",
     "New pin code length must be 4 digits": "Nieuwe pincode moet 4 cijferig zijn",
     "New pin code must be unique from old pin code": "Nieuwe pincode moet anders zijn dan huidige",
-    "Confirmation does not match pin code": "De pincodes matchen niet met elkaar"
+    "Confirmation does not match pin code": "De pincodes matchen niet met elkaar",
+    "Pin code updated": "Pin code is met success geüpdate."
   },
   "userDetails": {
     "profile": "{name}'s profiel",
@@ -437,12 +438,16 @@
     "Active": "Actief",
     "user is active": "gebruiker is actief",
     "Update user information": "Werk profiel bij",
+    "Updated user information": "Profiel is met success bijgewerkt",
     "Change password": "Verander wachtwoord",
     "Password": "Wachtwoord",
     "Password should": "Je wachtwoord moet tenminste 8 characters bevatten",
     "Confirm password": "Bevestig wachtwoord",
     "The passwords to not match up": "De wachtwoorden zijn niet gelijk",
     "Update password": "Verander wachtwoord",
+    "Request reset": "Wachtwoord reset aanvragen",
+    "Request reset sent": "Wachtwoord reset link is vestuurd.",
+    "Not local": "Dit account wordt niet beheerd via SudoSOS.",
     "Change pin code": "Verander pincode",
     "Old pin code": "Oude pincode",
     "New pin code": "Nieuwe pincode",

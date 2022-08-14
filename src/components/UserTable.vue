@@ -1,7 +1,13 @@
 <template>
 <div>
+  <UserCreationModal/>
   <b-card>
     <template v-slot:header>
+      <div class="text-right mb-2">
+        <b-button variant="primary" @click="$bvModal.show('create-user')">
+          Create
+        </b-button>
+      </div>
       <b-form-group
         id="name-filter-group"
         :label="$t('c_userTable.Filter by name')"
@@ -93,10 +99,13 @@ import { getPOSTransactions, getUserTransactions } from '@/api/transactions';
 import { getUserTransfers } from '@/api/transfers';
 import { TransferFilter } from '@/entities/Transfer';
 import { getUsers } from '@/api/users';
+import UserCreationModal from '@/components/UserCreationModal.vue';
 
-@Component
+@Component({
+  components: { UserCreationModal },
+})
 export default class UserTable extends Formatters {
-  // userState = getModule(UserModule)
+  userState = getModule(UserModule)
 
   users: User[] = [];
 
@@ -130,7 +139,6 @@ export default class UserTable extends Formatters {
 
   beforeMount() {
     this.fetchNewData();
-    this.totalRows = this.userState.allUsers.length;
 
     // If the locale is changed make sure the labels are also correctly updated for the b-table
     eventBus.$on('localeUpdated', () => {
@@ -152,7 +160,7 @@ export default class UserTable extends Formatters {
     const skip = (page - 1) * this.perPage;
     const take = this.perPage;
 
-    const { records, _pagination } = (await getUsers({ take, skip }));
+    const { records, _pagination } = (await this.userState.fetchUsers({ take, skip }));
     this.users = records;
 
     this.totalRows = _pagination.count;

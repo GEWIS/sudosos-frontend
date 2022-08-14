@@ -424,7 +424,8 @@
     "Pin code must be 4 digits": "Pin code must be 4 digits",
     "New pin code length must be 4 digits": "New pin code length must be 4 digits",
     "New pin code must be unique from old pin code": "New pin code must be unique from old pin code",
-    "Confirmation does not match pin code": "Confirmation does not match pin code"
+    "Confirmation does not match pin code": "Confirmation does not match pin code",
+    "Pin code updated": "Pin code was successfully updated."
   },
   "userDetails": {
     "profile": "{name}'s profile",
@@ -437,12 +438,16 @@
     "Active": "Active",
     "user is active": "user is active",
     "Update user information": "Update user information",
-    "Change password": "Change password",
+    "Updated user information": "User information successfully updated",
+    "Reset password": "Reset password",
     "Password": "Password",
     "Password should": "Password should contain at least 8 characters",
     "Confirm password": "Confirm password",
     "The passwords to not match up": "The passwords to not match up",
     "Update password": "Update password",
+    "Request reset": "Request reset link",
+    "Request reset sent": "Password reset link was sent successfully",
+    "Not local": "This account is not managed through SudoSOS.",
     "Change pin code": "Change pin code",
     "Old pin code": "Old pin code",
     "New pin code": "New pin code",

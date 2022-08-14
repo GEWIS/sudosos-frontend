@@ -122,8 +122,8 @@ export default class UserTable extends Formatters {
   ]
 
   beforeMount() {
-    this.userState.fetchAllUsers();
-    this.totalRows = this.userState.allUsers.length;
+    // this.userState.fetchAllUsers();
+    // this.totalRows = this.userState.users.size;
 
     // If the locale is changed make sure the labels are also correctly updated for the b-table
     eventBus.$on('localeUpdated', () => {

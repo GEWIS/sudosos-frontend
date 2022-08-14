@@ -148,7 +148,6 @@ import UserModule from '@/store/modules/user';
 import ProductTable from '@/components/ProductTable.vue';
 import { Container } from '@/entities/Container';
 import { Product, ProductList } from '@/entities/Product';
-import { checkPermissions } from '@/entities/User';
 import { getContainerProducts } from '@/api/containers';
 import ProductsModule from '@/store/modules/products';
 import ContainerModule from '@/store/modules/containers';
@@ -195,7 +194,7 @@ export default class ContainerComponent extends Vue {
   };
 
   beforeMount() {
-    this.userState.fetchUser();
+    this.userState.fetchSelf();
     this.selected = this.alreadySelected;
   }
 

@@ -23,7 +23,7 @@ export default class Formatters extends Vue {
   userState = getModule(UserModule);
 
   beforeMount() {
-    this.userState.fetchUser();
+    this.userState.fetchSelf();
   }
 
   /**
@@ -143,7 +143,7 @@ export default class Formatters extends Vue {
    * @param {Transaction} trans : Transaction or transfer that we need description for
    */
   setDescription(trans: Transaction | Transfer) {
-    const { id } = this.userState.user;
+    const { id } = this.userState.self;
     // We have a transactions
     if ('pointOfSale' in trans) {
       // This is a transaction put in for someone else

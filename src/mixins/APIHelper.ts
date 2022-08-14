@@ -132,22 +132,22 @@ function fetchResource(route: string, body: ResponseBody) {
     }
   } else {
     fetchResult = fetch(route, body)
-      .then((response) => {
+      .then((response) => new Promise((resolve, reject) => {
         checkResponse(response);
-        return response.json();
-      })
-      .then((data: any) => data)
-      .catch((error) => {
-        console.error(route, body);
-        console.error(error);
-      });
+        if (response.status >= 400) reject(response);
+        else {
+          const responseCopy = response.clone();
+          resolve(responseCopy.json().catch((_) => response.text()));
+        }
+      }))
+      .then((data: any) => data);
   }
 
   return fetchResult;
 }
 
 export default {
-  getToken() {
+  getToken(): { jwtToken: string, jwtExpires: string } {
     const rawToken = localStorage.getItem('jwt_token') as string;
     let token = {} as Token;
     if (rawToken !== null) token = JSON.parse(rawToken);
@@ -251,7 +251,7 @@ export default {
     return fetchResource(constructedRoute, postBody);
   },
 
-  postResource(route: string, data: any = {}, args = null as any) {
+  postResource(route: string, data: any = {}, args = null as any): Promise<any> {
     const constructedRoute = makeRoute(route, args);
 
     const postBody = {
