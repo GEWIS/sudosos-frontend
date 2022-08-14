@@ -9,18 +9,18 @@ import { NFCDevice } from '@/entities/NFCDevice';
 import jwtDecode from 'jwt-decode';
 import { LoginResponse } from '@/entities/APIResponses';
 import {
-  CreateUserRequest, getAllUsers,
-  getUser, getUsers, PaginatedUserResponse, postUser, UserQueryParameters,
+  CreateUserRequest,
+  getAllUsers,
+  getUser,
+  getUsers,
+  PaginatedUserResponse,
+  patchUser,
+  postUser,
+  UpdateUserInfo,
+  UserQueryParameters,
 } from '@/api/users';
 import { getSelfBalance } from '@/api/balance';
 import dinero from 'dinero.js';
-
-interface UpdateUserInfo {
-  userID: number,
-  firstname: string,
-  lastname: string,
-  email: string,
-}
 
 @Module({
   dynamic: true, namespaced: true, store, name: 'UserModule',
@@ -114,7 +114,7 @@ export default class UserModule extends VuexModule {
 
   @Action
   async updatePinCode(pin: string) {
-    const result = await APIHelper.putResource(`users/${this.self.id}/authenticator/pin`, { pin });
+    return APIHelper.putResource(`users/${this.self.id}/authenticator/pin`, { pin });
   }
 
   @Action
@@ -136,9 +136,11 @@ export default class UserModule extends VuexModule {
   }
 
   @Action
-  // eslint-disable-next-line class-methods-use-this
-  async updateUserInformation(information: UpdateUserInfo) {
-    // pass
+  async updateUserInformation(update: {id: number, user: Partial<UpdateUserInfo>}) {
+    return Promise.resolve(patchUser(update.id, update.user).then((u) => {
+      this.context.commit('setUser', u);
+      return u;
+    }));
   }
 
   @Action

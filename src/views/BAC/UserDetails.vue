@@ -16,7 +16,7 @@
           </b-card-title>
           <b-card-body>
             <p v-if="!isLocal">
-              This account is not managed through SudoSOS.
+              {{ $t('userDetails.Not local') }}
             </p>
             <b-form @submit="updateUserInformation">
               <b-form-group
@@ -63,7 +63,9 @@
                   {{  $t("userDetails.user is active") }}
                 </b-form-checkbox>
               </b-form-group>
-              <b-button type="submit" variant="primary">
+              <b-button variant="primary" :disabled="userUpdate.busy"
+                      type="submit">
+                <b-spinner v-if="userUpdate.busy" small></b-spinner>
                 {{ $t('userDetails.Update user information')}}
               </b-button>
             </b-form>
@@ -77,7 +79,7 @@
           </b-card-title>
           <b-card-body>
             <b-form>
-              <p> A reset password link will be sent to {{ email }} </p>
+              <p> A reset password link will be sent to {{ user.email }} </p>
               <b-button variant="primary" :disabled="passwordReset.busy"
                         @click="requestPasswordReset">
                 <b-spinner v-if="passwordReset.busy" small></b-spinner>
@@ -146,6 +148,7 @@ import UserModule from '@/store/modules/user';
 import { NFCDevice } from '@/entities/NFCDevice';
 import { LOCAL_USER_TYPES, User } from '@/entities/User';
 import { requestPasswordReset } from '@/api/users';
+import eventBus from '@/eventbus';
 
 @Component({
   components: {
@@ -177,6 +180,8 @@ export default class UserDetails extends Vue {
 
   isLocal: boolean = false;
 
+  user: User = null;
+
   pincode: any = {
     newPincode: null,
     confirmPincode: null,
@@ -186,13 +191,13 @@ export default class UserDetails extends Vue {
    * Fetch all the user info that is needed for the profile
    */
   async beforeMount() {
-    const user = await this.userState.fetchUser(Number(this.id)) as User;
-    this.firstname = user.firstname;
-    this.lastname = user.lastname;
-    this.email = user.email || '';
-    this.active = user.active;
-    this.nfcDevices = user.nfcDevices;
-    if (LOCAL_USER_TYPES.includes(user.type)) this.isLocal = true;
+    this.user = await this.userState.fetchUser(Number(this.id)) as User;
+    this.firstname = this.user.firstname;
+    this.lastname = this.user.lastname;
+    this.email = this.user.email || '';
+    this.active = this.user.active;
+    this.nfcDevices = this.user.nfcDevices;
+    if (LOCAL_USER_TYPES.includes(this.user.type)) this.isLocal = true;
   }
 
   /**
@@ -200,33 +205,42 @@ export default class UserDetails extends Vue {
    */
   updateUserInformation(event: Event) {
     event.preventDefault();
+    this.userUpdate.busy = true;
     if (this.validateEmail && this.validateFirstname) {
-      this.userState.updateUsersUserInformation({
-        userID: Number(this.id),
-        firstname: this.firstname,
-        lastname: this.lastname,
-        email: this.email || '',
+      const user = {
+        firstName: this.firstname,
+        lastName: this.lastname,
+        email: this.email,
         active: this.active,
+      };
+      this.userState.updateUserInformation({ id: Number(this.id), user }).then((u) => {
+        this.user = u as User;
+        this.userUpdate.busy = false;
+        eventBus.$emit('success', {
+          message: String(this.$t('userDetails.Updated user information')),
+          title: 'Success',
+        });
       });
     }
   }
 
+  userUpdate = {
+    busy: false,
+  }
+
   passwordReset = {
     busy: false,
-    success: false,
-    requested: false,
   }
 
   requestPasswordReset(event: Event) {
     event.preventDefault();
     this.passwordReset.busy = true;
-    this.passwordReset.requested = true;
     requestPasswordReset(this.email).then(() => {
-      this.passwordReset.success = true;
-    }).catch(() => {
-      this.passwordReset.success = false;
-    }).finally(() => {
       this.passwordReset.busy = false;
+      eventBus.$emit('success', {
+        message: String(this.$t('userDetails.Request reset sent')),
+        title: 'Success',
+      });
     });
   }
 

@@ -4,6 +4,15 @@ import APIHelper from '@/mixins/APIHelper';
 import { Pagination } from '@/entities/Pagination';
 import { BaseUser, User } from '@/entities/User';
 
+export interface UpdateUserInfo {
+  firstName: string,
+  lastName: string,
+  active: boolean,
+  ofAge: boolean,
+  email: string,
+  deleted: boolean
+}
+
 export interface UserQueryParameters {
   take?: number,
   skip?: number,
@@ -55,7 +64,7 @@ export function getUser(id: number): Promise<User | BaseUser> {
   return APIHelper.getResource(`users/${id}`).then((response) => UserTransformer.makeUser(response));
 }
 
-export function patchUser(id: number, user: any) {
+export function patchUser(id: number, user: Partial<UpdateUserInfo>) {
   return APIHelper.patchResource(`users/${id}`, user).then((response) => UserTransformer.makeUser(response));
 }
 

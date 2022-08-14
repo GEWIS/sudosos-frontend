@@ -14,6 +14,9 @@
           <b-card-title>
             {{ $t('profile.Edit info') }}
           </b-card-title>
+          <p v-if="!isLocal" class="warning">
+            {{ $t('userDetails.Not local') }}
+          </p>
           <b-card-body>
             <b-form @submit="updateUserInformation">
               <b-form-group
@@ -43,9 +46,10 @@
                 :invalid-feedback="emailFeedback"
                 :state="validateEmail"
               >
-                <b-form-input id="new-email" v-model="email" type="text" />
+                <b-form-input :disabled="!isLocal"
+                  id="new-email" v-model="email" type="text" />
               </b-form-group>
-              <b-button type="submit" variant="primary">
+              <b-button type="submit" :disabled="!isLocal" variant="primary">
                 {{ $t('profile.Update user information')}}
               </b-button>
             </b-form>
@@ -177,6 +181,8 @@ import ConfirmationModal from '@/components/ConfirmationModal.vue';
 import UserModule from '@/store/modules/user';
 import { NFCDevice } from '@/entities/NFCDevice';
 import Validators from '@/mixins/Validators';
+import eventBus from '@/eventbus';
+import { requestPasswordReset } from '@/api/users';
 
 @Component({
   components: {
@@ -216,7 +222,7 @@ export default class Profile extends Vue {
    * Fetch all the user info that is needed for the profile
    */
   beforeMount() {
-    this.userState.fetchSelf();
+    this.userState.fetchSelf(true);
     this.firstname = this.userState.self.firstname;
     this.lastname = this.userState.self.lastname;
     this.email = this.userState.self.email || '';
@@ -228,8 +234,16 @@ export default class Profile extends Vue {
    */
   changePincode(event: Event) {
     event.preventDefault();
-    if (!this.validateNewPincode && this.validateConfirmPincode) {
-      this.userState.updatePinCode(this.pincode.newPincode);
+    if (this.validateNewPincode && this.validateConfirmPincode
+      && this.pincode.newPincode !== '') {
+      this.userState.updatePinCode(this.pincode.newPincode).then(() => {
+        eventBus.$emit('success', {
+          message: String(this.$t('profile.Pin code updated')),
+          title: 'Success',
+        });
+      }).catch(() => {
+        // pass
+      });
       this.pincode.newPincode = null;
       this.pincode.confirmPincode = null;
     }
@@ -242,10 +256,12 @@ export default class Profile extends Vue {
     event.preventDefault();
     if (this.validateEmail && this.validateFirstname) {
       this.userState.updateUserInformation({
-        userID: this.userState.self.id,
-        firstname: this.firstname,
-        lastname: this.lastname,
-        email: this.email || '',
+        id: this.userState.self.id,
+        user: {
+          firstName: this.firstname,
+          lastName: this.lastname,
+          email: this.email,
+        },
       });
     }
   }
@@ -396,6 +412,10 @@ input#confirm-pincode {
 
 button {
   float: left !important;
+}
+
+.warning {
+  color: rgba(255, 0, 0, 0.73);
 }
 
 .nfc-device-badge {

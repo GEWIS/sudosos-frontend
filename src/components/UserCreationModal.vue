@@ -82,10 +82,10 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
-import { UserType } from '@/entities/User';
 import Validators from '@/mixins/Validators';
 import { getModule } from 'vuex-module-decorators';
-import UserModule, { CreateUserRequest } from '@/store/modules/user';
+import UserModule from '@/store/modules/user';
+import { CreateUserRequest } from '@/api/users';
 
 @Component
 export default class UserCreationModal extends Vue {

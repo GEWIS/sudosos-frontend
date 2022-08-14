@@ -44,6 +44,24 @@ export default class App extends Formatters {
         appendToast: true,
       });
     });
+
+    eventBus.$on('success', (data: {message: string, title: string}) => {
+      const toastBody = this.$createElement('div',
+        { class: [''] },
+        [
+          this.$createElement('p',
+            { class: ['mb-2'] },
+            `${data.message}`),
+        ]);
+
+      // Show the toast for 5 seconds
+      this.$bvToast.toast(toastBody, {
+        title: data.title,
+        autoHideDelay: 5000,
+        variant: 'success',
+        appendToast: true,
+      });
+    });
   }
 }
 </script>
