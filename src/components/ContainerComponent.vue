@@ -190,7 +190,7 @@ export default class ContainerComponent extends Vue {
   };
 
   beforeMount() {
-    this.userState.fetchUser();
+    this.userState.fetchSelf();
     this.selected = this.alreadySelected;
   }
 

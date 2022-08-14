@@ -2,27 +2,24 @@ import {
   Action, Module, Mutation, VuexModule,
 } from 'vuex-module-decorators';
 import store from '@/store';
-import { BaseUser, User, UserPermissions } from '@/entities/User';
+import { BaseUser, User } from '@/entities/User';
 import APIHelper from '@/mixins/APIHelper';
 import UserTransformer from '@/transformers/UserTransformer';
 import { NFCDevice } from '@/entities/NFCDevice';
-import jwtDecode, { JwtPayload } from 'jwt-decode';
-import Dinero, { DineroObject } from 'dinero.js';
+import jwtDecode from 'jwt-decode';
 import { LoginResponse } from '@/entities/APIResponses';
+import {
+  CreateUserRequest, getAllUsers,
+  getUser, getUsers, PaginatedUserResponse, postUser, UserQueryParameters,
+} from '@/api/users';
+import { getSelfBalance } from '@/api/balance';
+import dinero from 'dinero.js';
 
 interface UpdateUserInfo {
   userID: number,
   firstname: string,
   lastname: string,
   email: string,
-}
-
-export interface CreateUserRequest {
-  firstName: string,
-  lastName: string,
-  active: boolean,
-  type: number,
-  email: string
 }
 
 @Module({
@@ -82,8 +79,8 @@ export default class UserModule extends VuexModule {
   }
 
   @Mutation
-  updateSaldo(newSaldo: { amount: DineroObject }) {
-    this.self.saldo = Dinero({ ...newSaldo.amount });
+  updateSaldo(newSaldo: dinero.Dinero) {
+    this.self.saldo = newSaldo;
   }
 
   @Mutation
@@ -111,9 +108,7 @@ export default class UserModule extends VuexModule {
   })
   fetchBalance(force: boolean = false) {
     if (this.self.saldo === undefined || force) {
-      APIHelper.getResource('balances').then((saldoResponse) => {
-        this.context.commit('updateSaldo', saldoResponse);
-      });
+      getSelfBalance().then((b) => this.context.commit('updateSaldo', b));
     }
   }
 
@@ -154,9 +149,8 @@ export default class UserModule extends VuexModule {
 
   @Action
   async fetchAllUsers() {
-    await APIHelper.readPagination('users', 500).then((userResponses: any[]) => {
-      const users = userResponses.map((u) => UserTransformer.makeUser(u));
-      this.context.commit('setUser', users);
+    await getAllUsers().then((users) => {
+      this.context.commit('setUsers', users);
     });
   }
 
@@ -174,27 +168,40 @@ export default class UserModule extends VuexModule {
 
   @Action
   async createUser(userRequest: CreateUserRequest): Promise<User | BaseUser> {
-    return Promise.resolve(APIHelper.postResource('users', userRequest).then((userResponse) => {
-      const user = UserTransformer.makeUser(userResponse);
+    return Promise.resolve(postUser(userRequest).then((user) => {
       this.context.commit('setUser', user);
       return user;
+    }));
+  }
+
+  @Action
+  async fetchUser(id: number, force: boolean = false): Promise<User | BaseUser> {
+    if (!this.users.has(id) || force) {
+      return Promise.resolve(getUser(id).then((user) => {
+        this.context.commit('setUser', user);
+        return user;
+      }));
+    }
+    return this.users.get(id);
+  }
+
+  @Action
+  async fetchUsers(queryParameters: UserQueryParameters): Promise<PaginatedUserResponse> {
+    return Promise.resolve(getUsers(queryParameters).then((response) => {
+      this.context.commit('setUsers', response.records);
+      return response;
     }));
   }
 
   @Action({
     rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
-  async fetchUser(force: boolean = false) {
+  async fetchSelf(force: boolean = false) {
     if (this.self.id === undefined || force) {
-      const token = jwtDecode(APIHelper.getToken().jwtToken as string) as any;
-      this.extractResponse(token);
-
-      await APIHelper.getResource(`users/${token.user.id}`).then((userResponse) => {
-        this.context.commit('setSelf', UserTransformer.makeUser(userResponse));
-      });
-      await APIHelper.getResource('balances').then((saldoResponse) => {
-        this.context.commit('updateSaldo', saldoResponse);
-      });
+      const token = jwtDecode(APIHelper.getToken().jwtToken) as any;
+      this.context.commit('extractResponse', token);
+      getUser(token.user.id).then((u) => this.context.commit('setSelf', u));
+      getSelfBalance().then((b) => this.context.commit('updateSaldo', b));
     }
   }
 }

@@ -73,31 +73,15 @@
       <b-col sm="12" md="6">
         <b-card class="h-100" v-if="isLocal">
           <b-card-title>
-            {{ $t('userDetails.Change password') }}
+            {{ $t('userDetails.Reset password') }}
           </b-card-title>
           <b-card-body>
-            <b-form @submit="updatePassword">
-              <b-form-group
-                id="user-password-group"
-                :label="$t('userDetails.Password')"
-                label-for="new-password"
-                :invalid-feedback="passwordFeedback"
-                :state="validatePassword"
-              >
-                <b-form-input id="new-password" v-model="password" type="password" />
-              </b-form-group>
-
-              <b-form-group
-                id="user-password-confirm-group"
-                :label="$t('userDetails.Confirm password')"
-                label-for="new-password-confirm"
-                :invalid-feedback="confirmPasswordFeedback"
-                :state="validateConfirmPassword"
-              >
-                <b-form-input id="new-password-confirm" v-model="confirmPassword" type="password" />
-              </b-form-group>
-              <b-button type="submit" variant="primary">
-                {{ $t('userDetails.Update password')}}
+            <b-form>
+              <p> A reset password link will be sent to {{ email }} </p>
+              <b-button variant="primary" :disabled="passwordReset.busy"
+                        @click="requestPasswordReset">
+                <b-spinner v-if="passwordReset.busy" small></b-spinner>
+                {{ $t('userDetails.Request reset')}}
               </b-button>
             </b-form>
           </b-card-body>
@@ -160,8 +144,8 @@ import { getModule } from 'vuex-module-decorators';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
 import UserModule from '@/store/modules/user';
 import { NFCDevice } from '@/entities/NFCDevice';
-import { getUser } from '@/api/users';
-import { User, UserType } from '@/entities/User';
+import { LOCAL_USER_TYPES, User } from '@/entities/User';
+import { requestPasswordReset } from '@/api/users';
 
 @Component({
   components: {
@@ -202,14 +186,13 @@ export default class UserDetails extends Vue {
    * Fetch all the user info that is needed for the profile
    */
   async beforeMount() {
-    const user = (await getUser(this.id)) as User;
+    const user = await this.userState.fetchUser(Number(this.id)) as User;
     this.firstname = user.firstname;
     this.lastname = user.lastname;
     this.email = user.email || '';
     this.active = user.active;
     this.nfcDevices = user.nfcDevices;
-    console.error(user.type);
-    if (user.type === UserType.LOCAL_USER) this.isLocal = true;
+    if (LOCAL_USER_TYPES.includes(user.type)) this.isLocal = true;
   }
 
   /**
@@ -228,19 +211,23 @@ export default class UserDetails extends Vue {
     }
   }
 
-  /**
-   * Updates the users password
-   */
-  updatePassword(event: Event) {
+  passwordReset = {
+    busy: false,
+    success: false,
+    requested: false,
+  }
+
+  requestPasswordReset(event: Event) {
     event.preventDefault();
-    if (this.validatePassword && this.validateConfirmPassword) {
-      this.userState.updateUsersPassword({
-        userID: Number(this.id),
-        password: this.password || '',
-      });
-      this.password = null;
-      this.confirmPassword = null;
-    }
+    this.passwordReset.busy = true;
+    this.passwordReset.requested = true;
+    requestPasswordReset(this.email).then(() => {
+      this.passwordReset.success = true;
+    }).catch(() => {
+      this.passwordReset.success = false;
+    }).finally(() => {
+      this.passwordReset.busy = false;
+    });
   }
 
   /**

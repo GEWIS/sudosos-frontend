@@ -160,7 +160,7 @@ export default class UserTable extends Formatters {
     const skip = (page - 1) * this.perPage;
     const take = this.perPage;
 
-    const { records, _pagination } = (await getUsers({ take, skip }));
+    const { records, _pagination } = (await this.userState.fetchUsers({ take, skip }));
     this.users = records;
 
     this.totalRows = _pagination.count;

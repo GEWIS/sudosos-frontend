@@ -26,7 +26,7 @@ export default class TransactionEditPage extends Vue {
   transaction: Transaction = {} as Transaction;
 
   beforeMount() {
-    this.userState.fetchUser();
+    this.userState.fetchSelf();
     this.transactionState.fetchUsersTransactions(APIHelper.getTokenUser().id);
     const id = Number(this.$route.params.id);
     const index = this.transactionState.userTransactions.findIndex((trans) => trans.id === id);

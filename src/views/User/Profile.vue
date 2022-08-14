@@ -216,7 +216,7 @@ export default class Profile extends Vue {
    * Fetch all the user info that is needed for the profile
    */
   beforeMount() {
-    this.userState.fetchUser();
+    this.userState.fetchSelf();
     this.firstname = this.userState.self.firstname;
     this.lastname = this.userState.self.lastname;
     this.email = this.userState.self.email || '';

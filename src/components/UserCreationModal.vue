@@ -13,6 +13,7 @@
         label-cols-sm="3"
         label="Firstname"
         :state="nameState"
+        :invalid-feedback="firstNameFeedback"
         label-align="left"
         label-for="name"
       >

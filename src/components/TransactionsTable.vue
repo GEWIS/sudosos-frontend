@@ -206,7 +206,7 @@ export default class TransactionsTable extends Formatters {
   ];
 
   async beforeMount() {
-    this.userState.fetchUser();
+    this.userState.fetchSelf();
     await this.fetchNewData();
 
     // If the locale is changed make sure the labels are also correctly updated for the b-table

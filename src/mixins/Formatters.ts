@@ -23,7 +23,7 @@ export default class Formatters extends Vue {
   userState = getModule(UserModule);
 
   beforeMount() {
-    this.userState.fetchUser();
+    this.userState.fetchSelf();
   }
 
   /**

@@ -140,7 +140,7 @@ export default class Dashboard extends Vue {
   async beforeMount() {
     APIHelper.getToken();
     if (Object.keys(this.userState.self).length <= 0) {
-      await this.userState.fetchUser(true);
+      await this.userState.fetchSelf(true);
     }
   }
 

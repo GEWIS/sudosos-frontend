@@ -200,7 +200,7 @@ export default class POSCreate extends Vue {
   organsList: {value: number, text: string}[] = [];
 
   async beforeMount() {
-    await this.userState.fetchUser();
+    await this.userState.fetchSelf();
     this.organsList = this.userState.organsList;
     this.posOwnerId = this.userState.organsList[0].value;
 

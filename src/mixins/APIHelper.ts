@@ -147,7 +147,7 @@ function fetchResource(route: string, body: ResponseBody) {
 }
 
 export default {
-  getToken() {
+  getToken(): { jwtToken: string, jwtExpires: string } {
     const rawToken = localStorage.getItem('jwt_token') as string;
     let token = {} as Token;
     if (rawToken !== null) token = JSON.parse(rawToken);
@@ -251,7 +251,7 @@ export default {
     return fetchResource(constructedRoute, postBody);
   },
 
-  postResource(route: string, data: any = {}, args = null as any) {
+  postResource(route: string, data: any = {}, args = null as any): Promise<any> {
     const constructedRoute = makeRoute(route, args);
 
     const postBody = {

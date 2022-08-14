@@ -288,7 +288,7 @@ export default class ProductEditModal extends Formatters {
   organsList: {value: number, text: string}[] = [];
 
   async beforeMount() {
-    this.userState.fetchUser();
+    this.userState.fetchSelf();
     this.organsList = this.userState.organsList;
     this.productOwnerId = this.organsList[0].value;
     this.products = await getProducts(999);
