@@ -51,9 +51,12 @@
     "Sunday": "Sunday"
   },
   "termsOfService": {
+    "termsOfService": "Terms of Service",
+    "modalHeader": "SudoSOS Terms of Service",
+    "ok": "OK",
     "acceptFirst": "Accept the Terms of Service",
     "description": "Before you can use SudoSOS, you need to accept the Terms of Service. Please read the contents of the terms of service below.",
-    "extensiveDataProcessing": "SudoSOS can use your personal data to provide more insights, both for yourself as well as other users. When you enable the checkbox below, you enable this feature and you can see extensive statistics from other users as well. This feature is optional.",
+    "extensiveDataProcessing": "SudoSOS can use your personal data to provide more insights, both for yourself as well as other people within GEWIS. When you enable the checkbox below, you enable this feature and you can see extensive statistics of yourself, but of other users as well. This feature is optional.",
     "agreeData": "I agree with extensive data processing for my account (optional).",
     "agreeToS": "I agree with the Terms of Service"
   },

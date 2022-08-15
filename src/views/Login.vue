@@ -1,55 +1,60 @@
 <template>
-  <b-container fluid="md">
-    <BeerMugs />
-    <b-row class="vh-100 text-center" align-v="center">
-      <b-col>
-        <img id="login-image" class="m-4" src="~@/assets/img/bier.png" alt="Logo" />
-        <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('login.SudoSOS Login') }}</h1>
-        <b-form class="login-form">
-          <b-button @click="loginViaGEWIS" variant="success">
-            <img src="~@/assets/img/gewis-branding.svg" />
-            {{ $t("login.Login via GEWIS") }}
-          </b-button>
+  <div>
+    <main>
+      <b-container fluid="md">
+        <BeerMugs />
+        <b-row class="text-center" align-v="center">
+          <b-col>
+            <img id="login-image" class="m-4" src="~@/assets/img/bier.png" alt="Logo" />
+            <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('login.SudoSOS Login') }}</h1>
+            <b-form class="login-form">
+              <b-button @click="loginViaGEWIS" variant="success">
+                <img src="~@/assets/img/gewis-branding.svg" />
+                {{ $t("login.Login via GEWIS") }}
+              </b-button>
 
-          <hr class="mt-5 mb-4">
+              <hr class="mt-5 mb-4">
 
-          <b-form-group
-            id="username-group"
-            :label="$t('login.Username')"
-            label-for="username"
-          >
-            <b-form-input
-              id="username"
-              v-model="username"
-              type="text"
-              :placeholder="$t('login.Enter username')"
-            ></b-form-input>
-          </b-form-group>
+              <b-form-group
+                id="username-group"
+                :label="$t('login.Username')"
+                label-for="username"
+              >
+                <b-form-input
+                  id="username"
+                  v-model="username"
+                  type="text"
+                  :placeholder="$t('login.Enter username')"
+                ></b-form-input>
+              </b-form-group>
 
-          <b-form-group
-            id="password-group"
-            :label="$t('login.Password')"
-            label-for="password"
-            class="mt-2"
-          >
-            <b-form-input
-              id="password"
-              v-model="password"
-              type="password"
-              :placeholder="$t('login.Enter password')"
-              v-on:keydown.enter="login"
-            ></b-form-input>
-          </b-form-group>
+              <b-form-group
+                id="password-group"
+                :label="$t('login.Password')"
+                label-for="password"
+                class="mt-2"
+              >
+                <b-form-input
+                  id="password"
+                  v-model="password"
+                  type="password"
+                  :placeholder="$t('login.Enter password')"
+                  v-on:keydown.enter="login"
+                ></b-form-input>
+              </b-form-group>
 
-          <b-button @click="login" variant="primary">{{ $t('login.Login') }}</b-button>
-          <div
-            class="password-reset"
-            @click="resetPassword"
-          >{{ $t('login.Password reset') }}</div>
-        </b-form>
-      </b-col>
-    </b-row>
-  </b-container>
+              <b-button @click="login" variant="primary">{{ $t('login.Login') }}</b-button>
+              <div
+                class="password-reset"
+                @click="resetPassword"
+              >{{ $t('login.Password reset') }}</div>
+            </b-form>
+          </b-col>
+        </b-row>
+      </b-container>
+    </main>
+    <PageFooter />
+  </div>
 </template>
 
 <script lang="ts">
@@ -61,11 +66,13 @@ import UserModule from '@/store/modules/user';
 import { v4 as uuid } from 'uuid';
 import { LoginResponse } from '@/entities/APIResponses';
 import BeerMugs from '@/components/BeerMugs.vue';
+import PageFooter from '@/components/PageFooter.vue';
 
 dotenv.config();
 
 @Component({
   components: {
+    PageFooter,
     BeerMugs,
   },
 })

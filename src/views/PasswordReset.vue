@@ -1,85 +1,91 @@
 <template>
-  <b-container fluid="md">
-    <BeerMugs />
-    <b-row class="vh-100 text-center" align-v="center">
-      <b-col>
-        <img id="login-image" class="m-4" src="~@/assets/img/bier.png" alt="Logo" />
-        <h1 class="mb-1 mb-sm-2 mb-lg-3">{{ $t('login.SudoSOS Login') }}</h1>
+  <div>
+    <main>
+      <b-container fluid="md">
+        <BeerMugs />
+        <b-row class="text-center" align-v="center">
+          <b-col>
+            <img id="login-image" class="m-4" src="~@/assets/img/bier.png" alt="Logo" />
+            <h1 class="mb-1 mb-sm-2 mb-lg-3">{{ $t('login.SudoSOS Login') }}</h1>
 
-        <b-form v-if="passwordResetMode === 0" class="login-form" @submit="resetPasswordRequest">
-          <b-form-group
-            id="email-group"
-            :label="$t('login.Email')"
-            label-for="email"
-          >
-            <b-form-input
-              id="email"
-              v-model="email"
-              type="text"
-              :placeholder="$t('login.Enter email')"
-            ></b-form-input>
-          </b-form-group>
-          <b-button
-            variant="primary"
-            type="submit"
-          >{{ $t('login.Reset') }}</b-button>
-          <div
-            class="password-reset-toggle"
-            @click="hidePasswordReset"
-          >{{ $t('login.Back to login') }}</div>
-        </b-form>
-        <div v-else-if="passwordResetMode === 1" class="login-form">
-          <div>{{ $t('login.Email sent', { email: this.email}) }}</div>
-          <div
-            class="password-reset-toggle"
-            @click="hidePasswordReset"
-          >{{ $t('login.Back to login') }}</div>
-        </div>
-        <b-form v-else class="login-form" @submit="setNewPassword">
-          <h2 class="mb-2 mb-sm-3 mb-lg-4"><small>{{
-              $t('login.Reset the password for', {email: this.email})
-            }}</small></h2>
-          <b-form-group
-            id="password-group"
-            :label="$t('login.New password')"
-            :state="strongPassword"
-            :invalid-feedback="weakPassword"
-            label-for="password"
-          >
-            <b-form-input
-              id="password"
-              v-model="password"
-              type="password"
-              :placeholder="$t('login.Enter password')"
-            ></b-form-input>
-          </b-form-group>
-          <b-form-group
-            id="password-2-group"
-            :label="$t('login.Confirm password')"
-            :state="equalPassword"
-            :invalid-feedback="unequalPassword"
-            label-for="password-2"
-            class="mt-2"
-          >
-            <b-form-input
-              id="password-2"
-              v-model="password2"
-              type="password"
-              :placeholder="$t('login.Enter password again')"
-            ></b-form-input>
-          </b-form-group>
-          <b-button
-            variant="primary"
-            type="submit"
-          >{{ $t('login.Set new password') }}</b-button>
-          <div
-            class="password-reset-toggle"
-            @click="hidePasswordReset"
-          >{{ $t('login.Back to login') }}</div>
-        </b-form>
-      </b-col>
-    </b-row>
-  </b-container>
+            <b-form v-if="passwordResetMode === 0"
+                    class="login-form" @submit="resetPasswordRequest">
+              <b-form-group
+                id="email-group"
+                :label="$t('login.Email')"
+                label-for="email"
+              >
+                <b-form-input
+                  id="email"
+                  v-model="email"
+                  type="text"
+                  :placeholder="$t('login.Enter email')"
+                ></b-form-input>
+              </b-form-group>
+              <b-button
+                variant="primary"
+                type="submit"
+              >{{ $t('login.Reset') }}</b-button>
+              <div
+                class="password-reset-toggle"
+                @click="hidePasswordReset"
+              >{{ $t('login.Back to login') }}</div>
+            </b-form>
+            <div v-else-if="passwordResetMode === 1" class="login-form">
+              <div>{{ $t('login.Email sent', { email: this.email}) }}</div>
+              <div
+                class="password-reset-toggle"
+                @click="hidePasswordReset"
+              >{{ $t('login.Back to login') }}</div>
+            </div>
+            <b-form v-else class="login-form" @submit="setNewPassword">
+              <h2 class="mb-2 mb-sm-3 mb-lg-4"><small>{{
+                  $t('login.Reset the password for', {email: this.email})
+                }}</small></h2>
+              <b-form-group
+                id="password-group"
+                :label="$t('login.New password')"
+                :state="strongPassword"
+                :invalid-feedback="weakPassword"
+                label-for="password"
+              >
+                <b-form-input
+                  id="password"
+                  v-model="password"
+                  type="password"
+                  :placeholder="$t('login.Enter password')"
+                ></b-form-input>
+              </b-form-group>
+              <b-form-group
+                id="password-2-group"
+                :label="$t('login.Confirm password')"
+                :state="equalPassword"
+                :invalid-feedback="unequalPassword"
+                label-for="password-2"
+                class="mt-2"
+              >
+                <b-form-input
+                  id="password-2"
+                  v-model="password2"
+                  type="password"
+                  :placeholder="$t('login.Enter password again')"
+                ></b-form-input>
+              </b-form-group>
+              <b-button
+                variant="primary"
+                type="submit"
+              >{{ $t('login.Set new password') }}</b-button>
+              <div
+                class="password-reset-toggle"
+                @click="hidePasswordReset"
+              >{{ $t('login.Back to login') }}</div>
+            </b-form>
+          </b-col>
+        </b-row>
+      </b-container>
+    </main>
+    <PageFooter />
+  </div>
 </template>
 
 <script lang="ts">
@@ -88,11 +94,13 @@ import { Component, Vue } from 'vue-property-decorator';
 import isStrongPassword from 'validator/lib/isStrongPassword';
 import APIHelper from '@/mixins/APIHelper';
 import BeerMugs from '@/components/BeerMugs.vue';
+import PageFooter from '@/components/PageFooter.vue';
 
 dotenv.config();
 
 @Component({
   components: {
+    PageFooter,
     BeerMugs,
   },
 })
