@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid="lg" class="mt-lg-4 mt-2">
+  <b-container fluid="lg" class="mt-lg-4 mt-2 mb-4">
     <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('termsOfService.acceptFirst') }}</h1>
     <p>{{ $t('termsOfService.description') }}</p>
     <hr />

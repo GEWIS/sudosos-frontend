@@ -7,6 +7,7 @@
       id="terms-of-service-modal" :title="$t('termsOfService.modalHeader')"
       ok-only
       :ok-title="$t('termsOfService.ok')"
+      size="xl"
     >
       <terms-of-service-text />
     </b-modal>
