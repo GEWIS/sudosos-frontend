@@ -27,7 +27,6 @@ import {
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import vSelect from 'vue-select';
-import { StripePlugin } from '@vue-stripe/vue-stripe';
 import App from './App.vue';
 import router from './router';
 import store from './store';

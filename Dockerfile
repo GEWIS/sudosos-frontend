@@ -5,7 +5,6 @@ COPY ./package.json ./package-lock.json ./
 RUN npm install
 COPY ./ ./
 RUN npm run build
-RUN cat ./.env
 
 # The target image that will be run
 FROM nginx:alpine as target
