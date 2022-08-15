@@ -322,7 +322,6 @@ export default class ProductEditModal extends Formatters {
       // If a product is selected we are adding that to the container meaning we do not
       // also have to create a new product
       if (this.selectedProduct !== null) {
-        console.log('selectedProduct', this.selectedProduct);
         await this.containerState.addProduct({
           container: this.container,
           product: this.selectedProduct as any,
@@ -363,7 +362,7 @@ export default class ProductEditModal extends Formatters {
           product: product as UpdateProductRequest, image: this.file,
         });
       } else {
-        await this.productState.addProduct(product as any, this.file);
+        await this.productState.addProduct({ product: product as any, image: this.file });
       }
       this.$bvModal.hide('edit-product');
     } else {

@@ -168,12 +168,11 @@ export default class ContainerModule extends VuexModule {
   @Action({
     rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
-  fetchContainers(force: boolean = false) {
+  async fetchContainers(force: boolean = false) {
     if (Object.keys(this.containerMapping).length === 0 || force) {
-      (APIHelper.getResource('containers') as Promise<{records: any[]}>).then((res) => {
-        const cntrs = res.records.map((cntr) => ContainerTransformer.makeContainer(cntr));
-        this.context.commit('setContainers', cntrs);
-      });
+      const res: { records: any[] } = await APIHelper.getResource('containers');
+      const cntrs = res.records.map((cntr) => ContainerTransformer.makeContainer(cntr));
+      this.context.commit('setContainers', cntrs);
     }
   }
 

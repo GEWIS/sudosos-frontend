@@ -25,8 +25,8 @@ export default class ProductsModule extends VuexModule {
 
   @Mutation
   addProductToState(product: Product) {
-    console.log('add product to state', product);
     this.products.push(product);
+    this.products = this.products.sort();
   }
 
   @Mutation
@@ -46,9 +46,9 @@ export default class ProductsModule extends VuexModule {
   }
 
   @Action
-  async addProduct(product: CreateProductRequest, image?: File) {
-    let productResponse = await APIHelper.postResource('products', product);
-    if (image) await setProductImage(productResponse.id, image);
+  async addProduct(data: { product: CreateProductRequest, image?: File }) {
+    let productResponse = await APIHelper.postResource('products', data.product);
+    if (data.image) await setProductImage(productResponse.id, data.image);
     productResponse = await APIHelper.getResource(`products/${productResponse.id}`);
     const productToAdd = ProductTransformer.makeProduct(productResponse) as Product;
     this.context.commit('addProductToState', productToAdd);
@@ -70,7 +70,6 @@ export default class ProductsModule extends VuexModule {
 
     await APIHelper.patchResource(`products/${product.id}`, updateRequest);
     if (image) {
-      console.log('update image');
       await setProductImage((product as any).id, image);
     }
     const response = await APIHelper.getResource(`products/${product.id}`);

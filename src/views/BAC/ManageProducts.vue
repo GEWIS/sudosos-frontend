@@ -37,7 +37,7 @@
           </b-button>
         </div>
         <ContainerComponent
-          v-for="container in this.containerState.containerMapping.values()"
+          v-for="container in containerState.containerMapping.values()"
           v-bind:key="container.id"
           :container="container"
           :enabled="true"
@@ -111,9 +111,11 @@ export default class ManageProducts extends Vue {
   activeContainer: Container = {} as Container;
 
   async beforeMount() {
-    this.containerState.fetchContainers();
-    this.containerState.fetchPublicContainers();
-    this.productState.fetchProducts();
+    await Promise.all([
+      this.containerState.fetchContainers(),
+      this.containerState.fetchPublicContainers(),
+      this.productState.fetchProducts(),
+    ]);
   }
 
   /**
