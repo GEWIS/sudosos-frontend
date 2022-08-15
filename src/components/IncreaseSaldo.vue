@@ -3,7 +3,6 @@
     <b-card>
       <b-card-title>
         Increase saldo
-<!--        {{ $t('c_currentSaldo.saldo') }}-->
       </b-card-title>
       <b-card-body class="mb-0">
         <p class="mb-2">
@@ -17,80 +16,81 @@
             </b-input-group>
           </b-col>
         </b-row>
-        <b-row>
-          <b-col class="font-weight-bold">
-            <label for="ideal-bank-element">
-              iDEAL Bank
-            </label>.
-            <div ref="bank" id="ideal-bank-element">
-            </div>
-          </b-col>
-        </b-row>
-<!--        <b-row>-->
-<!--          <b-col class="font-weight-bold">-->
-<!--            <form id="payment-form">-->
-<!--              <div id="payment-element">-->
-<!--                &lt;!&ndash;Stripe.js injects the Payment Element&ndash;&gt;-->
-<!--              </div>-->
-<!--              <button id="submit">-->
-<!--                <div class="spinner hidden" id="spinner"></div>-->
-<!--                <span id="button-text">Pay now</span>-->
-<!--              </button>-->
-<!--              <div id="payment-message" class="hidden"></div>-->
-<!--            </form>-->
-<!--          </b-col>-->
-<!--        </b-row>-->
         <b-row class="mt-3">
           <b-col>
           <b-button
             variant="primary"
             class="mx-1 my-1 my-sm-0"
             v-on:click="pay">
-            Increase Balance
+            Start Payment
           </b-button>
           </b-col>
         </b-row>
       </b-card-body>
     </b-card>
+    <b-modal id="payment-modal" :lazy="false" hide-header-close>
+      <p> You will be topping up with €{{ whole }},{{decimal}} </p>
+      <form ref="payment" id="payment-form" v-show="!loading">
+        <div id="payment-element">
+          <!--Stripe.js injects the Payment Element-->
+        </div>
+      </form>
+      <template v-slot:modal-footer="{ }">
+        <b-button
+          variant="primary"
+          :disabled="loading"
+          class="btn-empty"
+          @click="cancelPay"
+        >{{ $t('c_productEditModal.cancel') }}
+        </b-button>
+        <b-button
+          variant="primary"
+          :disabled="loading"
+          class="btn-primary"
+          @click="submitPay">
+          PAY
+        </b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import stripeDeposit from '@/api/stripe';
+import { loadStripe } from '@stripe/stripe-js';
 
 @Component
 export default class IncreaseSaldo extends Vue {
-  private idealBank: any = null;
-
   whole = 0;
 
   decimal = 0;
 
-  $stripe: any;
+  stripe: any;
 
-  get stripeElements() {
-    return this.$stripe.elements();
-  }
-
-  // eslint-disable-next-line class-methods-use-this
   async beforeMount() {
-    const options = {
-      // Custom styling can be passed to options when creating an Element
-      style: {
-        base: {
-          padding: '10px 12px',
-          color: '#d40000',
-          fontSize: '16px',
-          '::placeholder': {
-            color: '#aab7c4',
-          },
-        },
-      },
-    };
-    this.idealBank = await this.stripeElements.create('idealBank', options);
-    this.idealBank.mount('#ideal-bank-element');
+    this.stripe = await loadStripe(process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY);
   }
+
+  async cancelPay() {
+    this.paymentElement.destroy();
+    this.$bvModal.hide('payment-modal');
+  }
+
+  async submitPay() {
+    this.setLoading(true);
+    const { error } = await this.stripe.confirmPayment({
+      elements: this.elements,
+      confirmParams: {
+        return_url: process.env.VUE_APP_STRIPE_RETURN_URL,
+      },
+    });
+    this.setLoading(false);
+  }
+
+  elements: any = undefined;
+
+  paymentElement: any = undefined;
 
   async pay() {
     const amount = Number(this.whole) * 100 + Number(this.decimal);
@@ -102,24 +102,17 @@ export default class IncreaseSaldo extends Vue {
       },
     };
     const paymentIntent = await stripeDeposit(deposit);
-    //
-    // const elements = this.$stripe.elements({ clientSecret: paymentIntent.clientSecret });
-    // const paymentElement = elements.create('payment');
-    // paymentElement.mount('#payment-element');
+    this.elements = this.stripe.elements({ clientSecret: paymentIntent.clientSecret });
+    this.paymentElement = this.elements.create('payment');
+    this.$bvModal.show('payment-modal');
+    await this.$nextTick();
+    this.paymentElement.mount('#payment-element');
+  }
 
-    // Redirects away from the client
-    this.$stripe.confirmIdealPayment(
-      paymentIntent.clientSecret,
-      {
-        payment_method: {
-          ideal: this.idealBank,
-          // billing_details: {
-          //   name: accountholderName.value,
-          // },
-        },
-        return_url: process.env.VUE_APP_STRIPE_RETURN_URL,
-      },
-    );
+  loading: boolean = false;
+
+  setLoading(isLoading: boolean) {
+    this.loading = isLoading;
   }
 }
 </script>
@@ -137,8 +130,6 @@ export default class IncreaseSaldo extends Vue {
 
 input,
 .StripeElement {
-  height: 40px;
-
   color: #32325d;
   background-color: white;
   border: 1px solid transparent;

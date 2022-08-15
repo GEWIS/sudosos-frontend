@@ -1,4 +1,5 @@
 import APIHelper from '@/mixins/APIHelper';
+import { ResponseBody } from '@/entities/ResponseBody';
 
 export interface Deposit {
   amount : {
