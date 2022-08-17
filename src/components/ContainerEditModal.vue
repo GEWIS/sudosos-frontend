@@ -101,10 +101,14 @@ import { getContainerProducts, patchContainer, postContainer } from '@/api/conta
 import { Product } from '@/entities/Product';
 import { User } from '@/entities/User';
 import { getUsers } from '@/api/users';
+import { getModule } from 'vuex-module-decorators';
+import ContainerModule from '@/store/modules/containers';
 
   @Component
 export default class ContainerEditModal extends Formatters {
     @Prop() private editContainer! : Container;
+
+    private containerState = getModule(ContainerModule);
 
     containerName: string | null = null;
 
@@ -140,13 +144,11 @@ export default class ContainerEditModal extends Formatters {
       updatedContainer.ownerId = this.containerOwnerId;
 
       if (this.editContainer.id) {
-        patchContainer(this.editContainer.id, updatedContainer).then((data) => {
-          this.$emit('updatedContainer', data);
-        });
+        this.containerState.updateContainer(
+          { id: this.editContainer.id, container: updatedContainer },
+        );
       } else {
-        postContainer(updatedContainer).then((data) => {
-          this.$emit('addedContainer', data);
-        });
+        this.containerState.addContainer(updatedContainer);
       }
 
       this.$bvModal.hide('edit-container');
