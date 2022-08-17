@@ -106,6 +106,7 @@ export default class UserCreationModal extends Vue {
   ];
 
   get validateFirstname() {
+    if (this.firstname === null) return true;
     return Validators.firstName(this.firstname);
   }
 
