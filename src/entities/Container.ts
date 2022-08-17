@@ -19,9 +19,12 @@ export interface ContainerList {
   records: Container[];
 }
 
-export interface CreateContainerRequest {
+export interface UpdateContainerRequest {
   name: string,
   products: number[],
   public: boolean,
-  ownerId?: number,
+}
+
+export interface CreateContainerRequest extends UpdateContainerRequest{
+  ownerId: number,
 }

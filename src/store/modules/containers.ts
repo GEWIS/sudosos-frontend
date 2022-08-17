@@ -4,12 +4,17 @@ import {
 import store from '@/store';
 import APIHelper from '@/mixins/APIHelper';
 import { CreateProductRequest, Product, UpdateProductRequest } from '@/entities/Product';
-import { Container } from '@/entities/Container';
+import { Container, UpdateContainerRequest } from '@/entities/Container';
 import ProductTransformer from '@/transformers/ProductTransformer';
-import ContainerTransformer from '@/transformers/ContainerTransformer';
-import ProductsModule from '@/store/modules/products';
 import { postProductImage, setProductImage } from '@/api/products';
-import { getContainerProducts } from '@/api/containers';
+import {
+  deleteContainer, getAllContainers, getAllPublicContainers,
+  getContainer,
+  getContainerProducts, patchContainer,
+  postContainer,
+} from '@/api/containers';
+import { Dictionary, getItems } from '@/store/dictionary';
+import Vue from 'vue';
 
 interface ContainerProductParam {
   containerId: number;
@@ -25,57 +30,69 @@ interface ContainerProductsParam {
   dynamic: true, namespaced: true, store, name: 'ContainerModule',
 })
 export default class ContainerModule extends VuexModule {
-  containerMapping = new Map<number, Container>();
+  containerDict: Dictionary<Container> = {};
 
-  publicContainers: Container[] = [];
+  get containers() {
+    return getItems(this.containerDict);
+  }
+
+  publicContainerDict: Dictionary<Container> = {};
+
+  get publicContainers() {
+    return getItems(this.publicContainerDict);
+  }
 
   @Mutation
   reset() {
-    this.containerMapping = new Map();
-    this.publicContainers = [];
+    this.containerDict = {};
+    this.publicContainerDict = {};
   }
 
   @Mutation
   setContainers(containers: Container[]) {
     containers.forEach((c) => {
-      this.containerMapping.set(c.id, c);
+      Vue.set(this.containerDict, c.id, c);
     });
   }
 
   @Mutation
   setPublicContainers(containers: Container[]) {
-    this.publicContainers = containers;
-  }
-
-  @Mutation
-  addContainerToState(container: Container) {
-    this.containerMapping.set(container.id, container);
+    containers.forEach((c) => {
+      Vue.set(this.publicContainerDict, c.id, c);
+    });
   }
 
   @Action
   async addContainer(container: any) {
-    const containerResponse = await APIHelper.postResource('containers', container);
-    const newContainer = ContainerTransformer.makeContainer(containerResponse) as Container;
-    this.context.commit('addContainerToState', newContainer);
+    return postContainer(container).then((c) => {
+      this.context.commit('setContainers', [c]);
+      return c;
+    });
+  }
+
+  @Action
+  async updateContainer(update: {container: UpdateContainerRequest, id: number}) {
+    return patchContainer(update.id, update.container).then((c) => {
+      this.context.commit('setContainers', [c]);
+      return c;
+    });
   }
 
   @Mutation
   setContainerProducts({ containerId, products }: ContainerProductsParam) {
-    const container = this.containerMapping.get(containerId);
+    const container = this.containerDict[containerId];
     container.products = products;
-    this.containerMapping.set(containerId, container);
   }
 
   @Mutation
   addContainerProductToState({ containerId, product }: ContainerProductParam) {
-    const container = this.containerMapping.get(containerId);
+    const container = this.containerDict[containerId];
     container.products.push(product);
-    this.containerMapping.set(containerId, container);
   }
 
   @Mutation
   updateContainerProductInAllContainers(product: Product) {
-    const containersContainingProduct = Array.from(this.containerMapping.values())
+    const containersContainingProduct = Array.from(getItems(this.containerDict))
       .filter((c) => c.products.map((p) => p.id).includes(product.id));
     containersContainingProduct.forEach((container) => {
       const index = container.products.findIndex((p) => p.id === product.id);
@@ -85,13 +102,12 @@ export default class ContainerModule extends VuexModule {
       }
 
       container.products.splice(index, 1, product);
-      this.containerMapping.set(container.id, container);
     });
   }
 
   @Mutation
   updateContainerProductInState({ containerId, product }: ContainerProductParam) {
-    const container = this.containerMapping.get(containerId);
+    const container = this.containerDict[containerId];
     const index = container.products.findIndex((p) => p.id === product.id);
     if (index < 0) {
       this.context.commit('addContainerProductToState', product);
@@ -99,17 +115,15 @@ export default class ContainerModule extends VuexModule {
     }
 
     container.products.splice(index, 1, product);
-    this.containerMapping.set(containerId, container);
   }
 
   @Mutation
   removeContainerProductFromState({ containerId, product }: ContainerProductParam) {
-    const container = this.containerMapping.get(containerId);
+    const container = this.containerDict[containerId];
     const index = container.products.findIndex((p) => p.id === product.id);
     if (index < 0) return;
 
     container.products.splice(index, 1);
-    this.containerMapping.set(containerId, container);
   }
 
   @Action
@@ -126,21 +140,21 @@ export default class ContainerModule extends VuexModule {
       this.context.commit('ProductsModule/addProductToState', productToAdd, { root: true });
     }
 
-    const containerResponse: Container = await APIHelper.getResource(`containers/${data.container.id}`);
+    const containerResponse: Container = await getContainer(data.container.id) as Container;
     const products = containerResponse.products.map((p) => p.id);
     products.push((productToAdd as Product).id);
-    const containerUpdate = {
+    const containerUpdate: UpdateContainerRequest = {
       name: containerResponse.name,
       public: containerResponse.public,
       products,
     };
-    await APIHelper.patchResource(`containers/${data.container.id}`, containerUpdate);
+    await patchContainer(data.container.id, containerUpdate);
     this.context.commit('addContainerProductToState', { containerId: data.container.id, product: productToAdd });
   }
 
   @Action
   async removeProduct(data: {container: Container, product: UpdateProductRequest }) {
-    const containerResponse: Container = await APIHelper.getResource(`containers/${data.container.id}`);
+    const containerResponse: Container = await getContainer(data.container.id) as Container;
     const products = containerResponse.products.map((p) => p.id);
     const remaining = products.filter((p) => p !== data.product.id);
     const containerUpdate = {
@@ -154,24 +168,23 @@ export default class ContainerModule extends VuexModule {
 
   @Mutation
   removeContainer(containerId: number) {
-    APIHelper.delResource(`containers/${containerId}`);
-    this.containerMapping.delete(containerId);
+    deleteContainer(containerId);
+    delete this.containerDict[containerId];
   }
 
-  @Mutation
-  updateContainer(container: any) {
-    const response = APIHelper.putResource('containers', container);
-    const containerResponse = ContainerTransformer.makeContainer(response) as Container;
-    this.containerMapping.set(containerResponse.id, containerResponse);
-  }
+  // @Mutation
+  // updateContainer(container: any) {
+  //   const response = APIHelper.putResource('containers', container);
+  //   const containerResponse = ContainerTransformer.makeContainer(response) as Container;
+  //   this.containerMapping.set(containerResponse.id, containerResponse);
+  // }
 
   @Action({
     rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   async fetchContainers(force: boolean = false) {
-    if (Object.keys(this.containerMapping).length === 0 || force) {
-      const res: { records: any[] } = await APIHelper.getResource('containers');
-      const cntrs = res.records.map((cntr) => ContainerTransformer.makeContainer(cntr));
+    if (Object.keys(this.containerDict).length === 0 || force) {
+      const cntrs = await getAllContainers();
       this.context.commit('setContainers', cntrs);
     }
   }
@@ -186,9 +199,8 @@ export default class ContainerModule extends VuexModule {
     rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   async fetchPublicContainers(force: boolean = false) {
-    if (this.publicContainers.length === 0 || force) {
-      const res = await APIHelper.getResource('containers/public');
-      const cntrs = res.records.map((cntr: any) => ContainerTransformer.makeContainer(cntr));
+    if (Object.keys(this.publicContainerDict).length === 0 || force) {
+      const cntrs = await getAllPublicContainers();
       this.context.commit('setPublicContainers', cntrs);
     }
   }
