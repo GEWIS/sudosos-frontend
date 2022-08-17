@@ -18,6 +18,10 @@ export function getProducts(take: number | null = null, skip: number | null = nu
   });
 }
 
+export function getAllProducts() {
+  return APIHelper.readPagination('products').then((res: any[]) => res.map((r) => ProductTransformer.makeProduct(r)));
+}
+
 export function postProduct(product: any, image: FormData) {
   return APIHelper.postResource('products', product).then((response) => APIHelper.postFile(`product/${response.id}/image`, image)).then((response) => ProductTransformer.makeProduct(response));
 }

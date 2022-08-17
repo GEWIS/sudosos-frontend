@@ -2,6 +2,10 @@ import APIHelper from '@/mixins/APIHelper';
 import PaginationTransformer from '@/transformers/PaginationTransformer';
 import { VatGroupList } from '@/entities/VatGroup';
 
+export function getAllVatGroups(): Promise<any[]> {
+  return APIHelper.readPagination('vatgroups');
+}
+
 export default function getVatGroups(take: number | null = null, skip: number | null = null):
   Promise<VatGroupList> {
   const body = {

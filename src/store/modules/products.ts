@@ -5,7 +5,7 @@ import store from '@/store';
 import APIHelper from '@/mixins/APIHelper';
 import { Product, CreateProductRequest, UpdateProductRequest } from '@/entities/Product';
 import ProductTransformer from '@/transformers/ProductTransformer';
-import { setProductImage } from '@/api/products';
+import { getAllProducts, setProductImage } from '@/api/products';
 
 @Module({
   dynamic: true, namespaced: true, store, name: 'ProductsModule',
@@ -84,8 +84,7 @@ export default class ProductsModule extends VuexModule {
   })
   async fetchProducts(force: boolean = false) {
     if (this.products.length === 0 || force) {
-      const res = await APIHelper.getResource('products');
-      const products = res.records.map((product: any) => ProductTransformer.makeProduct(product));
+      const products = await getAllProducts();
       this.context.commit('setProducts', products);
     }
   }

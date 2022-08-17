@@ -240,9 +240,9 @@ import Formatters from '@/mixins/Formatters';
 import { Container } from '@/entities/Container';
 import ProductsModule from '@/store/modules/products';
 import ContainerModule from '@/store/modules/containers';
-import { ProductCategoryList } from '@/entities/ProductCategory';
-import { getProductCategories } from '@/api/productCategories';
-import getVatGroups from '@/api/vatGroups';
+import { ProductCategory, ProductCategoryList } from '@/entities/ProductCategory';
+import { getAllProductCategories, getProductCategories } from '@/api/productCategories';
+import getVatGroups, { getAllVatGroups } from '@/api/vatGroups';
 
 @Component({
   components: {
@@ -258,7 +258,7 @@ export default class ProductEditModal extends Formatters {
 
   private containerState = getModule(ContainerModule);
 
-  productCategories: ProductCategoryList = {} as ProductCategoryList;
+  productCategories: ProductCategory[] = [];
 
   vatGroups: {value: number, text: string}[] = [];
 
@@ -288,9 +288,9 @@ export default class ProductEditModal extends Formatters {
     this.userState.fetchSelf();
     this.organsList = this.userState.organsList;
     this.productOwnerId = this.organsList[0].value;
-    this.productCategories = await getProductCategories(999);
-    this.vatGroups = (await getVatGroups(999))
-      .records.map((group) => ({ value: group.id, text: String(group.percentage) }));
+    this.productCategories = await getAllProductCategories();
+    this.vatGroups = (await getAllVatGroups())
+      .map((group) => ({ value: group.id, text: String(group.percentage) }));
   }
 
   get products() {
@@ -364,6 +364,7 @@ export default class ProductEditModal extends Formatters {
       } else {
         await this.productState.addProduct({ product: product as any, image: this.file });
       }
+      this.setProductProperties();
       this.$bvModal.hide('edit-product');
     } else {
       this.setInvalidStates();
@@ -413,7 +414,7 @@ export default class ProductEditModal extends Formatters {
         currency: 'EUR',
         precision: 2,
       },
-      category: this.productCategories.records.find(
+      category: this.productCategories.find(
         (cat) => cat.name === this.category,
       )?.id,
       alcoholPercentage: this.alcoholPercentage === null ? 0 : Number(this.alcoholPercentage),
