@@ -364,6 +364,7 @@ export default class ProductEditModal extends Formatters {
       } else {
         await this.productState.addProduct({ product: product as any, image: this.file });
       }
+      this.setProductProperties();
       this.$bvModal.hide('edit-product');
     } else {
       this.setInvalidStates();
