@@ -37,7 +37,7 @@
           </b-button>
         </div>
         <ContainerComponent
-          v-for="container in containerState.containerMapping.values()"
+          v-for="container in containers"
           v-bind:key="container.id"
           :container="container"
           :enabled="true"
@@ -101,6 +101,10 @@ export default class ManageProducts extends Vue {
   private productState = getModule(ProductsModule);
 
   private containerState = getModule(ContainerModule);
+
+  get containers() {
+    return this.containerState.containers;
+  }
 
   editContainer: Container = {} as Container;
 
