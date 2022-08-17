@@ -376,15 +376,15 @@
     "Transactions": "Transacties",
     "transaction": "{person} hebt in totaal {amount} uitgegeven",
     "transactionPutFor": "{person} hebt {amount} afgestreept voor {name}",
-    "transactionPutBy": "{name} heeft voor {amount} afgestreept bij jou",
-    "transactionForYou": "{name} heeft voor {amount} afgestreept voor jouw producten",
-    "transferIncoming": "{person} heeft {amount} ontvangen van {other}",
-    "transferOutgoing": "{person} heeft {amount} betaald aan {other}",
-    "transferVoidIncoming": "{person} heeft {amount} ontvangen",
-    "transferVoidOutgoing": "{person} heeft {amount} betaald",
-    "transferInvoiceIncoming": "{person} heeft {amount} ontvangen van een factuur",
-    "transferInvoiceOutgoing": "{person} is {amount} gefactureerd",
-    "transferDeposit": "{person} heeft saldo opgehoogd met {amount}",
+    "transactionPutBy": "{name} hebt voor {amount} afgestreept bij jou",
+    "transactionForYou": "{name} hebt voor {amount} afgestreept voor jouw producten",
+    "transferIncoming": "{person} hebt {amount} ontvangen van {other}",
+    "transferOutgoing": "{person} hebt {amount} betaald aan {other}",
+    "transferVoidIncoming": "{person} hebt {amount} ontvangen",
+    "transferVoidOutgoing": "{person} hebt {amount} betaald",
+    "transferInvoiceIncoming": "{person} hebt {amount} ontvangen van een factuur",
+    "transferInvoiceOutgoing": "{person} bent voor {amount} gefactureerd",
+    "transferDeposit": "{person} hebt saldo opgehoogd met {amount}",
     "transferPayoutRequest": "{person} hebt {amount} teruggestort naar je bankrekening",
     "Empty": "Geen transacties gevonden."
   },
@@ -414,6 +414,9 @@
     "PayoutRequest": "Uitbetaling naar bankrekening",
     "Transfer": "Overboeking tussen gebruikers",
     "Other": "Overige transactie"
+  },
+  "c_depositAlert": {
+    "message": "Een of meer opwaarderingen worden nog verwerkt. Zodra dit is gelukt, wordt je opwaardering toegevoegd aan je saldo en zal dit bericht verdwijnen."
   },
   "profile": {
     "My profile": "Mijn profiel",

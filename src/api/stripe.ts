@@ -1,5 +1,4 @@
 import APIHelper from '@/mixins/APIHelper';
-import { ResponseBody } from '@/entities/ResponseBody';
 
 export interface Deposit {
   amount : {
@@ -11,4 +10,8 @@ export interface Deposit {
 
 export default function stripeDeposit(deposit: Deposit) {
   return APIHelper.postResource('stripe/deposit', deposit).then((response) => response);
+}
+
+export function getProcessingDeposits(id: number) {
+  return APIHelper.getResource(`users/${id}/deposits`);
 }

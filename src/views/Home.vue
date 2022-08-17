@@ -1,5 +1,6 @@
 <template>
   <b-container fluid="lg">
+    <deposit-processing-alert />
     <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('home.Overview') }}</h1>
     <b-row>
       <b-col lg="3" class="mb-3">
@@ -16,10 +17,13 @@
 import { Component, Vue } from 'vue-property-decorator';
 import RecentTransactionsTable from '@/components/RecentTransactionsTable.vue';
 import CurrentSaldo from '@/components/CurrentSaldo.vue';
+import DepositProcessingAlert from '@/components/DepositProcessingAlert.vue';
 
   @Component({
     components: {
-      RecentTransactionsTable, CurrentSaldo,
+      DepositProcessingAlert,
+      RecentTransactionsTable,
+      CurrentSaldo,
     },
   })
 export default class Home extends Vue {
