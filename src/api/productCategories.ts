@@ -2,6 +2,10 @@ import APIHelper from '@/mixins/APIHelper';
 import PaginationTransformer from '@/transformers/PaginationTransformer';
 import ProductCategoryTransformer from '@/transformers/ProductCategoryTransformer';
 
+export function getAllProductCategories() {
+  return APIHelper.readPagination('productcategories').then((res: any[]) => res.map((r) => ProductCategoryTransformer.makeProductCategory(r)));
+}
+
 export function getProductCategories(take: number | null = null, skip: number | null = null) {
   const body = {
     ...take && { take },
