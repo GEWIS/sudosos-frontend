@@ -6,11 +6,15 @@ import { Transfer } from '@/entities/Transfer';
 import { getModule } from 'vuex-module-decorators';
 import UserModule from '@/store/modules/user';
 
+function toYou(trans: Transfer, id: number) {
+  return trans.to.id === id;
+}
+
 function byYou(trans: Transaction, id: number) {
   return trans.createdBy.id === id;
 }
 
-function forYou(trans: Transaction, id: number) {
+function fromYou(trans: Transaction | Transfer, id: number) {
   return trans.from.id === id;
 }
 
@@ -148,27 +152,36 @@ export default class Formatters extends Vue {
     if ('pointOfSale' in trans) {
       // This is a transaction put in for someone else
       if (byYou(trans, id)) {
-        if (forYou(trans, id)) {
+        if (fromYou(trans, id)) {
           return this.$t('c_transactionsTable.transaction', { person: this.$t('c_transactionsTable.You'), amount: trans.price.toFormat() });
         }
         return this.$t('c_transactionsTable.transactionPutFor', { person: this.$t('c_transactionsTable.You'), name: trans.from.firstname, amount: trans.price.toFormat() });
       }
-      if (forYou(trans, id)) {
+      if (fromYou(trans, id)) {
         return this.$t('c_transactionsTable.transactionPutFor', { person: trans.createdBy.firstname, name: this.$t('c_transactionsTable.You'), amount: trans.price.toFormat() });
       }
       if (samePerson(trans)) {
         return this.$t('c_transactionsTable.transaction', { person: trans.from.firstname, amount: trans.price.toFormat() });
       }
-      return this.$t('c_transactionsTable.transactionPutFor', { person: trans.createdBy.firstname, name: trans.from.firstname, amount: trans.price.toFormat() });
+      return this.$t('c_transactionsTable.transactionForYou', { person: trans.createdBy.firstname, name: trans.from.firstname, amount: trans.price.toFormat() });
     }
 
-    // This is a transfer
-    if (trans.description !== undefined && trans.description.length > 0) {
-      if (trans.to.id === id) return this.$t('c_transactionsTable.transfer', { person: this.$t('c_transactionsTable.You'), amount: trans.amount.toFormat() });
-      return this.$t('c_transactionsTable.transfer', { person: trans.to.firstname, amount: trans.amount.toFormat() });
-      // return trans.description;
+    const amount = trans.amount.toFormat();
+    if (trans.invoice != null) {
+      if (fromYou(trans, id)) return this.$t('c_transactionsTable.transferInvoiceOutgoing', { person: this.$t('c_transactionsTable.You'), amount });
+      return this.$t('c_transactionsTable.transferInvoiceIncoming', { person: this.$t('c_transactionsTable.You'), amount });
     }
-
-    return this.$t('c_recentTransactionsTable.transfer', { amount: trans.amount.toFormat() });
+    if (trans.deposit != null) {
+      return this.$t('c_transactionsTable.transferDeposit', { person: this.$t('c_transactionsTable.You'), amount });
+    }
+    if (trans.payoutRequest != null) {
+      return this.$t('c_transactionsTable.transferPayoutRequest', { person: this.$t('c_transactionsTable.You'), amount });
+    }
+    if (trans.to != null && trans.to.id != null && trans.from != null && trans.from.id != null) {
+      if (fromYou(trans, id)) return this.$t('c_transactionsTable.transferOutgoing', { person: this.$t('c_transactionsTable.You'), amount, other: trans.to.firstname });
+      return this.$t('c_transactionsTable.transferIncoming', { person: this.$t('c_transactionsTable.You'), amount, other: trans.from.firstname });
+    }
+    if (fromYou(trans, id)) return this.$t('c_transactionsTable.transferVoidOutgoing', { person: this.$t('c_transactionsTable.You'), amount });
+    return this.$t('c_transactionsTable.transferVoidIncoming', { person: this.$t('c_transactionsTable.You'), amount });
   }
 }

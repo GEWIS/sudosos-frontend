@@ -2,6 +2,7 @@ import UserTransformer from '@/transformers/UserTransformer';
 import { Invoice, InvoiceEntry, InvoiceStatus } from '@/entities/Invoice';
 import Dinero from 'dinero.js';
 import BaseTransformer from '@/transformers/BaseTransformer';
+// eslint-disable-next-line import/no-cycle
 import TransferTransformer from '@/transformers/TransferTransformer';
 
 export default {
@@ -9,7 +10,7 @@ export default {
     return {
       ...BaseTransformer.makeBaseEntity(data),
       to: UserTransformer.makeUser(data.to),
-      transfer: TransferTransformer.makeTransfer(data.transfer),
+      transfer: data.transfer ? TransferTransformer.makeTransfer(data.transfer) : null,
       invoiceEntries: data.invoiceEntries.map((entry: any) => this.makeInvoiceEntry(entry)),
       invoiceStatus: data.invoiceStatus.map((status: any) => this.makeInvoiceStatus(status)),
       addressee: data.addressee,

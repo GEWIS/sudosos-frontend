@@ -377,7 +377,15 @@
     "transaction": "{person} hebt in totaal {amount} uitgegeven",
     "transactionPutFor": "{person} hebt {amount} afgestreept voor {name}",
     "transactionPutBy": "{name} heeft voor {amount} afgestreept bij jou",
-    "transfer": "{person} hebt opgewaardeerd voor {amount}",
+    "transactionForYou": "{name} heeft voor {amount} afgestreept voor jouw producten",
+    "transferIncoming": "{person} heeft {amount} ontvangen van {other}",
+    "transferOutgoing": "{person} heeft {amount} betaald aan {other}",
+    "transferVoidIncoming": "{person} heeft {amount} ontvangen",
+    "transferVoidOutgoing": "{person} heeft {amount} betaald",
+    "transferInvoiceIncoming": "{person} heeft {amount} ontvangen van een factuur",
+    "transferInvoiceOutgoing": "{person} is {amount} gefactureerd",
+    "transferDeposit": "{person} heeft saldo opgehoogd met {amount}",
+    "transferPayoutRequest": "{person} hebt {amount} teruggestort naar je bankrekening",
     "Empty": "Geen transacties gevonden."
   },
   "c_transactionDetailsModal": {
@@ -400,7 +408,12 @@
     "From": "Van",
     "To": "Naar",
     "Type": "Transactie type",
-    "Description": "Beschrijving"
+    "Description": "Beschrijving",
+    "Invoice": "Factuur",
+    "Deposit": "Opwaardering",
+    "PayoutRequest": "Uitbetaling naar bankrekening",
+    "Transfer": "Overboeking tussen gebruikers",
+    "Other": "Overige transactie"
   },
   "profile": {
     "My profile": "Mijn profiel",

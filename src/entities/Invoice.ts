@@ -1,5 +1,6 @@
 import { BaseEntity } from '@/entities/BaseEntity';
 import { BaseUser, User } from '@/entities/User';
+// eslint-disable-next-line import/no-cycle
 import { Transfer } from '@/entities/Transfer';
 import { Dinero } from 'dinero.js';
 

@@ -377,7 +377,15 @@
     "transaction": "{person} spent a total of {amount}",
     "transactionPutFor": "{person} charged {name} for {amount}",
     "transactionPutBy": "{name} charged you {amount}",
-    "transfer": "{person} topped up with {amount}",
+    "transactionForYou": "{name} spent a total of {amount} for your products",
+    "transferIncoming": "{person} received {amount} from {other}",
+    "transferOutgoing": "{person} paid {amount} to {other}",
+    "transferVoidIncoming": "{person} received {amount}",
+    "transferVoidOutgoing": "{person} paid {amount}",
+    "transferInvoiceIncoming": "{person} received {amount} from invoice",
+    "transferInvoiceOutgoing": "{person} were invoiced {amount}",
+    "transferDeposit": "{person} increased balance with {amount}",
+    "transferPayoutRequest": "{person} were paid {amount} back to bank account",
     "Empty": "No transactions found."
   },
   "c_transactionDetailsModal": {
@@ -400,7 +408,12 @@
     "From": "From",
     "To": "To",
     "Type": "Transaction type",
-    "Description": "Description"
+    "Description": "Description",
+    "Invoice": "Invoice",
+    "Deposit": "Deposit",
+    "PayoutRequest": "PayoutRequest",
+    "Transfer": "Transfer between users",
+    "Other": "Other transaction"
   },
   "profile": {
     "My profile": "My profile",
