@@ -160,8 +160,8 @@
           :invalid-feedback="endDateInvalid"
         >
           <b-form-datepicker
-            id="start-date"
-            name="start-date"
+            id="end-date"
+            name="end-date"
             type="date"
             v-model="currBanner.endDate"
             :state="endDateState"
