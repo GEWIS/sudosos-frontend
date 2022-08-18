@@ -109,7 +109,7 @@
           value-field="text"
           v-model="category"
           :disabled="selectedProduct !== null"
-          :options="productCategories.records"
+          :options="productCategories"
           :state="categoryState"
           @change="onCategoryChange"
         >
