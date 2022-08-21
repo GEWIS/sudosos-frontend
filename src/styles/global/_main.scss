@@ -1,11 +1,9 @@
 @import "variables.scss";
-
-$primary: $gewis-red !default;
-$secondary: $gewis-grey !default;
+@import "animations.scss";
 
 // Imports
 @import "~bootstrap/scss/bootstrap";
-@import "~bootstrap-vue";
+@import "~bootstrap-vue/src/index";
 @import url('https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Raleway:500,500i,700,700i&display=swap');
 
@@ -21,60 +19,12 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
     font-weight: 500;
 }
 
-/*
-    General button styles
+/**
+ * Global style for forms in a card title
  */
-.btn.btn-primary {
-    background-color: $gewis-red;
-    float: right;
-    border-color: $gewis-red;
-    border-radius: $border-radius;
-}
-
-.btn.btn-primary:hover {
-    border-color: $gewis-red;
-    color: $gewis-red;
-    background-color: $text-primary;
-}
-
-.btn.btn-primary:focus {
-    background-color: $gewis-red;
-    border-color: $gewis-red;
-    color: $text-primary;
-    box-shadow: 0 0 0 0.2rem $gewis-red-shadow;
-}
-
-.btn.btn-primary:active {
-    background-color: $gewis-red !important;
-    border-color: $gewis-red !important;
-}
-
-.btn.btn-secondary {
-    background-color: $gewis-grey;
-    float: right;
-    border-color: $gewis-grey;
-    border-radius: $border-radius;
-}
-
-.btn.btn-secondary:hover {
-    border-color: $gewis-grey;
-    color: $gewis-grey;
-    background-color: $text-primary;
-}
-
-.btn.btn-secondary:focus {
-    background-color: $gewis-grey;
-    border-color: $gewis-grey;
-    color: $text-primary;
-    box-shadow: 0 0 0 0.2rem $gewis-grey-shadow;
-}
-
-.btn.btn-secondary:active {
-    background-color: $gewis-grey !important;
-    border-color: $gewis-grey !important;
-}
-
 .title-form {
+    text-transform: uppercase;
+
     .b-form-datepicker {
         border: 1px solid $gewis-grey-shadow;
 
@@ -123,15 +73,53 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
     }
 }
 
-/*
-    Some General styles for tables, some classes here need to be specifically added (will be listed)
+/**
+ * Some General styles for tables, some classes here need to be specifically added (will be listed)
  */
 .b-table {
+
+    &.details-table {
+        tr {
+            background-color: inherit !important;
+        }
+
+        .details-table-tr:not(:first-of-type) {
+            border-top: 1px solid #cccccc;
+        }
+    }
+
+    &#transaction-table {
+        > tbody {
+            tr[role='row']:not(.b-table-top-row):not(.b-table-details) {
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #ffffff;
+                }
+            }
+        }
+    }
+
+    .b-table-details {
+        background-color: #f2f2f2;
+    }
+
+    tr:last-of-type {
+        &.b-table-details {
+            display: none;
+        }
+    }
 
     // Use this as table header style to make sure table has the correctly styled headers
     .table-header {
         border-bottom: 1px solid #cccccc;
         text-transform: uppercase;
+
+        &.align-last-right {
+            tr > th:last-of-type {
+                text-align: right;
+            }
+        }
 
         tr > th {
             font-weight: 400;
@@ -164,20 +152,79 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
         }
     }
 
-    .transaction-row+.transaction-row {
+    .transaction-row,
+    .product-row,
+    .user-row {
+        cursor: pointer;
+    }
+
+    .transaction-row:hover {
+        background-color: #ffffff;
+    }
+
+    .product-row:hover {
+        background-color: $gewis-grey-light;
+    }
+
+    .transaction-row+.transaction-row,
+    .transaction-flag-row+.transaction-flag-row {
         border-top: 1px solid #cccccc;
     }
 }
 
-/*
- Global styles to change models
+/**
+ * Global style for pagination
  */
+.custom-pagination {
+    .nextButton,
+    .prevButton,
+    .pageButton{
+        > .page-link {
+            color: gray;
+            border: none;
+            // background-color: #f2f2f2;
+            background-color: transparent;
+        }
+    }
 
+    .page-item {
+        .page-link:focus {
+            box-shadow: none;
+        }
+    }
+
+    li:nth-of-type(2).page-item.pageButton:not(.active) {
+        display: none;
+    }
+
+    .pageButton {
+        button::after {
+            content: '/';
+            padding-left: 0.35rem;
+        }
+    }
+
+    li.pageButton:nth-last-of-type(2) {
+        button::after {
+            content: '';
+            padding-left: 0;
+        }
+    }
+
+    .pageButton {
+        .page-link {
+            padding: 0.5rem 0.20rem;
+        }
+    }
+}
+
+/**
+ * Global styles to change modals
+ */
 .modal {
     .modal-content {
         border-radius: 0;
         border: none;
-        min-height: 300px;
 
         > *,
         > div {
@@ -209,11 +256,14 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
     }
 
     button {
-        background-color: white !important;
-        color: $gewis-grey !important;
-        border: none !important;
-        padding: .375rem 0.5rem !important;
         text-transform: uppercase;
+    }
+
+    button.btn-empty {
+        background-color: white;
+        color: $gewis-grey;
+        border: none;
+        padding: .375rem 0.5rem;
     }
 
     input::-webkit-outer-spin-button,
@@ -231,7 +281,6 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
     }
 
     .form-group {
-        margin-bottom: 0;
 
         > div {
             margin: auto 0;
@@ -241,6 +290,43 @@ h1, h2, h3, h4, h5, h6, .lead, nav.navbar {
             height: 100%;
         }
     }
+}
+
+/**
+ * Global v-select styles
+ */
+.v-select {
+    .vs__dropdown-toggle {
+        padding: 0;
+
+        input.vs__search {
+            margin-top: 0;
+            padding: 0.375rem 0.75rem;
+        }
+
+        span.vs__selected {
+            position: absolute;
+            margin: 0;
+            padding: 0.375rem 0.5rem;
+        }
+
+        button.vs__clear {
+            margin-bottom: 5px;
+        }
+    }
+}
+
+// Make sure that things that are links actually show the correct cursor and fade a bit when hovered
+[role="link"] {
+    &:hover {
+        cursor: pointer;
+        opacity: 0.5;
+    }
+}
+
+// Some icons needs extra aligning if they're small, this utility class aligns the icons correctly
+.fa-sm-mb {
+    margin-bottom: 2.5px;
 }
 
 // To make sure that the view always has a certain height and the footer stays away from the content
@@ -259,6 +345,11 @@ h1 {
     }
 
     .b-table {
+        &.details-table {
+            .details-table-tr:not(:first-of-type) {
+                border-top: none;
+            }
+        }
 
         .table-header-3 {
             th:nth-of-type(3) {
@@ -269,6 +360,18 @@ h1 {
         .table-header-5 {
             th:nth-of-type(5) {
                 display: none;
+            }
+        }
+
+        .cell-reason {
+            max-width: 0;
+            width: 50%;
+
+            div,
+            a {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
             }
         }
 
@@ -287,7 +390,7 @@ h1 {
             }
         }
 
-        .transaction-row {
+        .transaction-row, .transaction-flag-row {
             border-top: none;
 
             > td:first-child {
@@ -296,7 +399,7 @@ h1 {
             }
         }
 
-        .transaction-row+.transaction-row {
+        .transaction-row+.transaction-row, .transaction-flag-row+.transaction-flag-row {
             border-top: none;
         }
     }
@@ -318,7 +421,13 @@ h1 {
     }
 
     .modal {
-        input {
+        input,
+        .v-select,
+        select {
+            width: 75% !important;
+        }
+
+        .b-form-datepicker {
             width: 75% !important;
         }
 

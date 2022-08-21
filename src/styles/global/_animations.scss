@@ -1,0 +1,23 @@
+$duration: 0.2s;
+
+.dropdown-item {
+  transition: background-color $duration linear;
+}
+
+nav {
+  &.navbar {
+    .nav-link {
+      transition: color $duration linear;
+    }
+  }
+}
+
+[role="link"] {
+  transition: opacity $duration linear;
+}
+
+.dropdown-menu {
+  &.show {
+    transition: display $duration linear;
+  }
+}

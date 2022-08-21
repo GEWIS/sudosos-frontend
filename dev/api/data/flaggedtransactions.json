@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "flaggedBy": {
+      "id": 0,
+      "name": "Ruben Brinkman"
+    },
+    "reason": "Dit is een test",
+    "transaction": {
+      "id": 0,
+      "from": {
+        "id": 0,
+        "name": "Ruben Brinkman"
+      },
+      "createdBy": {
+        "id": 1,
+        "name": "BAr Commissie"
+      },
+      "pointOfSale": {
+        "id": 0,
+        "name": "borrel"
+      },
+      "subTransactions": [
+        {
+          "id": 0,
+          "to": {
+            "id": 1,
+            "name": "BAr Commissie"
+          },
+          "container": {
+            "id": 0,
+            "name": "Koelkast speciaalbier"
+          },
+          "subTransactionRows": [
+            {
+              "id": 0,
+              "product": {
+                "id": 1,
+                "revision": 1,
+                "name": "Grolsch Beugel",
+                "price": 110,
+                "owner": {
+                  "id": 1,
+                  "name": "BAr Commissie"
+                },
+                "category": {
+                  "id": 0,
+                  "name": "alcoholic drink"
+                },
+                "picture": "https://www.supermarktaanbiedingen.com/public/images/product/2017/39/0-508102fls-grolsch-premium-pilsner-beugel-45cl.jpg",
+                "alcoholPercentage": 5.6,
+                "createdAt": "2021-01-01T12:38:38.380Z",
+                "updatedAt": "2021-01-01T12:38:38.380Z"
+              },
+              "amount": 3
+            },
+            {
+              "id": 1,
+              "product": {
+                "id": 2,
+                "revision": 1,
+                "name": "Grimbergen",
+                "price": 150,
+                "owner": {
+                  "id": 1,
+                  "name": "BAr Commissie"
+                },
+                "category": {
+                  "id": 0,
+                  "name": "alcoholic drink"
+                },
+                "picture": "https://deklokdranken.blob.core.windows.net/product-images/105120.jpg",
+                "alcoholPercentage": 7.8,
+                "createdAt": "2021-01-01T12:48:38.380Z",
+                "updatedAt": "2021-01-01T12:48:38.380Z"
+              },
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "id": 1,
+          "to": {
+            "id": 1,
+            "name": "BAr Commissie"
+          },
+          "container": {
+            "id": 1,
+            "name": "Koelkast katerwater"
+          },
+          "subTransactionRows": [
+            {
+              "product": {
+                "id": 4,
+                "revision": 1,
+                "name": "Aquarius",
+                "price": 70,
+                "owner": {
+                  "id": 1,
+                  "name": "BAr Commissie"
+                },
+                "category": {
+                  "id": 1,
+                  "name": "drink"
+                },
+                "picture": "https://cdn.webshopapp.com/shops/71421/files/264918896/140x140x2/aquarius-blik-24x33cl-lemon.jpg",
+                "alcoholPercentage": 0,
+                "createdAt": "2021-01-01T13:08:38.380Z",
+                "updatedAt": "2021-01-01T13:08:38.380Z"
+              },
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "createdAt": "2021-01-02T12:38:38.380Z",
+      "updatedAt": "2021-01-02T12:38:38.380Z"
+    },
+    "createdAt": "2021-01-02T12:38:38.380Z",
+    "updatedAt": "2021-01-02T12:38:38.380Z"
+  }
+]

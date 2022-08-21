@@ -1,20 +1,21 @@
 <template>
   <b-container fluid="lg">
-    <h1>Manage point of sales page</h1>
+    <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('managePOS.Manage points of sale') }}</h1>
+    <POSOverview :full="true" :show-all="true"></POSOverview>
   </b-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import POSOverview from '@/components/POSOverview.vue';
 
   @Component({
-    components: {},
+    components: {
+      POSOverview,
+    },
   })
-
 export default class ManagePointOfSale extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style scoped lang="scss"></style>

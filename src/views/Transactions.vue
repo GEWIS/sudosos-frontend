@@ -1,20 +1,19 @@
 <template>
   <b-container fluid="lg">
-      <h1>Transactions page</h1>
-    <TransactionsComponent></TransactionsComponent>
+      <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('transactions.Transactions') }}</h1>
+    <TransactionsTable :hideHandled="false" />
   </b-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import TransactionsComponent from '@/components/Transactions.vue';
+import TransactionsTable from '@/components/TransactionsTable.vue';
 
   @Component({
     components: {
-      TransactionsComponent,
+      TransactionsTable,
     },
   })
-
 export default class Transactions extends Vue {
 }
 </script>
