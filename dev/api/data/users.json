@@ -1,0 +1,34 @@
+[
+  {
+    "id": 0,
+    "firstname": "Ruben",
+    "lastname": "Brinkman",
+    "gewisID": 8073,
+    "email": "rubenjulianbrinkman@gmail.com",
+    "active": true,
+    "type": 1,
+    "nfcDevices": [
+      {
+        "id": 0,
+        "name": "OV Chipkaart",
+        "address": "33:33:33:33:33:33"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "firstname": "Kevin",
+    "lastname": "Jiellliissen",
+    "gewisID": 8888,
+    "email": "kevin@gewis.nl",
+    "active": true,
+    "type": 1,
+    "nfcDevices": [
+      {
+        "id": 1,
+        "name": "OV Chipkaart",
+        "address": "34:34:34:34:34:34"
+      }
+    ]
+  }
+]

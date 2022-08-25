@@ -1,26 +1,35 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld :usr="users"  msg= "Welcome to Your Vue.js App"/>
-  </div>
+  <b-container fluid="lg">
+    <deposit-processing-alert />
+    <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('home.Overview') }}</h1>
+    <b-row>
+      <b-col lg="3" class="mb-3">
+        <CurrentSaldo></CurrentSaldo>
+      </b-col>
+      <b-col cols="12" lg="9">
+        <RecentTransactionsTable></RecentTransactionsTable>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
-<script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import RecentTransactionsTable from '@/components/RecentTransactionsTable.vue';
+import CurrentSaldo from '@/components/CurrentSaldo.vue';
+import DepositProcessingAlert from '@/components/DepositProcessingAlert.vue';
 
-export default {
-  name: 'home',
-  data() {
-    return {
-      dismissSecs: 10,
-      dismissCountDown: 0,
-      showDismissibleAlert: false,
-      user: usar,
-    };
-  },
-  methods: {
-
-  },
-};
+  @Component({
+    components: {
+      DepositProcessingAlert,
+      RecentTransactionsTable,
+      CurrentSaldo,
+    },
+  })
+export default class Home extends Vue {
+}
 </script>
+
+<style scoped lang="scss">
+
+</style>

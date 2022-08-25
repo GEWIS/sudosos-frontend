@@ -1,32 +1,95 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+<div id="app">
+  <transition
+    name="fade"
+    mode="out-in"
+  >
     <router-view/>
-  </div>
+  </transition>
+</div>
 </template>
 
+<script lang="ts">
+import { Component } from 'vue-property-decorator';
+import eventBus from '@/eventbus';
+import { ApiError } from '@/entities/ApiError';
+import Formatters from '@/mixins/Formatters';
+
+import './styles/Navbar.scss';
+import './styles/Footer.scss';
+
+@Component
+export default class App extends Formatters {
+  beforeMount() {
+    if (this.$route.name === undefined) {
+      this.$router.push({ name: 'home' });
+    }
+
+    eventBus.$on('apiError', (error: ApiError) => {
+      // Create the body for the toast error message, first make a div
+      // then create three paragraph elements with the error messages
+      const toastBody = this.$createElement('div',
+        { class: [''] },
+        [
+          this.$createElement('p',
+            { class: ['mb-2'] },
+            `${String(this.$t(error.message))}`),
+        ]);
+
+      // Show the toast for 5 seconds
+      this.$bvToast.toast(toastBody, {
+        title: `Error ${error.status}`,
+        autoHideDelay: 5000,
+        variant: 'danger',
+        appendToast: true,
+      });
+    });
+
+    eventBus.$on('success', (data: {message: string, title: string}) => {
+      const toastBody = this.$createElement('div',
+        { class: [''] },
+        [
+          this.$createElement('p',
+            { class: ['mb-2'] },
+            `${data.message}`),
+        ]);
+
+      // Show the toast for 5 seconds
+      this.$bvToast.toast(toastBody, {
+        title: data.title,
+        autoHideDelay: 5000,
+        variant: 'success',
+        appendToast: true,
+      });
+    });
+  }
+}
+</script>
+
 <style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+.router-link-active {
+  opacity: 0.5;
 }
 
-#nav {
-  padding: 30px;
+.fade-enter-active,
+.fade-leave-active {
+  transition-duration: 0.125s;
+  transition-property: opacity;
+  transition-timing-function: ease;
+}
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+.fade-enter,
+.fade-leave-active {
+  opacity: 0
+}
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+@media print {
+  nav, footer {
+    display: none !important;
+  }
+
+  main {
+    margin: 0 !important;
   }
 }
 </style>

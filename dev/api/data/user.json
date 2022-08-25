@@ -1,0 +1,16 @@
+{
+  "id": 0,
+  "firstname": "Ruben",
+  "lastname": "Brinkman",
+  "gewisID": 8073,
+  "email": "rubenjulianbrinkman@gmail.com",
+  "active": true,
+  "type": 1,
+  "nfcDevices": [
+    {
+      "id": 0,
+      "name": "OV Chipkaart",
+      "address": "33:33:33:33:33:33"
+    }
+  ]
+}
