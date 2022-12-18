@@ -12,7 +12,7 @@ export default {
       to: UserTransformer.makeUser(data.to),
       transfer: data.transfer ? TransferTransformer.makeTransfer(data.transfer) : null,
       invoiceEntries: data.invoiceEntries.map((entry: any) => this.makeInvoiceEntry(entry)),
-      invoiceStatus: data.invoiceStatus.map((status: any) => this.makeInvoiceStatus(status)),
+      invoiceStatus: this.makeInvoiceStatus(data.currentState),
       addressee: data.addressee,
       description: data.description,
     } as Invoice;
