@@ -26,7 +26,7 @@ export interface Invoice extends BaseEntity {
   to: User,
   transfer: Transfer,
   invoiceEntries: InvoiceEntry[],
-  invoiceStatus: InvoiceStatus[],
+  invoiceStatus: InvoiceStatus,
   addressee: string,
   description: string,
 }
