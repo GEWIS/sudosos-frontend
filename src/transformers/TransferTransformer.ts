@@ -9,6 +9,7 @@ import PayoutRequestTransformer from '@/transformers/PayoutRequestTransformer';
 
 export default {
   makeTransfer(data: any): Transfer {
+    console.error(data);
     return {
       ...BaseTransformer.makeBaseEntity(data),
       from: UserTransformer.makeUser(data.from),
