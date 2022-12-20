@@ -49,6 +49,9 @@
               <b-dropdown-item :to="{ name: 'borrelkaartOverview'}">
                 {{ $t('app.Social drink cards') }}
               </b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'manageVatGroups'}">
+                {{ $t('app.Manage VAT groups') }}
+              </b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
 
@@ -112,10 +115,6 @@ import { getModule } from 'vuex-module-decorators';
 import UserModule from '@/store/modules/user';
 import Logout from '@/mixins/Logout';
 import APIHelper from '@/mixins/APIHelper';
-import { LoginResponse } from '@/entities/APIResponses';
-import UserTransformer from '@/transformers/UserTransformer';
-import { User } from '@/entities/User';
-import jwtDecode, { JwtPayload } from 'jwt-decode';
 import PageFooter from '@/components/PageFooter.vue';
 
 @Component({

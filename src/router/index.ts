@@ -19,6 +19,7 @@ import Profile from '@/views/User/Profile.vue';
 import FlaggedTransactionDetails from '@/views/BAC/FlaggedTransactionDetails.vue';
 import PointOfSaleInfo from '@/views/PointOfSale/PointOfSaleInfo.vue';
 import BorrelkaartOverview from '@/views/BAC/Borrelkaarten.vue';
+import ManageVatGroups from '@/views/BAC/ManageVatGroups.vue';
 import BorrelkaartenPrint from '@/views/BAC/BorrelkaartenPrint.vue';
 import TransactionEditPage from '@/views/BAC/TransactionEditPage.vue';
 import UserOverview from '@/views/BAC/UserOverview.vue';
@@ -149,6 +150,11 @@ const routes = [
         path: '/borrelkaart-overview',
         name: 'borrelkaartOverview',
         component: BorrelkaartOverview,
+      },
+      {
+        path: '/manage-vat-groups',
+        name: 'manageVatGroups',
+        component: ManageVatGroups,
       },
       {
         path: '/borrelkaarten-overview/cards/:id',
