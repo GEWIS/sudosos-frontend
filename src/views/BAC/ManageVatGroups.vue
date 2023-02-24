@@ -1,99 +1,82 @@
 <template>
   <b-container fluid="lg">
     <h1 class="mb-2 mb-sm-3 mb-lg-4">
-      {{ $t('manageProducts.Manage all products and default containers') }}
+      {{ $t('manageVAT.Manage all VAT groups') }}
     </h1>
 
     <b-row>
       <b-col cols="12" class="containers-container">
         <div class="d-flex justify-content-between align-items-center">
-          <p class="containers-header">{{ $t('manageProducts.All products') }}</p>
+          <p class="containers-header">{{ $t('manageVAT.VAT groups') }}</p>
           <b-button
             class="my-2 text-truncate"
             variant="success"
-            v-on:click="prepAddingProduct({})"
+            v-on:click="prepAddingVatGroup({})"
           >
             <font-awesome-icon icon="plus" size="sm" class="mr-2" />
-            {{ $t('manageProducts.Add product') }}
+            {{ $t('manageVAT.Add VAT group') }}
           </b-button>
         </div>
-        <ProductTable
-          :productsProp="this.productState.products"
+        <VatGroupTable
+          :vatGroupsProp="this.vatGroupState.vatGroups"
           :editable="true"
           :enabled="true"
-          v-on:editProduct="prepEditStandardProduct"
-          v-on:productDetails="showProductDetails"
+          v-on:editVatGroup="prepEditStandardVatGroup"
         />
       </b-col>
     </b-row>
 
-    <b-row>
-      <b-col cols="12" class="containers-container">
-        <div class="d-flex justify-content-between align-items-center">
-          <p class="containers-header">{{ $t('manageProducts.Default containers') }}</p>
-          <b-button class="my-2 text-truncate" variant="success" v-on:click="addContainer">
-            <font-awesome-icon icon="plus" size="sm" class="mr-2" />
-            {{ $t('manageProducts.Add container') }}
-          </b-button>
-        </div>
-        <ContainerComponent
-          v-for="container in containers"
-          v-bind:key="container.id"
-          :container="container"
-          :enabled="true"
-          :editable="true"
-          v-model="editContainer"
-          v-on:addProduct="prepAddingProduct"
-          v-on:editProduct="prepEditContainerProduct"
-          v-on:productDetails="showProductDetails"
-        />
-      </b-col>
-    </b-row>
-
-    <ContainerEditModal
-      :editContainer="editContainer"
-    />
-
-    <ProductEditModal
-      :editProduct="editProduct"
-      :container="activeContainer"
-    />
-
-    <ConfirmationModal
-      :reason="$t('manageProducts.Are you sure')"
-      :title="$t('manageProducts.Confirm')"
-      v-on:modalConfirmed="confirmContainerDelete"
-    />
-
-    <ProductInfoModal
-      :product="infoProduct"
-      v-if="Object.keys(infoProduct).length > 0"
+    <VatGroupEditModal
+      :editVatGroup="editVatGroup"
     />
   </b-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
 import ContainerComponent from '@/components/ContainerComponent.vue';
 import ContainerEditModal from '@/components/ContainerEditModal.vue';
-import ProductEditModal from '@/components/ProductEditModal.vue';
+import VatGroupEditModal from '@/components/VatGroupEditModal.vue';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
-import ProductInfoModal from '@/components/ProductInfoModal.vue';
-import ProductTable from '@/components/ProductTable.vue';
+import { VatGroup, VatGroupList } from '@/entities/VatGroup';
+import VatGroupTable from '@/components/VatGroupTable.vue';
+import VatGroupModule from '@/store/modules/vatgroups';
 
 @Component({
   components: {
     ContainerComponent,
     ContainerEditModal,
-    ProductEditModal,
+    VatGroupEditModal,
     ConfirmationModal,
-    ProductInfoModal,
-    ProductTable,
+    VatGroupTable,
   },
 })
 
-export default class ManageProducts extends Vue {
+export default class ManageVatGroups extends Vue {
+  private vatGroupState = getModule(VatGroupModule);
 
+  editVatGroup: VatGroup = {} as VatGroup;
+
+  async beforeMount() {
+    await this.vatGroupState.fetchVatGroups();
+  }
+
+  /**
+   * Method for preparing adding a VAT group
+   */
+  prepAddingVatGroup() : void {
+    this.editVatGroup = {} as VatGroup;
+    this.$bvModal.show('edit-vatGroup');
+  }
+
+  /**
+   * Method for preparing editing a VAT group
+   */
+  prepEditStandardVatGroup(vatGroup: VatGroup): void {
+    this.editVatGroup = vatGroup;
+    this.$bvModal.show('edit-vatGroup');
+  }
 }
 </script>
 

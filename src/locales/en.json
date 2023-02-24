@@ -499,5 +499,11 @@
     "403": "You cannot access this data",
     "404": "This data does not seem to exist",
     "500": "Something is going wrong, please contact the SudoSOS team"
+  },
+  "c_vatGroupTable": {
+    "name": "Name",
+    "deleted": "Deleted",
+    "hidden": "Hidden",
+    "percentage": "Percentage"
   }
 }
