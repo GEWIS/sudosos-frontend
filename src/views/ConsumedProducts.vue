@@ -1,7 +1,8 @@
 <template>
   <b-container fluid="lg">
     <h1 class="mb-2 mb-sm-3 mb-lg-4">Statistics</h1>
-    <StatisticsChart time-scale="" />
+    <StatisticsChart  />
+
   </b-container>
 </template>
 

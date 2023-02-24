@@ -1,15 +1,22 @@
 <template>
-  <Bar
-    :chart-options="chartOptions"
-    :chart-data="chartData"
-    :chart-id="chartId"
-    :dataset-id-key="datasetIdKey"
-    :plugins="plugins"
-    :css-classes="cssClasses"
-    :styles="styles"
-    :width="width"
-    :height="height"
-  />
+  <div>
+    <Bar
+      :chart-options="chartOptions"
+      :chart-data="chartData"
+      :chart-id="chartId"
+      :dataset-id-key="datasetIdKey"
+      :plugins="plugins"
+      :css-classes="cssClasses"
+      :styles="styles"
+      :width="width"
+      :height="height"
+    />
+    <b-button-group>
+      <b-button @click="changeTimeScale('week')">Week</b-button>
+      <b-button>Month</b-button>
+      <b-button>Year</b-button>
+    </b-button-group>
+  </div>
 </template>
 
 <script>
@@ -66,37 +73,15 @@ export default {
       type: String,
       default: 'consumed',
     },
-    timeScale: {
+    timeScale: [{
       type: String,
       default: 'year',
-    },
+    }],
   },
   data() {
-    const label = 'january';
     return {
-      chartData: {
-        labels: [
-          label,
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-          'July',
-          'August',
-          'September',
-          'October',
-          'November',
-          'December',
-        ],
-        datasets: [
-          {
-            label: 'Data One',
-            backgroundColor: '#f87979',
-            data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11],
-          },
-        ],
-      },
+      loaded: false,
+      chartData: null,
       chartOptions: {
         responsive: true,
         maintainAspectRatio: false,
@@ -110,7 +95,53 @@ export default {
       },
     };
   },
+  async created() {
+    let labels;
+    switch (this.timeScale) {
+      case 'month':
+        labels = Array.from({ length: 31 }, (_, i) => (i + 1).toString());
+        break;
+      case 'week':
+        labels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        break;
+      default:
+        labels = [
+          'January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+          'August',
+          'September',
+          'October',
+          'November',
+          'December',
+        ];
+        break;
+    }
+    this.loaded = false;
+    this.chartData = {
+      labels,
+      datasets: [
+        {
+          label: 'Data One',
+          backgroundColor: '#f87979',
+          data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11],
+        },
+      ],
+    };
+    this.loaded = true;
+  },
+  methods: {
+    changeTimeScale(scale) {
+      // eslint-disable-next-line vue/no-mutating-props
+      this.timeScale = scale;
+    },
+  },
 };
+
 </script>
 
 <style scoped>
