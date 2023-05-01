@@ -18,6 +18,7 @@
         <b-form-input
           id="filter"
           v-model="filter"
+          v-on:change="fetchNewItems"
           type="text"
           :placeholder="$t('c_userTable.Fill in a name')"
           trim
@@ -34,8 +35,6 @@
         thead-class="table-header table-header-4"
         id="user-table"
         tbody-tr-class="user-row"
-        :filter="filter"
-        :filter-included-fields="['name', 'gewisID']"
         :items="users"
         :busy="!loaded"
         :fields="fields"
@@ -65,7 +64,7 @@
     </b-card-body>
   </b-card>
 
-  <b-card-footer v-if="totalRows > perPage" class="d-flex">
+  <b-card-footer class="d-flex">
     <p class="my-auto h-100">
       {{ $t('c_userTable.Page') }}:
     </p>
@@ -98,7 +97,7 @@ import { Product } from '@/entities/Product';
 import { getPOSTransactions, getUserTransactions } from '@/api/transactions';
 import { getUserTransfers } from '@/api/transfers';
 import { TransferFilter } from '@/entities/Transfer';
-import { getUsers } from '@/api/users';
+import { getUsers, UserQueryParameters } from '@/api/users';
 import UserCreationModal from '@/components/UserCreationModal.vue';
 
 @Component({
@@ -109,7 +108,7 @@ export default class UserTable extends Formatters {
 
   users: User[] = [];
 
-  perPage = 10;
+  perPage = 25;
 
   currentPage = 1;
 
@@ -160,7 +159,9 @@ export default class UserTable extends Formatters {
     const skip = (page - 1) * this.perPage;
     const take = this.perPage;
 
-    const { records, _pagination } = (await this.userState.fetchUsers({ take, skip }));
+    const params: UserQueryParameters = { take, skip };
+    if (this.filter !== '') params.search = this.filter;
+    const { records, _pagination } = (await this.userState.fetchUsers(params));
     this.users = records;
 
     this.totalRows = _pagination.count;

@@ -17,6 +17,7 @@ export interface UserQueryParameters {
   take?: number,
   skip?: number,
   type?: string,
+  search?: string,
 }
 
 export interface AcceptTosRequest {
