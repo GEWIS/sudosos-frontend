@@ -135,6 +135,11 @@
         </b-card>
       </b-col>
     </b-row>
+    <b-row>
+      <b-col>
+        <transactions-table :user="this.user" />
+      </b-col>
+    </b-row>
   </b-container>
 </template>
 
@@ -149,9 +154,11 @@ import { NFCDevice } from '@/entities/NFCDevice';
 import { LOCAL_USER_TYPES, User } from '@/entities/User';
 import { requestPasswordReset } from '@/api/users';
 import eventBus from '@/eventbus';
+import TransactionsTable from '@/components/TransactionsTable.vue';
 
 @Component({
   components: {
+    TransactionsTable,
     ConfirmationModal,
   },
 })

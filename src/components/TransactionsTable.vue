@@ -120,6 +120,7 @@ import {
   getUserTransactions,
 } from '@/api/transactions';
 import { getTransfer, getUserTransfers } from '@/api/transfers';
+import { BaseUser } from '@/entities/User';
 
 @Component({
   components: {
@@ -145,6 +146,8 @@ export default class TransactionsTable extends Formatters {
   @Prop({ default: true, type: Boolean }) private reset!: boolean;
 
   @Prop({ default: true, type: Boolean }) private csv!: boolean;
+
+  @Prop() private user: BaseUser;
 
   // If this prop is set all the transactions of a certain POS are being looked at
   @Prop() private pointOfSale: number | undefined;
@@ -206,7 +209,6 @@ export default class TransactionsTable extends Formatters {
   ];
 
   async beforeMount() {
-    this.userState.fetchSelf();
     await this.fetchNewData();
 
     // If the locale is changed make sure the labels are also correctly updated for the b-table
@@ -243,16 +245,16 @@ export default class TransactionsTable extends Formatters {
       this.transactionFilter.tillDate = this.filterValues.toDate.toString();
     }
     if (this.filterValues.putInByYou) {
-      this.transactionFilter.createdById = this.userState.self.id;
+      this.transactionFilter.createdById = this.user.id;
     }
 
     if (this.filterValues.putInForYou) {
-      this.transactionFilter.fromId = this.userState.self.id;
+      this.transactionFilter.fromId = this.user.id;
     }
 
     if (this.filterValues.selfBought) {
-      this.transactionFilter.createdById = this.userState.self.id;
-      this.transactionFilter.fromId = this.userState.self.id;
+      this.transactionFilter.createdById = this.user.id;
+      this.transactionFilter.fromId = this.user.id;
     }
 
     this.fetchNewData();
@@ -288,8 +290,15 @@ export default class TransactionsTable extends Formatters {
     }
   }
 
+  @Watch('user')
+  async onUserChange() {
+    await this.fetchNewData();
+  }
+
   // Grabs the latest items depending on the current page
   async fetchNewData(page = this.currentPage) {
+    if (this.user == null) return;
+    console.log('fetch data');
     this.loaded = false;
     const transFilter = this.transactionFilter;
     let skip = (page - 1) * this.perPage;
@@ -305,14 +314,14 @@ export default class TransactionsTable extends Formatters {
       this.transactions = await getPOSTransactions(this.pointOfSale, take, skip);
     } else {
       this.transactions = await getUserTransactions(
-        this.userState.self.id,
+        this.user.id,
         transFilter,
         take,
         skip,
       );
 
       this.transfers = await getUserTransfers(
-        this.userState.self.id,
+        this.user.id,
         {} as TransferFilter,
         take,
         skip,
