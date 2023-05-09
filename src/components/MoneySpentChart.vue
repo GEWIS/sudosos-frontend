@@ -83,7 +83,9 @@ export default {
           title: {
             display: true,
             font: {
-              size: 20,
+              size: 30,
+              family: 'Raleway, sans-serif',
+              weight: '500',
             },
             text: 'Money Spent',
             align: 'start',
