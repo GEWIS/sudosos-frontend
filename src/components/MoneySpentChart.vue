@@ -35,7 +35,7 @@ import {
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 export default {
-  name: 'StatisticsChart',
+  name: 'MoneySpentChart',
   components: {
     Bar,
   },
@@ -83,7 +83,10 @@ export default {
         plugins: {
           title: {
             display: true,
-            text: 'Hello World!',
+            font: {
+              size: 20,
+            },
+            text: 'Money Spent',
             align: 'start',
           },
         },

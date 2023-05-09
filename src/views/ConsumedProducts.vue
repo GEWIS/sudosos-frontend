@@ -1,18 +1,20 @@
 <template>
-  <b-container fluid="lg">
+  <b-container fluid="lg" style="display: flex; flex-direction: column">
     <h1 class="mb-2 mb-sm-3 mb-lg-4">Statistics</h1>
-    <StatisticsChart  />
-
+    <MoneySpentChart  />
+    <div style="display: flex; flex-direction: row"><MostBoughtChart /></div>
   </b-container>
 </template>
 
 <script>
-import StatisticsChart from '@/components/StatisticsChart.vue';
+import MoneySpentChart from '@/components/MoneySpentChart.vue';
+import MostBoughtChart from '@/components/MostBoughtChart.vue';
 
 export default {
   name: 'ConsumedProducts',
   components: {
-    StatisticsChart,
+    MoneySpentChart,
+    MostBoughtChart,
   },
 };
 </script>
