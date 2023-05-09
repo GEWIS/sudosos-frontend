@@ -1,12 +1,12 @@
 import {
-  Action, getModule, Module, Mutation, VuexModule,
+  Action, Module, Mutation, VuexModule,
 } from 'vuex-module-decorators';
 import store from '@/store';
 import APIHelper from '@/mixins/APIHelper';
 import { CreateProductRequest, Product, UpdateProductRequest } from '@/entities/Product';
 import { Container, UpdateContainerRequest } from '@/entities/Container';
 import ProductTransformer from '@/transformers/ProductTransformer';
-import { postProductImage, setProductImage } from '@/api/products';
+import { setProductImage } from '@/api/products';
 import {
   deleteContainer, getAllContainers, getAllPublicContainers,
   getContainer,
@@ -192,7 +192,7 @@ export default class ContainerModule extends VuexModule {
   @Action
   async fetchContainerProducts(containerId: number) {
     const res = await getContainerProducts(containerId);
-    this.context.commit('setContainerProducts', { containerId, products: res.records });
+    this.context.commit('setContainerProducts', { containerId, products: res });
   }
 
   @Action({
