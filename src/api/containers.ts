@@ -50,7 +50,7 @@ export function deleteContainer(id: number) {
 }
 
 export function getContainerProducts(id: number) {
-  return APIHelper.readPagination(`containers/${id}/products`, 25).then((response) => response);
+  return APIHelper.readPagination(`containers/${id}/products`, 100).then((response) => response);
 }
 
 export function approveContainer(id: number) {
