@@ -13,8 +13,8 @@
     />
     <b-button-group>
       <b-button @click="changeTimeScale('week')">Week</b-button>
-      <b-button>Month</b-button>
-      <b-button>Year</b-button>
+      <b-button @click="changeTimeScale('month')">Month</b-button>
+      <b-button @click="changeTimeScale('year')">Year</b-button>
     </b-button-group>
   </div>
 </template>
@@ -73,15 +73,10 @@ export default {
       type: String,
       default: 'consumed',
     },
-    timeScale: [{
-      type: String,
-      default: 'year',
-    }],
   },
   data() {
     return {
       loaded: false,
-      chartData: null,
       chartOptions: {
         responsive: true,
         maintainAspectRatio: false,
@@ -93,6 +88,7 @@ export default {
           },
         },
       },
+      timeScale: 'year',
     };
   },
   async created() {
@@ -122,22 +118,46 @@ export default {
         break;
     }
     this.loaded = false;
-    this.chartData = {
-      labels,
-      datasets: [
+    this.loaded = true;
+  },
+  methods: {
+    changeTimeScale(scale) {
+      this.$set(this, 'timeScale', scale);
+    },
+  },
+  computed: {
+    chartData() {
+      const datasets = [
         {
           label: 'Data One',
           backgroundColor: '#f87979',
           data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11],
         },
-      ],
-    };
-    this.loaded = true;
-  },
-  methods: {
-    changeTimeScale(scale) {
-      // eslint-disable-next-line vue/no-mutating-props
-      this.timeScale = scale;
+      ];
+      switch (this.timeScale) {
+        default:
+          return {
+            labels: [
+              'January',
+              'February',
+              'March',
+              'April',
+              'May',
+              'June',
+              'July',
+              'August',
+              'September',
+              'October',
+              'November',
+              'December',
+            ],
+            datasets,
+          };
+        case 'month':
+          return { labels: Array.from({ length: 31 }, (_, i) => (i + 1).toString()), datasets };
+        case 'week':
+          return { labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], datasets };
+      }
     },
   },
 };
