@@ -9,9 +9,22 @@
 </template>
 
 <script>
+import getTransactionsReport from '@/api/statistics';
+import { getModule } from 'vuex-module-decorators';
+import UserModule from '@/store/modules/user';
+
 export default {
   name: 'MiscStatisticsComponent',
+  async beforeMount() {
+    const userState = getModule(UserModule);
+    await userState.fetchSelf(true);
+    const userID = userState.self.id;
+    await getTransactionsReport(userID, {
+      fromId: userID,
+    });
+  },
 };
+
 </script>
 
 <style scoped>

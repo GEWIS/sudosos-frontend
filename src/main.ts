@@ -3,7 +3,10 @@ import VueI18n from 'vue-i18n';
 import BootstrapVue from 'bootstrap-vue';
 import dinero, { Currency } from 'dinero.js';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome';
+import {
+  FontAwesomeIcon, FontAwesomeLayers,
+  FontAwesomeLayersText,
+} from '@fortawesome/vue-fontawesome';
 import {
   faCoffee,
   faChild,
