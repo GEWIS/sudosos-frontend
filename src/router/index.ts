@@ -30,6 +30,7 @@ import Logout from '@/mixins/Logout';
 import PointOfSaleEdit from '@/views/PointOfSale/PointOfSaleEdit.vue';
 import TermsOfService from '@/views/TermsOfService.vue';
 import { TermsOfServiceStatus } from '@/entities/User';
+import Schandpaal from '@/views/BAC/Schandpaal.vue';
 
 Vue.use(VueRouter);
 
@@ -166,6 +167,11 @@ const routes = [
         path: '/profile',
         name: 'profile',
         component: Profile,
+      },
+      {
+        path: '/schandpaal',
+        name: 'schandpaal',
+        component: Schandpaal,
       },
     ],
   },
