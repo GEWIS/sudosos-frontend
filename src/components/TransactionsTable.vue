@@ -100,6 +100,7 @@
     <TransactionDetailsModal
       v-if="Object.keys(modalTransaction).length > 0"
       :trans="modalTransaction"
+      @updatedTransaction="refreshItems"
     />
   </div>
 </template>
@@ -146,6 +147,8 @@ export default class TransactionsTable extends Formatters {
   @Prop({ default: true, type: Boolean }) private reset!: boolean;
 
   @Prop({ default: true, type: Boolean }) private csv!: boolean;
+
+  @Prop({ default: false, type: Boolean }) private showAdminOptions!: boolean;
 
   @Prop() private user: BaseUser;
 
@@ -283,6 +286,13 @@ export default class TransactionsTable extends Formatters {
     }
   }
 
+  async refreshItems(): Promise<void> {
+    this.transList = [];
+    this.transList = [];
+    this.currentPage = 1;
+    await this.fetchNewData();
+  }
+
   fetchNewItems(event: any, page: number) {
     if (page > this.maxPage) {
       this.fetchNewData(page);
@@ -298,7 +308,6 @@ export default class TransactionsTable extends Formatters {
   // Grabs the latest items depending on the current page
   async fetchNewData(page = this.currentPage) {
     if (this.user == null) return;
-    console.log('fetch data');
     this.loaded = false;
     const transFilter = this.transactionFilter;
     let skip = (page - 1) * this.perPage;

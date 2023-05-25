@@ -1,12 +1,18 @@
 <template>
   <div>
+    <ConfirmationModal
+      :title="$t('c_transactionDetailsModal.Confirm deletion').toString()"
+      :reason="$t('c_transactionDetailsModal.Are you sure delete').toString()"
+      :id="deleteConfirmDialogId"
+      @confirmed="confirmTransactionDelete">
+    </ConfirmationModal>
+
     <b-modal
       id="details-modal"
       :title="$t('c_transactionDetailsModal.transaction details')"
       hide-header-close
       centered
       size="lg"
-      no-stacking
     >
       <p>
         {{ `${this.formatDateTime(trans.updatedAt, full=true)}` +
@@ -16,6 +22,24 @@
       <TransactionDetails v-if="'pointOfSale' in trans" :transaction="trans" />
       <TransferDetails v-else :transfer="trans" />
 
+      <template #modal-header>
+        <div class="w-100 d-flex justify-content-center align-items-center">
+          <h5 class="modal-title flex-grow-1">
+            {{ $t('c_transactionDetailsModal.transaction details') }}
+          </h5>
+          <div>
+            <b-button
+              v-b-modal="deleteConfirmDialogId"
+            >
+              <font-awesome-icon
+                icon="trash"
+                class="icon"
+              />
+            </b-button>
+          </div>
+        </div>
+      </template>
+
       <template v-slot:modal-footer="{ ok, cancel }">
         <b-button
           variant="primary"
@@ -23,13 +47,13 @@
           @click="cancel()"
         >{{ $t('c_transactionDetailsModal.Cancel') }}
         </b-button>
-<!--        <b-button-->
-<!--          v-if="'pointOfSale' in trans"-->
-<!--          variant="primary"-->
-<!--          class="btn-empty"-->
-<!--          v-b-modal.flag-modal-->
-<!--        >{{ $t('c_transactionDetailsModal.Flag transaction') }}-->
-<!--        </b-button>-->
+        <b-button
+          v-if="'pointOfSale' in trans"
+          variant="primary"
+          class="btn-empty"
+          v-b-modal.flag-modal
+        >{{ $t('c_transactionDetailsModal.Flag transaction') }}
+        </b-button>
       </template>
     </b-modal>
 
@@ -87,9 +111,12 @@ import { Transaction } from '@/entities/Transaction';
 import { Transfer } from '@/entities/Transfer';
 import TransactionDetails from '@/components/TransactionDetails.vue';
 import TransferDetails from '@/components/TransferDetails.vue';
+import ConfirmationModal from '@/components/ConfirmationModal.vue';
+import { deleteTransaction } from '@/api/transactions';
 
 @Component({
   components: {
+    ConfirmationModal,
     TransactionDetails,
     TransferDetails,
   },
@@ -126,6 +153,19 @@ export default class TransactionDetailsModal extends Formatters {
     }
 
     return this.flagReasonText.length > 0;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  get deleteConfirmDialogId(): string {
+    return 'confirmation-delete-transaction';
+  }
+
+  private async confirmTransactionDelete(): Promise<void> {
+    if ('pointOfSale' in this.trans) {
+      await deleteTransaction(this.trans.id);
+      this.$emit('updatedTransaction');
+      this.$bvModal.hide('details-modal');
+    }
   }
 }
 </script>
