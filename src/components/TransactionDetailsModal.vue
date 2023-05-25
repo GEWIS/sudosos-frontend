@@ -1,11 +1,13 @@
 <template>
   <div>
-    <ConfirmationModal
-      :title="$t('c_transactionDetailsModal.Confirm deletion').toString()"
-      :reason="$t('c_transactionDetailsModal.Are you sure delete').toString()"
-      :id="deleteConfirmDialogId"
-      @confirmed="confirmTransactionDelete">
-    </ConfirmationModal>
+    <div v-if="showAdminOptions">
+      <ConfirmationModal
+        :title="$t('c_transactionDetailsModal.Confirm deletion').toString()"
+        :reason="$t('c_transactionDetailsModal.Are you sure delete').toString()"
+        :id="deleteConfirmDialogId"
+        @confirmed="confirmTransactionDelete">
+      </ConfirmationModal>
+    </div>
 
     <b-modal
       id="details-modal"
@@ -30,6 +32,7 @@
           <div>
             <b-button
               v-b-modal="deleteConfirmDialogId"
+              v-if="showAdminOptions"
             >
               <font-awesome-icon
                 icon="trash"
@@ -47,13 +50,13 @@
           @click="cancel()"
         >{{ $t('c_transactionDetailsModal.Cancel') }}
         </b-button>
-        <b-button
-          v-if="'pointOfSale' in trans"
-          variant="primary"
-          class="btn-empty"
-          v-b-modal.flag-modal
-        >{{ $t('c_transactionDetailsModal.Flag transaction') }}
-        </b-button>
+<!--        <b-button-->
+<!--          v-if="'pointOfSale' in trans"-->
+<!--          variant="primary"-->
+<!--          class="btn-empty"-->
+<!--          v-b-modal.flag-modal-->
+<!--        >{{ $t('c_transactionDetailsModal.Flag transaction') }}-->
+<!--        </b-button>-->
       </template>
     </b-modal>
 
@@ -123,6 +126,8 @@ import { deleteTransaction } from '@/api/transactions';
 })
 export default class TransactionDetailsModal extends Formatters {
   @Prop() trans!: Transaction | Transfer;
+
+  @Prop({ default: false }) showAdminOptions: boolean;
 
   flagReasonText: string | null = null;
 

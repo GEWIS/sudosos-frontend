@@ -137,7 +137,7 @@
     </b-row>
     <b-row>
       <b-col>
-        <transactions-table :user="this.user" />
+        <transactions-table :user="this.user" :show-admin-options="true" />
       </b-col>
     </b-row>
   </b-container>

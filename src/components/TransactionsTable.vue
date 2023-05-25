@@ -101,6 +101,7 @@
       v-if="Object.keys(modalTransaction).length > 0"
       :trans="modalTransaction"
       @updatedTransaction="refreshItems"
+      :show-admin-options="showAdminOptions"
     />
   </div>
 </template>
