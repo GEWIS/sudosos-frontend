@@ -1,7 +1,6 @@
 import ContainerTransformer from '@/transformers/ContainerTransformer';
 import APIHelper from '@/mixins/APIHelper';
 import PaginationTransformer from '@/transformers/PaginationTransformer';
-import ProductTransformer from '@/transformers/ProductTransformer';
 import {
   BaseContainer,
   Container,
@@ -50,22 +49,8 @@ export function deleteContainer(id: number) {
   return APIHelper.delResource(`containers/${id}`);
 }
 
-export function getContainerProducts(
-  id: number, take: number | null = null, skip: number | null = null,
-) {
-  const body = {
-    ...take && { take },
-    ...skip && { skip },
-  };
-
-  return APIHelper.getResource(`containers/${id}/products`, body).then((response) => {
-    response._pagination = PaginationTransformer.makePagination(response._pagination);
-    response.records = response.records.map(
-      (product: any) => ProductTransformer.makeProduct(product),
-    );
-
-    return response;
-  });
+export function getContainerProducts(id: number) {
+  return APIHelper.readPagination(`containers/${id}/products`, 100).then((response) => response);
 }
 
 export function approveContainer(id: number) {
