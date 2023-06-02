@@ -7,8 +7,15 @@
 </template>
 
 <script>
+import { getAllBalances } from '@/api/balance';
+import getSchandpaal from '@/api/schandpaal';
+
 export default {
   name: 'Schandpaal',
+  async beforeMount() {
+    const schandpaal = await getSchandpaal();
+    console.log(schandpaal);
+  },
 };
 </script>
 
