@@ -135,7 +135,43 @@ export async function getDatasets(timeScale: string, userId: number) {
       }
       break;
   }
-  console.log(`Elapsed time for total query: ${elapsedTime}ms`);
-  console.log(`Total amount of queries: ${totalQueries}`);
   return datasets;
+}
+
+export class StatisticsHelper {
+  data: any;
+
+  categories: string[];
+
+  userId: number;
+
+  colors: string[];
+
+  constructor(userId: number) {
+    this.userId = userId;
+    this.colors = ['#D30000', '#8AC45E', '#F7B538', '#B084CC'];
+  }
+
+  public async init() {
+    this.data = await getTransactionsReport(this.userId, {
+      fromId: this.userId,
+    }).then((response) => response.data);
+    this.setCategories();
+  }
+
+  public getFullTransactionsReport() {
+    return this.data;
+  }
+
+  private setCategories() {
+    this.categories = this.data.categories.map((entry:any) => entry.category.name);
+  }
+
+  public getCategories() {
+    return this.categories;
+  }
+
+  public getStatistics(fromDate: Date, tillDate: Date) {
+    return this.data;
+  }
 }

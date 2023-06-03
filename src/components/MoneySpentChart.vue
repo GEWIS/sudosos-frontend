@@ -32,7 +32,7 @@ import {
 } from 'chart.js';
 import { getModule } from 'vuex-module-decorators';
 import UserModule from '@/store/modules/user';
-import { getDatasets } from '@/api/statistics';
+import { getDatasets, StatisticsHelper } from '@/api/statistics';
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
@@ -122,6 +122,9 @@ export default {
       await userState.fetchSelf(true);
       const userID = userState.self.id;
       const datasets = await getDatasets(this.timeScale, userID);
+      const statHelper = new StatisticsHelper(userID);
+      await statHelper.init();
+      console.log(statHelper.getStatistics(new Date(), new Date(2023, 6, 4)));
       /* const datasets = [
         {
           label: userID,
