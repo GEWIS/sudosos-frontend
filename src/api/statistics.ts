@@ -8,13 +8,13 @@ export default function getTransactionsReport(userId: number,
 export async function getDatasets(timeScale: string, userId: number) {
   const date = new Date();
   const colors = ['#D30000', '#8AC45E', '#F7B538', '#B084CC'];
-  const datasets = [];
-  const dataset:number[] = [];
+  const datasets: any[] = [];
   const categories = await getTransactionsReport(userId, {
     fromId: userId,
   }).then((response) => response.data.categories);
   switch (timeScale) {
     default:
+
       for (let j:number = 0; j < categories.length; j++) {
         const data: {
           label: string;
@@ -25,6 +25,7 @@ export async function getDatasets(timeScale: string, userId: number) {
           backgroundColor: colors[j],
           data: [],
         };
+        const dataset:number[] = [];
         for (let i:number = 0; i < 12; i++) {
           const fromDate = new Date(date.getFullYear(), i, 1).toString();
           const tillDate = new Date(date.getFullYear(), i + 1, 1).toString();
@@ -58,6 +59,7 @@ export async function getDatasets(timeScale: string, userId: number) {
           backgroundColor: colors[j],
           data: [],
         };
+        const dataset:number[] = [];
         for (let i: number = 1; i <= lastDayOfMonth; i++) {
           const fromDate = new Date(date.getFullYear(), date.getMonth(), i).toString();
           const tillDate = new Date(date.getFullYear(), date.getMonth(), i + 1).toString();
@@ -67,12 +69,13 @@ export async function getDatasets(timeScale: string, userId: number) {
             fromDate,
             tillDate,
           }).then((response) => {
-            if (response.data.categories.length === 0) {
+            if (response.data.categories[j] === undefined) {
               return dataset.push(0);
             }
             return dataset.push(response.data.categories[j].totalInclVat.amount ?? 0);
           });
         }
+        console.log(dataset);
         data.data = dataset;
         datasets.push(data);
       }
@@ -92,6 +95,7 @@ export async function getDatasets(timeScale: string, userId: number) {
           backgroundColor: colors[j],
           data: [],
         };
+        const dataset:number[] = [];
         for (let i: number = 0; i < 7; i++) {
           const fromDate = new Date(firstDayOfWeek.getTime() + i * (1000 * 60 * 60 * 24))
             .toString();
@@ -103,7 +107,7 @@ export async function getDatasets(timeScale: string, userId: number) {
             fromDate,
             tillDate,
           }).then((response) => {
-            if (response.data.categories.length === 0) {
+            if (response.data.categories[j] === undefined) {
               return dataset.push(0);
             }
             return dataset.push(response.data.categories[j].totalInclVat.amount ?? 0);
