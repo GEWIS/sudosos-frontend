@@ -6,6 +6,8 @@ export default function getTransactionsReport(userId: number,
 }
 
 export async function getDatasets(timeScale: string, userId: number) {
+  let elapsedTime = 0;
+  let totalQueries = 0;
   const date = new Date();
   const colors = ['#D30000', '#8AC45E', '#F7B538', '#B084CC'];
   const datasets: any[] = [];
@@ -29,12 +31,18 @@ export async function getDatasets(timeScale: string, userId: number) {
         for (let i:number = 0; i < 12; i++) {
           const fromDate = new Date(date.getFullYear(), i, 1).toString();
           const tillDate = new Date(date.getFullYear(), i + 1, 1).toString();
+
+          const startTime = new Date();
           // eslint-disable-next-line no-await-in-loop
           await getTransactionsReport(userId, {
             fromId: userId,
             fromDate,
             tillDate,
+            // eslint-disable-next-line no-loop-func
           }).then((response) => {
+            const endTime = new Date(); // Get the end time
+            elapsedTime += endTime.getTime() - startTime.getTime();
+            totalQueries++;
             if (response.data.categories.length === 0) {
               return dataset.push(0);
             }
@@ -63,19 +71,23 @@ export async function getDatasets(timeScale: string, userId: number) {
         for (let i: number = 1; i <= lastDayOfMonth; i++) {
           const fromDate = new Date(date.getFullYear(), date.getMonth(), i).toString();
           const tillDate = new Date(date.getFullYear(), date.getMonth(), i + 1).toString();
+          const startTime = new Date();
           // eslint-disable-next-line no-await-in-loop
           await getTransactionsReport(userId, {
             fromId: userId,
             fromDate,
             tillDate,
+            // eslint-disable-next-line no-loop-func
           }).then((response) => {
+            const endTime = new Date(); // Get the end time
+            elapsedTime += endTime.getTime() - startTime.getTime();
+            totalQueries++;
             if (response.data.categories[j] === undefined) {
               return dataset.push(0);
             }
             return dataset.push(response.data.categories[j].totalInclVat.amount ?? 0);
           });
         }
-        console.log(dataset);
         data.data = dataset;
         datasets.push(data);
       }
@@ -101,12 +113,17 @@ export async function getDatasets(timeScale: string, userId: number) {
             .toString();
           const tillDate = new Date(firstDayOfWeek.getTime() + (i + 1) * (1000 * 60 * 60 * 24))
             .toString();
+          const startTime = new Date();
           // eslint-disable-next-line no-await-in-loop
           await getTransactionsReport(userId, {
             fromId: userId,
             fromDate,
             tillDate,
+            // eslint-disable-next-line no-loop-func
           }).then((response) => {
+            const endTime = new Date(); // Get the end time
+            elapsedTime += endTime.getTime() - startTime.getTime();
+            totalQueries++;
             if (response.data.categories[j] === undefined) {
               return dataset.push(0);
             }
@@ -118,5 +135,7 @@ export async function getDatasets(timeScale: string, userId: number) {
       }
       break;
   }
+  console.log(`Elapsed time for total query: ${elapsedTime}ms`);
+  console.log(`Total amount of queries: ${totalQueries}`);
   return datasets;
 }
