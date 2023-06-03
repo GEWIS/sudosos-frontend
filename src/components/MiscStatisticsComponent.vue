@@ -19,7 +19,7 @@ export default {
     const userState = getModule(UserModule);
     await userState.fetchSelf(true);
     const userID = userState.self.id;
-    await getTransactionsReport(userID, {
+    const data = await getTransactionsReport(userID, {
       fromId: userID,
     });
   },

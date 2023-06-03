@@ -50,6 +50,7 @@
                 {{ $t('app.Social drink cards') }}
               </b-dropdown-item>
             </b-nav-item-dropdown>
+            <b-nav-item :to="{ name: 'consumed_products'}">Statistics</b-nav-item>
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->

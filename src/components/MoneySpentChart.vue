@@ -20,9 +20,7 @@
 </template>
 
 <script>
-
 import { Bar } from 'vue-chartjs/legacy';
-
 import {
   Chart as ChartJS,
   Title,
@@ -32,12 +30,56 @@ import {
   CategoryScale,
   LinearScale,
 } from 'chart.js';
+import { getModule } from 'vuex-module-decorators';
+import UserModule from '@/store/modules/user';
+import { getDatasets } from '@/api/statistics';
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
+
 export default {
   name: 'MoneySpentChart',
   components: {
     Bar,
+  },
+  data() {
+    return {
+      loaded: false,
+      chartData: null,
+      chartOptions: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            font: {
+              size: 30,
+              family: 'Raleway, sans-serif',
+              weight: '500',
+            },
+            text: 'Money Spent',
+            align: 'start',
+          },
+        },
+        scales: {
+          x: {
+            stacked: true,
+          },
+          y: {
+            stacked: true,
+          },
+        },
+      },
+      timeScale: 'year',
+    };
+  },
+  async mounted() {
+    await this.fetchData();
+  },
+  watch: {
+    timeScale: {
+      handler: 'fetchData',
+      immediate: true,
+    },
   },
   props: {
     chartId: {
@@ -62,8 +104,7 @@ export default {
     },
     styles: {
       type: Object,
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      default: () => {},
+      default: () => ({}),
     },
     plugins: {
       type: Array,
@@ -74,69 +115,64 @@ export default {
       default: 'consumed',
     },
   },
-  data() {
-    return {
-      chartOptions: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          title: {
-            display: true,
-            font: {
-              size: 30,
-              family: 'Raleway, sans-serif',
-              weight: '500',
-            },
-            text: 'Money Spent',
-            align: 'start',
-          },
-        },
-      },
-      timeScale: 'year',
-    };
-  },
   methods: {
-    changeTimeScale(scale) {
-      this.$set(this, 'timeScale', scale);
-    },
-  },
-  computed: {
-    chartData() {
-      const datasets = [
+    async fetchData() {
+      this.loaded = false;
+      const userState = getModule(UserModule);
+      await userState.fetchSelf(true);
+      const userID = userState.self.id;
+      const datasets = await getDatasets(this.timeScale, userID);
+      /* const datasets = [
         {
-          label: 'Data One',
+          label: userID,
           backgroundColor: '#f87979',
-          data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11],
+          data: dataset,
         },
-      ];
+      ]; */
+      let labels;
       switch (this.timeScale) {
         default:
-          return {
-            labels: [
-              'January',
-              'February',
-              'March',
-              'April',
-              'May',
-              'June',
-              'July',
-              'August',
-              'September',
-              'October',
-              'November',
-              'December',
-            ],
-            datasets,
-          };
-        case 'month':
-          return { labels: Array.from({ length: 31 }, (_, i) => (i + 1).toString()), datasets };
+          labels = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December',
+          ];
+          break;
         case 'week':
-          return { labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], datasets };
+          labels = [
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday',
+            'Sunday',
+          ];
+          break;
+        case 'month':
+          labels = Array.from({ length: 31 }, (_, index) => index + 1);
+          break;
       }
+      this.chartData = {
+        labels,
+        datasets,
+      };
+      this.loaded = true;
+    },
+    changeTimeScale(scale) {
+      this.timeScale = scale;
     },
   },
 };
-
 </script>
 
 <style scoped>
