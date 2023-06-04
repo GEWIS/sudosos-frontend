@@ -19,12 +19,19 @@ jobs:
         with:
           path: .
           
-      - name: Set up environment
+      - name: Set up environment - main
         env:
-          ENV_FILE: ${{ if github.ref == 'refs/heads/main' }}${{ secrets.ENV_FILE_PRODUCTION }}${{ else }}${{ secrets.ENV_FILE_DEVELOPMENT }}${{ endif }}
+          ENV_FILE: ${{ secrets.ENV_FILE_PRODUCTION }}
+        if: github.ref == 'refs/heads/main'
         run: |
           echo "${ENV_FILE}" > .env
 
+      - name: Set up environment - develop
+        env:
+          ENV_FILE: ${{ secrets.ENV_FILE_DEVELOPMENT }}
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          echo "${ENV_FILE}" > .env
         
       - name: Get Docker meta (for tags)
         id: meta
