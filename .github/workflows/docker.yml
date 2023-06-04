@@ -29,7 +29,7 @@ jobs:
       - name: Set up environment - develop
         env:
           ENV_FILE: ${{ secrets.ENV_FILE_DEVELOPMENT }}
-        if: github.ref == 'refs/heads/develop'
+        if: github.ref != 'refs/heads/main'
         run: |
           echo "${ENV_FILE}" > .env
         
