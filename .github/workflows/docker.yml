@@ -16,6 +16,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          path: .
+          
+      - name: Set up environment
+        env:
+          ENV_FILE: ${{ if github.ref == 'refs/heads/main' }}${{ secrets.ENV_FILE_PRODUCTION }}${{ else }}${{ secrets.ENV_FILE_DEVELOPMENT }}${{ endif }}
+        run: |
+          echo "${ENV_FILE}" > .env
+
         
       - name: Get Docker meta (for tags)
         id: meta
