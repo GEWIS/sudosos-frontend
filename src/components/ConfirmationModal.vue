@@ -1,6 +1,6 @@
 <template>
   <b-modal
-    id="confirmation"
+    :id="this.id"
     :title="title"
     size="md"
     hide-header-close
@@ -37,13 +37,15 @@ export default class ConfirmationModal extends Vue {
   // Message that will be shown in the modal
   @Prop({ type: String }) private reason!: string;
 
+  @Prop({ type: String }) private id: string;
+
   // Once the modal is closed check if the OK action was used and proceed with method
   mounted() {
     this.$root.$on('bv::modal::hide', (bvEvent: any, modalId: string) => {
       if (Object.keys(bvEvent).indexOf('trigger') !== -1
         && bvEvent.trigger === 'ok'
-        && modalId === 'confirmation') {
-        this.$emit('modalConfirmed');
+        && modalId === this.id) {
+        this.$emit('confirmed');
       }
     });
   }

@@ -394,7 +394,9 @@
     "Flag transaction": "Flag transaction",
     "flag reason": "Please provide a reason for flagging the transaction",
     "reason placeholder": "Provide a reason",
-    "flag invalid": "Please provide a reason"
+    "flag invalid": "Please provide a reason",
+    "Confirm deletion": "Confirm deletion",
+    "Are you sure delete": "Are you sure you want to remove this transaction?"
   },
   "c_transactionDetails": {
     "Total": "Total",
