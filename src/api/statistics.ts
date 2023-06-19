@@ -5,6 +5,11 @@ export default function getTransactionsReport(userId: number,
   return APIHelper.getResource(`users/${userId}/transactions/report`, payload).then((response) => response);
 }
 
+export function getTransactions(userId: number,
+  payload: {fromId?: number, toId?: number, fromDate?: string, tillDate?: string}) {
+  return APIHelper.getResource(`users/${userId}/transactions`, payload).then((response) => response);
+}
+
 export async function getDatasets(timeScale: string, userId: number) {
   let elapsedTime = 0;
   let totalQueries = 0;
@@ -153,10 +158,10 @@ export class StatisticsHelper {
   }
 
   public async init() {
-    this.data = await getTransactionsReport(this.userId, {
+    this.data = await getTransactions(this.userId, {
       fromId: this.userId,
-    }).then((response) => response.data);
-    this.setCategories();
+    }).then((response) => response);
+    // this.setCategories();
   }
 
   public getFullTransactionsReport() {
