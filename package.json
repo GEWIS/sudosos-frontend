@@ -31,6 +31,7 @@
     "jwt-decode": "^3.1.2",
     "marked": "^4.0.18",
     "sortablejs": "^1.10.2",
+    "sudosos-client": "github:GEWIS/sudosos-client#main",
     "uuid": "^3.4.0",
     "validator": "^13.7.0",
     "vue": "^2.6.10",

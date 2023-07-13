@@ -21,6 +21,7 @@ import {
 } from '@/api/users';
 import { getSelfBalance } from '@/api/balance';
 import dinero from 'dinero.js';
+import {AuthenticationResponse} from "sudosos-client";
 
 @Module({
   dynamic: true, namespaced: true, store, name: 'UserModule',
@@ -48,7 +49,7 @@ export default class UserModule extends VuexModule {
   organsList: {value: number, text: string}[] = [];
 
   @Mutation
-  extractResponse(response: LoginResponse) {
+  extractResponse(response: AuthenticationResponse) {
     this.self = UserTransformer.makeUser(response.user) as User;
     this.userRoles = response.roles;
     this.organs = response.organs.map((organ: any) => UserTransformer.makeUser(organ) as User);

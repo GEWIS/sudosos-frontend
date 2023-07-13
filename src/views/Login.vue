@@ -2,14 +2,14 @@
   <div>
     <main>
       <b-container fluid="md">
-        <BeerMugs />
+        <BeerMugs/>
         <b-row class="text-center" align-v="center">
           <b-col>
-            <img id="login-image" class="m-4" src="~@/assets/img/bier.png" alt="Logo" />
+            <img id="login-image" class="m-4" src="~@/assets/img/bier.png" alt="Logo"/>
             <h1 class="mb-2 mb-sm-3 mb-lg-4">{{ $t('login.SudoSOS Login') }}</h1>
             <b-form class="login-form">
               <b-button @click="loginViaGEWIS" variant="success">
-                <img src="~@/assets/img/gewis-branding.svg" />
+                <img src="~@/assets/img/gewis-branding.svg"/>
                 {{ $t("login.Login via GEWIS") }}
               </b-button>
 
@@ -47,13 +47,14 @@
               <div
                 class="password-reset"
                 @click="resetPassword"
-              >{{ $t('login.Password reset') }}</div>
+              >{{ $t('login.Password reset') }}
+              </div>
             </b-form>
           </b-col>
         </b-row>
       </b-container>
     </main>
-    <PageFooter />
+    <PageFooter/>
   </div>
 </template>
 
@@ -64,9 +65,10 @@ import APIHelper from '@/mixins/APIHelper';
 import { getModule } from 'vuex-module-decorators';
 import UserModule from '@/store/modules/user';
 import { v4 as uuid } from 'uuid';
-import { LoginResponse } from '@/entities/APIResponses';
 import BeerMugs from '@/components/BeerMugs.vue';
 import PageFooter from '@/components/PageFooter.vue';
+import ApiService from '@/api/ApiService';
+import { AuthenticationResponse } from 'sudosos-client';
 
 dotenv.config();
 
@@ -90,13 +92,14 @@ export default class Login extends Vue {
   beforeMount() {
     if (this.$route.query.token !== undefined) {
       const { token } = this.$route.query;
-      APIHelper.postResource('authentication/gewisweb', {
-        token,
-        nonce: uuid(),
-      })
-        .then((res: LoginResponse) => {
-          this.loginSuccesful(res);
-        }).catch((e) => console.error(e));
+      ApiService.authenticate.gewisWebAuthentication({
+        req: {
+          token: token as string,
+          nonce: uuid(),
+        },
+      }).then((res) => {
+        this.loginSuccesful(res);
+      }).catch((e) => console.error(e));
     }
   }
 
@@ -108,19 +111,22 @@ export default class Login extends Vue {
     // If the username is an email, it is an external account
     // and we authenticate using the local account database
     if (this.username.includes('@')) {
-      APIHelper.postResource('authentication/local', {
-        accountMail: this.username,
-        password: this.password,
-      })
-        .then((res: LoginResponse) => {
-          this.loginSuccesful(res);
-        });
+      ApiService.authenticate.localAuthentication({
+        req: {
+          accountMail: this.username,
+          password: this.password,
+        },
+      }).then((res) => {
+        this.loginSuccesful(res);
+      });
     } else {
-      APIHelper.postResource('authentication/GEWIS/LDAP', {
-        accountName: this.username,
-        password: this.password,
+      ApiService.authenticate.gewisLDAPAuthentication({
+        req: {
+          accountName: this.username,
+          password: this.password,
+        },
       })
-        .then((res: LoginResponse) => {
+        .then((res) => {
           this.loginSuccesful(res);
         });
     }
@@ -130,8 +136,9 @@ export default class Login extends Vue {
    * If the API has succesfully logged in the user we need to store the returned
    * user data and token at the right place. It's also nice to send them to the homepage
    */
-  loginSuccesful(info: LoginResponse) {
+  loginSuccesful(info: AuthenticationResponse) {
     this.userState.extractResponse(info);
+    ApiService.setJwtToken(info.token);
     APIHelper.setToken(info.token);
     this.$router.push({ name: 'home' });
   }
@@ -185,12 +192,7 @@ export default class Login extends Vue {
 
   > button:hover {
     > img {
-      filter: invert(15%)
-              sepia(16%)
-              saturate(1327%)
-              hue-rotate(42deg)
-              brightness(86%)
-              contrast(83%);
+      filter: invert(15%) sepia(16%) saturate(1327%) hue-rotate(42deg) brightness(86%) contrast(83%);
     }
   }
 }
