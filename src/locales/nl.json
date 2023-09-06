@@ -252,7 +252,9 @@
   },
   "c_currentSaldo": {
     "saldo": "saldo",
-    "upgrade online": "online opwaarderen"
+    "upgrade online": "online opwaarderen",
+    "of which": "Waarvan",
+    "fine": "boete"
   },
   "c_recentTransactionsTable": {
     "recent transactions": "recente transacties",

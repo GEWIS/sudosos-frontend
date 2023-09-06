@@ -21,6 +21,7 @@ import {
 } from '@/api/users';
 import { getSelfBalance } from '@/api/balance';
 import dinero from 'dinero.js';
+import { Balance } from '@/entities/Balance';
 
 @Module({
   dynamic: true, namespaced: true, store, name: 'UserModule',
@@ -79,8 +80,8 @@ export default class UserModule extends VuexModule {
   }
 
   @Mutation
-  updateSaldo(newSaldo: dinero.Dinero) {
-    this.self.saldo = newSaldo;
+  updateBalance(newBalance: Balance) {
+    this.self.balance = newBalance;
   }
 
   @Mutation
@@ -107,8 +108,8 @@ export default class UserModule extends VuexModule {
     rawError: (process.env.VUE_APP_DEBUG_STORES === 'true'),
   })
   fetchBalance(force: boolean = false) {
-    if (this.self.saldo === undefined || force) {
-      getSelfBalance().then((b) => this.context.commit('updateSaldo', b));
+    if (this.self.balance === undefined || force) {
+      getSelfBalance().then((b) => this.context.commit('updateBalance', b));
     }
   }
 
@@ -203,7 +204,7 @@ export default class UserModule extends VuexModule {
       const token = jwtDecode(APIHelper.getToken().jwtToken) as any;
       this.context.commit('extractResponse', token);
       getUser(token.user.id).then((u) => this.context.commit('setSelf', u));
-      getSelfBalance().then((b) => this.context.commit('updateSaldo', b));
+      getSelfBalance().then((b) => this.context.commit('updateBalance', b));
     }
   }
 }

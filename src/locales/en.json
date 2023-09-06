@@ -252,7 +252,9 @@
   },
   "c_currentSaldo": {
     "saldo": "balance",
-    "upgrade online": "increase online"
+    "upgrade online": "increase online",
+    "of which": "Of which",
+    "fine": "fine"
   },
   "c_recentTransactionsTable": {
     "recent transactions": "recent transactions",

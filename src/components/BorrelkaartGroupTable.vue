@@ -120,7 +120,7 @@
           </template>
 
           <template v-slot:cell(saldo)="data">
-            {{ data.item.saldo.toFormat() }}
+            {{ data.item.balance.balance.toFormat() }}
           </template>
 
         </b-table>
