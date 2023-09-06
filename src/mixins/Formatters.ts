@@ -177,6 +177,12 @@ export default class Formatters extends Vue {
     if (trans.payoutRequest != null) {
       return this.$t('c_transactionsTable.transferPayoutRequest', { person: this.$t('c_transactionsTable.You'), amount });
     }
+    if (trans.fine != null) {
+      return this.$t('c_transactionsTable.transferFine', { person: this.$t('c_transactionsTable.You'), amount });
+    }
+    if (trans.waivedFines != null) {
+      return this.$t('c_transactionsTable.transferWaivedFines', { person: this.$t('c_transactionsTable.You'), amount });
+    }
     if (trans.to != null && trans.to.id != null && trans.from != null && trans.from.id != null) {
       if (fromYou(trans, id)) return this.$t('c_transactionsTable.transferOutgoing', { person: this.$t('c_transactionsTable.You'), amount, other: trans.to.firstname });
       return this.$t('c_transactionsTable.transferIncoming', { person: this.$t('c_transactionsTable.You'), amount, other: trans.from.firstname });

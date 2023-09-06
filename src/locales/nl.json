@@ -388,6 +388,8 @@
     "transferInvoiceOutgoing": "{person} bent voor {amount} gefactureerd",
     "transferDeposit": "{person} hebt saldo opgehoogd met {amount}",
     "transferPayoutRequest": "{person} hebt {amount} teruggestort naar je bankrekening",
+    "transferFine": "{person} hebt {amount} boete gekregen",
+    "transferWaivedFines": "{person} hebt {amount} teruggekregen door kwijtgescholde boetes",
     "Empty": "Geen transacties gevonden."
   },
   "c_transactionDetailsModal": {
@@ -415,6 +417,8 @@
     "Deposit": "Opwaardering",
     "PayoutRequest": "Uitbetaling naar bankrekening",
     "Transfer": "Overboeking tussen gebruikers",
+    "Fine": "Boete",
+    "WaivedFines": "Kwijtgescholde boetes",
     "Other": "Overige transactie"
   },
   "c_depositAlert": {

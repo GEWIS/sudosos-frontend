@@ -388,6 +388,8 @@
     "transferInvoiceOutgoing": "{person} were invoiced {amount}",
     "transferDeposit": "{person} increased balance with {amount}",
     "transferPayoutRequest": "{person} were paid {amount} back to bank account",
+    "transferFine": "{person} were fined {amount}",
+    "transferWaivedFines": "{person} had {amount} in fines waived",
     "Empty": "No transactions found."
   },
   "c_transactionDetailsModal": {
@@ -417,6 +419,8 @@
     "Deposit": "Deposit",
     "PayoutRequest": "PayoutRequest",
     "Transfer": "Transfer between users",
+    "Fine": "Fine",
+    "WaivedFines": "Waived fines",
     "Other": "Other transaction"
   },
   "c_depositAlert": {

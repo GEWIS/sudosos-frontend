@@ -55,6 +55,8 @@ export default class TransferDetails extends Vue {
     if (this.transfer.invoice != null) return this.$t('c_transferDetails.Invoice');
     if (this.transfer.deposit != null) return this.$t('c_transferDetails.Deposit');
     if (this.transfer.payoutRequest != null) return this.$t('c_transferDetails.PayoutRequest');
+    if (this.transfer.fine != null) return this.$t('c_transferDetails.Fine');
+    if (this.transfer.waivedFines != null) return this.$t('c_transferDetails.WaivedFines');
     if (this.transfer.to != null && this.transfer.to.id != null
       && this.transfer.from != null && this.transfer.from.id != null) {
       return this.$t('c_transferDetails.Transfer');
