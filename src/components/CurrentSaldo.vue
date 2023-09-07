@@ -5,9 +5,19 @@
         {{ $t('c_currentSaldo.saldo') }}
       </b-card-title>
       <b-card-body>
-        <p v-if="userState.self.saldo !== undefined" id="saldo-text" class="lead">
-          {{ userState.self.saldo.toFormat() }}
-        </p>
+        <div v-if="userState.self.balance !== undefined">
+          <p id="saldo-text" class="lead">
+            {{ userState.self.balance.balance.toFormat() }}
+          </p>
+          <p
+            v-if="userState.self.balance.fine !== undefined"
+            id="saldo-fine"
+          >
+            {{ $t('c_currentSaldo.of which') }}
+            <span id="saldo-fine-amount">-{{ userState.self.balance.fine.toFormat() }}</span>
+            {{ $t('c_currentSaldo.fine') }}
+          </p>
+        </div>
         <div v-else class="text-center">
           <b-spinner variant="primary" id="saldo-spinner"></b-spinner>
         </div>
@@ -49,6 +59,16 @@ export default class CurrentSaldo extends Formatters {
 #saldo-text {
   font-size: 50px;
   text-align: center;
+}
+
+#saldo-fine {
+  text-align: center;
+  font-style: italic;
+}
+
+#saldo-fine-amount {
+  font-weight: bold;
+  color: red;
 }
 
 #saldo-spinner {

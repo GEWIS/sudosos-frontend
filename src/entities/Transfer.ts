@@ -6,6 +6,7 @@ import { Pagination } from '@/entities/Pagination';
 import { Invoice } from '@/entities/Invoice';
 import { StripeDeposit } from '@/entities/StripeDeposit';
 import { PayoutRequest } from '@/entities/PayoutRequest';
+import { Fine } from '@/entities/Fine';
 
 export enum TransferType {
   DEPOSIT = 1,
@@ -23,6 +24,8 @@ export interface Transfer extends BaseEntity {
   invoice?: Invoice;
   deposit?: StripeDeposit;
   payoutRequest?: PayoutRequest;
+  fine?: Fine;
+  waivedFines?: Fine[];
 }
 
 export interface TransferList {

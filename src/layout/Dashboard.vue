@@ -67,10 +67,10 @@
               <b-dropdown-item @click="logout">{{ $t('app.Sign out') }}</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item
-              v-if="userState.self.saldo"
+              v-if="userState.self.balance"
               class="d-none d-md-inline"
               :to="{ name: 'saldo'}">
-              {{ userState.self.saldo.toFormat() }}
+              {{ userState.self.balance.balance.toFormat() }}
             </b-nav-item>
             <b-nav-item-dropdown right>
               <template v-slot:button-content>

@@ -22,7 +22,7 @@
                    ${formatDateTime(cardGroup.validDates.activeEndDate, false, true)}`
               }}</p>
             <p>{{ `${$t('socialDrinkCardsPrint.value')}:
-                  ${socialDrinkCards[(group * 2) + card - 3].saldo.toFormat()}`
+                  ${socialDrinkCards[(group * 2) + card - 3].balance.balance.toFormat()}`
               }}</p>
           </div>
         </td>
