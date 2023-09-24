@@ -6,18 +6,20 @@
     <div class="content-wrapper">
       <div class="pos-row">
         <div class="pos-general-info">
-          <h3>{{ $t("c_POSCreate.General") }}</h3>
-          <span class="general-info-block">
-            <b>{{ $t("c_POSCreate.Title") }}</b>
-            <InputText class="input" type="text" v-model="title"/>
-          </span>
-          <div class="general-info-block">
-            <b>{{ $t("c_POSCreate.Owner") }}</b>
-            <p>{{ pos ? (pos.owner ? pos.owner.firstName + pos.owner.lastName : "") : "" }}</p></div>
-<!--          TODO: Clean-up whatever the fuck is that above-->
-          <div>
+          <form @submit="handleEditPOS">
+            <h3>{{ $t("c_POSCreate.General") }}</h3>
+            <span class="general-info-block">
+              <b>{{ $t("c_POSCreate.Title") }}</b>
+              <InputText class="input" type="text" v-bind="title"/>
+            </span>
+            <div class="general-info-block">
+              <b>{{ $t("c_POSCreate.Owner") }}</b>
+              <p>{{ pos ? (pos.owner ? pos.owner.firstName + pos.owner.lastName : "") : "" }}</p>
+            </div>
+            <!--          TODO: Clean-up whatever the fuck is that above-->
+            <div>
             <span class="general-info-block" style="flex-direction: row;">
-              <Checkbox v-model="useAuthentication"
+              <Checkbox v-bind="useAuthentication"
                         inputId="useAuthentication"
                         name="useAuthentication"
                         value="useAuthentication"
@@ -25,16 +27,17 @@
               />
               <label for="useAuthentication">{{ $t("c_POSCreate.Use authentication") }}</label>
             </span>
-          </div>
-          <div class="general-info-block">
-            <b>{{ $t("c_POSCreate.Selected containers") }}</b>
-            <ul class="selected-containers">
-              <li v-for="container in selectedContainers" :key="container.id">
-                {{ container.name }}
-              </li>
-            </ul>
-          </div>
-          <Button id="create-pos-button" :label="$t('c_POSCreate.Edit')" @click="updatePointOfSale" severity="success"/>
+            </div>
+            <div class="general-info-block">
+              <b>{{ $t("c_POSCreate.Selected containers") }}</b>
+              <ul class="selected-containers">
+                <li v-for="container in selectedContainers" :key="container.id">
+                  {{ container.name }}
+                </li>
+              </ul>
+            </div>
+            <Button id="create-pos-button" :label="$t('c_POSCreate.Edit')" type="submit" severity="success"/>
+          </form>
         </div>
         <DetailedContainerCardComponent
             @selectedChanged="handleSelectedChanged"
@@ -60,15 +63,25 @@ import type { BaseUserResponse, ContainerResponse, UserResponse } from "@sudosos
 import { usePointOfSaleStore } from "@/stores/pos.store";
 import { useRoute, useRouter } from "vue-router";
 import type { PointOfSaleWithContainersResponse } from "@sudosos/sudosos-client";
+import * as yup from 'yup';
+import {useForm} from "vee-validate";
 
-const title: Ref<string> = ref("");
+const { defineComponentBinds, handleSubmit, errors, setValues} = useForm({
+  validationSchema: {
+    title: yup.string().required(),
+    useAuthentication: yup.boolean().required(),
+    selectedContainers: yup.mixed<Array<ContainerResponse>>(),
+  }
+});
+
+const title = defineComponentBinds('title');
 
 const containerStore = useContainerStore();
 const userStore = useUserStore();
 const publicContainers: Ref<Array<ContainerResponse> | null | undefined> = ref();
 const ownContainers: Ref<Array<ContainerResponse> | null | undefined> = ref();
 const selectedContainers: Ref<Array<ContainerResponse> | undefined> = ref();
-const useAuthentication = ref(false);
+const useAuthentication = defineComponentBinds('useAuthentication');
 const organsList: Ref<Array<UserResponse>> = ref([]);
 const authStore = useAuthStore();
 const pointOfSaleStore = usePointOfSaleStore();
@@ -79,13 +92,15 @@ const pos: Ref<PointOfSaleWithContainersResponse | null | undefined> = ref();
 const selectedOwner: Ref<BaseUserResponse | undefined> = ref();
 
 onBeforeMount(async () => {
-
   id.value = route.params.id;
   pos.value = pointOfSaleStore.getPos;
   if (pos.value) {
-    useAuthentication.value = pos.value.useAuthentication;
-    selectedContainers.value = pos.value.containers;
-    title.value = pos.value.name;
+    setValues({
+      useAuthentication : pos.value.useAuthentication,
+      title: pos.value.name,
+      selectedContainers: pos.value.containers,
+    });
+    //selectedContainers.value = pos.value.containers;
     selectedOwner.value = pos.value.owner;
   }
   if (userStore.getCurrentUser.user ) {
@@ -100,25 +115,38 @@ onBeforeMount(async () => {
 });
 
 const handleSelectedChanged = (selected: any) => {
-  selectedContainers.value = selected;
+  setValues({
+    selectedContainers: selected,
+  });
+  //selectedContainers.value = selected;
 };
 
-const updatePointOfSale = async () => {
-  if (title.value && selectedOwner.value && pos.value && selectedContainers.value) {
-    const response = await pointOfSaleStore.updatePointOfSale(
-        title.value,
+// const updatePointOfSale = async () => {
+//   if (title.value && selectedOwner.value && pos.value && selectedContainers.value) {
+//     const response = await pointOfSaleStore.updatePointOfSale(
+//         title.value,
+//         pos.value.id,
+//         useAuthentication.value,
+//         selectedContainers.value.map((container: ContainerResponse) => container.id),
+//     );
+//     if (response.status == 200){
+//       router.push('/point-of-sale/overview');
+//     } else {
+//       // TODO: Error Toasts
+//     }
+//   }
+// };
+
+const handleEditPOS = handleSubmit(async (values) => {
+    if (!pos.value) return;
+    const handleEditPOSResponse = await pointOfSaleStore.updatePointOfSale(
+        values.title,
         pos.value.id,
-        useAuthentication.value,
-        selectedContainers.value.map((container: ContainerResponse) => container.id),
+        values.useAuthentication,
+        values.selectedContainers.map((cont: ContainerResponse) => cont.id),
     );
-    if (response.status == 200){
-      router.push('/point-of-sale/overview');
-    } else {
-      // TODO: Error Toasts
-    }
-  }
-};
-
+    console.warn(handleEditPOSResponse.status);
+});
 </script>
 
 <style scoped lang="scss">
