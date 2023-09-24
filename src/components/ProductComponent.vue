@@ -28,13 +28,13 @@ defineProps({
 .product-card {
   overflow: hidden;
   text-align: center;
-  height: 100%;
+  height: 9rem;
+  width: 8.5rem;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-sizing: border-box; /* Include padding and border in the .card's width */
 
   .product {
-    height: 100%;
     display: flex;
     flex-direction: column; /* Align items vertically */
     justify-content: space-between;
