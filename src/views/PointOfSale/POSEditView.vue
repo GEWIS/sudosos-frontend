@@ -11,6 +11,7 @@
             <span class="general-info-block">
               <b>{{ $t("c_POSCreate.Title") }}</b>
               <InputText class="input" type="text" v-bind="title"/>
+              <span class="error-text">{{ errors.title }}</span>
             </span>
             <div class="general-info-block">
               <b>{{ $t("c_POSCreate.Owner") }}</b>
@@ -61,12 +62,12 @@ import DetailedContainerCardComponent from "@/components/DetailedContainerCardCo
 import { useAuthStore, useUserStore } from "@sudosos/sudosos-frontend-common";
 import type { BaseUserResponse, ContainerResponse, UserResponse } from "@sudosos/sudosos-client";
 import { usePointOfSaleStore } from "@/stores/pos.store";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import type { PointOfSaleWithContainersResponse } from "@sudosos/sudosos-client";
 import * as yup from 'yup';
-import {useForm} from "vee-validate";
+import { useForm } from "vee-validate";
 
-const { defineComponentBinds, handleSubmit, errors, setValues} = useForm({
+const { defineComponentBinds, handleSubmit, errors, setValues } = useForm({
   validationSchema: {
     title: yup.string().required(),
     useAuthentication: yup.boolean().required(),
@@ -85,7 +86,6 @@ const useAuthentication = defineComponentBinds('useAuthentication');
 const organsList: Ref<Array<UserResponse>> = ref([]);
 const authStore = useAuthStore();
 const pointOfSaleStore = usePointOfSaleStore();
-const router = useRouter();
 const id = ref();
 const route = useRoute();
 const pos: Ref<PointOfSaleWithContainersResponse | null | undefined> = ref();
