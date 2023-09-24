@@ -1,28 +1,33 @@
 <template>
   <Dialog v-model:visible="visible" :header="$t('c_POSCreate.add container')">
     <div class="dialog">
-      <div class="row">
-        <h6>{{ $t("c_containerEditModal.Name") }}</h6>
-        <InputText class="flex-child" v-model="name" />
-      </div>
-      <div class="row">
-        <h6>{{ $t("c_containerEditModal.owner") }}</h6>
-        <Dropdown
-            class="flex-child"
-            :options="organsList"
-            optionLabel="firstName"
-            v-model="selectedOwner"
-            :placeholder="$t('c_containerEditModal.select owner')"
-        />
-      </div>
-      <div class="row">
-        <h6>{{ $t("c_containerEditModal.Public") }}</h6>
-        <Checkbox class="flex-child" :binary="true" v-model="isPublic"/>
-      </div>
-      <div class="row" id="actions">
-        <Button severity="danger" outlined @click="visible = false">{{ $t("c_containerEditModal.cancel") }}</Button>
-        <Button severity="danger" @click="saveContainer">{{ $t("c_containerEditModal.save") }}</Button>
-      </div>
+      <form @submit="handleCreateContainer">
+        <div class="row">
+          <h6>{{ $t("c_containerEditModal.Name") }}</h6>
+          <InputText class="flex-child" v-bind="name"/>
+          <span class="error-text">{{ errors.name }}</span>
+        </div>
+        <div class="row">
+          <h6>{{ $t("c_containerEditModal.owner") }}</h6>
+          <Dropdown
+              class="flex-child"
+              :options="organsList"
+              optionLabel="firstName"
+              v-bind="selectedOwner"
+              :placeholder="$t('c_containerEditModal.select owner')"
+          />
+          <span class="error-text">{{ errors.selectedOwner }}</span>
+        </div>
+        <div class="row">
+          <h6>{{ $t("c_containerEditModal.Public") }}</h6>
+          <Checkbox class="flex-child" :binary="true" v-bind="isPublic"/>
+          <span class="error-text">{{ errors.isPublic }}</span>
+        </div>
+        <div class="row" id="actions">
+          <Button severity="danger" outlined @click="visible = false">{{ $t("c_containerEditModal.cancel") }}</Button>
+          <Button severity="danger" type="submit">{{ $t("c_containerEditModal.save") }}</Button>
+        </div>
+      </form>
     </div>
   </Dialog>
 </template>
@@ -33,28 +38,42 @@ import type { Ref } from "vue";
 import type { UserResponse } from "@sudosos/sudosos-client";
 import { useAuthStore } from "@sudosos/sudosos-frontend-common";
 import { useContainerStore } from "@/stores/container.store";
+import * as yup from 'yup';
+import { useForm } from "vee-validate";
+
+const { defineComponentBinds, handleSubmit, errors } = useForm({
+  validationSchema: {
+    name: yup.string().required(),
+    owner: yup.mixed<UserResponse>().required(),
+    isPublic: yup.boolean().required().default(false),
+  }
+});
 
 const visible = ref(false);
-const selectedOwner: Ref<UserResponse | undefined > = ref();
+const selectedOwner = defineComponentBinds('selectedOwner');
 const organsList: Ref<Array<UserResponse>> = ref([]);
 const authStore = useAuthStore();
-const name: Ref<string> = ref("");
-const isPublic: Ref<boolean> = ref(false);
+const name = defineComponentBinds('name');
+const isPublic = defineComponentBinds('isPublic');
 const containerStore = useContainerStore();
 
 onMounted(async () => {
   organsList.value = authStore.organs;
 });
 
-const saveContainer = () => {
-  if (selectedOwner.value){
-    containerStore.createEmptyContainer(name.value, isPublic.value, selectedOwner.value.id);
-    visible.value = false;
+const handleCreateContainer = handleSubmit(async (values) => {
+  const createContainerResponse = await containerStore.createEmptyContainer(
+      values.name,
+      values.isPublic,
+      values.selectedOwner.id
+  );
+  if (createContainerResponse.status === 204){
+    // TODO: Correct toasts
   } else {
-    console.error("Owner not defined"); // TODO: Correct error-handling
+    // TODO: Correct error handling
   }
+});
 
-};
 </script>
 
 <style scoped lang="scss">

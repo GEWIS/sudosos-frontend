@@ -28,8 +28,8 @@ defineProps({
 .product-card {
   overflow: hidden;
   text-align: center;
-  height: 9rem;
-  width: 8.5rem;
+  height: 9.5rem;
+  width: 8rem;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-sizing: border-box; /* Include padding and border in the .card's width */
