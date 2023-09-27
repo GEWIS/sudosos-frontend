@@ -70,7 +70,7 @@ const handleCreateContainer = handleSubmit(async (values) => {
   if (createContainerResponse.status === 204){
     // TODO: Correct toasts
   } else {
-    // TODO: Correct error handling
+    // TODO: Correct error-handling
   }
 });
 

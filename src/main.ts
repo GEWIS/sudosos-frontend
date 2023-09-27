@@ -23,6 +23,8 @@ import Dropdown from "primevue/dropdown";
 import Checkbox from "primevue/checkbox";
 import TabView from "primevue/tabview";
 import ScrollPanel from "primevue/scrollpanel";
+import FileUpload from "primevue/fileupload";
+import { populateStoresFromToken } from "@/helper/ApiHelper";
 
 const app = createApp(App);
 
@@ -38,7 +40,7 @@ app.use(PrimeVue);
 app.use(i18n);
 
 app.component('Button', Button);
-app.component('InputText', InputText);-
+app.component('InputText', InputText);
 app.component('Menubar', Menubar);
 app.component('Panel', Panel);
 app.component('DataTable', DataTable);
@@ -48,4 +50,7 @@ app.component('Dropdown', Dropdown);
 app.component('Checkbox', Checkbox);
 app.component('TabView', TabView);
 app.component('ScrollPanel', ScrollPanel);
+app.component('FileUpload', FileUpload);
+app.component('InputNumber', InputNumber);
+populateStoresFromToken();
 app.mount('#app');

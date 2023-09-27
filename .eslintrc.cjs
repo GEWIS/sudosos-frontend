@@ -6,14 +6,14 @@ module.exports = {
   plugins: ['import'],
   'extends': [
     'plugin:vue/vue3-essential',
-    'plugin:@intlify/vue-i18n/recommended',
     'eslint:recommended',
     '@vue/eslint-config-typescript',
-    '@vue/eslint-config-prettier/skip-formatting'
+    '@vue/eslint-config-prettier/skip-formatting',
+    'plugin:@intlify/vue-i18n/recommended'
   ],
+
   ignorePatterns: ["/src/components/icons/*.vue"],
   rules: {
-    '@intlify/vue-i18n/no-raw-text': 'error',
     'max-len': ['warn', { "code": 120 } ],
     'semi': ['error', 'always'],
     'object-curly-spacing': ['error', 'always'],
@@ -26,7 +26,7 @@ module.exports = {
           "lang": "ts"
         }
       }
-    ]
+    ],
   },
   parserOptions: {
     ecmaVersion: 'latest',

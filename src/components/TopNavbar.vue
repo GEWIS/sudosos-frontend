@@ -40,7 +40,6 @@ const firstName = computed((): string | undefined => {
 });
 
 const handleLogout = () => {
-  console.error(true);
   authStore.logout();
   router.push('/');
 };
@@ -84,16 +83,15 @@ const leftItems = ref([ // TODO: Implement Submenus
     label: 'BAC', // TODO: Implement RBAC Determination for permissions
     items: [
       {
-        label: 'Manage POS',
-      },
-      {
         label: 'User Overview',
+        to: '/user-overview',
       },
       {
         label: 'Flagged Transactions',
       },
       {
         label: 'Manage Products',
+        to: '/manage-products',
       },
       {
         label: 'Social Drink Cards',
