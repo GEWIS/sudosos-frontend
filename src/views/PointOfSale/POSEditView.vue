@@ -55,7 +55,7 @@
 
 <script setup lang="ts">
 
-import { onBeforeMount, ref } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 import type { Ref } from "vue";
 import { useContainerStore } from "@/stores/container.store";
 import DetailedContainerCardComponent from "@/components/DetailedContainerCardComponent.vue";
@@ -91,6 +91,11 @@ const route = useRoute();
 const pos: Ref<PointOfSaleWithContainersResponse | null | undefined> = ref();
 const selectedOwner: Ref<BaseUserResponse | undefined> = ref();
 
+const posDisplayName = computed(() => {
+  if (!pos.value || !pos.value.owner) return "";
+  return pos.value.owner.firstName + pos.value.owner.lastName;
+});
+
 onBeforeMount(async () => {
   id.value = route.params.id;
   pos.value = pointOfSaleStore.getPos;
@@ -110,7 +115,7 @@ onBeforeMount(async () => {
     ownContainers.value = ownContainersResponse.records.filter((container) => container.public == false);
     organsList.value = authStore.organs;
   } else {
-    console.error("User not found"); // TODO: Error handling
+    // TODO: Error handling
   }
 });
 

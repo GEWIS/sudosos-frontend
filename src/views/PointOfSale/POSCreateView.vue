@@ -119,7 +119,7 @@ onMounted(async () => {
     );
     organsList.value = authStore.organs;
   } else {
-    console.error('User not found'); // TODO: Error handling
+    // TODO: Error handling
   }
 });
 
@@ -141,26 +141,6 @@ const handleCreatePOS = handleSubmit(async (values) => {
 const handleSelectedChanged = (selected: any) => {
   value.value = selected;
 };
-
-/* const createPointOfSale = async () => {
-  console.warn(title.value);
-  console.error(selectedOwner.value);
-  console.warn(useAuthentication.value);
-  console.error(selectedContainers.value);
-  if (title.value && selectedOwner.value) {
-    const response = await pointOfSaleStore.createPointOfSale(
-        title.value,
-        useAuthentication.value,
-        selectedContainers.value.map((container: ContainerResponse) => container.id),
-        selectedOwner.value.id
-    );
-    if (response.status == 200){
-      router.push('/point-of-sale/overview');
-    } else {
-      // TODO: Error Toasts
-    }
-  }
-}; */
 </script>
 
 <style scoped lang="scss">

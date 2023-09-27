@@ -1,5 +1,5 @@
 <template>
-  <CardComponent header="Points of Sale">
+  <CardComponent :header="$t('app.Points of Sale')">
     <DataTable :value="listOfPOS">
       <Column field="name" header="Title"/>
       <Column field="owner.firstName" header="Owner"/>
@@ -33,8 +33,6 @@ onMounted(async () => {
   const userId = userStore.getCurrentUser.user !== null ? userStore.getCurrentUser.user.id : undefined;
   if (userId){
     listOfPOS.value = await pointOfSaleStore.getUserPointsOfSale(userId).then((resp)=> {return resp.data.records;});
-  } else {
-    console.error("userID is not defined");
   }
 
 });

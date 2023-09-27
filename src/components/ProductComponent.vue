@@ -26,6 +26,8 @@ defineProps({
 
 <style scoped lang="scss">
 .product-card {
+  height: 9.5rem;
+  width: 8rem;
   overflow: hidden;
   text-align: center;
   height: 9.5rem;
@@ -52,9 +54,5 @@ defineProps({
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.card {
-
 }
 </style>

@@ -42,7 +42,8 @@
     "Profile": "Profile",
     "Sign out": "Sign out",
     "Netherlands": "Nederlands",
-    "English": "English"
+    "English": "English",
+    "Search": "Search"
   },
   "formatters": {
     "Monday": "Monday",
@@ -165,7 +166,7 @@
     "Total": "Total"
   },
   "manageProducts": {
-    "Manage all products and default containers": "Manage all products and default containers",
+    "Manage all products and containers": "Manage all products and containers",
     "All products": "All products",
     "Add product": "Add product",
     "Default containers": "Default containers",
@@ -257,10 +258,12 @@
   "c_currentSaldo": {
     "saldo": "balance",
     "upgrade online": "increase online",
-    "topup": "You will be topping up with €",
+    "topup": "You will be topping up with €{amount}",
     "cashtopup": "It is no longer possible to increase your balance in cash during the 'borrel'",
     "increase": "Balance increase amount:",
-    "currency": "€"
+    "currency": "€",
+    "startPayment": "Start Payment",
+    "Increase Saldo": "Increase Saldo"
   },
   "c_recentTransactionsTable": {
     "recent transactions": "recent transactions",
@@ -300,7 +303,8 @@
   },
   "c_confirmationModal": {
     "Cancel": "Cancel",
-    "Confirm": "Confirm"
+    "Confirm": "Confirm",
+    "Save": "Save"
   },
   "containersOverview": {
     "Containers": "Containers"
@@ -335,6 +339,7 @@
     "Price": "Price (in €)",
     "Category": "Category",
     "Please select": "Please select a product category",
+    "Please select VAT": "Please select a VAT group",
     "Alcohol Percentage": "Alcohol percentage",
     "Image": "Image",
     "Delete product": "Delete product",
@@ -487,15 +492,25 @@
     "Pin code must be 4 digits": "Pin code must be 4 digits",
     "New pin code length must be 4 digits": "New pin code length must be 4 digits",
     "New pin code must be unique from old pin code": "New pin code must be unique from old pin code",
-    "Confirmation does not match pin code": "Confirmation does not match pin code"
+    "Confirmation does not match pin code": "Confirmation does not match pin code",
+    "Usertype": "Usertype",
+    "Update information": "Update information",
+    "Personal Info": "Personal Info",
+    "User Transactions": "User Transactions"
   },
   "c_userTable": {
-    "Name": "Name",
+    "firstName": "First Name",
+    "lastName": "Last Name",
     "gewisID": "GEWIS ID",
     "Active": "Active",
     "Filter by name": "Filter by name or ID",
     "Fill in a name": "Fill in a name or ID",
-    "Page": "Page"
+    "Page": "Page",
+    "Type": "Type",
+    "Select Type": "Select Type",
+    "Create User": "Create User",
+    "User Type": "User Type",
+    "Select User Type": "Select User Type"
   },
   "signOut": {
     "message": "Signing you out! Hope you had a nice time :) Be sure to come back soon!"
