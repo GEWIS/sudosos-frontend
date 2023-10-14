@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model:visible="visible" :header="$t('c_POSCreate.add container')">
+  <Dialog v-model:visible="visible" :header="$t('c_POSCreate.add container')" :draggable="false">
     <div class="dialog">
       <form @submit="handleCreateContainer">
         <div class="row">

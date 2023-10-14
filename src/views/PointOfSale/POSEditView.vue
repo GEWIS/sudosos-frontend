@@ -15,11 +15,10 @@
             </span>
             <div class="general-info-block">
               <b>{{ $t("c_POSCreate.Owner") }}</b>
-              <p>{{ pos ? (pos.owner ? pos.owner.firstName + pos.owner.lastName : "") : "" }}</p>
+              <p>{{ posDisplayName }}</p>
             </div>
-            <!--          TODO: Clean-up whatever the fuck is that above-->
             <div>
-            <span class="general-info-block" style="flex-direction: row;">
+            <span class="general-info-block" style="flex-direction: row; align-items: center;">
               <Checkbox v-bind="useAuthentication"
                         inputId="useAuthentication"
                         name="useAuthentication"
@@ -66,6 +65,7 @@ import { useRoute } from "vue-router";
 import type { PointOfSaleWithContainersResponse } from "@sudosos/sudosos-client";
 import * as yup from 'yup';
 import { useForm } from "vee-validate";
+import apiService from "@/services/ApiService";
 
 const { defineComponentBinds, handleSubmit, errors, setValues } = useForm({
   validationSchema: {
@@ -98,14 +98,15 @@ const posDisplayName = computed(() => {
 
 onBeforeMount(async () => {
   id.value = route.params.id;
-  pos.value = pointOfSaleStore.getPos;
+  const posRes = await apiService.pos.getSinglePointOfSale(id.value);
+  pos.value = posRes.data;
   if (pos.value) {
     setValues({
       useAuthentication : pos.value.useAuthentication,
       title: pos.value.name,
       selectedContainers: pos.value.containers,
     });
-    //selectedContainers.value = pos.value.containers;
+
     selectedOwner.value = pos.value.owner;
   }
   if (userStore.getCurrentUser.user ) {
@@ -115,7 +116,8 @@ onBeforeMount(async () => {
     ownContainers.value = ownContainersResponse.records.filter((container) => container.public == false);
     organsList.value = authStore.organs;
   } else {
-    // TODO: Error handling
+    // TODO: Error handling, issue #18
+    // See https://github.com/gewis/sudosos-frontend-vue3/issues/18
   }
 });
 
@@ -123,24 +125,7 @@ const handleSelectedChanged = (selected: any) => {
   setValues({
     selectedContainers: selected,
   });
-  //selectedContainers.value = selected;
 };
-
-// const updatePointOfSale = async () => {
-//   if (title.value && selectedOwner.value && pos.value && selectedContainers.value) {
-//     const response = await pointOfSaleStore.updatePointOfSale(
-//         title.value,
-//         pos.value.id,
-//         useAuthentication.value,
-//         selectedContainers.value.map((container: ContainerResponse) => container.id),
-//     );
-//     if (response.status == 200){
-//       router.push('/point-of-sale/overview');
-//     } else {
-//       // TODO: Error Toasts
-//     }
-//   }
-// };
 
 const handleEditPOS = handleSubmit(async (values) => {
     if (!pos.value) return;
@@ -151,6 +136,8 @@ const handleEditPOS = handleSubmit(async (values) => {
         values.selectedContainers.map((cont: ContainerResponse) => cont.id),
     );
     console.warn(handleEditPOSResponse.status);
+    // TODO: Correct error handling, issue #18
+    // See: https://github.com/GEWIS/sudosos-frontend-vue3/issues/18
 });
 </script>
 
@@ -222,5 +209,12 @@ hr {
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
+
+  label {
+    margin-left: 10px;
+  }
 }
+
+
+
 </style>
