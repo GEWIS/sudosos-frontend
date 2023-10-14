@@ -104,8 +104,6 @@ onBeforeMount(async () => {
   if (userStore.getCurrentUser.user ) {
     const publicContainersResponse = await containerStore.getPublicContainers();
     const ownContainersResponse = await containerStore.getUsersContainers(userStore.getCurrentUser.user.id);
-    console.warn(publicContainersResponse.records);
-    console.log(ownContainersResponse.records);
     publicContainers.value = publicContainersResponse.records;
     ownContainers.value = ownContainersResponse.records.filter((container) => container.public == false);
     organsList.value = authStore.organs;
@@ -120,7 +118,6 @@ onBeforeMount(async () => {
     });
     selectedContainers.value = pos.value.containers;
     selectedOwner.value = pos.value.owner;
-    console.error(selectedContainers.value);
   }
 });
 

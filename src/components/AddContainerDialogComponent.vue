@@ -75,7 +75,6 @@ onMounted(async () => {
   });
 
 const handleCreateContainer = handleSubmit(async (values) => {
-  console.log(values.isPublic);
   const createContainerResponse = await containerStore.createEmptyContainer(
       values.name,
       values.isPublic || false,
