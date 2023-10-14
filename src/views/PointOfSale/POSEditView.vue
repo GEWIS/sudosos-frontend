@@ -100,18 +100,12 @@ onBeforeMount(async () => {
   id.value = route.params.id;
   const posRes = await apiService.pos.getSinglePointOfSale(id.value);
   pos.value = posRes.data;
-  if (pos.value) {
-    setValues({
-      useAuthentication : pos.value.useAuthentication,
-      title: pos.value.name,
-      selectedContainers: pos.value.containers,
-    });
 
-    selectedOwner.value = pos.value.owner;
-  }
   if (userStore.getCurrentUser.user ) {
     const publicContainersResponse = await containerStore.getPublicContainers();
     const ownContainersResponse = await containerStore.getUsersContainers(userStore.getCurrentUser.user.id);
+    console.warn(publicContainersResponse.records);
+    console.log(ownContainersResponse.records);
     publicContainers.value = publicContainersResponse.records;
     ownContainers.value = ownContainersResponse.records.filter((container) => container.public == false);
     organsList.value = authStore.organs;
@@ -119,12 +113,19 @@ onBeforeMount(async () => {
     // TODO: Error handling, issue #18
     // See https://github.com/gewis/sudosos-frontend-vue3/issues/18
   }
+  if (pos.value) {
+    setValues({
+      useAuthentication : pos.value.useAuthentication,
+      title: pos.value.name,
+    });
+    selectedContainers.value = pos.value.containers;
+    selectedOwner.value = pos.value.owner;
+    console.error(selectedContainers.value);
+  }
 });
 
 const handleSelectedChanged = (selected: any) => {
-  setValues({
-    selectedContainers: selected,
-  });
+  selectedContainers.value = selected;
 };
 
 const handleEditPOS = handleSubmit(async (values) => {
@@ -215,6 +216,8 @@ hr {
   }
 }
 
-
+:deep(tr.p-highlight) {
+  color: black;
+}
 
 </style>
