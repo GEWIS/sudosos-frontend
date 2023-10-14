@@ -11,8 +11,7 @@ import BalanceView from "@/views/BalanceView.vue";
 import UserOverView from '../views/UserOverView.vue';
 import SingleUserView from "@/views/SingleUserView.vue";
 import ProductsContainersView from "@/views/ProductsContainersView.vue";
-import apiService from "@/services/ApiService";
-import {isAuthenticated} from "@sudosos/sudosos-frontend-common";
+import { isAuthenticated } from "@sudosos/sudosos-frontend-common";
 
 const router = createRouter({
   history: createWebHistory(),

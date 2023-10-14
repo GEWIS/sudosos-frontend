@@ -1,5 +1,10 @@
 <template>
-  <Dialog v-model:visible="visible" :header="$t('c_POSCreate.add container')" :draggable="false" modal @update:visible="closeDialog">
+  <Dialog v-model:visible="visible"
+          :header="$t('c_POSCreate.add container')"
+          :draggable="false"
+          modal
+          @update:visible="closeDialog"
+  >
     <div class="dialog">
       <form @submit="handleCreateContainer">
         <div class="row">
@@ -44,7 +49,7 @@ import { useAuthStore } from "@sudosos/sudosos-frontend-common";
 import { useContainerStore } from "@/stores/container.store";
 import * as yup from 'yup';
 import { useForm } from "vee-validate";
-import {useRouter} from "vue-router";
+import { useRouter } from "vue-router";
 
 const { defineComponentBinds, handleSubmit, errors } = useForm({
   validationSchema: {
@@ -64,7 +69,7 @@ const isPublic = defineComponentBinds('isPublic');
 const containerStore = useContainerStore();
 const closeDialog = () => {
   emit('update:visible', false);
-}
+};
 onMounted(async () => {
   organsList.value = authStore.organs;
   });
