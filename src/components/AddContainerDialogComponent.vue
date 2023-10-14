@@ -51,6 +51,12 @@ import * as yup from 'yup';
 import { useForm } from "vee-validate";
 import { useRouter } from "vue-router";
 
+const emit = defineEmits(['update:visible']);
+
+const visible: Ref<boolean | undefined> = ref(false);
+const organsList: Ref<Array<UserResponse>> = ref([]);
+
+// Form setup and component binds
 const { defineComponentBinds, handleSubmit, errors } = useForm({
   validationSchema: {
     name: yup.string().required(),
@@ -58,21 +64,20 @@ const { defineComponentBinds, handleSubmit, errors } = useForm({
     isPublic: yup.boolean().required().default(false),
   }
 });
-const router = useRouter();
-const emit = defineEmits(['update:visible']);
-const visible = ref(false);
-const selectedOwner = defineComponentBinds('selectedOwner');
-const organsList: Ref<Array<UserResponse>> = ref([]);
-const authStore = useAuthStore();
 const name = defineComponentBinds('name');
 const isPublic = defineComponentBinds('isPublic');
 const containerStore = useContainerStore();
+const selectedOwner = defineComponentBinds('selectedOwner');
+
+const router = useRouter();
+const authStore = useAuthStore();
+
+onMounted(async () => {
+  organsList.value = authStore.organs;
+});
 const closeDialog = () => {
   emit('update:visible', false);
 };
-onMounted(async () => {
-  organsList.value = authStore.organs;
-  });
 
 const handleCreateContainer = handleSubmit(async (values) => {
   const createContainerResponse = await containerStore.createEmptyContainer(
@@ -85,10 +90,10 @@ const handleCreateContainer = handleSubmit(async (values) => {
     closeDialog();
     router.go(0);
     // TODO: Correct toasts
+    // See issue #18: https://github.com/GEWIS/sudosos-frontend-vue3/issues/18
   } else {
     // TODO: Correct error-handling
   }
-
 });
 
 </script>
@@ -111,7 +116,7 @@ const handleCreateContainer = handleSubmit(async (values) => {
       font-family: Lato,Arial,sans-serif!important;
       font-size: 1rem!important;
       flex: 0 0 33.33333%;
-      max-width: 33.33333%;
+      max-width: 20%;
     }
 
     .flex-child {
