@@ -36,7 +36,7 @@
                 </li>
               </ul>
             </div>
-            <Button id="create-pos-button" :label="$t('c_POSCreate.Edit')" type="submit" severity="success"/>
+            <Button id="create-pos-button" :label="$t('c_containerEditModal.save')" type="submit" severity="success"/>
           </form>
         </div>
         <DetailedContainerCardComponent

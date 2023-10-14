@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model:visible="visible" :header="$t('c_POSCreate.add container')" :draggable="false">
+  <Dialog v-model:visible="visible" :header="$t('c_POSCreate.add container')" :draggable="false" modal>
     <div class="dialog">
       <form @submit="handleCreateContainer">
         <div class="row">
@@ -24,7 +24,7 @@
           <span class="error-text">{{ errors.isPublic }}</span>
         </div>
         <div class="row" id="actions">
-          <Button severity="danger" outlined @click="visible = false">{{ $t("c_containerEditModal.cancel") }}</Button>
+          <Button severity="danger" outlined @click="closeDialog">{{ $t("c_containerEditModal.cancel") }}</Button>
           <Button severity="danger" type="submit">{{ $t("c_containerEditModal.save") }}</Button>
         </div>
       </form>
@@ -40,15 +40,17 @@ import { useAuthStore } from "@sudosos/sudosos-frontend-common";
 import { useContainerStore } from "@/stores/container.store";
 import * as yup from 'yup';
 import { useForm } from "vee-validate";
+import {useRouter} from "vue-router";
 
 const { defineComponentBinds, handleSubmit, errors } = useForm({
   validationSchema: {
     name: yup.string().required(),
-    owner: yup.mixed<UserResponse>().required(),
+    selectedOwner: yup.mixed<UserResponse>().required(),
     isPublic: yup.boolean().required().default(false),
   }
 });
-
+const router = useRouter();
+const emit = defineEmits(['update:visible']);
 const visible = ref(false);
 const selectedOwner = defineComponentBinds('selectedOwner');
 const organsList: Ref<Array<UserResponse>> = ref([]);
@@ -56,22 +58,29 @@ const authStore = useAuthStore();
 const name = defineComponentBinds('name');
 const isPublic = defineComponentBinds('isPublic');
 const containerStore = useContainerStore();
-
+const closeDialog = () => {
+  emit('update:visible', false);
+}
 onMounted(async () => {
   organsList.value = authStore.organs;
-});
+  });
 
 const handleCreateContainer = handleSubmit(async (values) => {
+  console.log(values.isPublic);
   const createContainerResponse = await containerStore.createEmptyContainer(
       values.name,
-      values.isPublic,
+      values.isPublic || false,
       values.selectedOwner.id
   );
-  if (createContainerResponse.status === 204){
+
+  if (createContainerResponse.status === 200){
+    closeDialog();
+    router.go(0);
     // TODO: Correct toasts
   } else {
     // TODO: Correct error-handling
   }
+
 });
 
 </script>
