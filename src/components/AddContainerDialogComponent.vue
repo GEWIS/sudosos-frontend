@@ -10,8 +10,14 @@
         <div class="row">
           <h6>{{ $t("c_containerEditModal.Name") }}</h6>
           <div class="input-container">
-            <InputText class="flex-child" v-bind="name"/>
-            <span class="error-text">{{ errors.name || "&nbsp;" }}</span>
+            <InputText class="flex-child" :class="{'p-invalid': errors.name}" v-bind="name"/>
+            <small
+                v-if="errors.name"
+                class="p-error"
+            >
+              <i class="pi pi-exclamation-circle" />{{ " " + errors.name }}
+            </small>
+            <br v-else>
           </div>
         </div>
         <div class="row">
@@ -23,8 +29,15 @@
                 optionLabel="firstName"
                 v-bind="selectedOwner"
                 :placeholder="$t('c_containerEditModal.select owner')"
+                :class="{'p-invalid': errors.selectedOwner}"
             />
-            <span class="error-text">{{ errors.selectedOwner || "&nbsp;"}}</span>
+            <small
+                v-if="errors.selectedOwner"
+                class="p-error"
+            >
+              <i class="pi pi-exclamation-circle" />{{ " " + errors.selectedOwner }}
+            </small>
+            <br v-else>
             </div>
         </div>
         <div class="row">
@@ -151,4 +164,20 @@ const handleCreateContainer = handleSubmit(async (values) => {
   width: 50%;
 }
 
+.p-invalid {
+  background-color: #fef0f0;
+}
+
+.p-error {
+  display: block;
+  font-size: 12px;
+  text-align: left;
+  line-height:18px;
+}
+
+.p-error > i {
+  font-size:12px;
+  margin-right: 3.6px;
+  line-height:12px;
+}
 </style>
