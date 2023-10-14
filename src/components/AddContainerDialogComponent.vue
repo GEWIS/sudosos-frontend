@@ -4,6 +4,8 @@
           :draggable="false"
           modal
           @update:visible="closeDialog"
+          ref="addContainer"
+          @show="addListenerOnDialogueOverlay(addContainer)"
   >
     <div class="dialog">
       <form @submit="handleCreateContainer">
@@ -63,11 +65,13 @@ import { useContainerStore } from "@/stores/container.store";
 import * as yup from 'yup';
 import { useForm } from "vee-validate";
 import { useRouter } from "vue-router";
+import {addListenerOnDialogueOverlay} from "@/utils/dialogUtil";
 
 const emit = defineEmits(['update:visible']);
 
 const visible: Ref<boolean | undefined> = ref(false);
 const organsList: Ref<Array<UserResponse>> = ref([]);
+const addContainer: Ref<null | any> = ref(null);
 
 // Form setup and component binds
 const { defineComponentBinds, handleSubmit, errors } = useForm({
