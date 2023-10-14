@@ -10,8 +10,14 @@
             <h3>{{ $t("c_POSCreate.General") }}</h3>
             <span class="general-info-block">
               <b>{{ $t("c_POSCreate.Title") }}</b>
-              <InputText class="input" type="text" v-bind="title"/>
-              <span class="error-text">{{ errors.title }}</span>
+              <InputText class="input" type="text" v-bind="title" :class="{'p-invalid': errors.title}"/>
+              <small
+                  v-if="errors.title"
+                  class="p-error"
+              >
+              <i class="pi pi-exclamation-circle" />{{ " " + errors.title }}
+            </small>
+            <br v-else>
             </span>
             <div class="general-info-block">
               <b>{{ $t("c_POSCreate.Owner") }}</b>
@@ -217,4 +223,20 @@ hr {
   color: black;
 }
 
+.p-invalid {
+  background-color: #fef0f0;
+}
+
+.p-error {
+  display: block;
+  font-size: 12px;
+  text-align: left;
+  line-height:18px;
+}
+
+.p-error > i {
+  font-size:12px;
+  margin-right: 3.6px;
+  line-height:12px;
+}
 </style>
