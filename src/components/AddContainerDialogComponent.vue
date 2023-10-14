@@ -1,22 +1,26 @@
 <template>
-  <Dialog v-model:visible="visible" :header="$t('c_POSCreate.add container')" :draggable="false" modal>
+  <Dialog v-model:visible="visible" :header="$t('c_POSCreate.add container')" :draggable="false" modal @update:visible="closeDialog">
     <div class="dialog">
       <form @submit="handleCreateContainer">
         <div class="row">
           <h6>{{ $t("c_containerEditModal.Name") }}</h6>
-          <InputText class="flex-child" v-bind="name"/>
-          <span class="error-text">{{ errors.name }}</span>
+          <div class="input-container">
+            <InputText class="flex-child" v-bind="name"/>
+            <span class="error-text">{{ errors.name || "&nbsp;" }}</span>
+          </div>
         </div>
         <div class="row">
           <h6>{{ $t("c_containerEditModal.owner") }}</h6>
-          <Dropdown
-              class="flex-child"
-              :options="organsList"
-              optionLabel="firstName"
-              v-bind="selectedOwner"
-              :placeholder="$t('c_containerEditModal.select owner')"
-          />
-          <span class="error-text">{{ errors.selectedOwner }}</span>
+          <div class="input-container">
+            <Dropdown
+                class="flex-child"
+                :options="organsList"
+                optionLabel="firstName"
+                v-bind="selectedOwner"
+                :placeholder="$t('c_containerEditModal.select owner')"
+            />
+            <span class="error-text">{{ errors.selectedOwner || "&nbsp;"}}</span>
+            </div>
         </div>
         <div class="row">
           <h6>{{ $t("c_containerEditModal.Public") }}</h6>
@@ -109,8 +113,7 @@ const handleCreateContainer = handleSubmit(async (values) => {
     .flex-child {
       font-family: Lato,Arial,sans-serif!important;
       font-size: 1rem!important;
-      flex: 1; /* Make the child fill the available space within the .row */
-      max-width: 66.66666%;
+
       margin-bottom: 0.25rem;
     }
 
@@ -131,6 +134,12 @@ const handleCreateContainer = handleSubmit(async (values) => {
       margin: 0 0.2rem;
     }
   }
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
 }
 
 </style>
