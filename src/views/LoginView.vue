@@ -1,35 +1,94 @@
 <template>
   <div>
     <main>
-      <img id="login-image" src="../assets/img/bier.png" alt="logo" />
+      <img
+          id="login-image"
+          src="../assets/img/bier.png"
+          alt="logo"
+      />
       <h1>{{ $t('login.SudoSOS Login') }}</h1>
-      <Button id="login-gewis-button" @click="loginViaGEWIS" severity="success"
-        ><img id="gewis-branding" src="../assets/img/gewis-branding.svg" alt="GEWIS" />{{
-          $t('login.Login via GEWIS')
-        }}</Button
+      <Button
+          id="login-gewis-button"
+          @click="loginViaGEWIS"
+          severity="success"
       >
+        <img
+            id="gewis-branding"
+            src="../assets/img/gewis-branding.svg"
+            alt="GEWIS"
+        />
+        {{ $t('login.Login via GEWIS') }}
+      </Button>
       <hr />
-      <form id="login-form" @submit.prevent="ldapLogin">
-        <!--      TODO: Form validation with vee-validate -->
-        <label for="username">{{ $t('login.Username') }}</label>
-        <InputText
-          id="username"
-          type="text"
-          v-bind="username"
-          :placeholder="$t('login.Enter username')"
-        />
-        <label for="password">{{ $t('login.Password') }}</label>
-        <InputText
-          id="password"
-          type="password"
-          v-bind="password"
-          :placeholder="$t('login.Enter password')"
-        />
-        <Button type="submit" id="login-button" severity="danger">{{ $t('login.Login') }}</Button>
-        <div class="password-reset" @click="resetPassword">{{ $t('login.Password reset') }}</div>
-      </form>
+      <Form id="login-form" @submit="ldapLogin">
+        <label
+            id="input-description"
+            for="username"
+        >
+          {{ $t('login.Username') }}
+        </label>
+        <span class="p-float-label with-error">
+          <InputText
+            id="username"
+            type="text"
+            v-bind="username"
+            size="large"
+            name="username"
+          />
+          <label
+              :class="{'contains-text': username.modelValue }"
+              for="username">{{ $t('login.Username') }}
+          </label>
+          <small
+              v-if="loginForm.errors.value.username"
+              class="p-error"
+          >
+            <i class="pi pi-exclamation-circle"/>
+            {{ loginForm.errors.value.username }}
+          </small>
+        </span>
+        <label
+            id="input-description"
+            for="password"
+        >
+          {{ $t('login.Password') }}
+        </label>
+        <span class="p-float-label with-error">
+          <InputText
+              id="password"
+              type="password"
+              v-bind="password"
+              size="large"
+              name="password"
+          />
+          <label
+              :class="{'contains-text': password.modelValue }"
+              for="password">{{ $t('login.Password') }}
+          </label>
+          <small
+              v-if="loginForm.errors.value.password"
+              class="p-error"
+          >
+            <i class="pi pi-exclamation-circle"/>
+            {{ loginForm.errors.value.password }}
+          </small>
+        </span>
+        <Button
+            type="submit"
+            id="login-button"
+            severity="danger"
+        >
+          {{ $t('login.Login') }}
+        </Button>
+        <div
+            class="password-reset"
+            @click="resetPassword"
+        >
+          {{ $t('login.Password reset') }}
+        </div>
+      </Form>
     </main>
-    <CopyrightBanner />
+    <CopyrightBanner/>
   </div>
 </template>
 
@@ -44,20 +103,28 @@ import router from "@/router";
 import { useForm } from "vee-validate";
 import * as yup from 'yup';
 import { toTypedSchema } from '@vee-validate/yup';
+import InputText from "primevue/inputtext";
+import { Form } from 'vee-validate';
 
 const authStore = useAuthStore();
 const userStore = useUserStore();
+
 const schema = toTypedSchema(
   yup.object({
-    username: yup.string().required(),
-    password: yup.string().required()
+    username: yup
+        .string()
+        .required("This is a required field."),
+    password: yup
+        .string()
+        .required("This is a required field.")
   })
 );
-const { values, defineComponentBinds } = useForm({
+const loginForm = useForm({
   validationSchema: schema
 });
-const username = defineComponentBinds('username');
-const password = defineComponentBinds('password');
+
+const username = loginForm.defineComponentBinds('username');
+const password = loginForm.defineComponentBinds('password');
 
 const route = useRoute();
 
@@ -70,17 +137,16 @@ onBeforeMount(() => {
   }
 });
 
-const ldapLogin = async (event: Event) => {
-  event.preventDefault();
-  if (!values.username || !values.password) return;
-  await authStore.gewisLdapLogin(values.username, values.password, apiService).then(() => {
-    console.error("loggedin");
+const ldapLogin = loginForm.handleSubmit(async () => {
+  if (!username.value.modelValue || !password.value.modelValue) return;
+  await authStore.gewisLdapLogin(username.value.modelValue,  password.value.modelValue, apiService).then(() => {
     if (authStore.getUser) userStore.fetchCurrentUserBalance(authStore.getUser.id, apiService);
     router.push({ name: 'home' });
   }).catch((error) => {
     console.error(error);
   });
-};
+});
+
 const loginViaGEWIS = () => {
   window.location.href = `https://gewis.nl/token/${import.meta.env.VITE_APP_GEWIS_TOKEN}`;
 };
@@ -96,6 +162,7 @@ form {
   display: flex;
   flex-direction: column;
 }
+
 h1 {
   color: black;
   max-width: 350px;
@@ -135,8 +202,55 @@ main {
   margin-right: 1rem;
 }
 
-label {
+.p-error {
+  display: block;
+  font-size: 12px;
+  text-align: left;
+  line-height:18px;
+}
+
+.p-error > i {
+  font-size:12px;
+  margin-right: 3.6px;
+  line-height:12px;
+}
+
+#username {
+  width: 100%;
+  padding-top: 18px;
+  padding-left: 12px;
+  padding-bottom: 0px;
+  height: 60px;
+}
+
+#password {
+  width: 100%;
+  padding-top: 18px;
+  padding-left: 12px;
+  padding-bottom: 0px;
+  height: 60px;
+}
+
+.p-float-label label {
+  top: 30%;
+  margin-top: 0;
+  left: 12px;
+}
+
+.contains-text, .p-float-label input:focus ~ label,  .p-float-label label ~ input:focus {
+  margin-top: 0;
+  top: 8px!important;
+}
+
+#input-description {
   color: black;
+}
+
+.p-invalid {
+  background-color: #fef0f0;
+}
+
+.p-inputtext {
   margin-bottom: 0.5rem;
 }
 
