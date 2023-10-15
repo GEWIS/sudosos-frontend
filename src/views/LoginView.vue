@@ -219,7 +219,7 @@ main {
   width: 100%;
   padding-top: 18px;
   padding-left: 12px;
-  padding-bottom: 0px;
+  padding-bottom: 0;
   height: 60px;
 }
 
@@ -227,7 +227,7 @@ main {
   width: 100%;
   padding-top: 18px;
   padding-left: 12px;
-  padding-bottom: 0px;
+  padding-bottom: 0;
   height: 60px;
 }
 
