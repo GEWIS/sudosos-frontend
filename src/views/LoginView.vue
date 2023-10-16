@@ -34,16 +34,14 @@
             v-bind="username"
             size="large"
             name="username"
+            :class="{'p-invalid': loginForm.errors.value.username}"
           />
           <label
               :class="{'contains-text': username.modelValue }"
               for="username">{{ $t('login.Username') }}
           </label>
-          <small
-              v-if="loginForm.errors.value.username"
-              class="p-error"
-          >
-            <i class="pi pi-exclamation-circle"/>
+          <small class="p-error">
+            <i v-if="loginForm.errors.value.username" class="pi pi-exclamation-circle"/>
             {{ loginForm.errors.value.username }}
           </small>
         </span>
@@ -60,18 +58,16 @@
               v-bind="password"
               size="large"
               name="password"
+              :class="{'p-invalid': loginForm.errors.value.password}"
           />
           <label
               :class="{'contains-text': password.modelValue }"
               for="password">{{ $t('login.Password') }}
           </label>
-          <small
-              v-if="loginForm.errors.value.password"
-              class="p-error"
-          >
-            <i class="pi pi-exclamation-circle"/>
+          <smal class="p-error">
+            <i v-if="loginForm.errors.value.password" class="pi pi-exclamation-circle"/>
             {{ loginForm.errors.value.password }}
-          </small>
+          </smal>
         </span>
         <Button
             type="submit"
@@ -226,6 +222,7 @@ main {
   font-size: 12px;
   text-align: left;
   line-height:18px;
+  min-height: 25px;
 }
 
 .p-error > i {
