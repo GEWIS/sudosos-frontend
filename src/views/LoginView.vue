@@ -20,7 +20,7 @@
         {{ $t('login.Login via GEWIS') }}
       </Button>
       <hr />
-      <Form id="login-form" @submit="ldapLogin">
+      <Form id="login-form" @submit="loginHandler">
         <label
             id="input-description"
             for="username"
@@ -94,17 +94,16 @@
 
 <script setup lang="ts">
 import CopyrightBanner from "@/components/CopyrightBanner.vue";
+import { useRoute } from "vue-router";
 import { onBeforeMount } from "vue";
 import { useUserStore, useAuthStore } from "@sudosos/sudosos-frontend-common";
 import apiService from "@/services/ApiService";
-import { useRoute } from "vue-router";
-import { v4 as uuid } from 'uuid';
 import router from "@/router";
-import { useForm } from "vee-validate";
-import * as yup from 'yup';
+import { v4 as uuid } from 'uuid';
+import { useForm, Form } from "vee-validate";
 import { toTypedSchema } from '@vee-validate/yup';
+import * as yup from 'yup';
 import InputText from "primevue/inputtext";
-import { Form } from 'vee-validate';
 
 const authStore = useAuthStore();
 const userStore = useUserStore();
@@ -137,14 +136,28 @@ onBeforeMount(() => {
   }
 });
 
-const ldapLogin = loginForm.handleSubmit(async () => {
+const loginHandler = loginForm.handleSubmit(async () => {
   if (!username.value.modelValue || !password.value.modelValue) return;
-  await authStore.gewisLdapLogin(username.value.modelValue,  password.value.modelValue, apiService).then(() => {
-    if (authStore.getUser) userStore.fetchCurrentUserBalance(authStore.getUser.id, apiService);
-    router.push({ name: 'home' });
-  }).catch((error) => {
-    console.error(error);
-  });
+
+  if (username.value.modelValue.includes('@')) {
+    await apiService.authenticate.localAuthentication({
+      accountMail: username.value.modelValue,
+      password: password.value.modelValue }).then((res) => {
+        authStore.handleResponse(res.data, apiService);
+      if (authStore)
+        userStore.fetchCurrentUserBalance(authStore.getUser.id, apiService);
+        toHomeView();
+    }).catch((err) => {
+      console.error(err);
+    });
+  } else {
+    await authStore.gewisLdapLogin(username.value.modelValue, password.value.modelValue, apiService).then(() => {
+      if (authStore.getUser) userStore.fetchCurrentUserBalance(authStore.getUser.id, apiService);
+      toHomeView();
+    }).catch((err) => {
+      console.error(err);
+    });
+  }
 });
 
 const loginViaGEWIS = () => {
@@ -153,6 +166,10 @@ const loginViaGEWIS = () => {
 
 const resetPassword = () => {
   router.push({ name: 'passwordreset' });
+};
+
+const toHomeView = () => {
+  router.push({ name: 'home' });
 };
 
 </script>
