@@ -3,7 +3,7 @@
     <main>
       <img
           id="login-image"
-          src="../assets/img/bier.png"
+          src="@/assets/img/bier.png"
           alt="logo"
       />
       <h1>{{ $t('login.SudoSOS Login') }}</h1>
@@ -14,7 +14,7 @@
       >
         <img
             id="gewis-branding"
-            src="../assets/img/gewis-branding.svg"
+            src="@/assets/img/gewis-branding.svg"
             alt="GEWIS"
         />
         {{ $t('login.Login via GEWIS') }}
@@ -127,6 +127,7 @@ const password = loginForm.defineComponentBinds('password');
 
 const route = useRoute();
 
+//TODO error handling and error toasts #18
 onBeforeMount(() => {
   if (route.query.token !== undefined) {
     const token = route.query.token as string;
@@ -136,9 +137,8 @@ onBeforeMount(() => {
   }
 });
 
+//TODO error handling and error toasts #18
 const loginHandler = loginForm.handleSubmit(async () => {
-  if (!username.value.modelValue || !password.value.modelValue) return;
-
   if (username.value.modelValue.includes('@')) {
     await apiService.authenticate.localAuthentication({
       accountMail: username.value.modelValue,
@@ -160,6 +160,7 @@ const loginHandler = loginForm.handleSubmit(async () => {
   }
 });
 
+//TODO fix the GEWIS login #32
 const loginViaGEWIS = () => {
   window.location.href = `https://gewis.nl/token/${import.meta.env.VITE_APP_GEWIS_TOKEN}`;
 };
@@ -175,6 +176,7 @@ const toHomeView = () => {
 </script>
 
 <style scoped lang="scss">
+//TODO Fix the amount of css used related to #14 and #29
 form {
   display: flex;
   flex-direction: column;
