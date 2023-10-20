@@ -97,7 +97,8 @@ const router = createRouter({
         {
           path: '/user-overview',
           component: UserOverView,
-          name: 'userOverview'
+          name: 'userOverview',
+          meta: { requiresAuth: true, isBAC: true }
         },
         {
           path: '/user/:userId',
