@@ -161,7 +161,7 @@ const allUsers: Ref<UserResponse[]> = ref([]);
 const userTypes = [
   'MEMBER',
   'ORGAN',
-  'BORRELKAART',
+  'VOUCHER',
   'LOCAL_USER',
   'LOCAL_ADMIN',
   'INVOICE',
