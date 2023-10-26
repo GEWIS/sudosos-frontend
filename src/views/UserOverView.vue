@@ -1,126 +1,123 @@
 <template>
   <div class="page-container">
-    <div class="page-title">{{ $t('c_userTable.Manage users') }}</div>
-    <div class="content-wrapper">
-      <CardComponent :header="$t('app.User overview')" class="full-width">
-        <DataTable
-          v-model:filters="filters"
-          :value="allUsers"
-          paginator
-          :rows="10"
-          :rowsPerPageOptions="[5, 10, 25, 50, 100]"
-          filterDisplay="menu"
-          :globalFilterFields="['type', 'firstName', 'lastName', 'fullName']"
-          lazy
-          :totalRecords="totalRecords"
-          :loading="loading"
-          @page="onPage($event)"
-          @sort="onSort()"
-          @filter="onFilter()"
-        >
-          <template #header>
-            <div class="usertable-header">
+    <div class="page-title">{{ $t('app.User overview') }}</div>
+    <CardComponent :header="$t('app.User overview')" class="full-width">
+    <DataTable
+      v-model:filters="filters"
+      :value="sortedUsers.length > 0 ? sortedUsers : allUsersWithFullName"
+      paginator
+      :rows="10"
+      :rowsPerPageOptions="[5, 10, 25, 50, 100]"
+      filterDisplay="menu"
+      :globalFilterFields="['type', 'firstName', 'lastName', 'fullName']"
+      lazy
+      :totalRecords="totalRecords"
+      :loading="loading"
+      @page="onPage($event)"
+      @sort="onSort()"
+      @filter="onFilter()"
+    >
+      <template #header>
+        <div class="usertable-header">
               <span class="p-input-icon-left search-box">
                 <i class="pi pi-search" />
                 <InputText v-model="filters['global'].value" :placeholder="$t('app.Search')" />
               </span>
-              <span>
+          <span>
                 <Button @click="visible = true">{{ $t('app.Create') }}</Button>
               </span>
-            </div>
-          </template>
-          <Column field="id" header="GEWIS ID" />
-          <Column field="firstName" :header="$t('c_userTable.firstName')" />
-          <Column field="lastName" :header="$t('c_userTable.lastName')" />
-          <Column field="type" :header="$t('c_userTable.Type')" :showFilterMatchModes="false">
-            <template #filter="{ filterModel, filterCallback }">
-              <Dropdown
-                v-model="filterModel.value"
-                @change="filterCallback()"
-                :options="userTypes"
-                :placeholder="$t('c_userTable.Select Type')"
-              />
-            </template>
-          </Column>
-          <Column
-            headerStyle="width: 3rem; text-align: center"
-            bodyStyle="text-align: center; overflow: visible"
-          >
-            <template #body="slotProps">
-              <Button
-                @click="handleInfoPush(slotProps.data.id)"
-                type="button"
-                icon="pi pi-info-circle"
-                outlined
-              />
-            </template>
-          </Column>
-        </DataTable>
-        <Dialog
-          class="w-auto flex w-9"
-          v-model:visible="visible"
-          modal
-          :header="$t('c_userTable.Create User')"
-          @after-hide="resetForm"
-        >
-          <form @submit="handleCreateUser">
-            <div class="field grid">
-              <label for="first-name" class="col-12 mb-2 md:col-2 md:mb-0">{{ $t('c_userTable.firstName') }}</label>
-              <div class="col-12 md:col-10">
-                <InputText v-bind="firstName" id="first-name" />
-                <span class="error-text">{{ errors.firstName }}</span>
-              </div>
-            </div>
-            <div class="field grid">
-              <label for="last-name" class="col-12 mb-2 md:col-2 md:mb-0">{{ $t('c_userTable.lastName') }}</label>
-              <div class="col-12 md:col-10">
-                <InputText v-bind="lastName" id="last-name"/>
-                <span class="error-text">{{ errors.lastName }}</span></div>
-            </div>
-            <div class="field grid">
-              <label for="user-type" class="col-12 mb-2 md:col-2 md:mb-0">{{ $t('c_userTable.User Type') }}</label>
-              <div class="col-12 md:col-10">
-                <Dropdown
-                    v-bind="userType"
-                    :options="userTypes"
-                    :placeholder="$t('c_userTable.Select User Type')"
-                    id="user-type"
-                />
-                <span class="error-text">{{ errors.userType }}</span></div>
-            </div>
-            <div class="field grid">
-              <label for="email" class="col-12 mb-2 md:col-2 md:mb-0">{{ $t('profile.emailAddress') }}</label>
-              <div class="col-12 md:col-10">
-                <InputText v-bind="email" id="email"/>
-                <span class="error-text">{{ errors.email }}</span></div>
-            </div>
-            <div class="field grid">
-              <label for="ofAge" class="col-12 mb-2 md:col-2 md:mb-0">{{ $t('profile.ofAge') }}</label>
-              <div class="col-12 md:col-10">
-                <Checkbox v-bind="ofAge" id="ofAge"/>
-                <span class="error-text">{{ errors.ofAge }}</span></div>
-            </div>
-            <div class="field grid">
-              <label for="canGoIntoDebt" class="col-12 mb-2 md:col-2 md:mb-0">{{ $t('profile.canGoIntoDebt') }}</label>
-              <div class="col-12 md:col-10">
-                <Checkbox v-bind="canGoIntoDebt" id="canGoIntoDebt"/>
-                <span class="error-text">{{ errors.canGoIntoDebt }}</span></div>
-            </div>
-            <div class="form-row" id="actions">
-              <Button outlined @click="visible = false">{{ $t('c_confirmationModal.Cancel' )}}</Button>
-              <Button type="submit">{{ $t('c_confirmationModal.Save' )}}</Button>
-            </div>
-          </form>
-        </Dialog>
-      </CardComponent>
-    </div>
+        </div>
+      </template>
+      <Column field="id" header="GEWIS ID" />
+      <Column field="firstName" :header="$t('c_userTable.firstName')" />
+      <Column field="lastName" :header="$t('c_userTable.lastName')" />
+      <Column field="type" :header="$t('c_userTable.Type')" :showFilterMatchModes="false">
+        <template #filter="{ filterModel, filterCallback }">
+          <Dropdown
+            v-model="filterModel.value"
+            @change="filterCallback()"
+            :options="userTypes"
+            :placeholder="$t('c_userTable.Select Type')"
+          />
+        </template>
+      </Column>
+      <Column
+        headerStyle="width: 3rem; text-align: center"
+        bodyStyle="text-align: center; overflow: visible"
+      >
+        <template #body="slotProps">
+          <Button
+            @click="handleInfoPush(slotProps.data.id)"
+            type="button"
+            icon="pi pi-info-circle"
+            outlined
+          />
+        </template>
+      </Column>
+    </DataTable>
+    <Dialog
+      class="w-auto flex w-9"
+      v-model:visible="visible"
+      modal
+      :header="$t('c_userTable.Create User')"
+      @after-hide="resetForm"
+    >
+      <form @submit="handleCreateUser">
+        <div class="field grid">
+          <label for="first-name" class="col-12 mb-2 md:col-2 md:mb-0">{{ $t('c_userTable.firstName') }}</label>
+          <div class="col-12 md:col-10">
+            <InputText v-bind="firstName" id="first-name" />
+            <span class="error-text">{{ errors.firstName }}</span>
+          </div>
+        </div>
+        <div class="field grid">
+          <label for="last-name" class="col-12 mb-2 md:col-2 md:mb-0">{{ $t('c_userTable.lastName') }}</label>
+          <div class="col-12 md:col-10">
+            <InputText v-bind="lastName" id="last-name"/>
+            <span class="error-text">{{ errors.lastName }}</span></div>
+        </div>
+        <div class="field grid">
+          <label for="user-type" class="col-12 mb-2 md:col-2 md:mb-0">{{ $t('c_userTable.User Type') }}</label>
+          <div class="col-12 md:col-10">
+            <Dropdown
+              v-bind="userType"
+              :options="userTypes"
+              :placeholder="$t('c_userTable.Select User Type')"
+              id="user-type"
+            />
+            <span class="error-text">{{ errors.userType }}</span></div>
+        </div>
+        <div class="field grid">
+          <label for="email" class="col-12 mb-2 md:col-2 md:mb-0">{{ $t('profile.emailAddress') }}</label>
+          <div class="col-12 md:col-10">
+            <InputText v-bind="email" id="email"/>
+            <span class="error-text">{{ errors.email }}</span></div>
+        </div>
+        <div class="field grid">
+          <label for="ofAge" class="col-12 mb-2 md:col-2 md:mb-0">{{ $t('profile.ofAge') }}</label>
+          <div class="col-12 md:col-10">
+            <Checkbox v-bind="ofAge" id="ofAge"/>
+            <span class="error-text">{{ errors.ofAge }}</span></div>
+        </div>
+        <div class="field grid">
+          <label for="canGoIntoDebt" class="col-12 mb-2 md:col-2 md:mb-0">{{ $t('profile.canGoIntoDebt') }}</label>
+          <div class="col-12 md:col-10">
+            <Checkbox v-bind="canGoIntoDebt" id="canGoIntoDebt"/>
+            <span class="error-text">{{ errors.canGoIntoDebt }}</span></div>
+        </div>
+        <div class="form-row" id="actions">
+          <Button outlined @click="visible = false">{{ $t('c_confirmationModal.Cancel' )}}</Button>
+          <Button type="submit">{{ $t('c_confirmationModal.Save' )}}</Button>
+        </div>
+      </form>
+    </Dialog>
+    </CardComponent>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from '@sudosos/sudosos-frontend-common';
-import { onMounted, ref, watch } from 'vue';
-import type { Ref } from 'vue';
+import { useUserStore } from "@sudosos/sudosos-frontend-common";
+import { computed, onMounted, ref, type Ref, watch } from "vue";
 import apiService from '@/services/ApiService';
 import type { CreateUserRequest, UserResponse } from '@sudosos/sudosos-client';
 import DataTable from 'primevue/datatable';
@@ -129,12 +126,13 @@ import { FilterMatchMode } from 'primevue/api';
 import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
 import router from '@/router';
-import { userDetailsSchema } from "@/utils/validation-schema";
-import { useForm } from "vee-validate";
+import { userDetailsSchema } from '@/utils/validation-schema';
+import { useForm } from 'vee-validate';
+import Fuse from 'fuse.js';
 import CardComponent from '@/components/CardComponent.vue';
 
 const userStore = useUserStore();
-
+const searchQuery: Ref<string> = ref('');
 const { defineComponentBinds, handleSubmit, errors, resetForm } = useForm({
   validationSchema: userDetailsSchema,
 });
@@ -142,8 +140,6 @@ const { defineComponentBinds, handleSubmit, errors, resetForm } = useForm({
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   type: { value: null, matchMode: FilterMatchMode.EQUALS },
-  firstName: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  lastName: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
 
 const firstName = defineComponentBinds('firstName');
@@ -157,6 +153,14 @@ const visible: Ref<boolean> = ref(false);
 const loading = ref(false);
 const totalRecords = ref(0);
 const allUsers: Ref<UserResponse[]> = ref([]);
+const allUsersWithFullName: Ref<UserResponse[]> = computed(() => {
+  return allUsers.value.map((user) => {
+    return {
+      ...user,
+      fullName: `${user.firstName} ${user.lastName}`
+    };
+  });
+});
 
 const userTypes = [
   'MEMBER',
@@ -185,20 +189,22 @@ function debounce(func: (skip: number) => Promise<void>, delay: number): (skip: 
 }
 
 const apiCall: (skip: number) => Promise<void> = async (skip: number) => {
-  let res = await apiService.user.getAllUsers(
-    Number.MAX_SAFE_INTEGER,
-    skip,
-    filters.value.global.value || '',
-    true,
-    undefined,
-    undefined,
-    filters.value.type.value || undefined,
-  );
-  totalRecords.value = res.data._pagination.count || 0;
-  allUsers.value = res.data.records;
+  await apiService.user
+    .getAllUsers(
+      Number.MAX_SAFE_INTEGER,
+      skip,
+      searchQuery.value || '',
+      true,
+      undefined,
+      undefined,
+      filters.value.type.value || undefined
+    )
+    .then((response) => {
+      totalRecords.value = response.data._pagination.count || 0;
+      allUsers.value = response.data.records;
+    });
 };
 
-// Wrap apiCall with debounce
 const delayedAPICall = debounce(apiCall, 250);
 
 const onPage = (event: any) => {
@@ -220,6 +226,10 @@ watch(filters.value.global, () => {
   delayedAPICall(0);
 });
 
+watch(searchQuery, () => {
+  delayedAPICall(0);
+});
+
 const handleCreateUser = handleSubmit(async (values) => {
   const createUserRequest: CreateUserRequest = {
     firstName: values.firstName,
@@ -233,7 +243,7 @@ const handleCreateUser = handleSubmit(async (values) => {
   if (response.status === 200) {
     await router.push({ name: 'user-overview' });
   } else {
-    console.error(response.status + ": " + response.statusText);
+    console.error(response.status + ': ' + response.statusText);
   }
   visible.value = false;
 });
@@ -245,7 +255,19 @@ async function handleInfoPush(userId: number) {
   if (clickedUser) userStore.addUser(clickedUser);
   router.push({ name: 'user', params: { userId } });
 }
+
+const sortedUsers = computed(() => {
+  const fuzzed: UserResponse[] = new Fuse(allUsersWithFullName.value, {
+    keys: ['fullName'],
+    isCaseSensitive: false,
+    shouldSort: true,
+    threshold: 0.2
+  })
+    .search(searchQuery.value || '')
+    .map((r) => r.item);
+  return fuzzed;
+});
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 </style>
