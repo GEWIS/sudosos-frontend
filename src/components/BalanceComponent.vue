@@ -64,7 +64,6 @@ watch(current, () => {
   updateUserBalance();
 });
 
-
 const isAllFine = computed(() => {
   if (!userBalance.value?.fine) return false;
   return userBalance.value.fine.amount >= -1*userBalance.value?.amount.amount;
