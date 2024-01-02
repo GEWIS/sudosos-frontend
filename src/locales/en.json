@@ -590,6 +590,22 @@
   "quickOverview": {
     "quickOverview": "Quick Overview",
     "quickOverviewMessage": "Show this at the bar so we can help you faster"
+  },
+  "fine": {
+    "fineOverview": "Fine Overview",
+    "gewisId": "GEWIS ID",
+    "name": "Name",
+    "firstBalance": "First Balance",
+    "lastBalance": "Last Balance",
+    "eligibleUsers": "Eligible Users",
+    "apply": "Apply",
+    "firstDate": "First Date",
+    "secondDate": "Second Date",
+    "fineHandoutEvents": "Fine Handout Events",
+    "id": "ID",
+    "date": "Date",
+    "referenceDate": "Reference Date",
+    "count": "Count",
+    "info": "Info"
   }
 }
-
