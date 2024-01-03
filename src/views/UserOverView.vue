@@ -18,10 +18,10 @@
       @filter="onFilter()"
     >
       <template #header>
-        <div class="usertable-header">
+        <div class="flex flex-row gap-2">
               <span class="p-input-icon-left search-box">
                 <i class="pi pi-search" />
-                <InputText v-model="filters['global'].value" :placeholder="$t('app.Search')" />
+                <InputText v-model="searchQuery" :placeholder="$t('app.Search')" />
               </span>
           <span>
                 <Button @click="visible = true">{{ $t('app.Create') }}</Button>
