@@ -11,7 +11,7 @@
       filterDisplay="menu"
       :globalFilterFields="['type', 'firstName', 'lastName', 'fullName']"
       lazy
-      :totalRecords="totalRecords"
+      :totalRecords="sortedUsers.length > 0 ? sortedUsers.length : totalRecords"
       :loading="loading"
       @page="onPage($event)"
       @sort="onSort()"
@@ -39,6 +39,31 @@
             :options="userTypes"
             :placeholder="$t('c_userTable.Select Type')"
           />
+        </template>
+      </Column>
+      <Column field="active" :showFilterMatchModes="false">
+        <template #header>
+          <div class="flex flex-row gap-2 align-items-center">
+            {{ $t("userDetails.Active") }}
+            <Checkbox
+              v-model="isActiveFilter"
+              @change="onFilter()"
+              binary
+            />
+          </div>
+        </template>
+      </Column>
+
+      <Column field="ofAge">
+        <template #header>
+          <div class="flex flex-row gap-2 align-items-center">
+            {{ $t('c_userTable.ofAge') }}
+            <Checkbox
+              v-model="ofAgeFilter"
+              @change="onFilter()"
+              binary
+            />
+          </div>
         </template>
       </Column>
       <Column
@@ -123,6 +148,7 @@ import type { CreateUserRequest, GewisUserResponse, UserResponse } from "@sudoso
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import { FilterMatchMode } from 'primevue/api';
+import Checkbox from "primevue/checkbox";
 import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
 import router from '@/router';
@@ -149,6 +175,9 @@ const email = defineComponentBinds('email');
 const ofAge = defineComponentBinds('ofAge');
 const canGoIntoDebt = defineComponentBinds('canGoIntoDebt');
 
+
+const isActiveFilter: Ref<boolean> = ref(true);
+const ofAgeFilter: Ref<boolean> = ref(true);
 const visible: Ref<boolean> = ref(false);
 const loading = ref(false);
 const totalRecords = ref(0);
@@ -194,16 +223,15 @@ const apiCall: (skip: number) => Promise<void> = async (skip: number) => {
     .getAllUsers(
       Number.MAX_SAFE_INTEGER,
       skip,
-      searchQuery.value || '',
-      true,
-      undefined,
+      searchQuery.value.split(' ')[0] || '',
+      isActiveFilter.value,
+      ofAgeFilter.value,
       undefined,
       filters.value.type.value || undefined
     )
     .then((response) => {
       totalRecords.value = response.data._pagination.count || 0;
       allUsers.value = response.data.records;
-      console.log(allUsers);
     });
 };
 
