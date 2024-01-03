@@ -28,7 +28,7 @@
               </span>
         </div>
       </template>
-      <Column field="id" header="GEWIS ID" />
+      <Column field="gewisId" header="GEWIS ID" />
       <Column field="firstName" :header="$t('c_userTable.firstName')" />
       <Column field="lastName" :header="$t('c_userTable.lastName')" />
       <Column field="type" :header="$t('c_userTable.Type')" :showFilterMatchModes="false">
@@ -119,7 +119,7 @@
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
 import { computed, onMounted, ref, type Ref, watch } from "vue";
 import apiService from '@/services/ApiService';
-import type { CreateUserRequest, UserResponse } from '@sudosos/sudosos-client';
+import type { CreateUserRequest, GewisUserResponse, UserResponse } from "@sudosos/sudosos-client";
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import { FilterMatchMode } from 'primevue/api';
@@ -152,8 +152,8 @@ const canGoIntoDebt = defineComponentBinds('canGoIntoDebt');
 const visible: Ref<boolean> = ref(false);
 const loading = ref(false);
 const totalRecords = ref(0);
-const allUsers: Ref<UserResponse[]> = ref([]);
-const allUsersWithFullName: Ref<UserResponse[]> = computed(() => {
+const allUsers: Ref<GewisUserResponse[]> = ref([]);
+const allUsersWithFullName: Ref<GewisUserResponse[]> = computed(() => {
   return allUsers.value.map((user) => {
     return {
       ...user,
@@ -174,6 +174,7 @@ const userTypes = [
 
 onMounted(() => {
   delayedAPICall(0);
+
 });
 
 function debounce(func: (skip: number) => Promise<void>, delay: number): (skip: number) => Promise<void> {
@@ -202,6 +203,7 @@ const apiCall: (skip: number) => Promise<void> = async (skip: number) => {
     .then((response) => {
       totalRecords.value = response.data._pagination.count || 0;
       allUsers.value = response.data.records;
+      console.log(allUsers);
     });
 };
 
@@ -216,8 +218,6 @@ const onPage = (event: any) => {
 const onSort = () => {
   delayedAPICall(0);
 };
-// TODO: Fix user type filtering
-// See: https://github.com/GEWIS/sudosos-frontend-vue3/issues/19
 const onFilter = () => {
   delayedAPICall(0);
 };
