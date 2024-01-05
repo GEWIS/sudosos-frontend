@@ -88,7 +88,7 @@ const handleDeleteProduct = async () => {
   await apiService.container.updateContainer(props.container.id, {
     name: props.container.name,
     products: newProducts,
-    public: props.container.public,
+    public: props.container.public || false,
     }).then(() => {
         toast.add({
           severity: 'success',
