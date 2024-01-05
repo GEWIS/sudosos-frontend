@@ -3,11 +3,7 @@
     <div class="page-title">{{ t('fine.fineOverview') }}</div>
     <div class="content-wrapper flex flex-column gap-5">
       <CardComponent :header="t('fine.eligibleUsers')" class="w-full">
-        <DataTable
-          paginator
-          :rows="10"
-          :rowsPerPageOptions="[5, 10, 25, 50, 100]"
-        >
+        <DataTable paginator :rows="10" :rowsPerPageOptions="[5, 10, 25, 50, 100]">
           <template #header>
             <form @submit.prevent="handlePickedDates" class="flex flex-row gap-3">
               <span class="p-float-label">
@@ -29,11 +25,7 @@
         </DataTable>
       </CardComponent>
       <CardComponent :header="t('fine.fineHandoutEvents')" class="w-full">
-        <DataTable
-          paginator
-          :rows="10"
-          :rowsPerPageOptions="[5, 10, 25, 50, 100]"
-        >
+        <DataTable paginator :rows="10" :rowsPerPageOptions="[5, 10, 25, 50, 100]">
           <Column id="id" :header="t('fine.id')" />
           <Column id="date" :header="t('fine.date')" />
           <Column id="referenceDate" :header="t('fine.referenceDate')" />
@@ -53,14 +45,20 @@ import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/yup";
 import * as yup from "yup";
 import Calendar from "primevue/calendar";
+import apiService from "@/services/ApiService";
+import type { BalanceResponse } from "@sudosos/sudosos-client";
+import { onMounted, ref, type Ref } from "vue";
+import { useUserStore } from "@sudosos/sudosos-frontend-common";
 
 const { t } = useI18n();
 
+const balances: Ref<Array<BalanceResponse>> = ref([]);
+const userStore = useUserStore();
 const { defineField, handleSubmit, errors } = useForm({
   validationSchema: toTypedSchema(
     yup.object({
       firstDate: yup.date().required(),
-      secondDate: yup.date(),
+      secondDate: yup.date().required(),
     }
   ))
 });
@@ -70,6 +68,12 @@ const [secondDate, secondDateAttrs] = defineField('secondDate');
 
 const handlePickedDates = handleSubmit(async (values) => {
   console.log(values.firstDate, values.secondDate);
+  const result = await apiService.debtor.calculateFines([values.firstDate.toISOString(), values.secondDate.toISOString()], [1]);
+  console.log(result);
+});
+
+onMounted(async () => {
+  await userStore.fetchUsers(apiService);
 });
 </script>
 
