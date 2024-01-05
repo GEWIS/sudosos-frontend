@@ -606,6 +606,8 @@
     "date": "Date",
     "referenceDate": "Reference Date",
     "count": "Count",
-    "info": "Info"
+    "info": "Info",
+    "notify": "Notify Users",
+    "handout": "Handout Fines"
   }
 }
