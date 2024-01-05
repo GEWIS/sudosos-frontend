@@ -3,7 +3,7 @@
     class="flex flex-column h-10rem w-8rem border-300 border-1 border-round-sm overflow-hidden"
     @click="visible = true"
   >
-      <img :src="getProductImageSrc(product)" :alt="product.name" />
+      <img :src="getProductImageSrc(product)" :alt="product.name" class="h-8rem"/>
       <p class="text-center m-0 text-base text-overflow-ellipsis font-bold">{{ product.name }}</p>
   </div>
   <ProductDialogComponent :container="container" v-model:visible="visible" :product="product"/>

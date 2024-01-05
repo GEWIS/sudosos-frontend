@@ -34,8 +34,8 @@
           </template>
           <Column field="image" :header="$t('c_productEditModal.Image')" >
             <template #editor="rowData">
-              <span class="w-4rem mx-1 cursor-pointer image-preview-container">
-                <img class="w-4rem" :src="getProductImageSrc(rowData.data)"/>
+              <span class="w-4rem h-4rem mx-1 cursor-pointer image-preview-container">
+                <img class="w-4rem h-4rem" :src="getProductImageSrc(rowData.data)"/>
                 <button ref="previewButton" type="button" class="image-preview-indicator p-image-preview-indicator fileupload" @click="fileInput.click()">
                   <i class="pi pi-upload"></i>
                   <input ref="fileInput" type="file" accept="image/*" @change="(e: Event) => onImgUpload(e, (rowData.data as ProductResponse).id)"/>
@@ -43,7 +43,7 @@
               </span>
             </template>
             <template #body="rowData">
-              <img :src="getProductImageSrc(rowData.data)" alt="img" class="w-4rem mx-1" />
+              <img :src="getProductImageSrc(rowData.data)" alt="img" class="w-4rem h-4rem mx-1" />
             </template>
           </Column>
           <Column field="name" :header="$t('c_productEditModal.Name')" style="width: 35%">
