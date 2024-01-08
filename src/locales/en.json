@@ -286,7 +286,9 @@
     "increase": "Balance increase amount:",
     "currency": "€",
     "startPayment": "Start Payment",
-    "Increase balance": "Increase balance"
+    "Increase balance": "Increase balance",
+    "allIsFines": "All of which is a fine",
+    "someIsFines": "Of which {fine} is fines"
   },
   "c_recentTransactionsTable": {
     "recent transactions": "recent transactions",
