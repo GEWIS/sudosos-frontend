@@ -73,7 +73,7 @@ const { t } = useI18n();
 
 const eligibleUsers = ref();
 const userStore = useUserStore();
-const { defineField, handleSubmit, errors } = useForm({
+const { defineField, handleSubmit } = useForm({
   validationSchema: toTypedSchema(
     yup.object({
       firstDate: yup.date().required(),
@@ -120,7 +120,7 @@ onMounted(async () => {
 const notifyUsers = async () => {
   console.log(selection);
   await apiService.debtor.notifyAboutFutureFines({
-    userIds: selection.value.map((item) => item.id),
+    userIds: selection.value.map((item: any) => item.id),
     referenceDate: secondDate.value?.toISOString() || new Date().toISOString()
   });
 };
@@ -128,8 +128,8 @@ const notifyUsers = async () => {
 const handoutFines = async () => {
   console.log(selection);
   await apiService.debtor.handoutFines({
-    userIds: selection.value.map((item) => item.id),
-    referenceDate: firstDate.value.toISOString(),
+    userIds: selection.value.map((item: any) => item.id),
+    referenceDate: firstDate.value?.toISOString() || new Date().toISOString(),
   });
 };
 </script>
