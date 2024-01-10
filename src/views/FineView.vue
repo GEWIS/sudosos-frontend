@@ -14,18 +14,30 @@
           <template #header>
             <div class="flex flex-row justify-content-between">
               <form @submit.prevent="handlePickedDates" class="flex flex-row gap-3">
-              <span class="p-float-label">
-                <Calendar v-model="firstDate" id="firstDate" v-bind="firstDateAttrs" showTime hourFormat="24"/>
-                <label for="firstDate">{{ t("fine.firstDate") }}</label>
-              </span>
                 <span class="p-float-label">
-                <Calendar v-model="secondDate" id="firstDate" v-bind="secondDateAttrs" showTime hourFormat="24" />
-                <label for="secondDate">{{ t("fine.secondDate") }}</label>
-              </span>
-                <Button severity="success" type="submit">{{ t("fine.apply") }}</Button>
+                  <Calendar
+                    v-model="firstDate"
+                    id="firstDate"
+                    v-bind="firstDateAttrs"
+                    showTime
+                    hourFormat="24"
+                  />
+                  <label for="firstDate">{{ t('fine.firstDate') }}</label>
+                </span>
+                <span class="p-float-label">
+                  <Calendar
+                    v-model="secondDate"
+                    id="firstDate"
+                    v-bind="secondDateAttrs"
+                    showTime
+                    hourFormat="24"
+                  />
+                  <label for="secondDate">{{ t('fine.secondDate') }}</label>
+                </span>
+                <Button severity="success" type="submit">{{ t('fine.apply') }}</Button>
               </form>
-              <Button @click="notifyUsers" severity="info">{{ t("fine.notify") }}</Button>
-              <Button @click="handoutFines" severity="success">{{ t("fine.handout") }}</Button>
+              <Button @click="notifyUsers" severity="info">{{ t('fine.notify') }}</Button>
+              <Button @click="handoutFines" severity="success">{{ t('fine.handout') }}</Button>
             </div>
           </template>
           <Column selectionMode="multiple" />
@@ -68,9 +80,10 @@ import apiService from "@/services/ApiService";
 import { onMounted, ref } from "vue";
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
 import { formatPrice } from "../utils/formatterUtils";
+import { useRouter } from "vue-router";
 
 const { t } = useI18n();
-
+const router = useRouter();
 const eligibleUsers = ref();
 const userStore = useUserStore();
 const { defineField, handleSubmit } = useForm({
@@ -127,9 +140,13 @@ const notifyUsers = async () => {
 
 const handoutFines = async () => {
   console.log(selection);
+  if (!firstDate.value) {
+    await router.replace({ path: "/error" });
+    return;
+  }
   await apiService.debtor.handoutFines({
     userIds: selection.value.map((item: any) => item.id),
-    referenceDate: firstDate.value?.toISOString() || new Date().toISOString(),
+    referenceDate: firstDate.value.toISOString(),
   });
 };
 </script>
