@@ -67,7 +67,7 @@ watch(current, () => {
 
 const isAllFine = computed(() => {
   if (!userBalance.value?.fine) return false;
-  return userBalance.value.fine.amount >= userBalance.value?.amount.amount;
+  return userBalance.value.fine.amount >= -1*userBalance.value?.amount.amount;
 });
 
 const displayFine = computed(() => {
