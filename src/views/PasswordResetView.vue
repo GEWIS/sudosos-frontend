@@ -22,12 +22,12 @@
         {{ emailForm.errors.value.email }}
       </small>
       <Button type="submit" id="reset-button">{{ $t('login.Reset') }}</Button>
-      <div class="text-900 underline" @click="backToLogin">{{ $t('login.Back to login') }}</div>
+      <div class="text-900 underline cursor-pointer" @click="backToLogin">{{ $t('login.Back to login') }}</div>
 
     </form>
     <div v-else-if="passwordResetMode === 1" class="login-form">
       <div class="text-900">{{ $t('login.Email sent') }}</div>
-      <div class="text-900 underline" @click="backToLogin">{{ $t('login.Back to login') }}</div>
+      <div class="text-900 underline cursor-pointer" @click="backToLogin">{{ $t('login.Back to login') }}</div>
     </div>
     <form v-else class="login-form" @submit="setNewPassword">
         <span class="p-float-label with-error">

@@ -51,7 +51,7 @@
         >
           Back to home
         </Button>
-        <div class="text-900 underline" @click="resetPassword">
+        <div class="text-900 underline cursor-pointer" @click="resetPassword">
           {{ $t('login.Password reset') }}
         </div>
       </form>
