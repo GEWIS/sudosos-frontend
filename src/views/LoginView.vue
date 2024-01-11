@@ -7,6 +7,7 @@
             @click="loginViaGEWIS"
             class="my-3 mx-auto w-full flex justify-content-center align-items-center"
         >
+          <img class="mr-3 h-18" src="@/assets/img/gewis-branding.svg" alt="GEWIS"/>
           {{ $t('login.Login via GEWIS') }}
         </Button>
         <Button
@@ -58,6 +59,9 @@ const loginViaGEWIS = () => {
 <style scoped lang="scss">
 //TODO Fix the amount of css used related to #14 and #29
 
+.h-18 {
+  height: 24px;
+}
 .p-error {
   display: block;
   font-size: 12px;
