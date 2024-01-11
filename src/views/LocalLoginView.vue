@@ -1,6 +1,5 @@
 <template>
-  <div class="flex flex-column h-screen">
-    <main class="flex flex-column align-items-center justify-content-center flex-grow text-center h-full mx-auto my-7 max-w-21rem">
+  <div>
       <img class="max-h-9rem block mx-auto my-0" src="@/assets/img/bier.png" alt="logo"/>
       <div class="text-900 text-5xl mt-0 mx-auto mb-2 w-full">{{ $t('login.SudoSOS Login') }}</div>
       <form class="flex flex-column" @submit="loginHandler">
@@ -10,7 +9,7 @@
               v-bind="username"
               size="large"
               name="username"
-              class="w-full pt-2 pb-0 pl-1 h-4rem"
+              class="w-full pt-2 pb-0 cinput h-4rem"
               :class="{ 'p-invalid': loginForm.errors.value.username }"
           />
           <label :class="{ 'contains-text': username.modelValue }" for="username"
@@ -27,7 +26,7 @@
               v-bind="password"
               size="large"
               name="password"
-              class="w-full pt-2 pb-0 pl-1 h-4rem"
+              class="w-full pt-2 pb-0 cinput h-4rem"
               :class="{ 'p-invalid': loginForm.errors.value.password }"
           />
           <label :class="{ 'contains-text': password.modelValue }" for="password"
@@ -55,14 +54,10 @@
           {{ $t('login.Password reset') }}
         </div>
       </form>
-    </main>
-    <CopyrightBanner/>
   </div>
 </template>
 
 <script setup lang="ts">
-
-import CopyrightBanner from "@/components/CopyrightBanner.vue";
 import { useRoute } from "vue-router";
 import { onBeforeMount } from "vue";
 import { useUserStore, useAuthStore } from "@sudosos/sudosos-frontend-common";
@@ -147,6 +142,10 @@ const toHomeView = () => {
 
 <style scoped lang="scss">
 //TODO Fix the amount of css used related to #14 and #29
+
+.cinput {
+  padding-left: 10px;
+}
 
 .p-error {
   display: block;

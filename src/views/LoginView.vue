@@ -1,8 +1,5 @@
 <template>
-  <div class="flex flex-column h-screen">
-    <!-- Use align-items-center and justify-content-center for centering -->
-    <main class="flex flex-column align-items-center justify-content-center flex-grow text-center h-full mx-auto my-7 max-w-21rem">
-      <div>
+  <div>
         <img class="max-h-9rem block mx-auto my-0" src="@/assets/img/bier.png" alt="logo"/>
         <div class="text-900 text-5xl mt-0 mx-auto mb-2 w-full">{{ $t('login.SudoSOS Login') }}</div>
         <Button
@@ -20,16 +17,12 @@
           Login using local account
         </Button>
       </div>
-    </main>
-    <CopyrightBanner/>
-  </div>
 </template>
 
 
 <script setup lang="ts">
-import CopyrightBanner from "@/components/CopyrightBanner.vue";
 import { useRoute } from "vue-router";
-import { onBeforeMount } from "vue";
+import { onBeforeMount, ref } from "vue";
 import { useAuthStore } from "@sudosos/sudosos-frontend-common";
 import apiService from "@/services/ApiService";
 import router from "@/router";
@@ -37,9 +30,15 @@ import { v4 as uuid } from 'uuid';
 
 const authStore = useAuthStore();
 const route = useRoute();
+const returning = ref();
 
 const navigateToLocal = () => {
   router.push('/local');
+};
+
+const hasToken = () => {
+  const rawToken = localStorage.getItem('jwt_token') as string;
+  return (rawToken !== null);
 };
 
 onBeforeMount(() => {
@@ -49,6 +48,7 @@ onBeforeMount(() => {
       router.replace({ path: "/error" });
     });
   }
+  returning.value = hasToken();
 });
 const loginViaGEWIS = () => {
   window.location.href = `https://gewis.nl/token/${import.meta.env.VITE_APP_GEWIS_TOKEN}`;
