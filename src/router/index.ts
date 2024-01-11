@@ -62,12 +62,12 @@ const router = createRouter({
               name: 'local',
               alias: ['/local'],
             },
+            {
+              path: '/passwordreset',
+              component: PasswordResetView,
+              name: 'passwordreset'
+            },
           ],
-        },
-        {
-          path: '/passwordreset',
-          component: PasswordResetView,
-          name: 'passwordreset'
         },
         {
           path: '/error',

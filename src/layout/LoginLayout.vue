@@ -4,7 +4,7 @@
       <RouterView />
     </main>
     <CopyrightBanner/>
-    <BeerMugs />
+    <BeerMugs/>
   </div>
 </template>
 

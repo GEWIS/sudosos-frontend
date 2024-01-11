@@ -46,6 +46,7 @@
         </Button>
         <Button
             @click="toHomeView"
+            :outlined="true"
             class="my-3 mx-auto w-full flex justify-content-center align-items-center"
         >
           Back to home
