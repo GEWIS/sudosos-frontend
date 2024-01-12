@@ -610,6 +610,8 @@
     "count": "Count",
     "info": "Info",
     "notify": "Notify Users",
-    "handout": "Handout Fines"
+    "handout": "Handout Fines",
+    "infoMessage": "Currently, eligible users have a total debt of {debt}. This would result in a total of {fines} in fines being handed out.",
+    "pleaseSelect": "Please apply two dates to see how much users are in debt."
   }
 }

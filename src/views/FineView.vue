@@ -12,32 +12,42 @@
           v-model:selection="selection"
         >
           <template #header>
-            <div class="flex flex-row justify-content-between">
-              <form @submit.prevent="handlePickedDates" class="flex flex-row gap-3">
-                <span class="p-float-label">
-                  <Calendar
-                    v-model="firstDate"
-                    id="firstDate"
-                    v-bind="firstDateAttrs"
-                    showTime
-                    hourFormat="24"
-                  />
-                  <label for="firstDate">{{ t('fine.firstDate') }}</label>
-                </span>
-                <span class="p-float-label">
-                  <Calendar
-                    v-model="secondDate"
-                    id="firstDate"
-                    v-bind="secondDateAttrs"
-                    showTime
-                    hourFormat="24"
-                  />
-                  <label for="secondDate">{{ t('fine.secondDate') }}</label>
-                </span>
-                <Button severity="success" type="submit">{{ t('fine.apply') }}</Button>
-              </form>
-              <Button @click="notifyUsers" severity="info">{{ t('fine.notify') }}</Button>
-              <Button @click="handoutFines" severity="success">{{ t('fine.handout') }}</Button>
+            <div class="flex flex-column">
+              <div class="flex flex-row justify-content-between">
+                <form @submit.prevent="handlePickedDates" class="flex flex-row gap-3">
+                  <span class="p-float-label">
+                    <Calendar
+                      v-model="firstDate"
+                      id="firstDate"
+                      v-bind="firstDateAttrs"
+                      showTime
+                      hourFormat="24"
+                    />
+                    <label for="firstDate">{{ t('fine.firstDate') }}</label>
+                  </span>
+                  <span class="p-float-label">
+                    <Calendar
+                      v-model="secondDate"
+                      id="firstDate"
+                      v-bind="secondDateAttrs"
+                      showTime
+                      hourFormat="24"
+                    />
+                    <label for="secondDate">{{ t('fine.secondDate') }}</label>
+                  </span>
+                  <Button severity="success" type="submit">{{ t('fine.apply') }}</Button>
+                </form>
+                <Button @click="notifyUsers" severity="info">{{ t('fine.notify') }}</Button>
+                <Button @click="handoutFines" severity="success">{{ t('fine.handout') }}</Button>
+              </div>
+              <p class="text-red-500">
+                {{
+                  showMessage ? t('fine.infoMessage', {
+                    fines: formatPrice(totalFines),
+                    debt: formatPrice(totalDebt)
+                  }): t('fine.pleaseSelect')
+                }}
+              </p>
             </div>
           </template>
           <Column selectionMode="multiple" />
@@ -77,10 +87,12 @@ import { toTypedSchema } from "@vee-validate/yup";
 import * as yup from "yup";
 import Calendar from "primevue/calendar";
 import apiService from "@/services/ApiService";
-import { onMounted, ref } from "vue";
+import { onMounted, type Ref, ref } from "vue";
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
 import { formatPrice } from "../utils/formatterUtils";
 import { useRouter } from "vue-router";
+import Dinero, { type DineroObject } from 'dinero.js';
+import { floor, min } from "lodash";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -97,13 +109,22 @@ const { defineField, handleSubmit } = useForm({
 const selection = ref();
 const [firstDate, firstDateAttrs] = defineField('firstDate');
 const [secondDate, secondDateAttrs] = defineField('secondDate');
+const totalFines: Ref<DineroObject> = ref({
+  amount: 0,
+  currency: 'EUR',
+  precision: 2
+});
+const totalDebt: Ref<DineroObject> = ref({
+  amount: 0,
+  currency: 'EUR',
+  precision: 2
+});
+const showMessage: Ref<boolean>  = ref(false);
 
 const handlePickedDates = handleSubmit(async (values) => {
-  console.log(values.firstDate, values.secondDate);
   const result = await apiService.debtor.calculateFines(
     [values.firstDate.toISOString(), values.secondDate.toISOString()],
     [1]);
-  console.log(result);
   const userFullNameMap: { [key: number]: string } = {};
   userStore.users.forEach((user: any) => {
     userFullNameMap[user.id] = `${user.firstName} ${user.lastName}`;
@@ -122,16 +143,30 @@ const handlePickedDates = handleSubmit(async (values) => {
       lastBalance: secondBalance,
     };
   });
-  console.log(eligibleUsers.value);
+  const totalDebtAmount = eligibleUsers.value.reduce((accumulator: number, current: any) => {
+    return accumulator + current.firstBalance.amount.amount; // Use getAmount() to access the value
+  }, 0);
+  const totalFinesAmount = eligibleUsers.value.reduce((accumulator: number, current: any) => {
+    return accumulator + (min([floor(current.firstBalance.amount.amount / -500) * 100, 500]) || 0);
+  }, 0);
+  totalDebt.value = {
+    amount: totalDebtAmount,
+    currency: 'EUR',
+    precision: 2,
+  };
+  totalFines.value = {
+    amount: totalFinesAmount,
+    currency: 'EUR',
+    precision: 2,
+  };
+  showMessage.value = true;
 });
 
 onMounted(async () => {
   await userStore.fetchUsers(apiService);
-  console.log(userStore.users);
 });
 
 const notifyUsers = async () => {
-  console.log(selection);
   await apiService.debtor.notifyAboutFutureFines({
     userIds: selection.value.map((item: any) => item.id),
     referenceDate: secondDate.value?.toISOString() || new Date().toISOString()
@@ -139,7 +174,6 @@ const notifyUsers = async () => {
 };
 
 const handoutFines = async () => {
-  console.log(selection);
   if (!firstDate.value) {
     await router.replace({ path: "/error" });
     return;
