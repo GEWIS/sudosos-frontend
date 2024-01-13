@@ -584,7 +584,8 @@
     "createContainer": "Successfully created container.",
     "productCreated": "Successfully created product.",
     "fineDeleted": "Successfully deleted fine.",
-    "transactionDeleted": "Successfully deleted transaction."
+    "transactionDeleted": "Successfully deleted transaction.",
+    "finesHandedOut": "Successfully handed out fines"
   },
   "quickOverview": {
     "quickOverview": "Quick Overview",

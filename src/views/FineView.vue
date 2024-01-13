@@ -130,6 +130,9 @@ import { floor, min } from "lodash";
 import type { FineHandoutEventResponse } from "@sudosos/sudosos-client";
 import { fetchAllPages } from "@sudosos/sudosos-frontend-common";
 import { date } from "yup";
+import { useToast } from "primevue/usetoast";
+import type { AxiosError } from "axios";
+import { handleError } from "@/utils/errorUtils";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -143,6 +146,7 @@ const { defineField, handleSubmit } = useForm({
     }
   ))
 });
+const toast = useToast();
 const selection = ref();
 const [firstDate, firstDateAttrs] = defineField('firstDate');
 const [secondDate, secondDateAttrs] = defineField('secondDate');
@@ -250,7 +254,14 @@ const handoutFines = async () => {
   await apiService.debtor.handoutFines({
     userIds: selection.value.map((item: any) => item.id),
     referenceDate: firstDate.value.toISOString(),
-  });
+  }).then(() => {
+    toast.add({
+      summary: t('successMessages.success'),
+      detail: t('successMessages.finesHandedOut'),
+      life: 3000,
+      severity: 'success',
+    });
+  }).catch((err: AxiosError) => handleError(err, toast));
 };
 </script>
 
