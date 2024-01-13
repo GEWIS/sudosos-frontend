@@ -66,16 +66,50 @@
         </DataTable>
       </CardComponent>
       <CardComponent :header="t('fine.fineHandoutEvents')" class="w-full">
-        <DataTable paginator :rows="10" :rowsPerPageOptions="[5, 10, 25, 50, 100]">
-          <Column id="id" :header="t('fine.id')" />
-          <Column id="date" :header="t('fine.date')" />
-          <Column id="referenceDate" :header="t('fine.referenceDate')" />
-          <Column id="count" :header="t('fine.count')" />
-          <Column id="info" :header="t('fine.info')" />
+        <DataTable
+          paginator
+          :rows="10"
+          :rowsPerPageOptions="[5, 10, 25, 50, 100]"
+          :value="fineHandoutEvents"
+          @row-click="(e: any) => openHandoutEvent(e.data.id)"
+        >
+          <Column field="id" id="id" :header="t('fine.id')" />
+          <Column field="createdAt" id="date" :header="t('fine.date')">
+            <template #body="slotProps">{{ formatDateTime(new Date(slotProps.data.createdAt)) }}</template>
+          </Column>
+          <Column field="referenceDate" id="referenceDate" :header="t('fine.referenceDate')">
+            <template #body="slotProps">{{ formatDateTime(new Date(slotProps.data.referenceDate)) }}</template>
+          </Column>
+          <Column id="info" :header="t('fine.info')" >
+            <template #body>
+              <i class="pi pi-info-circle"/>
+            </template>
+          </Column>
         </DataTable>
       </CardComponent>
     </div>
   </div>
+    <Dialog v-model:visible="showModal" class="w-auto flex w-9 md:w-4" :header="t('fine.handoutEventDetails')">
+      <div class="flex flex-column">
+        <div class="flex flex-row justify-content-between">
+          <p>{{ t("fine.fineNumber") }}</p>
+          <p>{{ selectedHandoutEvent?.fines.length }}</p>
+        </div>
+        <div class="flex flex-row justify-content-between">
+          <p>{{ t("fine.fineTotal") }}</p>
+          <p>{{ formatPrice(modalTotalFines) }}
+          </p>
+        </div>
+        <div class="flex flex-row justify-content-between">
+          <p>{{ t("fine.createdAt") }}</p>
+          <p>{{ formatDateTime(new Date(selectedHandoutEvent?.createdAt)) }}</p>
+        </div>
+        <div class="flex flex-row justify-content-between">
+          <p>{{ t("fine.referenceDate") }}</p>
+          <p>{{ formatDateTime(new Date(selectedHandoutEvent?.referenceDate)) }}</p>
+        </div>
+      </div>
+    </Dialog>
 </template>
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
@@ -89,10 +123,13 @@ import Calendar from "primevue/calendar";
 import apiService from "@/services/ApiService";
 import { onMounted, type Ref, ref } from "vue";
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
-import { formatPrice } from "../utils/formatterUtils";
+import { formatDateTime, formatPrice } from "@/utils/formatterUtils";
 import { useRouter } from "vue-router";
-import Dinero, { type DineroObject } from 'dinero.js';
+import { type DineroObject } from 'dinero.js';
 import { floor, min } from "lodash";
+import type { FineHandoutEventResponse } from "@sudosos/sudosos-client";
+import { fetchAllPages } from "@sudosos/sudosos-frontend-common";
+import { date } from "yup";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -109,6 +146,8 @@ const { defineField, handleSubmit } = useForm({
 const selection = ref();
 const [firstDate, firstDateAttrs] = defineField('firstDate');
 const [secondDate, secondDateAttrs] = defineField('secondDate');
+const showModal: Ref<boolean> = ref(false);
+const selectedHandoutEvent: Ref<FineHandoutEventResponse | undefined> = ref();
 const totalFines: Ref<DineroObject> = ref({
   amount: 0,
   currency: 'EUR',
@@ -119,8 +158,13 @@ const totalDebt: Ref<DineroObject> = ref({
   currency: 'EUR',
   precision: 2
 });
+const modalTotalFines: Ref<DineroObject> = ref({
+  amount: 0,
+  currency: 'EUR',
+  precision: 2
+});
 const showMessage: Ref<boolean>  = ref(false);
-
+const fineHandoutEvents: Ref<Array<FineHandoutEventResponse>> = ref([]);
 const handlePickedDates = handleSubmit(async (values) => {
   const result = await apiService.debtor.calculateFines(
     [values.firstDate.toISOString(), values.secondDate.toISOString()],
@@ -164,7 +208,32 @@ const handlePickedDates = handleSubmit(async (values) => {
 
 onMounted(async () => {
   await userStore.fetchUsers(apiService);
+  fineHandoutEvents.value = await fetchAllPages<FineHandoutEventResponse>(
+    0,
+    Number.MAX_SAFE_INTEGER,
+    // @ts-ignore
+    (take, skip) => apiService.debtor.returnAllFineHandoutEvents(take, skip)
+  );
+  console.log(fineHandoutEvents.value);
 });
+const openHandoutEvent = async (eventId: number) => {
+  selectedHandoutEvent.value = await apiService.debtor.returnSingleFineHandoutEvent(eventId).then((res) => {
+    return res.data;
+  });
+  if(!selectedHandoutEvent.value){
+    await router.replace('/error');
+    return;
+  }
+  showModal.value = true;
+  const totalOfFines = selectedHandoutEvent.value.fines.reduce((accumulator: number, current: any) => {
+    return accumulator + (current.amount.amount|| 0);
+  }, 0);
+  modalTotalFines.value = {
+    amount: totalOfFines,
+    currency: 'EUR',
+    precision: 2,
+  };
+};
 
 const notifyUsers = async () => {
   await apiService.debtor.notifyAboutFutureFines({

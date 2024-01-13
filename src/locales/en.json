@@ -614,6 +614,11 @@
     "from": "From",
     "type": "Transaction type",
     "fine": "Fine",
-    "description": "Description"
+    "description": "Description",
+    "fineNumber": "Number of fines",
+    "fineTotal": "Total of fines",
+    "createdBy": "Created by",
+    "createdAt": "Created at",
+    "handoutEventDetails": "Fine Handout Event Details"
   }
 }
