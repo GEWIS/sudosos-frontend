@@ -102,11 +102,11 @@
         </div>
         <div class="flex flex-row justify-content-between">
           <p>{{ t("fine.createdAt") }}</p>
-          <p>{{ formatDateTime(new Date(selectedHandoutEvent?.createdAt)) }}</p>
+          <p>{{ formatDateTime(new Date(selectedHandoutEvent?.createdAt || '')) }}</p>
         </div>
         <div class="flex flex-row justify-content-between">
           <p>{{ t("fine.referenceDate") }}</p>
-          <p>{{ formatDateTime(new Date(selectedHandoutEvent?.referenceDate)) }}</p>
+          <p>{{ formatDateTime(new Date(selectedHandoutEvent?.referenceDate || '')) }}</p>
         </div>
       </div>
     </Dialog>
