@@ -78,10 +78,13 @@
     "transferStatus": "Transfer Status:",
     "deposit": "Deposit",
     "invoice": "Invoice",
-    "pos": "Point of sale",
-    "boughtBy": "Bought by",
-    "putInBy": "Put in by",
-    "products": "Products"
+    "userBoughtAt": "You bought at {pos}",
+    "otherBoughtAt": "{user} bought at {pos}",
+    "putInBy": "Transaction created by {createdBy}",
+    "products": "Products",
+    "title": "Title",
+    "price": "Price",
+    "subtotal": "Subtotal"
   },
   "balance": {
     "Balance": "Balance",

@@ -64,7 +64,13 @@
     "Overview": "Overzicht"
   },
   "transactions": {
-    "Transactions": "Transacties"
+    "Transactions": "Transacties",
+    "total": "Totaal:",
+    "userBoughtAt": "Je hebt gekocht bij {pos}",
+    "otherBoughtAt": "{user} heeft gekocht bij {pos}",
+    "title": "Titel",
+    "price": "Prijs",
+    "subtotal": "Subtotaal"
   },
   "balance": {
     "Balance": "Saldo",

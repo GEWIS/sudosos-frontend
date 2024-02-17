@@ -14,7 +14,9 @@
       <Column field="mutationDescription" style="width: 60%" header="What"/>
       <Column field="">
         <template #body>
-            <i class="pi pi-info-circle"/>
+            <i 
+              class="pi pi-info-circle cursor-pointer"
+            />
         </template>
       </Column>
     </DataTable>
