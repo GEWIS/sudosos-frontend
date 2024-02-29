@@ -45,7 +45,7 @@
     </Translation>
     <br>
     <DataTable
-      :value="productsInfo.concat()"
+      :value="productsInfo"
       :pt="{
         tfoot: 'font-bold'
       }"
@@ -64,7 +64,7 @@
         </template></Column>
       <Column 
         field="totalPriceInclVat" 
-        :header="$t('transactions.subtotal')"
+        :header="$t('transactions.amount')"
         class="p-1"
         footerClass="font-bold"
         :footer="formatValueEuro(transactionInfo.totalPriceInclVat)"

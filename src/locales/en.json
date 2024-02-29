@@ -71,20 +71,15 @@
   "transactions": {
     "Transactions": "Transactions",
     "total": "Total:",
-    "to": "To:",
-    "transferRef": "Transfer Reference:",
-    "transferType": "Transfer Type:",
-    "transferDesc": "Transfer Description:",
-    "transferStatus": "Transfer Status:",
-    "deposit": "Deposit",
-    "invoice": "Invoice",
     "userBoughtAt": "You bought at {pos}",
     "otherBoughtAt": "{user} bought at {pos}",
     "putInBy": "Transaction created by {createdBy}",
     "products": "Products",
     "title": "Title",
     "price": "Price",
-    "subtotal": "Subtotal"
+    "amount": "Amount",
+    "when": "When",
+    "what": "What"
   },
   "balance": {
     "Balance": "Balance",

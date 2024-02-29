@@ -1,47 +1,69 @@
-import type { BaseTransactionResponse, TransferResponse } from "@sudosos/sudosos-client";
+import type { BaseTransactionResponse, BaseUserResponse, TransferResponse } from "@sudosos/sudosos-client";
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
 import type { Dinero } from "@sudosos/sudosos-client";
 import { formatDateTime, formatPrice } from "@/utils/formatterUtils";
 import type { PaginatedBaseTransactionResponse } from "@sudosos/sudosos-client";
 
 
+export enum FinancialMutationType {
+    INVOICE,
+    DEPOSIT,
+    PAYOUT_REQUEST,
+    FINE,
+    WAIVED_FINE,
+    TRANSACTION
+}
 
-export interface MutationTableRow {
-    mutationDescription: string,
-    mutationMoment: string,
-    mutationType: string,
-    mutationID: number,
+export interface FinancialMutation {
+    amount: Dinero,
+    to: BaseUserResponse | undefined,
+    from: BaseUserResponse | undefined,
+    type: FinancialMutationType,
+    moment: Date,
+    id: number
 }
 
 
-/**
- * This should be replaced...
- * @param value
- */
 export function formatValueEuro(value: Dinero): string {
     return formatPrice(value);
 }
 
-export function parseTransaction(transaction: BaseTransactionResponse): MutationTableRow {
+export function parseTransaction(transaction: BaseTransactionResponse): FinancialMutation {
     return {
-        mutationDescription: transactionDescription(transaction),
-        mutationMoment: formatDateTime(new Date(transaction.createdAt || "")),
-        mutationType: 'transaction',
-        mutationID: transaction.id,
+        amount: transaction.value,
+        to: undefined,
+        from: transaction.from,
+        type: FinancialMutationType.TRANSACTION,
+        moment: new Date(transaction.updatedAt!!),
+        id: transaction.id
     };
 }
 
-export function parseTransfer(transfer: TransferResponse): MutationTableRow {
+export function parseTransfer(transfer: TransferResponse): FinancialMutation {
+    let type = FinancialMutationType.DEPOSIT
+    
+    if(transfer.invoice) {
+        type = FinancialMutationType.INVOICE
+    } else if(transfer.deposit) {
+        type = FinancialMutationType.DEPOSIT
+    } else if(transfer.payoutRequest) {
+        type = FinancialMutationType.PAYOUT_REQUEST
+    } else if(transfer.fine) {
+        type = FinancialMutationType.FINE
+    }
+    
     return {
-        mutationDescription: transferDescription(transfer),
-        mutationMoment: formatDateTime(new Date(transfer.createdAt || "")),
-        mutationType: "transfer",
-        mutationID: transfer.id
+        amount: transfer.amount,
+        to: transfer.to,
+        from: transfer.from,
+        type: type,
+        moment: new Date(transfer.updatedAt!!),
+        id: transfer.id
     };
 }
 
-export function parseFinancialTransactions(transactions: PaginatedBaseTransactionResponse) : MutationTableRow[] {
-    const result: MutationTableRow[] = [];
+export function parseFinancialTransactions(transactions: PaginatedBaseTransactionResponse) : FinancialMutation[] {
+    const result: FinancialMutation[] = [];
     transactions.records.forEach((transaction: BaseTransactionResponse) => {
         result.push(parseTransaction(transaction));
     });

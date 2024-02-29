@@ -26,3 +26,7 @@ function parseTime(value: number): string {
 export function formatPrice(value: Dinero): string {
     return (value.amount / 100).toLocaleString('nl-NL', { style: 'currency', currency: "EUR" });
 }
+
+export function formatPriceAsNegative(value: Dinero): string {
+    return ((value.amount / 100)*-1).toLocaleString('nl-NL', { style: 'currency', currency: "EUR" });
+}
