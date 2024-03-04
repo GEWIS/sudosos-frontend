@@ -149,6 +149,7 @@ const rows: Ref<number> = ref(10);
 onMounted( async () => {
   const initialMutations = await getMutations(rows.value, 0);
   mutations.value = parseFinancialMutations(initialMutations);
+  totalRecords.value = initialMutations._pagination.count || 0
 });
 
 function isPaginatedBaseTransactionResponse(obj: any): obj is PaginatedBaseTransactionResponse {
