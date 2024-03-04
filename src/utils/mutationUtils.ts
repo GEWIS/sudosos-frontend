@@ -23,11 +23,6 @@ export interface FinancialMutation {
     id: number
 }
 
-
-export function formatValueEuro(value: Dinero): string {
-    return formatPrice(value);
-}
-
 export function parseTransaction(transaction: BaseTransactionResponse): FinancialMutation {
     return {
         amount: transaction.value,
@@ -68,41 +63,4 @@ export function parseFinancialTransactions(transactions: PaginatedBaseTransactio
         result.push(parseTransaction(transaction));
     });
     return result;
-}
-
-export function transferDescription(transfer: TransferResponse): string {
-    if (transfer.deposit) {
-        return `You increased your balance with ${formatValueEuro(transfer.amount)}`;
-    } else if (transfer.invoice) {
-        return `An invoice valued ${formatValueEuro(transfer.amount)} was added.`;
-    } else if (transfer.payoutRequest) {
-        // Todo: Currently payoutRequests are not fetched. So this will actually not do anything.
-        return `You were refunded ${formatValueEuro(transfer.amount)}`;
-    } else if (transfer.fine) {
-        return `You were fined ${formatValueEuro(transfer.amount)}`;
-    } else if (transfer.description == 'Initial transfer from SuSOS') {
-        return `You got ${formatValueEuro(transfer.amount)} transferred from your SuSOS account.`;
-    } else {
-        return `An unknown transaction was performed on your account.`; // This is probably not even possible.
-    }
-}
-
-export function transactionDescription(transaction: BaseTransactionResponse): string {
-    const user = useUserStore().getCurrentUser.user;
-    if (user === null) return "error";
-    const currentUserId: number = user.id;
-    const valueOfTransaction: string = formatValueEuro(transaction.value);
-    if (transaction.from.id === currentUserId) {
-        if (!transaction.createdBy) {
-            return `Magically, a transaction of ${valueOfTransaction} was put in.`;
-        } else {
-            if (transaction.createdBy.id === currentUserId) {
-                return `You spent a total of ${valueOfTransaction}`;
-            } else {
-                return `${transaction.createdBy.firstName} charged you ${valueOfTransaction}`;
-            }
-        }
-    } else {
-        return `You charged ${transaction.from.firstName} a total of ${valueOfTransaction}`;
-    }
 }

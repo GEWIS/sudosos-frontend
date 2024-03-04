@@ -66,17 +66,17 @@
         :footer="$t('transactions.total')"
       >
         <template #body="product">
-            {{ formatValueEuro(product.data.product.priceInclVat) }}
+            {{ formatPrice(product.data.product.priceInclVat) }}
         </template></Column>
       <Column 
         field="totalPriceInclVat" 
         :header="$t('transactions.amount')"
         class="p-1"
         footerClass="font-bold"
-        :footer="formatValueEuro(transactionInfo.totalPriceInclVat)"
+        :footer="formatPrice(transactionInfo.totalPriceInclVat)"
         >
         <template #body="product">
-            {{ formatValueEuro(product.data.totalPriceInclVat) }}
+            {{ formatPrice(product.data.totalPriceInclVat) }}
         </template>
       </Column>
     </DataTable>
@@ -85,7 +85,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { formatValueEuro } from "../../utils/mutationUtils";
+import { formatPrice } from "../../utils/formatterUtils";
 import type { SubTransactionRowResponse } from "@sudosos/sudosos-client/src/api";
 import type { TransactionResponse } from "@sudosos/sudosos-client";
 import { useUserStore } from '@sudosos/sudosos-frontend-common';
