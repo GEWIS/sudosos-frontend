@@ -4,7 +4,7 @@
     :visible="visible"
     modal
     :header="t('c_transactionDetailsModal.transactionDetails')"
-    class="w-auto flex w-9 md:w-4" ref="dialog"
+    class="w-auto flex w-11 md:w-4" ref="dialog"
   >
     <TransactionDetailModal
         v-if="shouldShowTransaction"

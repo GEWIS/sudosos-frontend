@@ -9,14 +9,20 @@
         @page="onPage($event)"
         :totalRecords="totalRecords"
         >
+      <Column 
+          field="moment" 
+          style="width: 30%" 
+          :header="$t('transactions.when')"
+          >
+          <template #body="mutation">
+            <span class="hidden sm:block">{{ mutation.data.moment.toDateString() }}</span>
+            <span class="sm:hidden">{{ mutation.data.moment.toLocaleDateString('nl-NL', {
+              dateStyle: 'short'
+            }) }}</span>
+          </template>
+        </Column>
 
-      <Column field="moment" style="width: 25%" :header="$t('transactions.when')">
-        <template #body="mutation">
-          {{ mutation.data.moment.toDateString() }}
-        </template>
-      </Column>
-
-      <Column field="mutationDescription" style="width: 25%" :header="$t('transactions.what')">
+      <Column field="mutationDescription" style="width: 30%" :header="$t('transactions.what')">
         <template #body="mutation">
           {{ 
             getDescription(mutation.data)
@@ -25,13 +31,11 @@
       
       </Column>
 
-      <Column field="change" style="width: 40%" :header="$t('transactions.amount')">
+      <Column field="change" style="width: 30%" :header="$t('transactions.amount')">
         <template #body="mutation">
           <div 
             v-if="mutation.data.to && mutation.data.to.id == user.id" 
             style="
-              min-width: 9rem;
-              justify-content: start;
               color: #198754;
             "
             class="font-bold"
@@ -42,8 +46,6 @@
           <div 
             v-else-if="mutation.data.type == 3" 
             style="
-              min-width: 9rem;
-              justify-content: start;
               color: #D40000;
             "
             class="font-bold"
@@ -57,18 +59,13 @@
           <div 
             v-else 
             severity="info"
-            style="
-              min-width: 9rem;
-              justify-content: start;
-            "
-            
             >
               {{ formatPriceAsNegative((mutation.data as FinancialMutation).amount) }}
         </div>
         </template>  
       </Column>
 
-      <Column field="">
+      <Column field="" style="width: 10%">
         <template #body="mutation">
             <i 
               class="pi pi-info-circle cursor-pointer"

@@ -30,9 +30,12 @@ defineProps({
         tfoot: 'font-bold'
       }"
     >
-      <Column field="description" :header="$t('transactions.depositID')" class="p-1">
+      <Column 
+        field="description" 
+        :header="$t('transactions.depositID')" 
+        class="p-1">
         <template #body="product">
-          {{ depositInfo.description }}
+          <span class="text-sm xl:text-base">{{ depositInfo.description }}</span>
         </template>
       </Column>
       <Column 
