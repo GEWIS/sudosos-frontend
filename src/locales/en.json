@@ -79,7 +79,12 @@
     "price": "Price",
     "amount": "Amount",
     "when": "When",
-    "what": "What"
+    "what": "What",
+    "description": "Description",
+    "fineDescr": "You have received a fine.",
+    "fineAmount": "Fine",
+    "depositDescr": "You have deposited money on SudoSOS",
+    "depositID": "Deposit ID"
   },
   "balance": {
     "Balance": "Balance",
