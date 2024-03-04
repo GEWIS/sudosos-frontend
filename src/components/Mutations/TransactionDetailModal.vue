@@ -1,6 +1,11 @@
 <template>
   <div class="flex flex-column">
-
+    <span>
+      {{ new Date(transactionInfo.createdAt!!).toLocaleString('nl-NL', {
+        dateStyle: 'short',
+        timeStyle: 'short'
+      }) }}
+    </span>
     <Translation 
       v-if="
         transactionInfo.from.id == userStore.current.user!!.id
@@ -43,6 +48,7 @@
         </span>
       </template>
     </Translation>
+    
     <br>
     <DataTable
       :value="productsInfo"

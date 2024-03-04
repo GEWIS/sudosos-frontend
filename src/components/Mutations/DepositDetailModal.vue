@@ -16,6 +16,12 @@ defineProps({
 
 <template>
   <div class="flex flex-column">
+    <span>
+      {{ new Date(depositInfo.createdAt!!).toLocaleString('nl-NL', {
+        dateStyle: 'short',
+        timeStyle: 'short'
+      }) }}
+    </span>
     <span>{{ $t("transactions.depositDescr") }}</span>
     <br>
     <DataTable

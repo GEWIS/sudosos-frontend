@@ -27,38 +27,44 @@
 
       <Column field="change" style="width: 40%" :header="$t('transactions.amount')">
         <template #body="mutation">
-          <InlineMessage 
+          <div 
             v-if="mutation.data.to && mutation.data.to.id == user.id" 
-            severity="success"
             style="
               min-width: 9rem;
               justify-content: start;
-            ">
+              color: #198754;
+            "
+            class="font-bold"
+            >
             {{ formatPrice((mutation.data as FinancialMutation).amount) }}
-          </InlineMessage>
+          </div>
 
-          <InlineMessage 
+          <div 
             v-else-if="mutation.data.type == 3" 
-            severity="error" 
             style="
               min-width: 9rem;
               justify-content: start;
-            ">
-              <template #icon>
-                <i class="pi p-inline-message-icon pi-exclamation-triangle"></i>
-              </template>
-              {{ formatPriceAsNegative((mutation.data as FinancialMutation).amount) }}
-          </InlineMessage>
+              color: #D40000;
+            "
+            class="font-bold"
+            >
+            <!-- <template #icon>
+              <i class="pi p-inline-message-icon pi-exclamation-triangle"></i>
+            </template> -->
+            {{ formatPriceAsNegative((mutation.data as FinancialMutation).amount) }}
+          </div>
 
-          <InlineMessage 
+          <div 
             v-else 
             severity="info"
             style="
               min-width: 9rem;
               justify-content: start;
-            ">
+            "
+            
+            >
               {{ formatPriceAsNegative((mutation.data as FinancialMutation).amount) }}
-          </InlineMessage>
+        </div>
         </template>  
       </Column>
 

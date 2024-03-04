@@ -1,5 +1,11 @@
 <template>
   <div class="flex flex-column">
+    <span>
+    {{ new Date($props.fine.createdAt!!).toLocaleString('nl-NL', {
+      dateStyle: 'short',
+      timeStyle: 'short'
+    }) }}
+    </span>
       <span>{{ $t("transactions.fineDescr") }}</span>
       <br>
       <DataTable
