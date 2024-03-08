@@ -125,7 +125,7 @@
 }
 
 .p-component {
-    font-family: $fontFamily;
+    font-family: var(--font-family);
     font-feature-settings: var(--font-feature-settings, normal);
     font-size: $fontSize;
     font-weight: $fontWeight;
@@ -158,7 +158,7 @@
 }
 
 .p-link {
-    font-family: $fontFamily;
+    font-family: var(--font-family);
     font-feature-settings: var(--font-feature-settings, normal);
     font-size: $fontSize;
     border-radius: $borderRadius;
