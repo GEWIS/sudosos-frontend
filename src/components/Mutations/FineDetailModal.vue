@@ -1,10 +1,7 @@
 <template>
   <div class="flex flex-column">
     <span>
-    {{ new Date($props.fine.createdAt!!).toLocaleString('nl-NL', {
-      dateStyle: 'short',
-      timeStyle: 'short'
-    }) }}
+    {{ dateString }}
     </span>
       <span>{{ $t("transactions.fineDescr") }}</span>
       <br>
@@ -38,7 +35,7 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { formatPrice } from "../../utils/formatterUtils";
-import { onMounted, type Ref, ref } from "vue";
+import { onMounted, type Ref, ref, computed } from "vue";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import type {
@@ -71,6 +68,13 @@ onMounted(async () => {
   lastName.value = props.fine.from.lastName;
   description.value = props.fine.description;
 });
+
+const dateString = computed(() => {
+  return new Date(props.fine.createdAt!!).toLocaleString('nl-NL', {
+    dateStyle: 'short',
+    timeStyle: 'short'
+  })
+})
 
 </script>
 

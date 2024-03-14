@@ -1,26 +1,7 @@
-<script setup lang="ts">
-import type { TransferResponse } from "@sudosos/sudosos-client";
-import { formatPrice } from "../../utils/formatterUtils";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-
-defineProps({
-  depositInfo: {
-    type: Object as () => TransferResponse,
-    required: true,
-  }
-});
-
-
-</script>
-
 <template>
   <div class="flex flex-column">
     <span>
-      {{ new Date(depositInfo.createdAt!!).toLocaleString('nl-NL', {
-        dateStyle: 'short',
-        timeStyle: 'short'
-      }) }}
+      {{ dateString }}
     </span>
     <span>{{ $t("transactions.depositDescr") }}</span>
     <br>
@@ -51,6 +32,27 @@ defineProps({
     </DataTable>
   </div>
 </template>
+<script setup lang="ts">
+import type { TransferResponse } from "@sudosos/sudosos-client";
+import { formatPrice } from "../../utils/formatterUtils";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import { computed } from "vue";
 
-<style scoped lang="scss">
-</style>
+const { depositInfo } = defineProps({
+  depositInfo: {
+    type: Object as () => TransferResponse,
+    required: true,
+  }
+});
+
+
+const dateString = computed(() => {
+  return new Date(depositInfo.createdAt!!).toLocaleString('nl-NL', {
+    dateStyle: 'short',
+    timeStyle: 'short'
+  })
+})
+
+
+</script>
