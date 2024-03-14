@@ -53,14 +53,14 @@
             <!-- <template #icon>
               <i class="pi p-inline-message-icon pi-exclamation-triangle"></i>
             </template> -->
-            {{ formatPriceAsNegative((mutation.data as FinancialMutation).amount) }}
+            {{ formatPrice((mutation.data as FinancialMutation).amount, true) }}
           </div>
 
           <div 
             v-else 
             severity="info"
             >
-              {{ formatPriceAsNegative((mutation.data as FinancialMutation).amount) }}
+              {{ formatPrice((mutation.data as FinancialMutation).amount, true) }}
         </div>
         </template>  
       </Column>
@@ -73,7 +73,6 @@
             />
         </template>
       </Column>
-
     </DataTable>
   </CardComponent>
   <MutationModal
@@ -108,7 +107,7 @@ import {
   type FinancialMutation,
   FinancialMutationType
 } from "@/utils/mutationUtils";
-import { formatPrice, formatPriceAsNegative } from "@/utils/formatterUtils";
+import { formatPrice } from "@/utils/formatterUtils";
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
 import "primeicons/primeicons.css"
 
@@ -142,8 +141,8 @@ const props = defineProps({
 });
 
 const mutations = ref<FinancialMutation[]>();
-const selectedMutationId = ref<number>(-1); // TODO: Handle the case when this is not changed
-const selectedMutationType = ref<FinancialMutationType>(FinancialMutationType.TRANSACTION); // TODO: Handle the case when this is not changed
+const selectedMutationId = ref<number>(-1);
+const selectedMutationType = ref<FinancialMutationType>(FinancialMutationType.TRANSACTION);
 const mutationShow = ref<boolean>(false);
 const totalRecords = ref<number>(0);
 
