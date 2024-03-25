@@ -49,7 +49,7 @@
             :outlined="true"
             class="my-3 mx-auto w-full flex justify-content-center align-items-center"
         >
-          Back to home
+          {{ $t('login.Back') }}
         </Button>
         <div class="text-900 underline cursor-pointer" @click="resetPassword">
           {{ $t('login.Password reset') }}
@@ -72,6 +72,10 @@ import InputText from 'primevue/inputtext';
 import { useToast } from 'primevue/usetoast';
 import { AxiosError } from 'axios';
 import { handleError } from "@/utils/errorUtils";
+import { useI18n } from "vue-i18n";
+
+
+const { t } = useI18n();
 
 const authStore = useAuthStore();
 const userStore = useUserStore();
@@ -79,8 +83,8 @@ const toast = useToast();
 
 const schema = toTypedSchema(
     yup.object({
-      username: yup.string().required('This is a required field.'),
-      password: yup.string().required('This is a required field.')
+      username: yup.string().required(t("login.Required field")),
+      password: yup.string().required(t("login.Required field"))
     })
 );
 const loginForm = useForm({
