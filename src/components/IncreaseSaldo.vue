@@ -2,16 +2,18 @@
   <div id="saldo-box"> <!-- to be replaced by card component -->
     <b-card>
       <b-card-title>
-        Increase saldo
+        Increase balance
       </b-card-title>
       <b-card-body class="mb-0">
         <p class="mb-2">
-          It is no longer possible to increase your balance in cash during the 'borrel'.</p>
+          It is no longer possible to increase your balance in cash during the 'borrel'.
+          Payments can be made through European payment schemes (iDEAL, Bancontact, giropay, EPS) or common credit/debit cards (Visa/Mastercard/American Express/UnionPay/Cartes Bancaires).<br/>
+          To be able to offer you the best prices and avoid transaction fees, you need to increase your balance by at least €10,-. If your balance is negative, you can also top it up with the amount your balance is negative, such that your balance becomes €0,-.</p>
         <b-row class="mb-3">
           <b-col class="font-weight-bold">
-            Balance Increase amount:
+            Amount:
             <b-input-group size="sm" prepend="€" class="input-group">
-              <b-form-input v-model="whole" placeholder="00" type="number" min="0"></b-form-input>
+              <b-form-input v-model="whole" placeholder="0" type="number" min="0"></b-form-input>
               <b-form-input v-model="decimal" placeholder="00" type="number" min="0"></b-form-input>
             </b-input-group>
           </b-col>
