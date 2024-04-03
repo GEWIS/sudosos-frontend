@@ -81,7 +81,9 @@
     "fineAmount": "Boete",
     "depositDescr": "Je hebt geld gestort op SudoSOS",
     "depositID": "Opwaardeer ID",
-    "waivedFineDescr": "Je boetes zijn kwijtgescholden."
+    "waivedFineDescr": "Je boetes zijn kwijtgescholden.",
+    "invoiceStatus": "Status",
+    "transferType": "Type"
   },
   "balance": {
     "Balance": "Saldo",

@@ -88,7 +88,9 @@
     "fineAmount": "Fine",
     "depositDescr": "You have deposited money on SudoSOS",
     "depositID": "Deposit ID",
-    "waivedFineDescr": "Your fines were waived."
+    "waivedFineDescr": "Your fines were waived.",
+    "invoiceStatus": "Status",
+    "transferType": "Type"
   },
   "balance": {
     "Balance": "Balance",

@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="flex flex-row justify-content-between">
-      <div class="transaction-left-column"><p>{{ $t("transactions.transferDesc") }}</p></div>
+      <div class="transaction-left-column"><p>{{ $t("transactions.description") }}</p></div>
       <div class="transaction-right-column"><p>{{ invoiceInfo.invoice?.description }}</p></div>
     </div>
     <div class="flex flex-row justify-content-between">

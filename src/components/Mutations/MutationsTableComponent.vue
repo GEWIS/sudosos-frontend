@@ -1,76 +1,60 @@
 <template>
   <CardComponent :action="action" :header="header" :router-link="routerLink" class="w-full">
     <DataTable
-        :rows=rows
-        :value="mutations"
-        :rowsPerPageOptions="[5, 10, 25, 50, 100]"
-        :paginator="paginator"
-        lazy
-        @page="onPage($event)"
-        :totalRecords="totalRecords"
-        >
-      <Column
-          field="moment"
-          style="width: 30%"
-          :header="$t('transactions.when')"
-          >
-          <template #body="mutation">
-            <span class="hidden sm:block">{{ mutation.data.moment.toDateString() }}</span>
-            <span class="sm:hidden">{{ mutation.data.moment.toLocaleDateString('nl-NL', {
+      :rows="rows"
+      :value="mutations"
+      :rowsPerPageOptions="[5, 10, 25, 50, 100]"
+      :paginator="paginator"
+      lazy
+      @page="onPage($event)"
+      :totalRecords="totalRecords"
+    >
+      <Column field="moment" style="width: 30%" :header="$t('transactions.when')">
+        <template #body="mutation">
+          <span class="hidden sm:block">{{ mutation.data.moment.toDateString() }}</span>
+          <span class="sm:hidden">{{
+            mutation.data.moment.toLocaleDateString('nl-NL', {
               dateStyle: 'short'
-            }) }}</span>
-          </template>
-        </Column>
+            })
+          }}</span>
+        </template>
+      </Column>
 
       <Column field="mutationDescription" style="width: 30%" :header="$t('transactions.what')">
         <template #body="mutation">
-          {{
-            getDescription(mutation.data)
-          }}
+          {{ getDescription(mutation.data) }}
         </template>
-
       </Column>
 
       <Column field="change" style="width: 30%" :header="$t('transactions.amount')">
         <template #body="mutation">
           <div
             v-if="mutation.data.to && mutation.data.to.id == user.id"
-            style="
-              color: #198754;
-            "
+            style="color: #198754"
             class="font-bold"
-            >
+          >
             {{ formatPrice((mutation.data as FinancialMutation).amount) }}
           </div>
 
-          <div
-            v-else-if="mutation.data.type == 3"
-            style="
-              color: #D40000;
-            "
-            class="font-bold"
-            >
+          <div v-else-if="mutation.data.type == 3" style="color: #d40000" class="font-bold">
             <!-- <template #icon>
               <i class="pi p-inline-message-icon pi-exclamation-triangle"></i>
             </template> -->
             {{ formatPrice((mutation.data as FinancialMutation).amount, true) }}
           </div>
 
-          <div
-            v-else
-            severity="info"
-            >
-              {{ formatPrice((mutation.data as FinancialMutation).amount, true) }}
-        </div>
+          <div v-else severity="info">
+            {{ formatPrice((mutation.data as FinancialMutation).amount, true) }}
+          </div>
         </template>
       </Column>
 
       <Column field="" style="width: 10%">
         <template #body="mutation">
-            <i
-              class="pi pi-info-circle cursor-pointer"
-              @click="() => openModal(mutation.data.id, mutation.data.type)"
-            />
+          <i
+            class="pi pi-info-circle cursor-pointer"
+            @click="() => openModal(mutation.data.id, mutation.data.type)"
+          />
         </template>
       </Column>
     </DataTable>
@@ -83,33 +67,31 @@
   />
 </template>
 
-
 <script lang="ts" setup>
-import DataTable from "primevue/datatable";
 import type { DataTablePageEvent } from "primevue/datatable";
-import Column from 'primevue/column';
-import Tag from 'primevue/tag';
-import InlineMessage from 'primevue/inlinemessage';
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
 import CardComponent from "@/components/CardComponent.vue";
 import type {
   BaseTransactionResponse,
-  FinancialMutationResponse, PaginatedBaseTransactionResponse,
+  FinancialMutationResponse,
+  PaginatedBaseTransactionResponse,
   PaginatedFinancialMutationResponse,
   TransferResponse
 } from "@sudosos/sudosos-client";
-import { onMounted, ref } from "vue";
 import type { Ref } from "vue";
+import { onMounted, ref } from "vue";
 import MutationModal from "@/components/Mutations/MutationModal.vue";
 import {
+  type FinancialMutation,
+  FinancialMutationType,
   parseFinancialTransactions,
   parseTransaction,
-  parseTransfer,
-  type FinancialMutation,
-  FinancialMutationType
+  parseTransfer
 } from "@/utils/mutationUtils";
 import { formatPrice } from "@/utils/formatterUtils";
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
-import "primeicons/primeicons.css"
+import "primeicons/primeicons.css";
 
 const user = useUserStore().getCurrentUser.user!!
 
@@ -209,6 +191,9 @@ function getDescription(mutation: FinancialMutation) {
     case FinancialMutationType.WAIVED_FINE: {
       return "Waived Fine";
     }
+    case FinancialMutationType.INVOICE: {
+      return "Invoice";
+    }
     default: {
       return "Could not find";
     }
@@ -216,5 +201,4 @@ function getDescription(mutation: FinancialMutation) {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
