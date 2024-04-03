@@ -68,7 +68,7 @@ import BalanceComponent from "@/components/BalanceComponent.vue";
 import { useForm } from "vee-validate";
 import apiService from "@/services/ApiService";
 import router from "@/router";
-import { userDetailsSchema } from "@/utils/validation-schema";
+import { userDetailsSchema, userTypes } from "@/utils/validation-schema";
 import MutationsTableComponent from "@/components/Mutations/MutationsTableComponent.vue";
 import { handleError } from "@/utils/errorUtils";
 import { useToast } from "primevue/usetoast";
@@ -107,6 +107,8 @@ onBeforeMount(async () => {
     await router.replace({ path: '/error' });
     return;
   }
+  console.error(currentUser.value.type);
+  console.error(currentUser.value.type);
   isLocal.value = currentUser.value.type == "LOCAL_USER";
   setValues({
     firstName: currentUser.value?.firstName,
