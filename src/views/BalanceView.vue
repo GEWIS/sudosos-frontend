@@ -13,7 +13,7 @@
         </div>
         <br />
         <div class="flex justify-content-end">
-          <Button @click="showDialog">
+          <Button @click="showDialog" :disabled="isUndefined(amountValue)" >
             {{ $t('balance.Start payment') }}
           </Button>
         </div>
@@ -23,15 +23,14 @@
 </template>
 
 <script setup lang="ts">
-// TODO: Create Modal for Topping up Balance
-// See: https://github.com/GEWIS/sudosos-frontend-vue3/issues/46
 import CardComponent from "@/components/CardComponent.vue";
 import { ref } from "vue";
 import TopupModal from "@/components/TopupModalComponent.vue";
+import { isUndefined } from "lodash";
 
 // Define the 'visible' ref variable to control dialog visibility
 const visible = ref(false);
-const amountValue = ref();
+const amountValue = ref(undefined);
 
 // Function to set 'visible' to true, showing the dialog
 const showDialog = () => {
