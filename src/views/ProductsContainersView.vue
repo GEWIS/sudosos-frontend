@@ -254,7 +254,7 @@ const onImgUpload = async (event: Event, productId: number) => {
   if(el == null || el.files == null) return;
   await apiService.products.updateProductImage(productId, el.files[0]);
   handleNewProduct();
-}
+};
 </script>
 
 <style scoped lang="scss">

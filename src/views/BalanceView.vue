@@ -46,7 +46,7 @@ import apiService from "@/services/ApiService";
 
 // Define the 'visible' ref variable to control dialog visibility
 const visible = ref(false);
-const amountValue = ref(undefined);
+const amountValue = ref(0);
 
 // Function to set 'visible' to true, showing the dialog
 const showDialog = () => {

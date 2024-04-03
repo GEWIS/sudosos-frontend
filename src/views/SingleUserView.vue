@@ -25,8 +25,8 @@
           </div>
           <div class="field">
             <label for="type">{{ $t("userDetails.Usertype") }}</label>
-            <InputText id="userType" disabled :placeholder="currentUser ? currentUser.type : undefined"
-              v-model="userType" v-bind="userTypeAttrs" class="w-full" />
+            <InputText id="userType" disabled :placeholder="userTypeDisplay"
+              v-bind="userTypeAttrs" class="w-full" />
             <span class="error-text">{{ errors.userType }}</span>
           </div>
           <div class="field">
@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, ref } from 'vue';
+import { computed, onBeforeMount, ref } from "vue";
 import type { Ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
@@ -107,8 +107,6 @@ onBeforeMount(async () => {
     await router.replace({ path: '/error' });
     return;
   }
-  console.error(currentUser.value.type);
-  console.error(currentUser.value.type);
   isLocal.value = currentUser.value.type == "LOCAL_USER";
   setValues({
     firstName: currentUser.value?.firstName,
@@ -155,6 +153,12 @@ const getUserMutations = async (take: number, skip: number):
   return userStore.getCurrentUser.financialMutations;
 };
 
+const userTypeDisplay = computed(() => {
+  const type = currentUser.value ? currentUser.value.type : '';
+  // Assuming type is a numeric ID; find the corresponding name
+  const userTypeObj = userTypes.value.find(ut => ut.name === type);
+  return userTypeObj ? userTypeObj.name : 'Unknown';
+});
 </script>
 
 <style scoped lang="scss">

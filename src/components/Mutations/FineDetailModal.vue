@@ -49,7 +49,7 @@ const { t } = useI18n();
 const firstName: Ref<string> = ref('');
 const lastName: Ref<string> = ref('');
 const description: Ref<string> = ref('');
-const amount: Ref<DineroObjectResponse> = ref({amount: 0, currency: 'EUR', precision: 2});
+const amount: Ref<DineroObjectResponse> = ref({ amount: 0, currency: 'EUR', precision: 2 });
 
 const props = defineProps({
   fine: {

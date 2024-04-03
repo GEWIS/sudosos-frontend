@@ -236,10 +236,20 @@ watch(searchQuery, () => {
 });
 
 const handleCreateUser = handleSubmit(async (values) => {
+  // Ensure userType is a number. You might need a more complex check depending on your data.
+  const userTypeAsNumber = Number(values.userType);
+
+  // Check if conversion was successful or if the value was already a number
+  if (isNaN(userTypeAsNumber)) {
+    console.error('User type is not a valid number:', values.userType);
+    // Handle error appropriately, possibly aborting the submit or setting a default
+    return;
+  }
+
   const createUserRequest: CreateUserRequest = {
     firstName: values.firstName,
     lastName: values.lastName,
-    type: values.userType,
+    type: userTypeAsNumber, // Use the converted/validated number here
     email: values.email || '',
     ofAge: values.ofAge,
     canGoIntoDebt: values.canGoIntoDebt,

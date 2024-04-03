@@ -49,7 +49,7 @@ const { t } = useI18n();
 const toFirstName: Ref<string> = ref('');
 const toLastName: Ref<string> = ref('');
 const description: Ref<string> = ref('');
-const waivedAmount: Ref<DineroObjectResponse> = ref({amount: 0, currency: 'EUR', precision: 2});
+const waivedAmount: Ref<DineroObjectResponse> = ref({ amount: 0, currency: 'EUR', precision: 2 });
 
 const props = defineProps({
   waivedFines: {
