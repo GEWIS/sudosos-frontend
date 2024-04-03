@@ -97,7 +97,8 @@
     "Balance increase amount": "Balance increase amount",
     "Start payment": "Start payment",
     "Increase balance": "Increase balance",
-    "Price": "Price"
+    "Price": "Price",
+    "minPayment": "Note: minimum topup is €10."
   },
   "payment": {
     "pay": "pay",

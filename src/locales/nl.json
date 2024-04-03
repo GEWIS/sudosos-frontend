@@ -90,7 +90,8 @@
     "Balance increase amount": "Saldo verhogen met:",
     "Start payment": "Betaal",
     "Increase balance": "Verhoog saldo",
-    "Price": "Prijs"
+    "Price": "Prijs",
+    "minPayment": "Let op: minimum bedrag is €10."
   },
   "pointOfSaleOverview": {
     "Point of sale overview": "Verkooppunt overzicht"

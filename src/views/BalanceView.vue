@@ -7,15 +7,28 @@
         <div>
           <p class="font-bold">{{ $t('balance.Balance increase amount') }}</p>
           <div class="w-3 flex-1">
-            <InputNumber v-model="amountValue" :placeholder="$t('balance.Price')" inputId="amount" mode="currency"
-              currency="EUR" locale="nl-NL" :min="10" />
+            <InputNumber
+              v-model="amountValue"
+              :placeholder="$t('balance.Price')"
+              inputId="amount"
+              mode="currency"
+              currency="EUR"
+              locale="nl-NL"
+            />
           </div>
+          <p v-if="!isUndefined(amountValue) && amountValue < 10" class="font-bold text-red-500">
+            {{ $t('balance.minPayment') }}
+          </p>
+          <br v-else />
         </div>
         <br />
         <div class="flex justify-content-end">
-          <Button @click="showDialog" :disabled="isUndefined(amountValue)" >
-            {{ $t('balance.Start payment') }}
-          </Button>
+        <Button
+          @click="showDialog"
+          :disabled="isUndefined(amountValue) || amountValue < 10"
+        >
+          {{ $t('balance.Start payment') }}
+        </Button>
         </div>
       </CardComponent>
     </div>
