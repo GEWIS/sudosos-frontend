@@ -16,7 +16,7 @@
     <FineDetailModal v-else-if="shouldShowFine" :fine="transferDetails[props.id]"/>
     <template #footer v-if="!shouldShowDeposit && !shouldShowInvoice">
       <div class="flex flex-column align-items-end">
-        <Button @click="deleteMutation" severity="danger">
+        <Button @click="deleteMutation" severity="danger" v-if="shouldShowDeleteButton">
           {{ t('c_transactionDetailsModal.delete').toUpperCase() }}
         </Button>
       </div>
@@ -43,6 +43,8 @@ import { useToast } from "primevue/usetoast";
 import type { AxiosError } from "axios";
 import { handleError } from "@/utils/errorUtils";
 import { FinancialMutationType } from "@/utils/mutationUtils";
+import { isAdmin, isBAC, UserRole } from "@/utils/rbacUtils";
+import { useAuthStore } from "@sudosos/sudosos-frontend-common";
 
 const props = defineProps({
   type: {
@@ -64,6 +66,11 @@ const transferStore = useTransferStore();
 const transferDetails: Ref<{ [id: number]: TransferResponse }> = ref({});
 const dialog: Ref<null | any> = ref(null);
 const toast = useToast();
+const authStore = useAuthStore();
+
+const shouldShowDeleteButton = computed(() => {
+  return authStore.roles.includes(UserRole.BAC) || authStore.roles.includes(UserRole.BOARD);
+});
 
 const shouldShowInvoice = computed(() => {
   if (!transferDetails.value[props.id]) return false;
