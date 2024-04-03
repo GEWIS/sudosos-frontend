@@ -4,16 +4,18 @@
     :visible="visible"
     modal
     :header="t('c_transactionDetailsModal.transactionDetails')"
-    class="w-auto flex w-11 md:w-4" ref="dialog"
+    class="w-auto flex w-11 md:w-4"
+    ref="dialog"
   >
     <TransactionDetailModal
-        v-if="shouldShowTransaction"
-        :transactionInfo="transactionsDetails[props.id]"
-        :productsInfo="transactionProducts[props.id]"
+      v-if="shouldShowTransaction"
+      :transactionInfo="transactionsDetails[props.id]"
+      :productsInfo="transactionProducts[props.id]"
     />
-    <InvoiceDetailModal v-else-if="shouldShowInvoice" :invoiceInfo="transferDetails[props.id]"/>
-    <DepositDetailModal v-else-if="shouldShowDeposit" :depositInfo="transferDetails[props.id]"/>
-    <FineDetailModal v-else-if="shouldShowFine" :fine="transferDetails[props.id]"/>
+    <InvoiceDetailModal v-else-if="shouldShowInvoice" :invoiceInfo="transferDetails[props.id]" />
+    <DepositDetailModal v-else-if="shouldShowDeposit" :depositInfo="transferDetails[props.id]" />
+    <FineDetailModal v-else-if="shouldShowFine" :fine="transferDetails[props.id]" />
+    <WaivedFineDetailModal v-else-if="shouldShowWaivedFine" :waivedFines="transferDetails[props.id]" />
     <template #footer v-if="!shouldShowDeposit && !shouldShowInvoice">
       <div class="flex flex-column align-items-end">
         <Button @click="deleteMutation" severity="danger" v-if="shouldShowDeleteButton">
@@ -25,26 +27,30 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
 import type { Ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useTransactionStore } from '@/stores/transaction.store';
 import type { TransactionResponse, TransferResponse } from '@sudosos/sudosos-client';
-import type { SubTransactionResponse, SubTransactionRowResponse } from '@sudosos/sudosos-client/src/api';
+import type {
+  SubTransactionResponse,
+  SubTransactionRowResponse
+} from '@sudosos/sudosos-client/src/api';
 import { useTransferStore } from '@/stores/transfer.store';
 import apiService from '@/services/ApiService';
 import TransactionDetailModal from '@/components/Mutations/TransactionDetailModal.vue';
 import DepositDetailModal from '@/components/Mutations/DepositDetailModal.vue';
 import InvoiceDetailModal from '@/components/Mutations/InvoiceDetailModal.vue';
-import router from "@/router";
-import { addListenerOnDialogueOverlay } from "@/utils/dialogUtil";
-import FineDetailModal from "@/components/Mutations/FineDetailModal.vue";
-import { useI18n } from "vue-i18n";
-import { useToast } from "primevue/usetoast";
-import type { AxiosError } from "axios";
-import { handleError } from "@/utils/errorUtils";
-import { FinancialMutationType } from "@/utils/mutationUtils";
-import { isAdmin, isBAC, UserRole } from "@/utils/rbacUtils";
-import { useAuthStore } from "@sudosos/sudosos-frontend-common";
+import router from '@/router';
+import { addListenerOnDialogueOverlay } from '@/utils/dialogUtil';
+import FineDetailModal from '@/components/Mutations/FineDetailModal.vue';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'primevue/usetoast';
+import type { AxiosError } from 'axios';
+import { handleError } from '@/utils/errorUtils';
+import { FinancialMutationType } from '@/utils/mutationUtils';
+import { UserRole } from '@/utils/rbacUtils';
+import { useAuthStore } from '@sudosos/sudosos-frontend-common';
+import WaivedFineDetailModal from "@/components/Mutations/WaivedFineDetailModal.vue";
 
 const props = defineProps({
   type: {
@@ -89,7 +95,14 @@ const shouldShowDeposit = computed(() => {
 
 const shouldShowFine = computed(() => {
   if (!transferDetails.value[props.id]) return false;
-  return props.type === FinancialMutationType.FINE;
+  return (
+    props.type === FinancialMutationType.FINE);
+});
+
+const shouldShowWaivedFine = computed(() => {
+  if (!transferDetails.value[props.id]) return false;
+  return (
+    props.type === FinancialMutationType.WAIVED_FINE);
 });
 
 async function fetchTransferInfo() {
@@ -128,10 +141,10 @@ async function fetchMutation(): Promise<void> {
 }
 
 watch(
-    () => props.id || props.type,
-    async () => {
-      await fetchMutation();
-    }
+  () => props.id || props.type,
+  async () => {
+    await fetchMutation();
+  }
 );
 
 const deleteMutation = async () => {
@@ -143,17 +156,20 @@ const deleteMutation = async () => {
       return;
     }
 
-    await apiService.debtor.deleteFine(transferDetail.fine.id).then(() => {
-      toast.add({
-        summary: t('successMessages.success'),
-        detail: t('successMessages.fineDeleted'),
-        severity: 'success',
-        life: 3000,
+    await apiService.debtor
+      .deleteFine(transferDetail.fine.id)
+      .then(() => {
+        toast.add({
+          summary: t('successMessages.success'),
+          detail: t('successMessages.fineDeleted'),
+          severity: 'success',
+          life: 3000
+        });
+        router.go(0);
+      })
+      .catch((err: AxiosError) => {
+        handleError(err, toast);
       });
-      router.go(0);
-    }).catch((err: AxiosError) => {
-      handleError(err, toast);
-    });
   } else {
     const transactionsDetail = transactionsDetails.value[props.id];
 
@@ -162,20 +178,22 @@ const deleteMutation = async () => {
       return;
     }
 
-    await apiService.transaction.deleteTransaction(transactionsDetail.id).then(() => {
-      toast.add({
-        summary: t('successMessages.success'),
-        detail: t('successMessages.transactionDeleted'),
-        severity: 'success',
-        life: 3000,
+    await apiService.transaction
+      .deleteTransaction(transactionsDetail.id)
+      .then(() => {
+        toast.add({
+          summary: t('successMessages.success'),
+          detail: t('successMessages.transactionDeleted'),
+          severity: 'success',
+          life: 3000
+        });
+        router.go(0);
+      })
+      .catch((err: AxiosError) => {
+        handleError(err, toast);
       });
-      router.go(0);
-    }).catch((err: AxiosError) => {
-      handleError(err, toast);
-    });
   }
 };
-
 </script>
 
 <style scoped lang="scss"></style>

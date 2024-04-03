@@ -18,8 +18,8 @@
       >
         <Column field="description" :header="$t('transactions.description')" class="p-1">
         </Column>
-        <Column 
-          field="totalPriceInclVat" 
+        <Column
+          field="totalPriceInclVat"
           :header="$t('transactions.fineAmount')"
           class="p-1"
           footerClass="font-bold"
@@ -73,8 +73,8 @@ const dateString = computed(() => {
   return new Date(props.fine.createdAt!!).toLocaleString('nl-NL', {
     dateStyle: 'short',
     timeStyle: 'short'
-  })
-})
+  });
+});
 
 </script>
 

@@ -9,9 +9,9 @@
         @page="onPage($event)"
         :totalRecords="totalRecords"
         >
-      <Column 
-          field="moment" 
-          style="width: 30%" 
+      <Column
+          field="moment"
+          style="width: 30%"
           :header="$t('transactions.when')"
           >
           <template #body="mutation">
@@ -24,17 +24,17 @@
 
       <Column field="mutationDescription" style="width: 30%" :header="$t('transactions.what')">
         <template #body="mutation">
-          {{ 
+          {{
             getDescription(mutation.data)
           }}
-        </template>  
-      
+        </template>
+
       </Column>
 
       <Column field="change" style="width: 30%" :header="$t('transactions.amount')">
         <template #body="mutation">
-          <div 
-            v-if="mutation.data.to && mutation.data.to.id == user.id" 
+          <div
+            v-if="mutation.data.to && mutation.data.to.id == user.id"
             style="
               color: #198754;
             "
@@ -43,8 +43,8 @@
             {{ formatPrice((mutation.data as FinancialMutation).amount) }}
           </div>
 
-          <div 
-            v-else-if="mutation.data.type == 3" 
+          <div
+            v-else-if="mutation.data.type == 3"
             style="
               color: #D40000;
             "
@@ -56,18 +56,18 @@
             {{ formatPrice((mutation.data as FinancialMutation).amount, true) }}
           </div>
 
-          <div 
-            v-else 
+          <div
+            v-else
             severity="info"
             >
               {{ formatPrice((mutation.data as FinancialMutation).amount, true) }}
         </div>
-        </template>  
+        </template>
       </Column>
 
       <Column field="" style="width: 10%">
         <template #body="mutation">
-            <i 
+            <i
               class="pi pi-info-circle cursor-pointer"
               @click="() => openModal(mutation.data.id, mutation.data.type)"
             />
@@ -198,16 +198,19 @@ async function getMutations(take: number, skip: number):
 function getDescription(mutation: FinancialMutation) {
   switch (mutation.type) {
     case FinancialMutationType.TRANSACTION: {
-      return "Payment"
+      return "Payment";
     }
     case FinancialMutationType.DEPOSIT: {
-      return "Top up"
+      return "Top up";
     }
     case FinancialMutationType.FINE: {
-      return "Fine"
+      return "Fine";
+    }
+    case FinancialMutationType.WAIVED_FINE: {
+      return "Waived Fine";
     }
     default: {
-      return "Could not find"
+      return "Could not find";
     }
   }
 }

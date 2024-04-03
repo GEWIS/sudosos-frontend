@@ -80,7 +80,8 @@
     "fineDescr": "Je hebt een boete ontvangen.",
     "fineAmount": "Boete",
     "depositDescr": "Je hebt geld gestort op SudoSOS",
-    "depositID": "Opwaardeer ID"
+    "depositID": "Opwaardeer ID",
+    "waivedFineDescr": "Je boetes zijn kwijtgescholden."
   },
   "balance": {
     "Balance": "Saldo",

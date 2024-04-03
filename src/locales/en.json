@@ -87,7 +87,8 @@
     "fineDescr": "You have received a fine.",
     "fineAmount": "Fine",
     "depositDescr": "You have deposited money on SudoSOS",
-    "depositID": "Deposit ID"
+    "depositID": "Deposit ID",
+    "waivedFineDescr": "Your fines were waived."
   },
   "balance": {
     "Balance": "Balance",
