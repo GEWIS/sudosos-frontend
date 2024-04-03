@@ -91,7 +91,7 @@
     "Start payment": "Betaal",
     "Increase balance": "Verhoog saldo",
     "Price": "Prijs",
-    "minPayment": "Let op: minimum bedrag is €10."
+    "minPayment": "Let op: minimum bedrag is €10 of moet schulden afbetalen."
   },
   "pointOfSaleOverview": {
     "Point of sale overview": "Verkooppunt overzicht"
