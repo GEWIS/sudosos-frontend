@@ -42,6 +42,7 @@ const updateUserBalance = async () => {
   if (props.user) {
     const response = await apiService.balance.getBalanceId(props.user.id);
     userBalance.value = response.data;
+    console.error(userBalance.value);
   } else {
     // Force refresh balance, since people tend to refresh pages like this to ensure an up to date balance.
     const auth = useAuthStore();
@@ -51,16 +52,13 @@ const updateUserBalance = async () => {
     }
     await userStore.fetchCurrentUserBalance(auth.getUser.id, apiService);
     userBalance.value = userStore.getCurrentUser.balance;
+    console.error(userBalance.value);
   }
 };
 
 onMounted(updateUserBalance);
 
 watch(() => props.user, () => {
-  updateUserBalance();
-});
-
-watch(current, () => {
   updateUserBalance();
 });
 
@@ -79,8 +77,7 @@ const displayFine = computed(() => {
 });
 
 const displayBalance = computed(() => {
-  if (!userBalance.value?.amount.amount) return undefined;
-  return formatPrice(userBalance.value.amount);
+  return formatPrice(userBalance.value?.amount || { amount: 0, currency: 'EUR', precision: 2 });
 });
 </script>
 
