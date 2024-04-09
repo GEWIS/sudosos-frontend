@@ -16,7 +16,8 @@
             mutation.data.moment.toLocaleDateString('nl-NL', {
               dateStyle: 'short'
             })
-          }}</span>
+            }}
+          </span>
         </template>
       </Column>
 
@@ -29,17 +30,12 @@
       <Column field="change" style="width: 30%" :header="$t('transactions.amount')">
         <template #body="mutation">
           <div
-            v-if="mutation.data.to && mutation.data.to.id == user.id"
-            style="color: #198754"
-            class="font-bold"
-          >
+            v-if="mutation.data.type == FinancialMutationType.DEPOSIT || mutation.data.type == FinancialMutationType.INVOICE"
+            style="color: #198754" class="font-bold">
             {{ formatPrice((mutation.data as FinancialMutation).amount) }}
           </div>
 
-          <div v-else-if="mutation.data.type == 3" style="color: #d40000" class="font-bold">
-            <!-- <template #icon>
-              <i class="pi p-inline-message-icon pi-exclamation-triangle"></i>
-            </template> -->
+          <div v-else-if="mutation.data.type == FinancialMutationType.FINE" style="color: #d40000" class="font-bold">
             {{ formatPrice((mutation.data as FinancialMutation).amount, true) }}
           </div>
 
@@ -93,8 +89,6 @@ import { formatPrice } from "@/utils/formatterUtils";
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
 import "primeicons/primeicons.css";
 
-const user = useUserStore().getCurrentUser.user!!;
-
 const props = defineProps({
   action: {
     type: String,
@@ -119,7 +113,8 @@ const props = defineProps({
   callbackFunction: {
     type: Function,
     required: true,
-  }
+  },
+
 });
 
 const mutations = ref<FinancialMutation[]>();
