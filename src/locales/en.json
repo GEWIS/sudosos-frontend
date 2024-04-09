@@ -91,7 +91,8 @@
     "waivedFineDescr": "Your fines were waived.",
     "invoiceStatus": "Status",
     "transferType": "Type",
-    "invoiceDescr": "You have paid an invoice to GEWIS"
+    "invoiceDescr": "You have paid an invoice to GEWIS",
+    "invoice": "Invoice"
   },
   "balance": {
     "Balance": "Balance",
