@@ -90,7 +90,8 @@
     "depositID": "Deposit ID",
     "waivedFineDescr": "Your fines were waived.",
     "invoiceStatus": "Status",
-    "transferType": "Type"
+    "transferType": "Type",
+    "invoice": "Invoice"
   },
   "balance": {
     "Balance": "Balance",
