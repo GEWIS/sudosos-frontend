@@ -16,9 +16,12 @@
     <DepositDetailModal v-else-if="shouldShowDeposit" :depositInfo="transferDetails[props.id]" />
     <FineDetailModal v-else-if="shouldShowFine" :fine="transferDetails[props.id]" />
     <WaivedFineDetailModal v-else-if="shouldShowWaivedFine" :waivedFines="transferDetails[props.id]" />
-    <template #footer v-if="!shouldShowDeposit && !shouldShowInvoice">
+    <template #footer v-if="
+      !shouldShowDeposit && 
+      !shouldShowInvoice && 
+      shouldShowDeleteButton">
       <div class="flex flex-column align-items-end">
-        <Button @click="deleteMutation" severity="danger" v-if="shouldShowDeleteButton">
+        <Button @click="deleteMutation" severity="danger">
           {{ t('c_transactionDetailsModal.delete').toUpperCase() }}
         </Button>
       </div>
@@ -75,6 +78,8 @@ const toast = useToast();
 const authStore = useAuthStore();
 
 const shouldShowDeleteButton = computed(() => {
+  // If the transfer is not loaded yet, do not show the delete button.
+  if (!transferDetails.value[props.id]) return false;
   return authStore.roles.includes(UserRole.BAC) || authStore.roles.includes(UserRole.BOARD);
 });
 
