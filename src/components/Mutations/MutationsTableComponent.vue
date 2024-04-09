@@ -30,7 +30,9 @@
       <Column field="change" style="width: 30%" :header="$t('transactions.amount')">
         <template #body="mutation">
           <div
-            v-if="mutation.data.type == FinancialMutationType.DEPOSIT || mutation.data.type == FinancialMutationType.INVOICE"
+            v-if="mutation.data.type == FinancialMutationType.DEPOSIT 
+            || mutation.data.type == FinancialMutationType.INVOICE
+            || mutation.data.type == FinancialMutationType.WAIVED_FINE"
             style="color: #198754" class="font-bold">
             {{ formatPrice((mutation.data as FinancialMutation).amount) }}
           </div>
