@@ -83,7 +83,8 @@
     "depositID": "Opwaardeer ID",
     "waivedFineDescr": "Je boetes zijn kwijtgescholden.",
     "invoiceStatus": "Status",
-    "transferType": "Type"
+    "transferType": "Type",
+    "invoiceDescr": "Je hebt een factuur aan GEWIS betaald"
   },
   "balance": {
     "Balance": "Saldo",
