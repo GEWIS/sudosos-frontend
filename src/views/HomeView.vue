@@ -6,7 +6,7 @@
         :user="current.user as UserResponse"
         class="xl:hidden lg:hidden"
       />
-      <BalanceComponent :showOption="true"/>
+      <BalanceWithTopupComponent />
       <MutationsTableComponent
           :callback-function="getUserMutations"
           :header="$t('c_recentTransactionsTable.recent transactions')"
@@ -21,6 +21,7 @@
 
 <script setup lang="ts">
 import BalanceComponent from '@/components/BalanceComponent.vue';
+import BalanceWithTopupComponent from '@/components/BalanceWithTopupComponent.vue';
 import MutationsTableComponent from '@/components/Mutations/MutationsTableComponent.vue';
 import { useAuthStore, useUserStore } from '@sudosos/sudosos-frontend-common';
 import apiService from '@/services/ApiService';
