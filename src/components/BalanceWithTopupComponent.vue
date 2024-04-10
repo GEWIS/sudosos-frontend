@@ -22,7 +22,7 @@
     </div>
     <br />
     <div class="flex justify-content-end">
-      <Button @click="onSubmit" :disabled="!meta.touched">
+      <Button @click="onSubmit" :disabled="topupAmount == null">
         {{ $t('balance.Start payment') }}
       </Button>
     </div>
