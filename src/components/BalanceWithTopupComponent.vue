@@ -1,6 +1,6 @@
 <template>
   <TopupModal v-model:visible="visible" :amount="topupAmount!!" />
-  <CardComponent :header="$t('c_currentBalance.balance')">
+  <CardComponent :header="$t('c_currentBalance.balance')" class="w-full sm:w-5">
     <div class="flex flex-column justify-content-center">
       <h1 class="text-center font-medium text-6xl my-0">{{ displayBalance }}</h1>
       <p class="text-center text-base font-semibold text-red-500" v-if="userBalance && userBalance.fine">
