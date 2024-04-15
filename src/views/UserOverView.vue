@@ -195,7 +195,7 @@ const [canGoIntoDebt, canGoIntoDebtAttrs] = defineField('canGoIntoDebt', {});
 const isActiveFilter: Ref<boolean> = ref(true);
 const ofAgeFilter: Ref<boolean> = ref(true);
 const visible: Ref<boolean> = ref(false);
-const loading = ref(false);
+const loading = ref(true);
 const totalRecords = ref(0);
 const allUsers: Ref<GewisUserResponse[]> = ref(new Array(10));
 const allUsersWithFullName: Ref<GewisUserResponse[]> = computed(() => {
@@ -208,8 +208,9 @@ const allUsersWithFullName: Ref<GewisUserResponse[]> = computed(() => {
 });
 
 onMounted(() => {
-
+  loading.value = true;
   delayedAPICall(0);
+  loading.value = false;
 });
 
 function debounce(func: (skip: number) => Promise<void>, delay: number): (skip: number) => Promise<void> {
