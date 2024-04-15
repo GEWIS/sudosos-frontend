@@ -11,7 +11,7 @@
       <div class="col-6 md:col-6">
         <ChangePasswordComponent />
       </div>
-      <div class="col-6 md:col-6">
+      <div class="col-6 md:col-6" v-if="isAdmin">
         <ChangeApiKeyComponent />
       </div>
 
@@ -23,14 +23,18 @@
 import ChangePasswordComponent from "@/components/ChangePasswordComponent.vue";
 import ChangePinComponent from "@/components/ChangePinComponent.vue";
 import ChangeApiKeyComponent from "@/components/ChangeApiKeyComponent.vue";
-import ChangeInfoComponent from "@/components/ChangeInfoComponent.vue";
-import { useUserStore } from "@sudosos/sudosos-frontend-common";
+import { useAuthStore, useUserStore } from "@sudosos/sudosos-frontend-common";
 import { storeToRefs } from "pinia";
 import UserInfoComponent from "@/components/UserInfoComponent.vue";
 import type { UserResponse } from "@sudosos/sudosos-client";
+import { computed } from "vue";
+import { UserRole } from "@/utils/rbacUtils";
 
 const userStore = useUserStore();
-
+const authStore = useAuthStore();
+const isAdmin = computed(() => {
+  return authStore.roles.includes(UserRole.BOARD);
+});
 const { current } = storeToRefs(userStore);
 </script>
 
