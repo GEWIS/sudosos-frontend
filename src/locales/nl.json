@@ -81,6 +81,14 @@
     "save": "Opslaan",
     "select owner": "Selecteer Eigenaar"
   },
+  "c_POSOverview": {
+  },
+  "c_bannerTable": {
+  },
+  "c_borrelkaartGroupTable": {
+  },
+  "c_containerComponent": {
+  },
   "c_currentBalance": {
     "Increase balance": "Saldo opwaarderen",
     "allIsFines": "Waarvan alles een boete is",
@@ -168,8 +176,30 @@
     "referenceDate": "Referentie datum",
     "secondDate": "Tweede datum"
   },
+  "c_depositAlert": {
+  },
+  "c_fileFormPreview": {
+  },
+  "c_productTable": {
+  },
+  "c_transactionDetails": {
+  },
+  "c_transactionEditor": {
+  },
+  "c_transactionFlagsComponent": {
+  },
+  "c_transactionTableFilter": {
+  },
+  "c_transactionsTable": {
+  },
+  "c_transferDetails": {
+  },
   "flagged": {
     "Flagged transactions": "Gemarkeerde transacties"
+  },
+  "flaggedDetails": {
+  },
+  "formatters": {
   },
   "home": {
     "Overview": "Overzicht"
@@ -236,6 +266,8 @@
     "pinNew": "Nieuwe PIN code",
     "updateInfo": "Update gebruikersinformatie"
   },
+  "screens": {
+  },
   "quickOverview": {
     "quickOverview": "Kort Overzicht",
     "quickOverviewMessage": "Laat dit aan de bar zien zodat we je sneller kunnen helpen."
@@ -251,12 +283,18 @@
     "success": "Gelukt!",
     "transactionDeleted": "Transactie is succesvol verwijderd."
   },
+  "socialDrinkCards": {
+  },
+  "socialDrinkCardsPrint": {
+  },
   "termsOfService": {
     "acceptFirst": "Accepteer de Voorwaarden",
     "agreeData": "Ik ga akkoord met uitgebreidere dataverwerking voor mijn account (optioneel).",
     "agreeToS": "Ik ga akkoord met de voorwaarden",
     "description": "Voordat je SudoSOS kunt gebruiken, dien je de voorwaarden te accepteren. Je kunt de inhoud van de voorwaarden hieronder lezen.",
     "termsOfService": "Voorwaarden"
+  },
+  "transactionFlagTableFilter": {
   },
   "transactions": {
     "Transactions": "Transacties",
