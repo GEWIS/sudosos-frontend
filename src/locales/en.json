@@ -241,9 +241,15 @@
   },
   "c_recentTransactionsTable": {
     "all transactions": "all transactions",
+    "fine": "Fine",
+    "invoice": "Invoice",
+    "payment": "Payment",
     "recent transactions": "recent transactions",
+    "topUp": "Top up",
     "transaction": "You spent a total of {amount}",
     "transfer": "You topped up with {amount}",
+    "unknown": "Could not find",
+    "waivedFine": "Waived Fine",
     "what": "What",
     "when": "When"
   },
@@ -479,7 +485,8 @@
     "Page": "Page",
     "Title": "Title",
     "What": "What",
-    "When": "When"
+    "When": "When",
+    "ownedBy": "Owned by "
   },
   "profile": {
     "Are you sure": "Are you sure you want to delete this token?",

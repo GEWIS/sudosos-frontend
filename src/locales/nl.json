@@ -23,6 +23,7 @@
     "Points of Sale": "Verkooppunten",
     "Profile": "Profiel",
     "Screens": "TV Schermen",
+    "Search": "Zoek",
     "Sign out": "Uitloggen",
     "Social drink cards": "Borrelkaarten",
     "Transactions": "Transacties",
@@ -61,6 +62,7 @@
     "Owner": "Eigenaar",
     "Pick date": "Kies een datum",
     "Public containers": "Publieke containers",
+    "Select owner": "Selecteer Eigenaar",
     "Selected containers": "Geselecteerde containers",
     "Start date": "Verkooppunt start datum",
     "Start invalid": "Voer een start datum in die vroeger is dan de eind datum",
@@ -69,7 +71,8 @@
     "add container": "Container toevoegen",
     "are you sure": "Weet je zeker dat je deze container wil verwijderen?",
     "confirm": "Bevestig verwijderen",
-    "name invalid": "Voer een correcte naam in van die langer is dan 0 tekens"
+    "name invalid": "Voer een correcte naam in van die langer is dan 0 tekens",
+    "noContainersSelected": "Er zijn geen containers geselecteerd."
   },
   "c_POSOverview": {
     "ACCEPTED": "Geaccepteerd",
@@ -151,11 +154,12 @@
     "add container": "container toevoegen",
     "added by": "Toegevoegd door",
     "added on": "Toegevoegd op",
-    "cancel": "annuleren",
+    "cancel": "Annuleren",
     "edit container": "bewerk container",
     "name invalid": "Vul een naam in die langer groter dan 0 tekens is",
     "owner": "Eigenaar",
-    "save": "opslaan"
+    "save": "Opslaan",
+    "select owner": "Selecteer Eigenaar"
   },
   "c_currentBalance": {
     "Increase balance": "Saldo opwaarderen",
@@ -184,6 +188,7 @@
     "Image": "Plaatje",
     "Name": "Naam",
     "Please select": "Selecteer een product categorie",
+    "Please select VAT": "Selecteer BTW groep",
     "Price": "Prijs (in €)",
     "Product details": "Product details",
     "VAT": "BTW (in %)",
@@ -228,9 +233,15 @@
   },
   "c_recentTransactionsTable": {
     "all transactions": "alle transacties",
+    "fine": "Boete",
+    "invoice": "Factuur",
+    "payment": "Betaling",
     "recent transactions": "recente transacties",
+    "topUp": "Opwaardering",
     "transaction": "Je hebt in totaal {amount} uitgegeven",
     "transfer": "Je hebt opgewaardeerd voor {amount}",
+    "unknown": "Onbekend",
+    "waivedFine": "Kwijtgescholden boete",
     "what": "Wat",
     "when": "Wanneer"
   },
@@ -323,10 +334,19 @@
     "Manage users": "Manager users",
     "Name": "Naam",
     "Page": "Pagina",
-    "gewisID": "GEWID ID"
+    "Select Type": "Selecteer Type",
+    "Select User Type": "Selecteer Gebruikerstype",
+    "Type": "Type",
+    "User Type": "Gebruikerstype",
+    "firstName": "Voornaam",
+    "gewisID": "GEWID ID",
+    "lastName": "Achternaam"
   },
   "containersOverview": {
     "Containers": "Containers"
+  },
+  "fine": {
+    "type": "Transactietype"
   },
   "flagged": {
     "Flagged transactions": "Gemarkeerde transacties"
@@ -419,7 +439,8 @@
     "Page": "Pagina",
     "Title": "Titel",
     "What": "Wat",
-    "When": "Wanneer"
+    "When": "Wanneer",
+    "ownedBy": "Eigendom van "
   },
   "profile": {
     "Are you sure": "Weet je zeker dat je deze NFC token wil verwijderen?",
@@ -574,13 +595,17 @@
     "Old pin code": "Oude pincode",
     "Password": "Wachtwoord",
     "Password should": "Je wachtwoord moet tenminste 8 characters bevatten",
+    "Personal Info": "Persoonlijke Informatie",
     "Pin code must be 4 digits": "Pincode moet 4 cijferig zijn",
     "Request reset": "Wachtwoord reset aanvragen",
     "Request reset sent": "Wachtwoord reset link is vestuurd.",
     "The passwords to not match up": "De wachtwoorden zijn niet gelijk",
+    "Update information": "Update informatie",
     "Update password": "Verander wachtwoord",
     "Update user information": "Werk profiel bij",
     "Updated user information": "Profiel is met success bijgewerkt",
+    "User Transactions": "Gebruikerstransacties",
+    "Usertype": "Gebruikerstype",
     "profile": "{name}'s profiel",
     "user is active": "gebruiker is actief"
   }
