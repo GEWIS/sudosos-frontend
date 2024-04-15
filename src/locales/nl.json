@@ -1,7 +1,7 @@
 {
   "apiError": {
-    "500": "Iets gaat fout, open alstublieft een probleem op {link} waarin u het probleem beschrijft.",
-    "error": "Fout"
+    "error": "Fout",
+    "500": "Iets gaat fout, open alstublieft een probleem op {link} waarin u het probleem beschrijft."
   },
   "app": {
     "BAC": "BAC",
@@ -80,6 +80,14 @@
     "owner": "Eigenaar",
     "save": "Opslaan",
     "select owner": "Selecteer Eigenaar"
+  },
+  "c_POSOverview": {
+  },
+  "c_bannerTable": {
+  },
+  "c_borrelkaartGroupTable": {
+  },
+  "c_containerComponent": {
   },
   "c_currentBalance": {
     "Increase balance": "Saldo opwaarderen",
@@ -168,8 +176,30 @@
     "referenceDate": "Referentie datum",
     "secondDate": "Tweede datum"
   },
+  "c_depositAlert": {
+  },
+  "c_fileFormPreview": {
+  },
+  "c_productTable": {
+  },
+  "c_transactionDetails": {
+  },
+  "c_transactionEditor": {
+  },
+  "c_transactionFlagsComponent": {
+  },
+  "c_transactionTableFilter": {
+  },
+  "c_transactionsTable": {
+  },
+  "c_transferDetails": {
+  },
   "flagged": {
     "Flagged transactions": "Gemarkeerde transacties"
+  },
+  "flaggedDetails": {
+  },
+  "formatters": {
   },
   "home": {
     "Overview": "Overzicht"
@@ -193,16 +223,19 @@
     "copyright": "© 2023 GEWIS",
     "localAccount": "Login met een lokaal account"
   },
-  "manageProducts": {
-    "Add product": "Product toevoegen",
-    "Containers": "Containers",
-    "Manage all products and containers": "Beheer alle producten en containers"
-  },
   "payment": {
     "pay": "betaal"
   },
   "pointOfSaleOverview": {
     "Point of sale overview": "Verkooppunt overzicht"
+  },
+  "managePOS": {
+  },
+  "manageProducts": {
+    "Add product": "Product toevoegen",
+    "Containers": "Containers"
+  },
+  "posApprove": {
   },
   "posInfo": {
     "Edit": "Bewerken",
@@ -213,6 +246,7 @@
     "ownedBy": "Eigendom van "
   },
   "profile": {
+    "individualDataAnalysis": "Individuele Data Analyse:",
     "canGoIntoDebt": "Gebruiker mag in de schuld",
     "changePassword": "Verander wachtwoord",
     "changeUserInfo": "Verander gebruikersinformatie",
@@ -235,6 +269,8 @@
     "pinNew": "Nieuwe PIN code",
     "updateInfo": "Update gebruikersinformatie"
   },
+  "screens": {
+  },
   "quickOverview": {
     "quickOverview": "Kort Overzicht",
     "quickOverviewMessage": "Laat dit aan de bar zien zodat we je sneller kunnen helpen."
@@ -250,12 +286,18 @@
     "success": "Gelukt!",
     "transactionDeleted": "Transactie is succesvol verwijderd."
   },
+  "socialDrinkCards": {
+  },
+  "socialDrinkCardsPrint": {
+  },
   "termsOfService": {
     "acceptFirst": "Accepteer de Voorwaarden",
     "agreeData": "Ik ga akkoord met uitgebreidere dataverwerking voor mijn account (optioneel).",
     "agreeToS": "Ik ga akkoord met de voorwaarden",
     "description": "Voordat je SudoSOS kunt gebruiken, dien je de voorwaarden te accepteren. Je kunt de inhoud van de voorwaarden hieronder lezen.",
     "termsOfService": "Voorwaarden"
+  },
+  "transactionFlagTableFilter": {
   },
   "transactions": {
     "Transactions": "Transacties",
