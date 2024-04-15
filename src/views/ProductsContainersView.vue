@@ -24,10 +24,10 @@
         >
           <template #header>
             <div class="flex flex-row justify-content-between">
-              <span class="p-input-icon-left">
-                <i class="pi pi-search" />
+              <IconField iconPosition="left">
+                <InputIcon class="pi pi-search"> </InputIcon>
                 <InputText v-model="filters['global'].value" placeholder="Search" />
-              </span>
+              </IconField>
               <span>
                 <Button @click="openCreateModal">{{ $t('app.Create') }}</Button>
               </span>
@@ -187,9 +187,11 @@
 </template>
 
 <script setup lang="ts">
+import InputIcon from "primevue/inputicon";
+import IconField from "primevue/iconfield";
 import CardComponent from '@/components/CardComponent.vue';
 import { onBeforeMount, type Ref } from "vue";
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import apiService from '@/services/ApiService';
 import { fetchAllPages } from '@sudosos/sudosos-frontend-common';
 import type {
