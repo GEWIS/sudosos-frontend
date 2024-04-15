@@ -34,6 +34,7 @@ import 'primeicons/primeicons.css'; // Import PrimeIcons
 import 'primeflex/primeflex.css';
 import apiService from './services/ApiService';
 import Accordion from "primevue/accordion";
+import Skeleton from "primevue/skeleton";
 const app = createApp(App);
 
 
@@ -67,6 +68,7 @@ app.component('ScrollPanel', ScrollPanel);
 app.component('FileUpload', FileUpload);
 app.component('Toast', Toast);
 app.component('Accordion', Accordion);
+app.component('Skeleton', Skeleton);
 
 populateStoresFromToken(apiService);
 app.mount('#app');
