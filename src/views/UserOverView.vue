@@ -12,7 +12,7 @@
         :globalFilterFields="['type', 'firstName', 'lastName', 'fullName']"
         lazy
         :totalRecords="sortedUsers.length > 0 ? sortedUsers.length : totalRecords"
-        :loading="loading"
+        :loading="isLoading"
         @page="onPage($event)"
         @sort="onSort"
         @filter="onFilter"
@@ -27,17 +27,17 @@
           </div>
         </template>
         <Column field="gewisId" header="GEWIS ID">
-          <template #body v-if="loading">
+          <template #body v-if="isLoading">
             <Skeleton class="w-6 my-1 h-1rem surface-300"/>
           </template>
         </Column>
         <Column field="firstName" :header="$t('c_userTable.firstName')">
-          <template #body v-if="loading">
+          <template #body v-if="isLoading">
             <Skeleton class="w-8 my-1 h-1rem surface-300"/>
           </template>
         </Column>
         <Column field="lastName" :header="$t('c_userTable.lastName')">
-          <template #body v-if="loading">
+          <template #body v-if="isLoading">
             <Skeleton class="w-8 my-1 h-1rem surface-300"/>
           </template>
         </Column>
@@ -52,7 +52,7 @@
               :placeholder="$t('c_userTable.Select Type')"
             />
           </template>
-          <template #body v-if="loading">
+          <template #body v-if="isLoading">
             <Skeleton class="w-5 my-1 h-1rem surface-300"/>
           </template>
         </Column>
@@ -67,7 +67,7 @@
               />
             </div>
           </template>
-          <template #body v-if="loading">
+          <template #body v-if="isLoading">
             <Skeleton class="w-2 my-1 h-1rem surface-300"/>
           </template>
         </Column>
@@ -83,7 +83,7 @@
               />
             </div>
           </template>
-          <template #body v-if="loading">
+          <template #body v-if="isLoading">
             <Skeleton class="w-3 my-1 h-1rem surface-300"/>
           </template>
         </Column>
@@ -91,7 +91,7 @@
           headerStyle="width: 3rem; text-align: center"
           bodyStyle="text-align: center; overflow: visible"
         >
-          <template #body v-if="loading">
+          <template #body v-if="isLoading">
             <Skeleton class="w-4 my-1 h-1rem surface-300"/>
           </template>
           <template #body="slotProps" v-else>
@@ -197,7 +197,7 @@ const [canGoIntoDebt, canGoIntoDebtAttrs] = defineField('canGoIntoDebt', {});
 const isActiveFilter: Ref<boolean> = ref(true);
 const ofAgeFilter: Ref<boolean> = ref(true);
 const visible: Ref<boolean> = ref(false);
-const loading = ref(true);
+const isLoading = ref(true);
 const totalRecords = ref(0);
 const allUsers: Ref<GewisUserResponse[]> = ref(new Array(10));
 const allUsersWithFullName: Ref<GewisUserResponse[]> = computed(() => {
@@ -210,9 +210,9 @@ const allUsersWithFullName: Ref<GewisUserResponse[]> = computed(() => {
 });
 
 onMounted(() => {
-  loading.value = true;
+  isLoading.value = true;
   delayedAPICall(0);
-  loading.value = false;
+  isLoading.value = false;
 });
 
 function debounce(func: (skip: number) => Promise<void>, delay: number): (skip: number) => Promise<void> {
