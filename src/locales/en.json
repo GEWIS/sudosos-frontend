@@ -25,10 +25,11 @@
     "User overview": "User overview"
   },
   "balance": {
-    "Balance increase amount": "Balance increase amount",
+    "Balance": "Balance",
+    "Balance increase amount": "Increase balance:",
+    "Start payment": "Start payment",
     "Increase balance": "Increase balance",
     "Price": "Price",
-    "Start payment": "Start payment",
     "minPayment": "Note: minimum topup is €10 or needs to pay off debt."
   },
   "c_ContainerAssign": {

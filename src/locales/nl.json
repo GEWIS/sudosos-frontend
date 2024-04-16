@@ -25,7 +25,8 @@
     "User overview": "Gebruikers overzicht"
   },
   "balance": {
-    "Balance increase amount": "Saldo verhogen met:",
+    "Balance": "Saldo",
+    "Balance increase amount": "Verhoog saldo:",
     "Increase balance": "Verhoog saldo",
     "Price": "Prijs",
     "Start payment": "Betaal",

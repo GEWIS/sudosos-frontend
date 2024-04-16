@@ -1,30 +1,40 @@
 <template>
   <TopupModal v-model:visible="visible" :amount="topupAmount!!" />
-  <CardComponent :header="$t('c_currentBalance.balance')" class="w-full sm:w-5">
-    <div class="flex flex-column justify-content-center">
-      <h1 class="text-center font-medium text-6xl my-0">{{ displayBalance }}</h1>
-      <p class="text-center text-base font-semibold text-red-500" v-if="userBalance && userBalance.fine">
-        {{ isAllFine ? $t('c_currentBalance.allIsFines') : $t('c_currentBalance.someIsFines', { fine: displayFine }) }}
-      </p>
-    </div>
-    <div>
-      <p class="font-bold">{{ $t('balance.Balance increase amount') }}</p>
-      <div class="w-3 flex-1">
-
-        <InputNumber v-model="topupAmount" v-bind="topupAmountAttrs" :inputProps="{
-            inputmode: 'numeric',
-          }" @input="(test) => {
-            setFieldValue('Top up amount', test.value as number, errors['Top up amount'] != undefined);
-            setTouched(true)
-          }" :placeholder="$t('balance.Price')" inputId="amount" mode="currency" currency="EUR" locale="nl-NL" />
+  <CardComponent :header="$t('c_currentBalance.balance')" class="w-full sm:w-full">
+    <div class="flex flex-row justify-content-center">
+      <div class="flex flex-column justify-content-center w-6">
+        <h1 class="text-center font-medium text-5xl sm:text-7xl my-0">{{ displayBalance }}</h1>
+        <p class="text-center text-base font-semibold text-red-500" v-if="userBalance && userBalance.fine">
+          {{ isAllFine ? $t('c_currentBalance.allIsFines') : $t('c_currentBalance.someIsFines', { fine: displayFine })
+          }}
+        </p>
+        <div class="text-center text-600">
+          Balance after: €3,80 //TODO
+        </div>
       </div>
-      <span class="font-bold text-red-500">{{ errors['Top up amount'] }}</span>
-    </div>
-    <br />
-    <div class="flex justify-content-end">
-      <Button @click="onSubmit">
-        {{ $t('balance.Start payment') }}
-      </Button>
+      <Divider layout="vertical" />
+
+      <div class="flex flex-column w-6">
+        <div>
+          <p class="font-bold">{{ $t('balance.Balance increase amount') }}</p>
+          <div class="w-full flex-1">
+
+            <InputNumber v-model="topupAmount" v-bind="topupAmountAttrs" :inputProps="{
+                inputmode: 'numeric',
+                class: 'w-full'
+              }" @input="(test) => {
+                setFieldValue('Top up amount', test.value as number, errors['Top up amount'] != undefined);
+                setTouched(true)
+              }" :placeholder="$t('balance.Price')" inputId="amount" mode="currency" currency="EUR" locale="nl-NL" />
+          </div>
+          <span class="font-bold text-red-500">{{ errors['Top up amount'] }}</span>
+        </div>
+        <div class="flex justify-content-end my-2">
+          <Button @click="onSubmit" class="w-full sm:w-4 justify-content-center">
+            {{ $t('balance.Start payment') }}
+          </Button>
+        </div>
+      </div>
     </div>
   </CardComponent>
 </template>
@@ -42,6 +52,7 @@ import { useRouter } from "vue-router";
 import { useForm, useField } from 'vee-validate';
 import * as yup from 'yup';
 import { toTypedSchema } from '@vee-validate/yup';
+import Divider from 'primevue/divider';
 
 const productSchema = toTypedSchema(
   yup.object({

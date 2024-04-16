@@ -1,7 +1,7 @@
 <template>
   <div class="page-container flex flex-column">
     <div class="page-title">{{ $t('home.Overview') }}</div>
-    <div class="content-wrapper gap-5 flex md:flex-row flex-column">
+    <div class="content-wrapper gap-5 flex md:flex-column flex-column">
       <UserInfoComponent
         :user="current.user as UserResponse"
         class="hidden"
@@ -14,6 +14,7 @@
           :paginator="false"
           :modal="false"
           routerLink="transaction-view"
+          :rows-amount=6
       />
     </div>
   </div>
