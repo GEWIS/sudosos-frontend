@@ -22,6 +22,7 @@
                       v-bind="firstDateAttrs"
                       showTime
                       hourFormat="24"
+                      @dateSelect="handleDateSelect(0, $event)"
                     />
                     <label for="firstDate">{{ t('fine.firstDate') }}</label>
                   </span>
@@ -32,6 +33,7 @@
                       v-bind="secondDateAttrs"
                       showTime
                       hourFormat="24"
+                      @dateSelect="handleDateSelect(1, $event)"
                     />
                     <label for="secondDate">{{ t('fine.secondDate') }}</label>
                   </span>
@@ -296,6 +298,25 @@ const handoutFines = async () => {
     })
     .catch((err: AxiosError) => handleError(err, toast))
     .finally(() => selection.value = []);
+};
+
+// NOTE: This is a temporary fix, until PrimeVue 3.52, where this issue should be fixed in the library
+const handleDateSelect = (dateConst: number, event: Date) => {
+  const currentDate = new Date();
+  const combinedDate = new Date(
+    event.getFullYear(),
+    event.getMonth(),
+    event.getDate(),
+    currentDate.getHours(),
+    currentDate.getMinutes(),
+    currentDate.getSeconds(),
+    currentDate.getMilliseconds()
+  );
+  if (dateConst === 0) {
+    firstDate.value = combinedDate;
+  } else {
+    secondDate.value = combinedDate;
+  }
 };
 </script>
 
