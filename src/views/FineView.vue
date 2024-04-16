@@ -37,7 +37,10 @@
                   </span>
                   <Button type="submit">{{ t('fine.apply') }}</Button>
                 </form>
-                <Button @click="notifyUsers" severity="info">{{ t('fine.notify') }}</Button>
+                <div class="flex flex-row w-4 align-items-start">
+                  <Button @click="notifyUsers" severity="info">{{ t('fine.notify') }}</Button>
+                  <ProgressSpinner class="h-2rem ml-0"/>
+                </div>
                 <Button @click="handoutFines">{{ t('fine.handout') }}</Button>
               </div>
               <p class="text-red-500">
@@ -146,6 +149,7 @@ import { useToast } from "primevue/usetoast";
 import type { AxiosError } from "axios";
 import { handleError } from "@/utils/errorUtils";
 import Skeleton from "primevue/skeleton";
+import ProgressSpinner from "primevue/progressspinner";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -161,6 +165,7 @@ const { defineField, handleSubmit } = useForm({
 });
 const toast = useToast();
 const selection = ref();
+const isNotifying: Ref<boolean> = ref(false);
 const [firstDate, firstDateAttrs] = defineField('firstDate');
 const [secondDate, secondDateAttrs] = defineField('secondDate');
 const showModal: Ref<boolean> = ref(false);
@@ -254,10 +259,21 @@ const openHandoutEvent = async (eventId: number) => {
 };
 
 const notifyUsers = async () => {
+  isNotifying.value = true;
   await apiService.debtor.notifyAboutFutureFines({
     userIds: selection.value.map((item: any) => item.id),
     referenceDate: secondDate.value?.toISOString() || new Date().toISOString()
-  });
+  })
+    .then(() => {
+      toast.add({
+        summary: t('successMessages.success'),
+        detail: t('successMessages.finesNotified'),
+        life: 3000,
+        severity: 'success',
+      });
+
+    });
+  isNotifying.value = false;
 };
 
 const handoutFines = async () => {
@@ -268,14 +284,16 @@ const handoutFines = async () => {
   await apiService.debtor.handoutFines({
     userIds: selection.value.map((item: any) => item.id),
     referenceDate: firstDate.value.toISOString(),
-  }).then(() => {
-    toast.add({
-      summary: t('successMessages.success'),
-      detail: t('successMessages.finesHandedOut'),
-      life: 3000,
-      severity: 'success',
-    });
-  }).catch((err: AxiosError) => handleError(err, toast));
+  })
+    .then(() => {
+      toast.add({
+        summary: t('successMessages.success'),
+        detail: t('successMessages.finesHandedOut'),
+        life: 3000,
+        severity: 'success',
+      });
+    })
+    .catch((err: AxiosError) => handleError(err, toast));
 };
 </script>
 

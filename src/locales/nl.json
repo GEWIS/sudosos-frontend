@@ -95,13 +95,7 @@
   },
   "c_recentTransactionsTable": {
     "all transactions": "alle transacties",
-    "fine": "Boete",
-    "invoice": "Factuur",
-    "payment": "Betaling",
-    "recent transactions": "recente transacties",
-    "topUp": "Opwaardering",
-    "unknown": "Onbekend",
-    "waivedFine": "Kwijtgescholden boete"
+    "recent transactions": "recente transacties"
   },
   "c_transactionDetailsModal": {
     "delete": "Verwijder",
@@ -178,7 +172,7 @@
   "manageProducts": {
     "Add product": "Product toevoegen",
     "Containers": "Containers",
-    "Manage all products and containers": "Beheer alle producten en containers."
+    "Manage all products and containers": "Beheer alle producten en containers"
   },
   "payment": {
     "pay": "betaal"
@@ -227,6 +221,7 @@
     "editPOS": "Verkooppunt is succesvol",
     "fineDeleted": "Boete is succesvol verwijderd.",
     "finesHandedOut": "Boetes zijn succesvol uitgedeeld.",
+    "finesNotified": "Gebruikers succesvol ingelicht.",
     "productCreated": "Het product is aangemaakt!",
     "success": "Gelukt!",
     "transactionDeleted": "Transactie is succesvol verwijderd."
