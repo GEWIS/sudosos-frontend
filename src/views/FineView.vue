@@ -39,7 +39,7 @@
                 </form>
                 <div class="flex flex-row w-4 align-items-start">
                   <Button @click="notifyUsers" severity="info">{{ t('fine.notify') }}</Button>
-                  <ProgressSpinner class="h-2rem ml-0"/>
+                  <ProgressSpinner class="h-2rem ml-0" v-if="isNotifying"/>
                 </div>
                 <Button @click="handoutFines">{{ t('fine.handout') }}</Button>
               </div>
@@ -271,7 +271,8 @@ const notifyUsers = async () => {
         life: 3000,
         severity: 'success',
       });
-
+      isNotifying.value = false;
+      selection.value = [];
     });
   isNotifying.value = false;
 };
@@ -293,7 +294,8 @@ const handoutFines = async () => {
         severity: 'success',
       });
     })
-    .catch((err: AxiosError) => handleError(err, toast));
+    .catch((err: AxiosError) => handleError(err, toast))
+    .finally(() => selection.value = []);
 };
 </script>
 
