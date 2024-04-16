@@ -73,3 +73,14 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  i18n-coverage:
+    runs-on: ubuntu-latest
+    name: Check i18n coverage
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check i18n coverage
+        uses: alexkiro/i18n-coverage@v1.0.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          translations-path: 'src/locales/*.json'
