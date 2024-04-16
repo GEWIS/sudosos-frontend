@@ -4,7 +4,7 @@
     <div class="content-wrapper gap-5 flex md:flex-row flex-column">
       <UserInfoComponent
         :user="current.user as UserResponse"
-        class="xl:hidden lg:hidden md:hidden"
+        class="hidden"
       />
       <BalanceWithTopupComponent />
       <MutationsTableComponent

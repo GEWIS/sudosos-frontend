@@ -110,10 +110,6 @@ const leftItems = computed(() => [
     route: '/transactions'
   },
   {
-    label: t('app.Balance'),
-    route: '/balance',
-  },
-  {
     label: t('app.Points of Sale'),
     visible: isSeller(),
     items: [
