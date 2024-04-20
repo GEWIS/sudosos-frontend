@@ -8,8 +8,10 @@
           {{ isAllFine ? $t('c_currentBalance.allIsFines') : $t('c_currentBalance.someIsFines', { fine: displayFine })
           }}
         </p>
-        <div class="text-center text-600">
-          Balance after: €3,80 //TODO
+        <div v-if="meta.touched && userBalance?.amount != undefined && topupAmount != undefined"
+          class="text-center text-600 font-italic">
+          Balance after: 
+          {{ formatPrice(Dinero(userBalance?.amount!! as Dinero.Options).add(Dinero({ amount: topupAmount!!*100,currency: 'EUR' })).toObject()) }}
         </div>
       </div>
       <Divider layout="vertical" />
@@ -31,7 +33,7 @@
         </div>
         <div class="flex justify-content-end my-2">
           <Button @click="onSubmit" class="w-full sm:w-4 justify-content-center">
-            {{ $t('balance.Start payment') }}
+            {{ $t('balance.Payment button') }}
           </Button>
         </div>
       </div>
@@ -53,6 +55,7 @@ import { useForm, useField } from 'vee-validate';
 import * as yup from 'yup';
 import { toTypedSchema } from '@vee-validate/yup';
 import Divider from 'primevue/divider';
+import Dinero from 'dinero.js';
 
 const productSchema = toTypedSchema(
   yup.object({
@@ -89,41 +92,26 @@ const onSubmit = handleSubmit((values) => {
   visible.value = true
 })
 
-const props = defineProps({
-  user: {
-    type: Object as () => UserResponse,
-    required: false
-  }
-});
-
 const userStore = useUserStore();
 const userBalance: Ref<BalanceResponse | null> = ref(null);
-const { current } = storeToRefs(userStore);
 const router = useRouter();
 const updateUserBalance = async () => {
-  if (props.user) {
-    const response = await apiService.balance.getBalanceId(props.user.id);
-    userBalance.value = response.data;
-  } else {
-    // Force refresh balance, since people tend to refresh pages like this to ensure an up to date balance.
-    const auth = useAuthStore();
-    if (!auth.getUser){
-      await router.replace({ path: '/error' });
-      return;
-    }
-    await userStore.fetchCurrentUserBalance(auth.getUser.id, apiService);
-    userBalance.value = userStore.getCurrentUser.balance;
+  // Force refresh balance, since people tend to refresh pages like this to ensure an up to date balance.
+  const auth = useAuthStore();
+  if (!auth.getUser){
+    await router.replace({ path: '/error' });
+    return;
   }
+  await userStore.fetchCurrentUserBalance(auth.getUser.id, apiService);
+  userBalance.value = userStore.getCurrentUser.balance;
 };
 
-onMounted(updateUserBalance);
-
-watch(() => props.user, () => {
-  updateUserBalance();
+onMounted(() => {
+  setTimeout(updateUserBalance, 1000)
 });
 
-watch(current, () => {
-  updateUserBalance();
+watch(userStore, () => {
+  userBalance.value = userStore.getCurrentUser.balance;
 });
 
 const isAllFine = computed(() => {
@@ -142,21 +130,6 @@ const displayBalance = computed(() => {
 
 // Define the 'visible' ref variable to control dialog visibility
 const visible = ref(false);
-
-
-onMounted(async () => {
-  if (!userStore.getCurrentUser.user) {
-    await router.replace({ path: '/error' });
-    return;
-  }
-  await userStore.fetchCurrentUserBalance(userStore.getCurrentUser.user.id, apiService);
-  if (!userStore.getCurrentUser.balance?.amount) {
-    await router.replace({ path: '/error' });
-    return;
-  }
-  userBalance.value = userStore.getCurrentUser.balance;
-  console.warn(userBalance.value);
-});
 </script>
 <style scoped lang="scss">
 
