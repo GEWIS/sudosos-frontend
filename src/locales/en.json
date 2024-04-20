@@ -30,7 +30,8 @@
     "Payment button": "Top up",
     "Increase balance": "Increase balance",
     "Price": "Price",
-    "minPayment": "Note: minimum topup is €10 or needs to pay off debt."
+    "minPayment": "Note: minimum topup is €10 or needs to pay off debt.",
+    "Balance after": "Balance after:"
   },
   "c_ContainerAssign": {
     "Assign product": "Assign product",

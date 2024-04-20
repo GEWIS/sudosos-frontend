@@ -8,10 +8,10 @@
           {{ isAllFine ? $t('c_currentBalance.allIsFines') : $t('c_currentBalance.someIsFines', { fine: displayFine })
           }}
         </p>
-        <div v-if="meta.touched && userBalance?.amount != undefined && topupAmount != undefined"
-          class="text-center text-600 font-italic">
-          Balance after: 
-          {{ formatPrice(Dinero(userBalance?.amount!! as Dinero.Options).add(Dinero({ amount: topupAmount!!*100,currency: 'EUR' })).toObject()) }}
+        <div v-show="displayBalanceAfterTopup" class="text-center text-600 font-italic">
+          {{ $t('balance.Balance after') }}
+          <span v-if="displayBalanceAfterTopup">{{ formatPrice(Dinero(userBalance?.amount!! as
+            Dinero.Options).add(Dinero({ amount: topupAmount!! * 100, currency: 'EUR' })).toObject()) }}</span>
         </div>
       </div>
       <Divider layout="vertical" />
@@ -22,9 +22,9 @@
           <div class="w-full flex-1">
 
             <InputNumber v-model="topupAmount" v-bind="topupAmountAttrs" :inputProps="{
-                inputmode: 'numeric',
-                class: 'w-full'
-              }" @input="(test) => {
+              inputmode: 'numeric',
+              class: 'w-full'
+            }" @input="(test) => {
                 setFieldValue('Top up amount', test.value as number, errors['Top up amount'] != undefined);
                 setTouched(true)
               }" :placeholder="$t('balance.Price')" inputId="amount" mode="currency" currency="EUR" locale="nl-NL" />
@@ -63,17 +63,17 @@ const productSchema = toTypedSchema(
       'is-min10-or-balance',
       `Top up should be more than €10 or settle debt exactly.`,
       (value) => {
-        return value >= 10 || value*-100 == userBalance.value?.amount.amount
+        return value >= 10 || value * -100 == userBalance.value?.amount.amount
       }
     ),
   })
 );
 
-const { 
-  values, 
-  errors, 
-  defineField, 
-  meta, 
+const {
+  values,
+  errors,
+  defineField,
+  meta,
   setFieldValue,
   setTouched,
   handleSubmit
@@ -98,7 +98,7 @@ const router = useRouter();
 const updateUserBalance = async () => {
   // Force refresh balance, since people tend to refresh pages like this to ensure an up to date balance.
   const auth = useAuthStore();
-  if (!auth.getUser){
+  if (!auth.getUser) {
     await router.replace({ path: '/error' });
     return;
   }
@@ -116,7 +116,7 @@ watch(userStore, () => {
 
 const isAllFine = computed(() => {
   if (!userBalance.value?.fine) return false;
-  return userBalance.value.fine.amount >= -1*userBalance.value?.amount.amount;
+  return userBalance.value.fine.amount >= -1 * userBalance.value?.amount.amount;
 });
 
 const displayFine = computed(() => {
@@ -128,9 +128,15 @@ const displayBalance = computed(() => {
   return formatPrice(userBalance.value?.amount || { amount: 0, currency: 'EUR', precision: 2 });
 });
 
+const displayBalanceAfterTopup = computed(() => {
+  return meta.value.touched && userBalance.value?.amount != undefined && topupAmount.value != undefined
+})
+
 // Define the 'visible' ref variable to control dialog visibility
 const visible = ref(false);
 </script>
 <style scoped lang="scss">
-
+.invisible {
+  visibility: hidden;
+}
 </style>

@@ -32,6 +32,7 @@
     "Price": "Prijs",
     "Start payment": "Betaal",
     "minPayment": "Let op: minimum bedrag is €10 of moet schulden afbetalen."
+    "Balance after": "Balans na opwaarderen:"
   },
   "c_ContainerAssign": {
     "Assign product": "Product toewijzen",
