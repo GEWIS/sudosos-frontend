@@ -1,25 +1,31 @@
 <template>
   <div class="page-container">
-    <div class="page-title">{{ $t('manageProducts.Manage all products and containers') }}</div>
+    <div class="page-title">Manage products</div>
     <div class="flex flex-column gap-5">
+      <ContainerCardComponent
+        v-if="containers"
+        :header="$t('manageProducts.Containers')"
+        :containers="containers"
+        class="w-full"/>
       <CardComponent header="all products" class="w-full">
         <DataTable
-          v-model:filters="filters"
-          :value="products"
-          paginator
-          :rows="5"
-          :rowsPerPageOptions="[5, 10, 25, 50, 100]"
-          filterDisplay="menu"
-          :globalFilterFields="['category', 'name']"
-          v-model:editingRows="editingRows"
-          editMode="row"
-          @row-edit-save="updateRow"
-          @row-edit-init="rowEditInit"
-          :pt="{
-              table: {
-                style: 'table-layout: fixed; width: 100%;'
-              }
-          }"
+            v-model:filters="filters"
+            :value="products"
+            paginator
+            :rows="5"
+            :rowsPerPageOptions="[5, 10, 25, 50, 100]"
+            filterDisplay="menu"
+            :globalFilterFields="['category', 'name']"
+            v-model:editingRows="editingRows"
+            editMode="row"
+            @row-edit-save="updateRow"
+            @row-edit-init="rowEditInit"
+            :pt="{
+                  table: {
+                    style: 'table-layout: fixed; width: 100%;'
+                  }
+              }"
+            lazy
         >
           <template #header>
             <div class="flex flex-row justify-content-between">
@@ -28,8 +34,8 @@
                 <InputText v-model="filters['global'].value" placeholder="Search" />
               </IconField>
               <span>
-                <Button @click="openCreateModal">{{ $t('app.Create') }}</Button>
-              </span>
+                    <Button @click="openCreateModal">{{ $t('app.Create') }}</Button>
+                  </span>
             </div>
           </template>
           <Column field="image" :header="$t('c_productEditModal.Image')" >
@@ -62,15 +68,15 @@
           <Column field="name" :header="$t('c_productEditModal.Name')" style="width: 35%">
             <template #editor="{ data, field }" v-if="!loading">
               <InputText
-                v-model="data[field]"
-                :pt="{
-                  root: {
-                    class: 'm-1',
-                    style: 'width: 99%;'
-                  },
+                  v-model="data[field]"
+                  :pt="{
+                      root: {
+                        class: 'm-1',
+                        style: 'width: 99%;'
+                      },
 
-                }"
-                />
+                    }"
+              />
             </template>
             <template #body v-if="loading">
               <Skeleton class="w-6 my-1 h-2rem surface-300"/>
@@ -79,14 +85,14 @@
           <Column field="category" :header="$t('c_productEditModal.Category')" style="width: 15%">
             <template #editor="{ data, field }" v-if="!loading">
               <Dropdown
-                :placeholder="$t('c_productEditModal.Please select')"
-                optionLabel="name"
-                :options="categories"
-                v-model="data[field]"
-                :pt="{
-                  input: 'w-full pt-1 pb-1',
-                  root: 'm-1'
-                }"
+                  :placeholder="$t('c_productEditModal.Please select')"
+                  optionLabel="name"
+                  :options="categories"
+                  v-model="data[field]"
+                  :pt="{
+                      input: 'w-full pt-1 pb-1',
+                      root: 'm-1'
+                    }"
               >
                 <template #value="slotProps" v-if="!loading">
                   {{ slotProps.value.name }}
@@ -103,16 +109,16 @@
           <Column field="priceInclVat" :header="$t('c_productEditModal.Price')"  style="width: 10%">
             <template #editor="{ data }" v-if="!loading">
               <InputNumber
-                v-model="data['editPrice']"
-                mode="currency"
-                currency="EUR"
-                :minFractionDigits="2"
-                :maxFractionDigits="2"
-                :pt="{
-                  input: {
-                    root: 'w-full pt-2 pb-2 m-1'
-                  }
-                }"
+                  v-model="data['editPrice']"
+                  mode="currency"
+                  currency="EUR"
+                  :minFractionDigits="2"
+                  :maxFractionDigits="2"
+                  :pt="{
+                      input: {
+                        root: 'w-full pt-2 pb-2 m-1'
+                      }
+                    }"
               />
             </template>
             <template #body="rowData" v-if="!loading">
@@ -125,14 +131,14 @@
           <Column field="alcoholPercentage" :header="$t('c_productEditModal.Alcohol Percentage')" style="width: 6%">
             <template #editor="{ data, field }" v-if="!loading">
               <InputNumber
-                v-model="data[field]"
-                suffix="%"
-                :pt="{
-                  input: {
-                    root: 'w-full pt-2 pb-2 m-1'
-                  }
-                }"
-                />
+                  v-model="data[field]"
+                  suffix="%"
+                  :pt="{
+                      input: {
+                        root: 'w-full pt-2 pb-2 m-1'
+                      }
+                    }"
+              />
             </template>
             <template #body="rowData" v-if="!loading">
               {{ `${rowData.data.alcoholPercentage} %` }}
@@ -149,9 +155,9 @@
                   optionLabel="percentage"
                   v-model="data[field]"
                   :pt="{
-                    input: 'w-full pt-1 pb-1' ,
-                    root: 'm-1'
-                  }"
+                        input: 'w-full pt-1 pb-1' ,
+                        root: 'm-1'
+                      }"
               >
                 <template #value="slotProps" v-if="!loading"> {{ `${slotProps.value.percentage} %` }} </template>
               </Dropdown>
@@ -165,9 +171,9 @@
 
           </Column>
           <Column
-            :rowEditor="true"
-            bodyStyle="text-align:center"
-            style="width: 16%"
+              :rowEditor="true"
+              bodyStyle="text-align:center"
+              style="width: 16%"
           >
             <template #body v-if="loading">
               <Skeleton class="w-3 my-1 h-2rem surface-300"/>
@@ -176,11 +182,6 @@
         </DataTable>
         <ProductCreateComponent v-model:visible="visible" @productCreated="handleNewProduct"/>
       </CardComponent>
-      <ContainerCardComponent
-        v-if="containers"
-        :header="$t('manageProducts.Containers')"
-        :containers="containers"
-        class="w-full"/>
     </div>
   </div>
 </template>
