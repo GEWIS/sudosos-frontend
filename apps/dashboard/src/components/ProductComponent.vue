@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-column h-10rem w-8rem border-300 border-1 border-round-sm overflow-hidden"
+    class="flex flex-column h-10rem w-9rem border-300 border-1 border-round-sm overflow-hidden"
     @click="visible = true"
   >
     <div class="flex align-items-center justify-content-center h-8rem w-full bg-white overflow-hidden">
@@ -32,4 +32,7 @@ defineProps({
 </script>
 
 <style scoped lang="scss">
+.background-white {
+  background-color: #fff; /* Ensuring background is white */
+}
 </style>
