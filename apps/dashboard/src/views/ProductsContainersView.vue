@@ -3,10 +3,10 @@
     <div class="page-title">Manage products</div>
     <div class="flex flex-column gap-5">
       <ContainerCardComponent
-        v-if="containers"
-        :header="$t('manageProducts.Containers')"
-        :containers="containers"
-        class="w-full"/>
+          v-if="containers"
+          :header="$t('manageProducts.Containers')"
+          :containers="containers"
+          class="w-full"/>
       <CardComponent header="all products" class="w-full">
         <DataTable
             v-model:filters="filters"
@@ -30,15 +30,15 @@
           <template #header>
             <div class="flex flex-row justify-content-between">
               <IconField iconPosition="left">
-                <InputIcon class="pi pi-search"> </InputIcon>
-                <InputText v-model="filters['global'].value" placeholder="Search" />
+                <InputIcon class="pi pi-search"></InputIcon>
+                <InputText v-model="filters['global'].value" placeholder="Search"/>
               </IconField>
               <span>
                     <Button @click="openCreateModal">{{ $t('app.Create') }}</Button>
                   </span>
             </div>
           </template>
-          <Column field="image" :header="$t('c_productEditModal.Image')" >
+          <Column field="image" :header="$t('c_productEditModal.Image')">
             <template #editor="rowData" v-if="!loading">
               <span class="w-4rem h-4rem mx-1 cursor-pointer image-preview-container">
                 <img class="w-4rem h-4rem" :src="getProductImageSrc(rowData.data)"/>
@@ -59,7 +59,7 @@
               </span>
             </template>
             <template #body="rowData" v-if="!loading">
-              <img :src="getProductImageSrc(rowData.data)" alt="img" class="w-4rem h-4rem mx-1" />
+              <img :src="getProductImageSrc(rowData.data)" alt="img" class="w-4rem h-4rem mx-1"/>
             </template>
             <template #body v-else>
               <Skeleton class="w-8 my-1 h-4rem surface-300"/>
@@ -106,7 +106,7 @@
               <Skeleton class="w-6 my-1 h-2rem surface-300"/>
             </template>
           </Column>
-          <Column field="priceInclVat" :header="$t('c_productEditModal.Price')"  style="width: 10%">
+          <Column field="priceInclVat" :header="$t('c_productEditModal.Price')" style="width: 10%">
             <template #editor="{ data }" v-if="!loading">
               <InputNumber
                   v-model="data['editPrice']"
@@ -159,7 +159,7 @@
                         root: 'm-1'
                       }"
               >
-                <template #value="slotProps" v-if="!loading"> {{ `${slotProps.value.percentage} %` }} </template>
+                <template #value="slotProps" v-if="!loading"> {{ `${slotProps.value.percentage} %` }}</template>
               </Dropdown>
             </template>
             <template #body v-if="loading">
@@ -239,35 +239,44 @@ const rowEditInit = (event: DataTableRowEditInitEvent) => {
 
 const handleNewProduct = async () => {
   products.value = await fetchAllPages<ProductResponse>(
-    0,
-    Number.MAX_SAFE_INTEGER,
-    // @ts-ignore
-    (take, skip) => apiService.products.getAllProducts(take, skip)
+      0,
+      Number.MAX_SAFE_INTEGER,
+      // @ts-ignore
+      (take, skip) => apiService.products.getAllProducts(take, skip)
   );
 };
 
 onBeforeMount(async () => {
   products.value = new Array(5);
   products.value = await fetchAllPages<ProductResponse>(
-    0,
-    Number.MAX_SAFE_INTEGER,
-    // @ts-ignore
-    (take, skip) => apiService.products.getAllProducts(take, skip)
+      0,
+      Number.MAX_SAFE_INTEGER,
+      // @ts-ignore
+      (take, skip) => apiService.products.getAllProducts(take, skip)
   );
   const categoriesResp = await apiService.category.getAllProductCategories();
   categories.value = categoriesResp.data.records;
   const vatGroupsResp = await apiService.vatGroups.getAllVatGroups();
   vatGroups.value = vatGroupsResp.data.records;
 
+  const req: Promise<void>[] = [];
+
+  const con: ContainerWithProductsResponse[] = [];
+
   // TODO: Put getAllContainers into container store and take care of pagination
   // See: https://github.com/GEWIS/sudosos-frontend-vue3/issues/51
   await apiService.container.getAllContainers(500, 0).then((resp: any) => {
-    (resp.data.records as ContainerResponse[]).forEach((container) =>
-      apiService.container.getSingleContainer(container.id).then((res) => {
-        containers.value.push(res.data as ContainerWithProductsResponse);
-      })
-    );
+    ((resp.data.records as ContainerResponse[]).forEach((container) => {
+      req.push(apiService.container.getSingleContainer(container.id).then((res) => {
+        con.push(res.data as ContainerWithProductsResponse);
+      }));
+    }));
   });
+
+  await Promise.all(req).then(() => {
+    containers.value = con.sort((a, b) => new Date(b.updatedAt as string).getTime() - new Date(a.updatedAt as string).getTime());
+  });
+
   loading.value = false;
 });
 
@@ -288,7 +297,7 @@ const updateRow = async (event: DataTableRowEditSaveEvent) => {
 
 const onImgUpload = async (event: Event, productId: number) => {
   const el = (event.target as HTMLInputElement);
-  if(el == null || el.files == null) return;
+  if (el == null || el.files == null) return;
   await apiService.products.updateProductImage(productId, el.files[0]);
   handleNewProduct();
 };
