@@ -9,6 +9,7 @@ import HomeView from '../views/HomeView.vue';
 import LoginView from "@/views/LoginView.vue";
 import UserOverView from '../views/UserOverView.vue';
 import SingleUserView from "@/views/SingleUserView.vue";
+import BannersView from "@/views/BannersView.vue";
 import ProductsContainersView from "@/views/ProductsContainersView.vue";
 import { isAuthenticated, useAuthStore } from "@sudosos/sudosos-frontend-common";
 import PasswordResetView from "@/views/PasswordResetView.vue";
@@ -27,8 +28,8 @@ declare module 'vue-router' {
     // must be declared by every route
     requiresAuth: boolean
 
-    // Admin
-    isAdmin?: boolean,
+    // Board
+    isBoard?: boolean,
 
     // Seller
     isSeller?: boolean,
@@ -125,7 +126,7 @@ const router = createRouter({
           path: '/user-overview',
           component: UserOverView,
           name: 'userOverview',
-          meta: { requiresAuth: true, isBAC: true }
+          meta: { requiresAuth: true, isBAC: true, isBoard: true }
         },
         {
           path: '/user/:userId',
@@ -160,6 +161,12 @@ const router = createRouter({
           name: 'fine',
           meta: { requiresAuth: true, isBAC: true }
         },
+        {
+          path: '/banners',
+          component: BannersView,
+          name: 'userOverview',
+          meta: { requiresAuth: true, isBoard: true }
+        },
         // Add other routes for authenticated users here
       ]
     }
@@ -169,7 +176,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
 
-  const isAdmin = () => {
+  const isBoard = () => {
     return authStore.roles.includes(UserRole.BOARD);
   };
 
@@ -197,7 +204,7 @@ router.beforeEach((to, from, next) => {
     // If the route doesn't require authentication and the user is authenticated, redirect to home
     next({ name: 'home' });
   } else {
-    if(to.meta?.isAdmin && !isAdmin()) next({ name: 'home' });
+    if(to.meta?.isBoard && !isBoard()) next({ name: 'home' });
 
     if(to.meta?.isSeller && !isSeller()) next({ name: 'home' });
 

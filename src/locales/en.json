@@ -8,6 +8,7 @@
     "BAC": "BAC",
     "Banners": "Banners",
     "Create": "Create",
+    "Board": "Board",
     "Create POS": "Create POS",
     "English": "English",
     "Manage POS": "Manage POS",
@@ -267,6 +268,14 @@
     "Usertype": "Usertype",
     "passwordUpdated": "Password successfully updated",
     "updatedUserInfo": "Succesfully updated user info.",
-    "userInfoUpdated": "User information successfully updated"
+    "userInfoUpdated": "User information successfully updated",
+    "fineNumber": "Number of fines",
+    "fineTotal": "Total of fines",
+    "createdBy": "Created by",
+    "createdAt": "Created at",
+    "handoutEventDetails": "Fine Handout Event Details"
+  },
+  "banner": {
+    "Banners": "Banners"
   }
 }
