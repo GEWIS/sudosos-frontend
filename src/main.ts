@@ -22,6 +22,7 @@ import Checkbox from "primevue/checkbox";
 import TabView from "primevue/tabview";
 import ScrollPanel from "primevue/scrollpanel";
 import FileUpload from "primevue/fileupload";
+import Tooltip from 'primevue/tooltip';
 import 'primeflex/primeflex.css';
 import { populateStoresFromToken } from "@sudosos/sudosos-frontend-common";
 import en from "./locales/en.json";
@@ -75,6 +76,8 @@ app.component('Skeleton', Skeleton);
 app.component('InputIcon', InputIcon);
 app.component('IconField', IconField);
 app.component('ProgressSpinner', ProgressSpinner);
+
+app.directive('tooltip', Tooltip)
 
 populateStoresFromToken(apiService);
 app.mount('#app');
