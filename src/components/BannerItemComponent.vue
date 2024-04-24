@@ -23,6 +23,7 @@
                 <div class="flex flex-column pr-3">
                     <span class="text-xl">{{ banner.name }}</span><br>
                     <span class="font-italic">
+                        <i class="pi pi-clock"></i>
                         {{ (banner.duration/1000).toLocaleString() }}
                         second{{ (banner.duration/1000) != 1 ? 's' : ''}}
                     </span>
@@ -30,8 +31,8 @@
                 <div class="flex flex-column justify-content-between align-items-end">
                     <!-- Text will be grey when time is in the past -->
                     <div class="text-right" :class="{ 'text-600 font-italic': isExpired }">
-                        <span v-tooltip.top="startDate.toLocaleString()" class="font-semibold">{{
-                            formatDateTime(startDate) }}</span>
+                        <span v-tooltip.top="startDate.toLocaleString()" class="font-semibold">
+                            {{ formatDateTime(startDate) }}</span>
                         till
                         <span v-tooltip.top="endDate.toLocaleString()" class="font-semibold">
                             {{ formatDateTime(endDate) }}
@@ -43,7 +44,7 @@
             </div>
         </div>
     </div>
-    <BannerDialogComponent v-model:visible="isEditDialogVisible" v-model:banner="banner"/>
+    <BannerDialogComponent v-model:visible="isEditDialogVisible" v-model:banner="banner" />
 </template>
 <script setup lang="ts">
 import Image from "primevue/image";

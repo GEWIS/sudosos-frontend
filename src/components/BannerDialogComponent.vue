@@ -4,7 +4,8 @@
             ? 'Edit banner'
             : 'Create banner'
         " 
-        ref="dialog" @show="addListenerOnDialogueOverlay(dialog)">
+        ref="dialog" @show="addListenerOnDialogueOverlay(dialog)"
+        class="w-full md:w-6">
         <Image preview class="w-full" v-if="banner?.image" :src="getBannerImageSrc(banner)"
             :pt:image:alt="banner.name" :pt="{
                 image: 'w-full'
@@ -25,7 +26,7 @@
             Timespan: <br>
             <Calendar v-model="startDate" showTime hourFormat="24" />
             till
-            <Calendar v-model="endDate" showTime hourFormat="24" />
+            <Calendar v-model="endDate" showTime hourFormat="24" class="pt-1 md:pt-0" />
         </div>
         <div class="py-2">
             Active:<br>
