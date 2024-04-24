@@ -30,7 +30,7 @@ export const useBannersStore = defineStore('banners', {
          * @param image The image file
          */
         async updateBannerImage(bannerid: number, image: File) {
-
+            return await apiService.banner.updateImage(bannerid, image);
         }
     },
     getters: {

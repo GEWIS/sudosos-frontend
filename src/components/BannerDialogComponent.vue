@@ -3,15 +3,26 @@
             banner != undefined
             ? 'Edit banner'
             : 'Create banner'
-        " 
-        ref="dialog" @show="addListenerOnDialogueOverlay(dialog)"
-        class="w-full md:w-6">
-        <Image preview class="w-full" v-if="banner?.image" :src="getBannerImageSrc(banner)"
-            :pt:image:alt="banner.name" :pt="{
+        " ref="dialog" @show="addListenerOnDialogueOverlay(dialog)" class="w-full md:w-6">
+        <!-- <Image preview class="w-full" v-if="banner?.image" :src="getBannerImageSrc(banner)" :pt:image:alt="banner.name"
+            :pt="{
                 image: 'w-full'
-            }" />
-        <div v-else class="px-3 py-5 text-xl surface-hover text-center">
-            No banner found, please upload one!
+            }" /> -->
+        <span v-if="getImageSource" class=" w-full mx-1 image-preview-container">
+            <img class="w-full" :src="getImageSource" />
+            <button ref="previewButton" type="button"
+                class="image-preview-indicator p-image-preview-indicator fileupload" @click="fileInput.click()">
+                <i class="pi pi-upload"></i>
+                <input ref="fileInput" type="file" accept="image/*" @change="onImgUpload" />
+            </button>
+        </span>
+        <div v-else class="px-3 py-5 text-xl surface-hover text-center  relative">
+            No banner found, click here to upload one!
+            <button ref="previewButton" type="button"
+                class="cursor-pointer image-preview-indicator p-image-preview-indicator fileupload"
+                @click="fileInput.click()">
+                <input ref="fileInput" type="file" accept="image/*" @change="onImgUpload" />
+            </button>
         </div>
         <Divider />
         <div class="py-2">
@@ -45,14 +56,13 @@ import InputNumber from 'primevue/inputnumber';
 import InputSwitch from 'primevue/inputswitch';
 import Calendar from 'primevue/calendar';
 import Button from 'primevue/button';
-import Image from 'primevue/image';
 
 import { getBannerImageSrc } from '@/utils/imageUtils';
 
 import type { BannerRequest, BannerResponse } from '@sudosos/sudosos-client';
 import { addListenerOnDialogueOverlay } from '@sudosos/sudosos-frontend-common';
 
-import { onMounted, ref, defineProps, watch } from 'vue'
+import { onMounted, ref, defineProps, watch, computed } from 'vue'
 import { useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/yup';
 import * as yup from 'yup';
@@ -60,6 +70,18 @@ import { useBannersStore } from '@/stores/banner.store';
 
 
 const dialog = ref(); // For addListenerOnDialogueOverlay
+
+const fileInput = ref(); // input HTML element for opening on button click
+
+const uploadedImage = ref<File>();
+
+const getImageSource = computed(() => {
+    if(uploadedImage.value == null) {
+        return banner.value?.image && getBannerImageSrc(banner.value)
+    } else {
+        return URL.createObjectURL(uploadedImage.value)
+    }
+})
 
 const visible = defineModel<boolean>('visible')
 // If Banner is undefined we are creating, otherwise editing.
@@ -70,11 +92,11 @@ const banner = defineModel<BannerResponse | undefined>('banner')
 // TODO: Actual validation and errors
 const bannerSchema = toTypedSchema(
     yup.object({
-        'Name': yup.string().required().default(banner.value?.name),
-        'Duration': yup.number().required().default(banner.value && banner.value?.duration/1000),
-        'Start date': yup.date().required().default(banner.value && new Date(banner.value?.startDate)),
-        'End date': yup.date().required().default(banner.value && new Date(banner.value?.endDate)),
-        'Active': yup.boolean().required().default(banner.value?.active),
+        'Name': yup.string().required(),
+        'Duration': yup.number().required(),
+        'Start date': yup.date().required(),
+        'End date': yup.date().required(),
+        'Active': yup.boolean().required(),
     })
 );
 
@@ -96,6 +118,21 @@ const [ startDate ] = defineField('Start date');
 const [ endDate ] = defineField('End date');
 const [ active ] = defineField('Active');
 
+// Reset values everytime dialog is opened.
+watch(visible, () => {
+    if(visible) {
+        resetValues()
+    }
+})
+
+function resetValues() {
+    setFieldValue('Name', banner.value?.name);
+    setFieldValue('Duration', banner.value && banner.value?.duration / 1000);
+    setFieldValue('Start date', banner.value && new Date(banner.value?.startDate));
+    setFieldValue('End date', banner.value && new Date(banner.value?.endDate));
+    setFieldValue('Active', banner.value?.active)
+    uploadedImage.value = undefined;
+}
 
 const bannersStore = useBannersStore();
 
@@ -110,9 +147,12 @@ const onSubmit = handleSubmit(async (values) => {
             endDate: values['End date'].toISOString()
         }
 
-        const res = await bannersStore.updateBanner(banner.value.id, bannerRequest)
-
-        banner.value = res.data
+        // First upload image
+        uploadedImage.value && await bannersStore.updateBannerImage(banner.value.id, uploadedImage.value)
+        // Then update and receive updated
+        const resContent = await bannersStore.updateBanner(banner.value.id, bannerRequest)
+            
+        banner.value = resContent.data
 
         visible.value = false;
     } else { 
@@ -121,4 +161,44 @@ const onSubmit = handleSubmit(async (values) => {
         // TODO
     }
 })
+
+const onImgUpload = (e: Event) => {
+    const el = (e.target as HTMLInputElement);
+    if (el == null || el.files == null) return;
+    uploadedImage.value = el.files[0]!!
+}
 </script>
+<style>
+.image-preview-container {
+    position: relative;
+    display: inline-block;
+    line-height: 0;
+}
+
+.image-preview-indicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+    border: none;
+    padding: 0;
+}
+
+.fileupload>input[type='file'],
+.fileupload-basic input[type='file'] {
+    display: none;
+}
+
+.image-preview-container:hover>.image-preview-indicator {
+    opacity: 1;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.5)
+}
+
+</style>
