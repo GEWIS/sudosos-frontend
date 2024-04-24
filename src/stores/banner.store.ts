@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { type BannerResponse } from '@sudosos/sudosos-client';
+import { type BannerRequest, type BannerResponse } from '@sudosos/sudosos-client';
 import { fetchAllPages } from '@sudosos/sudosos-frontend-common';
 import apiService from "@/services/ApiService";
 
@@ -13,6 +13,24 @@ export const useBannersStore = defineStore('banners', {
                 // @ts-ignore
                 apiService.openBanner.getAllOpenBanners(take, skip)
             );
+        },
+        /**
+         * Updates the banner information, excluding the image
+         * 
+         * @param bannerid Id of the banner
+         * @param banner The content of the banner
+         */
+        async updateBanner(bannerid: number, banner: BannerRequest) {
+            return await apiService.banner.update(bannerid, banner);
+        },
+        /**
+         * Updates the image of the banner.
+         * 
+         * @param bannerid The banner id
+         * @param image The image file
+         */
+        async updateBannerImage(bannerid: number, image: File) {
+
         }
     },
     getters: {

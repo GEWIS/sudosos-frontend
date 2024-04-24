@@ -10,7 +10,7 @@
             </template>
         </DataView>
     </CardComponent>
-
+    <!-- <BannerDialogComponent/> -->
 </template>
 <script setup lang="ts">
 import type { 
@@ -18,10 +18,11 @@ import type {
     PaginatedBannerResponse
 } from "@sudosos/sudosos-client";
 import { computed, type PropType } from "vue";
-import BannerItemComponent from "@/components/BannerItemComponent.vue";
 import DataView from "primevue/dataview";
 import DataTable from "primevue/datatable";
-import CardComponent from "./CardComponent.vue";
+import BannerItemComponent from "@/components/BannerItemComponent.vue";
+import CardComponent from "@/components/CardComponent.vue";
+import BannerDialogComponent from "@/components/BannerDialogComponent.vue";
 
 const props = defineProps<{
     banners: BannerResponse[],

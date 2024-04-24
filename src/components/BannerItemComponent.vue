@@ -2,8 +2,8 @@
     <div class="col-12">
         <div class="flex flex-column md:flex-row py-3" :class="{ 'border-top-1 surface-border': index !== 0 }">
             <div class="w-full  md:w-5 relative md:pr-2">
-                <Image preview class="w-full" v-if="props.banner.image" :src="getBannerImageSrc(props.banner)"
-                    :pt:image:alt="props.banner.name" :pt="{
+                <Image preview class="w-full" v-if="banner.image" :src="getBannerImageSrc(banner)"
+                    :pt:image:alt="banner.name" :pt="{
                     image: 'w-full'
                 }" />
                 <div v-else class="px-3 py-5 text-xl surface-hover text-center">No banner found, please upload one!
@@ -13,20 +13,18 @@
                     Yellow when active but banner image is not present
                     Red when not active
                 -->
-                <Tag :value="props.banner.active ? 'Active' : 'Not active'"
-                    :severity="props.banner.active 
-                        ? props.banner.image 
+                <Tag :value="banner.active ? 'Active' : 'Not active'" :severity="banner.active 
+                        ? banner.image 
                             ? 'success'
                             : 'warning'
-                        : 'danger'" class="absolute"
-                    style="left: 4px; top: 4px" />
+                        : 'danger'" class="absolute" style="left: 4px; top: 4px" />
             </div>
             <div class="flex flex-row justify-content-between w-full md:w-7">
                 <div class="flex flex-column pr-3">
-                    <span class="text-xl">{{ props.banner.name }}</span><br>
+                    <span class="text-xl">{{ banner.name }}</span><br>
                     <span class="font-italic">
-                        {{ (props.banner.duration/1000).toLocaleString() }}
-                        second{{ (props.banner.duration/1000) != 1 ? 's' : ''}}
+                        {{ (banner.duration/1000).toLocaleString() }}
+                        second{{ (banner.duration/1000) != 1 ? 's' : ''}}
                     </span>
                 </div>
                 <div class="flex flex-column justify-content-between align-items-end">
@@ -39,39 +37,50 @@
                             {{ formatDateTime(endDate) }}
                         </span>
                     </div>
-                    <Button>Edit</Button>
+                    <!-- Add icon and delete button here -->
+                    <Button @click="openDialog">Edit</Button>
                 </div>
             </div>
         </div>
     </div>
+    <BannerDialogComponent v-model:visible="isEditDialogVisible" v-model:banner="banner"/>
 </template>
 <script setup lang="ts">
+import Image from "primevue/image";
+import Tag from "primevue/tag";
+
+import BannerDialogComponent from "@/components/BannerDialogComponent.vue";
+
 import type {
     BannerResponse,
     PaginatedBannerResponse
 } from "@sudosos/sudosos-client";
-import { computed, type PropType } from "vue";
+import { computed, ref, type PropType } from "vue";
 import { getBannerImageSrc } from "@/utils/imageUtils";
 import { formatDateTime } from "@/utils/formatterUtils";
-import Image from "primevue/image";
-import Tag from "primevue/tag";
 
 const props = defineProps<{
-    banner: BannerResponse,
-    index: number
+    index: number,
 }>();
 
+const banner = defineModel<BannerResponse>('banner', { required: true })
+
 const startDate = computed(() => {
-    return new Date(props.banner.startDate)
+    return new Date(banner.value.startDate)
 })
 
 const endDate = computed(() => {
-    return new Date(props.banner.endDate)
+    return new Date(banner.value.endDate)
 })
 
 const isExpired = computed(() => {
-    return (Date.now() > Date.parse(props.banner.endDate))
+    return (Date.now() > Date.parse(banner.value.endDate))
 })
 
 
+const isEditDialogVisible = ref<boolean>(false);
+
+const openDialog = () => {
+    isEditDialogVisible.value = true
+}
 </script>
