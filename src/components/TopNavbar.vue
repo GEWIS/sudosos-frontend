@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { useAuthStore, useUserStore } from "@sudosos/sudosos-frontend-common";
 import { useRouter } from "vue-router";
 import { UserRole } from "@/utils/rbacUtils";

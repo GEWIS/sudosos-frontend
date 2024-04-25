@@ -6,6 +6,7 @@
     "404": "Deze data lijkt niet te bestaan",
     "500": "Iets gaat fout, open alstublieft een probleem op {link} waarin u het probleem beschrijft.",
     "Something went wrong": "Er ging iets mis",
+    "error": "Fout",
     "message": "Foutmelding"
   },
   "app": {
@@ -14,6 +15,7 @@
     "Balance": "Saldo",
     "Banners": "Banners",
     "Create": "Aanmaken",
+    "Create POS": "Creeër Verkooppunt",
     "English": "English",
     "Flagged transactions": "Gemarkeerde transacties",
     "Manage POS": "Beheer verkooppunten",
@@ -140,13 +142,15 @@
   },
   "c_confirmationModal": {
     "Cancel": "Annuleren",
-    "Confirm": "Bevestigen"
+    "Confirm": "Bevestigen",
+    "Save": "Opslaan"
   },
   "c_containerComponent": {
     "Add product": "Voeg nieuw product toe",
     "Public": "Publiek",
     "Table view": "Tafel modus",
-    "new": "Nieuw"
+    "new": "Nieuw",
+    "no products": "Deze container bevat geen producten."
   },
   "c_containerEditModal": {
     "Name": "Naam",
@@ -165,9 +169,14 @@
     "Increase balance": "Saldo opwaarderen",
     "allIsFines": "Waarvan alles een boete is",
     "balance": "Saldo",
+    "cashtopup": "Het is niet langer mogelijk om op te waarderen op de borrel.",
+    "currency": "€",
     "fine": "boete",
+    "increase": "Opwaardeerbedrag",
     "of which": "Waarvan",
     "someIsFines": "Waarvan {fine} boetes zijn",
+    "startPayment": "Start betaling",
+    "topup": "Je gaat opwaarderen met ",
     "upgrade online": "Online opwaarderen"
   },
   "c_depositAlert": {
@@ -216,6 +225,7 @@
     "Product picture": "Product plaatje",
     "Updated on": "Geupdated op",
     "VAT": "BTW",
+    "delete": "Verwijder product uit container",
     "title": "Product informatie"
   },
   "c_productTable": {
@@ -255,10 +265,12 @@
   "c_transactionDetailsModal": {
     "Cancel": "Sluiten",
     "Flag transaction": "Markeer transactie",
+    "delete": "Verwijder",
     "flag invalid": "Geef alsjeblieft een reden",
     "flag reason": "Geef een reden waarom de transactie gemarkeerd moet worden",
     "reason placeholder": "Geef een reden",
-    "transaction details": "transactie details"
+    "transaction details": "transactie details",
+    "transactionDetails": "Transactie Details"
   },
   "c_transactionEditor": {
     "Add product": "Voeg product toe",
@@ -329,6 +341,7 @@
   },
   "c_userTable": {
     "Active": "Actief",
+    "Create User": "Creeër Gebruiker",
     "Fill in a name": "Vul een naam of ID in",
     "Filter by name": "Filter op naam of ID",
     "Manage users": "Manager users",
@@ -340,12 +353,46 @@
     "User Type": "Gebruikerstype",
     "firstName": "Voornaam",
     "gewisID": "GEWID ID",
-    "lastName": "Achternaam"
+    "lastName": "Achternaam",
+    "ofAge": "18+"
   },
   "containersOverview": {
-    "Containers": "Containers"
+    "Containers": "Containers",
+    "newContainer": "Nieuwe container"
+  },
+  "errorMessages": {
+    "posNotFound": "Het gevraagde verkooppunt is niet gevonden.",
+    "userNotFound": "De gevraagde gebruiker is niet gevonden."
   },
   "fine": {
+    "apply": "Toepassen",
+    "count": "Aantal",
+    "createdAt": "Aangemaakt op",
+    "createdBy": "Aangemaakt door",
+    "date": "Datum",
+    "description": "Beschrijving",
+    "eligibleUsers": "Gebruikers in aanmerking voor boetes",
+    "fine": "Boete",
+    "fineHandoutEvents": "Boete evenementen",
+    "fineNumber": "Aantal boetes",
+    "fineOverview": "Boete-overzicht",
+    "fineTotal": "Totale boete",
+    "firstBalance": "Eerste saldo",
+    "firstDate": "Eerste datum",
+    "from": "Van",
+    "gewisId": "GEWIS ID",
+    "handout": "Deel boetes uit",
+    "handoutEventDetails": "Boete-evenement details",
+    "id": "ID",
+    "info": "Informatie",
+    "infoMessage": "Op dit moment, gebruikers die in aanmerking komen voor een boete hebben een totale schuld van {debt}. Dit zou resulteren in een totaal van {fines} dat uitgedeeld zou worden.",
+    "lastBalance": "Laatste saldo",
+    "name": "Naam",
+    "notify": "Bericht Gebruikers",
+    "pleaseSelect": "Selecteer twee datums om te kijken hoeveel schuld gebruikers hebben.",
+    "referenceDate": "Referentie datum",
+    "secondDate": "Tweede datum",
+    "total": "Totaal",
     "type": "Transactietype"
   },
   "flagged": {
@@ -398,8 +445,11 @@
     "Reset the password for": "Reset the password for {email}",
     "Returning": "Welkom terug",
     "Set new password": "Verander wachtwoord",
+    "SudoSOS": "SudoSOS",
     "SudoSOS Login": "SudoSOS Login",
-    "Username": "Gebruikersnaam"
+    "Username": "Gebruikersnaam",
+    "copyright": "© 2023 GEWIS",
+    "separator": "| "
   },
   "managePOS": {
     "Manage points of sale": "Beheer verkooppunten"
@@ -412,7 +462,12 @@
     "Confirm": "Bevestig verwijderen",
     "Containers": "Containers",
     "Default containers": "Standaard containers",
+    "Manage all products and containers": "Beheer alle producten en containers.",
     "Manage all products and default containers": "Beheer alle producten en standaard containers"
+  },
+  "payment": {
+    "cancel": "Annuleer",
+    "pay": "betaal"
   },
   "pointOfSaleOverview": {
     "Point of sale overview": "Verkooppunt overzicht"
@@ -505,6 +560,10 @@
     "pinUpdated": "PIN code is succesvol veranderd",
     "updateInfo": "Update gebruikersinformatie"
   },
+  "quickOverview": {
+    "quickOverview": "Kort Overzicht",
+    "quickOverviewMessage": "Laat dit aan de bar zien zodat we je sneller kunnen helpen."
+  },
   "screens": {
     "Confirm end time": "Bevestig eindtijd",
     "Ending time": "Eindtijd",
@@ -531,8 +590,14 @@
     "value": "Waarde"
   },
   "successMessages": {
+    "createContainer": "Container is succesvol aangemaakt.",
+    "deleteProductContainer": "Product is succesvol verwijderd van de container.",
+    "editPOS": "Verkooppunt is succesvol",
+    "fineDeleted": "Boete is succesvol verwijderd.",
+    "finesHandedOut": "Boetes zijn succesvol uitgedeeld.",
     "productCreated": "Het product is aangemaakt!",
-    "success": "Gelukt!"
+    "success": "Gelukt!",
+    "transactionDeleted": "Transactie is succesvol verwijderd."
   },
   "termsOfService": {
     "acceptFirst": "Accepteer de Voorwaarden",
@@ -564,6 +629,8 @@
     "invoiceStatus": "Status",
     "otherBoughtAt": "{user} heeft gekocht bij {pos}",
     "price": "Prijs",
+    "products": "Producten",
+    "putInBy": "Transactie aangemaakt door {createdBy}",
     "title": "Titel",
     "total": "Totaal:",
     "transferType": "Type",
@@ -599,6 +666,7 @@
     "Pin code must be 4 digits": "Pincode moet 4 cijferig zijn",
     "Request reset": "Wachtwoord reset aanvragen",
     "Request reset sent": "Wachtwoord reset link is vestuurd.",
+    "Reset password": "Reset wachtwoord",
     "The passwords to not match up": "De wachtwoorden zijn niet gelijk",
     "Update information": "Update informatie",
     "Update password": "Verander wachtwoord",
@@ -606,7 +674,10 @@
     "Updated user information": "Profiel is met success bijgewerkt",
     "User Transactions": "Gebruikerstransacties",
     "Usertype": "Gebruikerstype",
+    "passwordUpdated": "Wachtwoord is succesvol geüpdatet",
     "profile": "{name}'s profiel",
-    "user is active": "gebruiker is actief"
+    "updatedUserInfo": "Profiel is succesvol geüpdatet.",
+    "user is active": "gebruiker is actief",
+    "userInfoUpdated": "Profiel is succesvol aangepast"
   }
 }

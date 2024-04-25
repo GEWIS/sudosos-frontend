@@ -171,7 +171,9 @@
     "balance": "Balance",
     "cashtopup": "It is no longer possible to increase your balance in cash during the 'borrel'",
     "currency": "€",
+    "fine": "fine",
     "increase": "Balance increase amount:",
+    "of which": "Of which",
     "someIsFines": "Of which {fine} is fines",
     "startPayment": "Start Payment",
     "topup": "You will be topping up with",
@@ -267,6 +269,7 @@
     "flag invalid": "Please provide a reason",
     "flag reason": "Please provide a reason for flagging the transaction",
     "reason placeholder": "Provide a reason",
+    "transaction details": "Transaction Details",
     "transactionDetails": "Transaction Details"
   },
   "c_transactionEditor": {
@@ -309,17 +312,20 @@
     "transactionPutBy": "{name} charged you {amount}",
     "transactionPutFor": "{person} charged {name} for {amount}",
     "transferDeposit": "{person} increased balance with {amount}",
+    "transferFine": "{person} has received {amount} in fines",
     "transferIncoming": "{person} received {amount} from {other}",
     "transferInvoiceIncoming": "{person} received {amount} from invoice",
     "transferInvoiceOutgoing": "{person} were invoiced {amount}",
     "transferOutgoing": "{person} paid {amount} to {other}",
     "transferPayoutRequest": "{person} were paid {amount} back to bank account",
     "transferVoidIncoming": "{person} received {amount}",
-    "transferVoidOutgoing": "{person} paid {amount}"
+    "transferVoidOutgoing": "{person} paid {amount}",
+    "transferWaivedFines": "{person} has received back {amount} due to waived fines"
   },
   "c_transferDetails": {
     "Deposit": "Deposit",
     "Description": "Description",
+    "Fine": "Fine",
     "From": "From",
     "Invoice": "Invoice",
     "Other": "Other transaction",
@@ -327,7 +333,8 @@
     "To": "To",
     "Total": "Total",
     "Transfer": "Transfer between users",
-    "Type": "Transaction type"
+    "Type": "Transaction type",
+    "WaivedFines": "Waived Fines"
   },
   "c_userInfo": {
     "quick": "Quick Overview"
@@ -338,6 +345,7 @@
     "Fill in a name": "Fill in a name or ID",
     "Filter by name": "Filter by name or ID",
     "Manage users": "Manage users",
+    "Name": "Name",
     "Page": "Page",
     "Select Type": "Select Type",
     "Select User Type": "Select User Type",
@@ -454,7 +462,8 @@
     "Confirm": "Confirm deletion",
     "Containers": "Containers",
     "Default containers": "Default containers",
-    "Manage all products and containers": "Manage all products and containers"
+    "Manage all products and containers": "Manage all products and containers",
+    "Manage all products and default containers": "Beheer alle producten and default containers"
   },
   "payment": {
     "cancel": "cancel",
@@ -633,6 +642,7 @@
   "userDetails": {
     "Active": "Active",
     "Are you sure": "Are you sure you want to remove this NFC device?",
+    "Change password": "Change password",
     "Change pin code": "Change pin code",
     "Confirm deletion": "Confirm deletion",
     "Confirm new pin code": "Confirm new pin code",
@@ -661,6 +671,7 @@
     "Update information": "Update information",
     "Update password": "Update password",
     "Update user information": "Update user information",
+    "Updated user information": "Successfully updated profile",
     "User Transactions": "User Transactions",
     "Usertype": "Usertype",
     "passwordUpdated": "Password successfully updated",
