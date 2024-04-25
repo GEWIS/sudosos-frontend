@@ -56,7 +56,7 @@
             </div>
           </template>
           <Column selectionMode="multiple" />
-          <Column field="id" :header="t('fine.gewisId')" />
+          <Column field="gewisId" :header="t('fine.gewisId')" />
           <Column field="fullName" :header="t('fine.name')" />
           <Column field="firstBalance" :header="t('fine.firstBalance')">
             <template #body="slotProps">
@@ -200,8 +200,8 @@ const handlePickedDates = handleSubmit(async (values) => {
   });
   const deletedUsers = userStore.getDeletedUsers.map((u: UserResponse) => u.id);
   const activeUsers = userStore.getActiveUsers.map((u: UserResponse) => u.id);
-
   eligibleUsers.value = result.data.map((item: any) => {
+
     const fullName = userFullNameMap[item.id];
 
     // Extract balances from the item
@@ -209,6 +209,8 @@ const handlePickedDates = handleSubmit(async (values) => {
 
     return {
       ...item,
+      // @ts-ignore
+      gewisId: (userStore.users.find((u: UserResponse) => u.id === item.id) as UserResponse).gewisId || undefined,
       fullName,
       // Assign first and last balance based on the first and second items in the balances array
       firstBalance,
