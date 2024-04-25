@@ -1,5 +1,5 @@
 <template>
-    <Dialog v-model:visible="visible" modal :header="
+    <Dialog v-model:visible="visible" modal :draggable="false" :header="
             banner != undefined
             ? 'Edit banner'
             : 'Create banner'
@@ -110,7 +110,8 @@ const {
     errors,
     defineField,
     setFieldValue,
-    handleSubmit
+    handleSubmit,
+    resetForm
 } = useForm({
     validationSchema: bannerSchema
 })
@@ -129,11 +130,12 @@ watch(visible, () => {
 })
 
 function resetValues() {
+    resetForm();
     setFieldValue('Name', banner.value?.name, false);
     setFieldValue('Duration', banner.value && banner.value?.duration / 1000, false);
     setFieldValue('Start date', banner.value && new Date(banner.value?.startDate), false);
     setFieldValue('End date', banner.value && new Date(banner.value?.endDate), false);
-    setFieldValue('Active', banner.value?.active)
+    setFieldValue('Active', banner.value?.active);
     uploadedImage.value = undefined;
 }
 

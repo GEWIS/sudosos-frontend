@@ -1,7 +1,7 @@
 <template>
     <div class="page-container">
         <div class="page-title">{{ $t('banner.Banners') }}</div>
-        <BannersListComponent :banners="banners" :skip="0" :take="10"/>
+        <BannersListComponent :banners="banners" :skip="0" :take="5"/>
     </div>
 </template>
 <script setup lang="ts">
