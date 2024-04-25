@@ -4,12 +4,8 @@
             ? 'Edit banner'
             : 'Create banner'
         " ref="dialog" @show="addListenerOnDialogueOverlay(dialog)" class="w-full md:w-6">
-        <!-- <Image preview class="w-full" v-if="banner?.image" :src="getBannerImageSrc(banner)" :pt:image:alt="banner.name"
-            :pt="{
-                image: 'w-full'
-            }" /> -->
-        <span v-if="getImageSource" class=" w-full mx-1 image-preview-container">
-            <img class="w-full" :src="getImageSource" />
+        <span v-if="imageSource" class=" w-full mx-1 image-preview-container">
+            <img class="w-full" :src="imageSource" />
             <button ref="previewButton" type="button"
                 class="image-preview-indicator p-image-preview-indicator fileupload" @click="fileInput.click()">
                 <i class="pi pi-upload"></i>
@@ -75,8 +71,10 @@ const fileInput = ref(); // input HTML element for opening on button click
 
 const uploadedImage = ref<File>();
 
-const getImageSource = computed(() => {
+const imageSource = computed(() => {
     if(uploadedImage.value == null) {
+        // Return null if banner or banner image is missing,
+        // Else return banner image
         return banner.value?.image && getBannerImageSrc(banner.value)
     } else {
         return URL.createObjectURL(uploadedImage.value)
@@ -137,16 +135,17 @@ function resetValues() {
 const bannersStore = useBannersStore();
 
 const onSubmit = handleSubmit(async (values) => {
+    const bannerRequest: BannerRequest = {
+        name: values['Name'],
+        duration: values['Duration'] * 1000,
+        active: values['Active'],
+        startDate: values['Start date'].toISOString(),
+        endDate: values['End date'].toISOString()
+    }
+
     if(banner.value != undefined) {
         // Edit existing banner
-        const bannerRequest: BannerRequest = {
-            name: values['Name'],
-            duration: values['Duration']*1000,
-            active: values['Active'],
-            startDate: values['Start date'].toISOString(),
-            endDate: values['End date'].toISOString()
-        }
-
+        
         // First upload image
         uploadedImage.value && await bannersStore.updateBannerImage(banner.value.id, uploadedImage.value)
         // Then update and receive updated
@@ -158,7 +157,14 @@ const onSubmit = handleSubmit(async (values) => {
     } else { 
         // Create new banner
 
-        // TODO
+        // First create banner
+        const resContent = await bannersStore.createBanner(bannerRequest)
+        // Then set image
+        uploadedImage.value && await bannersStore.updateBannerImage(resContent.data.id, uploadedImage.value)
+
+        await bannersStore.fetchBanners();
+
+        visible.value = false;
     }
 })
 

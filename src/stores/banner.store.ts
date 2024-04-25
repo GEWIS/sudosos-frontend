@@ -14,6 +14,7 @@ export const useBannersStore = defineStore('banners', {
                 apiService.openBanner.getAllOpenBanners(take, skip)
             );
         },
+
         /**
          * Updates the banner information, excluding the image
          * 
@@ -23,6 +24,7 @@ export const useBannersStore = defineStore('banners', {
         async updateBanner(bannerid: number, banner: BannerRequest) {
             return await apiService.banner.update(bannerid, banner);
         },
+
         /**
          * Updates the image of the banner.
          * 
@@ -31,6 +33,15 @@ export const useBannersStore = defineStore('banners', {
          */
         async updateBannerImage(bannerid: number, image: File) {
             return await apiService.banner.updateImage(bannerid, image);
+        },
+
+        /**
+         * Create a new banner.
+         * 
+         * @param banner The banner request.
+         */
+        async createBanner(bannerRequest: BannerRequest) {
+            return await apiService.banner.create(bannerRequest)
         }
     },
     getters: {
