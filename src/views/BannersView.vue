@@ -15,7 +15,6 @@ const bannersStore = useBannersStore();
 const { banners } = storeToRefs(bannersStore)
 
 onMounted(async () => {
-    // TODO: See if we can optimize this.
     bannersStore.fetchBanners();
 })
 
