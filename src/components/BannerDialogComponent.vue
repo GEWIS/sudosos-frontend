@@ -23,17 +23,21 @@
         <Divider />
         <div class="py-2">
             Name: <br>
-            <InputText v-model="name" />
+            <InputText v-model="name" /> <br>
+            <span class="font-bold text-red-500">{{ errors['Name'] }}</span>
         </div>
         <div class="py-2">
             Duration: <br>
-            <InputNumber v-model="duration" suffix=" seconds" :maxFractionDigits="3" />
+            <InputNumber v-model="duration" suffix=" seconds" :maxFractionDigits="3" /><br>
+            <span class="font-bold text-red-500">{{ errors['Duration'] }}</span>
         </div>
         <div class="py-2">
             Timespan: <br>
             <Calendar v-model="startDate" showTime hourFormat="24" />
             till
-            <Calendar v-model="endDate" showTime hourFormat="24" class="pt-1 md:pt-0" />
+            <Calendar v-model="endDate" showTime hourFormat="24" class="pt-1 md:pt-0" /><br>
+            <span class="font-bold text-red-500">{{ errors['Start date'] }}</span><br>
+            <span class="font-bold text-red-500">{{ errors['End date'] }}</span>
         </div>
         <div class="py-2">
             Active:<br>
@@ -91,9 +95,12 @@ const banner = defineModel<BannerResponse | undefined>('banner')
 const bannerSchema = toTypedSchema(
     yup.object({
         'Name': yup.string().required(),
-        'Duration': yup.number().required(),
+        'Duration': yup.number().required().moreThan(0),
         'Start date': yup.date().required(),
-        'End date': yup.date().required(),
+        'End date': yup.date().required().min(new Date()).min(
+            yup.ref('Start date'),
+            "End date can't be before start date"
+        ),
         'Active': yup.boolean().required(),
     })
 );
@@ -102,9 +109,7 @@ const {
     values,
     errors,
     defineField,
-    meta,
     setFieldValue,
-    setTouched,
     handleSubmit
 } = useForm({
     validationSchema: bannerSchema
@@ -124,10 +129,10 @@ watch(visible, () => {
 })
 
 function resetValues() {
-    setFieldValue('Name', banner.value?.name);
-    setFieldValue('Duration', banner.value && banner.value?.duration / 1000);
-    setFieldValue('Start date', banner.value && new Date(banner.value?.startDate));
-    setFieldValue('End date', banner.value && new Date(banner.value?.endDate));
+    setFieldValue('Name', banner.value?.name, false);
+    setFieldValue('Duration', banner.value && banner.value?.duration / 1000, false);
+    setFieldValue('Start date', banner.value && new Date(banner.value?.startDate), false);
+    setFieldValue('End date', banner.value && new Date(banner.value?.endDate), false);
     setFieldValue('Active', banner.value?.active)
     uploadedImage.value = undefined;
 }
