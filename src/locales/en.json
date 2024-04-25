@@ -95,7 +95,13 @@
   },
   "c_recentTransactionsTable": {
     "all transactions": "all transactions",
-    "recent transactions": "recent transactions"
+    "fine": "Fine",
+    "invoice": "Invoice",
+    "payment": "Payment",
+    "recent transactions": "recent transactions",
+    "topUp": "Top up",
+    "unknown": "Could not find",
+    "waivedFine": "Waived Fine"
   },
   "c_transactionDetailsModal": {
     "delete": "Delete",

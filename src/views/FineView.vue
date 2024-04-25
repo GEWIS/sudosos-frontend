@@ -38,11 +38,9 @@
                     <label for="secondDate">{{ t('fine.secondDate') }}</label>
                   </span>
                   <Button type="submit">{{ t('fine.apply') }}</Button>
-                </form>
-                <div class="flex flex-row w-4 align-items-start">
                   <Button @click="notifyUsers" severity="info">{{ t('fine.notify') }}</Button>
                   <ProgressSpinner class="h-2rem ml-0" v-if="isNotifying"/>
-                </div>
+                </form>
                 <Button @click="handoutFines">{{ t('fine.handout') }}</Button>
               </div>
               <p class="text-red-500">
@@ -306,6 +304,8 @@ const handoutFines = async () => {
 };
 
 // NOTE: This is a temporary fix, until PrimeVue 3.52, where this issue should be fixed in the library
+// NOTE2: This is not an ideal fix, but better than the current situation.
+// TODO: Fix with 3.52
 const handleDateSelect = (dateConst: number, event: Date) => {
   const currentDate = new Date();
   const combinedDate = new Date(

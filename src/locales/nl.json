@@ -95,7 +95,13 @@
   },
   "c_recentTransactionsTable": {
     "all transactions": "alle transacties",
-    "recent transactions": "recente transacties"
+    "fine": "Boete",
+    "invoice": "Factuur",
+    "payment": "Betaling",
+    "recent transactions": "recente transacties",
+    "topUp": "Opwaardering",
+    "unknown": "Onbekend",
+    "waivedFine": "Kwijtgescholden boete"
   },
   "c_transactionDetailsModal": {
     "delete": "Verwijder",
@@ -132,7 +138,7 @@
     "firstBalance": "Eerste saldo",
     "firstDate": "Eerste datum",
     "gewisId": "GEWIS ID",
-    "handout": "Deel boetes uit",
+    "handout": "Handout Fines",
     "handoutEventDetails": "Boete-evenement details",
     "id": "ID",
     "info": "Informatie",
