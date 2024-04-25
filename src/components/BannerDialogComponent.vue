@@ -13,7 +13,7 @@
             </button>
         </span>
         <div v-else class="px-3 py-5 text-xl surface-hover text-center  relative">
-            No banner found, click here to upload one!
+            {{ $t('banner.noBannersFound') }}
             <button ref="previewButton" type="button"
                 class="cursor-pointer image-preview-indicator p-image-preview-indicator fileupload"
                 @click="fileInput.click()">
@@ -22,29 +22,29 @@
         </div>
         <Divider />
         <div class="py-2">
-            Name: <br>
+            {{$t('banner.name')}} <br>
             <InputText v-model="name" /> <br>
             <span class="font-bold text-red-500">{{ errors['Name'] }}</span>
         </div>
         <div class="py-2">
-            Duration: <br>
+            {{ $t('banner.duration') }}<br>
             <InputNumber v-model="duration" suffix=" seconds" :maxFractionDigits="3" /><br>
             <span class="font-bold text-red-500">{{ errors['Duration'] }}</span>
         </div>
         <div class="py-2">
-            Timespan: <br>
+            {{ $t('banner.timespan') }}<br>
             <Calendar v-model="startDate" showTime hourFormat="24" />
-            till
+            {{ $t('banner.till' )}}
             <Calendar v-model="endDate" showTime hourFormat="24" class="pt-1 md:pt-0" /><br>
             <span class="font-bold text-red-500">{{ errors['Start date'] }}</span><br>
             <span class="font-bold text-red-500">{{ errors['End date'] }}</span>
         </div>
         <div class="py-2">
-            Active:<br>
+          {{ $t('banner.active') }}<br>
             <InputSwitch v-model="active" />
         </div>
         <div class="flex flex-column justify-content-end align-items-end">
-            <Button @click="onSubmit">Submit</Button>
+            <Button @click="onSubmit">{{ $t('banner.submit') }}</Button>
         </div>
     </Dialog>
 </template>
@@ -62,7 +62,7 @@ import { getBannerImageSrc } from '@/utils/imageUtils';
 import type { BannerRequest, BannerResponse } from '@sudosos/sudosos-client';
 import { addListenerOnDialogueOverlay } from '@sudosos/sudosos-frontend-common';
 
-import { onMounted, ref, watch, computed } from 'vue'
+import { ref, watch, computed } from 'vue';
 import { useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/yup';
 import * as yup from 'yup';
@@ -79,15 +79,15 @@ const imageSource = computed(() => {
     if(uploadedImage.value == null) {
         // Return null if banner or banner image is missing,
         // Else return banner image
-        return banner.value?.image && getBannerImageSrc(banner.value)
+        return banner.value?.image && getBannerImageSrc(banner.value);
     } else {
-        return URL.createObjectURL(uploadedImage.value)
+        return URL.createObjectURL(uploadedImage.value);
     }
-})
+});
 
-const visible = defineModel<boolean>('visible')
+const visible = defineModel<boolean>('visible');
 // If Banner is undefined we are creating, otherwise editing.
-const banner = defineModel<BannerResponse | undefined>('banner')
+const banner = defineModel<BannerResponse | undefined>('banner');
 
 
 // Banner schema and validation
@@ -106,7 +106,6 @@ const bannerSchema = toTypedSchema(
 );
 
 const {
-    values,
     errors,
     defineField,
     setFieldValue,
@@ -114,7 +113,7 @@ const {
     resetForm
 } = useForm({
     validationSchema: bannerSchema
-})
+});
 
 const [ name ] = defineField('Name');
 const [ duration ] = defineField('Duration');
@@ -124,10 +123,10 @@ const [ active ] = defineField('Active');
 
 // Reset values everytime dialog is opened.
 watch(visible, () => {
-    if(visible) {
-        resetValues()
+    if(visible.value) {
+        resetValues();
     }
-})
+});
 
 function resetValues() {
     resetForm();
@@ -148,38 +147,38 @@ const onSubmit = handleSubmit(async (values) => {
         active: values['Active'],
         startDate: values['Start date'].toISOString(),
         endDate: values['End date'].toISOString()
-    }
+    };
 
     if(banner.value != undefined) {
         // Edit existing banner
-        
+
         // First upload image
-        uploadedImage.value && await bannersStore.updateBannerImage(banner.value.id, uploadedImage.value)
+        uploadedImage.value && await bannersStore.updateBannerImage(banner.value.id, uploadedImage.value);
         // Then update and receive updated
-        const resContent = await bannersStore.updateBanner(banner.value.id, bannerRequest)
-            
-        banner.value = resContent.data
+        const resContent = await bannersStore.updateBanner(banner.value.id, bannerRequest);
+
+        banner.value = resContent.data;
 
         visible.value = false;
-    } else { 
+    } else {
         // Create new banner
 
         // First create banner
-        const resContent = await bannersStore.createBanner(bannerRequest)
+        const resContent = await bannersStore.createBanner(bannerRequest);
         // Then set image
-        uploadedImage.value && await bannersStore.updateBannerImage(resContent.data.id, uploadedImage.value)
+        uploadedImage.value && await bannersStore.updateBannerImage(resContent.data.id, uploadedImage.value);
 
         await bannersStore.fetchBanners();
 
         visible.value = false;
     }
-})
+});
 
 const onImgUpload = (e: Event) => {
     const el = (e.target as HTMLInputElement);
     if (el == null || el.files == null) return;
-    uploadedImage.value = el.files[0]!!
-}
+    uploadedImage.value = el.files[0]!!;
+};
 </script>
 <style>
 .image-preview-container {

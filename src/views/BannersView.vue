@@ -6,16 +6,16 @@
 </template>
 <script setup lang="ts">
 import BannersListComponent from '@/components/BannersListComponent.vue';
-import { onMounted, watch } from 'vue';
+import { onMounted } from 'vue';
 import { useBannersStore } from '@/stores/banner.store';
 import { storeToRefs } from 'pinia';
 
 const bannersStore = useBannersStore();
 
-const { banners } = storeToRefs(bannersStore)
+const { banners } = storeToRefs(bannersStore);
 
 onMounted(async () => {
     bannersStore.fetchBanners();
-})
+});
 
 </script>

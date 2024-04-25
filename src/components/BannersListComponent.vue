@@ -5,7 +5,12 @@
             <template #header>
                 <div class="flex flex-column md:flex-row align-items-center justify-content-between">
                     <SelectButton v-model="filters" :options="options" multiple/>
-                    <Button class="mt-2 md:mt-0" label="Create" icon="pi pi-plus" @click="isCreateDialogVisible = true" />
+                    <Button
+                      class="mt-2 md:mt-0"
+                      label="Create"
+                      icon="pi pi-plus"
+                      @click="isCreateDialogVisible = true"
+                    />
                 </div>
             </template>
             <template #list="slotProps">
@@ -22,9 +27,8 @@
 import DataView from "primevue/dataview";
 import SelectButton from "primevue/selectbutton";
 
-import type { 
+import type {
     BannerResponse,
-    PaginatedBannerResponse
 } from "@sudosos/sudosos-client";
 import { computed, ref } from "vue";
 
@@ -45,7 +49,7 @@ const filters = ref<string[]>();
 const options = [
     "Filter active",
     "Filter expired"
-]
+];
 
 const displayedBanners = computed(() => {
     return props.banners
@@ -55,10 +59,10 @@ const displayedBanners = computed(() => {
             // Filters expired banners
             if (filters.value?.includes(options[1])  && Date.parse(b.endDate) <= Date.now()) return false;
 
-            return true
+            return true;
 
         })
-        .sort((a, b) => Date.parse(b.startDate) - Date.parse(a.startDate))
-})
+        .sort((a, b) => Date.parse(b.startDate) - Date.parse(a.startDate));
+});
 
 </script>

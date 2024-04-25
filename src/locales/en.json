@@ -4,20 +4,17 @@
     "error": "Error"
   },
   "app": {
-    "Admin": "Admin",
     "BAC": "BAC",
     "Banners": "Banners",
-    "Create": "Create",
     "Board": "Board",
+    "Create": "Create",
     "Create POS": "Create POS",
     "English": "English",
-    "Manage POS": "Manage POS",
     "Manage products": "Manage products",
     "Netherlands": "Nederlands",
     "Overview": "POS Overview",
     "Points of Sale": "Points of Sale",
     "Profile": "Profile",
-    "Screens": "TV Screens",
     "Search": "Search",
     "Sign out": "Sign out",
     "Social drink cards": "Social drink cards",
@@ -32,6 +29,18 @@
     "minPayment": "Note: minimum topup is €10 or needs to pay off debt.",
     "Balance after": "Balance after:",
     "Start payment": "Start payment"
+  },
+  "banner": {
+    "Banners": "Banners",
+    "active": "Active: ",
+    "duration": "Duration: ",
+    "name": "Name: ",
+    "noBannersFound": "No banner found, please upload one!",
+    "second": "Second",
+    "seconds": "Seconds",
+    "submit": "Submit",
+    "till": "till",
+    "timespan": "Timespan: "
   },
   "c_ContainerAssign": {
     "Assign product": "Assign product",
@@ -275,7 +284,4 @@
     "createdAt": "Created at",
     "handoutEventDetails": "Fine Handout Event Details"
   },
-  "banner": {
-    "Banners": "Banners"
-  }
 }

@@ -42,7 +42,7 @@ export const useBannersStore = defineStore('banners', {
          * @param banner The banner request.
          */
         async createBanner(bannerRequest: BannerRequest) {
-            return await apiService.banner.create(bannerRequest)
+            return await apiService.banner.create(bannerRequest);
         }
     },
     getters: {

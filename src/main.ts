@@ -77,7 +77,7 @@ app.component('InputIcon', InputIcon);
 app.component('IconField', IconField);
 app.component('ProgressSpinner', ProgressSpinner);
 
-app.directive('tooltip', Tooltip)
+app.directive('tooltip', Tooltip);
 
 populateStoresFromToken(apiService);
 app.mount('#app');
