@@ -31,8 +31,6 @@
     "Start payment": "Betaal",
     "minPayment": "Let op: minimum bedrag is €10 of moet schulden afbetalen."
   },
-  "banners": {
-  },
   "c_ContainerAssign": {
     "Assign product": "Product toewijzen",
     "Product": "Kies product:",
@@ -54,16 +52,8 @@
     "add container": "Container toevoegen",
     "noContainersSelected": "Er zijn geen containers geselecteerd."
   },
-  "c_POSOverview": {
-  },
-  "c_bannerTable": {
-  },
-  "c_borrelkaartGroupTable": {
-  },
   "c_confirmationModal": {
     "Save": "Opslaan"
-  },
-  "c_containerComponent": {
   },
   "c_containerEditModal": {
     "Name": "Naam",
@@ -79,10 +69,6 @@
     "balance": "Saldo",
     "someIsFines": "Waarvan {fine} boetes zijn",
     "topup": "Je gaat opwaarderen met "
-  },
-  "c_depositAlert": {
-  },
-  "c_fileFormPreview": {
   },
   "c_productEditModal": {
     "Alcohol Percentage": "Alcohol percentage",
@@ -107,8 +93,6 @@
     "delete": "Verwijder product uit container",
     "title": "Product informatie"
   },
-  "c_productTable": {
-  },
   "c_recentTransactionsTable": {
     "all transactions": "alle transacties",
     "fine": "Boete",
@@ -119,21 +103,9 @@
     "unknown": "Onbekend",
     "waivedFine": "Kwijtgescholden boete"
   },
-  "c_transactionDetails": {
-  },
   "c_transactionDetailsModal": {
     "delete": "Verwijder",
     "transactionDetails": "Transactie Details"
-  },
-  "c_transactionEditor": {
-  },
-  "c_transactionFlagsComponent": {
-  },
-  "c_transactionTableFilter": {
-  },
-  "c_transactionsTable": {
-  },
-  "c_transferDetails": {
   },
   "c_userInfo": {
     "quick": "Quick Overview"
@@ -181,10 +153,6 @@
   "flagged": {
     "Flagged transactions": "Gemarkeerde transacties"
   },
-  "flaggedDetails": {
-  },
-  "formatters": {
-  },
   "home": {
     "Overview": "Overzicht"
   },
@@ -204,9 +172,8 @@
     "SudoSOS": "SudoSOS",
     "SudoSOS Login": "SudoSOS Login",
     "Username": "Gebruikersnaam",
-    "copyright": "© 2023 GEWIS"
-  },
-  "managePOS": {
+    "copyright": "© 2023 GEWIS",
+    "localAccount": "Login met een lokaal account"
   },
   "manageProducts": {
     "Add product": "Product toevoegen",
@@ -218,8 +185,6 @@
   },
   "pointOfSaleOverview": {
     "Point of sale overview": "Verkooppunt overzicht"
-  },
-  "posApprove": {
   },
   "posInfo": {
     "Edit": "Bewerken",
@@ -256,14 +221,6 @@
     "quickOverview": "Kort Overzicht",
     "quickOverviewMessage": "Laat dit aan de bar zien zodat we je sneller kunnen helpen."
   },
-  "screens": {
-  },
-  "signOut": {
-  },
-  "socialDrinkCards": {
-  },
-  "socialDrinkCardsPrint": {
-  },
   "successMessages": {
     "createContainer": "Container is succesvol aangemaakt.",
     "deleteProductContainer": "Product is succesvol verwijderd van de container.",
@@ -280,8 +237,6 @@
     "agreeToS": "Ik ga akkoord met de voorwaarden",
     "description": "Voordat je SudoSOS kunt gebruiken, dien je de voorwaarden te accepteren. Je kunt de inhoud van de voorwaarden hieronder lezen.",
     "termsOfService": "Voorwaarden"
-  },
-  "transactionFlagTableFilter": {
   },
   "transactions": {
     "Transactions": "Transacties",

@@ -31,8 +31,6 @@
     "Start payment": "Start payment",
     "minPayment": "Note: minimum topup is €10 or needs to pay off debt."
   },
-  "banners": {
-  },
   "c_ContainerAssign": {
     "Assign product": "Assign product",
     "Product": "Choose product:",
@@ -54,16 +52,8 @@
     "add container": "Add container",
     "noContainersSelected": "There are no containers selected."
   },
-  "c_POSOverview": {
-  },
-  "c_bannerTable": {
-  },
-  "c_borrelkaartGroupTable": {
-  },
   "c_confirmationModal": {
     "Save": "Save"
-  },
-  "c_containerComponent": {
   },
   "c_containerEditModal": {
     "Name": "Name",
@@ -79,10 +69,6 @@
     "balance": "Balance",
     "someIsFines": "Of which {fine} is fines",
     "topup": "You will be topping up with"
-  },
-  "c_depositAlert": {
-  },
-  "c_fileFormPreview": {
   },
   "c_productEditModal": {
     "Alcohol Percentage": "Alc. %",
@@ -107,8 +93,6 @@
     "delete": "Delete Product from container",
     "title": "Product information"
   },
-  "c_productTable": {
-  },
   "c_recentTransactionsTable": {
     "all transactions": "all transactions",
     "fine": "Fine",
@@ -119,21 +103,9 @@
     "unknown": "Could not find",
     "waivedFine": "Waived Fine"
   },
-  "c_transactionDetails": {
-  },
   "c_transactionDetailsModal": {
     "delete": "Delete",
     "transactionDetails": "Transaction Details"
-  },
-  "c_transactionEditor": {
-  },
-  "c_transactionFlagsComponent": {
-  },
-  "c_transactionTableFilter": {
-  },
-  "c_transactionsTable": {
-  },
-  "c_transferDetails": {
   },
   "c_userInfo": {
     "quick": "Quick Overview"
@@ -181,10 +153,6 @@
   "flagged": {
     "Flagged transactions": "Flagged transactions"
   },
-  "flaggedDetails": {
-  },
-  "formatters": {
-  },
   "home": {
     "Overview": "Overview"
   },
@@ -204,9 +172,8 @@
     "SudoSOS": "SudoSOS",
     "SudoSOS Login": "SudoSOS Login",
     "Username": "Username",
-    "copyright": "© 2023 GEWIS"
-  },
-  "managePOS": {
+    "copyright": "© 2023 GEWIS",
+    "localAccount": "Login using local account"
   },
   "manageProducts": {
     "Add product": "Add product",
@@ -218,8 +185,6 @@
   },
   "pointOfSaleOverview": {
     "Point of sale overview": "Point of sale overview"
-  },
-  "posApprove": {
   },
   "posInfo": {
     "Edit": "Edit",
@@ -256,14 +221,6 @@
     "quickOverview": "Quick Overview",
     "quickOverviewMessage": "Show this at the bar so we can help you faster"
   },
-  "screens": {
-  },
-  "signOut": {
-  },
-  "socialDrinkCards": {
-  },
-  "socialDrinkCardsPrint": {
-  },
   "successMessages": {
     "createContainer": "Successfully created container.",
     "deleteProductContainer": "Successfully deleted product from container.",
@@ -280,8 +237,6 @@
     "agreeToS": "I agree with the Terms of Service",
     "description": "Before you can use SudoSOS, you need to accept the Terms of Service. Please read the contents of the terms of service below.",
     "termsOfService": "Terms of Service"
-  },
-  "transactionFlagTableFilter": {
   },
   "transactions": {
     "Transactions": "Transactions",
