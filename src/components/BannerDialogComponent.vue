@@ -62,7 +62,7 @@ import { getBannerImageSrc } from '@/utils/imageUtils';
 import type { BannerRequest, BannerResponse } from '@sudosos/sudosos-client';
 import { addListenerOnDialogueOverlay } from '@sudosos/sudosos-frontend-common';
 
-import { onMounted, ref, defineProps, watch, computed } from 'vue'
+import { onMounted, ref, watch, computed } from 'vue'
 import { useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/yup';
 import * as yup from 'yup';

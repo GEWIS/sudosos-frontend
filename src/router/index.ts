@@ -5,9 +5,9 @@ import POSCreateView from '@/views/PointOfSale/POSCreateView.vue';
 import POSEditView from '@/views/PointOfSale/POSEditView.vue';
 import PublicLayout from "@/layout/PublicLayout.vue";
 import DashboardLayout from "@/layout/DashboardLayout.vue";
-import HomeView from '../views/HomeView.vue';
+import HomeView from '@/views/HomeView.vue';
 import LoginView from "@/views/LoginView.vue";
-import UserOverView from '../views/UserOverView.vue';
+import UserOverView from '@/views/UserOverView.vue';
 import SingleUserView from "@/views/SingleUserView.vue";
 import BannersView from "@/views/BannersView.vue";
 import ProductsContainersView from "@/views/ProductsContainersView.vue";
@@ -124,8 +124,8 @@ const router = createRouter({
         },
         {
           path: '/user-overview',
-          component: UserOverView,
           name: 'userOverview',
+          component: UserOverView,
           meta: { requiresAuth: true, isBAC: true, isBoard: true }
         },
         {
@@ -164,7 +164,7 @@ const router = createRouter({
         {
           path: '/banners',
           component: BannersView,
-          name: 'userOverview',
+          name: 'banners',
           meta: { requiresAuth: true, isBoard: true }
         },
         // Add other routes for authenticated users here
@@ -209,7 +209,7 @@ router.beforeEach((to, from, next) => {
     if(to.meta?.isSeller && !isSeller()) next({ name: 'home' });
 
     if(to.meta?.isBAC && !isBAC()) next({ name: 'home' });
-
+    
     next();
   }
 });
