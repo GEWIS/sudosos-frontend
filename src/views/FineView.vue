@@ -145,7 +145,7 @@ import { formatDateTime, formatPrice } from "@/utils/formatterUtils";
 import { useRouter } from "vue-router";
 import { type DineroObject } from 'dinero.js';
 import { floor, min } from "lodash";
-import type { FineHandoutEventResponse } from "@sudosos/sudosos-client";
+import type { FineHandoutEventResponse, UserResponse } from "@sudosos/sudosos-client";
 import { fetchAllPages } from "@sudosos/sudosos-frontend-common";
 import { useToast } from "primevue/usetoast";
 import type { AxiosError } from "axios";
@@ -198,6 +198,9 @@ const handlePickedDates = handleSubmit(async (values) => {
   userStore.users.forEach((user: any) => {
     userFullNameMap[user.id] = `${user.firstName} ${user.lastName}`;
   });
+  const deletedUsers = userStore.getDeletedUsers.map((u: UserResponse) => u.id);
+  const activeUsers = userStore.getActiveUsers.map((u: UserResponse) => u.id);
+
   eligibleUsers.value = result.data.map((item: any) => {
     const fullName = userFullNameMap[item.id];
 
@@ -211,7 +214,7 @@ const handlePickedDates = handleSubmit(async (values) => {
       firstBalance,
       lastBalance: secondBalance,
     };
-  });
+  }).filter((u: any) => !deletedUsers.includes(u.id) && activeUsers.includes(u.id));
   const totalDebtAmount = eligibleUsers.value.reduce((accumulator: number, current: any) => {
     return accumulator + current.firstBalance.amount.amount; // Use getAmount() to access the value
   }, 0);
