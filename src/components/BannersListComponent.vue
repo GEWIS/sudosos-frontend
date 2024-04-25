@@ -3,12 +3,9 @@
         <DataView :value="displayedBanners" data-key="id"
             paginator :first="props.skip && props.skip-1" :rows="props.take">
             <template #header>
-                <div class="flex flex-row align-items-center justify-content-between">
-                    <div class="flex flex-row">
-                        <!-- <ToggleButton v-model="tmp" onLabel="Hide inactive" offLabel="Show active" /> -->
-                        <SelectButton v-model="filters" :options="options" multiple/>
-                    </div>
-                    <Button label="Create" icon="pi pi-plus" @click="isCreateDialogVisible = true" />
+                <div class="flex flex-column md:flex-row align-items-center justify-content-between">
+                    <SelectButton v-model="filters" :options="options" multiple/>
+                    <Button class="mt-2 md:mt-0" label="Create" icon="pi pi-plus" @click="isCreateDialogVisible = true" />
                 </div>
             </template>
             <template #list="slotProps">
