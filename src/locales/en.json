@@ -277,11 +277,6 @@
     "Usertype": "Usertype",
     "passwordUpdated": "Password successfully updated",
     "updatedUserInfo": "Succesfully updated user info.",
-    "userInfoUpdated": "User information successfully updated",
-    "fineNumber": "Number of fines",
-    "fineTotal": "Total of fines",
-    "createdBy": "Created by",
-    "createdAt": "Created at",
-    "handoutEventDetails": "Fine Handout Event Details"
+    "userInfoUpdated": "User information successfully updated"
   }
 }

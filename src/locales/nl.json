@@ -4,14 +4,12 @@
     "error": "Fout"
   },
   "app": {
-    "Admin": "Beheer",
     "BAC": "BAC",
     "Banners": "Banners",
     "Board": "Bestuur",
     "Create": "Aanmaken",
     "Create POS": "Creeër Verkooppunt",
     "English": "English",
-    "Manage POS": "Beheer verkooppunten",
     "Manage products": "Beheer producten",
     "Netherlands": "Nederlands",
     "Overview": "Overzicht POS",
