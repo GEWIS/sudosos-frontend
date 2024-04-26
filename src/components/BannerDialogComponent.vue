@@ -91,7 +91,6 @@ const banner = defineModel<BannerResponse | undefined>('banner');
 
 
 // Banner schema and validation
-// TODO: Actual validation and errors
 const bannerSchema = toTypedSchema(
     yup.object({
         'Name': yup.string().required(),
