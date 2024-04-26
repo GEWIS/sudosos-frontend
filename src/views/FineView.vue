@@ -22,7 +22,6 @@
                       v-bind="firstDateAttrs"
                       showTime
                       hourFormat="24"
-                      @dateSelect="handleDateSelect(0, $event)"
                     />
                     <label for="firstDate">{{ t('fine.firstDate') }}</label>
                   </span>
@@ -33,7 +32,6 @@
                       v-bind="secondDateAttrs"
                       showTime
                       hourFormat="24"
-                      @dateSelect="handleDateSelect(1, $event)"
                     />
                     <label for="secondDate">{{ t('fine.secondDate') }}</label>
                   </span>
@@ -265,7 +263,7 @@ const openHandoutEvent = async (eventId: number) => {
 
 const notifyUsers = async () => {
   isNotifying.value = true;
-  await apiService.debtor.notifyAboutFutureFines({
+  apiService.debtor.notifyAboutFutureFines({
     userIds: selection.value.map((item: any) => item.id),
     referenceDate: secondDate.value?.toISOString() || new Date().toISOString()
   })
@@ -279,7 +277,6 @@ const notifyUsers = async () => {
       isNotifying.value = false;
       selection.value = [];
     });
-  isNotifying.value = false;
 };
 
 const handoutFines = async () => {
@@ -301,27 +298,6 @@ const handoutFines = async () => {
     })
     .catch((err: AxiosError) => handleError(err, toast))
     .finally(() => selection.value = []);
-};
-
-// NOTE: This is a temporary fix, until PrimeVue 3.52, where this issue should be fixed in the library
-// NOTE2: This is not an ideal fix, but better than the current situation.
-// TODO: Fix with 3.52
-const handleDateSelect = (dateConst: number, event: Date) => {
-  const currentDate = new Date();
-  const combinedDate = new Date(
-    event.getFullYear(),
-    event.getMonth(),
-    event.getDate(),
-    currentDate.getHours(),
-    currentDate.getMinutes(),
-    currentDate.getSeconds(),
-    currentDate.getMilliseconds()
-  );
-  if (dateConst === 0) {
-    firstDate.value = combinedDate;
-  } else {
-    secondDate.value = combinedDate;
-  }
 };
 </script>
 

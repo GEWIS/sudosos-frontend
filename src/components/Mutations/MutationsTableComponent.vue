@@ -83,6 +83,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import CardComponent from "@/components/CardComponent.vue";
 import Skeleton from "primevue/skeleton";
+import { formatPrice } from "@/utils/formatterUtils";
 import type {
   BaseTransactionResponse,
   FinancialMutationResponse,
