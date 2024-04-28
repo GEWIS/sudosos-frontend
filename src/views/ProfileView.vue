@@ -13,8 +13,8 @@
       <div class="col-6 md:col-6">
         <ChangePasswordComponent />
       </div>
-      <div class="col-6 md:col-6" v-if="isAdmin">
-        <ChangeApiKeyComponent />
+      <div class="col-6 md:col-6">
+        <ChangeApiKeyComponent v-if="isAdmin"/>
         <div class="flex flex-row mb-2 align-items-center">
           <h3 class="mr-3">{{ $t('profile.individualDataAnalysis') }}</h3>
           <InputSwitch v-model="dataAnalysis" @update:modelValue="handleChange" />
