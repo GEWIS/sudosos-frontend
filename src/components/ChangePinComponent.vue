@@ -27,7 +27,6 @@ import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
 import { editPinSchema } from "@/utils/validation-schema";
 import { handleError } from "@/utils/errorUtils";
-import Password from "primevue/password";
 const userStore = useUserStore();
 const toast = useToast();
 const { t } = useI18n();

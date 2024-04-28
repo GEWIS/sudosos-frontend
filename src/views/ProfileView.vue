@@ -37,7 +37,6 @@ import type { UserResponse } from "@sudosos/sudosos-client";
 import { computed, onMounted, type Ref, ref } from "vue";
 import { UserRole } from "@/utils/rbacUtils";
 import ToggleButton from "primevue/togglebutton";
-import apiService from "@/services/ApiService";
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
