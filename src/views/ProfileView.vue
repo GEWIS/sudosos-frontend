@@ -5,7 +5,7 @@
     </div>
     <div class="flex flex-row mb-2 align-items-center">
       <h3 class="mr-3">{{ $t('profile.individualDataAnalysis') }}</h3>
-      <ToggleButton class="h-3rem" v-model="dataAnalysis" @update:modelValue="handleChange()"></ToggleButton>
+      <ToggleButton class="h-3rem" v-model="dataAnalysis" @update:modelValue="handleChange"></ToggleButton>
     </div>
 
     <div class="grid">
