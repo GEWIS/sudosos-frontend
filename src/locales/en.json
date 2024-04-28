@@ -40,7 +40,14 @@
     "seconds": "Seconds",
     "submit": "Submit",
     "till": "till",
-    "timespan": "Timespan: "
+    "timespan": "Timespan: ",
+    "Banner overview": "Banner overview",
+    "Filter active": "Filter active",
+    "Filter not expired": "Filter not expired",
+    "Active": "Active",
+    "Not active": "Not active",
+    "Edit banner": "Edit banner",
+    "Create banner": "Create banner"
   },
   "c_ContainerAssign": {
     "Assign product": "Assign product",

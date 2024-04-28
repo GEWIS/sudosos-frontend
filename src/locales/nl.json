@@ -40,7 +40,14 @@
     "seconds": "Seconden",
     "submit": "Toepassen",
     "till": "tot",
-    "timespan": "Tijdspan: "
+    "timespan": "Tijdspan: ",
+    "Banner overview": "Banner overzicht",
+    "Filter active": "Filter actief",
+    "Filter not expired": "Filter niet verlopen",
+    "Active": "Actief",
+    "Not active": "Niet actief",
+    "Edit banner": "Pas banner aan",
+    "Create banner": "Maak nieuwe banner"
   },
   "c_ContainerAssign": {
     "Assign product": "Product toewijzen",

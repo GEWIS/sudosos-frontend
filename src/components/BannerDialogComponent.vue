@@ -1,8 +1,8 @@
 <template>
     <Dialog v-model:visible="visible" modal :draggable="false" :header="
             banner != undefined
-            ? 'Edit banner'
-            : 'Create banner'
+            ? $t('banner.Edit banner')
+            : $t('banner.Create banner')
         " ref="dialog" @show="addListenerOnDialogueOverlay(dialog)" class="w-full md:w-6">
         <span v-if="imageSource" class=" w-full mx-1 image-preview-container">
             <img class="w-full" :src="imageSource" />
@@ -28,7 +28,7 @@
         </div>
         <div class="py-2">
             {{ $t('banner.duration') }}<br>
-            <InputNumber v-model="duration" suffix=" seconds" :maxFractionDigits="3" /><br>
+            <InputNumber v-model="duration" :suffix="' ' + $t('banner.seconds')" :maxFractionDigits="3" /><br>
             <span class="font-bold text-red-500">{{ errors['Duration'] }}</span>
         </div>
         <div class="py-2">
@@ -40,7 +40,7 @@
             <span class="font-bold text-red-500">{{ errors['End date'] }}</span>
         </div>
         <div class="py-2">
-          {{ $t('banner.active') }}<br>
+            {{ $t('banner.active') }}<br>
             <InputSwitch v-model="active" />
         </div>
         <div class="flex flex-column justify-content-end align-items-end">

@@ -1,20 +1,11 @@
 <template>
   <div class="col-12">
-    <div
-      class="flex flex-column md:flex-row py-3"
-      :class="{ 'border-top-1 surface-border': index !== 0 }"
-    >
+    <div class="flex flex-column md:flex-row py-3" :class="{ 'border-top-1 surface-border': index !== 0 }">
       <div class="w-full md:w-5 relative md:pr-2">
-        <Image
-          preview
-          class="w-full"
-          v-if="banner.image"
-          :src="getBannerImageSrc(banner)"
-          :pt:image:alt="banner.name"
+        <Image preview class="w-full" v-if="banner.image" :src="getBannerImageSrc(banner)" :pt:image:alt="banner.name"
           :pt="{
             image: 'w-full'
-          }"
-        />
+          }" />
         <div v-else class="px-3 py-5 text-xl surface-hover text-center">
           {{ $t('banner.noBannersFound') }}
         </div>
@@ -23,20 +14,16 @@
                     Yellow when active but banner image is not present
                     Red when not active
                 -->
-        <Tag
-          :value="banner.active ? 'Active' : 'Not active'"
-          :severity="banner.active ? (banner.image ? 'success' : 'warning') : 'danger'"
-          class="absolute"
-          style="left: 4px; top: 4px"
-        />
+        <Tag :value="banner.active ? $t('banner.Active') : $t('banner.Not active')"
+          :severity="banner.active ? (banner.image ? 'success' : 'warning') : 'danger'" class="absolute"
+          style="left: 4px; top: 4px" />
       </div>
       <div class="flex flex-row justify-content-between w-full md:w-7">
         <div class="flex flex-column pr-3">
-          <span class="text-xl">{{ banner.name }}</span
-          ><br />
+          <span class="text-xl">{{ banner.name }}</span><br />
           <span class="font-italic flex flex-row align-items-center">
             <i class="pi pi-clock mr-1"></i>
-             {{ displaySeconds }}
+            {{ displaySeconds }}
           </span>
         </div>
         <div class="flex flex-column justify-content-between align-items-end">
