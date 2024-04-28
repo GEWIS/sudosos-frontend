@@ -63,7 +63,7 @@ const productSchema = toTypedSchema(
       'is-min10-or-balance',
       `Top up should be more than €10 or settle debt exactly.`,
       (value) => {
-        return value >= 10 || value * -100 == userBalance.value?.amount.amount
+        return value >= 10 || value * -100 == userBalance.value?.amount.amount;
       }
     ),
   })
@@ -79,7 +79,7 @@ const {
   handleSubmit
 } = useForm({
   validationSchema: productSchema
-})
+});
 
 const [topupAmount, topupAmountAttrs] = defineField('Top up amount', {
   validateOnChange: false,
@@ -89,8 +89,8 @@ const [topupAmount, topupAmountAttrs] = defineField('Top up amount', {
 });
 
 const onSubmit = handleSubmit((values) => {
-  visible.value = true
-})
+  visible.value = true;
+});
 
 const userStore = useUserStore();
 const userBalance: Ref<BalanceResponse | null> = ref(null);
@@ -107,7 +107,7 @@ const updateUserBalance = async () => {
 };
 
 onMounted(() => {
-  setTimeout(updateUserBalance, 1000)
+  setTimeout(updateUserBalance, 1000);
 });
 
 watch(userStore, () => {
@@ -129,8 +129,8 @@ const displayBalance = computed(() => {
 });
 
 const displayBalanceAfterTopup = computed(() => {
-  return meta.value.touched && userBalance.value?.amount != undefined && topupAmount.value != undefined
-})
+  return meta.value.touched && userBalance.value?.amount != undefined && topupAmount.value != undefined;
+});
 
 // Define the 'visible' ref variable to control dialog visibility
 const visible = ref(false);
