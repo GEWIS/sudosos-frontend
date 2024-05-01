@@ -288,9 +288,9 @@
   },
   "contact": {
     "Contact": "Contact",
-    "Main contact": "Main contact",
-    "Incorrect transactions": "Incorrect transactions",
-    "Security": "Security",
-    "Feature requests": "Feature requests"
+    "Main contact": "Algemeen contact",
+    "Incorrect transactions": "Foute transacties",
+    "Security": "Beveiliging",
+    "Feature requests": "Verzoekjes"
   }
 }
