@@ -285,5 +285,12 @@
     "passwordUpdated": "Password successfully updated",
     "updatedUserInfo": "Succesfully updated user info.",
     "userInfoUpdated": "User information successfully updated"
+  },
+  "contact": {
+    "Contact": "Contact",
+    "Main contact": "Algemeen contact",
+    "Incorrect transactions": "Foute transacties",
+    "Security": "Beveiliging",
+    "Feature requests": "Verzoekjes"
   }
 }

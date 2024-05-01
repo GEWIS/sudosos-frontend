@@ -285,5 +285,12 @@
     "passwordUpdated": "Wachtwoord is succesvol geüpdatet",
     "updatedUserInfo": "Profiel is succesvol geüpdatet.",
     "userInfoUpdated": "Profiel is succesvol aangepast"
+  },
+  "contact": {
+    "Contact": "Contact",
+    "Main contact": "Main contact",
+    "Incorrect transactions": "Incorrect transactions",
+    "Security": "Security",
+    "Feature requests": "Feature requests"
   }
 }
