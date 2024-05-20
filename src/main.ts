@@ -42,11 +42,23 @@ import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import ProgressSpinner from "primevue/progressspinner";
 import ToggleButton from "primevue/togglebutton";
+import veeValidateNL from '@vee-validate/i18n/dist/locale/nl.json';
+import veeValidateEN from '@vee-validate/i18n/dist/locale/en.json';
+import { configure, defineRule } from "vee-validate";
+import { localize, setLocale } from "@vee-validate/i18n";
 const app = createApp(App);
 
+configure({
+    generateMessage: localize({
+        en: veeValidateEN,
+        nl: veeValidateNL,
+    }),
+});
+
+setLocale(localStorage.getItem('locale') || 'en');
 
 const i18n = createI18n({
-    locale: localStorage.getItem('locale') || 'en',
+    locale: localStorage.getItem('locale') || 'nl',
     fallbackLocale: 'en',
     legacy: false,
     globalInjection: true,
@@ -55,6 +67,7 @@ const i18n = createI18n({
         nl
     },
 });
+
 app.use(createPinia());
 app.use(router);
 app.use(PrimeVue);
