@@ -27,7 +27,7 @@
             }" @input="(test) => {
                 setFieldValue('Top up amount', test.value as number, errors['Top up amount'] != undefined);
                 setTouched(true)
-              }" :placeholder="$t('balance.Price')" inputId="amount" mode="currency" currency="EUR" locale="nl-NL" />
+              }" :placeholder="$t('balance.Price')" inputId="amount" mode="currency" currency="EUR" locale="nl-NL" :min="0"/>
           </div>
           <span class="font-bold text-red-500">{{ errors['Top up amount'] }}</span>
         </div>
