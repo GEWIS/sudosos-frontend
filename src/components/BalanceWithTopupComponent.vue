@@ -3,7 +3,8 @@
   <CardComponent :header="$t('c_currentBalance.balance')" class="w-full sm:w-full">
     <div class="flex flex-row justify-content-center">
       <div class="flex flex-column justify-content-center w-6">
-        <h1 class="text-center font-medium text-5xl sm:text-7xl my-0">{{ displayBalance }}</h1>
+        <Skeleton v-if="loading" class="h-4rem w-5 mx-auto"/>
+        <h1 v-else class="text-center font-medium text-5xl sm:text-7xl my-0">{{ displayBalance }}</h1>
         <p
           class="text-center text-base font-semibold text-red-500"
           v-if="userBalance && userBalance.fine"
@@ -82,6 +83,7 @@ import Divider from 'primevue/divider';
 import Dinero from 'dinero.js';
 import InputNumber from 'primevue/inputnumber';
 
+const loading: Ref<boolean> = ref(true);
 const productSchema = toTypedSchema(
   yup.object({
     'Top up amount': yup
@@ -111,13 +113,14 @@ const [topupAmount, topupAmountAttrs] = defineField('Top up amount', {
 
 const onSubmit = handleSubmit((values) => {
   visible.value = true;
-})
+});
 
 const userStore = useUserStore();
 const userBalance: Ref<BalanceResponse | null> = ref(null);
 const router = useRouter();
 const updateUserBalance = async () => {
   // Force refresh balance, since people tend to refresh pages like this to ensure an up to date balance.
+  loading.value = true;
   const auth = useAuthStore();
   if (!auth.getUser) {
     await router.replace({ path: '/error' });
@@ -125,6 +128,7 @@ const updateUserBalance = async () => {
   }
   await userStore.fetchCurrentUserBalance(auth.getUser.id, apiService);
   userBalance.value = userStore.getCurrentUser.balance;
+  loading.value = false;
 };
 
 onMounted(() => {
@@ -132,7 +136,9 @@ onMounted(() => {
 });
 
 watch(userStore, () => {
+  loading.value = true;
   userBalance.value = userStore.getCurrentUser.balance;
+  loading.value = false;
 });
 
 const isAllFine = computed(() => {
