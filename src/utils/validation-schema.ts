@@ -2,9 +2,9 @@ import { toTypedSchema } from "@vee-validate/yup";
 import * as yup from "yup";
 import { ref } from "vue";
 import type { Ref } from "vue";
-import { useI18n } from "vue-i18n";
+import { i18n } from "@/main";
 
-const { t } = useI18n();
+const t = i18n.global.t;
 
 export const userDetailsSchema = toTypedSchema(
     yup.object({

@@ -40,9 +40,6 @@ import InputIcon from "primevue/inputicon";
 import ProgressSpinner from "primevue/progressspinner";
 import ToggleButton from "primevue/togglebutton";
 import { setLocale as yupSetLocale } from 'yup';
-const app = createApp(App);
-
-
 const i18n = createI18n({
     locale: localStorage.getItem('locale') || 'en',
     fallbackLocale: 'en',
@@ -53,11 +50,16 @@ const i18n = createI18n({
         nl
     },
 });
+const app = createApp(App);
 
+
+
+app.use(i18n);
+export { i18n };
 app.use(createPinia());
 app.use(router);
 app.use(PrimeVue);
-app.use(i18n);
+
 app.use(ToastService);
 
 app.component('Button', Button);
