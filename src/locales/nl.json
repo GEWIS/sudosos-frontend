@@ -290,5 +290,14 @@
     "Incorrect transactions": "Foute transacties",
     "Security": "Beveiliging",
     "Feature requests": "Verzoekjes"
+  },
+  "validation": {
+    "required": "Dit veld is verplicht",
+    "string": {
+      "min": "Dit veld moet minimaal ${min} tekens bevatten"
+    },
+    "number": {
+      "min": "Dit veld moet groter zijn dan ${min}"
+    }
   }
 }

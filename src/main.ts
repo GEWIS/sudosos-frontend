@@ -1,6 +1,3 @@
-/* eslint vue/multi-word-component-names: 0 */
-/* eslint vue/no-reserved-component-names: 0 */
-
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import { createI18n } from 'vue-i18n';
@@ -42,20 +39,9 @@ import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import ProgressSpinner from "primevue/progressspinner";
 import ToggleButton from "primevue/togglebutton";
-import veeValidateNL from '@vee-validate/i18n/dist/locale/nl.json';
-import veeValidateEN from '@vee-validate/i18n/dist/locale/en.json';
-import { configure, defineRule } from "vee-validate";
-import { localize, setLocale } from "@vee-validate/i18n";
+import { setLocale as yupSetLocale } from 'yup';
 const app = createApp(App);
 
-configure({
-    generateMessage: localize({
-        en: veeValidateEN,
-        nl: veeValidateNL,
-    }),
-});
-
-setLocale(localStorage.getItem('locale') || 'en');
 
 const i18n = createI18n({
     locale: localStorage.getItem('locale') || 'nl',
@@ -99,3 +85,15 @@ app.component('ToggleButton', ToggleButton);
 
 populateStoresFromToken(apiService);
 app.mount('#app');
+
+yupSetLocale({
+    mixed: {
+        required: ({ path }) => i18n.global.t('validation.required', { path: i18n.global.t(`validation.fieldNames.${path}`) }),
+    },
+    string: {
+        min: ({ path, min }) => i18n.global.t('validation.string.min', { path: i18n.global.t(`validation.fieldNames.${path}`), min }),
+    },
+    number: {
+        min: ({ path, min }) => i18n.global.t('validation.number.min', { path: i18n.global.t(`validation.fieldNames.${path}`), min }),
+    },
+});
