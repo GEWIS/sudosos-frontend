@@ -269,7 +269,10 @@
     "total": "Totaal:",
     "waivedFineDescr": "Je boetes zijn kwijtgescholden.",
     "what": "Wat",
-    "when": "Wanneer"
+    "when": "Wanneer",
+    "userBoughtAt": "Je hebt gekocht bij {pos}",
+    "otherBoughtAt": "{user} heeft gekocht bij {pos}",
+    "putInBy": "Transactie aangemaakt door {createdBy}"
   },
   "userDetails": {
     "Active": "Actief",

@@ -71,7 +71,6 @@ import { useRouter } from "vue-router";
 import { UserRole } from "@/utils/rbacUtils";
 import { useI18n } from "vue-i18n";
 import { formatPrice } from "@/utils/formatterUtils";
-import { setLocale } from "@vee-validate/i18n";
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
@@ -188,7 +187,6 @@ const rightItems = computed(() =>[
         command: () => {
           locale.value = 'nl';
           localStorage.setItem('locale', 'nl');
-          setLocale('nl');
         },
       },
       {
@@ -197,7 +195,6 @@ const rightItems = computed(() =>[
         command: () => {
           locale.value = 'en';
           localStorage.setItem('locale', 'en');
-          setLocale('en')
         },
       },
     ]
@@ -288,7 +285,6 @@ const mobileItems = computed(() => [
         command: () => {
           locale.value = 'nl';
           localStorage.setItem('locale', 'nl');
-          setLocale('nl');
         },
       },
       {
@@ -297,7 +293,6 @@ const mobileItems = computed(() => [
         command: () => {
           locale.value = 'en';
           localStorage.setItem('locale', 'en');
-          setLocale('en');
         },
       },
     ]

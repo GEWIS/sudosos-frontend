@@ -340,7 +340,10 @@
     "total": "Total:",
     "waivedFineDescr": "Your fines were waived.",
     "what": "What",
-    "when": "When"
+    "when": "When",
+    "userBoughtAt": "You bought at {pos}",
+    "otherBoughtAt": "{user} bought at {pos}",
+    "putInBy": "Transaction created by {createdBy}"
   },
   "userDetails": {
     "Active": "Active",
