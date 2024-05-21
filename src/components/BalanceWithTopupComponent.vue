@@ -43,10 +43,10 @@
               v-model="topupAmount"
               inputId="amount"
               @input="
-                (test) => {
+                (data) => {
                   setFieldValue(
                     'Top up amount',
-                    test.value as number,
+                    data.value as number,
                     errors['Top up amount'] !== undefined
                   );
                   setTouched(true);
