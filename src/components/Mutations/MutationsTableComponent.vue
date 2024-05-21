@@ -8,7 +8,7 @@
       lazy
       @page="onPage($event)"
       :totalRecords="totalRecords"
-      :rowClass="getOtherTransaction"
+      :rowClass="isSomeoneElsesTransaction"
     >
       <Column field="moment" style="width: 30%" :header="$t('transactions.when')">
         <template #body v-if="isLoading">
@@ -231,7 +231,7 @@ function getDescription(mutation: FinancialMutation) {
   }
 }
 
-const getOtherTransaction = (data: FinancialMutation) => {
+const isSomeoneElsesTransaction = (data: FinancialMutation) => {
   if (isLoading.value) return;
   const isOtherTransaction = data.type === FinancialMutationType.TRANSACTION && data.from?.id != userStore.current.user!!.id;
   return [{ 'font-italic': isOtherTransaction, 'text-500': isOtherTransaction }];
