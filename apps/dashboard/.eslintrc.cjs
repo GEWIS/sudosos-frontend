@@ -11,7 +11,6 @@ module.exports = {
     '@vue/eslint-config-prettier/skip-formatting',
     'plugin:@intlify/vue-i18n/recommended',
   ],
-
   ignorePatterns: ["/src/components/icons/*.vue", "package-lock.json"],
   rules: {
     "@intlify/vue-i18n/no-raw-text": 'error',
@@ -55,6 +54,15 @@ module.exports = {
     rules: {
       'max-len': 'off'  // Turn off max-len rule for locale JSON files
     }
+  },
+  {
+    files: ['package.json'],
+    parser: 'jsonc-eslint-parser',
+    plugins: ['github-commit-hash'],
+    extends: [],
+    rules: {
+      'github-commit-hash/check-git-commit-hash': 'error',
+    },
   }
 ]
 };
