@@ -2,7 +2,7 @@
   <Dialog v-model:visible="visible" ref="dialog" modal :draggable="false" :header="product.name" :pt="{content: 'p-0'}" @show="addListenerOnDialogueOverlay(dialog)">
     <div class="flex gap-5 overflow-hidden">
       <!-- Row for Picture -->
-      <div class="picture-container">
+      <div class="picture-container p-3">
         <img class="product-image" :src="getProductImageSrc(product)" :alt="product.name">
       </div>
 
@@ -64,16 +64,14 @@ import Dialog from 'primevue/dialog';
 import { type Ref, ref } from "vue";
 import { getProductImageSrc } from "@/utils/imageUtils";
 import { formatDateTime, formatPrice } from "@/utils/formatterUtils";
-import apiService from "@/services/ApiService";
 import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
 import { handleError } from "@/utils/errorUtils";
-import { useRouter } from "vue-router";
 import { addListenerOnDialogueOverlay } from "@/utils/dialogUtil";
+import { useContainerStore } from "@/stores/container.store";
 
 const dialog: Ref<null|any> = ref(null);
 
-const router = useRouter();
 const toast = useToast();
 const props = defineProps({
   product: {
@@ -85,23 +83,19 @@ const props = defineProps({
     required: true,
   }
 });
+
 const visible = ref(false);
 const { t } = useI18n();
+const containerStore = useContainerStore();
+
 const handleDeleteProduct = async () => {
-  const newProducts = props.container.products.filter(product => product.id !== props.product.id)
-      .map(product => product.id);
-  await apiService.container.updateContainer(props.container.id, {
-    name: props.container.name,
-    products: newProducts,
-    public: props.container.public || false,
-  }).then(() => {
+  await containerStore.deleteProductFromContainer(props.container, props.product).then(() => {
         toast.add({
           severity: 'success',
           summary: t('successMessages.success'),
           detail: t('successMessages.deleteProductContainer'),
           life: 3000,
         });
-        router.go(0);
       }
   ).catch((error) => handleError(error, toast));
 };
