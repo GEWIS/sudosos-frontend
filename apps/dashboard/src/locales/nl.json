@@ -145,8 +145,7 @@
     "newContainer": "Nieuwe container"
   },
   "errorMessages": {
-    "posNotFound": "Het gevraagde verkooppunt is niet gevonden.",
-    "userNotFound": "De gevraagde gebruiker is niet gevonden."
+    "posNotFound": "Het gevraagde verkooppunt is niet gevonden."
   },
   "fine": {
     "apply": "Toepassen",

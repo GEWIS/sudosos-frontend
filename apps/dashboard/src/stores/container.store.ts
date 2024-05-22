@@ -10,7 +10,8 @@ import ApiService from "@/services/ApiService";
 
 export type ContainerInStore = ContainerWithProductsResponse | ContainerResponse;
 
-export function isContainerWithProductsResponse(container: ContainerInStore): container is ContainerWithProductsResponse {
+export function isContainerWithProductsResponse(container: ContainerInStore):
+  container is ContainerWithProductsResponse {
     return (container as ContainerWithProductsResponse).products !== undefined;
 }
 
@@ -27,11 +28,13 @@ export const useContainerStore = defineStore('container', {
         },
         getPublicContainers(state): Record<number, ContainerInStore> {
             return Object.fromEntries(
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
               Object.entries(state.containers).filter(([_, container]) => container.public)
             );
         },
         getUsersContainers(state): Record<number, ContainerInStore> {
             return Object.fromEntries(
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
               Object.entries(state.containers).filter(([_, container]) => container.public === false)
             );
         }

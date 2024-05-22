@@ -1,5 +1,7 @@
+<!-- eslint-disable @intlify/vue-i18n/no-raw-text -->
 <template>
-  <Dialog v-model:visible="visible" ref="dialog" modal :draggable="false" :header="product.name" :pt="{content: 'p-0'}" @show="addListenerOnDialogueOverlay(dialog)">
+  <Dialog v-model:visible="visible" ref="dialog" modal :draggable="false" :header="product.name"
+          :pt="{content: 'p-0'}" @show="addListenerOnDialogueOverlay(dialog)">
     <div class="flex gap-5 overflow-hidden">
       <!-- Row for Picture -->
       <div class="picture-container p-3">
@@ -70,7 +72,7 @@ import { handleError } from "@/utils/errorUtils";
 import { addListenerOnDialogueOverlay } from "@/utils/dialogUtil";
 import { useContainerStore } from "@/stores/container.store";
 
-const dialog: Ref<null|any> = ref(null);
+const dialog: Ref<null | any> = ref(null);
 
 const toast = useToast();
 const props = defineProps({
@@ -115,6 +117,7 @@ const handleDeleteProduct = async () => {
   align-items: center;
   background-color: #fff; /* Ensuring background is white */
 }
+
 .product-image {
   max-width: 100%;
   max-height: 100%;
