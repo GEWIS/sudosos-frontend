@@ -1,15 +1,16 @@
 <template>
   <CardComponent :header="$t('containersOverview.Containers')" class="p-0">
-    <!--    <TabView :active-index=1 class="hidden md:block" :scrollable="true">-->
-    <!--      <TabPanel v-for="container in containers" :key="container.id" :header="container.name">-->
-    <!--        <ProductGridComponent :container="container" :products="container.products"/>-->
-    <!--      </TabPanel>-->
-    <!--      <TabPanel>-->
-    <!--        <template #header>-->
-    <!--            <span class="p-tabview-title createContainerButton">{{ $t('containersOverview.newContainer') }}</span>-->
-    <!--        </template>-->
-    <!--      </TabPanel>-->
-    <!--    </TabView>-->
+<!--    TODO re-add newContainer button -->
+<!--    <TabView :active-index=1 class="hidden md:block" :scrollable="true">-->
+<!--      <TabPanel v-for="container in containers" :key="container.id" :header="container.name">-->
+<!--        <ProductGridComponent :container="container" :products="container.products"/>-->
+<!--      </TabPanel>-->
+<!--      <TabPanel>-->
+<!--        <template #header>-->
+<!--           <span class="p-tabview-title createContainerButton">{{ $t('containersOverview.newContainer') }}</span>-->
+<!--        </template>-->
+<!--      </TabPanel>-->
+<!--    </TabView>-->
     <Accordion :activeIndex="0" class="block w-full" :multiple="true"
                @tab-open="(event: AccordionTabOpenEvent) => onTabOpen(event)">
       <AccordionTab v-for="container in containers" :key="container.id" :header="container.name">

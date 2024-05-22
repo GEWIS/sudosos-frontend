@@ -10,7 +10,6 @@
     "Create": "Create",
     "Create POS": "Create POS",
     "English": "English",
-    "Manage POS": "Manage POS",
     "Manage products": "Manage products",
     "Netherlands": "Nederlands",
     "Overview": "POS Overview",
@@ -260,8 +259,7 @@
     "no products": "This container contains no products"
   },
   "errorMessages": {
-    "posNotFound": "The requested POS was not found.",
-    "userNotFound": "The requested user was not found."
+    "posNotFound": "The requested POS was not found."
   },
   "fine": {
     "apply": "Apply",

@@ -59,7 +59,8 @@ const pos: Ref<PointOfSaleWithContainersResponse | null | undefined> = ref();
 
 const containerStore = useContainerStore();
 const posContainerIds = computed(() => pos.value?.containers.map((container) => container.id));
-const posContainers = computed(() => Object.values(containerStore.getAllContainers).filter((container) => posContainerIds.value?.includes(container.id)));
+const posContainers = computed(() => Object.values(containerStore.getAllContainers)
+    .filter((container) => posContainerIds.value?.includes(container.id)));
 
 onBeforeMount(async () => {
   id.value = route.params.id;
