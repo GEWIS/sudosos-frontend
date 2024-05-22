@@ -84,6 +84,7 @@ import { useForm } from 'vee-validate';
 import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
 import { handleError } from "@/utils/errorUtils";
+import { useProductStore } from "@/stores/product.store";
 
 const productSchema = toTypedSchema(
   yup.object({
@@ -99,6 +100,8 @@ const productSchema = toTypedSchema(
 const { defineField, handleSubmit, errors } = useForm({
   validationSchema: productSchema
 });
+
+const productStore = useProductStore();
 
 const authStore = useAuthStore();
 const toast = useToast();
@@ -139,9 +142,8 @@ const handleProductCreate = handleSubmit(async (values) => {
     alcoholPercentage: values.alcoholPercentage || 0,
     ownerId: values.owner.id
   };
-  await apiService.products.createProduct(createProductRequest).then((resp) => {
-    if (productImage.value)
-      apiService.products.updateProductImage(resp.data.id, productImage.value);
+
+  await productStore.createProduct(createProductRequest, productImage.value).then(() => {
     toast.add({
       severity: 'success',
       summary: t('successMessages.success'),
@@ -150,7 +152,6 @@ const handleProductCreate = handleSubmit(async (values) => {
     });
     emit('productCreated');
     emit('update:visible', false);
-
   }).catch((err) => handleError(err, toast));
 });
 
