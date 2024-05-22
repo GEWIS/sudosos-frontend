@@ -40,22 +40,13 @@ import InputIcon from "primevue/inputicon";
 import ProgressSpinner from "primevue/progressspinner";
 import ToggleButton from "primevue/togglebutton";
 import { setLocale as yupSetLocale } from 'yup';
-const i18n = createI18n({
-    locale: localStorage.getItem('locale') || 'en',
-    fallbackLocale: 'en',
-    legacy: false,
-    globalInjection: true,
-    messages: {
-        en,
-        nl
-    },
-});
+import i18n from './utils/i18nUtils';
+
 const app = createApp(App);
 
 
 
 app.use(i18n);
-export { i18n };
 app.use(createPinia());
 app.use(router);
 app.use(PrimeVue);
@@ -87,16 +78,3 @@ app.component('ToggleButton', ToggleButton);
 
 populateStoresFromToken(apiService);
 app.mount('#app');
-
-yupSetLocale({
-    mixed: {
-        required: ({ path }) => i18n.global.t('validation.required', { path: i18n.global.t(`validation.fieldNames.${path}`) }),
-    },
-    string: {
-        min: ({ path, min }) => i18n.global.t('validation.string.min', { path: i18n.global.t(`validation.fieldNames.${path}`), min }),
-        max: ({ path, max }) => i18n.global.t('validation.string.max', { path: i18n.global.t(`validation.fieldNames.${path}`), max }),
-    },
-    number: {
-        min: ({ path, min }) => i18n.global.t('validation.number.min', { path: i18n.global.t(`validation.fieldNames.${path}`), min }),
-    },
-});

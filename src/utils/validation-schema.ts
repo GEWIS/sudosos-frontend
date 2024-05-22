@@ -2,7 +2,7 @@ import { toTypedSchema } from "@vee-validate/yup";
 import * as yup from "yup";
 import { ref } from "vue";
 import type { Ref } from "vue";
-import { i18n } from "@/main";
+import i18n from './i18nUtils';
 
 const t = i18n.global.t;
 

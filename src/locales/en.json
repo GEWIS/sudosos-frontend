@@ -1,13 +1,7 @@
 {
   "apiError": {
-    "400": "There is something wrong with the request you are trying to make",
-    "401": "You don't have the rights to access this data",
-    "403": "You cannot access this data",
-    "404": "This data does not seem to exist",
     "500": "Something is going wrong, please open an issue on {link} describing the issue.",
-    "Something went wrong": "Something went wrong",
-    "error": "Error",
-    "message": "Error message"
+    "error": "Error"
   },
   "app": {
     "BAC": "BAC",
@@ -16,7 +10,6 @@
     "Create": "Create",
     "Create POS": "Create POS",
     "English": "English",
-    "Flagged transactions": "Flagged transactions",
     "Manage POS": "Manage POS",
     "Manage products": "Manage products",
     "Netherlands": "Nederlands",
@@ -64,10 +57,8 @@
     "Select product": "Select product"
   },
   "c_POSCreate": {
-    "Containers": "Containers",
     "Create": "Create",
     "Create Point of Sale": "Create Point of Sale",
-    "Edit": "Edit",
     "Edit Point of Sale": "Edit Point of Sale",
     "General": "General",
     "Own containers": "Own containers",
@@ -92,6 +83,36 @@
     "waivedFine": "Waived Fine",
     "all transactions": "all transactions",
     "recent transactions": "recent transactions"
+  },
+  "login": {
+    "Back": "Back to home",
+    "Back to login": "Go back to login",
+    "Confirm password": "Confirm new password",
+    "Email sent": "If there exists an external account on this email address, an email has been sent to {email} with instructions on how to reset your password.",
+    "Enter email": "Enter email",
+    "Login": "Login",
+    "Login via GEWIS": "Login via GEWIS",
+    "New password": "New password",
+    "Password": "Password",
+    "Password reset": "Reset password (External accounts only)",
+    "Required field": "This is a required field.",
+    "Reset": "Reset password",
+    "SudoSOS": "SudoSOS",
+    "SudoSOS Login": "SudoSOS Login",
+    "Username": "Username",
+    "copyright": "© 2023 GEWIS",
+    "localAccount": "Login using local account"
+  },
+  "manageProducts": {
+    "Add product": "Add product",
+    "Containers": "Containers",
+    "Manage all products and containers": "Manage all products and containers"
+  },
+  "payment": {
+    "pay": "pay"
+  },
+  "pointOfSaleOverview": {
+    "Point of sale overview": "Point of sale overview"
   },
   "c_containerEditModal": {
     "Name": "Name",
@@ -365,540 +386,22 @@
     "Security": "Security",
     "Feature requests": "Feature requests"
   },
-  "login": {
-    "Back": "Back to home",
-    "Back to login": "Go back to login",
-    "Confirm password": "Confirm new password",
-    "Email sent": "If there exists an external account on this email address, an email has been sent to {email} with instructions on how to reset your password.",
-    "Enter email": "Enter email",
-    "Login": "Login",
-    "Login via GEWIS": "Login via GEWIS",
-    "New password": "New password",
-    "Password": "Password",
-    "Password reset": "Reset password (External accounts only)",
-    "Required field": "This is a required field.",
-    "Reset": "Reset password",
-    "SudoSOS": "SudoSOS",
-    "SudoSOS Login": "SudoSOS Login",
-    "Username": "Username",
-    "copyright": "© 2023 GEWIS",
-    "localAccount": "Login using local account"
-  },
-  "manageProducts": {
-    "Add product": "Add product",
-    "Containers": "Containers",
-    "Manage all products and containers": "Manage all products and containers"
-  },
-  "payment": {
-    "pay": "pay"
-  },
-  "pointOfSaleOverview": {
-    "Point of sale overview": "Point of sale overview",
-    "c_containerEditModal": {
-      "Name": "Name",
-      "Public": "Public",
-      "add container": "add container",
-      "added by": "Added by",
-      "added on": "Added on",
-      "cancel": "Cancel",
-      "edit container": "edit container",
-      "name invalid": "Please enter a name that is longer than 0 characters",
-      "owner": "Owner",
-      "save": "Save",
-      "select owner": "Please Select Owner"
+  "validation": {
+    "number": {
+      "min": "This field must be greater than ${min}"
     },
-    "c_currentBalance": {
-      "Increase balance": "Increase balance",
-      "allIsFines": "All of which is a fine",
-      "balance": "Balance",
-      "cashtopup": "It is no longer possible to increase your balance in cash during the 'borrel'",
-      "currency": "€",
-      "increase": "Balance increase amount:",
-      "someIsFines": "Of which {fine} is fines",
-      "startPayment": "Start Payment",
-      "topup": "You will be topping up with",
-      "upgrade online": "increase online"
+    "password": {
+      "match": "Passwords must match."
     },
-    "c_depositAlert": {
-      "message": "One or more deposits are still being processed. When this is successful, your deposit will be added to your balance and this message will disappear."
+    "pin": {
+      "match": "PINs must match.",
+      "onlyDigits": "PIN must be only digits."
     },
-    "c_fileFormPreview": {
-      "Choose image drop": "Choose image or drop here...",
-      "Drop file": "Drop file here..."
-    },
-    "c_productEditModal": {
-      "Add existing": "Add existing product",
-      "Add new": "Add new product",
-      "Alcohol Percentage": "Alc. %",
-      "Category": "Category",
-      "Delete from container": "Delete from container",
-      "Delete product": "Delete product",
-      "Existing products": "Existing products",
-      "Image": "Image",
-      "Name": "Name",
-      "Please select": "Please select a product category",
-      "Please select VAT": "Please select a VAT group",
-      "Price": "Price (in €)",
-      "Product details": "Product details",
-      "VAT": "VAT (in %)",
-      "add product": "add product",
-      "added by": "Added by",
-      "added on": "Added on",
-      "cancel": "cancel",
-      "category invalid": "Please select one of the product categories",
-      "edit product": "edit product",
-      "name invalid": "Please provide a valid name that is longer than 0 characters",
-      "picture invalid": "Please provide a picture",
-      "price invalid": "Please provide a valid price that is higher or equal to 0",
-      "save": "Save",
-      "updated on": "Last updated on"
-    },
-    "c_productInfoModal": {
-      "Added by": "Added by",
-      "Added on": "Added on",
-      "Alcohol percentage": "Alcohol percentage",
-      "Cancel": "Close",
-      "Category": "Category",
-      "Name": "Name",
-      "Picture": "Picture",
-      "Price": "Price",
-      "Product picture": "Product picture",
-      "Updated on": "Updated on",
-      "VAT": "VAT",
-      "delete": "Delete Product from container",
-      "title": "Product information"
-    },
-    "c_productTable": {
-      "Fill in a name": "Fill in a name",
-      "Filter by name": "Filter by name",
-      "No": "No",
-      "Page": "Page",
-      "Products per page": "Products per page",
-      "Yes": "Yes",
-      "alcoholic": "Alcohol %",
-      "category": "Category",
-      "image": "Image",
-      "name": "Name",
-      "price": "Price"
-    },
-    "c_recentTransactionsTable": {
-      "all transactions": "all transactions",
-      "recent transactions": "recent transactions",
-      "transaction": "You spent a total of {amount}",
-      "transfer": "You topped up with {amount}",
-      "what": "What",
-      "when": "When"
-    },
-    "c_transactionDetails": {
-      "Bought by": "Bought by",
-      "Point of sale": "Point of sale",
-      "Products": "Products",
-      "Put in by": "Put in by",
-      "Total": "Total"
-    },
-    "c_transactionDetailsModal": {
-      "Cancel": "Close",
-      "Flag transaction": "Flag transaction",
-      "delete": "Delete",
-      "flag invalid": "Please provide a reason",
-      "flag reason": "Please provide a reason for flagging the transaction",
-      "reason placeholder": "Provide a reason",
-      "transactionDetails": "Transaction Details"
-    },
-    "c_transactionEditor": {
-      "Add product": "Add product",
-      "Delete": "Delete",
-      "Delete product": "Delete product",
-      "Product container": "Product container",
-      "Save": "Save",
-      "Total": "Total"
-    },
-    "c_transactionFlagsComponent": {
-      "Info": "Info",
-      "Page": "Page",
-      "Reason": "Reason",
-      "Status": "Status",
-      "When": "When",
-      "Who": "Who"
-    },
-    "c_transactionTableFilter": {
-      "Export to CSV": "Export to CSV",
-      "Hide handled": "Hide handled",
-      "Put in for others": "Bought for others",
-      "Put in for you": "Bought by others for you",
-      "Reset filter": "Reset filter",
-      "Self Bought": "Bought by you",
-      "from": "from",
-      "placeholder": "Select a date",
-      "to": "to"
-    },
-    "c_transactionsTable": {
-      "Empty": "No transactions found.",
-      "Info": "Info",
-      "Page": "Page",
-      "Transactions": "Transactions",
-      "What": "What",
-      "When": "When",
-      "You": "You",
-      "transaction": "{person} spent a total of {amount}",
-      "transactionForYou": "{name} spent a total of {amount} for your products",
-      "transactionPutBy": "{name} charged you {amount}",
-      "transactionPutFor": "{person} charged {name} for {amount}",
-      "transferDeposit": "{person} increased balance with {amount}",
-      "transferIncoming": "{person} received {amount} from {other}",
-      "transferInvoiceIncoming": "{person} received {amount} from invoice",
-      "transferInvoiceOutgoing": "{person} were invoiced {amount}",
-      "transferOutgoing": "{person} paid {amount} to {other}",
-      "transferPayoutRequest": "{person} were paid {amount} back to bank account",
-      "transferVoidIncoming": "{person} received {amount}",
-      "transferVoidOutgoing": "{person} paid {amount}"
-    },
-    "c_transferDetails": {
-      "Deposit": "Deposit",
-      "Description": "Description",
-      "From": "From",
-      "Invoice": "Invoice",
-      "Other": "Other transaction",
-      "PayoutRequest": "PayoutRequest",
-      "To": "To",
-      "Total": "Total",
-      "Transfer": "Transfer between users",
-      "Type": "Transaction type"
-    },
-    "c_userTable": {
-      "Active": "Active",
-      "Create User": "Create User",
-      "Fill in a name": "Fill in a name or ID",
-      "Filter by name": "Filter by name or ID",
-      "Manage users": "Manage users",
-      "Page": "Page",
-      "Select Type": "Select Type",
-      "Select User Type": "Select User Type",
-      "Type": "Type",
-      "User Type": "User Type",
-      "firstName": "First Name",
-      "gewisID": "GEWIS ID",
-      "lastName": "Last Name",
-      "ofAge": "18+"
-    },
-    "containersOverview": {
-      "Containers": "Containers",
-      "newContainer": "New container"
-    },
-    "errorMessages": {
-      "posNotFound": "The requested POS was not found.",
-      "userNotFound": "The requested user was not found."
-    },
-    "fine": {
-      "apply": "Apply",
-      "count": "Count",
-      "createdAt": "Created at",
-      "createdBy": "Created by",
-      "date": "Date",
-      "description": "Description",
-      "eligibleUsers": "Eligible Users",
-      "fine": "Fine",
-      "fineHandoutEvents": "Fine Handout Events",
-      "fineNumber": "Number of fines",
-      "fineOverview": "Fine Overview",
-      "fineTotal": "Total of fines",
-      "firstBalance": "First Balance",
-      "firstDate": "First Date",
-      "from": "From",
-      "gewisId": "GEWIS ID",
-      "handout": "Handout Fines",
-      "handoutEventDetails": "Fine Handout Event Details",
-      "id": "ID",
-      "info": "Info",
-      "infoMessage": "Currently, eligible users have a total debt of {debt}. This would result in a total of {fines} in fines being handed out.",
-      "lastBalance": "Last Balance",
-      "name": "Name",
-      "notify": "Notify Users",
-      "pleaseSelect": "Please apply two dates to see how much users are in debt.",
-      "referenceDate": "Reference Date",
-      "secondDate": "Second Date",
-      "total": "Total",
-      "type": "Transaction type"
-    },
-    "flagged": {
-      "Flagged transactions": "Flagged transactions"
-    },
-    "flaggedDetails": {
-      "Edit transaction": "Edit transaction",
-      "Flag details": "Flag details",
-      "Flagged transaction": "Flagged transaction",
-      "Transaction details": "Transaction details",
-      "accept manual": "Accept (fix manual)",
-      "comment placeholder": "Provide a comment if needed",
-      "flagged by": "Flagged by",
-      "flagged on": "Flagged on",
-      "reason": "Reason",
-      "reject": "Reject",
-      "status": "Status"
-    },
-    "formatters": {
-      "Friday": "Friday",
-      "Monday": "Monday",
-      "Saturday": "Saturday",
-      "Sunday": "Sunday",
-      "Thursday": "Thursday",
-      "Tuesday": "Tuesday",
-      "Wednesday": "Wednesday"
-    },
-    "home": {
-      "Overview": "Overview"
-    },
-    "login": {
-      "Back": "Back to home",
-      "Back to login": "Go back to login",
-      "Confirm password": "Confirm new password",
-      "Email": "Email",
-      "Email sent": "If there exists an external account on this email address, an email has been sent to {email} with instructions on how to reset your password.",
-      "Enter email": "Enter email",
-      "Enter password": "Enter password",
-      "Enter password again": "Enter password again",
-      "Enter username": "Enter username",
-      "Login": "Login",
-      "Login via GEWIS": "Login via GEWIS",
-      "New password": "New password",
-      "Password": "Password",
-      "Password not strong": "Password needs to be longer than 8 characters and needs a lower- and uppercase letter, number and a special character",
-      "Password reset": "Reset password (External accounts only)",
-      "Passwords not equal": "Passwords are not equal",
-      "Required field": "This is a required field.",
-      "Reset": "Reset password",
-      "Reset the password for": "Reset the password for {email}",
-      "Returning": "Welcome back",
-      "Set new password": "Set new password",
-      "SudoSOS": "SudoSOS",
-      "SudoSOS Login": "SudoSOS Login",
-      "Username": "Username",
-      "copyright": "© 2023 GEWIS",
-      "separator": " | "
-    },
-    "managePOS": {
-      "Manage points of sale": "Manage points of sale"
-    },
-    "manageProducts": {
-      "Add container": "Add container",
-      "Add product": "Add product",
-      "All products": "All products",
-      "Are you sure": "Are you sure you want to delete this container?",
-      "Confirm": "Confirm deletion",
-      "Containers": "Containers",
-      "Default containers": "Default containers",
-      "Manage all products and containers": "Manage all products and containers"
-    },
-    "payment": {
-      "cancel": "cancel",
-      "pay": "pay"
-    },
-    "pointOfSaleOverview": {
-      "Point of sale overview": "Point of sale overview"
-    },
-    "posApprove": {
-      "Approve": "Approve",
-      "Containers": "Containers",
-      "General": "General",
-      "Management": "Management",
-      "Managers": "Managers",
-      "Owner": "Owner",
-      "Reject": "Reject",
-      "Request:": "Request:",
-      "Title": "Title"
-    },
-    "posInfo": {
-      "Close": "Close",
-      "Containers": "Containers",
-      "Edit": "Edit",
-      "General": "General",
-      "Info": "Info",
-      "Owner": "Owner",
-      "POS": "POS",
-      "Page": "Page",
-      "Title": "Title",
-      "What": "What",
-      "When": "When"
-    },
-    "profile": {
-      "canGoIntoDebt": "User can go into debt",
-      "changePassword": "Change password",
-      "changeUserInfo": "Change user info",
-      "confirmNFC": "Are you sure you want to remove this NFC device?",
-      "deletionConfirm": "Confirm deletion",
-      "editInfo": "Edit info",
-      "emailAddress": "Email address",
-      "emailNotCorrect": "You should enter a correct email address",
-      "firstName": "First name",
-      "firstNameError": "First name should contain at least 1 character",
-      "incorrectPassword": "Incorrect passwords submitted",
-      "individualDataAnalysis": "Individual Data Analysis:",
-      "keyGet": "Get API key",
-      "keyGetNew": "Get new API key",
-      "keyNotSaved": "NOTE: your API key is not saved so copy it now",
-      "keyOldRemoved": "NOTE: any old API key will be replaced",
-      "lastName": "Last name",
-      "manageNFC": "Manage NFC devices",
-      "myProfile": "My profile",
-      "newKey": "Your new API key is: ",
-      "notManagedThroughSudoSOS": "This account is not managed through SudoSOS!",
-      "ofAge": "User is of age",
-      "password": "Password",
-      "passwordConfirm": "Confirm password",
-      "passwordUpdate": "Update password",
-      "pinChange": "Change pin code",
-      "pinConfirm": "Confirm new pin code",
-      "pinNew": "New pin code",
-      "updateInfo": "Update user information"
-    },
-    "quickOverview": {
-      "quickOverview": "Quick Overview",
-      "quickOverviewMessage": "Show this at the bar so we can help you faster",
-      "passwordNotMatching": "The passwords do not match up",
-      "passwordTooShort": "Password should contain at least 8 characters",
-      "passwordUpdate": "Update password",
-      "pinChange": "Change pin code",
-      "pinConfirm": "Confirm new pin code",
-      "pinIncorrect": "Incorrect pin code submitted",
-      "pinIncorrectLength": "Pin code must be 4 digits",
-      "pinNew": "New pin code",
-      "pinNotMatch": "Confirmation does not match pin code",
-      "pinOld": "Old pin code",
-      "pinUpdated": "Pin code was successfully updated.",
-      "updateInfo": "Update user information"
-    },
-    "screens": {
-      "Confirm end time": "Confirm end time",
-      "Ending time": "Ending time",
-      "Screens": "TV Screens",
-      "Stop social drink mode": "Stop social drink mode",
-      "currently": "Currently social drink mode is turned ",
-      "early": "You can either change the time above or turn off the social drink mode prematurely by clicking on \"Stop social drink mode\".",
-      "off": "off",
-      "on": "on",
-      "turn off": "Social drink mode will automatically be turned off at ",
-      "turn on": "You can turn on social drink mode by choosing a time above and clicking the button. The social drink mode will automatically be turned of at that time."
-    },
-    "signOut": {
-      "message": "Signing you out! Hope you had a nice time :) Be sure to come back soon!"
-    },
-    "socialDrinkCards": {
-      "Social drink cards overview": "Social drink cards overview"
-    },
-    "socialDrinkCardsPrint": {
-      "BAr Committee Social drink card": "BAr Committee Social drink card",
-      "instructions": "Simply print this page to A4 format and the borrel cards will roll out of the printer correctly :)",
-      "until": "until",
-      "valid": "Valid",
-      "value": "Value"
-    },
-    "successMessages": {
-      "createContainer": "Successfully created container.",
-      "deleteProductContainer": "Successfully deleted product from container.",
-      "editPOS": "Succesfully edited POS.",
-      "fineDeleted": "Successfully deleted fine.",
-      "finesHandedOut": "Successfully handed out fines",
-      "finesNotified": "Succesfully notified users.",
-      "productCreated": "Successfully created product.",
-      "success": "Success",
-      "transactionDeleted": "Successfully deleted transaction."
-    },
-    "termsOfService": {
-      "acceptFirst": "Accept the Terms of Service",
-      "agreeData": "I agree with extensive data processing for my account (optional).",
-      "agreeToS": "I agree with the Terms of Service",
-      "description": "Before you can use SudoSOS, you need to accept the Terms of Service. Please read the contents of the terms of service below.",
-      "termsOfService": "Terms of Service",
-      "extensiveDataProcessing": "SudoSOS can use your personal data to provide more insights, both for yourself as well as other people within GEWIS. When you enable the checkbox below, you enable this feature and you can see extensive statistics of yourself, but of other users as well. This feature is optional.",
-      "modalHeader": "SudoSOS Terms of Service",
-      "ok": "OK"
-    },
-    "transactionFlagTableFilter": {
-      "Hide handled": "Hide handled",
-      "Reset filter": "Reset filter",
-      "from": "from",
-      "placeholder": "No date selected",
-      "to": "to"
-    },
-    "transactions": {
-      "Transactions": "Transactions",
-      "amount": "Amount",
-      "depositDescr": "You have deposited money on SudoSOS",
-      "depositID": "Deposit ID",
-      "description": "Description",
-      "fineAmount": "Fine",
-      "fineDescr": "You have received a fine.",
-      "invoiceDescr": "You have paid an invoice to GEWIS",
-      "price": "Price",
-      "title": "Title",
-      "total": "Total:",
-      "invoice": "Invoice",
-      "invoiceStatus": "Status",
-      "otherBoughtAt": "{user} bought at {pos}",
-      "products": "Products",
-      "putInBy": "Transaction created by {createdBy}",
-      "transferType": "Type",
-      "userBoughtAt": "You bought at {pos}",
-      "waivedFineDescr": "Your fines were waived.",
-      "what": "What",
-      "when": "When"
-    },
-    "userDetails": {
-      "Active": "Active",
-      "Are you sure": "Are you sure you want to remove this NFC device?",
-      "Change pin code": "Change pin code",
-      "Confirm deletion": "Confirm deletion",
-      "Confirm new pin code": "Confirm new pin code",
-      "Confirm password": "Confirm password",
-      "Confirmation does not match pin code": "Confirmation does not match pin code",
-      "Edit info": "Edit info",
-      "Email address": "Email address",
-      "Email should be correct": "You should enter a correct email address",
-      "First name": "First name",
-      "First name should contain at least 1 character": "First name should contain at least 1 character",
-      "Last name": "Last name",
-      "Manage NFC devices": "Manage NFC devices",
-      "New pin code": "New pin code",
-      "New pin code length must be 4 digits": "New pin code length must be 4 digits",
-      "New pin code must be unique from old pin code": "New pin code must be unique from old pin code",
-      "Not local": "This account is not managed through SudoSOS.",
-      "Old pin code": "Old pin code",
-      "Password": "Password",
-      "Password should": "Password should contain at least 8 characters",
-      "Personal Info": "Personal Info",
-      "Pin code must be 4 digits": "Pin code must be 4 digits",
-      "Request reset": "Request reset link",
-      "Request reset sent": "Password reset link was sent successfully",
-      "Reset password": "Reset password",
-      "The passwords to not match up": "The passwords to not match up",
-      "Update information": "Update information",
-      "Update password": "Update password",
-      "Update user information": "Update user information",
-      "User Transactions": "User Transactions",
-      "Usertype": "Usertype",
-      "passwordUpdated": "Password successfully updated",
-      "profile": "{name}'s profile",
-      "updatedUserInfo": "Succesfully updated user info.",
-      "user is active": "user is active",
-      "userInfoUpdated": "User information successfully updated"
-    },
-    "validation": {
-      "number": {
-        "min": "This field must be greater than ${min}"
-      },
-      "password": {
-        "match": "Passwords must match."
-      },
-      "pin": {
-        "match": "PINs must match.",
-        "onlyDigits": "PIN must be only digits."
-      },
-      "required": "This field is required",
-      "string": {
-        "exact": "This field must be exactly ${len} characters",
-        "max": "This field can't be greater than ${max} characters",
-        "min": "This field must be at least ${min} characters"
-      }
+    "required": "This field is required",
+    "string": {
+      "exact": "This field must be exactly ${len} characters",
+      "max": "This field can't be greater than ${max} characters",
+      "min": "This field must be at least ${min} characters"
     }
   }
 }
