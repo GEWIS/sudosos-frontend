@@ -4,13 +4,15 @@
             :draggable="false"
             modal
             @after-hide="resetForm"
+            ref="assignProduct"
+            @show="addListenerOnDialogueOverlay(assignProduct)"
     >
         <form @submit="handleProductCreate">
             <div class="row">
                 <p class="prop">{{ $t('c_ContainerAssign.Product') }}</p>
                 <Dropdown
                     :placeholder="$t('c_ContainerAssign.Select product')"
-                    :options="allProducts.filter(prod => !products.map(e => e.id).includes(prod.id))"
+                    :options="products.filter(prod => !container.products.map(e => e.id).includes(prod.id))"
                     optionLabel="name"
                     v-bind="productAttrs"
                     v-model="product"
@@ -27,16 +29,19 @@
 </template>
 <script setup lang="ts">
 import type { ContainerWithProductsResponse } from "@sudosos/sudosos-client";
-import apiService from '@/services/ApiService';
-import type { ProductResponse, UpdateContainerRequest } from '@sudosos/sudosos-client';
+import type { ProductResponse } from '@sudosos/sudosos-client';
 import Dialog from 'primevue/dialog';
-import { onMounted, ref, type PropType, type Ref } from 'vue';
+import { ref, type PropType, type Ref, onBeforeMount } from 'vue';
 import { useForm } from 'vee-validate';
 import * as yup from 'yup';
 import { toTypedSchema } from "@vee-validate/yup";
 import { computed } from 'vue';
 import { useI18n } from "vue-i18n";
+import { addListenerOnDialogueOverlay } from "@/utils/dialogUtil";
+import { useProductStore } from "@/stores/product.store";
+import { useContainerStore } from "@/stores/container.store";
 const { t } = useI18n();
+const assignProduct: Ref<null | any> = ref(null);
 
 const schema = toTypedSchema(
   yup.object({
@@ -56,7 +61,6 @@ const { defineField, resetForm, errors, handleSubmit } = useForm({
 });
 
 const [product, productAttrs] = defineField('product');
-const allProducts: Ref<ProductResponse[]> = ref([]);
 
 
 const props = defineProps({
@@ -68,21 +72,16 @@ const props = defineProps({
     type: Boolean,
     required: true
   },
-  products: {
-    type: Object as PropType<ProductResponse[]>,
-    required: true
-  }
 });
 
 const emit = defineEmits(['update:visible', 'update:products']);
 
-const products = computed({
-  get() {
-    return props.products;
-  },
-  set(value) {
-    emit('update:products', value);
-  }
+const productStore = useProductStore();
+const products = computed(() => Object.values(productStore.getProducts).sort((a, b) => a.name.localeCompare(b.name)));
+const containerStore = useContainerStore();
+
+onBeforeMount(async () => {
+  await productStore.fetchAllIfEmpty();
 });
 
 const visible = computed({
@@ -93,24 +92,9 @@ const visible = computed({
     emit('update:visible', value);
   }
 });
-onMounted(async () => {
-
-  const productsResp = await apiService.products.getAllProducts(500, 0);
-  allProducts.value = productsResp.data.records;
-});
 
 const handleProductCreate = handleSubmit(async (values) => {
-
-  const updateContainerReq: UpdateContainerRequest = {
-    name: props.container.name,
-    products: [values.product.id, ...props.container.products.map(e => e.id)],
-    public: props.container.public || false,
-  };
-
-  apiService.container.updateContainer(props.container.id, updateContainerReq);
-
-  products.value.push(values.product);
-
+  await containerStore.addProductToContainer(props.container, values.product);
   visible.value = false;
 });
 
