@@ -54,7 +54,7 @@ export const useProductStore = defineStore('products', {
         0,
         Number.MAX_SAFE_INTEGER,
         // @ts-ignore
-        (take, skip) => ApiService.vatGroups.getAllVatGroups(take, skip));
+        (take, skip) => ApiService.vatGroups.getAllVatGroups(undefined, undefined,undefined, false, take, skip));
     },
     async createProduct(createProductRequest: CreateProductRequest, productImage: File | undefined) {
       const product = await ApiService.products.createProduct(createProductRequest).then((resp) => resp.data);

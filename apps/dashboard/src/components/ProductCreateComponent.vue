@@ -1,116 +1,130 @@
 <template>
-  <Dialog modal v-model:visible="visible" :header="$t('manageProducts.Add product')" class="w-auto flex w-8"
-    @update:visible="closeDialog();">
+  <Dialog modal v-model:visible="visible" :header="$t('manageProducts.Add product')" class="w-auto flex"
+          @update:visible="closeDialog">
     <form @submit="handleProductCreate">
-      <div class="field grid">
-        <label for="name" class="col-12 mb-2 md:col-2 md:mb-0">{{ $t('c_productInfoModal.Name') }}</label>
-        <div class="col-12 md:col-10">
-          <InputText id="name" v-model="name" type="text" v-bind="nameAttrs" />
-          <span class="error-text">{{ errors.name }}</span>
+      <div class="flex gap-5 overflow-hidden">
+        <!-- Row for Picture -->
+        <div class="picture-container p-3">
+<!--          <img class="product-image" :src="getProductImageSrc(product)" :alt="product.name">-->
+          <div class="field grid">
+            <div class="col-12 md:col-10">
+              <label for="img" class="col-12 mb-2 md:col-2 md:mb-0">{{ $t("c_productEditModal.Image") }}</label>
+              <FileUpload id="img" mode="basic" name="productImg" accept="image/*" @select="onImgUpload($event)"/>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="field grid">
-        <label for="category" class="col-12 mb-2 md:col-2 md:mb-0">{{ $t('c_productInfoModal.Category') }}</label>
-        <div class="col-12 md:col-10">
-          <Dropdown :placeholder="$t('c_productEditModal.Please select')" :options="categories" optionLabel="name"
-            v-model="category" id="category" v-bind="categoryAttrs" />
-          <span class="error-text">{{ errors.category }}</span>
+
+        <div class="flex flex-column w-30rem justify-content-between pr-5 py-5 gap-3">
+          <div class="flex flex-row justify-content-between">
+            <label for="name">{{ $t('c_productInfoModal.Name') }}</label>
+            <div>
+              <InputText id="name" v-model="name" type="text" v-bind="nameAttrs"/>
+              <br>
+              <span class="error-text">{{ errors.name }}</span>
+            </div>
+          </div>
+          <div class="flex flex-row justify-content-between">
+            <label for="category">{{ $t('c_productInfoModal.Category') }}</label>
+            <div>
+              <Dropdown :placeholder="$t('c_productEditModal.Please select')" :options="categories" optionLabel="name"
+                        v-model="category" id="category" v-bind="categoryAttrs"/>
+              <br>
+              <span class="error-text">{{ errors.category }}</span>
+            </div>
+          </div>
+          <div class="flex flex-row justify-content-between">
+            <label for="vat">{{ $t('c_productEditModal.VAT') }}</label>
+            <div>
+              <Dropdown :placeholder="$t('c_productEditModal.Please select VAT')" :options="vatGroups"
+                        optionLabel="percentage" v-model="vat" v-bind="vatAttrs"/>
+              <br>
+              <span class="error-text">{{ errors.vatGroup }}</span>
+            </div>
+          </div>
+          <div class="flex flex-row justify-content-between" v-if="category && category.name === 'Alcoholic'">
+            <label for="alcohol">{{
+                $t('c_productEditModal.Alcohol Percentage')
+              }}</label>
+            <div>
+              <InputNumber id="alcohol" v-model="alcoholPercentage" v-bind="alcoholPercentageAttrs"/>
+              <span class="error-text">{{ errors.alcoholPercentage }}</span>
+            </div>
+          </div>
+          <div class="flex flex-row justify-content-between">
+            <label for="price" >{{ $t('c_productEditModal.Price') }}</label>
+            <div>
+              <InputNumber id="price" v-model="price" v-bind="priceAttrs" :max-fraction-digits="2"/>
+              <br>
+              <span class="error-text">{{ errors.price }}</span>
+            </div>
+          </div>
+          <div class="flex flex-row justify-content-between">
+            <label for="owner" >{{ $t('c_POSCreate.Owner') }}</label>
+            <div>
+              <Dropdown :placeholder="$t('c_POSCreate.Select owner')" :options="organsList" optionLabel="firstName"
+                        v-model="owner" id="owner" v-bind="ownerAttrs"/>
+              <br>
+              <span class="error-text">{{ errors.owner }}</span>
+            </div>
+          </div>
+          <div class="flex justify-content-end">
+            <Button type="submit" class="save-button">{{ $t('c_productEditModal.save') }}</Button>
+          </div>
         </div>
-      </div>
-      <div class="field grid">
-        <label for="vat" class="col-12 mb-2 md:col-2 md:mb-0">{{ $t('c_productEditModal.VAT') }}</label>
-        <div class="col-12 md:col-10">
-          <Dropdown :placeholder="$t('c_productEditModal.Please select VAT')" :options="vatGroups"
-            optionLabel="percentage" v-model="vat" v-bind="vatAttrs" />
-          <span class="error-text">{{ errors.vatGroup }}</span>
-        </div>
-      </div>
-      <div class="field grid" v-if="category && null === 'Alcoholic'">
-        <label for="alcohol" class="col-12 mb-2 md:col-2 md:mb-0">
-          {{ $t('c_productEditModal.Alcohol Percentage') }}
-        </label>
-        <div class="col-12 md:col-10">
-          <InputNumber id="alcohol" placeholder="" :options="vatGroups" v-model="alcoholPercentage"
-            v-bind="alcoholPercentageAttrs" />
-          <span class="error-text">{{ errors.alcoholPercentage }}</span>
-        </div>
-      </div>
-      <div class="field grid">
-        <label for="price" class="col-12 mb-2 md:col-2 md:mb-0">{{ $t('c_productEditModal.Price') }}</label>
-        <div class="col-12 md:col-10">
-          <InputNumber id="price" placeholder="" v-model="price" v-bind="priceAttrs" :max-fraction-digits="2" />
-          <span class="error-text">{{ errors.price }}</span>
-        </div>
-      </div>
-      <div class="field grid">
-        <div class="col-12 md:col-10">
-          <label for="img" class="col-12 mb-2 md:col-2 md:mb-0">{{ $t("c_productEditModal.Image") }}</label>
-          <FileUpload id="img" mode="basic" name="productImg" accept="image/*" @select="onImgUpload($event)" />
-        </div>
-      </div>
-      <div class="field grid">
-        <label for="owner" class="col-12 mb-2 md:col-2 md:mb-0">{{ $t('c_POSCreate.Owner') }}</label>
-        <div class="col-12 md:col-10">
-          <Dropdown :placeholder="$t('c_POSCreate.Select owner')" :options="organsList" optionLabel="firstName"
-            v-model="owner" id="owner" v-bind="ownerAttrs" />
-          <span class="error-text">{{ errors.owner }}</span>
-        </div>
-      </div>
-      <div class="flex justify-content-end">
-        <Button type="submit" class="save-button">{{ $t('c_productEditModal.save') }}</Button>
       </div>
     </form>
   </Dialog>
 </template>
 
 <script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
 import Dialog from 'primevue/dialog';
-import { onMounted, ref } from 'vue';
-import type { Ref } from 'vue';
+import InputText from 'primevue/inputtext';
+import Dropdown from 'primevue/dropdown';
+import FileUpload from 'primevue/fileupload';
+import InputNumber from 'primevue/inputnumber';
+import Button from 'primevue/button';
+import { useAuthStore } from '@sudosos/sudosos-frontend-common';
+import { useForm } from 'vee-validate';
+import * as yup from 'yup';
+import { useToast } from 'primevue/usetoast';
+import { useI18n } from 'vue-i18n';
+import { handleError } from "@/utils/errorUtils";
+import { useProductStore } from "@/stores/product.store";
+import type { Ref, ComputedRef } from 'vue';
 import type {
   BaseUserResponse,
   CreateProductRequest,
   ProductCategoryResponse,
   VatGroupResponse
 } from '@sudosos/sudosos-client';
-import apiService from '@/services/ApiService';
-import Dropdown from 'primevue/dropdown';
-import FileUpload from 'primevue/fileupload';
-import { useAuthStore } from '@sudosos/sudosos-frontend-common';
-import InputNumber from 'primevue/inputnumber';
-import { toTypedSchema } from '@vee-validate/yup';
-import * as yup from 'yup';
-import { useForm } from 'vee-validate';
-import { useToast } from "primevue/usetoast";
-import { useI18n } from "vue-i18n";
-import { handleError } from "@/utils/errorUtils";
-import { useProductStore } from "@/stores/product.store";
+import { getProductImageSrc } from "@/utils/imageUtils";
 
-const productSchema = toTypedSchema(
-  yup.object({
-    name: yup.string().required(),
-    category: yup.mixed<ProductCategoryResponse>().required(),
-    vatGroup: yup.mixed<VatGroupResponse>().required(),
-    alcoholPercentage: yup.number(),
-    price: yup.number().required(),
-    owner: yup.mixed<BaseUserResponse>().required()
-  })
-);
+const productSchema = yup.object({
+  name: yup.string().required(),
+  category: yup.mixed<ProductCategoryResponse>().required(),
+  vatGroup: yup.mixed<VatGroupResponse>().required(),
+  alcoholPercentage: yup.number(),
+  price: yup.number().required(),
+  owner: yup.mixed<BaseUserResponse>().required()
+});
 
 const { defineField, handleSubmit, errors } = useForm({
   validationSchema: productSchema
 });
 
 const productStore = useProductStore();
-
 const authStore = useAuthStore();
+
 const toast = useToast();
 const { t } = useI18n();
 const visible: Ref<boolean | undefined> = ref(false);
 const emit = defineEmits(['update:visible', 'productCreated']);
-const categories: Ref<ProductCategoryResponse[]> = ref([]);
-const vatGroups: Ref<VatGroupResponse[]> = ref([]);
+
+const categories: ComputedRef<ProductCategoryResponse[]> = computed(() => Object.values(productStore.categories));
+const vatGroups: ComputedRef<VatGroupResponse[]> = computed(() => Object.values(productStore.vatGroups));
 const organsList: Ref<BaseUserResponse[]> = ref([]);
+
 const [name, nameAttrs] = defineField('name');
 const [category, categoryAttrs] = defineField('category');
 const [vat, vatAttrs] = defineField('vatGroup');
@@ -120,12 +134,7 @@ const [alcoholPercentage, alcoholPercentageAttrs] = defineField('alcoholPercenta
 const productImage: Ref<File | undefined> = ref();
 
 onMounted(async () => {
-  const categoriesResp = await apiService.category.getAllProductCategories();
-  // I'm gonna go ahead and hardcode this because
-  // if there are more than 25 fucking categories we are doing something wrong.
-  categories.value = categoriesResp.data.records;
-  const vatGroupsResp = await apiService.vatGroups.getAllVatGroups();
-  vatGroups.value = vatGroupsResp.data.records;
+  await productStore.fetchAllIfEmpty();
   organsList.value = authStore.organs;
 });
 
@@ -166,4 +175,29 @@ const onImgUpload = (event: any) => {
 </script>
 
 <style scoped lang="scss">
+.alt-dialog-content {
+  padding: 0 !important;
+}
+
+.picture-container {
+  width: 21rem; /* 336px if 1rem = 16px */
+  height: 21rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff; /* Ensuring background is white */
+}
+
+.product-image {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto; /* New line: Ensures width is auto-adjusted */
+  height: 100%; /* New line: Ensures height is auto-adjusted */
+  object-fit: cover; /* Changes from contain to cover to ensure full square area is used */
+}
+
+.error-text {
+  color: red;
+  font-weight: bolder;
+}
 </style>
