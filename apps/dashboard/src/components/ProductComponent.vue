@@ -1,14 +1,14 @@
 <template>
   <div
-    class="flex flex-column h-10rem w-9rem border-300 border-1 border-round-sm overflow-hidden"
+    class="flex flex-column h-12rem w-9rem border-300 border-1 border-round-sm overflow-hidden"
     @click="visible = true"
   >
-    <div class="flex align-items-center justify-content-center h-8rem w-full bg-white overflow-hidden">
-      <img :src="getProductImageSrc(product)" :alt="product.name" class="max-w-full max-h-full object-contain" />
-    </div>
-    <p class="text-center m-0 text-base text-overflow-ellipsis font-bold">{{ product.name }}</p>
+      <div class="h-8rem flex justify-content-center align-items-center background-white">
+        <img :src="getProductImageSrc(product)" :alt="product.name" class="p-1 h-8rem"/>
+      </div>
+      <p class="text-center m-2 text-base text-overflow-ellipsis font-bold">{{ product.name }}</p>
   </div>
-  <ProductDialogComponent :container="container" v-model:visible="visible" :product="product" />
+  <ProductDialogComponent :container="container" v-model:visible="visible" :product="product"/>
 </template>
 
 <script setup lang="ts">
