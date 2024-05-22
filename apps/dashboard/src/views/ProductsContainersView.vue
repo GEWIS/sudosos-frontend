@@ -190,10 +190,9 @@
 import InputIcon from "primevue/inputicon";
 import IconField from "primevue/iconfield";
 import CardComponent from '@/components/CardComponent.vue';
-import { onBeforeMount, type Ref } from "vue";
+import { computed, onBeforeMount, type Ref } from "vue";
 import { ref } from 'vue';
 import apiService from '@/services/ApiService';
-import { fetchAllPages } from '@sudosos/sudosos-frontend-common';
 import type {
   ContainerResponse,
   ContainerWithProductsResponse,
@@ -213,10 +212,18 @@ import Dropdown from 'primevue/dropdown';
 import ContainerCardComponent from '@/components/ContainerCardComponent.vue';
 import ProductCreateComponent from "@/components/ProductCreateComponent.vue";
 import Skeleton from "primevue/skeleton";
+import { useProductStore } from "@/stores/product.store";
+import { type ContainerInStore, useContainerStore } from "@/stores/container.store";
 
-const containers: Ref<ContainerWithProductsResponse[]> = ref([]);
+const productStore = useProductStore();
+const containerStore = useContainerStore();
+
+const containers = computed<ContainerInStore[]>(() => Object.values(containerStore.getAllContainers));
 const loading: Ref<boolean> = ref(true);
-const products: Ref<ProductResponse[]> = ref(new Array(5));
+
+const products = computed<ProductResponse[]>(() => Object.values(productStore.getProducts)
+    .sort((a, b) => a.name.localeCompare(b.name)));
+
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   category: { value: null, matchMode: FilterMatchMode.EQUALS },
@@ -237,51 +244,20 @@ const rowEditInit = (event: DataTableRowEditInitEvent) => {
   event.data['editPrice'] = (event.data as ProductResponse).priceInclVat.amount / 100;
 };
 
+// TODO fix
 const handleNewProduct = async () => {
-  products.value = await fetchAllPages<ProductResponse>(
-      0,
-      Number.MAX_SAFE_INTEGER,
-      // @ts-ignore
-      (take, skip) => apiService.products.getAllProducts(take, skip)
-  );
 };
 
 onBeforeMount(async () => {
-  products.value = new Array(5);
-  products.value = await fetchAllPages<ProductResponse>(
-      0,
-      Number.MAX_SAFE_INTEGER,
-      // @ts-ignore
-      (take, skip) => apiService.products.getAllProducts(take, skip)
-  );
-  const categoriesResp = await apiService.category.getAllProductCategories();
-  categories.value = categoriesResp.data.records;
-  const vatGroupsResp = await apiService.vatGroups.getAllVatGroups();
+  await productStore.fetchAllIfEmpty();
+  await containerStore.fetchAllIfEmpty();
+  const vatGroupsResp = await apiService.vatGroups.getAllVatGroups(undefined, undefined, undefined, false);
   vatGroups.value = vatGroupsResp.data.records;
-
-  const req: Promise<void>[] = [];
-
-  const con: ContainerWithProductsResponse[] = [];
-
-  // TODO: Put getAllContainers into container store and take care of pagination
-  // See: https://github.com/GEWIS/sudosos-frontend-vue3/issues/51
-  await apiService.container.getAllContainers(500, 0).then((resp: any) => {
-    ((resp.data.records as ContainerResponse[]).forEach((container) => {
-      req.push(apiService.container.getSingleContainer(container.id).then((res) => {
-        con.push(res.data as ContainerWithProductsResponse);
-      }));
-    }));
-  });
-
-  await Promise.all(req).then(() => {
-    containers.value = con.sort((a, b) => new Date(b.updatedAt as string).getTime() - new Date(a.updatedAt as string).getTime());
-  });
-
   loading.value = false;
 });
 
 const updateRow = async (event: DataTableRowEditSaveEvent) => {
-  await apiService.products.updateProduct(event.newData.id, {
+  await productStore.updateProduct(event.newData.id, {
     name: event.newData.name,
     priceInclVat: {
       amount: event.newData.editPrice * 100,
@@ -292,7 +268,6 @@ const updateRow = async (event: DataTableRowEditSaveEvent) => {
     category: event.newData.category.id,
     alcoholPercentage: event.newData.alcoholPercentage
   });
-  products.value[event.index] = event.newData;
 };
 
 const onImgUpload = async (event: Event, productId: number) => {
