@@ -19,7 +19,9 @@
             dateStyle: 'full'
           }) }}</span>
           <span class="sm:hidden">{{
-            mutation.data.moment.toISOString().split('T')[0]
+            mutation.data.moment.toLocaleDateString('nl-NL', {
+              dateStyle: 'short'
+            })
             }}
           </span>
         </template>
