@@ -80,12 +80,12 @@ const [title, titleAttrs] = defineField('title');
 
 const containerStore = useContainerStore();
 const userStore = useUserStore();
-const publicContainers: Ref<Array<ContainerResponse> | null | undefined> = ref();
-const ownContainers: Ref<Array<ContainerResponse> | null | undefined> = ref();
+
+const publicContainers = computed(() => Object.values(containerStore.getPublicContainers));
+const ownContainers = computed(() => Object.values(containerStore.getUsersContainers));
+
 const selectedContainers: Ref<Array<ContainerResponse> | undefined> = ref();
 const [useAuthentication, useAuthenticationAttrs] = defineField('useAuthentication');
-const organsList: Ref<Array<UserResponse>> = ref([]);
-const authStore = useAuthStore();
 const pointOfSaleStore = usePointOfSaleStore();
 const id = ref();
 const route = useRoute();
@@ -98,34 +98,15 @@ const posDisplayName = computed(() => {
 });
 
 onBeforeMount(async () => {
+  await containerStore.fetchAllIfEmpty();
+
   id.value = route.params.id;
   await apiService.pos.getSinglePointOfSale(id.value).then((response) => {
     pos.value = response.data;
   }).catch(() => {
     router.replace({ path: '/error' });
   });
-  if (userStore.getCurrentUser.user) {
-    await containerStore
-      .getPublicContainers()
-      .then((response) => {
-        publicContainers.value = response.records;
-      })
-      .catch((error) => handleError(error, toast));
-    await containerStore
-      .getUsersContainers(userStore.getCurrentUser.user.id)
-      .then((response) => {
-        ownContainers.value = response.records.filter((container) => container.public == false);
-      })
-      .catch((error) => handleError(error, toast));
-    organsList.value = authStore.organs;
-  } else {
-    toast.add({
-      severity: 'error',
-      summary: t('apiError.error'),
-      detail: t('errorMessages.userNotFound'),
-      life: 3000
-    });
-  }
+
   if (pos.value) {
     setValues({
       useAuthentication: pos.value.useAuthentication,
