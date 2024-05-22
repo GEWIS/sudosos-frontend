@@ -1,3 +1,4 @@
+<!-- eslint-disable @intlify/vue-i18n/no-raw-text -->
 <template>
   <div class="page-container">
     <div class="page-title">Manage products</div>
@@ -194,8 +195,6 @@ import { computed, onBeforeMount, type Ref } from "vue";
 import { ref } from 'vue';
 import apiService from '@/services/ApiService';
 import type {
-  ContainerResponse,
-  ContainerWithProductsResponse,
   ProductCategoryResponse,
   ProductResponse,
   VatGroupResponse

@@ -52,8 +52,7 @@ import { computed, onBeforeMount, ref } from 'vue';
 import type { Ref } from 'vue';
 import { useContainerStore } from '@/stores/container.store';
 import DetailedContainerCardComponent from '@/components/DetailedContainerCardComponent.vue';
-import { useAuthStore, useUserStore } from '@sudosos/sudosos-frontend-common';
-import type { BaseUserResponse, ContainerResponse, UserResponse } from '@sudosos/sudosos-client';
+import type { BaseUserResponse, ContainerResponse } from '@sudosos/sudosos-client';
 import { usePointOfSaleStore } from '@/stores/pos.store';
 import { useRoute } from 'vue-router';
 import type { PointOfSaleWithContainersResponse } from '@sudosos/sudosos-client';
@@ -79,7 +78,6 @@ const { defineField, handleSubmit, errors, setValues } = useForm({
 const [title, titleAttrs] = defineField('title');
 
 const containerStore = useContainerStore();
-const userStore = useUserStore();
 
 const publicContainers = computed(() => Object.values(containerStore.getPublicContainers));
 const ownContainers = computed(() => Object.values(containerStore.getUsersContainers));
