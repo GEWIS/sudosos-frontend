@@ -13,8 +13,6 @@ Format issues on GitHub as `#XXX`. Tickets from support.gewis.nl can also be aut
 `ABC-YYMM-XXX`.
 -->
 
-Fixes GH-NNN.
-
 ## Types of changes
 <!-- What types of changes does your code introduce? Put an `X` in all the boxes that apply: -->
 - [ ] Bug fix _(non-breaking change which fixes an issue)_

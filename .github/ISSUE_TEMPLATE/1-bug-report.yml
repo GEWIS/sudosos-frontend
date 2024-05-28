@@ -1,5 +1,6 @@
 name: "🐛 Bug Report"
 description: Report a bug found while using the SudoSOS frontend.
+title: "[Bug]: "
 labels: ["Type: Bug", "Status: Triage"]
 body:
     -   type: textarea
@@ -24,23 +25,6 @@ body:
             placeholder: I did X, then Y, before arriving at Z, when ERROR ...
         validations:
             required: true
-    -   type: input
-        id: version
-        attributes:
-            label: Database version
-            placeholder: ex. v2.0 (1a64154)
-        validations:
-            required: true
-    -   type: dropdown
-        id: os
-        attributes:
-            label: What operating are you seeing the problem on?
-            multiple: true
-            options:
-                - Linux
-                - macOS
-                - Windows
-                - Other
     -   type: dropdown
         id: browsers
         attributes:
@@ -57,5 +41,5 @@ body:
         id: other
         attributes:
             label: Other information
-            description: Any other details? Things like browser and operating system version should go here.
+            description: Any other details?
 
