@@ -15,7 +15,6 @@
 import type { ContainerWithProductsResponse, ProductResponse } from "@sudosos/sudosos-client";
 import { getProductImageSrc } from "@/utils/imageUtils";
 import { ref } from "vue";
-import ProductDialogComponent from "@/components/ProductDialogComponent.vue";
 
 const visible = ref(false);
 

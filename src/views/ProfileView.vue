@@ -25,16 +25,11 @@
 </template>
 
 <script setup lang="ts">
-import ChangePasswordComponent from "@/components/ChangePasswordComponent.vue";
-import ChangePinComponent from "@/components/ChangePinComponent.vue";
-import ChangeApiKeyComponent from "@/components/ChangeApiKeyComponent.vue";
 import { useAuthStore, useUserStore } from "@sudosos/sudosos-frontend-common";
 import { storeToRefs } from "pinia";
-import UserInfoComponent from "@/components/UserInfoComponent.vue";
 import type { UserResponse } from "@sudosos/sudosos-client";
 import { computed, onMounted, type Ref, ref } from "vue";
 import { UserRole } from "@/utils/rbacUtils";
-import InputSwitch from "primevue/inputswitch";
 import apiService from "@/services/ApiService";
 import router from "@/router";
 import { useToast } from "primevue/usetoast";

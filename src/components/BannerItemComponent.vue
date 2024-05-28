@@ -46,9 +46,6 @@
   <BannerDialogComponent v-model:visible="isEditDialogVisible" v-model:banner="banner" />
 </template>
 <script setup lang="ts">
-import Image from 'primevue/image';
-import Tag from 'primevue/tag';
-
 import BannerDialogComponent from '@/components/BannerDialogComponent.vue';
 
 import type { BannerResponse } from '@sudosos/sudosos-client';

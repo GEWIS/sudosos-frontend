@@ -20,19 +20,12 @@
     <BannerDialogComponent v-model:visible="isCreateDialogVisible" />
 </template>
 <script setup lang="ts">
-import DataView from "primevue/dataview";
-import SelectButton from "primevue/selectbutton";
-
 import type {
     BannerResponse,
 } from "@sudosos/sudosos-client";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
-
-import BannerItemComponent from "@/components/BannerItemComponent.vue";
-import CardComponent from "@/components/CardComponent.vue";
-import BannerDialogComponent from "@/components/BannerDialogComponent.vue";
 
 const props = defineProps<{
     banners: BannerResponse[],

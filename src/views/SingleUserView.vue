@@ -62,18 +62,13 @@ import type { Ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
 import type { PaginatedFinancialMutationResponse, UpdateUserRequest, UserResponse } from "@sudosos/sudosos-client";
-import CardComponent from "@/components/CardComponent.vue";
-import Checkbox from "primevue/checkbox";
-import BalanceComponent from "@/components/BalanceComponent.vue";
 import { useForm } from "vee-validate";
 import apiService from "@/services/ApiService";
 import router from "@/router";
 import { userDetailsSchema, userTypes } from "@/utils/validation-schema";
-import MutationsTableComponent from "@/components/Mutations/MutationsTableComponent.vue";
 import { handleError } from "@/utils/errorUtils";
 import { useToast } from "primevue/usetoast";
 import type { AxiosError } from "axios";
-import Button from "primevue/button";
 import { useI18n } from "vue-i18n";
 
 const { defineField, handleSubmit, errors, setValues } = useForm({

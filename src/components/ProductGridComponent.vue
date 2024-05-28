@@ -15,8 +15,6 @@
 
 <script setup lang="ts">
 import type { ContainerWithProductsResponse, ProductResponse } from "@sudosos/sudosos-client";
-import ProductComponent from "@/components/ProductComponent.vue";
-import ContainerAssignProductDialog from "@/components/ContainerAssignProductDialog.vue";
 import { type Ref, ref, type PropType } from "vue";
 
 let visible: Ref<boolean> = ref(false);

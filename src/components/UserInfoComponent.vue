@@ -10,7 +10,6 @@
 
 <script setup lang="ts">
 import type { GewisUserResponse, UserResponse } from "@sudosos/sudosos-client";
-import CardComponent from "@/components/CardComponent.vue";
 
 const props = defineProps({
   user: {

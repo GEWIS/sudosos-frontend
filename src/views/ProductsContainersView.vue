@@ -186,9 +186,6 @@
 </template>
 
 <script setup lang="ts">
-import InputIcon from "primevue/inputicon";
-import IconField from "primevue/iconfield";
-import CardComponent from '@/components/CardComponent.vue';
 import { onBeforeMount, type Ref } from "vue";
 import { ref } from 'vue';
 import apiService from '@/services/ApiService';
@@ -201,16 +198,9 @@ import type {
   VatGroupResponse
 } from '@sudosos/sudosos-client';
 import type { DataTableRowEditInitEvent, DataTableRowEditSaveEvent } from 'primevue/datatable';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
 import { getProductImageSrc } from '@/utils/imageUtils';
 import { formatPrice } from '@/utils/formatterUtils';
 import { FilterMatchMode } from 'primevue/api';
-import InputText from 'primevue/inputtext';
-import Dropdown from 'primevue/dropdown';
-
-import ContainerCardComponent from '@/components/ContainerCardComponent.vue';
-import ProductCreateComponent from "@/components/ProductCreateComponent.vue";
 import Skeleton from "primevue/skeleton";
 
 const containers: Ref<ContainerWithProductsResponse[]> = ref([]);

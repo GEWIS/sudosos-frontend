@@ -90,11 +90,6 @@
 
 <script lang="ts" setup>
 import type { DataTablePageEvent } from 'primevue/datatable';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import CardComponent from '@/components/CardComponent.vue';
-import Skeleton from 'primevue/skeleton';
-import { formatPrice } from '@/utils/formatterUtils';
 import type {
   BaseTransactionResponse,
   FinancialMutationResponse,
@@ -103,7 +98,6 @@ import type {
   TransferResponse
 } from '@sudosos/sudosos-client';
 import { onMounted, type Ref, ref } from 'vue';
-import MutationModal from '@/components/Mutations/MutationModal.vue';
 import {
   type FinancialMutation,
   FinancialMutationType,

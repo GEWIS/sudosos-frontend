@@ -22,8 +22,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
 import { computed } from "vue";
 import { formatPrice } from "@/utils/formatterUtils";
 import type { TransferResponse } from "@sudosos/sudosos-client";

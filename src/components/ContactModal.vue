@@ -44,7 +44,6 @@
 </template>
 
 <script setup lang="ts">
-import Dialog from 'primevue/dialog';
 import { ref } from 'vue';
 
 const visible = ref(false);

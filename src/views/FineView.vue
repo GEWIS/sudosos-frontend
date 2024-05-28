@@ -127,13 +127,9 @@
 </template>
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import DataTable from 'primevue/datatable';
-import Column from "primevue/column";
-import CardComponent from "@/components/CardComponent.vue";
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/yup";
 import * as yup from "yup";
-import Calendar from "primevue/calendar";
 import apiService from "@/services/ApiService";
 import { onMounted, type Ref, ref } from "vue";
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
@@ -146,8 +142,6 @@ import { fetchAllPages } from "@sudosos/sudosos-frontend-common";
 import { useToast } from "primevue/usetoast";
 import type { AxiosError } from "axios";
 import { handleError } from "@/utils/errorUtils";
-import Skeleton from "primevue/skeleton";
-import ProgressSpinner from "primevue/progressspinner";
 
 const { t } = useI18n();
 const router = useRouter();

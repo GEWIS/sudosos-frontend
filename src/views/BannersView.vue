@@ -5,7 +5,6 @@
     </div>
 </template>
 <script setup lang="ts">
-import BannersListComponent from '@/components/BannersListComponent.vue';
 import { onMounted } from 'vue';
 import { useBannersStore } from '@/stores/banner.store';
 import { storeToRefs } from 'pinia';

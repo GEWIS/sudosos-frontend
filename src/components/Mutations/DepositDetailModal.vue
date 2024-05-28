@@ -35,8 +35,6 @@
 <script setup lang="ts">
 import type { TransferResponse } from "@sudosos/sudosos-client";
 import { formatPrice } from "@/utils/formatterUtils";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
 import { computed } from "vue";
 
 const { depositInfo } = defineProps({

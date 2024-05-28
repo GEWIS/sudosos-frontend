@@ -22,7 +22,6 @@
 </template>
 
 <script setup lang="ts">
-import Dialog from 'primevue/dialog';
 import { ref } from 'vue';
 import termsOfService from '@/locales/termsOfService.md?raw';
 import { marked } from 'marked';

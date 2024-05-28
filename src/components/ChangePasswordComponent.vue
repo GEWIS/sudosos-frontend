@@ -19,7 +19,6 @@
 </template>
 
 <script setup lang="ts">
-import CardComponent from "@/components/CardComponent.vue";
 import { useForm } from "vee-validate";
 import apiService from "@/services/ApiService";
 import { useUserStore } from "@sudosos/sudosos-frontend-common";

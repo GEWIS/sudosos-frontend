@@ -49,14 +49,6 @@
     </Dialog>
 </template>
 <script setup lang="ts">
-import Dialog from 'primevue/dialog';
-import Divider from 'primevue/divider';
-import InputText from 'primevue/inputtext';
-import InputNumber from 'primevue/inputnumber';
-import InputSwitch from 'primevue/inputswitch';
-import Calendar from 'primevue/calendar';
-import Button from 'primevue/button';
-
 import { getBannerImageSrc } from '@/utils/imageUtils';
 
 import type { BannerRequest, BannerResponse } from '@sudosos/sudosos-client';

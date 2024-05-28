@@ -20,12 +20,7 @@
 </template>
 <script setup lang="ts">
 import type { ContainerWithProductsResponse } from "@sudosos/sudosos-client";
-import ProductGridComponent from "@/components/ProductGridComponent.vue";
-import TabView from 'primevue/tabview';
-import TabPanel from 'primevue/tabpanel';
-import CardComponent from "./CardComponent.vue";
-import Accordion from "primevue/accordion";
-import AccordionTab from "primevue/accordiontab";
+
 
 defineProps({
   containers: {

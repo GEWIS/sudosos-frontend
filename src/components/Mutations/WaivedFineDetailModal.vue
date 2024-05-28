@@ -35,8 +35,6 @@
 <script setup lang="ts">
 import { formatPrice } from "@/utils/formatterUtils";
 import { onMounted, type Ref, ref, computed } from "vue";
-import Column from "primevue/column";
-import DataTable from "primevue/datatable";
 import type {
   DineroObjectResponse,
   TransferResponse

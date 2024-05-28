@@ -12,9 +12,6 @@
 </template>
 
 <script setup lang="ts">
-import TermsOfServiceModal from '@/components/TermsOfServiceModal.vue';
-import ContactModal from '@/components/ContactModal.vue';
-
 </script>
 
 <style scoped>

@@ -51,7 +51,6 @@
 import { computed, onBeforeMount, ref } from 'vue';
 import type { Ref } from 'vue';
 import { useContainerStore } from '@/stores/container.store';
-import DetailedContainerCardComponent from '@/components/DetailedContainerCardComponent.vue';
 import { useAuthStore, useUserStore } from '@sudosos/sudosos-frontend-common';
 import type { BaseUserResponse, ContainerResponse, UserResponse } from '@sudosos/sudosos-client';
 import { usePointOfSaleStore } from '@/stores/pos.store';

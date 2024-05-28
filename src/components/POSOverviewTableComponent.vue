@@ -28,14 +28,10 @@
   </CardComponent>
 </template>
 <script setup lang="ts">
-import CardComponent from "@/components/CardComponent.vue";
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
 import { onMounted, type Ref, ref } from "vue";
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
 import { usePointOfSaleStore } from "@/stores/pos.store";
 import type { PointOfSaleResponse } from "@sudosos/sudosos-client";
-import Skeleton from "primevue/skeleton";
 const userStore = useUserStore();
 const pointOfSaleStore = usePointOfSaleStore();
 const listOfPOS: Ref<Array<PointOfSaleResponse>> = ref(new Array(10));

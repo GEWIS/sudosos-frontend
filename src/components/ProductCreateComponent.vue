@@ -64,7 +64,6 @@
 </template>
 
 <script setup lang="ts">
-import Dialog from 'primevue/dialog';
 import { onMounted, ref } from 'vue';
 import type { Ref } from 'vue';
 import type {
@@ -74,10 +73,7 @@ import type {
   VatGroupResponse
 } from '@sudosos/sudosos-client';
 import apiService from '@/services/ApiService';
-import Dropdown from 'primevue/dropdown';
-import FileUpload from 'primevue/fileupload';
 import { useAuthStore } from '@sudosos/sudosos-frontend-common';
-import InputNumber from 'primevue/inputnumber';
 import { toTypedSchema } from '@vee-validate/yup';
 import * as yup from 'yup';
 import { useForm } from 'vee-validate';

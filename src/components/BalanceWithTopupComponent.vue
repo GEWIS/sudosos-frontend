@@ -67,8 +67,6 @@
 </template>
 
 <script setup lang="ts">
-import CardComponent from '@/components/CardComponent.vue';
-import TopupModal from '@/components/TopupModalComponent.vue';
 import { useAuthStore, useUserStore } from '@sudosos/sudosos-frontend-common';
 import { computed, ref, onMounted, type Ref, watch } from 'vue';
 import type { BalanceResponse, UserResponse } from '@sudosos/sudosos-client';
@@ -79,9 +77,7 @@ import { useRouter } from 'vue-router';
 import { useForm, useField } from 'vee-validate';
 import * as yup from 'yup';
 import { toTypedSchema } from '@vee-validate/yup';
-import Divider from 'primevue/divider';
 import Dinero from 'dinero.js';
-import InputNumber from 'primevue/inputnumber';
 
 const loading: Ref<boolean> = ref(true);
 const productSchema = toTypedSchema(

@@ -17,8 +17,6 @@
 </template>
 
 <script setup lang="ts">
-// TODO: Clean up all the fucking important statements
-// See: https://github.com/gewis/sudosos-frontend-vue3/issues/14
 import { useRouter } from "vue-router";
 
 const props = defineProps({

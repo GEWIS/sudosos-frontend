@@ -17,8 +17,6 @@
 </template>
 
 <script setup lang="ts">
-import BalanceWithTopupComponent from '@/components/BalanceWithTopupComponent.vue';
-import MutationsTableComponent from '@/components/Mutations/MutationsTableComponent.vue';
 import { useAuthStore, useUserStore } from '@sudosos/sudosos-frontend-common';
 import apiService from '@/services/ApiService';
 import type { PaginatedFinancialMutationResponse, UserResponse } from "@sudosos/sudosos-client";

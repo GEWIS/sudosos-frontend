@@ -17,7 +17,6 @@
 </template>
 
 <script setup lang="ts">
-import CardComponent from '@/components/CardComponent.vue';
 import { useAuthStore, useUserStore } from '@sudosos/sudosos-frontend-common';
 import { computed, ref, onMounted, type Ref, watch } from "vue";
 import type { BalanceResponse, UserResponse } from '@sudosos/sudosos-client';

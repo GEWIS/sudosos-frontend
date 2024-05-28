@@ -62,7 +62,6 @@ import { FinancialMutationType } from '@/utils/mutationUtils';
 import { UserRole } from '@/utils/rbacUtils';
 import { useAuthStore } from '@sudosos/sudosos-frontend-common';
 import WaivedFineDetailModal from "@/components/Mutations/WaivedFineDetailModal.vue";
-import Skeleton from "primevue/skeleton";
 
 const props = defineProps({
   type: {

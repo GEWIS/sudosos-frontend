@@ -48,13 +48,8 @@
   </CardComponent>
 </template>
 <script setup lang="ts">
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import CardComponent from "@/components/CardComponent.vue";
 import type { ContainerResponse } from "@sudosos/sudosos-client";
 import { onMounted, ref, watch } from "vue";
-import AddContainerDialogComponent from "@/components/AddContainerDialogComponent.vue";
-import Skeleton from "primevue/skeleton";
 
 const visible = ref(false);
 const selectedOwnContainers = ref<Array<ContainerResponse>>([]);

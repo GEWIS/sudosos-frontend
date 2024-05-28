@@ -59,7 +59,6 @@
 
 <script setup lang="ts">
 import type { ContainerWithProductsResponse, ProductResponse } from "@sudosos/sudosos-client";
-import Dialog from 'primevue/dialog';
 import { ref } from "vue";
 import { getProductImageSrc } from "@/utils/imageUtils";
 import { formatDateTime, formatPrice } from "@/utils/formatterUtils";

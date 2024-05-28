@@ -25,7 +25,6 @@
 </template>
 
 <script setup lang="ts">
-import CardComponent from "@/components/CardComponent.vue";
 import { useForm } from "vee-validate";
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
 import { useToast } from "primevue/usetoast";

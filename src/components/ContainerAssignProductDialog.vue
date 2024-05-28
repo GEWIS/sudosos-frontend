@@ -26,11 +26,10 @@
 
 </template>
 <script setup lang="ts">
+import { onMounted, ref, type PropType, type Ref } from 'vue';
 import type { ContainerWithProductsResponse } from "@sudosos/sudosos-client";
 import apiService from '@/services/ApiService';
 import type { ProductResponse, UpdateContainerRequest } from '@sudosos/sudosos-client';
-import Dialog from 'primevue/dialog';
-import { onMounted, ref, type PropType, type Ref } from 'vue';
 import { useForm } from 'vee-validate';
 import * as yup from 'yup';
 import { toTypedSchema } from "@vee-validate/yup";
