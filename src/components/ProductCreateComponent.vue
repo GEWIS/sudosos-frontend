@@ -4,13 +4,13 @@
     <form @submit="handleProductCreate">
       <div class="flex gap-5 overflow-hidden">
         <!-- Row for Picture -->
-        <div class="picture-container p-3">
-<!--          <img class="product-image" :src="getProductImageSrc(product)" :alt="product.name">-->
-          <div class="field grid">
-            <div class="col-12 md:col-10">
-              <label for="img" class="col-12 mb-2 md:col-2 md:mb-0">{{ $t("c_productEditModal.Image") }}</label>
-              <FileUpload id="img" mode="basic" name="productImg" accept="image/*" @select="onImgUpload($event)"/>
-            </div>
+        <div class="flex flex-column align-items-center gap-3">
+          <div class="picture-container p-3">
+            <img class="product-image" :src="productImageUrl">
+  <!--          <img class="product-image" :src="getProductImageSrc(product)" :alt="product.name">-->
+          </div>
+          <div class="col-12 md:col-10">
+            <FileUpload id="img" mode="basic" name="productImg" accept="image/*" @select="onImgUpload($event)"/>
           </div>
         </div>
 
@@ -45,14 +45,15 @@
             <label for="alcohol">{{
                 $t('c_productEditModal.Alcohol Percentage')
               }}</label>
-            <div>
-              <InputNumber id="alcohol" v-model="alcoholPercentage" v-bind="alcoholPercentageAttrs"/>
+            <div class="flex flex-column flex-end">
+              <InputNumber id="alcohol" v-model="alcoholPercentage" v-bind="alcoholPercentageAttrs" :max-fraction-digits="2"/>
+              <br>
               <span class="error-text">{{ errors.alcoholPercentage }}</span>
             </div>
           </div>
           <div class="flex flex-row justify-content-between">
             <label for="price" >{{ $t('c_productEditModal.Price') }}</label>
-            <div>
+            <div class="flex flex-column flex-end">
               <InputNumber id="price" v-model="price" v-bind="priceAttrs" :max-fraction-digits="2"/>
               <br>
               <span class="error-text">{{ errors.price }}</span>
@@ -60,7 +61,7 @@
           </div>
           <div class="flex flex-row justify-content-between">
             <label for="owner" >{{ $t('c_POSCreate.Owner') }}</label>
-            <div>
+            <div class="flex flex-column flex-end">
               <Dropdown :placeholder="$t('c_POSCreate.Select owner')" :options="organsList" optionLabel="firstName"
                         v-model="owner" id="owner" v-bind="ownerAttrs"/>
               <br>
@@ -131,7 +132,9 @@ const [vat, vatAttrs] = defineField('vatGroup');
 const [price, priceAttrs] = defineField('price');
 const [owner, ownerAttrs] = defineField('owner');
 const [alcoholPercentage, alcoholPercentageAttrs] = defineField('alcoholPercentage');
+
 const productImage: Ref<File | undefined> = ref();
+const productImageUrl: Ref<string | undefined> = ref();
 
 onMounted(async () => {
   await productStore.fetchAllIfEmpty();
@@ -171,6 +174,7 @@ const closeDialog = () => {
 const onImgUpload = (event: any) => {
   //@ts-ignore
   productImage.value = event.files[0];
+  productImageUrl.value = URL.createObjectURL(event.files[0]);
 };
 </script>
 
@@ -198,6 +202,7 @@ const onImgUpload = (event: any) => {
 
 .error-text {
   color: red;
+  text-align: right;
   font-weight: bolder;
 }
 </style>
