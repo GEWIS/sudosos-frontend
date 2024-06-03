@@ -20,16 +20,15 @@
         />
       </div>
       <div class="flex gap-5 align-items-center overflow-hidden">
-        <!-- Row for Picture -->
         <div class="flex flex-column align-items-center gap-3">
-          <div class="picture-container p-3">
-            <!--            <img class="product-image" :src="productImageUrl">-->
-            <img class="product-image" :src="imageSrc" :alt="displayProduct.name">
+          <div class="picture-container p-3" @click="onImgUpload">
+            <img v-if="imageSrc" class="product-image" :src="imageSrc" :alt="displayProduct.name">
+            <div v-else class="upload-container">
+              <i class="fa fa-upload"></i>
+              <p>Upload image here</p>
+            </div>
+            <input type="file" id="img" name="productImg" accept="image/*" @change="onImgUpload" style="display: none"/>
           </div>
-          <!--          <div class="col-12 md:col-10">-->
-          <!--            <FileUpload id="img" mode="basic" name="productImg" accept="image/*"/>-->
-          <!--            <FileUpload id="img" mode="basic" name="productImg" accept="image/*" @select="onImgUpload($event)"/>-->
-          <!--          </div>-->
         </div>
 
         <div class="flex flex-column w-30rem justify-content-between pr-5 py-5 gap-3">
@@ -59,14 +58,13 @@
               <span class="error-text">{{ errors.vatGroup }}</span>
             </div>
           </div>
-          <div class="flex flex-row justify-content-between align-items-center"
-               v-if="category && category.name === 'Alcoholic'">
+          <div class="flex flex-row justify-content-between align-items-center">
             <label for="alcohol">{{
                 $t('c_productEditModal.Alcohol Percentage')
               }}</label>
             <div class="flex flex-column flex-end relative">
               <InputNumber id="alcohol" class="w-18rem" v-model="alcoholPercentage" v-bind="alcoholPercentageAttrs"
-                           :max-fraction-digits="2" :disabled="!edit"/>
+                           :max-fraction-digits="2" :disabled="!edit || (!category || category.name !== 'Alcoholic')"/>
               <br>
               <span class="error-text">{{ errors.alcoholPercentage }}</span>
             </div>
