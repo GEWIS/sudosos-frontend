@@ -56,16 +56,32 @@ export const useProductStore = defineStore('products', {
         // @ts-ignore
         (take, skip) => ApiService.vatGroups.getAllVatGroups(undefined, undefined,undefined, false, take, skip));
     },
+    async updateProductImage(id: number, productImage: File) {
+      await ApiService.products.updateProductImage(id, productImage).then(async () => {
+        await this.fetchProduct(id);
+        await (useContainerStore()).handleProductUpdate(this.products[id]);
+      });
+    },
     async createProduct(createProductRequest: CreateProductRequest, productImage: File | undefined) {
       const product = await ApiService.products.createProduct(createProductRequest).then((resp) => resp.data);
-      if (productImage) await ApiService.products.updateProductImage(product.id, productImage);
+      if (productImage) {
+        await ApiService.products.updateProductImage(product.id, productImage);
+        // Ensure image is loaded
+        product.image = URL.createObjectURL(productImage);
+      }
       this.products[product.id] = product;
+      return product;
     },
-    async updateProduct(productId: number, updateProductRequest: UpdateProductRequest) {
+    async updateProduct(productId: number, updateProductRequest: UpdateProductRequest): Promise<ProductResponse> {
       const product = await ApiService.products
         .updateProduct(productId, updateProductRequest).then((resp) => resp.data);
       this.products[product.id] = product;
       await (useContainerStore()).handleProductUpdate(product);
+      return product;
+    },
+    async fetchProduct(id: number) {
+      const product = await ApiService.products.getSingleProduct(id).then((resp) => resp.data);
+      this.products[product.id] = product;
     },
     async addProduct(product: ProductResponse) {
       this.products[product.id] = product;
@@ -74,6 +90,9 @@ export const useProductStore = defineStore('products', {
   getters: {
     getProducts(): Record<string, ProductResponse> {
       return this.products;
+    },
+    getSingleProduct: (state) => (id: number): ProductResponse | null => {
+      return state.products[id] || null;
     }
   }
 });

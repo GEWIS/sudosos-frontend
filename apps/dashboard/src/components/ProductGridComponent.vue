@@ -9,7 +9,6 @@
       <i class="pi pi-plus text-5xl my-auto product-card"></i>
     </Button>
     <ProductContainerOperationsComponent v-model:visible="visible" :container="props.container"/>
-<!--    <ContainerAssignProductDialog v-model:visible="visible" :container="props.container"/>-->
   </div>
 </template>
 
