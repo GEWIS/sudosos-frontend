@@ -1,20 +1,32 @@
 <template>
   <div class="keypad flex-column">
     <div class="key-row d-flex justify-content-center" v-for="row in keypadLayout" :key="row[0]">
-      <div
-        :class="['key c-btn active square', { outlined: key === keypadBackspace || key === keypadExternal }]"
-        v-for="key in row"
-        :key="key"
-        @click="handleKeyClick(key)"
-      >
+      <div :class="['key c-btn active square', { outlined: key === keypadBackspace || key === keypadExternal }]"
+        v-for="key in row" :key="key" @click="handleKeyClick(key)">
         <font-awesome-icon icon="fa-solid fa-backspace" v-if="key === keypadBackspace" />
         {{ key !== keypadBackspace ? key : '' }}
       </div>
     </div>
   </div>
+
+  <div class="fs-5 text-decoration-underline text-center" @click="() => howToModalVisible = true">How do I login?</div>
+
+  <Dialog v-model:visible="howToModalVisible" header="How do I login?" modal :draggable="false" ref="howToModal"
+    @show="addListenerOnDialogueOverlay(howToModal)">
+    <div class="d-flex flex-column align-items-center">
+      <div>
+        <b style="font-weight: bold!important;">User id:</b> You can use your GEWIS number as user id. <br>
+        <b style="font-weight: bold!important;">Pin:</b> You can (re)set your pin at https://sudosos.gewis.nl/ <br>
+      </div>
+      <img src="@/assets/sudosos-qr.png" style="width: 25rem;" />
+    </div>
+  </Dialog>
 </template>
 
 <script setup lang="ts">
+import { ref, type Ref } from 'vue';
+import { addListenerOnDialogueOverlay } from "@/utils/dialogUtil";
+
 const keypadBackspace = 'B';
 const keypadExternal = 'E';
 const keypadLayout = [
@@ -23,6 +35,9 @@ const keypadLayout = [
   ['7', '8', '9'],
   ['E', '0', 'B']
 ];
+
+const howToModalVisible: Ref<boolean> = ref<boolean>(false);
+const howToModal: Ref<null | any> = ref(null);
 
 const emits = defineEmits(['backspace', 'continue', 'input', 'external']);
 
