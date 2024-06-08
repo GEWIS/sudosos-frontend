@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper user accent-text" :class="{ inactive: !isActive }">
     <font-awesome-icon icon="fa-solid fa-user" class="fs-3 w-100" />
-    <div class="display-value user-id">
+    <div class="display-value user-id" @click="() => { emits('focusUserId') }">
       {{ external ? 'E' : '' }}
       <span v-for="char in userId" :key="char">
         {{ char }}
@@ -14,7 +14,8 @@
       <div class="fs-1" v-if="wrongPin">
         WRONG PIN
       </div>
-      <div class="d-flex w-100 h-100 justify-content-between align-items-center" v-else>
+      <div class="d-flex w-100 h-100 justify-content-between align-items-center" v-else
+        @click="() => { emits('focusPasscode') }">
         <span class="passcode-span" v-for="char in displayCode" :key="char">{{ char }}</span>
       </div>
     </div>
@@ -24,6 +25,8 @@
 <script setup lang="ts">
 
 import { computed } from "vue";
+
+const emits = defineEmits(['focusPasscode', 'focusUserId']);
 
 const props = defineProps({
   userId: {
