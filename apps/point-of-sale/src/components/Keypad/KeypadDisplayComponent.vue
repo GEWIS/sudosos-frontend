@@ -1,4 +1,5 @@
 <template>
+  <LoginInfoComponent/>
   <div class="wrapper user accent-text" :class="{ inactive: !isActive }">
     <font-awesome-icon icon="fa-solid fa-user" class="fs-3 w-100" />
     <div class="display-value user-id" @click="() => { emits('focusUserId') }">
@@ -25,6 +26,7 @@
 <script setup lang="ts">
 
 import { computed } from "vue";
+import LoginInfoComponent from "@/components/LoginInfoComponent.vue";
 
 const emits = defineEmits(['focusPasscode', 'focusUserId']);
 
@@ -62,7 +64,6 @@ const displayCode = computed<string[]>(() => {
 .display-value {
   display: flex;
   background-color: $body-overlay-color;
-  padding-left: 20px;
   width: calc(3 * var(--key-size) + 2 * var(--key-gap-size));
 
   border-radius: $border-radius;
