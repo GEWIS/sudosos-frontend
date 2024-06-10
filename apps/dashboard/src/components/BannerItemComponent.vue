@@ -65,7 +65,7 @@ const { t } = useI18n();
 
 const displaySeconds = computed(() => {
   return `${(banner.value.duration).toLocaleString()}
-   ${banner.value.duration != 1 ? t('banner.seconds') : t('banner.second')}`;
+   ${t('banner.seconds', banner.value.duration)}`;
 });
 
 const banner = defineModel<BannerResponse>('banner', { required: true });
