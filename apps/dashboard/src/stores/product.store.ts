@@ -58,16 +58,19 @@ export const useProductStore = defineStore('products', {
     },
     async updateProductImage(id: number, productImage: File) {
       await ApiService.products.updateProductImage(id, productImage).then(async () => {
-        await this.fetchProduct(id);
-        await (useContainerStore()).handleProductUpdate(this.products[id]);
+        const product = this.products[id];
+        if (!product) return;
+        product.image = URL.createObjectURL(productImage);
+        this.products[product.id] = product;
       });
     },
     async createProduct(createProductRequest: CreateProductRequest, productImage: File | undefined) {
       const product = await ApiService.products.createProduct(createProductRequest).then((resp) => resp.data);
       if (productImage) {
-        await ApiService.products.updateProductImage(product.id, productImage);
+        await this.updateProductImage(product.id, productImage);
         // Ensure image is loaded
         product.image = URL.createObjectURL(productImage);
+        console.error(product.image);
       }
       this.products[product.id] = product;
       return product;

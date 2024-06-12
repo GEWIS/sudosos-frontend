@@ -26,12 +26,11 @@
       <div class="flex gap-5 align-items-center overflow-hidden" :class="!edit ? 'opacity-50':''">
         <div class="flex flex-column align-items-center gap-3">
           <div class="picture-container p-3">
-            <img v-if="imageSrc" class="product-image" :src="imageSrc" :alt="displayProduct.name">
+            <img v-if="imageSrc" class="product-image" :src="imageSrc">
           </div>
           <div v-if="edit">
             <FileUpload id="img" mode="basic" name="productImg" accept="image/*" @select="onImgUpload($event)"/>
           </div>
-          {{ productImage }}
         </div>
 
         <div class="flex flex-column w-30rem justify-content-between pr-5 py-5 gap-3">
@@ -114,10 +113,12 @@
         </div>
       </div>
       <div class="flex justify-content-end" v-if="state.addToContainer">
-        <Button type="submit" class="save-button" @click="handleProductAdd()">Add to container</Button>
+        <Button type="submit" class="save-button" disabled v-if="inContainer">Product already in container</Button>
+        <Button type="submit" class="save-button" v-else @click="handleProductAdd()">Add to container</Button>
       </div>
-      <div class="flex justify-content-end" v-if="state.displayProduct">
-        <Button type="submit" class="save-button" @click="handleSaveProduct()">Save</Button>
+      <div class="flex justify-content-between" v-if="state.displayProduct">
+        <Button type="submit" class="save-button" @click="handleDeleteContainerProduct()">Delete from container</Button>
+        <Button type="submit" class="save-button" @click="handleSaveProduct()"> Save </Button>
       </div>
     </div>
   </Dialog>
@@ -150,6 +151,7 @@ import Fuse from "fuse.js";
 import FileUpload from "primevue/fileupload";
 import { useAuthStore } from "@sudosos/sudosos-frontend-common";
 import { formatDateTime } from "@/utils/formatterUtils";
+
 const { t } = useI18n();
 
 const dialog: Ref<null | any> = ref(null);
@@ -158,16 +160,19 @@ const productStore = useProductStore();
 const containerStore = useContainerStore();
 const authStore = useAuthStore();
 
-const products = ref<ProductResponse[]>([]);
-
 const dropdownProducts = computed(() => {
   if (!props.container) return products;
   return products.value.filter((p) => !props.container.products.map((p) => p.id).includes(p.id));
 });
 
+const inContainer = computed(() => {
+  if (!props.container) return false;
+  return props.container.products.map((p) => p.id).includes(selectProduct.value?.id as number);
+});
 
 const categories: ComputedRef<ProductCategoryResponse[]> = computed(() => Object.values(productStore.categories));
 const vatGroups: ComputedRef<VatGroupResponse[]> = computed(() => Object.values(productStore.vatGroups));
+const products: ComputedRef<ProductResponse[]> = computed(() => Object.values(productStore.getProducts));
 const organsList: Ref<BaseUserResponse[]> = ref(authStore.organs);
 const edit = computed(() => selectProduct.value == null);
 const visible = ref(false);
@@ -182,7 +187,7 @@ const header = computed(() => {
 const productImage: Ref<File | undefined> = ref();
 const imageSrc = ref('');
 
-const vatMap: { [key: string | number]:any } = {
+const vatMap: { [key: string | number]: any } = {
   other: undefined,
   modified: false,
 };
@@ -198,7 +203,7 @@ const props = defineProps({
     type: Object as PropType<ContainerWithProductsResponse>,
   },
   product: {
-    type: Object as PropType<ProductResponse|undefined>,
+    type: Object as PropType<ProductResponse | undefined>,
   },
 });
 
@@ -223,7 +228,7 @@ const { defineField, resetForm, errors, handleSubmit } = useForm({
   validationSchema: creationSchema,
 });
 
-const selectProduct = ref<ProductResponse|undefined>(undefined);
+const selectProduct = ref<ProductResponse | undefined>(undefined);
 const [name, nameAttrs] = defineField('name');
 const [category, categoryAttrs] = defineField('category');
 const [vat, vatAttrs] = defineField('vatGroup');
@@ -293,7 +298,6 @@ watch(category, () => {
 onBeforeMount(async () => {
   await productStore.fetchAllIfEmpty();
   selectProduct.value = undefined;
-  products.value = Object.values(productStore.getProducts);
   if (props.product) updateFieldValues(props.product);
 
 
@@ -327,8 +331,8 @@ const handleProductAdd = async () => {
 
       await productStore.createProduct(createProductRequest, productImage.value)
           .then((createdProduct: ProductResponse) => {
-        if (props.container) containerStore.addProductToContainer(props.container, createdProduct);
-      });
+            if (props.container) containerStore.addProductToContainer(props.container, createdProduct);
+          });
     })();
   }
   closeDialog();
@@ -346,31 +350,37 @@ const changed = () => {
 const handleSaveProduct = async () => {
   if (!state.displayProduct) return;
   if (changed()) {
-  await handleSubmit(async () => {
-    const updateProductRequest: UpdateProductRequest = {
-      alcoholPercentage: alcoholPercentage.value as number,
-      category: category.value?.id as number,
-      featured: false,
-      name: name.value as string,
-      preferred: false,
-      priceInclVat: {
-        amount: Math.round(price.value as number * 100),
-        currency: 'EUR',
-        precision: 2
-      },
-      priceList: false,
-      vat: vat.value?.id as number,
-    };
-    if (!props.product) return;
-    await productStore.updateProduct(props.product.id, updateProductRequest)
-        .then((updatedProduct: ProductResponse) => {
-          displayProduct.value = updatedProduct;
-        });
-  })();
+    await handleSubmit(async () => {
+      const updateProductRequest: UpdateProductRequest = {
+        alcoholPercentage: alcoholPercentage.value as number,
+        category: category.value?.id as number,
+        featured: false,
+        name: name.value as string,
+        preferred: false,
+        priceInclVat: {
+          amount: Math.round(price.value as number * 100),
+          currency: 'EUR',
+          precision: 2
+        },
+        priceList: false,
+        vat: vat.value?.id as number,
+      };
+      if (!props.product) return;
+      await productStore.updateProduct(props.product.id, updateProductRequest)
+          .then((updatedProduct: ProductResponse) => {
+            displayProduct.value = updatedProduct;
+          });
+    })();
   }
   if (productImage.value && props.product) {
     await productStore.updateProductImage(props.product.id, productImage.value);
   }
+  closeDialog();
+};
+
+const handleDeleteContainerProduct = async () => {
+  if (!props.container || !props.product) return;
+  await containerStore.deleteProductFromContainer(props.container, props.product);
   closeDialog();
 };
 
@@ -402,7 +412,7 @@ const closeDialog = () => {
 const onImgUpload = (event: any) => {
   //@ts-ignore
   productImage.value = event.files[0];
-  imageSrc.value =  URL.createObjectURL(event.files[0]);
+  imageSrc.value = URL.createObjectURL(event.files[0]);
 };
 
 </script>
