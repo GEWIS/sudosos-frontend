@@ -120,6 +120,9 @@
         <Button type="submit" class="save-button" @click="handleDeleteContainerProduct()">Delete from container</Button>
         <Button type="submit" class="save-button" @click="handleSaveProduct()"> Save </Button>
       </div>
+      <div class="flex justify-content-end" v-if="state.createProduct">
+        <Button type="submit" class="save-button" @click="handleProductAdd()"> Create </Button>
+      </div>
     </div>
   </Dialog>
 </template>
@@ -314,12 +317,12 @@ const handleProductAdd = async () => {
     await containerStore.addProductToContainer(props.container, selectProduct.value as ProductResponse);
   }
   // Create an add new product
-  else if (props.container && edit.value && !selectProduct.value) {
+  else if (edit.value && !selectProduct.value) {
     await handleSubmit(async (values) => {
       const createProductRequest: CreateProductRequest = {
         name: values.name,
         priceInclVat: {
-          amount: values.price * 100,
+          amount: Math.round(values.price * 100),
           currency: 'EUR',
           precision: 2
         },
@@ -333,9 +336,10 @@ const handleProductAdd = async () => {
           .then((createdProduct: ProductResponse) => {
             if (props.container) containerStore.addProductToContainer(props.container, createdProduct);
           });
+
+      closeDialog();
     })();
   }
-  closeDialog();
 };
 
 const changed = () => {

@@ -3,6 +3,7 @@
   <div class="page-container">
     <div class="page-title">Manage products</div>
     <div class="flex flex-column gap-5">
+      <ProductContainerOperationsComponent v-model:visible="visible"/>
       <ContainerCardComponent
           v-if="containers"
           :header="$t('manageProducts.Containers')"
@@ -181,7 +182,6 @@
             </template>
           </Column>
         </DataTable>
-        <ProductCreateComponent v-model:visible="visible" @productCreated="handleNewProduct"/>
       </CardComponent>
     </div>
   </div>
@@ -213,6 +213,7 @@ import ProductCreateComponent from "@/components/ProductCreateComponent.vue";
 import Skeleton from "primevue/skeleton";
 import { useProductStore } from "@/stores/product.store";
 import { type ContainerInStore, useContainerStore } from "@/stores/container.store";
+import ProductContainerOperationsComponent from "@/components/ProductContainerOperationsComponent.vue";
 
 const productStore = useProductStore();
 const containerStore = useContainerStore();
@@ -232,19 +233,17 @@ const selectedProduct: Ref<ProductResponse | undefined> = ref();
 const visible: Ref<Boolean> = ref(false);
 const editingRows = ref([]);
 const fileInput = ref();
+
 const openCreateModal = () => {
   selectedProduct.value = undefined;
   visible.value = true;
 };
+
 const vatGroups: Ref<VatGroupResponse[]> = ref([]);
 const categories: Ref<ProductCategoryResponse[]> = ref([]);
 
 const rowEditInit = (event: DataTableRowEditInitEvent) => {
   event.data['editPrice'] = (event.data as ProductResponse).priceInclVat.amount / 100;
-};
-
-// TODO fix
-const handleNewProduct = async () => {
 };
 
 onBeforeMount(async () => {
@@ -259,7 +258,7 @@ const updateRow = async (event: DataTableRowEditSaveEvent) => {
   await productStore.updateProduct(event.newData.id, {
     name: event.newData.name,
     priceInclVat: {
-      amount: event.newData.editPrice * 100,
+      amount: Math.round(event.newData.editPrice * 100),
       currency: 'EUR',
       precision: 2
     },
@@ -273,8 +272,8 @@ const onImgUpload = async (event: Event, productId: number) => {
   const el = (event.target as HTMLInputElement);
   if (el == null || el.files == null) return;
   await apiService.products.updateProductImage(productId, el.files[0]);
-  handleNewProduct();
 };
+
 </script>
 
 <style scoped lang="scss">
