@@ -27,7 +27,6 @@
                     style: 'table-layout: fixed; width: 100%;'
                   }
               }"
-            lazy
         >
           <template #header>
             <div class="flex flex-row justify-content-between">
@@ -41,27 +40,27 @@
             </div>
           </template>
           <Column field="image" :header="$t('c_productEditModal.Image')">
-            <template #editor="rowData" v-if="!loading">
-              <span class="w-4rem h-4rem mx-1 cursor-pointer image-preview-container">
-                <img class="w-4rem h-4rem" :src="getProductImageSrc(rowData.data)"/>
+            <template #body="rowData" v-if="!loading">
+              <span
+                  class="h-4rem flex justify-content-center align-items-center
+                  background-white w-4rem mx-1 cursor-pointer image-preview-container">
+                <img :src="getProductImageSrc(rowData.data)" alt="img"
+                     class="h-4rem"/>
                 <button
-                  ref="previewButton"
-                  type="button"
-                  class="image-preview-indicator p-image-preview-indicator fileupload"
-                  @click="fileInput.click()"
+                    ref="previewButton"
+                    type="button"
+                    class="image-preview-indicator p-image-preview-indicator fileupload"
+                    @click="fileInput.click()"
                 >
                   <i class="pi pi-upload"></i>
                   <input
-                    ref="fileInput"
-                    type="file"
-                    accept="image/*"
-                    @change="(e: Event) => onImgUpload(e, (rowData.data as ProductResponse).id)"
+                      ref="fileInput"
+                      type="file"
+                      accept="image/*"
+                      @change="(e: Event) => onImgUpload(e, (rowData.data as ProductResponse).id)"
                   />
                 </button>
               </span>
-            </template>
-            <template #body="rowData" v-if="!loading">
-              <img :src="getProductImageSrc(rowData.data)" alt="img" class="w-4rem h-4rem mx-1"/>
             </template>
             <template #body v-else>
               <Skeleton class="w-8 my-1 h-4rem surface-300"/>
@@ -271,13 +270,12 @@ const updateRow = async (event: DataTableRowEditSaveEvent) => {
 const onImgUpload = async (event: Event, productId: number) => {
   const el = (event.target as HTMLInputElement);
   if (el == null || el.files == null) return;
-  await apiService.products.updateProductImage(productId, el.files[0]);
+  await productStore.updateProductImage(productId, el.files[0]);
 };
 
 </script>
 
 <style scoped lang="scss">
-
 .image-preview-container {
   position: relative;
   display: inline-block;
@@ -308,5 +306,9 @@ const onImgUpload = async (event: Event, productId: number) => {
   opacity: 1;
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.5)
+}
+
+.background-white {
+  background-color: #fff;
 }
 </style>

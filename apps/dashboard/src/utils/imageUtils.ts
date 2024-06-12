@@ -6,7 +6,7 @@ export function getProductImageSrc(product: ProductResponse): string {
     } else {
         // Regular expression to check if product.image is a URL
         // This allows for instant updating of the image locally
-        const urlRegex = /^(http|https):\/\/[^ "]+$/;
+        const urlRegex = /(http|https):\/\/[^ "]+$/;
         if (urlRegex.test(product.image)) {
             // If product.image is a URL, return it directly
             return product.image;
