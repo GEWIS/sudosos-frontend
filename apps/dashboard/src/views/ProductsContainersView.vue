@@ -40,25 +40,24 @@
             </div>
           </template>
           <Column field="image" :header="$t('c_productEditModal.Image')">
-            <template #body="rowData" v-if="!loading">
+            <template #body="rowDataImg" v-if="!loading">
               <span
-                  class="h-4rem flex justify-content-center align-items-center
-                  background-white w-4rem mx-1 cursor-pointer image-preview-container">
-                <img :src="getProductImageSrc(rowData.data)" alt="img"
-                     class="h-4rem"/>
+                  class="h-4rem flex justify-content-center align-items-center background-white w-4rem mx-1 cursor-pointer image-preview-container">
+                <img :src="getProductImageSrc(rowDataImg.data)" alt="img" class="h-4rem" />
                 <button
                     ref="previewButton"
                     type="button"
                     class="image-preview-indicator p-image-preview-indicator fileupload"
-                    @click="fileInput.click()"
+                    @click="triggerFileInput(rowDataImg.data.id)"
                 >
                   <i class="pi pi-upload"></i>
-                  <input
-                      ref="fileInput"
-                      type="file"
-                      accept="image/*"
-                      @change="(e: Event) => onImgUpload(e, (rowData.data as ProductResponse).id)"
-                  />
+                <input
+                    :ref="(el) => (fileInputs[rowDataImg.data.id] = el)"
+                    type="file"
+                    accept="image/*"
+                    id="fileInput"
+                    @change="(e) => onImgUpload(e, rowDataImg.data.id)"
+                />
                 </button>
               </span>
             </template>
@@ -190,7 +189,7 @@
 import InputIcon from "primevue/inputicon";
 import IconField from "primevue/iconfield";
 import CardComponent from '@/components/CardComponent.vue';
-import { computed, onBeforeMount, type Ref } from "vue";
+import { computed, type ComputedRef, onBeforeMount, type Ref } from "vue";
 import { ref } from 'vue';
 import apiService from '@/services/ApiService';
 import type {
@@ -231,15 +230,15 @@ const filters = ref({
 const selectedProduct: Ref<ProductResponse | undefined> = ref();
 const visible: Ref<Boolean> = ref(false);
 const editingRows = ref([]);
-const fileInput = ref();
+const fileInputs: Ref<{ [key: number]: any }> = ref({});
 
 const openCreateModal = () => {
   selectedProduct.value = undefined;
   visible.value = true;
 };
 
-const vatGroups: Ref<VatGroupResponse[]> = ref([]);
-const categories: Ref<ProductCategoryResponse[]> = ref([]);
+const categories: ComputedRef<ProductCategoryResponse[]> = computed(() => Object.values(productStore.categories));
+const vatGroups: ComputedRef<VatGroupResponse[]> = computed(() => Object.values(productStore.vatGroups));
 
 const rowEditInit = (event: DataTableRowEditInitEvent) => {
   event.data['editPrice'] = (event.data as ProductResponse).priceInclVat.amount / 100;
@@ -248,8 +247,6 @@ const rowEditInit = (event: DataTableRowEditInitEvent) => {
 onBeforeMount(async () => {
   await productStore.fetchAllIfEmpty();
   await containerStore.fetchAllIfEmpty();
-  const vatGroupsResp = await apiService.vatGroups.getAllVatGroups(undefined, undefined, undefined, false);
-  vatGroups.value = vatGroupsResp.data.records;
   loading.value = false;
 });
 
@@ -267,6 +264,11 @@ const updateRow = async (event: DataTableRowEditSaveEvent) => {
   });
 };
 
+const triggerFileInput = (id: number) => {
+  if (fileInputs.value[id]) {
+    fileInputs.value[id].click();
+  }
+};
 const onImgUpload = async (event: Event, productId: number) => {
   const el = (event.target as HTMLInputElement);
   if (el == null || el.files == null) return;
