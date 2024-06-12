@@ -85,28 +85,26 @@
     "someIsFines": "Waarvan {fine} boetes zijn",
     "topup": "Je gaat opwaarderen met "
   },
-  "c_productEditModal": {
+  "c_productContainerOperations": {
+    "Manage Products": "Beheer Producten",
+    "Existing Product": "Bestaand product toevoegen",
     "Alcohol Percentage": "Alcohol percentage",
     "Category": "Categorie",
     "Image": "Plaatje",
     "Name": "Naam",
+    "Owner": "Eigenaar",
     "Please select": "Selecteer een product categorie",
     "Please select VAT": "Selecteer BTW groep",
     "Price": "Prijs (in €)",
     "VAT": "BTW (in %)",
-    "save": "opslaan"
-  },
-  "c_productInfoModal": {
-    "Added by": "Toegevoegd door",
     "Added on": "Toegevoegd op",
-    "Alcohol percentage": "Alc. %",
-    "Category": "Categorie",
-    "Name": "Naam",
-    "Picture": "Plaatje",
-    "Price": "Prijs",
     "Updated on": "Geupdated op",
-    "delete": "Verwijder product uit container",
-    "title": "Product informatie"
+    "Already In": "Zit al in container",
+    "Add To Container": "Voeg toe aan container",
+    "Delete From Container": "Verwijder uit container",
+    "Save": "Opslaan",
+    "Create": "Aanmaken",
+    "Close To": "Naam lijkt op: {name} (klik om te kiezen)"
   },
   "c_recentTransactionsTable": {
     "all transactions": "alle transacties",
@@ -141,8 +139,7 @@
     "Security": "Beveiliging"
   },
   "containersOverview": {
-    "Containers": "Containers",
-    "newContainer": "Nieuwe container"
+    "Containers": "Containers"
   },
   "errorMessages": {
     "posNotFound": "Het gevraagde verkooppunt is niet gevonden."
@@ -197,9 +194,7 @@
     "localAccount": "Login met een lokaal account"
   },
   "manageProducts": {
-    "Add product": "Product toevoegen",
-    "Containers": "Containers",
-    "Manage all products and containers": "Beheer alle producten en containers"
+    "Containers": "Containers"
   },
   "payment": {
     "pay": "betaal"

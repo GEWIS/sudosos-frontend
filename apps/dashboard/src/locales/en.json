@@ -24,11 +24,8 @@
   "balance": {
     "Balance increase amount": "Increase balance:",
     "Payment button": "Top up",
-    "Increase balance": "Increase balance",
     "Price": "Price",
-    "minPayment": "Note: minimum topup is €10 or needs to pay off debt.",
-    "Balance after": "Balance after:",
-    "Start payment": "Start payment"
+    "Balance after": "Balance after:"
   },
   "banner": {
     "Banners": "Banners",
@@ -49,9 +46,6 @@
     "Create banner": "Create banner"
   },
   "c_ContainerAssign": {
-    "Assign product": "Assign product",
-    "Product": "Choose product:",
-    "Product selection error": " is een vereist veld.",
     "Select product": "Select product"
   },
   "c_POSCreate": {
@@ -102,9 +96,7 @@
     "localAccount": "Login using local account"
   },
   "manageProducts": {
-    "Add product": "Add product",
-    "Containers": "Containers",
-    "Manage all products and containers": "Manage all products and containers"
+    "Containers": "Containers"
   },
   "payment": {
     "pay": "pay"
@@ -127,56 +119,33 @@
     "someIsFines": "Of which {fine} is fines",
     "topup": "You will be topping up with"
   },
-  "c_productEditModal": {
+  "c_productContainerOperations": {
+    "Manage Products": "Manage Products",
+    "Existing Product": "Add existing product",
     "Alcohol Percentage": "Alc. %",
     "Category": "Category",
     "Image": "Image",
     "Name": "Name",
+    "Owner": "Owner",
     "Please select": "Please select a product category",
     "Please select VAT": "Please select a VAT group",
     "Price": "Price (in €)",
     "VAT": "VAT (in %)",
-    "save": "Save"
-  },
-  "c_productInfoModal": {
-    "Added by": "Added by",
     "Added on": "Added on",
-    "Alcohol percentage": "Alcohol percentage",
-    "Category": "Category",
-    "Name": "Name",
-    "Picture": "Picture",
-    "Price": "Price",
     "Updated on": "Updated on",
-    "delete": "Delete Product from container",
-    "title": "Product information"
+    "Already In": "Product already in container",
+    "Add To Container": "Add to container",
+    "Delete From Container": "Delete from container",
+    "Save": "Save",
+    "Create": "Create",
+    "Close To": "Name is close to: {name} (click to pick)"
   },
   "c_transactionDetailsModal": {
     "delete": "Delete",
     "transactionDetails": "Transaction Details"
   },
   "c_userInfo": {
-    "quick": "Quick Overview",
-    "End date": "Point of sale start date",
-    "End invalid": "Please pick an end date later than the end date and later than now",
-    "General": "General",
-    "Management": "Management",
-    "Managers": "Managers",
-    "No containers": "No containers selected",
-    "Own containers": "Own containers",
-    "Owner": "Owner",
-    "Pick date": "Pick a date",
-    "Public containers": "Public containers",
-    "Select owner": "Select Owner",
-    "Selected containers": "Selected containers",
-    "Start date": "Point of sale start date",
-    "Start invalid": "Please pick a start date earlier than the end date",
-    "Title": "POS Name",
-    "Use authentication": "Use Authentication",
-    "add container": "Add container",
-    "are you sure": "Are you sure you want to delete this container?",
-    "confirm": "Confirm deletion",
-    "name invalid": "Please provide a valid name that is longer than 0 characters",
-    "noContainersSelected": "There are no containers selected."
+    "quick": "Quick Overview"
   },
   "c_POSOverview": {
     "ACCEPTED": "Accepted",
@@ -251,11 +220,6 @@
     "ofAge": "18+"
   },
   "c_containerComponent": {
-    "Add product": "Add product",
-    "Public": "Public",
-    "Table view": "Table view",
-    "new": "New",
-    "no products": "This container contains no products"
   },
   "errorMessages": {
     "posNotFound": "The requested POS was not found."
@@ -328,12 +292,10 @@
   },
   "successMessages": {
     "createContainer": "Successfully created container.",
-    "deleteProductContainer": "Successfully deleted product from container.",
     "editPOS": "Succesfully edited POS.",
     "fineDeleted": "Successfully deleted fine.",
     "finesHandedOut": "Successfully handed out fines",
     "finesNotified": "Succesfully notified users.",
-    "productCreated": "Successfully created product.",
     "success": "Success",
     "transactionDeleted": "Successfully deleted transaction.",
     "resetPassword": "Successfully reset password."
@@ -359,10 +321,7 @@
     "total": "Total:",
     "waivedFineDescr": "Your fines were waived.",
     "what": "What",
-    "when": "When",
-    "userBoughtAt": "You bought at {pos}",
-    "otherBoughtAt": "{user} bought at {pos}",
-    "putInBy": "Transaction created by {createdBy}"
+    "when": "When"
   },
   "userDetails": {
     "Active": "Active",
@@ -383,6 +342,9 @@
     "Incorrect transactions": "Incorrect transactions",
     "Security": "Security",
     "Feature requests": "Feature requests"
+  },
+  "containersOverview": {
+    "Containers": "Containers"
   },
   "validation": {
     "number": {
