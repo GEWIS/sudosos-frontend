@@ -23,6 +23,7 @@ import FileUpload from "primevue/fileupload";
 import Tooltip from 'primevue/tooltip';
 import SelectButton from "primevue/selectbutton";
 import 'primeflex/primeflex.css';
+import { populateStoresFromToken } from "@sudosos/sudosos-frontend-common";
 import en from "./locales/en.json";
 import nl from "./locales/nl.json";
 import ToastService from "primevue/toastservice";
@@ -40,7 +41,6 @@ import ProgressSpinner from "primevue/progressspinner";
 import ToggleButton from "primevue/togglebutton";
 import { setLocale as yupSetLocale } from 'yup';
 import i18n from './utils/i18nUtils';
-import {populateStoresFromToken} from "@sudosos/sudosos-frontend-common";
 
 const app = createApp(App);
 
