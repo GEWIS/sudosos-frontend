@@ -16,6 +16,11 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['ToastService'],
   },
+  // build: {
+  //   rollupOptions: {
+  //     external: ['@sudosos/sudosos-frontend-common'],
+  //   },
+  // },
   // server: {
   //   host: '0.0.0.0',
   // }
