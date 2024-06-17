@@ -10,7 +10,7 @@
   >
     <div @submit="handleSubmit" class="flex flex-column gap-3">
       <div class="flex gap-5 justify-content-end" v-if="state.addToContainer">
-        <p class="prop">{{$t('c_productContainerOperations.Existing Product')}}</p>
+        <p class="prop">{{ $t('c_productContainerOperations.Existing Product') }}</p>
         <Dropdown
             :placeholder="$t('c_ContainerAssign.Select product')"
             :options="dropdownProducts"
@@ -21,7 +21,7 @@
         />
       </div>
       <hr class="w-full opacity-50" v-if="state.addToContainer">
-      <div class="flex gap-5 align-items-center overflow-hidden" :class="!edit ? 'opacity-50':''">
+      <div class="flex gap-5 align-items-center justify-content-center flex-wrap" :class="!edit ? 'opacity-50':''">
         <div class="flex flex-column align-items-center gap-3">
           <div class="picture-container p-3">
             <img v-if="imageSrc" class="product-image" :src="imageSrc">
@@ -31,9 +31,9 @@
           </div>
         </div>
 
-        <div class="flex flex-column w-30rem justify-content-between pr-5 py-5 gap-3">
-          <div class="flex flex-row justify-content-between align-items-center">
-            <label for="name">{{ $t('c_productContainerOperations.Name') }}</label>
+        <div class="flex flex-column justify-content-between pr-5 py-5 gap-3">
+          <div class="flex flex-row flex-wrap justify-content-between align-items-center">
+            <label for="name" class="mr-8">{{ $t('c_productContainerOperations.Name') }}</label>
             <div class="relative mb-3">
               <InputText id="name" class="w-18rem" v-model="name" type="text" v-bind="nameAttrs" :disabled="!edit"/>
               <br>
@@ -42,8 +42,8 @@
               <span class="error-text">{{ errors.name }}</span>
             </div>
           </div>
-          <div class="flex flex-row justify-content-between align-items-center">
-            <label for="category">{{ $t('c_productContainerOperations.Category') }}</label>
+          <div class="flex flex-row flex-wrap justify-content-between align-items-center">
+            <label for="category" class="mr-8">{{ $t('c_productContainerOperations.Category') }}</label>
             <div class="relative mb-3">
               <Dropdown :placeholder="$t('c_productContainerOperations.Please select')"
                         :options="categories" optionLabel="name" v-model="category" class="w-18rem" id="category"
@@ -52,8 +52,8 @@
               <span class="error-text">{{ errors.category }}</span>
             </div>
           </div>
-          <div class="flex flex-row justify-content-between align-items-center">
-            <label for="vat">{{ $t('c_productContainerOperations.VAT') }}</label>
+          <div class="flex flex-row flex-wrap justify-content-between align-items-center">
+            <label for="vat" class="mr-8">{{ $t('c_productContainerOperations.VAT') }}</label>
             <div class="relative mb-3">
               <Dropdown :placeholder="$t('c_productContainerOperations.Please select VAT')" :options="vatGroups"
                         :optionLabel="(v: VatGroupResponse) => `${v.percentage}`" class="w-18rem" v-model="vat"
@@ -62,8 +62,8 @@
               <span class="error-text">{{ errors.vatGroup }}</span>
             </div>
           </div>
-          <div class="flex flex-row justify-content-between align-items-center">
-            <label for="alcohol">{{
+          <div class="flex flex-row flex-wrap justify-content-between align-items-center">
+            <label for="alcohol" class="mr-8">{{
                 $t('c_productContainerOperations.Alcohol Percentage')
               }}</label>
             <div class="flex flex-column flex-end relative mb-3">
@@ -73,8 +73,8 @@
               <span class="error-text">{{ errors.alcoholPercentage }}</span>
             </div>
           </div>
-          <div class="flex flex-row justify-content-between align-items-center">
-            <label for="price">{{ $t('c_productContainerOperations.Price') }}</label>
+          <div class="flex flex-row flex-wrap justify-content-between align-items-center">
+            <label for="price" class="mr-8">{{ $t('c_productContainerOperations.Price') }}</label>
             <div class="flex flex-column flex-end relative mb-3">
               <InputNumber id="price" class="w-18rem" v-model="price" v-bind="priceAttrs" :max-fraction-digits="2"
                            :disabled="!edit"/>
@@ -82,8 +82,8 @@
               <span class="error-text">{{ errors.price }}</span>
             </div>
           </div>
-          <div v-if="!state.displayProduct" class="flex flex-row justify-content-between align-items-center">
-            <label for="owner">{{ $t('c_POSCreate.Owner') }}</label>
+          <div v-if="!state.displayProduct" class="flex flex-row flex-wrap justify-content-between align-items-center">
+            <label for="owner" class="mr-8">{{ $t('c_POSCreate.Owner') }}</label>
             <div class="flex flex-column flex-end relative mb-3">
               <Dropdown :placeholder="$t('c_POSCreate.Select owner')" :options="organsList" optionLabel="firstName"
                         v-model="owner" class="w-18rem" id="owner" v-bind="ownerAttrs" :disabled="!edit"/>
@@ -93,19 +93,19 @@
           </div>
 
           <!-- Row for Added on -->
-          <div v-if="state.displayProduct" class="flex flex-row justify-content-between">
+          <div v-if="state.displayProduct" class="flex flex-row flex-wrap justify-content-between">
             <h4 class="my-0">{{ $t("c_productContainerOperations.Added on") }}</h4>
             <p class="my-0">{{ formatDateTime(new Date(product.createdAt ? product.createdAt.toString() : '')) }}</p>
           </div>
 
           <!-- Row for Updated on -->
-          <div v-if="state.displayProduct" class="flex flex-row justify-content-between">
+          <div v-if="state.displayProduct" class="flex flex-row flex-wrap justify-content-between">
             <h4 class="my-0">{{ $t("c_productContainerOperations.Updated on") }}</h4>
             <p class="my-0">{{ formatDateTime(new Date(product.updatedAt ? product.updatedAt.toString() : '')) }}</p>
           </div>
 
           <!-- Row for Added by -->
-          <div v-if="state.displayProduct" class="flex flex-row justify-content-between">
+          <div v-if="state.displayProduct" class="flex flex-row flex-wrap justify-content-between">
             <h4 class="my-0">{{ $t("c_productContainerOperations.Owner") }}</h4>
             <p class="my-0">{{ product.owner.firstName + ' ' + product.owner.lastName }}</p>
           </div>
@@ -113,19 +113,29 @@
       </div>
       <div class="flex justify-content-end" v-if="state.addToContainer">
         <Button type="submit" class="save-button" disabled v-if="inContainer">
-          {{ $t("c_productContainerOperations.Already In") }}</Button>
+          {{ $t("c_productContainerOperations.Already In") }}
+        </Button>
         <Button type="submit" class="save-button" v-else @click="handleProductAdd()">
-          {{ $t("c_productContainerOperations.Add To Container") }}</Button>
+          {{ $t("c_productContainerOperations.Add To Container") }}
+        </Button>
       </div>
-      <div class="flex justify-content-between" v-if="state.displayProduct">
+      <div class="flex justify-content-between" v-if="state.displayProduct && container !== undefined">
         <Button type="submit" class="save-button" @click="handleDeleteContainerProduct()">
-          {{ $t("c_productContainerOperations.Delete From Container") }}</Button>
+          {{ $t("c_productContainerOperations.Delete From Container") }}
+        </Button>
         <Button type="submit" class="save-button" @click="handleSaveProduct()">
-          {{ $t("c_productContainerOperations.Save") }}</Button>
+          {{ $t("c_productContainerOperations.Save") }}
+        </Button>
+      </div>
+      <div class="flex justify-content-end" v-if="state.displayProduct && container === undefined">
+        <Button type="submit" class="save-button" @click="handleSaveProduct()">
+          {{ $t("c_productContainerOperations.Save") }}
+        </Button>
       </div>
       <div class="flex justify-content-end" v-if="state.createProduct">
         <Button type="submit" class="save-button" @click="handleProductAdd()">
-          {{ $t("c_productContainerOperations.Create") }}</Button>
+          {{ $t("c_productContainerOperations.Create") }}
+        </Button>
       </div>
     </div>
   </Dialog>
@@ -180,9 +190,9 @@ const organsList: Ref<BaseUserResponse[]> = ref(authStore.organs);
 const edit = computed(() => selectProduct.value == null);
 const visible = ref(false);
 const header = computed(() => {
-  if (state.addToContainer) return 'Add product to container';
-  if (state.createProduct) return 'Create product';
-  if (state.displayProduct) return 'Product details';
+  if (state.value.addToContainer) return 'Add product to container';
+  if (state.value.createProduct) return 'Create product';
+  if (state.value.displayProduct) return 'Product details';
   return '';
 
 });
@@ -210,11 +220,13 @@ const props = defineProps({
   },
 });
 
-const state = {
-  addToContainer: props.container !== undefined && props.product === undefined,
-  createProduct: props.container === undefined && props.product === undefined,
-  displayProduct: props.product !== undefined,
-};
+const state = computed(() => {
+  return {
+    addToContainer: props.container !== undefined && props.product === undefined,
+    createProduct: props.container === undefined && props.product === undefined,
+    displayProduct: props.product !== undefined,
+  };
+});
 
 const creationSchema = toTypedSchema(
     yup.object({
@@ -267,7 +279,7 @@ watch(displayProduct, () => {
 const closeTo = ref<ProductResponse | null>(null);
 
 watch(name, () => {
-  if (state.displayProduct) return;
+  if (state.value.displayProduct) return;
   if (selectProduct.value) return;
   if (!name.value) return;
 
@@ -353,7 +365,7 @@ const changed = () => {
 };
 
 const handleSaveProduct = async () => {
-  if (!state.displayProduct) return;
+  if (!state.value.displayProduct) return;
   if (changed()) {
     await handleSubmit(async () => {
       const updateProductRequest: UpdateProductRequest = {
@@ -403,7 +415,7 @@ watch(() => props.product, () => {
 });
 
 const closeDialog = () => {
-  if (!state.displayProduct) {
+  if (!state.value.displayProduct) {
     resetForm();
     imageSrc.value = '';
   }

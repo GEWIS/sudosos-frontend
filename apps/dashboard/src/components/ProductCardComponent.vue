@@ -1,18 +1,15 @@
 <template>
   <CardComponent header="all products" class="w-full">
-    <ProductContainerOperationsComponent v-model:visible="visible"/>
+    <ProductContainerOperationsComponent v-model:visible="visible" :product="product"/>
     <DataTable
         v-model:filters="filters"
         :value="products"
         paginator
+        tableStyle="min-width: 50rem"
         :rows="5"
         :rowsPerPageOptions="[5, 10, 25, 50, 100]"
         filterDisplay="menu"
-        :globalFilterFields="['category', 'name']"
-        v-model:editingRows="editingRows"
-        editMode="row"
-        @row-edit-save="updateRow"
-        @row-edit-init="rowEditInit"
+        :globalFilterFields="['name']"
         :pt="{
                   table: {
                     style: 'table-layout: fixed; width: 100%;'
@@ -57,40 +54,12 @@
           <Skeleton class="w-8 my-1 h-4rem surface-300"/>
         </template>
       </Column>
-      <Column field="name" :header="$t('c_productContainerOperations.Name')" style="width: 35%">
-        <template #editor="{ data, field }" v-if="!loading">
-          <InputText
-              v-model="data[field]"
-              :pt="{
-                      root: {
-                        class: 'm-1',
-                        style: 'width: 99%;'
-                      },
-
-                    }"
-          />
-        </template>
+      <Column field="name" :header="$t('c_productContainerOperations.Name')" style="width: 30%">
         <template #body v-if="loading">
           <Skeleton class="w-6 my-1 h-2rem surface-300"/>
         </template>
       </Column>
       <Column field="category" :header="$t('c_productContainerOperations.Category')" style="width: 15%">
-        <template #editor="{ data, field }" v-if="!loading">
-          <Dropdown
-              :placeholder="$t('c_productContainerOperations.Please select')"
-              optionLabel="name"
-              :options="categories"
-              v-model="data[field]"
-              :pt="{
-                      input: 'w-full pt-1 pb-1',
-                      root: 'm-1'
-                    }"
-          >
-            <template #value="slotProps" v-if="!loading">
-              {{ slotProps.value.name }}
-            </template>
-          </Dropdown>
-        </template>
         <template #body="rowData" v-if="!loading">
           {{ rowData.data.category.name }}
         </template>
@@ -98,21 +67,7 @@
           <Skeleton class="w-6 my-1 h-2rem surface-300"/>
         </template>
       </Column>
-      <Column field="priceInclVat" :header="$t('c_productContainerOperations.Price')" style="width: 10%">
-        <template #editor="{ data }" v-if="!loading">
-          <InputNumber
-              v-model="data['editPrice']"
-              mode="currency"
-              currency="EUR"
-              :minFractionDigits="2"
-              :maxFractionDigits="2"
-              :pt="{
-                      input: {
-                        root: 'w-full pt-2 pb-2 m-1'
-                      }
-                    }"
-          />
-        </template>
+      <Column field="priceInclVat" :header="$t('c_productContainerOperations.Price')" style="width: 17%">
         <template #body="rowData" v-if="!loading">
           {{ formatPrice(rowData.data.priceInclVat) }}
         </template>
@@ -121,18 +76,7 @@
         </template>
       </Column>
       <Column field="alcoholPercentage"
-              :header="$t('c_productContainerOperations.Alcohol Percentage')" style="width: 6%">
-        <template #editor="{ data, field }" v-if="!loading">
-          <InputNumber
-              v-model="data[field]"
-              suffix="%"
-              :pt="{
-                      input: {
-                        root: 'w-full pt-2 pb-2 m-1'
-                      }
-                    }"
-          />
-        </template>
+              :header="$t('c_productContainerOperations.Alcohol Percentage')" style="width: 10%">
         <template #body="rowData" v-if="!loading">
           {{ `${rowData.data.alcoholPercentage} %` }}
         </template>
@@ -140,21 +84,7 @@
           <Skeleton class="w-6 my-1 h-2rem surface-300"/>
         </template>
       </Column>
-      <Column field="vat" :header="$t('c_productContainerOperations.VAT')" style="width: 8%">
-        <template #editor="{ data, field }" v-if="!loading">
-          <Dropdown
-              :placeholder="$t('c_productContainerOperations.Please select VAT')"
-              :options="vatGroups"
-              optionLabel="percentage"
-              v-model="data[field]"
-              :pt="{
-                        input: 'w-full pt-1 pb-1' ,
-                        root: 'm-1'
-                      }"
-          >
-            <template #value="slotProps" v-if="!loading"> {{ `${slotProps.value.percentage} %` }}</template>
-          </Dropdown>
-        </template>
+      <Column field="vat" :header="$t('c_productContainerOperations.VAT')" style="width: 10%">
         <template #body v-if="loading">
           <Skeleton class="w-6 my-1 h-2rem surface-300"/>
         </template>
@@ -164,12 +94,19 @@
 
       </Column>
       <Column
-          :rowEditor="true"
           bodyStyle="text-align:center"
-          style="width: 16%"
+          style="width: 5%"
       >
         <template #body v-if="loading">
           <Skeleton class="w-3 my-1 h-2rem surface-300"/>
+        </template>
+        <template #body="rowData" v-else>
+          <Button
+              @click="openEditModal(rowData.data.id)"
+              type="button"
+              outlined
+              icon="pi pi-pencil"
+          />
         </template>
       </Column>
     </DataTable>
@@ -184,22 +121,18 @@ import CardComponent from "@/components/CardComponent.vue";
 import InputIcon from "primevue/inputicon";
 import Column from "primevue/column";
 import Skeleton from "primevue/skeleton";
-import Dropdown from "primevue/dropdown";
-import DataTable, { type DataTableRowEditInitEvent, type DataTableRowEditSaveEvent } from "primevue/datatable";
+import DataTable from "primevue/datatable";
 import InputText from "primevue/inputtext";
-import { computed, type ComputedRef, onBeforeMount, type Ref, ref } from "vue";
-import type { ProductCategoryResponse, ProductResponse, VatGroupResponse } from "@sudosos/sudosos-client";
+import { computed, onBeforeMount, type Ref, ref } from "vue";
+import type { ProductResponse } from "@sudosos/sudosos-client";
 import { useProductStore } from "@/stores/product.store";
 import { FilterMatchMode } from "primevue/api";
 import ProductContainerOperationsComponent from "@/components/ProductContainerOperationsComponent.vue";
 
 const loading: Ref<boolean> = ref(true);
 const visible: Ref<Boolean> = ref(false);
+const product: Ref<ProductResponse | null> = ref(null);
 const fileInputs: Ref<{ [key: number]: any }> = ref({});
-const editingRows = ref([]);
-
-const categories: ComputedRef<ProductCategoryResponse[]> = computed(() => Object.values(productStore.categories));
-const vatGroups: ComputedRef<VatGroupResponse[]> = computed(() => Object.values(productStore.vatGroups));
 
 const productStore = useProductStore();
 
@@ -208,7 +141,6 @@ const products = computed<ProductResponse[]>(() => Object.values(productStore.ge
 
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  category: { value: null, matchMode: FilterMatchMode.EQUALS },
   name: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
 
@@ -216,23 +148,6 @@ onBeforeMount(async () => {
   await productStore.fetchAllIfEmpty();
   loading.value = false;
 });
-
-const rowEditInit = (event: DataTableRowEditInitEvent) => {
-  event.data['editPrice'] = (event.data as ProductResponse).priceInclVat.amount / 100;
-};
-const updateRow = async (event: DataTableRowEditSaveEvent) => {
-  await productStore.updateProduct(event.newData.id, {
-    name: event.newData.name,
-    priceInclVat: {
-      amount: Math.round(event.newData.editPrice * 100),
-      currency: 'EUR',
-      precision: 2
-    },
-    vat: event.newData.vat.id,
-    category: event.newData.category.id,
-    alcoholPercentage: event.newData.alcoholPercentage
-  });
-};
 
 const triggerFileInput = (id: number) => {
   if (fileInputs.value[id]) {
@@ -246,6 +161,11 @@ const onImgUpload = async (event: Event, productId: number) => {
 };
 
 const openCreateModal = () => {
+  visible.value = true;
+};
+
+const openEditModal = (id: number) => {
+  product.value =  productStore.getSingleProduct(id);
   visible.value = true;
 };
 
