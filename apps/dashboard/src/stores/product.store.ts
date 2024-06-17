@@ -62,6 +62,7 @@ export const useProductStore = defineStore('products', {
         if (!product) return;
         product.image = URL.createObjectURL(productImage);
         this.products[product.id] = product;
+        await (useContainerStore()).handleProductUpdate(product);
       });
     },
     async createProduct(createProductRequest: CreateProductRequest, productImage: File | undefined) {
