@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-column h-12rem w-9rem border-300 border-1 border-round-sm overflow-hidden cursor-pointer"
+    class="flex flex-column h-12rem w-8rem border-300 border-1 border-round-sm overflow-hidden cursor-pointer"
     @click="visible = true"
   >
       <div class="h-8rem flex justify-content-center align-items-center background-white">

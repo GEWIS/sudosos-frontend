@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row flex-wrap w-full gap-2 w-full justify-space-between">
+  <div class="flex flex-row flex-wrap w-full gap-1 w-full justify-space-between">
     <!-- Loop through each product and render a card for each -->
     <div v-for="product in container.products" :key="product.id" class="card">
       <ProductComponent :container="container" :product="product" />
