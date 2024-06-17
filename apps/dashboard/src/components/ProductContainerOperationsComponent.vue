@@ -315,6 +315,7 @@ const handleProductAdd = async () => {
   // Add predefined product
   if (props.container && selectProduct.value && !edit.value) {
     await containerStore.addProductToContainer(props.container, selectProduct.value as ProductResponse);
+    closeDialog();
   }
   // Create an add new product
   else if (edit.value && !selectProduct.value) {
