@@ -19,17 +19,22 @@
       <div class="flex flex-row flex-wrap justify-content-between align-items-center">
         <label for="owner" class="mr-8">{{ $t('c_POSCreate.Owner') }}</label>
         <div class="flex flex-column flex-end relative">
+          <div v-if="state.create">
           <Dropdown :placeholder="$t('c_POSCreate.Select owner')" :options="organsList" optionLabel="firstName"
                     v-model="owner" class="w-18rem" id="owner" v-bind="ownerAttrs"/>
           <error-span :error="errors.owner"/>
+          </div>
+          <div v-else>
+            <p class="my-0">{{ container.owner.firstName + ' ' + container.owner.lastName }}</p>
+          </div>
         </div>
       </div>
       <div class="flex flex-row flex-wrap justify-content-between align-items-center">
         <label for="name" class="mr-8">{{ $t('c_productContainerOperations.Public') }}</label>
         <div class="relative">
-          <Checkbox v-model="publicContainer" v-bind="publicAttrs" inputId="publicContainer"
-                    name="public" value="public" :binary="true"/>
-          <error-span :error="errors.public"/>
+            <Checkbox v-model="publicContainer" v-bind="publicAttrs" inputId="publicContainer"
+                      name="public" value="public" :binary="true"/>
+            <error-span :error="errors.public"/>
         </div>
       </div>
       <div class="flex flex-row justify-content-end gap-2">
@@ -45,7 +50,7 @@ import { addListenerOnDialogueOverlay } from "@/utils/dialogUtil";
 import Dialog from "primevue/dialog";
 import { computed, onMounted, type PropType, type Ref, ref, watch } from "vue";
 import type {
-  BaseUserResponse, ContainerWithProductsResponse,
+  BaseUserResponse, ContainerResponse, ContainerWithProductsResponse,
   CreateContainerRequest
 } from "@sudosos/sudosos-client";
 import { useAuthStore } from "@sudosos/sudosos-frontend-common";
@@ -56,6 +61,11 @@ import InputText from "primevue/inputtext";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import ErrorSpan from "@/components/ErrorSpan.vue";
+import {useContainerStore} from "@/stores/container.store";
+import {handleError} from "@/utils/errorUtils";
+import {useToast} from "primevue/usetoast";
+import {useI18n} from "vue-i18n";
+const { t } = useI18n();
 
 const props = defineProps({
   container: {
@@ -65,15 +75,18 @@ const props = defineProps({
 
 const emit = defineEmits(['update:visible', 'create:container']);
 const authStore = useAuthStore();
+const containerStore = useContainerStore();
 
 const visible = ref(false);
 const dialog = ref();
 const organsList: Ref<BaseUserResponse[]> = ref(authStore.organs);
 
+const toast = useToast();
+
 const state = computed(() => {
   return {
-    create: props.container === undefined,
-    edit: props.container !== undefined,
+    create: props.container == undefined,
+    edit: props.container != undefined,
   };
 });
 const header = computed(() => {
@@ -107,19 +120,40 @@ const closeDialog = () => {
 };
 
 const handleSubmitContainer = handleSubmit(async (values) => {
-  const request: CreateContainerRequest = {
-    name: values.name, ownerId: values.owner.id, public: values.public
-  };
-
   // Updating a container
   if (props.container) {
-    request.products = props.container.products.map((p) => p.id);
+    await containerStore.updateContainer(
+        props.container.id,
+        {name: values.name,
+        public: values.public,
+        products: props.container.products.map((p) => p.id)}
+    ).then(() => {
+      closeDialog();
+      toast.add({
+        severity: 'success',
+        summary: t('successMessages.success'),
+        detail: t('successMessages.updateContainer'),
+        life: 3000,
+      });
+    }).catch((err) => handleError(err, toast));
   } else {
     // Creating a container
-
+    await containerStore.createEmptyContainer(
+        values.name,
+        values.public,
+        values.owner.id
+    ).then((c: ContainerResponse) => {
+      emit('create:container', c);
+      closeDialog();
+      toast.add({
+        severity: 'success',
+        summary: t('successMessages.success'),
+        detail: t('successMessages.createContainer'),
+        life: 3000,
+      });
+    }).catch((err) => handleError(err, toast));
   }
 
-  console.error(request);
   closeDialog();
 });
 

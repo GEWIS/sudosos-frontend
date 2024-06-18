@@ -1,6 +1,6 @@
 <template>
   <CardComponent :header="$t('containersOverview.Containers')" class="p-0">
-    <div class="flex justify-content-end">
+    <div v-if="showCreate" class="flex justify-content-end">
       <Button @click="openContainerEdit()">Create</Button>
     </div>
     <Accordion :activeIndex="0" class="block w-full" :multiple="true"
@@ -10,9 +10,8 @@
           <div class="flex justify-content-between w-full">
             <span>
               {{ container.name }}
-              {{ container.id }}
             </span>
-            <div @click="() => openContainerEdit(container.id)" class="mx-3">
+            <div @click="(event) => handleEditClick(event, container.id)" class="px-5">
               <i class="pi pi-pencil"/>
             </div>
           </div>
@@ -31,8 +30,9 @@ import Accordion, { type AccordionTabOpenEvent } from "primevue/accordion";
 import AccordionTab from "primevue/accordiontab";
 import { type ContainerInStore, useContainerStore } from "@/stores/container.store";
 import { type Ref, ref } from "vue";
-import ContainerCreateDialog from "@/components/ContainerCreateDialog.vue";
+import ContainerCreateDialog from "@/components/ContainerActionsDialog.vue";
 import type { ContainerResponse } from "@sudosos/sudosos-client";
+import {bool, boolean} from "yup";
 
 const visible = ref(false);
 const selectedContainer: Ref<ContainerResponse | null> = ref(null);
@@ -42,6 +42,10 @@ const props = defineProps({
     type: Array<ContainerInStore>,
     required: true,
   },
+  showCreate: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 const containerStore = useContainerStore();
@@ -50,8 +54,16 @@ const onTabOpen = async (event: AccordionTabOpenEvent) => {
   await containerStore.getContainerWithProducts(props.containers[event.index]);
 };
 
-const openContainerEdit = async (index?: number) => {
-  if (index) selectedContainer.value = await containerStore.getContainerWithProducts(props.containers[index - 1]);
+const handleEditClick = async (event: Event, id: number) => {
+  event.stopPropagation();
+  await openContainerEdit(id);
+}
+
+const openContainerEdit = async (id: number) => {
+  if (id) {
+    const container = props.containers.find((c) => c.id === id);
+    selectedContainer.value = await containerStore.getContainerWithProducts(container, true);
+  }
   else selectedContainer.value = null;
   visible.value = true;
 };

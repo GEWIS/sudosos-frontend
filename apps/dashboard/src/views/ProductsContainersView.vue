@@ -6,6 +6,7 @@
           v-if="containers"
           :header="$t('manageProducts.Containers')"
           :containers="containers"
+          :show-create="true"
           class="w-full"/>
       <ProductCardComponent/>
     </div>
