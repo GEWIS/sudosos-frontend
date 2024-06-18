@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import type {
     ContainerResponse,
-    ContainerWithProductsResponse,
+    ContainerWithProductsResponse, CreateContainerRequest,
     ProductResponse,
     UpdateContainerRequest
 } from "@sudosos/sudosos-client";
@@ -58,6 +58,11 @@ export const useContainerStore = defineStore('container', {
             );
             containersArray.forEach((container: ContainerWithProductsResponse) => {
                 this.containers[container.id] = container;
+            });
+        },
+        async createContainer(c: CreateContainerRequest) {
+            return await ApiService.container.createContainer(c).then(resp => {
+                this.containers[resp.data.id] = resp.data;
             });
         },
         async addProductToContainer(c: ContainerResponse, product: ProductResponse) {

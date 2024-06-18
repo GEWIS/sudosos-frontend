@@ -194,7 +194,6 @@ const header = computed(() => {
   if (state.value.createProduct) return 'Create product';
   if (state.value.displayProduct) return 'Product details';
   return '';
-
 });
 
 const productImage: Ref<File | undefined> = ref();
