@@ -148,7 +148,8 @@
     },
     "Preferred": "Preferred",
     "Featured": "Featured",
-    "Pricelist": "Price list"
+    "Pricelist": "Price list",
+    "AllProducts": "All Products"
   },
   "c_transactionDetailsModal": {
     "delete": "Delete",

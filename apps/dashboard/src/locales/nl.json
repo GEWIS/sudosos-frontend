@@ -111,7 +111,8 @@
     },
     "Preferred": "Voorkeur",
     "Featured": "Promo",
-    "Pricelist": "Prijslijst"
+    "Pricelist": "Prijslijst",
+    "AllProducts": "Alle producten"
   },
   "c_recentTransactionsTable": {
     "all transactions": "alle transacties",

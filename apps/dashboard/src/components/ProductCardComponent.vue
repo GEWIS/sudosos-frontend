@@ -1,5 +1,5 @@
 <template>
-  <CardComponent header="all products" class="w-full">
+  <CardComponent :header="$t('c_productContainerOperations.AllProducts')" class="w-full">
     <template #topAction>
       <div>
         <Button @click="openCreateModal">{{ $t('app.Create') }}</Button>
