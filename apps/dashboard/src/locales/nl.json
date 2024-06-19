@@ -47,9 +47,6 @@
     "timespan": "Tijdspan: "
   },
   "c_ContainerAssign": {
-    "Assign product": "Product toewijzen",
-    "Product": "Kies product:",
-    "Product selection error": " is een vereist veld.",
     "Select product": "Selecteer product"
   },
   "c_POSCreate": {
@@ -71,12 +68,9 @@
     "Save": "Opslaan"
   },
   "c_containerEditModal": {
-    "Name": "Naam",
     "Public": "Publiek",
     "cancel": "Annuleren",
-    "owner": "Eigenaar",
     "save": "Opslaan",
-    "select owner": "Selecteer Eigenaar",
     "header": {
       "edit": "Edit container",
       "create": "Container aanmaken"
@@ -249,12 +243,10 @@
   },
   "successMessages": {
     "createContainer": "Container is succesvol aangemaakt.",
-    "deleteProductContainer": "Product is succesvol verwijderd van de container.",
     "editPOS": "Verkooppunt is succesvol",
     "fineDeleted": "Boete is succesvol verwijderd.",
     "finesHandedOut": "Boetes zijn succesvol uitgedeeld.",
     "finesNotified": "Gebruikers succesvol ingelicht.",
-    "productCreated": "Het product is aangemaakt!",
     "success": "Gelukt!",
     "transactionDeleted": "Transactie is succesvol verwijderd.",
     "resetPassword": "Wachtwoord is succesvol gewijzigd.",
@@ -280,12 +272,9 @@
     "fineAmount": "Boete",
     "fineDescr": "Je hebt een boete ontvangen.",
     "invoiceDescr": "Je hebt een factuur aan GEWIS betaald",
-    "otherBoughtAt": "{user} heeft gekocht bij {pos}",
     "price": "Prijs",
-    "putInBy": "Transactie aangemaakt door {createdBy}",
     "title": "Titel",
     "total": "Totaal:",
-    "userBoughtAt": "Je hebt gekocht bij {pos}",
     "waivedFineDescr": "Je boetes zijn kwijtgescholden.",
     "what": "Wat",
     "when": "Wanneer"

@@ -1,7 +1,7 @@
 <template>
   <CardComponent :header="$t('containersOverview.Containers')" class="p-0">
     <div v-if="showCreate" class="flex justify-content-end">
-      <Button @click="openContainerEdit()">Create</Button>
+      <Button @click="openContainerEdit()">{{$t('app.Create')}}</Button>
     </div>
     <Accordion :activeIndex="0" class="block w-full" :multiple="true"
                @tab-open="(event: AccordionTabOpenEvent) => onTabOpen(event)">
@@ -13,7 +13,8 @@
             </span>
             <div>
               <div @click="(event) => handleEditClick(event, container.id)" class="px-5">
-                <span class="mr-4 text-xs uppercase" v-if="container.public">{{ $t('c_containerEditModal.Public') }}</span>
+                <span class="mr-4 text-xs uppercase" v-if="container.public">
+                  {{ $t('c_containerEditModal.Public') }}</span>
                 <i class="pi pi-pencil"/>
               </div>
             </div>
@@ -35,7 +36,6 @@ import { type ContainerInStore, useContainerStore } from "@/stores/container.sto
 import { type Ref, ref } from "vue";
 import ContainerCreateDialog from "@/components/ContainerActionsDialog.vue";
 import type { ContainerResponse } from "@sudosos/sudosos-client";
-import {bool, boolean} from "yup";
 
 const visible = ref(false);
 const selectedContainer: Ref<ContainerResponse | null> = ref(null);
@@ -60,12 +60,12 @@ const onTabOpen = async (event: AccordionTabOpenEvent) => {
 const handleEditClick = async (event: Event, id: number) => {
   event.stopPropagation();
   await openContainerEdit(id);
-}
+};
 
 const openContainerEdit = async (id: number) => {
   if (id) {
     const container = props.containers.find((c) => c.id === id);
-    selectedContainer.value = await containerStore.getContainerWithProducts(container, true);
+    if (container) selectedContainer.value = await containerStore.getContainerWithProducts(container, true);
   }
   else selectedContainer.value = null;
   visible.value = true;

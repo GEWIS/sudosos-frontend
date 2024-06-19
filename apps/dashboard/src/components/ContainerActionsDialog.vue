@@ -52,10 +52,9 @@
 <script setup lang="ts">
 import { addListenerOnDialogueOverlay } from "@/utils/dialogUtil";
 import Dialog from "primevue/dialog";
-import { computed, onMounted, type PropType, type Ref, ref, watch } from "vue";
+import { computed, type PropType, type Ref, ref } from "vue";
 import type {
-  BaseUserResponse, ContainerResponse, ContainerWithProductsResponse,
-  CreateContainerRequest
+  BaseUserResponse, ContainerResponse, ContainerWithProductsResponse
 } from "@sudosos/sudosos-client";
 import { useAuthStore } from "@sudosos/sudosos-frontend-common";
 import { toTypedSchema } from "@vee-validate/yup";
@@ -65,10 +64,10 @@ import InputText from "primevue/inputtext";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import ErrorSpan from "@/components/ErrorSpan.vue";
-import {useContainerStore} from "@/stores/container.store";
-import {handleError} from "@/utils/errorUtils";
-import {useToast} from "primevue/usetoast";
-import {useI18n} from "vue-i18n";
+import { useContainerStore } from "@/stores/container.store";
+import { handleError } from "@/utils/errorUtils";
+import { useToast } from "primevue/usetoast";
+import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
 const props = defineProps({
@@ -128,9 +127,9 @@ const handleSubmitContainer = handleSubmit(async (values) => {
   if (props.container) {
     await containerStore.updateContainer(
         props.container.id,
-        {name: values.name,
+        { name: values.name,
         public: values.public,
-        products: props.container.products.map((p) => p.id)}
+        products: props.container.products.map((p) => p.id) }
     ).then(() => {
       closeDialog();
       toast.add({
