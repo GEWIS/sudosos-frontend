@@ -104,7 +104,12 @@
     "Delete From Container": "Verwijder uit container",
     "Save": "Opslaan",
     "Create": "Aanmaken",
-    "Close To": "Naam lijkt op: {name} (klik om te kiezen)"
+    "Close To": "Naam lijkt op: {name} (klik om te kiezen)",
+    "header": {
+      "addProductToContainer": "Product aan container toevoegen",
+      "createProduct": "Product aanmaken",
+      "productDetails": "Productdetails"
+    }
   },
   "c_recentTransactionsTable": {
     "all transactions": "alle transacties",

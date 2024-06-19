@@ -6,7 +6,7 @@
           @update:visible="closeDialog"
           :close-on-escape="true"
           ref="dialog"
-          @show="addListenerOnDialogueOverlay(dialog)"
+          @show="openDialog"
   >
     <div @submit="handleSubmit" class="flex flex-column gap-3">
       <div class="flex gap-5 justify-content-end" v-if="state.addToContainer">
@@ -25,6 +25,7 @@
         <div class="flex flex-column align-items-center gap-3">
           <div class="picture-container p-3">
             <img v-if="imageSrc" class="product-image" :src="imageSrc">
+            <img v-else class="product-image" src="@/assets/img/bier.png">
           </div>
           <div v-if="edit">
             <FileUpload id="img" mode="basic" name="productImg" accept="image/*" @select="onImgUpload($event)"/>
@@ -39,7 +40,7 @@
               <br>
               <span class="error-text-name block w15-rem" v-if="closeTo && !errors.name" @click="selectCloseTo">
                 {{ $t('c_productContainerOperations.Close To', {name: closeTo.name}) }}</span>
-              <span class="error-text">{{ errors.name }}</span>
+              <error-span :error="errors.name"/>
             </div>
           </div>
           <div class="flex flex-row flex-wrap justify-content-between align-items-center">
@@ -48,8 +49,7 @@
               <Dropdown :placeholder="$t('c_productContainerOperations.Please select')"
                         :options="categories" optionLabel="name" v-model="category" class="w-18rem" id="category"
                         v-bind="categoryAttrs" :disabled="!edit"/>
-              <br>
-              <span class="error-text">{{ errors.category }}</span>
+              <error-span :error="errors.category"/>
             </div>
           </div>
           <div class="flex flex-row flex-wrap justify-content-between align-items-center">
@@ -58,8 +58,7 @@
               <Dropdown :placeholder="$t('c_productContainerOperations.Please select VAT')" :options="vatGroups"
                         :optionLabel="(v: VatGroupResponse) => `${v.percentage}`" class="w-18rem" v-model="vat"
                         v-bind="vatAttrs" :disabled="!edit" @change="markVatEdited()"/>
-              <br>
-              <span class="error-text">{{ errors.vatGroup }}</span>
+              <error-span :error="errors.vatGroup"/>
             </div>
           </div>
           <div class="flex flex-row flex-wrap justify-content-between align-items-center">
@@ -69,8 +68,7 @@
             <div class="flex flex-column flex-end relative mb-3">
               <InputNumber id="alcohol" class="w-18rem" v-model="alcoholPercentage" v-bind="alcoholPercentageAttrs"
                            :max-fraction-digits="2" :disabled="!edit || (!category || category.name !== 'Alcoholic')"/>
-              <br>
-              <span class="error-text">{{ errors.alcoholPercentage }}</span>
+              <error-span :error="errors.alcoholPercentage"/>
             </div>
           </div>
           <div class="flex flex-row flex-wrap justify-content-between align-items-center">
@@ -78,8 +76,7 @@
             <div class="flex flex-column flex-end relative mb-3">
               <InputNumber id="price" class="w-18rem" v-model="price" v-bind="priceAttrs" :max-fraction-digits="2"
                            :disabled="!edit"/>
-              <br>
-              <span class="error-text">{{ errors.price }}</span>
+              <error-span :error="errors.price"/>
             </div>
           </div>
           <div v-if="!state.displayProduct" class="flex flex-row flex-wrap justify-content-between align-items-center">
@@ -87,8 +84,7 @@
             <div class="flex flex-column flex-end relative mb-3">
               <Dropdown :placeholder="$t('c_POSCreate.Select owner')" :options="organsList" optionLabel="firstName"
                         v-model="owner" class="w-18rem" id="owner" v-bind="ownerAttrs" :disabled="!edit"/>
-              <br>
-              <span class="error-text">{{ errors.owner }}</span>
+              <error-span :error="errors.owner"/>
             </div>
           </div>
 
@@ -166,49 +162,9 @@ import Fuse from "fuse.js";
 import FileUpload from "primevue/fileupload";
 import { useAuthStore } from "@sudosos/sudosos-frontend-common";
 import { formatDateTime } from "@/utils/formatterUtils";
-
-const dialog: Ref<null | any> = ref(null);
-
-const productStore = useProductStore();
-const containerStore = useContainerStore();
-const authStore = useAuthStore();
-
-const dropdownProducts = computed(() => {
-  if (!props.container) return products;
-  return products.value.filter((p) => !props.container.products.map((p) => p.id).includes(p.id));
-});
-
-const inContainer = computed(() => {
-  if (!props.container) return false;
-  return props.container.products.map((p) => p.id).includes(selectProduct.value?.id as number);
-});
-
-const categories: ComputedRef<ProductCategoryResponse[]> = computed(() => Object.values(productStore.categories));
-const vatGroups: ComputedRef<VatGroupResponse[]> = computed(() => Object.values(productStore.vatGroups));
-const products: ComputedRef<ProductResponse[]> = computed(() => Object.values(productStore.getProducts));
-const organsList: Ref<BaseUserResponse[]> = ref(authStore.organs);
-const edit = computed(() => selectProduct.value == null);
-const visible = ref(false);
-const header = computed(() => {
-  if (state.value.addToContainer) return 'Add product to container';
-  if (state.value.createProduct) return 'Create product';
-  if (state.value.displayProduct) return 'Product details';
-  return '';
-});
-
-const productImage: Ref<File | undefined> = ref();
-const imageSrc = ref('');
-
-const vatMap: { [key: string | number]: any } = {
-  other: undefined,
-  modified: false,
-};
-
-const markVatEdited = () => {
-  vatMap.edited = true;
-};
-
-const emit = defineEmits(['update:visible']);
+import ErrorSpan from "@/components/ErrorSpan.vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const props = defineProps({
   container: {
@@ -217,14 +173,6 @@ const props = defineProps({
   product: {
     type: Object as PropType<ProductResponse | undefined>,
   },
-});
-
-const state = computed(() => {
-  return {
-    addToContainer: props.container !== undefined && props.product === undefined,
-    createProduct: props.container === undefined && props.product === undefined,
-    displayProduct: props.product !== undefined,
-  };
 });
 
 const creationSchema = toTypedSchema(
@@ -250,6 +198,80 @@ const [price, priceAttrs] = defineField('price');
 const [owner, ownerAttrs] = defineField('owner');
 const [alcoholPercentage, alcoholPercentageAttrs] = defineField('alcoholPercentage');
 
+const dialog: Ref<null | any> = ref(null);
+const visible = ref(false);
+const emit = defineEmits(['update:visible']);
+
+// Load Stores
+const productStore = useProductStore();
+const containerStore = useContainerStore();
+const authStore = useAuthStore();
+
+// List products to insta-add
+const dropdownProducts = computed(() => {
+  if (!props.container) return products;
+  // Ignore products that are already in the container
+  return products.value.filter((p) => !props.container.products.map((p) => p.id).includes(p.id));
+});
+
+
+// When using the "alike product", disable add button if its already in container.
+const inContainer = computed(() => {
+  if (!props.container) return false;
+  return props.container.products.map((p) => p.id).includes(selectProduct.value?.id as number);
+});
+
+// Deep reactivity
+const categories: ComputedRef<ProductCategoryResponse[]> = computed(() => Object.values(productStore.categories));
+const vatGroups: ComputedRef<VatGroupResponse[]> = computed(() => Object.values(productStore.vatGroups));
+const products: ComputedRef<ProductResponse[]> = computed(() => Object.values(productStore.getProducts));
+const organsList: Ref<BaseUserResponse[]> = ref(authStore.organs);
+
+// We don't allow editing of dropdown products
+const edit = computed(() => selectProduct.value == null);
+
+const header = computed(() => {
+  if (state.value.addToContainer) return t('c_productContainerOperations.header.addProductToContainer');
+  if (state.value.createProduct) return t('c_productContainerOperations.header.createProduct');
+  if (state.value.displayProduct) return t('c_productContainerOperations.header.productDetails');
+  return '';
+});
+
+const productImage: Ref<File | undefined> = ref();
+const imageSrc = ref('');
+
+// Smart automatic VAT percentage
+const vatMap: { [key: string | number]: any } = {
+  other: undefined,
+  modified: false,
+};
+
+const markVatEdited = () => {
+  vatMap.edited = true;
+};
+
+watch(category, () => {
+  if (vatMap.edited) return;
+
+  if (!category.value || !category.value.id) return;
+  const vatMapped = vatMap[category.value.id];
+  if (vatMapped) vat.value = vatMapped;
+  else if (vatMap.other) vat.value = vatMap.other;
+});
+
+// Current state / operations
+const state = computed(() => {
+  return {
+    addToContainer: props.container != undefined && props.product == undefined,
+    createProduct: props.container == undefined && props.product == undefined,
+    displayProduct: props.product != undefined,
+  };
+});
+
+watch(selectProduct, () => {
+  if (selectProduct.value) updateFieldValues(selectProduct.value);
+});
+
 const updateFieldValues = (p: ProductResponse) => {
   if (!p) return;
   name.value = p.name;
@@ -261,28 +283,12 @@ const updateFieldValues = (p: ProductResponse) => {
   imageSrc.value = getProductImageSrc(p);
 };
 
-
-const displayProduct = ref(props.product);
-watch(selectProduct, () => {
-  if (!props.product) {
-    displayProduct.value = selectProduct.value;
-  }
-});
-
-watch(displayProduct, () => {
-  const p = displayProduct.value as ProductResponse;
-  updateFieldValues(p);
-});
-
-
+// Give user a warning if making possible duplicate product
 const closeTo = ref<ProductResponse | null>(null);
-
 watch(name, () => {
-  if (state.value.displayProduct) return;
   if (selectProduct.value) return;
   if (!name.value) return;
 
-  // Create a new instance of Fuse for your products
   const fuse = new Fuse(products.value, {
     keys: ['name'],
     includeScore: true,
@@ -293,27 +299,27 @@ watch(name, () => {
   const results = fuse.search(name.value);
 
   // If a similar product is found, update the 'similar' value
-  if (results.length > 0 && results[0].score < 0.3) {
-    closeTo.value = results[0].item;
+  const closest = results[0];
+  if (results.length > 0 && closest.score < 0.3) {
+    if (props.product && closest.item.id === props.product.id ) {
+      closeTo.value = null;
+    } else {
+      closeTo.value = results[0].item;
+    }
   } else {
     closeTo.value = null;
   }
 });
 
-watch(category, () => {
-  if (vatMap.edited) return;
+const selectCloseTo = () => {
+  if (!closeTo.value) return;
+  selectProduct.value = closeTo.value;
+  closeTo.value = null;
+};
 
-  if (!category.value || !category.value.id) return;
-  const vatMapped = vatMap[category.value.id];
-  if (vatMapped) vat.value = vatMapped;
-  else if (vatMap.other) vat.value = vatMap.other;
-});
-
+// Load all product information once
 onBeforeMount(async () => {
   await productStore.fetchAllIfEmpty();
-  selectProduct.value = undefined;
-  if (props.product) updateFieldValues(props.product);
-
 
   const alcoholic = categories.value.find((c) => c.name === 'Alcoholic');
   if (alcoholic) {
@@ -346,6 +352,7 @@ const handleProductAdd = async () => {
 
       await productStore.createProduct(createProductRequest, productImage.value)
           .then((createdProduct: ProductResponse) => {
+            // Propagate product to container
             if (props.container) containerStore.addProductToContainer(props.container, createdProduct);
           });
 
@@ -355,7 +362,7 @@ const handleProductAdd = async () => {
 };
 
 const changed = () => {
-  if (props.product === undefined) return;
+  if (props.product == undefined) return;
   return name.value !== props.product.name ||
       category.value?.id !== props.product.category.id ||
       vat.value?.id !== props.product.vat.id ||
@@ -382,10 +389,7 @@ const handleSaveProduct = async () => {
         vat: vat.value?.id as number,
       };
       if (!props.product) return;
-      await productStore.updateProduct(props.product.id, updateProductRequest)
-          .then((updatedProduct: ProductResponse) => {
-            displayProduct.value = updatedProduct;
-          });
+      await productStore.updateProduct(props.product.id, updateProductRequest);
     })();
   }
   if (productImage.value && props.product) {
@@ -400,24 +404,18 @@ const handleDeleteContainerProduct = async () => {
   closeDialog();
 };
 
-const selectCloseTo = () => {
-  if (!closeTo.value) return;
-  selectProduct.value = closeTo.value;
-  closeTo.value = null;
+const openDialog = () => {
+  addListenerOnDialogueOverlay(dialog.value);
+  selectProduct.value = undefined;
+  if (props.product) {
+    updateFieldValues(props.product);
+    vatMap.edited = true;
+  }
 };
 
-watch(() => props.product, () => {
-  if (props.product) {
-    displayProduct.value = props.product;
-    updateFieldValues(props.product);
-  }
-});
-
 const closeDialog = () => {
-  if (!state.value.displayProduct) {
-    resetForm();
-    imageSrc.value = '';
-  }
+  resetForm();
+  imageSrc.value = '';
   selectProduct.value = undefined;
   productImage.value = undefined;
   closeTo.value = null;

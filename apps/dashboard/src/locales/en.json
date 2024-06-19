@@ -138,7 +138,12 @@
     "Delete From Container": "Delete from container",
     "Save": "Save",
     "Create": "Create",
-    "Close To": "Name is close to: {name} (click to pick)"
+    "Close To": "Name is close to: {name} (click to pick)",
+    "header": {
+      "addProductToContainer": "Add product to container",
+      "createProduct": "Create product",
+      "productDetails": "Product details"
+    }
   },
   "c_transactionDetailsModal": {
     "delete": "Delete",

@@ -161,6 +161,7 @@ const onImgUpload = async (event: Event, productId: number) => {
 };
 
 const openCreateModal = () => {
+  product.value = undefined;
   visible.value = true;
 };
 
