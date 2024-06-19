@@ -1,12 +1,12 @@
 <template>
   <div class="main-content">
-    <div v-if="loggingIn" class="flex-container justify-content-center h-100">
+    <div v-if="loggingIn" class="flex align-items-center justify-content-center h-full">
       <div>
         <ProgressSpinner aria-label="Loading" />
       </div>
     </div>
     <div v-else>
-      <div class="keypad-container">
+      <div class="keypad-container m-auto pt-6">
         <div class="display-container" :class="displayContainerClasses">
           <KeypadDisplayComponent
             :userId="userId"
@@ -98,11 +98,11 @@ const switchInput = () => {
 
 const focusPasscode = () => {
   if (enteringUserId.value) switchInput();
-}
+};
 
 const focusUserId = () => {
   if (!enteringUserId.value) switchInput();
-}
+};
 
 const handleExternal = () => {
   external.value = !external.value;
