@@ -29,10 +29,12 @@
       </template>
       <Column field="image" :header="$t('c_productContainerOperations.Image')">
         <template #body="rowDataImg" v-if="!loading">
-              <span
+              <div
                   class="h-4rem flex justify-content-center align-items-center background-white
                    w-4rem mx-1 cursor-pointer image-preview-container">
-                <img :src="getProductImageSrc(rowDataImg.data)" alt="img" class="h-4rem" />
+                <div class="h-4rem w-4rem">
+                  <img :src="getProductImageSrc(rowDataImg.data)" alt="img" class="h-4rem w-4rem product-image"/>
+                </div>
                 <button
                     ref="previewButton"
                     type="button"
@@ -48,7 +50,7 @@
                     @change="(e) => onImgUpload(e, rowDataImg.data.id)"
                 />
                 </button>
-              </span>
+              </div>
         </template>
         <template #body v-else>
           <Skeleton class="w-8 my-1 h-4rem surface-300"/>
@@ -166,7 +168,7 @@ const openCreateModal = () => {
 };
 
 const openEditModal = (id: number) => {
-  product.value =  productStore.getSingleProduct(id);
+  product.value = productStore.getSingleProduct(id);
   visible.value = true;
 };
 
@@ -207,5 +209,10 @@ const openEditModal = (id: number) => {
 
 .background-white {
   background-color: #fff;
+}
+
+.product-image {
+  object-fit: contain;
+  box-sizing: border-box;
 }
 </style>
