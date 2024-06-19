@@ -71,7 +71,7 @@ const handleInput = (value: string) => {
     if (pinCode.value.length >= maxPasscodeLength) return;
     pinCode.value += value;
     if (pinCode.value.length === maxPasscodeLength) {
-      setTimeout(() => login(), 500);
+      login();
     }
   }
 };
