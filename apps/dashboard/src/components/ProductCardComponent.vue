@@ -136,7 +136,7 @@ const fileInputs: Ref<{ [key: number]: any }> = ref({});
 
 const productStore = useProductStore();
 
-const products = computed<ProductResponse[]>(() => Object.values(productStore.getProducts)
+const products = computed<ProductResponse[]>(() => Object.values(productStore.getAllProducts)
     .sort((a, b) => a.name.localeCompare(b.name)));
 
 const filters = ref({

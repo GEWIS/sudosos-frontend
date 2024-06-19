@@ -231,7 +231,7 @@ const inContainer = computed(() => {
 // Deep reactivity
 const categories: ComputedRef<ProductCategoryResponse[]> = computed(() => Object.values(productStore.categories));
 const vatGroups: ComputedRef<VatGroupResponse[]> = computed(() => Object.values(productStore.vatGroups));
-const products: ComputedRef<ProductResponse[]> = computed(() => Object.values(productStore.getProducts));
+const products: ComputedRef<ProductResponse[]> = computed(() => Object.values(productStore.getAllProducts));
 const organsList: Ref<BaseUserResponse[]> = ref(authStore.organs);
 
 // We don't allow editing of dropdown products
