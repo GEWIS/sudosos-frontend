@@ -1,5 +1,10 @@
 <template>
   <CardComponent header="all products" class="w-full">
+    <template #topAction>
+      <div>
+        <Button @click="openCreateModal">{{ $t('app.Create') }}</Button>
+      </div>
+    </template>
     <ProductContainerOperationsComponent v-model:visible="visible" :product="product"/>
     <DataTable
         v-model:filters="filters"
@@ -22,35 +27,32 @@
             <InputIcon class="pi pi-search"></InputIcon>
             <InputText v-model="filters['global'].value" placeholder="Search"/>
           </IconField>
-          <span>
-                    <Button @click="openCreateModal">{{ $t('app.Create') }}</Button>
-                  </span>
         </div>
       </template>
       <Column field="image" :header="$t('c_productContainerOperations.Image')">
         <template #body="rowDataImg" v-if="!loading">
-              <div
-                  class="h-4rem flex justify-content-center align-items-center background-white
+          <div
+              class="h-4rem flex justify-content-center align-items-center background-white
                    w-4rem mx-1 cursor-pointer image-preview-container">
-                <div class="h-4rem w-4rem">
-                  <img :src="getProductImageSrc(rowDataImg.data)" alt="img" class="h-4rem w-4rem product-image"/>
-                </div>
-                <button
-                    ref="previewButton"
-                    type="button"
-                    class="image-preview-indicator p-image-preview-indicator fileupload"
-                    @click="triggerFileInput(rowDataImg.data.id)"
-                >
-                  <i class="pi pi-upload"></i>
-                <input
-                    :ref="(el) => (fileInputs[rowDataImg.data.id] = el)"
-                    type="file"
-                    accept="image/*"
-                    id="fileInput"
-                    @change="(e) => onImgUpload(e, rowDataImg.data.id)"
-                />
-                </button>
-              </div>
+            <div class="h-4rem w-4rem">
+              <img :src="getProductImageSrc(rowDataImg.data)" alt="img" class="h-4rem w-4rem product-image"/>
+            </div>
+            <button
+                ref="previewButton"
+                type="button"
+                class="image-preview-indicator p-image-preview-indicator fileupload"
+                @click="triggerFileInput(rowDataImg.data.id)"
+            >
+              <i class="pi pi-upload"></i>
+              <input
+                  :ref="(el) => (fileInputs[rowDataImg.data.id] = el)"
+                  type="file"
+                  accept="image/*"
+                  id="fileInput"
+                  @change="(e) => onImgUpload(e, rowDataImg.data.id)"
+              />
+            </button>
+          </div>
         </template>
         <template #body v-else>
           <Skeleton class="w-8 my-1 h-4rem surface-300"/>

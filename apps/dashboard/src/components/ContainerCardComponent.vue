@@ -1,8 +1,10 @@
 <template>
   <CardComponent :header="$t('containersOverview.Containers')" class="p-0">
-    <div v-if="showCreate" class="flex justify-content-end">
-      <Button @click="openContainerEdit()">{{$t('app.Create')}}</Button>
-    </div>
+    <template #topAction>
+      <div v-if="showCreate" class="flex justify-content-end">
+        <Button @click="openContainerEdit()">{{$t('app.Create')}}</Button>
+      </div>
+    </template>
     <Accordion :activeIndex="0" class="block w-full" :multiple="true"
                @tab-open="(event: AccordionTabOpenEvent) => onTabOpen(event)">
       <AccordionTab v-for="container in containers" :key="container.id">
