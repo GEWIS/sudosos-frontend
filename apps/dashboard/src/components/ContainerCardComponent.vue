@@ -11,8 +11,11 @@
             <span>
               {{ container.name }}
             </span>
-            <div @click="(event) => handleEditClick(event, container.id)" class="px-5">
-              <i class="pi pi-pencil"/>
+            <div>
+              <div @click="(event) => handleEditClick(event, container.id)" class="px-5">
+                <span class="mr-4 text-xs uppercase" v-if="container.public">{{ $t('c_containerEditModal.Public') }}</span>
+                <i class="pi pi-pencil"/>
+              </div>
             </div>
           </div>
         </template>
