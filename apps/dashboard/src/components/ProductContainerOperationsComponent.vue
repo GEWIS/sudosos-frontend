@@ -164,7 +164,10 @@ import { useAuthStore } from "@sudosos/sudosos-frontend-common";
 import { formatDateTime } from "@/utils/formatterUtils";
 import ErrorSpan from "@/components/ErrorSpan.vue";
 import { useI18n } from "vue-i18n";
+import { useToast } from "primevue/usetoast";
+import { handleError } from "@/utils/errorUtils";
 const { t } = useI18n();
+const toast = useToast();
 
 const props = defineProps({
   container: {
@@ -328,11 +331,22 @@ onBeforeMount(async () => {
   }
 });
 
+const onProductAddSuccess = () => {
+  toast.add({
+    severity: 'success',
+    summary: t('successMessages.success'),
+    detail: t('successMessages.productContainerAdd'),
+    life: 3000,
+  });
+  closeDialog();
+};
+
 const handleProductAdd = async () => {
   // Add predefined product
   if (props.container && selectProduct.value && !edit.value) {
-    await containerStore.addProductToContainer(props.container, selectProduct.value as ProductResponse);
-    closeDialog();
+    await containerStore.addProductToContainer(props.container, selectProduct.value as ProductResponse).then(() => {
+      onProductAddSuccess();
+    }).catch((err) => handleError(err, toast));
   }
   // Create an add new product
   else if (edit.value && !selectProduct.value) {
@@ -354,9 +368,18 @@ const handleProductAdd = async () => {
           .then((createdProduct: ProductResponse) => {
             // Propagate product to container
             if (props.container) containerStore.addProductToContainer(props.container, createdProduct);
-          });
-
-      closeDialog();
+          }).then(() => {
+            if (props.container) onProductAddSuccess();
+            else {
+              toast.add({
+                severity: 'success',
+                summary: t('successMessages.success'),
+                detail: t('successMessages.productCreate'),
+                life: 3000,
+              });
+              closeDialog();
+            }
+          }).catch((err) => handleError(err, toast));
     })();
   }
 };
@@ -372,6 +395,11 @@ const changed = () => {
 
 const handleSaveProduct = async () => {
   if (!state.value.displayProduct) return;
+
+  if (productImage.value && props.product) {
+    await productStore.updateProductImage(props.product.id, productImage.value);
+  }
+
   if (changed()) {
     await handleSubmit(async () => {
       const updateProductRequest: UpdateProductRequest = {
@@ -390,18 +418,30 @@ const handleSaveProduct = async () => {
       };
       if (!props.product) return;
       await productStore.updateProduct(props.product.id, updateProductRequest);
-    })();
+    })().then(() => {
+      toast.add({
+        severity: 'success',
+        summary: t('successMessages.success'),
+        detail: t('successMessages.productUpdate'),
+        life: 3000,
+      });
+    }).catch((err) => handleError(err, toast));
   }
-  if (productImage.value && props.product) {
-    await productStore.updateProductImage(props.product.id, productImage.value);
-  }
+
   closeDialog();
 };
 
 const handleDeleteContainerProduct = async () => {
   if (!props.container || !props.product) return;
-  await containerStore.deleteProductFromContainer(props.container, props.product);
-  closeDialog();
+  await containerStore.deleteProductFromContainer(props.container, props.product).then(() => {
+    toast.add({
+      severity: 'success',
+      summary: t('successMessages.success'),
+      detail: t('successMessages.productContainerDelete'),
+      life: 3000,
+    });
+    closeDialog();
+  }).catch((err) => handleError(err, toast));
 };
 
 const openDialog = () => {

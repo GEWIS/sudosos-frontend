@@ -76,7 +76,11 @@
     "cancel": "Annuleren",
     "owner": "Eigenaar",
     "save": "Opslaan",
-    "select owner": "Selecteer Eigenaar"
+    "select owner": "Selecteer Eigenaar",
+    "header": {
+      "edit": "Edit container",
+      "create": "Container aanmaken"
+    }
   },
   "c_currentBalance": {
     "Increase balance": "Saldo opwaarderen",
@@ -253,7 +257,12 @@
     "productCreated": "Het product is aangemaakt!",
     "success": "Gelukt!",
     "transactionDeleted": "Transactie is succesvol verwijderd.",
-    "resetPassword": "Wachtwoord is succesvol gewijzigd."
+    "resetPassword": "Wachtwoord is succesvol gewijzigd.",
+    "productUpdate": "Product is succesvol geüpdatet.",
+    "productContainerAdd": "Product is succesvol toegevoegd aan container.",
+    "productContainerDelete": "Product is succesvol verwijderd van container.",
+    "productCreate": "Product is succesvol aangemaakt.",
+    "updateContainer": "Container is succesvol geüpdatet."
   },
   "termsOfService": {
     "acceptFirst": "Accepteer de Voorwaarden",

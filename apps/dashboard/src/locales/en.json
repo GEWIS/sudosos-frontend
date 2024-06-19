@@ -110,7 +110,11 @@
     "cancel": "Cancel",
     "owner": "Owner",
     "save": "Save",
-    "select owner": "Please Select Owner"
+    "select owner": "Please Select Owner",
+    "header": {
+      "edit": "Edit container",
+      "create": "Create container"
+    }
   },
   "c_currentBalance": {
     "Increase balance": "Increase balance",
@@ -224,8 +228,6 @@
     "lastName": "Last Name",
     "ofAge": "18+"
   },
-  "c_containerComponent": {
-  },
   "errorMessages": {
     "posNotFound": "The requested POS was not found."
   },
@@ -303,7 +305,12 @@
     "finesNotified": "Succesfully notified users.",
     "success": "Success",
     "transactionDeleted": "Successfully deleted transaction.",
-    "resetPassword": "Successfully reset password."
+    "resetPassword": "Successfully reset password.",
+    "productUpdate": "Successfully updated product.",
+    "productContainerAdd": "Successfully added product to container.",
+    "productContainerDelete": "Successfully deleted product from container.",
+    "productCreate": "Successfully created product.",
+    "updateContainer": "Successfully updated container."
   },
   "termsOfService": {
     "acceptFirst": "Accept the Terms of Service",

@@ -30,7 +30,7 @@
         </div>
       </div>
       <div class="flex flex-row flex-wrap justify-content-between align-items-center">
-        <label for="name" class="mr-8">{{ $t('c_productContainerOperations.Public') }}</label>
+        <label for="name" class="mr-8">{{ $t('c_containerEditModal.Public') }}</label>
         <div class="relative">
             <Checkbox v-model="publicContainer" v-bind="publicAttrs" inputId="publicContainer"
                       name="public" value="public" :binary="true"/>
@@ -90,8 +90,8 @@ const state = computed(() => {
   };
 });
 const header = computed(() => {
-  if (state.value.create) return 'Create Container';
-  if (state.value.edit) return 'Edit Container';
+  if (state.value.create) return t('c_containerEditModal.header.create');
+  if (state.value.edit) return t('c_containerEditModal.header.edit');
   return '';
 });
 
