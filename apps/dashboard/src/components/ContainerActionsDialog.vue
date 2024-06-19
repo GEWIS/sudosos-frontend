@@ -17,7 +17,11 @@
         </div>
       </div>
       <div class="flex flex-row flex-wrap justify-content-between align-items-center">
-        <label for="owner" class="mr-8">{{ $t('c_POSCreate.Owner') }}</label>
+        <label for="owner" class="mr-8">
+          {{ $t('c_POSCreate.Owner') }}
+          <i class="pi pi-exclamation-circle text-red-500 cursor-pointer"
+             v-tooltip.top="$t('tooltip.owner_revenue')"/>
+        </label>
         <div class="flex flex-column flex-end relative">
           <div v-if="state.create">
           <Dropdown :placeholder="$t('c_POSCreate.Select owner')" :options="organsList" optionLabel="firstName"

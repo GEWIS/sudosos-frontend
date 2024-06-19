@@ -80,7 +80,11 @@
             </div>
           </div>
           <div v-if="!state.displayProduct" class="flex flex-row flex-wrap justify-content-between align-items-center">
-            <label for="owner" class="mr-8">{{ $t('c_POSCreate.Owner') }}</label>
+            <label for="owner" class="mr-8">
+              <i class="pi pi-exclamation-circle text-red-500 cursor-pointer"
+                 v-tooltip.top="$t('tooltip.owner_revenue')"/>
+              {{ $t('c_POSCreate.Owner') }}
+            </label>
             <div class="flex flex-column flex-end relative mb-3">
               <Dropdown :placeholder="$t('c_POSCreate.Select owner')" :options="organsList" optionLabel="firstName"
                         v-model="owner" class="w-18rem" id="owner" v-bind="ownerAttrs" :disabled="!edit"/>
@@ -100,7 +104,7 @@
             <p class="my-0">{{ formatDateTime(new Date(product.updatedAt ? product.updatedAt.toString() : '')) }}</p>
           </div>
 
-          <!-- Row for Added by -->
+          <!-- Row for Created by -->
           <div v-if="state.displayProduct" class="flex flex-row flex-wrap justify-content-between">
             <h4 class="my-0">{{ $t("c_productContainerOperations.Owner") }}</h4>
             <p class="my-0">{{ product.owner.firstName + ' ' + product.owner.lastName }}</p>

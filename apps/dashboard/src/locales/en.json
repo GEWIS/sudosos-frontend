@@ -375,5 +375,8 @@
       "max": "This field can't be greater than ${max} characters",
       "min": "This field must be at least ${min} characters"
     }
+  },
+  "tooltip": {
+    "owner_revenue": "Note: Container owner gets the revenue, not the product owner"
   }
 }

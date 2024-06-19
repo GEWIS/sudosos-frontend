@@ -320,5 +320,8 @@
       "max": "Dit veld mag maximaal ${max} tekens bevatten.",
       "min": "Dit veld moet minimaal ${min} tekens bevatten."
     }
+  },
+  "tooltip": {
+    "owner_revenue": "NB: De containereigenaar krijgt de opbrengst, niet de producteigenaar"
   }
 }
