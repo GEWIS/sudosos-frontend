@@ -21,7 +21,6 @@
 import { computed, onMounted } from "vue";
 import { usePointOfSaleStore } from "@/stores/pos.store";
 import BuyerSelectButtonComponent from "@/components/BuyerSelect/BuyerSelectButtonComponent.vue";
-// import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { UserResponse } from "@sudosos/sudosos-client";
 
 const emit = defineEmits(['cancelSelectCreator']);

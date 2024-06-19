@@ -41,7 +41,6 @@ import { useAuthStore } from "@sudosos/sudosos-frontend-common";
 import { storeToRefs } from "pinia";
 import { PointOfSaleResponse } from "@sudosos/sudosos-client";
 import { PointOfSaleSwitchService } from "@/services/PointOfSaleSwitchService";
-// import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { logoutService } from "@/services/logoutService";
 
 const visible = ref(false);
@@ -94,7 +93,6 @@ const openSettings = () => {
 .settings-icon {
   height: 100px;
   position: fixed;
-  bottom: 0px;
   left: 60px;
   font-size: 70px;
   cursor: pointer;

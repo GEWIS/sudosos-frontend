@@ -9,7 +9,6 @@
 <script setup lang="ts">
 import { GewisUserResponse, UserResponse } from "@sudosos/sudosos-client";
 import { useCartStore } from "@/stores/cart.store";
-// import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 const props = defineProps({
   user: {

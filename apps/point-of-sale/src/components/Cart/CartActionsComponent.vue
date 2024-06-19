@@ -15,7 +15,6 @@
 </template>
 
 <script setup lang="ts">
-// import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { computed, ref, watch } from "vue";
 import { logoutService } from "@/services/logoutService";
 import { useCartStore } from "@/stores/cart.store";

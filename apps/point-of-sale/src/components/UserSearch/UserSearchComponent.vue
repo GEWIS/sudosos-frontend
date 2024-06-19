@@ -19,15 +19,14 @@
     </div>
     <div>
       <ScrollPanel class="custombar" style="width: 100%; height: 25rem;">
-        <UserSearchRowComponent v-for="user in getUsers" :user="user" :key="user.id"
-                                @click="selectUser(user)"/>
+        <UserSearchRowComponent v-for="user in getUsers" :user="user as UserResponse" :key="user.id"
+                                @click="selectUser(user as UserResponse)"/>
       </ScrollPanel>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-// import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { computed, onMounted, Ref, ref, watch } from "vue";
 import apiService from "@/services/ApiService";
 import {
