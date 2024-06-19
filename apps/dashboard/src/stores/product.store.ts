@@ -127,11 +127,10 @@ export const useProductStore = defineStore('products', {
      */
     async createProduct(createProductRequest: CreateProductRequest, productImage: File | undefined) {
       const product = await ApiService.products.createProduct(createProductRequest).then((resp) => resp.data);
+      this.products[product.id] = product;
       if (productImage) {
         await this.updateProductImage(product.id, productImage);
-        product.image = URL.createObjectURL(productImage);
       }
-      this.products[product.id] = product;
       return product;
     },
     async updateProduct(productId: number, updateProductRequest: UpdateProductRequest): Promise<ProductResponse> {
