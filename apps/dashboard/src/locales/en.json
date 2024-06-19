@@ -19,7 +19,8 @@
     "Sign out": "Sign out",
     "Social drink cards": "Social drink cards",
     "Transactions": "Transactions",
-    "User overview": "User overview"
+    "User overview": "User overview",
+    "Promo": "Promo"
   },
   "balance": {
     "Balance increase amount": "Increase balance:",
@@ -144,7 +145,10 @@
       "addProductToContainer": "Add product to container",
       "createProduct": "Create product",
       "productDetails": "Product details"
-    }
+    },
+    "Preferred": "Preferred",
+    "Featured": "Featured",
+    "Pricelist": "Price list"
   },
   "c_transactionDetailsModal": {
     "delete": "Delete",

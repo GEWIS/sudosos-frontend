@@ -19,7 +19,8 @@
     "Sign out": "Uitloggen",
     "Social drink cards": "Borrelkaarten",
     "Transactions": "Transacties",
-    "User overview": "Gebruikers overzicht"
+    "User overview": "Gebruikers overzicht",
+    "Promo": "Promo"
   },
   "balance": {
     "Balance after": "Balans na opwaarderen:",
@@ -107,7 +108,10 @@
       "addProductToContainer": "Product aan container toevoegen",
       "createProduct": "Product aanmaken",
       "productDetails": "Productdetails"
-    }
+    },
+    "Preferred": "Voorkeur",
+    "Featured": "Promo",
+    "Pricelist": "Prijslijst"
   },
   "c_recentTransactionsTable": {
     "all transactions": "alle transacties",

@@ -92,6 +92,30 @@
             </div>
           </div>
 
+          <div class="flex flex-row flex-wrap justify-content-between align-items-center">
+            <div>
+              <div class="flex flex-row flex-start mb-3">
+                <label for="price" class="mr-2">{{ $t('c_productContainerOperations.Preferred') }}</label>
+                <Checkbox v-model="preferred" v-bind="preferredAttrs"
+                          name="preferred" value="preferred" :binary="true"/>
+              </div>
+            </div>
+            <div>
+              <div class="flex flex-row flex-start mb-3">
+                <label for="price" class="mr-2">{{ $t('c_productContainerOperations.Featured') }}</label>
+                <Checkbox v-model="featured" v-bind="featuredAttrs"
+                          name="featured" value="featured" :binary="true"/>
+              </div>
+            </div>
+            <div>
+              <div class="flex flex-row flex-start mb-3">
+                <label for="price" class="mr-2">{{ $t('c_productContainerOperations.Pricelist') }}</label>
+                <Checkbox v-model="priceList" v-bind="priceListAttrs"
+                          name="priceList" value="priceList" :binary="true"/>
+              </div>
+            </div>
+          </div>
+
           <!-- Row for Added on -->
           <div v-if="state.displayProduct" class="flex flex-row flex-wrap justify-content-between">
             <h4 class="my-0">{{ $t("c_productContainerOperations.Added on") }}</h4>
@@ -189,7 +213,10 @@ const creationSchema = toTypedSchema(
       vatGroup: yup.mixed<VatGroupResponse>().required(),
       alcoholPercentage: yup.number(),
       price: yup.number().required(),
-      owner: yup.mixed<BaseUserResponse>().required()
+      owner: yup.mixed<BaseUserResponse>().required(),
+      preferred: yup.boolean().required().default(false),
+      featured: yup.boolean().required().default(false),
+      priceList: yup.boolean().required().default(false),
     })
 );
 
@@ -203,6 +230,9 @@ const [category, categoryAttrs] = defineField('category');
 const [vat, vatAttrs] = defineField('vatGroup');
 const [price, priceAttrs] = defineField('price');
 const [owner, ownerAttrs] = defineField('owner');
+const [preferred, preferredAttrs] = defineField('preferred');
+const [featured, featuredAttrs] = defineField('featured');
+const [priceList, priceListAttrs] = defineField('priceList');
 const [alcoholPercentage, alcoholPercentageAttrs] = defineField('alcoholPercentage');
 
 const dialog: Ref<null | any> = ref(null);
@@ -287,6 +317,9 @@ const updateFieldValues = (p: ProductResponse) => {
   price.value = p.priceInclVat.amount / 100;
   owner.value = organsList.value.find((o) => o.id == p.owner.id);
   alcoholPercentage.value = p.alcoholPercentage;
+  preferred.value = p.preferred;
+  featured.value = p.featured;
+  priceList.value = p.priceList;
   imageSrc.value = getProductImageSrc(p);
 };
 
@@ -365,7 +398,10 @@ const handleProductAdd = async () => {
         vat: values.vatGroup.id,
         category: values.category.id,
         alcoholPercentage: values.alcoholPercentage || 0,
-        ownerId: values.owner.id
+        ownerId: values.owner.id,
+        featured: values.featured,
+        preferred: values.preferred,
+        priceList: values.priceList,
       };
 
       await productStore.createProduct(createProductRequest, productImage.value)
@@ -394,6 +430,9 @@ const changed = () => {
       category.value?.id !== props.product.category.id ||
       vat.value?.id !== props.product.vat.id ||
       price.value !== props.product.priceInclVat!.amount / 100 ||
+      preferred.value !== props.product.preferred ||
+      featured.value !== props.product.featured ||
+      priceList.value !== props.product.priceList ||
       alcoholPercentage.value !== props.product.alcoholPercentage;
 };
 
@@ -409,15 +448,15 @@ const handleSaveProduct = async () => {
       const updateProductRequest: UpdateProductRequest = {
         alcoholPercentage: alcoholPercentage.value as number,
         category: category.value?.id as number,
-        featured: false,
+        featured: featured.value,
         name: name.value as string,
-        preferred: false,
+        preferred: preferred.value,
         priceInclVat: {
           amount: Math.round(price.value as number * 100),
           currency: 'EUR',
           precision: 2
         },
-        priceList: false,
+        priceList: priceList.value,
         vat: vat.value?.id as number,
       };
       if (!props.product) return;
