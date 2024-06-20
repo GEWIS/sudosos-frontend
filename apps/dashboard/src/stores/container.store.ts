@@ -211,7 +211,7 @@ export const useContainerStore = defineStore('container', {
          * @param force
          */
         async getContainerWithProducts(c: ContainerResponse, force: boolean = false):
-          Promise<ContainerWithProductsResponse | null> {
+          Promise<ContainerWithProductsResponse | undefined> {
             let container = this.containers[c.id];
 
             if (!container) {

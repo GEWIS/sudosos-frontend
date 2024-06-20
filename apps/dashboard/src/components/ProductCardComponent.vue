@@ -135,7 +135,7 @@ import ProductContainerOperationsComponent from "@/components/ProductContainerOp
 
 const loading: Ref<boolean> = ref(true);
 const visible: Ref<Boolean> = ref(false);
-const product: Ref<ProductResponse | null> = ref(null);
+const product: Ref<ProductResponse | undefined> = ref(undefined);
 const fileInputs: Ref<{ [key: number]: any }> = ref({});
 
 const productStore = useProductStore();
@@ -160,7 +160,7 @@ const triggerFileInput = (id: number) => {
 };
 const onImgUpload = async (event: Event, productId: number) => {
   const el = (event.target as HTMLInputElement);
-  if (el == null || el.files == null) return;
+  if (el == null || el.files == null || el.files.length === 0) return;
   await productStore.updateProductImage(productId, el.files[0]);
 };
 

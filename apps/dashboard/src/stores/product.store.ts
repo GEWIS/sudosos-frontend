@@ -39,8 +39,8 @@ export const useProductStore = defineStore('products', {
          * Returns a single product from the store if it is loaded / exists.
          * @param state
          */
-        getSingleProduct: (state) => (id: number): ProductResponse | null => {
-            return state.products[id] || null;
+        getSingleProduct: (state) => (id: number): ProductResponse | undefined => {
+            return state.products[id] || undefined;
         }
     },
   actions: {

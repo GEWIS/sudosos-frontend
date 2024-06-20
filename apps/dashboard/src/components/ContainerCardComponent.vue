@@ -22,7 +22,7 @@
             </div>
           </div>
         </template>
-        <ProductGridComponent :container="container"/>
+        <ProductGridComponent :container="container as ContainerWithProductsResponse"/>
       </AccordionTab>
     </Accordion>
     <ContainerCreateDialog :container="selectedContainer" v-model:visible="visible"/>
@@ -37,10 +37,10 @@ import AccordionTab from "primevue/accordiontab";
 import { type ContainerInStore, useContainerStore } from "@/stores/container.store";
 import { type Ref, ref } from "vue";
 import ContainerCreateDialog from "@/components/ContainerActionsDialog.vue";
-import type { ContainerResponse } from "@sudosos/sudosos-client";
+import type {ContainerResponse, ContainerWithProductsResponse} from "@sudosos/sudosos-client";
 
 const visible = ref(false);
-const selectedContainer: Ref<ContainerResponse | null> = ref(null);
+const selectedContainer: Ref<ContainerWithProductsResponse | undefined> = ref(undefined);
 
 const props = defineProps({
   containers: {
@@ -64,12 +64,12 @@ const handleEditClick = async (event: Event, id: number) => {
   await openContainerEdit(id);
 };
 
-const openContainerEdit = async (id: number) => {
+const openContainerEdit = async (id?: number) => {
   if (id) {
     const container = props.containers.find((c) => c.id === id);
     if (container) selectedContainer.value = await containerStore.getContainerWithProducts(container, true);
   }
-  else selectedContainer.value = null;
+  else selectedContainer.value = undefined;
   visible.value = true;
 };
 

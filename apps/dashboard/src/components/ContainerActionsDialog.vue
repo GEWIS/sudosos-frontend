@@ -28,7 +28,7 @@
                     v-model="owner" class="w-18rem" id="owner" v-bind="ownerAttrs"/>
           <error-span :error="errors.owner"/>
           </div>
-          <div v-else>
+          <div v-else-if="container">
             <p class="my-0">{{ container.owner.firstName + ' ' + container.owner.lastName }}</p>
           </div>
         </div>
@@ -73,6 +73,7 @@ const { t } = useI18n();
 const props = defineProps({
   container: {
     type: Object as PropType<ContainerWithProductsResponse>,
+    required: false,
   },
 });
 
@@ -116,8 +117,8 @@ const [owner, ownerAttrs] = defineField('owner');
 
 const closeDialog = () => {
   name.value = '';
-  publicContainer.value = true;
-  owner.value = null;
+  publicContainer.value = undefined;
+  owner.value = undefined;
   resetForm();
   emit('update:visible', false);
 };
