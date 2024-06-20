@@ -37,7 +37,7 @@ import AccordionTab from "primevue/accordiontab";
 import { type ContainerInStore, useContainerStore } from "@/stores/container.store";
 import { type Ref, ref } from "vue";
 import ContainerCreateDialog from "@/components/ContainerActionsDialog.vue";
-import type {ContainerResponse, ContainerWithProductsResponse} from "@sudosos/sudosos-client";
+import type { ContainerWithProductsResponse } from "@sudosos/sudosos-client";
 
 const visible = ref(false);
 const selectedContainer: Ref<ContainerWithProductsResponse | undefined> = ref(undefined);

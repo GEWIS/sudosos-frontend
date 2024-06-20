@@ -55,7 +55,7 @@ import { computed, onMounted, ref } from 'vue';
 import type { Ref } from 'vue';
 import { useContainerStore } from '@/stores/container.store';
 import DetailedContainerCardComponent from '@/components/DetailedContainerCardComponent.vue';
-import { useAuthStore, useUserStore } from '@sudosos/sudosos-frontend-common';
+import { useAuthStore } from '@sudosos/sudosos-frontend-common';
 import type { BaseUserResponse, ContainerResponse, UserResponse } from '@sudosos/sudosos-client';
 import { usePointOfSaleStore } from '@/stores/pos.store';
 import { useRouter } from 'vue-router';
@@ -68,7 +68,6 @@ import { isEmpty } from "lodash";
 
 const isLoading: Ref<boolean> = ref(true);
 const containerStore = useContainerStore();
-const userStore = useUserStore();
 const publicContainers = computed(() => Object.values(containerStore.getPublicContainers));
 const ownContainers = computed(() => Object.values(containerStore.getUsersContainers));
 const authStore = useAuthStore();

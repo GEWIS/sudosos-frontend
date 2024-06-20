@@ -90,7 +90,7 @@ const productSchema = toTypedSchema(
         'is-total-less-than-150',
         `Your new balance cannot surpass €150.`,
         (value) => {
-          return userBalance.value!!.amount.amount + value*100 <= 15000
+          return userBalance.value!!.amount.amount + value*100 <= 15000;
         }
       )
   })

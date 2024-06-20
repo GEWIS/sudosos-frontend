@@ -119,19 +119,22 @@
           <!-- Row for Added on -->
           <div v-if="state.displayProduct" class="flex flex-row flex-wrap justify-content-between">
             <h4 class="my-0">{{ $t("c_productContainerOperations.Added on") }}</h4>
-            <p class="my-0" v-if="product">{{ formatDateTime(new Date(product.createdAt ? product.createdAt.toString() : '')) }}</p>
+            <p class="my-0" v-if="product">
+              {{ formatDateTime(new Date(product.createdAt ? product.createdAt.toString() : '')) }}</p>
           </div>
 
           <!-- Row for Updated on -->
           <div v-if="state.displayProduct" class="flex flex-row flex-wrap justify-content-between">
             <h4 class="my-0">{{ $t("c_productContainerOperations.Updated on") }}</h4>
-            <p class="my-0" v-if="product">{{ formatDateTime(new Date(product.updatedAt ? product.updatedAt.toString() : '')) }}</p>
+            <p class="my-0" v-if="product">
+              {{ formatDateTime(new Date(product.updatedAt ? product.updatedAt.toString() : '')) }}</p>
           </div>
 
           <!-- Row for Created by -->
           <div v-if="state.displayProduct" class="flex flex-row flex-wrap justify-content-between">
             <h4 class="my-0">{{ $t("c_productContainerOperations.Owner") }}</h4>
-            <p class="my-0" v-if="product">{{ product.owner.firstName + ' ' + product.owner.lastName }}</p>
+            <p class="my-0" v-if="product">
+              {{ product.owner.firstName + ' ' + product.owner.lastName }}</p>
           </div>
         </div>
       </div>
@@ -246,7 +249,7 @@ const authStore = useAuthStore();
 
 // List products to insta-add
 const dropdownProducts = computed(() => {
-  const c = props.container
+  const c = props.container;
   if (!c) return products.value;
   // Ignore products that are already in the container
   return products.value.filter((p) => !c.products.map((p) => p.id).includes(p.id));
