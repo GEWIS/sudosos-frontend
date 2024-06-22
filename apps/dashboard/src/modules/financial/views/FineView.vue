@@ -1,3 +1,4 @@
+<!-- TODO Split into components -->
 <template>
   <div class="page-container">
     <div class="page-title">{{ t('fine.fineOverview') }}</div>
@@ -303,5 +304,5 @@ const handoutFines = async () => {
 </script>
 
 <style scoped>
-@import '../styles/BasePage.scss';
+@import '../../../styles/BasePage.scss';
 </style>

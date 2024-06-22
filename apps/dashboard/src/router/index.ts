@@ -19,12 +19,13 @@ import { UserRole } from '@/utils/rbacUtils';
 import 'vue-router';
 import ErrorView from "@/views/ErrorView.vue";
 import ProfileView from "@/views/ProfileView.vue";
-import FineView from "@/views/FineView.vue";
+import FineView from "@/modules/financial/views/FineView.vue";
 import LocalLoginView from "@/modules/auth/views/AuthLocalView.vue";
 import LoginLayout from "@/modules/auth/layouts/AuthLayout.vue";
 import { authRoutes } from "@/modules/auth/routes";
 import { posRoutes } from "@/modules/point-of-sale/routes";
 import { adminRoutes } from "@/modules/admin/routes";
+import { financialRoutes } from "@/modules/financial/routes";
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -59,6 +60,7 @@ const router = createRouter({
     ...authRoutes(),
     ...posRoutes(),
     ...adminRoutes(),
+    ...financialRoutes(),
     {
       path: '',
       component: DashboardLayout,
@@ -96,12 +98,7 @@ const router = createRouter({
           component: ProfileView,
           name: 'profile',
         },
-        {
-          path: '/fine',
-          component: FineView,
-          name: 'fine',
-          meta: { requiresAuth: true, isBAC: true }
-        },
+
         // Add other routes for authenticated users here
       ]
     }
