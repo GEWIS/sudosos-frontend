@@ -22,7 +22,7 @@
             </div>
           </div>
         </template>
-        <ProductGridComponent :container="container as ContainerWithProductsResponse"/>
+        <ContainerProductGrid :container="container as ContainerWithProductsResponse"/>
       </AccordionTab>
     </Accordion>
     <ContainerCreateDialog :container="selectedContainer" v-model:visible="visible"/>
@@ -30,13 +30,13 @@
 
 </template>
 <script setup lang="ts">
-import ProductGridComponent from "@/components/ProductGridComponent.vue";
-import CardComponent from "./CardComponent.vue";
+import ContainerProductGrid from "@/components/container/ContainerProductGrid.vue";
+import CardComponent from "../CardComponent.vue";
 import Accordion, { type AccordionTabOpenEvent } from "primevue/accordion";
 import AccordionTab from "primevue/accordiontab";
 import { type ContainerInStore, useContainerStore } from "@/stores/container.store";
 import { type Ref, ref } from "vue";
-import ContainerCreateDialog from "@/components/ContainerActionsDialog.vue";
+import ContainerCreateDialog from "@/components/container/ContainerActionsDialog.vue";
 import type { ContainerWithProductsResponse } from "@sudosos/sudosos-client";
 
 const visible = ref(false);

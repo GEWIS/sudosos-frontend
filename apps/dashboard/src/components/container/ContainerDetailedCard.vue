@@ -54,7 +54,7 @@ import CardComponent from "@/components/CardComponent.vue";
 import type { ContainerResponse } from "@sudosos/sudosos-client";
 import { onMounted, ref, watch } from "vue";
 import Skeleton from "primevue/skeleton";
-import ContainerActionsDialog from "@/components/ContainerActionsDialog.vue";
+import ContainerActionsDialog from "@/components/container/ContainerActionsDialog.vue";
 
 const visible = ref(false);
 const selectedOwnContainers = ref<Array<ContainerResponse>>([]);

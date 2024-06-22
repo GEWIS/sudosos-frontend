@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import MutationsTableComponent from '@/components/Mutations/MutationsTableComponent.vue';
+import MutationsTableComponent from '@/components/mutations/MutationsTableComponent.vue';
 import apiService from '@/services/ApiService';
 import { useAuthStore, useUserStore } from '@sudosos/sudosos-frontend-common';
 import { ref } from 'vue';

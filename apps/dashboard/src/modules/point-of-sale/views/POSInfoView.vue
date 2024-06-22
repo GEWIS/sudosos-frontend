@@ -16,7 +16,7 @@
         />
     </div>
     <hr />
-    <ContainerCardComponent
+    <ContainerCard
       class="container-card"
       v-if="pos && pos.containers"
       :containers="posContainers"
@@ -41,8 +41,8 @@ import type {
   PaginatedBaseTransactionResponse,
   PointOfSaleWithContainersResponse
 } from '@sudosos/sudosos-client';
-import ContainerCardComponent from '@/components/ContainerCardComponent.vue';
-import MutationsTableComponent from '@/components/Mutations/MutationsTableComponent.vue';
+import ContainerCard from '@/components/container/ContainerCard.vue';
+import MutationsTableComponent from '@/components/mutations/MutationsTableComponent.vue';
 import router from '@/router';
 import { useToast } from 'primevue/usetoast';
 import { useI18n } from 'vue-i18n';

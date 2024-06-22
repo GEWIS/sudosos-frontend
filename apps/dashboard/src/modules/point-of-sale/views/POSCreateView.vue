@@ -43,7 +43,7 @@
           </div>
         </form>
       </div>
-      <DetailedContainerCardComponent class="w-full" @selectedChanged="handleSelectedChanged"
+      <DetailedContainerCard class="w-full" @selectedChanged="handleSelectedChanged"
         v-if="publicContainers && ownContainers" :own-containers="ownContainers"
         :public-containers="publicContainers" :isLoading="isLoading"/>
     </div>
@@ -54,7 +54,7 @@
 import { computed, onMounted, ref } from 'vue';
 import type { Ref } from 'vue';
 import { useContainerStore } from '@/stores/container.store';
-import DetailedContainerCardComponent from '@/components/DetailedContainerCardComponent.vue';
+import DetailedContainerCard from '@/components/container/ContainerDetailedCard.vue';
 import { useAuthStore } from '@sudosos/sudosos-frontend-common';
 import type { BaseUserResponse, ContainerResponse, UserResponse } from '@sudosos/sudosos-client';
 import { usePointOfSaleStore } from '@/stores/pos.store';

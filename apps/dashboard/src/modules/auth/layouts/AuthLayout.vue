@@ -4,13 +4,13 @@
     flex-grow text-center h-full mx-auto my-7 max-w-21rem">
       <RouterView />
     </main>
-    <CopyrightBanner/>
+    <Footer/>
     <BeerMugs/>
   </div>
 </template>
 
 <script setup lang="ts">
-import CopyrightBanner from "@/components/CopyrightBanner.vue";
+import Footer from "@/components/footer/Footer.vue";
 import BeerMugs from "@/modules/auth/components/BeerMugs.vue";
 </script>
 

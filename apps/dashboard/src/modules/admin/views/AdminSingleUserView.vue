@@ -49,7 +49,7 @@
           </div>
         </form>
       </CardComponent>
-      <BalanceComponent :user="currentUser" :showOption="false" id="userBalance" />
+      <AdminUserBalance :user="currentUser" :showOption="false" id="userBalance" />
       <MutationsTableComponent class="w-full" :header="$t('userDetails.User Transactions')" paginator modal
         :callbackFunction="getUserMutations" />
     </div>
@@ -64,12 +64,12 @@ import { useUserStore } from "@sudosos/sudosos-frontend-common";
 import type { PaginatedFinancialMutationResponse, UpdateUserRequest, UserResponse } from "@sudosos/sudosos-client";
 import CardComponent from "@/components/CardComponent.vue";
 import Checkbox from "primevue/checkbox";
-import BalanceComponent from "@/components/BalanceComponent.vue";
+import AdminUserBalance from "@/modules/admin/components/AdminUserBalance.vue";
 import { useForm } from "vee-validate";
 import apiService from "@/services/ApiService";
 import router from "@/router";
 import { userDetailsSchema, userTypes } from "@/utils/validation-schema";
-import MutationsTableComponent from "@/components/Mutations/MutationsTableComponent.vue";
+import MutationsTableComponent from "@/components/mutations/MutationsTableComponent.vue";
 import { handleError } from "@/utils/errorUtils";
 import { useToast } from "primevue/usetoast";
 import type { AxiosError } from "axios";

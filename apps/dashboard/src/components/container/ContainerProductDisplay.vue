@@ -9,14 +9,14 @@
       <div v-if="product.featured" class="promo-tag uppercase">{{ $t('app.Promo') }}</div>
       <p class="text-center m-2 text-base text-overflow-ellipsis font-bold">{{ product.name }}</p>
   </div>
-  <ProductContainerOperationsComponent :container="container" v-model:visible="visible" :product="product"/>
+  <ProductActions :container="container" v-model:visible="visible" :product="product"/>
 </template>
 
 <script setup lang="ts">
 import type { ContainerWithProductsResponse, ProductResponse } from "@sudosos/sudosos-client";
 import { getProductImageSrc } from "@/utils/imageUtils";
 import { computed, ref } from "vue";
-import ProductContainerOperationsComponent from "@/components/ProductContainerOperationsComponent.vue";
+import ProductActions from "@/components/ProductActions.vue";
 
 const visible = ref(false);
 const imageSrc = computed(() => getProductImageSrc(props.product));

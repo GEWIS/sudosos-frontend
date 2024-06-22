@@ -5,15 +5,15 @@
     </span>
     <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
     <span class="separator"> | </span>
-    <TermsOfServiceModal />
+    <FooterTermsOfServiceModal />
     <span class="mx-2"></span>
-    <ContactModal />
+    <FooterContactModal />
   </footer>
 </template>
 
 <script setup lang="ts">
-import TermsOfServiceModal from '@/components/TermsOfServiceModal.vue';
-import ContactModal from '@/components/ContactModal.vue';
+import FooterTermsOfServiceModal from '@/components/footer/FooterTermsOfServiceModal.vue';
+import FooterContactModal from '@/components/footer/FooterContactModal.vue';
 
 </script>
 

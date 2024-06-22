@@ -48,12 +48,12 @@ import type {
 } from '@sudosos/sudosos-client/src/api';
 import { useTransferStore } from '@/stores/transfer.store';
 import apiService from '@/services/ApiService';
-import TransactionDetailModal from '@/components/Mutations/TransactionDetailModal.vue';
-import DepositDetailModal from '@/components/Mutations/DepositDetailModal.vue';
-import InvoiceDetailModal from '@/components/Mutations/InvoiceDetailModal.vue';
+import TransactionDetailModal from '@/components/mutations/TransactionDetailModal.vue';
+import DepositDetailModal from '@/components/mutations/DepositDetailModal.vue';
+import InvoiceDetailModal from '@/components/mutations/InvoiceDetailModal.vue';
 import router from '@/router';
 import { addListenerOnDialogueOverlay } from '@/utils/dialogUtil';
-import FineDetailModal from '@/components/Mutations/FineDetailModal.vue';
+import FineDetailModal from '@/components/mutations/FineDetailModal.vue';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'primevue/usetoast';
 import type { AxiosError } from 'axios';
@@ -61,7 +61,7 @@ import { handleError } from '@/utils/errorUtils';
 import { FinancialMutationType } from '@/utils/mutationUtils';
 import { UserRole } from '@/utils/rbacUtils';
 import { useAuthStore } from '@sudosos/sudosos-frontend-common';
-import WaivedFineDetailModal from "@/components/Mutations/WaivedFineDetailModal.vue";
+import WaivedFineDetailModal from "@/components/mutations/WaivedFineDetailModal.vue";
 import Skeleton from "primevue/skeleton";
 
 const props = defineProps({

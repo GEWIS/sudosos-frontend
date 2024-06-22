@@ -103,7 +103,7 @@ import type {
   TransferResponse
 } from '@sudosos/sudosos-client';
 import { onMounted, type Ref, ref } from 'vue';
-import MutationModal from '@/components/Mutations/MutationModal.vue';
+import MutationModal from '@/components/mutations/MutationModal.vue';
 import {
   type FinancialMutation,
   FinancialMutationType,

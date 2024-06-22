@@ -5,7 +5,7 @@
         <Button @click="openCreateModal">{{ $t('app.Create') }}</Button>
       </div>
     </template>
-    <ProductContainerOperationsComponent v-model:visible="visible" :product="product"/>
+    <ProductActions v-model:visible="visible" :product="product"/>
     <DataTable
         v-model:filters="filters"
         :value="products"
@@ -131,7 +131,7 @@ import { computed, onBeforeMount, type Ref, ref } from "vue";
 import type { ProductResponse } from "@sudosos/sudosos-client";
 import { useProductStore } from "@/stores/product.store";
 import { FilterMatchMode } from "primevue/api";
-import ProductContainerOperationsComponent from "@/components/ProductContainerOperationsComponent.vue";
+import ProductActions from "@/components/ProductActions.vue";
 
 const loading: Ref<boolean> = ref(true);
 const visible: Ref<Boolean> = ref(false);
