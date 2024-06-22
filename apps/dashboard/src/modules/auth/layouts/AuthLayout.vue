@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import Footer from "@/components/footer/Footer.vue";
+import Footer from "@/components/footer/FooterBar.vue";
 import BeerMugs from "@/modules/auth/components/BeerMugs.vue";
 </script>
 

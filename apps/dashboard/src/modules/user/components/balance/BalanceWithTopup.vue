@@ -1,5 +1,5 @@
 <template>
-  <TopupModal v-model:visible="visible" :amount="topupAmount!!" />
+  <BalanceTopupModal v-model:visible="visible" :amount="topupAmount!!" />
   <CardComponent :header="$t('c_currentBalance.balance')" class="w-full sm:w-full">
     <div class="flex flex-row justify-content-center">
       <div class="flex flex-column justify-content-center w-6">

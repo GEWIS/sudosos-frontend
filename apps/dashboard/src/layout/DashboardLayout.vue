@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import { RouterView } from "vue-router";
-import Footer from "@/components/footer/Footer.vue";
+import Footer from "@/components/footer/FooterBar.vue";
 import TopNavbar from "@/components/TopNavbar.vue";
 import "@/styles/BasePage.scss";
 
