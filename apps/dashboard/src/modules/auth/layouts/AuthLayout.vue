@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import CopyrightBanner from "@/components/CopyrightBanner.vue";
-import BeerMugs from "@/components/BeerMugs.vue";
+import BeerMugs from "@/modules/auth/components/BeerMugs.vue";
 </script>
 
 <style scoped>

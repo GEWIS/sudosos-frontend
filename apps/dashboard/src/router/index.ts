@@ -6,13 +6,13 @@ import POSEditView from '@/views/PointOfSale/POSEditView.vue';
 import PublicLayout from "@/layout/PublicLayout.vue";
 import DashboardLayout from "@/layout/DashboardLayout.vue";
 import HomeView from '@/views/HomeView.vue';
-import LoginView from "@/views/LoginView.vue";
+import LoginView from "@/modules/auth/views/AuthLoginView.vue";
 import UserOverView from '@/views/UserOverView.vue';
 import SingleUserView from "@/views/SingleUserView.vue";
 import BannersView from "@/views/BannersView.vue";
 import ProductsContainersView from "@/views/ProductsContainersView.vue";
 import { isAuthenticated, useAuthStore } from "@sudosos/sudosos-frontend-common";
-import PasswordResetView from "@/views/PasswordResetView.vue";
+import PasswordResetView from "@/modules/auth/views/AuthResetView.vue";
 import TransactionsView from "@/views/TransactionsView.vue";
 import TermsOfServiceView from "@/views/TermsOfServiceView.vue";
 import { UserRole } from '@/utils/rbacUtils';
@@ -20,8 +20,9 @@ import 'vue-router';
 import ErrorView from "@/views/ErrorView.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import FineView from "@/views/FineView.vue";
-import LocalLoginView from "@/views/LocalLoginView.vue";
-import LoginLayout from "@/layout/LoginLayout.vue";
+import LocalLoginView from "@/modules/auth/views/AuthLocalView.vue";
+import LoginLayout from "@/modules/auth/layouts/AuthLayout.vue";
+import { authRoutes } from "@/modules/auth/routes";
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -46,29 +47,7 @@ const router = createRouter({
       path: '',
       component: PublicLayout,
       children: [
-        {
-          path: '',
-          component: LoginLayout,
-          children: [
-            {
-              path: '',
-              component: LoginView,
-              name: 'login',
-              alias: ['/login'],
-            },
-            {
-              path: '/local',
-              component: LocalLoginView,
-              name: 'local',
-              alias: ['/local'],
-            },
-            {
-              path: '/passwordreset',
-              component: PasswordResetView,
-              name: 'passwordreset'
-            },
-          ],
-        },
+        authRoutes(),
         {
           path: '/error',
           component: ErrorView,
@@ -209,7 +188,7 @@ router.beforeEach((to, from, next) => {
     if(to.meta?.isSeller && !isSeller()) next({ name: 'home' });
 
     if(to.meta?.isBAC && !isBAC()) next({ name: 'home' });
-    
+
     next();
   }
 });

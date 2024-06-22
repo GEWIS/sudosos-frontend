@@ -1,6 +1,6 @@
 <template>
   <div>
-      <img class="max-h-9rem block mx-auto my-0" src="@/assets/img/bier.png" alt="logo"/>
+      <img class="max-h-9rem block mx-auto my-0" src="../../../assets/img/bier.png" alt="logo"/>
       <div class="text-900 text-5xl mt-0 mx-auto mb-2 w-full">{{ $t('login.SudoSOS Login') }}</div>
       <form class="flex flex-column" @submit="loginHandler">
         <span class="p-float-label with-error">
