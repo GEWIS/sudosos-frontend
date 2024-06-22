@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import PublicLayout from "@/layout/PublicLayout.vue";
 import DashboardLayout from "@/layout/DashboardLayout.vue";
-import SingleUserView from "@/views/SingleUserView.vue";
 import { isAuthenticated, useAuthStore } from "@sudosos/sudosos-frontend-common";
 import { UserRole } from '@/utils/rbacUtils';
 import 'vue-router';
@@ -55,17 +54,10 @@ const router = createRouter({
       meta: { requiresAuth: true },
       children: [
         {
-          path: '/user/:userId',
-          component: SingleUserView,
-          name: 'user',
-          props: true,
-        },
-        {
           path: '/error',
           component: ErrorView,
           name: 'error',
         },
-        // Add other routes for authenticated users here
       ]
     }
   ]
