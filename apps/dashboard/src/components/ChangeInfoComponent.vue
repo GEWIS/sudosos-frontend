@@ -1,3 +1,4 @@
+<!-- TODO unused? -->
 <template>
   <CardComponent :header="$t('profile.changeUserInfo')" :class="{ 'opacity-30': !isLocal}">
     <form @submit="changeUserInfo">

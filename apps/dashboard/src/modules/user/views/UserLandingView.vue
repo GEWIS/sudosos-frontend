@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import BalanceWithTopupComponent from '@/modules/home/components/BalanceWithTopup.vue';
+import BalanceWithTopupComponent from '@/modules/user/components/balance/BalanceWithTopup.vue';
 import MutationsTableComponent from '@/components/Mutations/MutationsTableComponent.vue';
 import { useAuthStore, useUserStore } from '@sudosos/sudosos-frontend-common';
 import apiService from '@/services/ApiService';

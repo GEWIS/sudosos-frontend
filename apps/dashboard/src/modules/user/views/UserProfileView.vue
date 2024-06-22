@@ -5,16 +5,16 @@
     </div>
     <div class="grid">
       <div class="col-6 md:col-6">
-        <UserInfoComponent :user="current.user as UserResponse"/>
+        <UserInfo :user="current.user as UserResponse"/>
       </div>
       <div class="col-6 md:col-6">
-          <ChangePinComponent />
+          <ChangePin />
       </div>
       <div class="col-6 md:col-6">
-        <ChangePasswordComponent />
+        <ChangePassword />
       </div>
       <div class="col-6 md:col-6">
-        <ChangeApiKeyComponent v-if="isAdmin"/>
+        <ChangeApiKey v-if="isAdmin"/>
         <div class="flex flex-row mb-2 align-items-center">
           <h3 class="mr-3">{{ $t('profile.individualDataAnalysis') }}</h3>
           <InputSwitch v-model="dataAnalysis" @update:modelValue="handleChange" />
@@ -25,12 +25,12 @@
 </template>
 
 <script setup lang="ts">
-import ChangePasswordComponent from "@/components/ChangePasswordComponent.vue";
-import ChangePinComponent from "@/components/ChangePinComponent.vue";
-import ChangeApiKeyComponent from "@/components/ChangeApiKeyComponent.vue";
+import ChangePassword from "@/modules/user/components/ChangePassword.vue";
+import ChangePin from "@/modules/user/components/ChangePin.vue";
+import ChangeApiKey from "@/modules/user/components/ChangeApiKey.vue";
 import { useAuthStore, useUserStore } from "@sudosos/sudosos-frontend-common";
 import { storeToRefs } from "pinia";
-import UserInfoComponent from "@/components/UserInfoComponent.vue";
+import UserInfo from "@/modules/user/components/UserInfo.vue";
 import type { UserResponse } from "@sudosos/sudosos-client";
 import { computed, onMounted, type Ref, ref } from "vue";
 import { UserRole } from "@/utils/rbacUtils";

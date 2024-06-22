@@ -1,32 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import POSOverviewView from '@/modules/point-of-sale/views/POSOverviewView.vue';
-import POSInfoView from '@/modules/point-of-sale/views/POSInfoView.vue';
-import POSCreateView from '@/modules/point-of-sale/views/POSCreateView.vue';
-import POSEditView from '@/modules/point-of-sale/views/POSEditView.vue';
 import PublicLayout from "@/layout/PublicLayout.vue";
 import DashboardLayout from "@/layout/DashboardLayout.vue";
-import HomeView from '@/modules/home/views/HomeView.vue';
-import LoginView from "@/modules/auth/views/AuthLoginView.vue";
-import UserOverView from '@/modules/admin/views/AdminUserOverView.vue';
 import SingleUserView from "@/views/SingleUserView.vue";
-import BannersView from "@/modules/admin/views/AdminBannersView.vue";
-import ProductsContainersView from "@/modules/seller/views/ProductsContainersView.vue";
 import { isAuthenticated, useAuthStore } from "@sudosos/sudosos-frontend-common";
-import PasswordResetView from "@/modules/auth/views/AuthResetView.vue";
-import TransactionsView from "@/views/TransactionsView.vue";
-import TermsOfServiceView from "@/modules/auth/views/AuthTermsOfServiceView.vue";
 import { UserRole } from '@/utils/rbacUtils';
 import 'vue-router';
 import ErrorView from "@/views/ErrorView.vue";
-import ProfileView from "@/views/ProfileView.vue";
-import FineView from "@/modules/financial/views/FineView.vue";
-import LocalLoginView from "@/modules/auth/views/AuthLocalView.vue";
-import LoginLayout from "@/modules/auth/layouts/AuthLayout.vue";
 import { authRoutes } from "@/modules/auth/routes";
 import { posRoutes } from "@/modules/point-of-sale/routes";
 import { adminRoutes } from "@/modules/admin/routes";
 import { financialRoutes } from "@/modules/financial/routes";
 import { sellerRoutes } from "@/modules/seller/routes";
+import { userRoutes } from "@/modules/user/routes";
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -63,16 +48,12 @@ const router = createRouter({
     ...adminRoutes(),
     ...financialRoutes(),
     ...sellerRoutes(),
+    ...userRoutes(),
     {
       path: '',
       component: DashboardLayout,
       meta: { requiresAuth: true },
       children: [
-        {
-          path: '/',
-          component: HomeView,
-          name: 'home'
-        },
         {
           path: '/user/:userId',
           component: SingleUserView,
@@ -80,21 +61,10 @@ const router = createRouter({
           props: true,
         },
         {
-          path: '/transactions',
-          component: TransactionsView,
-          name: 'transaction-view'
-        },
-        {
           path: '/error',
           component: ErrorView,
           name: 'error',
         },
-        {
-          path: '/profile',
-          component: ProfileView,
-          name: 'profile',
-        },
-
         // Add other routes for authenticated users here
       ]
     }
