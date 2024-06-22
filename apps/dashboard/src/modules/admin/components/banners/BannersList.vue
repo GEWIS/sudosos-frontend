@@ -11,13 +11,13 @@
             </template>
             <template #list="slotProps">
                 <div class="grid grid-nogutter">
-                    <BannerItemComponent v-for="(item, index) in slotProps.items" :key="index" :index="index"
+                    <BannerItem v-for="(item, index) in slotProps.items" :key="index" :index="index"
                         :banner="item" />
                 </div>
             </template>
         </DataView>
     </CardComponent>
-    <BannerDialogComponent v-model:visible="isCreateDialogVisible" />
+    <BannerDialog v-model:visible="isCreateDialogVisible" />
 </template>
 <script setup lang="ts">
 import DataView from "primevue/dataview";
@@ -30,9 +30,9 @@ import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
-import BannerItemComponent from "@/components/BannerItemComponent.vue";
+import BannerItem from "@/modules/admin/components/banners/BannerItem.vue";
 import CardComponent from "@/components/CardComponent.vue";
-import BannerDialogComponent from "@/components/BannerDialogComponent.vue";
+import BannerDialog from "@/modules/admin/components/banners/BannerDialog.vue";
 
 const props = defineProps<{
     banners: BannerResponse[],

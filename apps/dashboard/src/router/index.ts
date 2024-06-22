@@ -7,9 +7,9 @@ import PublicLayout from "@/layout/PublicLayout.vue";
 import DashboardLayout from "@/layout/DashboardLayout.vue";
 import HomeView from '@/modules/home/views/HomeView.vue';
 import LoginView from "@/modules/auth/views/AuthLoginView.vue";
-import UserOverView from '@/views/UserOverView.vue';
+import UserOverView from '@/modules/admin/views/AdminUserOverView.vue';
 import SingleUserView from "@/views/SingleUserView.vue";
-import BannersView from "@/views/BannersView.vue";
+import BannersView from "@/modules/admin/views/AdminBannersView.vue";
 import ProductsContainersView from "@/views/ProductsContainersView.vue";
 import { isAuthenticated, useAuthStore } from "@sudosos/sudosos-frontend-common";
 import PasswordResetView from "@/modules/auth/views/AuthResetView.vue";
@@ -24,6 +24,7 @@ import LocalLoginView from "@/modules/auth/views/AuthLocalView.vue";
 import LoginLayout from "@/modules/auth/layouts/AuthLayout.vue";
 import { authRoutes } from "@/modules/auth/routes";
 import { posRoutes } from "@/modules/point-of-sale/routes";
+import { adminRoutes } from "@/modules/admin/routes";
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -57,6 +58,7 @@ const router = createRouter({
     },
     ...authRoutes(),
     ...posRoutes(),
+    ...adminRoutes(),
     {
       path: '',
       component: DashboardLayout,
@@ -66,12 +68,6 @@ const router = createRouter({
           path: '/',
           component: HomeView,
           name: 'home'
-        },
-        {
-          path: '/user-overview',
-          name: 'userOverview',
-          component: UserOverView,
-          meta: { requiresAuth: true, isBAC: true, isBoard: true }
         },
         {
           path: '/user/:userId',
@@ -105,12 +101,6 @@ const router = createRouter({
           component: FineView,
           name: 'fine',
           meta: { requiresAuth: true, isBAC: true }
-        },
-        {
-          path: '/banners',
-          component: BannersView,
-          name: 'banners',
-          meta: { requiresAuth: true, isBoard: true }
         },
         // Add other routes for authenticated users here
       ]
