@@ -2,13 +2,13 @@
   <div class="page-container">
     <div class="page-title">{{ $t('pointOfSaleOverview.Point of sale overview') }}</div>
     <div class="content-wrapper">
-      <POSOverviewTableComponent class="pos-overview-table"/>
+      <POSOverviewTable class="pos-overview-table"/>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import POSOverviewTableComponent from "@/components/POSOverviewTableComponent.vue";
+import POSOverviewTable from "@/modules/point-of-sale/components/POSOverviewTable.vue";
 
 </script>
 

@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import POSOverviewView from '@/views/PointOfSale/POSOverviewView.vue';
-import POSInfoView from '@/views/PointOfSale/POSInfoView.vue';
-import POSCreateView from '@/views/PointOfSale/POSCreateView.vue';
-import POSEditView from '@/views/PointOfSale/POSEditView.vue';
+import POSOverviewView from '@/modules/point-of-sale/views/POSOverviewView.vue';
+import POSInfoView from '@/modules/point-of-sale/views/POSInfoView.vue';
+import POSCreateView from '@/modules/point-of-sale/views/POSCreateView.vue';
+import POSEditView from '@/modules/point-of-sale/views/POSEditView.vue';
 import PublicLayout from "@/layout/PublicLayout.vue";
 import DashboardLayout from "@/layout/DashboardLayout.vue";
 import HomeView from '@/modules/home/views/HomeView.vue';
@@ -23,6 +23,7 @@ import FineView from "@/views/FineView.vue";
 import LocalLoginView from "@/modules/auth/views/AuthLocalView.vue";
 import LoginLayout from "@/modules/auth/layouts/AuthLayout.vue";
 import { authRoutes } from "@/modules/auth/routes";
+import { posRoutes } from "@/modules/point-of-sale/routes";
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -55,6 +56,7 @@ const router = createRouter({
       ]
     },
     ...authRoutes(),
+    ...posRoutes(),
     {
       path: '',
       component: DashboardLayout,
@@ -64,32 +66,6 @@ const router = createRouter({
           path: '/',
           component: HomeView,
           name: 'home'
-        },
-        {
-          path: '/point-of-sale/overview',
-          name: 'pointOfSale',
-          component: POSOverviewView,
-          meta: { requiresAuth: true, isSeller: true }
-        },
-        {
-          path: '/point-of-sale/info/:id',
-          name: 'pointOfSaleInfo',
-          component: POSInfoView,
-          props: true,
-          meta: { requiresAuth: true, isSeller: true }
-        },
-        {
-          path: '/point-of-sale/request',
-          name: 'pointOfSaleCreate',
-          component: POSCreateView,
-          meta: { requiresAuth: true, isSeller: true }
-        },
-        {
-          path: '/point-of-sale/edit/:id',
-          name: 'pointOfSaleEdit',
-          component: POSEditView,
-          props: true,
-          meta: { requiresAuth: true, isSeller: true }
         },
         {
           path: '/user-overview',
