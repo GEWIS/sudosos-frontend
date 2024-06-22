@@ -5,7 +5,7 @@ import POSCreateView from '@/views/PointOfSale/POSCreateView.vue';
 import POSEditView from '@/views/PointOfSale/POSEditView.vue';
 import PublicLayout from "@/layout/PublicLayout.vue";
 import DashboardLayout from "@/layout/DashboardLayout.vue";
-import HomeView from '@/views/HomeView.vue';
+import HomeView from '@/modules/home/views/HomeView.vue';
 import LoginView from "@/modules/auth/views/AuthLoginView.vue";
 import UserOverView from '@/views/UserOverView.vue';
 import SingleUserView from "@/views/SingleUserView.vue";

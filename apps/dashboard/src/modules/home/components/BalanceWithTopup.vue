@@ -39,7 +39,7 @@
                   );
                   setTouched(true);
                 }
-              " 
+              "
               :inputProps="{
                 inputmode: 'numeric',
                 class: 'w-full'
@@ -59,7 +59,7 @@
 
 <script setup lang="ts">
 import CardComponent from '@/components/CardComponent.vue';
-import TopupModal from '@/components/TopupModalComponent.vue';
+import TopupModal from '@/modules/home/components/TopupModal.vue';
 import { useAuthStore, useUserStore } from '@sudosos/sudosos-frontend-common';
 import { computed, ref, onMounted, type Ref, watch } from 'vue';
 import type { BalanceResponse } from '@sudosos/sudosos-client';
