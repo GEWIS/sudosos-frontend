@@ -14,7 +14,7 @@ import ProductsContainersView from "@/views/ProductsContainersView.vue";
 import { isAuthenticated, useAuthStore } from "@sudosos/sudosos-frontend-common";
 import PasswordResetView from "@/modules/auth/views/AuthResetView.vue";
 import TransactionsView from "@/views/TransactionsView.vue";
-import TermsOfServiceView from "@/views/TermsOfServiceView.vue";
+import TermsOfServiceView from "@/modules/auth/views/AuthTermsOfServiceView.vue";
 import { UserRole } from '@/utils/rbacUtils';
 import 'vue-router';
 import ErrorView from "@/views/ErrorView.vue";
@@ -47,7 +47,6 @@ const router = createRouter({
       path: '',
       component: PublicLayout,
       children: [
-        authRoutes(),
         {
           path: '/error',
           component: ErrorView,
@@ -55,16 +54,7 @@ const router = createRouter({
         },
       ]
     },
-    {
-      path: '',
-      component: PublicLayout,
-      meta: { requiresAuth: true },
-      children: [{
-        path: '/',
-        component: TermsOfServiceView,
-        name: 'tos'
-      }]
-    },
+    ...authRoutes(),
     {
       path: '',
       component: DashboardLayout,

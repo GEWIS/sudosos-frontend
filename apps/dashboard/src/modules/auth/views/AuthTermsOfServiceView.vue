@@ -5,9 +5,7 @@
     <hr />
     <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
     <p>SudoSOS Terms of Service - version 1.0 (14/08/2022)</p>
-
     <div v-html="tos"/>
-
 
     <Checkbox v-model="acceptsExtensiveDataProcessing" :binary="true" class="checkbox"/>
     <label for="accept">{{ $t('termsOfService.agreeData') }}</label>
@@ -57,8 +55,6 @@ const acceptTermsOfService = (async () => {
     await userStore.fetchCurrentUserBalance(authStore.getUser.id, apiService);
   }
   router.push({ name: 'home' });
-
-
 });
 
 const handleLogout = () => {
