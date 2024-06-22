@@ -10,7 +10,7 @@ import LoginView from "@/modules/auth/views/AuthLoginView.vue";
 import UserOverView from '@/modules/admin/views/AdminUserOverView.vue';
 import SingleUserView from "@/views/SingleUserView.vue";
 import BannersView from "@/modules/admin/views/AdminBannersView.vue";
-import ProductsContainersView from "@/views/ProductsContainersView.vue";
+import ProductsContainersView from "@/modules/seller/views/ProductsContainersView.vue";
 import { isAuthenticated, useAuthStore } from "@sudosos/sudosos-frontend-common";
 import PasswordResetView from "@/modules/auth/views/AuthResetView.vue";
 import TransactionsView from "@/views/TransactionsView.vue";
@@ -26,6 +26,7 @@ import { authRoutes } from "@/modules/auth/routes";
 import { posRoutes } from "@/modules/point-of-sale/routes";
 import { adminRoutes } from "@/modules/admin/routes";
 import { financialRoutes } from "@/modules/financial/routes";
+import { sellerRoutes } from "@/modules/seller/routes";
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -61,6 +62,7 @@ const router = createRouter({
     ...posRoutes(),
     ...adminRoutes(),
     ...financialRoutes(),
+    ...sellerRoutes(),
     {
       path: '',
       component: DashboardLayout,
@@ -76,12 +78,6 @@ const router = createRouter({
           component: SingleUserView,
           name: 'user',
           props: true,
-        },
-        {
-          path: '/manage-products',
-          component: ProductsContainersView,
-          name: 'products-containers-overview',
-          meta: { requiresAuth: true, isBAC: true }
         },
         {
           path: '/transactions',

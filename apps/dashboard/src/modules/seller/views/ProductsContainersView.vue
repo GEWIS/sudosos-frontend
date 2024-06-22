@@ -8,7 +8,7 @@
           :containers="containers"
           :show-create="true"
           class="w-full"/>
-      <ProductCardComponent/>
+      <ProductCard/>
     </div>
   </div>
 </template>
@@ -17,7 +17,7 @@
 import { computed, onBeforeMount } from "vue";
 import ContainerCardComponent from '@/components/ContainerCardComponent.vue';
 import { type ContainerInStore, useContainerStore } from "@/stores/container.store";
-import ProductCardComponent from "@/components/ProductCardComponent.vue";
+import ProductCard from "@/modules/seller/components/ProductCard.vue";
 
 const containerStore = useContainerStore();
 
