@@ -21,7 +21,10 @@ module.exports = {
         '@intlify/vue-i18n/no-missing-keys': 'error',
         '@intlify/vue-i18n/no-missing-keys-in-other-locales': 'error',
         '@intlify/vue-i18n/no-unused-keys': ['error', { 'enableFix': true, 'extensions': ['.js', '.vue', '.ts'] }],
-        '@intlify/vue-i18n/no-duplicate-keys-in-locale': 'error'
+        '@intlify/vue-i18n/no-duplicate-keys-in-locale': 'error',
+        'vue/no-mutating-props': ['error', {
+            'shallowOnly': true
+        }]
     },
     ignorePatterns: ["/src/components/icons/*.vue", "package-lock.json"],
     parserOptions: {

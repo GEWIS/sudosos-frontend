@@ -8,68 +8,31 @@
           ref="dialog"
           @show="openDialog"
   >
-    <form @submit="handleSubmitContainer" class="flex flex-column gap-3">
-      <div class="flex flex-row flex-wrap justify-content-between align-items-center">
-        <label for="name" class="mr-8">{{ $t('c_productContainerOperations.Name') }}</label>
-        <div class="relative">
-          <InputText id="name" class="w-18rem" v-model="form.model.name.value.value"
-                     type="text" v-bind="form.model.name.attr.value"/>
-          <error-span :error="form.context.errors.value.name"/>
-        </div>
-      </div>
-      <div class="flex flex-row flex-wrap justify-content-between align-items-center">
-        <label for="owner" class="mr-8">
-          {{ $t('c_POSCreate.Owner') }}
-          <i class="pi pi-exclamation-circle text-red-500 cursor-pointer"
-             v-tooltip.top="$t('tooltip.owner_revenue')"/>
-        </label>
-        <div class="flex flex-column flex-end relative">
-          <div v-if="state.create">
-            <Dropdown :placeholder="$t('c_POSCreate.Select owner')" :options="organsList" optionLabel="firstName"
-                      v-model="form.model.owner.value.value" class="w-18rem" id="owner"
-                      v-bind="form.model.owner.attr.value"/>
-            <error-span :error="form.context.errors.value.owner"/>
-          </div>
-          <div v-else-if="container">
-            <p class="my-0">{{ container.owner.firstName + ' ' + container.owner.lastName }}</p>
-          </div>
-        </div>
-      </div>
-      <div class="flex flex-row flex-wrap justify-content-between align-items-center">
-        <label for="name" class="mr-8">{{ $t('c_containerEditModal.Public') }}</label>
-        <div class="relative">
-          <Checkbox v-model="form.model.public.value.value" v-bind="form.model.public.attr.value"
-                    inputId="publicContainer"
-                    name="public" value="public" :binary="true"/>
-          <error-span :error="form.context.errors.value.public"/>
-        </div>
-      </div>
-      <div class="flex flex-row justify-content-end gap-2">
-        <Button outlined @click="closeDialog">{{ $t("c_containerEditModal.cancel") }}</Button>
-        <Button type="submit">{{ $t("c_containerEditModal.save") }}</Button>
-      </div>
-    </form>
+    <ContainerActionForm :form="form" :container="props.container"/>
+    <div class="flex flex-row justify-content-end gap-2 mt-3">
+      <Button outlined @click="closeDialog">{{ $t("c_containerEditModal.cancel") }}</Button>
+      <Button type="submit" @click="handleSubmitContainer">{{ $t("c_containerEditModal.save") }}</Button>
+    </div>
   </Dialog>
 </template>
 
 <script setup lang="ts">
 import { addListenerOnDialogueOverlay } from "@/utils/dialogUtil";
 import Dialog from "primevue/dialog";
-import { computed, type PropType, type Ref, ref } from "vue";
+import { computed, type PropType, ref } from "vue";
 import type {
   BaseUserResponse, ContainerResponse, ContainerWithProductsResponse
 } from "@sudosos/sudosos-client";
-import { useAuthStore } from "@sudosos/sudosos-frontend-common";
 import * as yup from "yup";
-import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
-import ErrorSpan from "@/components/ErrorSpan.vue";
 import { useContainerStore } from "@/stores/container.store";
 import { handleError } from "@/utils/errorUtils";
 import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
-import InputText from "primevue/inputtext";
 import { specToForm } from "@/utils/formUtil";
+import { useAuthStore } from "@sudosos/sudosos-frontend-common";
+import { storeToRefs } from "pinia";
+import ContainerActionForm from "@/components/container/ContainerActionForm.vue";
 
 const { t } = useI18n();
 
@@ -81,13 +44,10 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:visible', 'create:container']);
-const authStore = useAuthStore();
 const containerStore = useContainerStore();
 
 const visible = ref(false);
 const dialog = ref();
-const organsList: Ref<BaseUserResponse[]> = ref(authStore.organs);
-
 const toast = useToast();
 
 const state = computed(() => {
@@ -96,6 +56,7 @@ const state = computed(() => {
     edit: props.container != undefined,
   };
 });
+
 const header = computed(() => {
   if (state.value.create) return t('c_containerEditModal.header.create');
   if (state.value.edit) return t('c_containerEditModal.header.edit');
@@ -153,10 +114,11 @@ const handleSubmitContainer = form.context.handleSubmit(async (values) => {
   closeDialog();
 });
 
+const { organs } = storeToRefs(useAuthStore());
 const updateFieldValues = (p: ContainerWithProductsResponse) => {
   if (!p) return;
   const name = p.name;
-  const owner = organsList.value.find((o) => o.id == p.owner.id);
+  const owner = organs.value.find((o) => o.id == p.owner.id);
   const isPublic = p.public;
   form.context.resetForm();
   form.context.setValues({ name, owner, public: isPublic });

@@ -3,6 +3,7 @@ import * as yup from "yup";
 import { ref } from "vue";
 import type { Ref } from "vue";
 import i18n from './i18nUtils';
+import type { BaseUserResponse } from "@sudosos/sudosos-client";
 
 const t = i18n.global.t;
 
@@ -52,3 +53,9 @@ export const userTypes : Ref<Array<{name: string, value: number}>> = ref([
   { name: 'INVOICE', value: 6 },
   { name: 'AUTOMATIC_INVOICE', value: 7 },
 ]);
+
+export const createContainerSpec = {
+  name: yup.string().required(),
+  public: yup.boolean().required().default(true),
+  owner: yup.mixed<BaseUserResponse>().required(),
+};

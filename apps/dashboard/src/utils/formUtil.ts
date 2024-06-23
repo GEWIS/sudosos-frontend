@@ -4,7 +4,7 @@ import type { BaseFieldProps, FormContext, GenericObject, TypedSchema } from "ve
 import { toTypedSchema } from "@vee-validate/yup";
 import { useForm } from "vee-validate";
 
-interface Form<T> {
+export interface Form<T> {
   context: FormContext
   schema:  TypedSchema
   model: { [K in keyof T]: { value: Ref, attr: Ref<BaseFieldProps & GenericObject> } }
@@ -35,6 +35,7 @@ export function specToForm<T extends Record<string, yup.AnySchema>>(spec: T): Fo
   return {
     context,
     schema,
-    model
+    model,
   };
 }
+
