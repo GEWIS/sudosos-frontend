@@ -140,6 +140,7 @@ const leftItems = computed(() => [
   {
     label: t('app.Financial'),
     // TODO isFinancial()
+    // https://github.com/GEWIS/sudosos-frontend/issues/229
     visible: isBAC(),
     items: [
       {
@@ -161,6 +162,7 @@ const leftItems = computed(() => [
   {
     label: t('app.Seller'),
     // TODO: isSeller()
+    // https://github.com/GEWIS/sudosos-frontend/issues/229
     visible: isBAC(),
     items: [
       {

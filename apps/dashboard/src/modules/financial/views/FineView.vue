@@ -1,4 +1,5 @@
 <!-- TODO Split into components -->
+<!-- https://github.com/GEWIS/sudosos-frontend/issues/228 -->
 <template>
   <div class="page-container">
     <div class="page-title">{{ t('fine.fineOverview') }}</div>
