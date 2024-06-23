@@ -12,8 +12,9 @@
       <div class="flex flex-row flex-wrap justify-content-between align-items-center">
         <label for="name" class="mr-8">{{ $t('c_productContainerOperations.Name') }}</label>
         <div class="relative">
-          <InputText id="name" class="w-18rem" v-model="name" type="text" v-bind="nameAttrs"/>
-          <error-span :error="errors.name"/>
+          <InputText id="name" class="w-18rem" v-model="form.model.name.value.value"
+                     type="text" v-bind="form.model.name.attr.value"/>
+          <error-span :error="form.context.errors.value.name"/>
         </div>
       </div>
       <div class="flex flex-row flex-wrap justify-content-between align-items-center">
@@ -24,9 +25,10 @@
         </label>
         <div class="flex flex-column flex-end relative">
           <div v-if="state.create">
-          <Dropdown :placeholder="$t('c_POSCreate.Select owner')" :options="organsList" optionLabel="firstName"
-                    v-model="owner" class="w-18rem" id="owner" v-bind="ownerAttrs"/>
-          <error-span :error="errors.owner"/>
+            <Dropdown :placeholder="$t('c_POSCreate.Select owner')" :options="organsList" optionLabel="firstName"
+                      v-model="form.model.owner.value.value" class="w-18rem" id="owner"
+                      v-bind="form.model.owner.attr.value"/>
+            <error-span :error="form.context.errors.value.owner"/>
           </div>
           <div v-else-if="container">
             <p class="my-0">{{ container.owner.firstName + ' ' + container.owner.lastName }}</p>
@@ -36,9 +38,10 @@
       <div class="flex flex-row flex-wrap justify-content-between align-items-center">
         <label for="name" class="mr-8">{{ $t('c_containerEditModal.Public') }}</label>
         <div class="relative">
-            <Checkbox v-model="publicContainer" v-bind="publicAttrs" inputId="publicContainer"
-                      name="public" value="public" :binary="true"/>
-            <error-span :error="errors.public"/>
+          <Checkbox v-model="form.model.public.value.value" v-bind="form.model.public.attr.value"
+                    inputId="publicContainer"
+                    name="public" value="public" :binary="true"/>
+          <error-span :error="form.context.errors.value.public"/>
         </div>
       </div>
       <div class="flex flex-row justify-content-end gap-2">
@@ -57,10 +60,7 @@ import type {
   BaseUserResponse, ContainerResponse, ContainerWithProductsResponse
 } from "@sudosos/sudosos-client";
 import { useAuthStore } from "@sudosos/sudosos-frontend-common";
-import { toTypedSchema } from "@vee-validate/yup";
 import * as yup from "yup";
-import { useForm } from "vee-validate";
-import InputText from "primevue/inputtext";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import ErrorSpan from "@/components/ErrorSpan.vue";
@@ -68,6 +68,9 @@ import { useContainerStore } from "@/stores/container.store";
 import { handleError } from "@/utils/errorUtils";
 import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
+import InputText from "primevue/inputtext";
+import { specToForm } from "@/utils/formUtil";
+
 const { t } = useI18n();
 
 const props = defineProps({
@@ -99,38 +102,27 @@ const header = computed(() => {
   return '';
 });
 
-const creationSchema = toTypedSchema(
-    yup.object({
-      name: yup.string().required(),
-      public: yup.boolean().required().default(true),
-      owner: yup.mixed<BaseUserResponse>().required()
-    })
-);
-
-const { defineField, handleSubmit, errors, resetForm } = useForm({
-  validationSchema: creationSchema,
+const form = specToForm({
+  name: yup.string().required(),
+  public: yup.boolean().required().default(true),
+  owner: yup.mixed<BaseUserResponse>().required(),
 });
 
-const [name, nameAttrs] = defineField('name');
-const [publicContainer, publicAttrs] = defineField('public');
-const [owner, ownerAttrs] = defineField('owner');
-
 const closeDialog = () => {
-  name.value = '';
-  publicContainer.value = undefined;
-  owner.value = undefined;
-  resetForm();
+  form.context.resetForm();
   emit('update:visible', false);
 };
 
-const handleSubmitContainer = handleSubmit(async (values) => {
+const handleSubmitContainer = form.context.handleSubmit(async (values) => {
   // Updating a container
   if (props.container) {
     await containerStore.updateContainer(
         props.container.id,
-        { name: values.name,
-        public: values.public,
-        products: props.container.products.map((p) => p.id) }
+        {
+          name: values.name,
+          public: values.public,
+          products: props.container.products.map((p) => p.id)
+        }
     ).then(() => {
       closeDialog();
       toast.add({
@@ -163,11 +155,12 @@ const handleSubmitContainer = handleSubmit(async (values) => {
 
 const updateFieldValues = (p: ContainerWithProductsResponse) => {
   if (!p) return;
-  name.value = p.name;
-  owner.value = organsList.value.find((o) => o.id == p.owner.id);
-  publicContainer.value = p.public;
+  const name = p.name;
+  const owner = organsList.value.find((o) => o.id == p.owner.id);
+  const isPublic = p.public;
+  form.context.resetForm();
+  form.context.setValues({ name, owner, public: isPublic });
 };
-
 const openDialog = () => {
   addListenerOnDialogueOverlay(dialog.value);
   if (props.container) updateFieldValues(props.container);
