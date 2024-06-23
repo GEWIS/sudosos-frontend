@@ -1,6 +1,6 @@
 {
-  "theme_color": "#8936FF",
-  "background_color": "#2EC6FE",
+  "theme_color": "#333333",
+  "background_color": "#D40000",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
