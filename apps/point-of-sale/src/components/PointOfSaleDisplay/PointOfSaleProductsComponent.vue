@@ -1,5 +1,5 @@
 <template>
-  <div class="container-grid-wrapper flex-1 h-full mb-3 pr-7 mr-3 mt-2">
+  <div class="container-grid-wrapper flex-1 h-full mb-3 pr-6 mr-3 mt-2" ref="wrapper">
     <div class="container gap-3 pr-5">
       <ProductComponent
           v-for="product in sortedProducts"
@@ -39,6 +39,7 @@ const props = defineProps({
 });
 
 const searchQuery = ref(props.searchQuery);
+const wrapper = ref();
 
 watch(() => props.searchQuery, (newValue) => {
   searchQuery.value = newValue;
@@ -46,6 +47,7 @@ watch(() => props.searchQuery, (newValue) => {
 
 const getFilteredProducts = () => {
   if (!props.pointOfSale) return [];
+  wrapper.value?.scrollTo(0, 0);
 
   let filteredProducts = props.pointOfSale.containers.flatMap((container) => {
     return container.products.map((product) => ({
