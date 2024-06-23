@@ -1,6 +1,6 @@
 <template>
-  <div class="container-grid-wrapper flex-1 h-full mb-3 mr-3">
-    <div class="container grid gap-2 pr-5 pb-3">
+  <div class="container-grid-wrapper flex-1 h-full mb-3 pr-7 mr-3 mt-2">
+    <div class="container gap-3 pr-5">
       <ProductComponent
           v-for="product in sortedProducts"
           :key="`${product.product.id}-${product.container.id}`"
@@ -115,6 +115,7 @@ const sortedProducts = computed(() => {
 
   > .container {
     grid-template-columns: repeat(auto-fill, minmax($product-column-width, 1fr));
+    display: grid;
   }
 }
 </style>
