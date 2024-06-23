@@ -44,16 +44,20 @@ import { createContainerSpec } from "@/utils/validation-schema";
 import InputText from "primevue/inputtext";
 import ErrorSpan from "@/components/ErrorSpan.vue";
 import Dropdown from "primevue/dropdown";
-import { computed, type PropType, ref, type Ref } from "vue";
-import type { ContainerWithProductsResponse } from "@sudosos/sudosos-client";
+import { computed, type PropType } from "vue";
+import type { ContainerResponse, ContainerWithProductsResponse, ProductResponse } from "@sudosos/sudosos-client";
 import { useI18n } from "vue-i18n";
 import { useAuthStore } from "@sudosos/sudosos-frontend-common";
 import { storeToRefs } from "pinia";
+import { handleError } from "@/utils/errorUtils";
+import { useContainerStore } from "@/stores/container.store";
+import { useToast } from "primevue/usetoast";
 const { t } = useI18n();
+const toast = useToast();
 
 const props = defineProps({
   form: {
-    type: Object as Form<typeof createContainerSpec>,
+    type: Object as PropType<Form<typeof createContainerSpec>>,
     required: true,
   },
   container: {
@@ -62,13 +66,52 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(['update:visible', 'create:container']);
+
 const { organs } = storeToRefs(useAuthStore());
+const containerStore = useContainerStore();
 
 const state = computed(() => {
   return {
     create: props.container == undefined,
     edit: props.container != undefined,
   };
+});
+
+props.form.submit = props.form.context.handleSubmit(async (values: any) => {
+  // Updating a container
+  if (props.container) {
+    await containerStore.updateContainer(
+        props.container.id,
+        {
+          name: values.name,
+          public: values.public,
+          products: props.container.products.map((p: ProductResponse) => p.id)
+        }
+    ).then(() => {
+      toast.add({
+        severity: 'success',
+        summary: t('successMessages.success'),
+        detail: t('successMessages.updateContainer'),
+        life: 3000,
+      });
+    }).catch((err) => handleError(err, toast));
+  } else {
+    // Creating a container
+    await containerStore.createEmptyContainer(
+        values.name,
+        values.public,
+        values.owner.id
+    ).then((c: ContainerResponse) => {
+      emit('create:container', c);
+      toast.add({
+        severity: 'success',
+        summary: t('successMessages.success'),
+        detail: t('successMessages.createContainer'),
+        life: 3000,
+      });
+    }).catch((err) => handleError(err, toast));
+  }
 });
 
 </script>

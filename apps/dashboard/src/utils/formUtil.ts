@@ -8,6 +8,7 @@ export interface Form<T> {
   context: FormContext
   schema:  TypedSchema
   model: { [K in keyof T]: { value: Ref, attr: Ref<BaseFieldProps & GenericObject> } }
+  submit: () => Promise<any>
 }
 
 const specToFields = <T extends Record<string, yup.AnySchema>>(spec: T, ctx: FormContext):
@@ -36,6 +37,7 @@ export function specToForm<T extends Record<string, yup.AnySchema>>(spec: T): Fo
     context,
     schema,
     model,
+    submit: async () => console.error("Submit not implemented"),
   };
 }
 

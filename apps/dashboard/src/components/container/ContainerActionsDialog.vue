@@ -11,7 +11,7 @@
     <ContainerActionForm :form="form" :container="props.container"/>
     <div class="flex flex-row justify-content-end gap-2 mt-3">
       <Button outlined @click="closeDialog">{{ $t("c_containerEditModal.cancel") }}</Button>
-      <Button type="submit" @click="handleSubmitContainer">{{ $t("c_containerEditModal.save") }}</Button>
+      <Button type="submit" @click="submit">{{ $t("c_containerEditModal.save") }}</Button>
     </div>
   </Dialog>
 </template>
@@ -21,13 +21,10 @@ import { addListenerOnDialogueOverlay } from "@/utils/dialogUtil";
 import Dialog from "primevue/dialog";
 import { computed, type PropType, ref } from "vue";
 import type {
-  BaseUserResponse, ContainerResponse, ContainerWithProductsResponse
+  BaseUserResponse, ContainerWithProductsResponse
 } from "@sudosos/sudosos-client";
 import * as yup from "yup";
 import Button from "primevue/button";
-import { useContainerStore } from "@/stores/container.store";
-import { handleError } from "@/utils/errorUtils";
-import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
 import { specToForm } from "@/utils/formUtil";
 import { useAuthStore } from "@sudosos/sudosos-frontend-common";
@@ -44,11 +41,9 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:visible', 'create:container']);
-const containerStore = useContainerStore();
 
 const visible = ref(false);
 const dialog = ref();
-const toast = useToast();
 
 const state = computed(() => {
   return {
@@ -63,55 +58,16 @@ const header = computed(() => {
   return '';
 });
 
+async function submit() {
+  await form.submit().then(() => {
+    closeDialog();
+  });
+}
+
 const form = specToForm({
   name: yup.string().required(),
   public: yup.boolean().required().default(true),
   owner: yup.mixed<BaseUserResponse>().required(),
-});
-
-const closeDialog = () => {
-  form.context.resetForm();
-  emit('update:visible', false);
-};
-
-const handleSubmitContainer = form.context.handleSubmit(async (values) => {
-  // Updating a container
-  if (props.container) {
-    await containerStore.updateContainer(
-        props.container.id,
-        {
-          name: values.name,
-          public: values.public,
-          products: props.container.products.map((p) => p.id)
-        }
-    ).then(() => {
-      closeDialog();
-      toast.add({
-        severity: 'success',
-        summary: t('successMessages.success'),
-        detail: t('successMessages.updateContainer'),
-        life: 3000,
-      });
-    }).catch((err) => handleError(err, toast));
-  } else {
-    // Creating a container
-    await containerStore.createEmptyContainer(
-        values.name,
-        values.public,
-        values.owner.id
-    ).then((c: ContainerResponse) => {
-      emit('create:container', c);
-      closeDialog();
-      toast.add({
-        severity: 'success',
-        summary: t('successMessages.success'),
-        detail: t('successMessages.createContainer'),
-        life: 3000,
-      });
-    }).catch((err) => handleError(err, toast));
-  }
-
-  closeDialog();
 });
 
 const { organs } = storeToRefs(useAuthStore());
@@ -123,6 +79,12 @@ const updateFieldValues = (p: ContainerWithProductsResponse) => {
   form.context.resetForm();
   form.context.setValues({ name, owner, public: isPublic });
 };
+
+const closeDialog = () => {
+  form.context.resetForm();
+  emit('update:visible', false);
+};
+
 const openDialog = () => {
   addListenerOnDialogueOverlay(dialog.value);
   if (props.container) updateFieldValues(props.container);
