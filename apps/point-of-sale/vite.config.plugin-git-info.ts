@@ -14,7 +14,7 @@ export default function useGitInfo(): Record<string, any> {
   console.error(branch, commit);
 
   return {
-    __VITE_GIT_BRANCH__: JSON.stringify(branch),
-    __VITE_GIT_COMMIT__: JSON.stringify(commit),
+    __GIT_BRANCH__: JSON.stringify(branch),
+    __GIT_COMMIT__: JSON.stringify(commit),
   };
 }
