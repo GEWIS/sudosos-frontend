@@ -3,8 +3,8 @@
 </template>
 
 <script setup lang="ts">
-const branch = __VITE_GIT_BRANCH__;
-const commit = __VITE_GIT_COMMIT__;
+const branch = __GIT_BRANCH__;
+const commit = __GIT_COMMIT__;
 </script>
 
 <style scoped lang="scss">
