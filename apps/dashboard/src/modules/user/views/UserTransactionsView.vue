@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
     <div class="page-title">{{ $t('transactions.Transactions') }}</div>
-    <div class="content-wrapper">
+    <div class="content-wrapper gap-5 flex md:flex-column flex-column">
       <MutationsTableComponent
         class="transactions-table"
         :header="$t('c_recentTransactionsTable.recent transactions')"
@@ -10,16 +10,26 @@
         :paginator="true"
         :callbackFunction="getUserMutations"
       />
+
+      <TransactionsTableComponent
+        class="transactions-table"
+        header="Transactions made for others"
+        :paginatedMutationResponse="financialMutationsResponse"
+        :modal="true"
+        :paginator="true"
+        :callbackFunction="getTransactionsForOthers"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import MutationsTableComponent from '@/components/mutations/MutationsTableComponent.vue';
+import TransactionsTableComponent from '@/components/mutations/TransactionsTableComponent.vue';
 import apiService from '@/services/ApiService';
 import { useAuthStore, useUserStore } from '@sudosos/sudosos-frontend-common';
 import { ref } from 'vue';
-import type { PaginatedFinancialMutationResponse } from '@sudosos/sudosos-client';
+import type { PaginatedBaseTransactionResponse, PaginatedFinancialMutationResponse } from '@sudosos/sudosos-client';
 import { useToast } from 'primevue/usetoast';
 import { handleError } from '@/utils/errorUtils';
 import router from '@/router';
@@ -50,6 +60,18 @@ const getUserMutations = async (take: number, skip: number)
   await userStore.fetchUsersFinancialMutations(authStore.getUser.id, apiService, take, skip)
     .catch((err) => handleError(err, toast));
   return userStore.getCurrentUser.financialMutations;
+};
+
+const getTransactionsForOthers = async (take: number, skip: number)
+  : Promise<PaginatedBaseTransactionResponse | undefined> => {
+  if (!authStore.getUser) {
+    await router.replace({ path: '/error' });
+    return;
+  }
+  await userStore.fetchUserCreatedTransactions(authStore.getUser.id, apiService, take, skip)
+    .catch((err) => handleError(err, toast));
+  console.log(userStore.getCurrentUser.createdTransactions)
+  return userStore.getCurrentUser.createdTransactions;
 };
 </script>
 
