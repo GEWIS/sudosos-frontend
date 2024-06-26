@@ -285,7 +285,11 @@
     "waivedFineDescr": "Je boetes zijn kwijtgescholden.",
     "what": "Wat",
     "when": "Wanneer",
-    "pos": "Point of sale"
+    "pos": "Point of sale",
+    "from": "Voor",
+    "userBoughtAt": "U kocht bij {pos}",
+    "otherBoughtAt": "{user} kocht bij {pos}",
+    "putInBy": "Transactie aangemaakt door {createdBy}"
   },
   "userDetails": {
     "Active": "Actief",

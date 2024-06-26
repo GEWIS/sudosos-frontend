@@ -1,7 +1,7 @@
 <template>
     <CardComponent :action="action" :header="header" :router-link="routerLink" class="w-full">
         <DataTable :rows="rows" :value="mutations" :rowsPerPageOptions="[5, 10, 25, 50, 100]" :paginator="paginator"
-            lazy @page="onPage($event)" :totalRecords="totalRecords" :rowClass="isSomeoneElsesTransaction">
+            lazy @page="onPage($event)" :totalRecords="totalRecords">
             <Column field="moment" :header="$t('transactions.when')">
                 <template #body v-if="isLoading">
                     <Skeleton class="w-6 my-1 h-1rem surface-300" />
@@ -19,12 +19,12 @@
                 </template>
             </Column>
 
-            <Column field="mutationDescription" :header="$t('transactions.what')">
+            <Column field="mutationFrom" :header="$t('transactions.from')">
                 <template #body v-if="isLoading">
                     <Skeleton class="w-6 my-1 h-1rem surface-300" />
                 </template>
                 <template #body="mutation" v-else>
-                    {{ getDescription(mutation.data) }}
+                    {{ mutation.data.from.firstName + " " + mutation.data.from.lastName }}
                 </template>
             </Column>
 

@@ -281,7 +281,11 @@
     "waivedFineDescr": "Your fines were waived.",
     "what": "What",
     "when": "When",
-    "pos": "Point of sale"
+    "pos": "Point of sale",
+    "from": "From",
+    "userBoughtAt": "You bought at {pos}",
+    "otherBoughtAt": "{user} bought at {pos}",
+    "putInBy": "Transaction put in by {createdBy}"
   },
   "userDetails": {
     "Active": "Active",
