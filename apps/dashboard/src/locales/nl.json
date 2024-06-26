@@ -284,7 +284,8 @@
     "total": "Totaal:",
     "waivedFineDescr": "Je boetes zijn kwijtgescholden.",
     "what": "Wat",
-    "when": "Wanneer"
+    "when": "Wanneer",
+    "pos": "Point of sale"
   },
   "userDetails": {
     "Active": "Actief",

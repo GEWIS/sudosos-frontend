@@ -280,7 +280,8 @@
     "total": "Total:",
     "waivedFineDescr": "Your fines were waived.",
     "what": "What",
-    "when": "When"
+    "when": "When",
+    "pos": "Point of sale"
   },
   "userDetails": {
     "Active": "Active",

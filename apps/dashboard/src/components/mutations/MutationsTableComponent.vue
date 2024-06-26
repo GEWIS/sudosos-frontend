@@ -1,33 +1,25 @@
 <template>
   <CardComponent :action="action" :header="header" :router-link="routerLink" class="w-full">
-    <DataTable
-      :rows="rows"
-      :value="mutations"
-      :rowsPerPageOptions="[5, 10, 25, 50, 100]"
-      :paginator="paginator"
-      lazy
-      @page="onPage($event)"
-      :totalRecords="totalRecords"
-      :rowClass="isSomeoneElsesTransaction"
-    >
-      <Column field="moment" style="width: 30%" :header="$t('transactions.when')">
+    <DataTable :rows="rows" :value="mutations" :rowsPerPageOptions="[5, 10, 25, 50, 100]" :paginator="paginator" lazy
+      @page="onPage($event)" :totalRecords="totalRecords" :rowClass="isSomeoneElsesTransaction">
+      <Column field="moment" :header="$t('transactions.when')">
         <template #body v-if="isLoading">
           <Skeleton class="w-6 my-1 h-1rem surface-300" />
         </template>
         <template #body="mutation" v-else>
           <span class="hidden sm:block">{{ mutation.data.moment.toLocaleDateString($i18n.locale, {
             dateStyle: 'full'
-          }) }}</span>
+            }) }}</span>
           <span class="sm:hidden">{{
             mutation.data.moment.toLocaleDateString('nl-NL', {
-              dateStyle: 'short'
+            dateStyle: 'short'
             })
             }}
           </span>
         </template>
       </Column>
 
-      <Column field="mutationDescription" style="width: 30%" :header="$t('transactions.what')">
+      <Column field="mutationDescription" :header="$t('transactions.what')">
         <template #body v-if="isLoading">
           <Skeleton class="w-6 my-1 h-1rem surface-300" />
         </template>
@@ -36,28 +28,29 @@
         </template>
       </Column>
 
-      <Column field="change" style="width: 30%" :header="$t('transactions.amount')">
+      <Column field="mutationPOS" class="hidden sm:block" :header="$t('transactions.pos')">
+        <template #body v-if="isLoading">
+          <Skeleton class="w-6 my-1 h-1rem surface-300" />
+        </template>
+        <template #body="mutation" v-else>
+          {{ mutation.data.pos }}
+        </template>
+      </Column>
+
+      <Column field="change" :header="$t('transactions.amount')">
         <template #body v-if="isLoading">
           <Skeleton class="w-3 my-1 h-1rem surface-300" />
         </template>
         <template #body="mutation" v-else>
-          <div
-            v-if="
+          <div v-if="
               mutation.data.type == FinancialMutationType.DEPOSIT ||
               mutation.data.type == FinancialMutationType.INVOICE ||
               mutation.data.type == FinancialMutationType.WAIVED_FINE
-            "
-            style="color: #198754"
-            class="font-bold"
-          >
+            " style="color: #198754" class="font-bold">
             {{ formatPrice((mutation.data as FinancialMutation).amount) }}
           </div>
 
-          <div
-            v-else-if="mutation.data.type == FinancialMutationType.FINE"
-            style="color: #d40000"
-            class="font-bold"
-          >
+          <div v-else-if="mutation.data.type == FinancialMutationType.FINE" style="color: #d40000" class="font-bold">
             {{ formatPrice((mutation.data as FinancialMutation).amount, true) }}
           </div>
 
@@ -72,20 +65,13 @@
           <Skeleton class="w-3 my-1 h-1rem surface-300" />
         </template>
         <template #body="mutation" v-else>
-          <i
-            class="pi pi-info-circle cursor-pointer"
-            @click="() => openModal(mutation.data.id, mutation.data.type)"
-          />
+          <i class="pi pi-info-circle cursor-pointer" @click="() => openModal(mutation.data.id, mutation.data.type)" />
         </template>
       </Column>
     </DataTable>
   </CardComponent>
-  <MutationModal
-    :type="selectedMutationType"
-    :id="selectedMutationId"
-    v-model:visible="mutationShow"
-    :draggable="false"
-  />
+  <MutationModal :type="selectedMutationType" :id="selectedMutationId" v-model:visible="mutationShow"
+    :draggable="false" />
 </template>
 
 <script lang="ts" setup>
@@ -107,9 +93,7 @@ import MutationModal from '@/components/mutations/MutationModal.vue';
 import {
   type FinancialMutation,
   FinancialMutationType,
-  parseFinancialTransactions,
-  parseTransaction,
-  parseTransfer
+  parseFinancialMutations
 } from '@/utils/mutationUtils';
 import 'primeicons/primeicons.css';
 import { useI18n } from 'vue-i18n';
@@ -163,31 +147,6 @@ onMounted(async () => {
   isLoading.value = false;
 });
 
-function isPaginatedBaseTransactionResponse(obj: any): obj is PaginatedBaseTransactionResponse {
-  return obj.records && obj.records.length > 0 && 'id' in obj.records[0];
-}
-
-function parseFinancialMutations(
-  mutations: PaginatedFinancialMutationResponse | PaginatedBaseTransactionResponse
-): FinancialMutation[] {
-  let result: FinancialMutation[] = [];
-  if (isPaginatedBaseTransactionResponse(mutations)) {
-    mutations.records.forEach((mutation: BaseTransactionResponse) => {
-      result.push(parseTransaction(mutation));
-    });
-  } else {
-    mutations.records.forEach((mutation: FinancialMutationResponse) => {
-      if (mutation.type === 'transaction') {
-        const transaction = mutation.mutation as BaseTransactionResponse;
-        result.push(parseTransaction(transaction));
-      } else if (mutation.type === 'transfer') {
-        const transfer = mutation.mutation as TransferResponse;
-        result.push(parseTransfer(transfer));
-      }
-    });
-  }
-  return result;
-}
 
 function openModal(id: number, type: FinancialMutationType) {
   selectedMutationId.value = id;
@@ -197,9 +156,7 @@ function openModal(id: number, type: FinancialMutationType) {
 
 async function onPage(event: DataTablePageEvent) {
   const newTransactions = await getMutations(event.rows, event.first);
-  mutations.value = isPaginatedBaseTransactionResponse(newTransactions)
-    ? parseFinancialTransactions(newTransactions)
-    : parseFinancialMutations(newTransactions);
+  mutations.value = parseFinancialMutations(newTransactions);
 }
 
 async function getMutations(
