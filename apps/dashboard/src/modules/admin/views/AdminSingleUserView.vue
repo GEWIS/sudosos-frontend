@@ -50,8 +50,8 @@
         </form>
       </CardComponent>
       <AdminUserBalance :user="currentUser" :showOption="false" id="userBalance" />
-      <MutationsTableComponent class="w-full" :header="$t('userDetails.User Transactions')" paginator modal
-        :callbackFunction="getUserMutations" />
+      <MutationsBalanceCard class="w-full" :header="$t('userDetails.User Transactions')" paginator modal
+        :get-mutations="getUserMutations" />
     </div>
   </div>
 </template>
@@ -69,12 +69,12 @@ import { useForm } from "vee-validate";
 import apiService from "@/services/ApiService";
 import router from "@/router";
 import { userDetailsSchema, userTypes } from "@/utils/validation-schema";
-import MutationsTableComponent from "@/components/mutations/MutationsTableComponent.vue";
 import { handleError } from "@/utils/errorUtils";
 import { useToast } from "primevue/usetoast";
 import type { AxiosError } from "axios";
 import Button from "primevue/button";
 import { useI18n } from "vue-i18n";
+import MutationsBalanceCard from "@/components/mutations/MutationsBalanceCard.vue";
 
 const { defineField, handleSubmit, errors, setValues } = useForm({
   validationSchema: userDetailsSchema,

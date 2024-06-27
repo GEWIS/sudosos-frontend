@@ -21,10 +21,10 @@
       v-if="pos && pos.containers"
       :containers="posContainers"
     />
-    <MutationsTableComponent
+    <MutationPOSCard
       :header="$t('app.Transactions')"
       class="pos-transactions"
-      :callback-function="getPOSTransactions"
+      :get-mutations="getPOSTransactions"
       :modal="true"
       paginator
       style="width: 100% !important"
@@ -42,13 +42,13 @@ import type {
   PointOfSaleWithContainersResponse
 } from '@sudosos/sudosos-client';
 import ContainerCard from '@/components/container/ContainerCard.vue';
-import MutationsTableComponent from '@/components/mutations/MutationsTableComponent.vue';
 import router from '@/router';
 import { useToast } from 'primevue/usetoast';
 import { useI18n } from 'vue-i18n';
 import { handleError } from '@/utils/errorUtils';
 import apiService from '@/services/ApiService';
 import { useContainerStore } from "@/stores/container.store";
+import MutationPOSCard from "@/components/mutations/MutationPOSCard.vue";
 
 const route = useRoute(); // Use the useRoute function to access the current route
 const toast = useToast();

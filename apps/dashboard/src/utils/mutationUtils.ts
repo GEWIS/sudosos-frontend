@@ -2,6 +2,9 @@ import type { BaseTransactionResponse, BaseUserResponse, FinancialMutationRespon
 import type { Dinero } from "@sudosos/sudosos-client";
 import type { PaginatedBaseTransactionResponse } from "@sudosos/sudosos-client";
 
+import i18n from '@/utils/i18nUtils'
+
+const t = i18n.global.t
 
 export enum FinancialMutationType {
     INVOICE,
@@ -83,4 +86,27 @@ export function parseFinancialMutations(
     });
   }
   return result;
+}
+
+export function getDescription(mutation: FinancialMutation) {
+  switch (mutation.type) {
+    case FinancialMutationType.TRANSACTION: {
+      return t('c_recentTransactionsTable.payment');
+    }
+    case FinancialMutationType.DEPOSIT: {
+      return t('c_recentTransactionsTable.topUp');
+    }
+    case FinancialMutationType.FINE: {
+      return t('c_recentTransactionsTable.fine');
+    }
+    case FinancialMutationType.WAIVED_FINE: {
+      return t('c_recentTransactionsTable.waivedFine');
+    }
+    case FinancialMutationType.INVOICE: {
+      return t('c_recentTransactionsTable.invoice');
+    }
+    default: {
+      return t('c_recentTransactionsTable.unknown');
+    }
+  }
 }

@@ -3,8 +3,8 @@
     <div class="page-title">{{ $t('home.Overview') }}</div>
     <div class="content-wrapper gap-5 flex md:flex-column flex-column">
       <BalanceWithTopupComponent />
-      <MutationsTableComponent
-          :callback-function="getUserMutations"
+      <MutationsBalanceCard
+          :getMutations="getUserMutations"
           :header="$t('c_recentTransactionsTable.recent transactions')"
           :action="$t('c_recentTransactionsTable.all transactions')"
           :paginator="false"
@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import BalanceWithTopupComponent from '@/modules/user/components/balance/BalanceWithTopup.vue';
-import MutationsTableComponent from '@/components/mutations/MutationsTableComponent.vue';
+import MutationsBalanceCard from '@/components/mutations/MutationsBalanceCard.vue';
 import { useAuthStore, useUserStore } from '@sudosos/sudosos-frontend-common';
 import apiService from '@/services/ApiService';
 import type { PaginatedFinancialMutationResponse } from "@sudosos/sudosos-client";
