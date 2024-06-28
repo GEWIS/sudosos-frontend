@@ -1,5 +1,5 @@
 {
-  "branches": ["ci/semver-2"],
+  "branches": ["main"],
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
