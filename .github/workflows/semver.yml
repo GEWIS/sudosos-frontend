@@ -53,12 +53,3 @@ jobs:
           echo "New Release Major Version: ${{ steps.semantic.outputs.new_release_major_version }}"
           echo "New Release Minor Version: ${{ steps.semantic.outputs.new_release_minor_version }}"
           echo "New Release Patch Version: ${{ steps.semantic.outputs.new_release_patch_version }}"
-
-      - name: Save Node.js modules to cache
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
