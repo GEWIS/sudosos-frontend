@@ -16,7 +16,7 @@ jobs:
       issues: write
 
     outputs:
-      next_version: ${{ steps.semantic.outputs.new_release_version }
+      next_version: ${{ steps.semantic.outputs.new_release_version }}
 
     steps:
       - name: Checkout repository
