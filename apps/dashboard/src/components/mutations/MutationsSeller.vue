@@ -1,7 +1,4 @@
 <template>
-    <div>
-        Filters
-    </div>
     <DataTable :rows="rows" :value="mutations" :rows-per-page-options="[5, 10, 25, 50, 100]" :paginator="paginator" lazy
                @page="onPage($event)" :total-records="totalRecords" data-key="id">
         <Column field="moment" :header="$t('transactions.when')">
@@ -76,11 +73,18 @@
             </template>
         </Column>
     </DataTable>
+    <ModalMutation
+        v-if="openedMutationId && openedMutationType"
+        v-model:visible="isModalVisible"
+        :id="openedMutationId"
+        :type="openedMutationType"
+    />
 </template>
 <script lang="ts" setup>
 import DataTable, { type DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import { onMounted, type Ref, ref } from "vue";
+import ModalMutation from "@/components/mutations/mutationmodal/ModalMutation.vue";
 import { formatPrice } from '@/utils/formatterUtils';
 import { getDescription, FinancialMutationType } from "@/utils/mutationUtils";
 import {
@@ -110,6 +114,16 @@ onMounted(async () => {
 async function onPage(event: DataTablePageEvent) {
     const newTransactions = await props.getMutations(event.rows, event.first);
     mutations.value = parseFinancialMutations(newTransactions);
+}
+
+const openedMutationId = ref<number>();
+const openedMutationType = ref<FinancialMutationType>();
+const isModalVisible = ref<boolean>(false);
+
+function openModal(id: number, type: FinancialMutationType) {
+    openedMutationId.value = id;
+    openedMutationType.value = type;
+    isModalVisible.value = true;
 }
 </script>
 <style lang="scss" scoped></style>

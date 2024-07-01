@@ -48,7 +48,7 @@ import { useI18n } from 'vue-i18n';
 import { handleError } from '@/utils/errorUtils';
 import apiService from '@/services/ApiService';
 import { useContainerStore } from "@/stores/container.store";
-import MutationPOSCard from "@/components/mutations/MutationPOS.vue";
+import MutationPOSCard from "@/components/mutations/MutationsPOS.vue";
 import CardComponent from "@/components/CardComponent.vue";
 
 const route = useRoute(); // Use the useRoute function to access the current route
