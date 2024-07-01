@@ -21,14 +21,14 @@
       v-if="pos && pos.containers"
       :containers="posContainers"
     />
-    <MutationPOSCard
-      :header="$t('app.Transactions')"
-      class="pos-transactions"
-      :get-mutations="getPOSTransactions"
-      :modal="true"
-      paginator
-      style="width: 100% !important"
-    />
+    <CardComponent header="PH-header">
+      <MutationPOSCard
+        class="pos-transactions"
+        :get-mutations="getPOSTransactions"
+        paginator
+        style="width: 100% !important"
+      />
+    </CardComponent>
   </div>
 </template>
 
@@ -48,7 +48,8 @@ import { useI18n } from 'vue-i18n';
 import { handleError } from '@/utils/errorUtils';
 import apiService from '@/services/ApiService';
 import { useContainerStore } from "@/stores/container.store";
-import MutationPOSCard from "@/components/mutations/MutationPOSCard.vue";
+import MutationPOSCard from "@/components/mutations/MutationPOS.vue";
+import CardComponent from "@/components/CardComponent.vue";
 
 const route = useRoute(); // Use the useRoute function to access the current route
 const toast = useToast();

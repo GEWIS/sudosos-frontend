@@ -58,7 +58,7 @@ const getTransactionsForOthers = async (take: number, skip: number)
   }
   await userStore.fetchUserCreatedTransactions(authStore.getUser.id, apiService, take, skip)
     .catch((err) => handleError(err, toast));
-  console.log(userStore.getCurrentUser.createdTransactions)
+  console.log(userStore.getCurrentUser.createdTransactions);
   return userStore.getCurrentUser.createdTransactions;
 };
 </script>

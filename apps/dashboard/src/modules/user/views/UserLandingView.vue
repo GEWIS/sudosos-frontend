@@ -3,7 +3,10 @@
     <div class="page-title">{{ $t('home.Overview') }}</div>
     <div class="content-wrapper gap-5 flex md:flex-column flex-column">
       <BalanceWithTopupComponent />
-      <MutationsBalanceCard
+      <CardComponent
+          header="PH-Recent transactions"
+          class="w-full">
+        <MutationsBalanceCard
           :getMutations="getUserMutations"
           :header="$t('c_recentTransactionsTable.recent transactions')"
           :action="$t('c_recentTransactionsTable.all transactions')"
@@ -11,20 +14,22 @@
           :modal="false"
           routerLink="transaction-view"
           :rows-amount=6
-      />
+        />
+      </CardComponent>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import BalanceWithTopupComponent from '@/modules/user/components/balance/BalanceWithTopup.vue';
-import MutationsBalanceCard from '@/components/mutations/MutationsBalanceCard.vue';
+import MutationsBalanceCard from '@/components/mutations/MutationsBalance.vue';
 import { useAuthStore, useUserStore } from '@sudosos/sudosos-frontend-common';
 import apiService from '@/services/ApiService';
 import type { PaginatedFinancialMutationResponse } from "@sudosos/sudosos-client";
 import router from "@/router";
 import { handleError } from "@/utils/errorUtils";
 import { useToast } from "primevue/usetoast";
+import CardComponent from "@/components/CardComponent.vue";
 
 const authStore = useAuthStore();
 const userStore = useUserStore();

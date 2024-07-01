@@ -74,7 +74,7 @@ import { useToast } from "primevue/usetoast";
 import type { AxiosError } from "axios";
 import Button from "primevue/button";
 import { useI18n } from "vue-i18n";
-import MutationsBalanceCard from "@/components/mutations/MutationsBalanceCard.vue";
+import MutationsBalanceCard from "@/components/mutations/MutationsBalance.vue";
 
 const { defineField, handleSubmit, errors, setValues } = useForm({
   validationSchema: userDetailsSchema,
