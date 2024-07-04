@@ -18,12 +18,25 @@
             </template>
         </Column>
 
-        <Column field="mutationDescription" :header="$t('transactions.what')">
+<!--        <Column field="mutationDescription" :header="$t('transactions.what')">-->
+<!--            <template #body v-if="isLoading">-->
+<!--                <Skeleton class="w-6 my-1 h-1rem surface-300" />-->
+<!--            </template>-->
+<!--            <template #body="mutation" v-else>-->
+<!--                {{ getDescription(mutation.data) }}-->
+<!--            </template>-->
+<!--        </Column>-->
+
+        <Column field="createdBy" :header="$t('transactions.createdBy')">
             <template #body v-if="isLoading">
                 <Skeleton class="w-6 my-1 h-1rem surface-300" />
             </template>
             <template #body="mutation" v-else>
-                {{ getDescription(mutation.data) }}
+                {{ mutation.data.createdBy
+                && (mutation.data.createdBy?.id == userStore.current.user.id
+                    ? "You"
+                    : mutation.data.createdBy?.firstName + " " + mutation.data.createdBy?.lastName)
+                }}
             </template>
         </Column>
 
@@ -90,6 +103,10 @@ import {
 } from "@/utils/mutationUtils";
 import CardComponent from "@/components/CardComponent.vue";
 import ModalMutation from "@/components/mutations/mutationmodal/ModalMutation.vue";
+
+import { useUserStore } from "@sudosos/sudosos-frontend-common";
+
+const userStore = useUserStore();
 
 const props = defineProps({
     paginator: {

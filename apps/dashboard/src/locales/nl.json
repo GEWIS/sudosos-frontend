@@ -289,7 +289,8 @@
     "from": "Voor",
     "userBoughtAt": "U kocht bij {pos}",
     "otherBoughtAt": "{user} kocht bij {pos}",
-    "putInBy": "Transactie aangemaakt door {createdBy}"
+    "putInBy": "Transactie aangemaakt door {createdBy}",
+    "createdBy": "Created by"
   },
   "userDetails": {
     "Active": "Actief",

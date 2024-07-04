@@ -22,7 +22,8 @@ export interface FinancialMutation {
     type: FinancialMutationType,
     moment: Date,
     id: number,
-    pos?: String
+    pos?: String,
+    createdBy?: BaseUserResponse | undefined,
 }
 
 export function parseTransaction(transaction: BaseTransactionResponse): FinancialMutation {
@@ -33,7 +34,8 @@ export function parseTransaction(transaction: BaseTransactionResponse): Financia
         type: FinancialMutationType.TRANSACTION,
         moment: new Date(transaction.updatedAt!!),
         id: transaction.id,
-        pos: transaction.pointOfSale.name
+        pos: transaction.pointOfSale.name,
+        createdBy: transaction.createdBy,
     };
 }
 

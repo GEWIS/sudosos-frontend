@@ -18,23 +18,25 @@
             </template>
         </Column>
 
-        <Column field="mutationDescription" :header="$t('transactions.what')">
+        <Column field="createdBy" :header="$t('transactions.createdBy')">
             <template #body v-if="isLoading">
                 <Skeleton class="w-6 my-1 h-1rem surface-300" />
             </template>
             <template #body="mutation" v-else>
-                {{ getDescription(mutation.data) }}
+                {{ mutation.data.createdBy?.firstName + " " + mutation.data.createdBy?.lastName }}
             </template>
         </Column>
 
-        <Column field="mutationPOS" class="hidden sm:block" :header="$t('transactions.pos')">
+        <Column field="createdFor" :header="$t('transactions.createdFor')">
             <template #body v-if="isLoading">
                 <Skeleton class="w-6 my-1 h-1rem surface-300" />
             </template>
             <template #body="mutation" v-else>
-                {{ mutation.data.pos }}
+                {{ mutation.data.from?.firstName + " " + mutation.data.from?.lastName}}
             </template>
         </Column>
+
+
 
         <Column field="change" :header="$t('transactions.amount')">
             <template #body v-if="isLoading">
