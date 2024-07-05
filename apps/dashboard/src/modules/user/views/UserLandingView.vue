@@ -4,15 +4,17 @@
     <div class="content-wrapper gap-5 flex md:flex-column flex-column">
       <BalanceWithTopupComponent />
       <CardComponent
-          header="PH-Recent transactions"
-          class="w-full">
+          :header="$t('transactions.recentTransactions')"
+          class="w-full"
+          :action="$t('c_recentTransactionsTable.all transactions')"
+          routerLink="transaction-view">
         <MutationsBalanceCard
           :getMutations="getUserMutations"
           :header="$t('c_recentTransactionsTable.recent transactions')"
-          :action="$t('c_recentTransactionsTable.all transactions')"
+
           :paginator="false"
           :modal="false"
-          routerLink="transaction-view"
+
           :rows-amount=6
         />
       </CardComponent>

@@ -50,8 +50,16 @@
         </form>
       </CardComponent>
       <AdminUserBalance :user="currentUser" :showOption="false" id="userBalance" />
-      <MutationsBalanceCard class="w-full" :header="$t('userDetails.User Transactions')" paginator modal
-        :get-mutations="getUserMutations" />
+        <CardComponent
+            :header="$t('transactions.recentTransactions')"
+            class="w-full">
+          <MutationsBalanceCard
+              class="w-full"
+              :header="$t('userDetails.User Transactions')"
+              paginator
+              modal
+              :get-mutations="getUserMutations" />
+        </CardComponent>
     </div>
   </div>
 </template>

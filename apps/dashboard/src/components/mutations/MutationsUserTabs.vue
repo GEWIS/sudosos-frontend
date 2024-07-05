@@ -1,24 +1,16 @@
 <template>
         <TabView class="w-full">
-            <TabPanel header="PH-Balance mutations">
-                <CardComponent
-                    header="PH-Recent transactions"
-                >
+            <TabPanel :header="$t('transactions.balanceMutations')">
                     <MutationsBalance
                         :paginator="paginator"
                         :getMutations="props.getBalanceMutations"
                     />
-                </CardComponent>
             </TabPanel>
-            <TabPanel header="PH-Created transactions">
-                <CardComponent
-                     header="PH-Created transactions"
-                >
+            <TabPanel :header="$t('transactions.createdTransactions')">
                     <MutationsSeller
                         :paginator="paginator"
                         :getMutations="props.getSellerMutations"
                     />
-                </CardComponent>
             </TabPanel>
         </TabView>
 </template>

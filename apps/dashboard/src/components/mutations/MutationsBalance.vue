@@ -18,15 +18,6 @@
             </template>
         </Column>
 
-<!--        <Column field="mutationDescription" :header="$t('transactions.what')">-->
-<!--            <template #body v-if="isLoading">-->
-<!--                <Skeleton class="w-6 my-1 h-1rem surface-300" />-->
-<!--            </template>-->
-<!--            <template #body="mutation" v-else>-->
-<!--                {{ getDescription(mutation.data) }}-->
-<!--            </template>-->
-<!--        </Column>-->
-
         <Column field="createdBy" :header="$t('transactions.createdBy')">
             <template #body v-if="isLoading">
                 <Skeleton class="w-6 my-1 h-1rem surface-300" />

@@ -287,7 +287,10 @@
     "otherBoughtAt": "{user} bought at {pos}",
     "putInBy": "Transaction put in by {createdBy}",
     "createdBy": "Created by",
-    "createdFor": "Created for"
+    "createdFor": "Created for",
+    "balanceMutations": "Balance mutations",
+    "createdTransactions": "Created transactions",
+    "recentTransactions": "Recent transactions"
   },
   "userDetails": {
     "Active": "Active",
