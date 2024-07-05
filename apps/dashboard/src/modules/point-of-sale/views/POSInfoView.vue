@@ -21,7 +21,7 @@
       v-if="pos && pos.containers"
       :containers="posContainers"
     />
-    <CardComponent header="PH-header">
+    <CardComponent :header="$t('transactions.recentTransactions')">
       <MutationPOSCard
         class="pos-transactions"
         :get-mutations="getPOSTransactions"
