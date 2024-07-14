@@ -102,7 +102,7 @@ import type { PaginatedFinancialMutationResponse } from "@sudosos/sudosos-client
 const userStore = useUserStore();
 
 const props = defineProps<{
-    getMutations: (take: number, skip: number) => PaginatedFinancialMutationResponse,
+    getMutations: (take: number, skip: number) => Promise<PaginatedFinancialMutationResponse | undefined>,
     paginator?: boolean,
     rowsAmount?: number,
 }>();
@@ -113,6 +113,7 @@ const isLoading: Ref<boolean> = ref(true);
 const rows: Ref<number> = ref(props.rowsAmount || 10);
 onMounted(async () => {
   const initialMutations = await props.getMutations(rows.value, 0);
+  if(!initialMutations) return;
   mutations.value = parseFinancialMutations(initialMutations);
   totalRecords.value = initialMutations._pagination.count || 0;
   isLoading.value = false;
@@ -120,6 +121,10 @@ onMounted(async () => {
 
 async function onPage(event: DataTablePageEvent) {
   const newTransactions = await props.getMutations(event.rows, event.first);
+  if(!newTransactions) {
+      isLoading.value = true;
+      return;
+  }
   mutations.value = parseFinancialMutations(newTransactions);
 }
 
