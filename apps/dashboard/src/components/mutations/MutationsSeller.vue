@@ -42,16 +42,12 @@
             </template>
             <template #body="mutation" v-else>
                 <!-- Deposits, Invoices, Waived fines all get green -->
-                <div v-if="
-              mutation.data.type == FinancialMutationType.DEPOSIT ||
-              mutation.data.type == FinancialMutationType.INVOICE ||
-              mutation.data.type == FinancialMutationType.WAIVED_FINE
-            " style="color: #198754" class="font-bold">
+                <div v-if="isIncreasingTransfer(mutation.data.type)" style="color: #198754" class="font-bold">
                     {{ formatPrice((mutation.data as FinancialMutation).amount) }}
                 </div>
 
                 <!-- Fines get green -->
-                <div v-else-if="mutation.data.type == FinancialMutationType.FINE" style="color: #d40000"
+                <div v-else-if="isFine(mutation.data.type)" style="color: #d40000"
                      class="font-bold">
                     {{ formatPrice((mutation.data as FinancialMutation).amount, true) }}
                 </div>
@@ -86,7 +82,7 @@ import Column from 'primevue/column';
 import { onMounted, type Ref, ref } from "vue";
 import ModalMutation from "@/components/mutations/mutationmodal/ModalMutation.vue";
 import { formatPrice } from '@/utils/formatterUtils';
-import { getDescription, FinancialMutationType } from "@/utils/mutationUtils";
+import { getDescription, FinancialMutationType, isIncreasingTransfer, isFine } from "@/utils/mutationUtils";
 import {
     type FinancialMutation,
     parseFinancialMutations,

@@ -43,19 +43,18 @@
                 <Skeleton class="w-3 my-1 h-1rem surface-300" />
             </template>
             <template #body="mutation" v-else>
-                <div v-if="
-              mutation.data.type == FinancialMutationType.DEPOSIT ||
-              mutation.data.type == FinancialMutationType.INVOICE ||
-              mutation.data.type == FinancialMutationType.WAIVED_FINE
-            " style="color: #198754" class="font-bold">
+                <!-- Deposits, Invoices, Waived fines all get green -->
+                <div v-if="isIncreasingTransfer(mutation.data.type)" style="color: #198754" class="font-bold">
                     {{ formatPrice((mutation.data as FinancialMutation).amount) }}
                 </div>
 
-                <div v-else-if="mutation.data.type == FinancialMutationType.FINE" style="color: #d40000"
+                <!-- Fines get green -->
+                <div v-else-if="isFine(mutation.data.type)" style="color: #d40000"
                      class="font-bold">
                     {{ formatPrice((mutation.data as FinancialMutation).amount, true) }}
                 </div>
 
+                <!-- Other transactions stay black -->
                 <div v-else severity="info">
                     {{ formatPrice((mutation.data as FinancialMutation).amount, true) }}
                 </div>
@@ -88,7 +87,9 @@ import {
     type FinancialMutation,
     FinancialMutationType,
     parseFinancialMutations,
-    getDescription
+    getDescription,
+    isIncreasingTransfer,
+    isFine
 } from "@/utils/mutationUtils";
 import ModalMutation from "@/components/mutations/mutationmodal/ModalMutation.vue";
 

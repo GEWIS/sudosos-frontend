@@ -6,12 +6,14 @@
                 <Skeleton class="w-6 my-1 h-1rem surface-300" />
             </template>
             <template #body="mutation" v-else>
-                <span class="hidden sm:block">{{ mutation.data.moment.toLocaleDateString($i18n.locale, {
-                    dateStyle: 'full'
-                    }) }}</span>
+                <span class="hidden sm:block">{{
+                    mutation.data.moment.toLocaleDateString($i18n.locale, {
+                        dateStyle: 'full'
+                    })
+                    }}</span>
                 <span class="sm:hidden">{{
                     mutation.data.moment.toLocaleDateString('nl-NL', {
-                    dateStyle: 'short'
+                        dateStyle: 'short'
                     })
                     }}
                 </span>
@@ -45,19 +47,18 @@
                 <Skeleton class="w-3 my-1 h-1rem surface-300" />
             </template>
             <template #body="mutation" v-else>
-                <div v-if="
-              mutation.data.type == FinancialMutationType.DEPOSIT ||
-              mutation.data.type == FinancialMutationType.INVOICE ||
-              mutation.data.type == FinancialMutationType.WAIVED_FINE
-            " style="color: #198754" class="font-bold">
+                <!-- Deposits, Invoices, Waived fines all get green -->
+                <div v-if="isIncreasingTransfer(mutation.data.type)" style="color: #198754" class="font-bold">
                     {{ formatPrice((mutation.data as FinancialMutation).amount) }}
                 </div>
 
-                <div v-else-if="mutation.data.type == FinancialMutationType.FINE" style="color: #d40000"
+                <!-- Fines get green -->
+                <div v-else-if="isFine(mutation.data.type)" style="color: #d40000"
                     class="font-bold">
                     {{ formatPrice((mutation.data as FinancialMutation).amount, true) }}
                 </div>
 
+                <!-- Other transactions stay black -->
                 <div v-else severity="info">
                     {{ formatPrice((mutation.data as FinancialMutation).amount, true) }}
                 </div>

@@ -112,3 +112,13 @@ export function getDescription(mutation: FinancialMutation) {
     }
   }
 }
+
+export function isIncreasingTransfer(mutationType: FinancialMutationType): boolean {
+    return mutationType == FinancialMutationType.DEPOSIT ||
+        mutationType == FinancialMutationType.INVOICE ||
+        mutationType == FinancialMutationType.WAIVED_FINE;
+}
+
+export function isFine(mutationType: FinancialMutationType): boolean {
+    return mutationType == FinancialMutationType.FINE;
+}
