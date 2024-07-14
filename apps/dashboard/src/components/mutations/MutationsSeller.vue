@@ -87,9 +87,10 @@ import {
     type FinancialMutation,
     parseFinancialMutations,
 } from "@/utils/mutationUtils";
+import type { PaginatedFinancialMutationResponse } from "@sudosos/sudosos-client";
 
 const props = defineProps<{
-    getMutations: Function,
+    getMutations: (take: number, skip: number) => PaginatedFinancialMutationResponse,
     filterVisible?: boolean,
     paginator?: boolean,
     rowsAmount?: number,

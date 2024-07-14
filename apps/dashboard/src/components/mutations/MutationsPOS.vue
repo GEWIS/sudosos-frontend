@@ -83,6 +83,7 @@ import DataTable, { type DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import { onMounted, type Ref, ref } from "vue";
 import { formatPrice } from '@/utils/formatterUtils';
+import { type PaginatedFinancialMutationResponse } from "@sudosos/sudosos-client";
 import {
     type FinancialMutation,
     FinancialMutationType,
@@ -93,20 +94,12 @@ import {
 } from "@/utils/mutationUtils";
 import ModalMutation from "@/components/mutations/mutationmodal/ModalMutation.vue";
 
-const props = defineProps({
-    paginator: {
-        type: Boolean,
-        required: true
-    },
-    getMutations: {
-        type: Function,
-        required: true
-    },
-    rowsAmount: {
-        type: Number,
-        required: false
-    }
-});
+
+const props = defineProps<{
+    getMutations: (take: number, skip: number) => PaginatedFinancialMutationResponse,
+    paginator?: boolean,
+    rowsAmount?: number,
+}>();
 
 const mutations = ref<FinancialMutation[]>(new Array(10));
 const totalRecords = ref<number>(0);

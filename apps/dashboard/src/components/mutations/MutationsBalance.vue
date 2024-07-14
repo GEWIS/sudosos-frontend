@@ -97,24 +97,15 @@ import CardComponent from "@/components/CardComponent.vue";
 import ModalMutation from "@/components/mutations/mutationmodal/ModalMutation.vue";
 
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
+import type { PaginatedFinancialMutationResponse } from "@sudosos/sudosos-client";
 
 const userStore = useUserStore();
 
-const props = defineProps({
-    paginator: {
-      type: Boolean,
-      required: true
-    },
-    getMutations: {
-        type: Function,
-        required: true
-    },
-    rowsAmount: {
-      type: Number,
-      required: false
-    }
-});
-
+const props = defineProps<{
+    getMutations: (take: number, skip: number) => PaginatedFinancialMutationResponse,
+    paginator?: boolean,
+    rowsAmount?: number,
+}>();
 const mutations = ref<FinancialMutation[]>(new Array(10));
 const totalRecords = ref<number>(0);
 const isLoading: Ref<boolean> = ref(true);
