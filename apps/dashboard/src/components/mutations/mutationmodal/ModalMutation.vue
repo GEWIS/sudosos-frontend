@@ -64,17 +64,6 @@ import { UserRole } from '@/utils/rbacUtils';
 import { useAuthStore } from '@sudosos/sudosos-frontend-common';
 import Skeleton from "primevue/skeleton";
 
-// const props = defineProps({
-//   type: {
-//     type: FinancialMutationType,
-//     required: true
-//   },
-//   id: {
-//     type: Number,
-//     required: true
-//   }
-// });
-
 const props = defineProps<{
     type: FinancialMutationType,
     id: number
