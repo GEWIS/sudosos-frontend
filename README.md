@@ -66,6 +66,3 @@ You can quickly start development directly in your browser by using [Codespaces]
 - Run `cd apps/dashboard` or `cd apps/point-of-sale` in the terminal. 
 - Run `npm run dev` to start the development environment.
 - You can access the dashboard and point of sale at `localhost:5173` and `localhost:5174` respectively.
-
-### Set up browser for CORS
-By default no network requests are allowed from other hosts to `sudosos.test.gewis.nl`. This will prevent critical network requests like authentication from working correctly. To allow this, CORS will need to be disabled. This can be done by using an [extension](https://addons.mozilla.org/en-US/firefox/addon/cors-everywhere/) that can disable CORS. Alternatively, if you are using chrome, [you can directly run it without CORS](https://stackoverflow.com/questions/3102819/disable-same-origin-policy-in-chrome).
