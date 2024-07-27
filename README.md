@@ -1,4 +1,19 @@
-# SudoSOS Frontend Monorepo
+<div align="center">
+
+<!-- Centered Logo Image -->
+<img src="https://github.com/GEWIS/sudosos-frontend/blob/develop/apps/dashboard/src/assets/img/bier.png?raw=true" alt="Logo" style="width:200px;height:auto;">
+
+<!-- Centered Name Beneath Logo -->
+<h1>SudoSOS Frontend Monorepo</h1>
+
+[![Build](https://img.shields.io/github/actions/workflow/status/GEWIS/sudosos-frontend/semver.yml?branch=main&label=Build)](https://github.com/GEWIS/sudosos-frontend/actions/workflows/semver.yml)
+[![Latest Release](https://img.shields.io/github/v/tag/GEWIS/sudosos-frontend?label=Latest)](https://github.com/GEWIS/sudosos-frontend/releases)
+[![Issues](https://img.shields.io/github/issues/GEWIS/sudosos-frontend)](https://github.com/GEWIS/sudosos-frontend/issues)
+[![Commit Activity](https://img.shields.io/github/commit-activity/m/GEWIS/sudosos-frontend)](https://github.com/GEWIS/sudosos-frontend/commits/main)
+[![Code Size](https://img.shields.io/github/languages/code-size/GEWIS/sudosos-frontend)](https://github.com/GEWIS/sudosos-frontend)
+
+</div>
+
 
 This monorepo contains all the frontend projects and common code for the SudoSOS.
 
@@ -52,5 +67,5 @@ You can quickly start development directly in your browser by using [Codespaces]
 - Run `npm run dev` to start the development environment.
 - You can access the dashboard and point of sale at `localhost:5173` and `localhost:5174` respectively.
 
-### Set up browser for CORS
-By default no network requests are allowed from other hosts to `sudosos.test.gewis.nl`. This will prevent critical network requests like authentication from working correctly. To allow this, CORS will need to be disabled. This can be done by using an [extension](https://addons.mozilla.org/en-US/firefox/addon/cors-everywhere/) that can disable CORS. Alternatively, if you are using chrome, [you can directly run it without CORS](https://stackoverflow.com/questions/3102819/disable-same-origin-policy-in-chrome).
+### Proxying requests to different backends
+In the respective `.env` files, you can change which backend the frontend uses in development by changing the `VITE_DEV_API_BASE`. By default, this is set to the test backend (`https://sudosos.test.gewis.nl/api/v1`), but you can also change it to `https://sudosos.gewis.nl/api/v1` for the production backend. Or you can change it to `http://localhost:3000` if you are running the backend locally.   
