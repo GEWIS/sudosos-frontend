@@ -99,5 +99,5 @@ jobs:
         if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
         uses: fjogeleit/http-request-action@v1
         with:
-            url: ${{ vars.PORTAINER_WEBHOOK_URL_DEVELOP }}
+            url: ${{ secrets.PORTAINER_WEBHOOK_URL_DEVELOP }}
             method: 'POST'
