@@ -44,13 +44,14 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['update:modelValue', 'save']);
+const emit = defineEmits(['update:modelValue', 'save', 'cancel']);
 
 const edit = ref(props.modelValue);
 
 const toggleEdit = (value: boolean) => {
   edit.value = value;
   emit('update:modelValue', value);
+  if (!value) emit('cancel');
 };
 
 const handleSave = () => {

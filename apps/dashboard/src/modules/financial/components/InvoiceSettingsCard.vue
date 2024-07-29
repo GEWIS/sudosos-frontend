@@ -1,5 +1,5 @@
 <template>
-  <FormCard :header="$t('c_invoiceInfo.Settings')" v-if="invoice" @update:modelValue="edit = $event" @save="formSubmit">
+  <FormCard :header="$t('c_invoiceInfo.Settings')" v-if="invoice" @cancel="updateFieldValues(invoice)" @update:modelValue="edit = $event" @save="formSubmit">
       <div class="flex flex-column justify-content-between gap-2">
         <InvoiceSettingsForm :invoice="invoice" :form="form" :edit="edit" @update:edit="edit = $event"/>
       </div>
