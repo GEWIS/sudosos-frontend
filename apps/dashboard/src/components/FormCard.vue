@@ -59,6 +59,7 @@ const enableEdit = ref(props.enableEdit);
 const toggleEdit = (value: boolean) => {
   edit.value = value;
   emit('update:modelValue', value);
+  if (!value) emit('cancel');
 };
 
 const cancel = () => {
