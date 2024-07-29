@@ -31,6 +31,10 @@
     "Price": "Price",
     "Balance after": "Balance after:"
   },
+  "invoice": {
+    "Invoice": "Invoice",
+    "info": "Info"
+  },
   "banner": {
     "Banners": "Banners",
     "active": "Active: ",
@@ -336,5 +340,24 @@
   },
   "tooltip": {
     "owner_revenue": "Note: Container owner gets the revenue, not the product owner"
+  },
+  "c_invoiceInfo": {
+    "Info": "Info",
+    "Created on": "Created",
+    "Updated on": "Updated",
+    "For": "For",
+    "Owner": "Owner",
+    "Addressing": "Addressing",
+    "id": "ID",
+    "Addressee": "Addressee",
+    "Street": "Street",
+    "Postal code": "Postal code",
+    "City": "City",
+    "Country": "Country",
+    "Reference": "Reference",
+    "Description": "Description",
+    "Date": "Date",
+    "Progress": "Progress",
+    "Settings": "Settings"
   }
 }

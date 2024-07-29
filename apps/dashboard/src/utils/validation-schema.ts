@@ -33,6 +33,12 @@ export const editPasswordSchema = toTypedSchema(
   })
 );
 
+export const updateInvoiceSettingsSchema = {
+  reference: yup.string().required(),
+  date: yup.string().required(),
+  description: yup.string().required(),
+};
+
 export const editPinSchema = toTypedSchema(
   yup.object({
     pin: yup.string().required()

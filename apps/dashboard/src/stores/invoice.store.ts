@@ -1,0 +1,55 @@
+import { defineStore } from "pinia";
+import type { InvoiceResponse } from "@sudosos/sudosos-client";
+import { fetchAllPages } from "@sudosos/sudosos-frontend-common";
+import ApiService from "@/services/ApiService";
+
+export const useInvoiceStore = defineStore('invoice', {
+    state: () => ({
+      invoices: {} as Record<number, InvoiceResponse>,
+    }),
+    getters: {
+        getAll(state): Record<number, InvoiceResponse> {
+            return state.invoices;
+        },
+    },
+    actions: {
+        async getOrFetchInvoice(id: number): Promise<InvoiceResponse> {
+            if (this.invoices[id]) {
+                return this.invoices[id];
+            }
+            return this.fetchInvoice(id);
+        },
+        async fetchInvoicePdf(id: number): Promise<string> {
+            return await ApiService.invoices.getInvoicePdf(id).then((res) => {
+                const pdf = (res.data as any).pdf;
+                this.invoices[id].pdf = pdf;
+                return pdf;
+            });
+        },
+        async fetchInvoice(id: number): Promise<InvoiceResponse> {
+            return await ApiService.invoices.getSingleInvoice(id).then((res) => {
+                const invoice = res.data;
+                this.invoices[invoice.id] = invoice;
+                return invoice;
+            });
+        },
+        async fetchAllIfEmpty() {
+            if (Object.keys(this.invoices).length === 0) {
+                await this.fetchAll();
+            }
+        },
+        async fetchAll(): Promise<Record<number, InvoiceResponse>> {
+            return fetchAllPages<InvoiceResponse>(
+              0,
+              Number.MAX_SAFE_INTEGER,
+              // @ts-ignore
+              (take, skip) => ApiService.invoices.getAllInvoices(null, null, null, null, null, null, take, skip)
+            ).then((invoices) => {
+                invoices.forEach((invoice: InvoiceResponse) => {
+                    this.invoices[invoice.id] = invoice;
+                });
+                return this.invoices;
+            });
+        },
+    }
+});
