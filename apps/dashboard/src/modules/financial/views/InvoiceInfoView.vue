@@ -14,29 +14,7 @@
           <Steps :model="stepItems" :readonly="false" :activeStep="activeStep"></Steps>
         </CardComponent>
         <InvoiceSettingsCard :invoice="invoice"/>
-        <CardComponent :header="$t('c_invoiceInfo.Addressing')" v-if="invoice">
-          <template #topAction>
-            <!-- Edit button -->
-            <Button
-                severity="primary"
-                :label="$t('edit')"
-                icon="pi pi-pencil"
-                @click="reloadPdf"
-            />
-          </template>
-          <div class="flex flex-column justify-content-between gap-3">
-            <InfoSpan :label="$t('c_invoiceInfo.Addressee')"
-                      :value="invoice.addressee"/>
-            <InfoSpan :label="$t('c_invoiceInfo.Street')"
-                      :value="invoice.street"/>
-            <InfoSpan :label="$t('c_invoiceInfo.Postal code')"
-                      :value="invoice.postalCode"/>
-            <InfoSpan :label="$t('c_invoiceInfo.City')"
-                      :value="invoice.city"/>
-            <InfoSpan :label="$t('c_invoiceInfo.Country')"
-                      :value="invoice.country"/>
-          </div>
-        </CardComponent>
+        <InvoiceAddressingCard :invoice="invoice"/>
         <CardComponent :header="$t('c_invoiceInfo.Info')" v-if="invoice">
           <div class="flex flex-column justify-content-between">
             <InfoSpan :label="$t('c_invoiceInfo.id')"
@@ -90,6 +68,7 @@ import { formatDateTime } from "@/utils/formatterUtils";
 import InfoSpan from "@/components/InfoSpan.vue";
 import InvoiceSettingsCard from "@/modules/financial/components/InvoiceSettingsCard.vue";
 import { InvoiceStatusResponseStateEnum } from "@sudosos/sudosos-client/src/api";
+import InvoiceAddressingCard from "@/modules/financial/components/InvoiceAddressingCard.vue";
 
 const toast = useToast();
 const route = useRoute();

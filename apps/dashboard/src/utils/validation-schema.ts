@@ -3,6 +3,7 @@ import * as yup from "yup";
 import { ref } from "vue";
 import type { Ref } from "vue";
 import i18n from './i18nUtils';
+import { object } from "yup";
 
 const t = i18n.global.t;
 
@@ -33,11 +34,20 @@ export const editPasswordSchema = toTypedSchema(
   })
 );
 
-export const updateInvoiceSettingsSchema = {
+export const updateInvoiceSettingsObject = yup.object({
   reference: yup.string().required(),
   date: yup.string().required(),
   description: yup.string().required(),
-};
+});
+
+export const updateInvoiceAddressingObject = yup.object({
+  addressee: yup.string().required(),
+  attention: yup.string(),
+  street: yup.string().required(),
+  postalCode: yup.string().required(),
+  city: yup.string().required(),
+  country: yup.string().required(),
+});
 
 export const editPinSchema = toTypedSchema(
   yup.object({

@@ -25,17 +25,21 @@
 
 <script setup lang="ts">
 import InputSpan from "@/components/InputSpan.vue";
-import { type PropType, ref } from "vue";
+import { type PropType } from "vue";
 import type { InvoiceResponse } from "@sudosos/sudosos-client";
 import type { Form } from "@/utils/formUtils";
-import { updateInvoiceSettingsSchema } from "@/utils/validation-schema";
+import { updateInvoiceSettingsObject } from "@/utils/validation-schema";
 import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
+import { useInvoiceStore } from "@/stores/invoice.store";
+import * as yup from "yup";
+import { handleError } from "@/utils/errorUtils";
 
 const { t } = useI18n();
 const toast = useToast();
 
 const emit = defineEmits(['update:edit']);
+const invoiceStore = useInvoiceStore();
 
 const props = defineProps({
   invoice: {
@@ -43,7 +47,7 @@ const props = defineProps({
     required: true
   },
   form: {
-    type: Object as PropType<Form<typeof updateInvoiceSettingsSchema>>,
+    type: Object as PropType<Form<yup.InferType<typeof updateInvoiceSettingsObject>>>,
     required: true,
   },
   edit: {
@@ -53,15 +57,28 @@ const props = defineProps({
   },
 });
 
-props.form.submit = props.form.context.handleSubmit(async (values: any) => {
-  console.error(values);
-  toast.add({
-    severity: 'success',
-    summary: t('successMessages.success'),
-    detail: values,
-    life: 3000,
+const needsUpdate = () => {
+  return props.invoice.reference !== props.form.model.reference.value.value ||
+    props.invoice.date !==  props.form.model.date.value.value ||
+    props.invoice.description !==  props.form.model.description.value.value;
+};
+
+props.form.submit = props.form.context.handleSubmit(async (values) => {
+  if (!needsUpdate()) {
+    emit('update:edit', false);
+    return;
+  }
+  await invoiceStore.updateInvoice(props.invoice.id, values).then(() => {
+    toast.add({
+      severity: 'success',
+      summary: t('successMessages.success'),
+      detail: values,
+      life: 3000,
+    });
+    emit('update:edit', false);
+  }).catch((error) => {
+    handleError(error, toast);
   });
-  emit('update:edit', false);
 });
 </script>
 

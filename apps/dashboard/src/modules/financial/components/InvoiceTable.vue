@@ -1,21 +1,21 @@
 <template>
   <div class="flex flex-col gap-5">
-    <DataTable :value="unpaid" tableStyle="min-width: 50rem">
-      <Column field="id" header="ID"></Column>
-      <Column field="createdAt" header="Created">
-        <template #body="slotProps">
-          {{ formatDateFromString(slotProps.data.createdAt) }}
-        </template>
-      </Column>
-      <Column field="currentState.state" header="State"></Column>
-      <Column field="to.firstName" header="To"></Column>
-      <Column field="description" header="Description"></Column>
-      <Column field="transfer" header="Amount">
-        <template #body="slotProps">
-          {{ formatPrice(slotProps.data.transfer.amount) }}
-        </template>
-      </Column>
-    </DataTable>
+      <DataTable :value="unpaid" tableStyle="min-width: 50rem">
+        <Column field="id" header="ID"></Column>
+        <Column field="createdAt" header="Created">
+          <template #body="slotProps">
+            {{ formatDateFromString(slotProps.data.createdAt) }}
+          </template>
+        </Column>
+        <Column field="currentState.state" header="State"></Column>
+        <Column field="to.firstName" header="To"></Column>
+        <Column field="description" header="Description"></Column>
+        <Column field="transfer" header="Amount">
+          <template #body="slotProps">
+            {{ formatPrice(slotProps.data.transfer.amount) }}
+          </template>
+        </Column>
+      </DataTable>
   </div>
 </template>
 

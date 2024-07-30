@@ -1,12 +1,30 @@
 <template>
-  <span :class="['flex flex-wrap justify-content-between', column ? 'flex-column gap-1' : 'flex-row align-items-center gap-3']">
-    <p class="my-0">{{ label }}</p>
-      <InputText v-if="type === 'text'" :placeholder="placeholder" v-model="internalValue" v-bind="attributes" :disabled="disabled"/>
-      <Textarea v-if="type === 'textarea'" :placeholder="placeholder" v-model="internalValue" v-bind="attributes" autoResize :disabled="disabled"/>
-      <Calendar v-if="type === 'date'" :placeholder="placeholder" v-model="internalValue" v-bind="attributes" :disabled="disabled"/>
-  </span>
-  <div class="flex justify-content-end">
-    <ErrorSpan :error="errors"/>
+  <div>
+    <span :class="['flex flex-wrap justify-content-between', column ? 'flex-column gap-1' : 'flex-row align-items-center gap-3']">
+      <p class="my-0">{{ label }}</p>
+      <InputText v-if="type === 'text'"
+                 :placeholder="placeholder"
+                 v-model="internalValue"
+                 v-bind="attributes"
+                 :disabled="disabled"/>
+
+      <Textarea v-if="type === 'textarea'"
+                :placeholder="placeholder"
+                v-model="internalValue"
+                v-bind="attributes"
+                autoResize
+                :disabled="disabled"/>
+
+      <!-- TODO fix date vs string  -->
+      <Calendar v-if="type === 'date'"
+                :placeholder="placeholder"
+                v-model="internalValue"
+                v-bind="attributes"
+                :disabled="disabled"/>
+    </span>
+    <div class="flex justify-content-end">
+      <ErrorSpan :error="errors"/>
+    </div>
   </div>
 </template>
 
@@ -17,6 +35,7 @@ import Textarea from 'primevue/textarea';
 import Calendar from 'primevue/calendar';
 import ErrorSpan from "@/components/ErrorSpan.vue";
 
+// Define props with their types
 const props = defineProps({
   label: {
     type: String,

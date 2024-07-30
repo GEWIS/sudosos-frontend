@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type { InvoiceResponse } from "@sudosos/sudosos-client";
+import type { BaseInvoiceResponse, InvoiceResponse, UpdateInvoiceRequest } from "@sudosos/sudosos-client";
 import { fetchAllPages } from "@sudosos/sudosos-frontend-common";
 import ApiService from "@/services/ApiService";
 
@@ -13,6 +13,15 @@ export const useInvoiceStore = defineStore('invoice', {
         },
     },
     actions: {
+        async updateInvoice(id: number, updateInvoiceRequest: UpdateInvoiceRequest): Promise<InvoiceResponse> {
+            return await ApiService.invoices.updateInvoice(id,updateInvoiceRequest).then((res) => {
+                const invoice: BaseInvoiceResponse = res.data;
+                // BaseInvoice does not contain entries, so we merge them
+                const current = this.invoices[invoice.id];
+                this.invoices[invoice.id] = { ...current, ...invoice };
+                return this.invoices[invoice.id];
+            });
+        },
         async getOrFetchInvoice(id: number): Promise<InvoiceResponse> {
             if (this.invoices[id]) {
                 return this.invoices[id];
