@@ -20,7 +20,7 @@
             severity="secondary"
             :label="$t('close')"
             icon="pi pi-times"
-            @click="toggleEdit(false)"
+            @click="cancel"
         />
       </div>
     </template>
@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits, defineProps } from 'vue';
+import { ref, defineEmits } from 'vue';
 import CardComponent from "@/components/CardComponent.vue";
 import Button from 'primevue/button';
 
@@ -51,7 +51,11 @@ const edit = ref(props.modelValue);
 const toggleEdit = (value: boolean) => {
   edit.value = value;
   emit('update:modelValue', value);
-  if (!value) emit('cancel');
+};
+
+const cancel = () => {
+  emit('cancel');
+  toggleEdit(false);
 };
 
 const handleSave = () => {
