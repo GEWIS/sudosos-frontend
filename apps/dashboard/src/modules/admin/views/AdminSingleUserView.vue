@@ -20,6 +20,12 @@
             <span class="error-text">{{ errors.lastName }}</span>
           </div>
           <div class="field">
+            <label for="nickname">{{ $t("userDetails.nickname") }}</label>
+            <InputText id="nickname"
+                       v-model="nickname"
+                       v-bind="nicknameAttrs" class="w-full" />
+          </div>
+          <div class="field">
             <label for="email">{{ $t("userDetails.Email address") }}</label>
             <InputText :disabled="!isLocal" id="email" v-model="email" v-bind="emailAttrs" class="w-full" />
           </div>
@@ -97,6 +103,7 @@ const currentUser: Ref<UserResponse | undefined> = ref();
 const [firstName, firstNameAttrs] = defineField('firstName', {});
 const [lastName, lastNameAttrs] = defineField('lastName', {});
 const [email, emailAttrs] = defineField('email', {});
+const [nickname, nicknameAttrs] = defineField('nickname', {});
 const [isActive, isActiveAttrs] = defineField('isActive', {});
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const [userType, userTypeAttrs] = defineField('userType', {});
@@ -109,6 +116,8 @@ onBeforeMount(async () => {
   userId.value = route.params.userId;
   await apiService.user.getIndividualUser(userId.value).then((res) => {
     currentUser.value = res.data;
+
+    console.log(currentUser.value);
   }).catch((error: AxiosError) => {
     handleError(error, toast);
   });
@@ -121,6 +130,7 @@ onBeforeMount(async () => {
     firstName: currentUser.value?.firstName,
     lastName: currentUser.value?.lastName,
     email: currentUser.value.email ? currentUser.value.email : '',
+    nickname: currentUser.value.nickname ? currentUser.value.nickname : '',
     userType: currentUser.value ? currentUser.value.type : '',
     isActive: currentUser.value.active,
     ofAge: currentUser.value.ofAge,
@@ -134,6 +144,7 @@ const handleEditUser = handleSubmit(async (values) => {
     const updateUserRequest: UpdateUserRequest = {
       firstName: values.firstName,
       lastName: values.lastName,
+      nickname: values.nickname || '',
       active: values.isActive,
       email: values.email || '',
       canGoIntoDebt: values.canGoIntoDebt,
@@ -142,6 +153,7 @@ const handleEditUser = handleSubmit(async (values) => {
     const response = await apiService.user.updateUser(userId, updateUserRequest);
     if (response.status === 200) {
       await router.push({ name: 'user', params: { userId } }).then(() => {
+        console.log(response);
         toast.add({
           severity: 'success',
           summary: t('successMessages.success'),
