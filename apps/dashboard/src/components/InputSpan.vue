@@ -30,13 +30,11 @@
 
 <script setup lang="ts">
 import { ref, watch, onMounted, type PropType } from 'vue';
+import type { Ref } from "vue";
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import Calendar from 'primevue/calendar';
 import ErrorSpan from "@/components/ErrorSpan.vue";
-
-// Define props with their types
-import type { Ref } from "vue";
 
 const props = defineProps({
   label: {
