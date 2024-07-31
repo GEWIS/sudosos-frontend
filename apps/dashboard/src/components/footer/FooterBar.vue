@@ -14,7 +14,6 @@
 <script setup lang="ts">
 import FooterTermsOfServiceModal from '@/components/footer/FooterTermsOfServiceModal.vue';
 import FooterContactModal from '@/components/footer/FooterContactModal.vue';
-import FooterGitInfo from '@/components/footer/FooterGitInfo.vue';
 import { ref } from 'vue';
 
 const branch = __GIT_BRANCH__;
