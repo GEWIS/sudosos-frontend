@@ -96,7 +96,7 @@
     "SudoSOS": "SudoSOS",
     "SudoSOS Login": "SudoSOS Login",
     "Username": "Username",
-    "copyright": "© 2023 GEWIS",
+    "copyright": "© 2024 GEWIS",
     "localAccount": "Login using local account"
   },
   "manageProducts": {
@@ -222,7 +222,7 @@
     "changeUserInfo": "Change user info",
     "emailAddress": "Email address",
     "firstName": "First name",
-    "individualDataAnalysis": "Individual Data Analysis:",
+    "extensiveDataAnalysis": "Extensive Data Analysis:",
     "keyGet": "Get API key",
     "keyGetNew": "Get new API key",
     "keyNotSaved": "NOTE: your API key is not saved so copy it now",
