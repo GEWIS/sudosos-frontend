@@ -68,6 +68,12 @@ jobs:
           tags: |
             type=ref,enable=true,priority=600,prefix=,suffix=,event=branch
 
+      - name: Get commit branch
+        run: echo "GIT_COMMIT_BRANCH=$(git branch --show-current)" >> $GITHUB_ENV
+
+      - name: Get short commit SHA
+        run: echo "GIT_COMMIT_SHA=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_ENV
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
@@ -93,4 +99,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: |
+            GIT_COMMIT_BRANCH=${{ env.GIT_COMMIT_BRANCH }}
+            GIT_COMMIT_SHA=${{ env.GIT_COMMIT_SHA }}
           file: ${{ matrix.dockerfile_path }}
