@@ -8,6 +8,9 @@ export const useInvoiceStore = defineStore('invoice', {
       invoices: {} as Record<number, InvoiceResponse>,
     }),
     getters: {
+        getInvoice: (state) => (id: number): InvoiceResponse | undefined => {
+            return state.invoices[id];
+        },
         getAll(state): Record<number, InvoiceResponse> {
             return state.invoices;
         },
@@ -17,8 +20,7 @@ export const useInvoiceStore = defineStore('invoice', {
             return await ApiService.invoices.updateInvoice(id,updateInvoiceRequest).then((res) => {
                 const invoice: BaseInvoiceResponse = res.data;
                 // BaseInvoice does not contain entries, so we merge them
-                const current = this.invoices[invoice.id];
-                this.invoices[invoice.id] = { ...current, ...invoice };
+                this.invoices[invoice.id] = { ...this.invoices[invoice.id], ...invoice };
                 return this.invoices[invoice.id];
             });
         },
@@ -39,7 +41,7 @@ export const useInvoiceStore = defineStore('invoice', {
             return await ApiService.invoices.getSingleInvoice(id).then((res) => {
                 const invoice = res.data;
                 this.invoices[invoice.id] = invoice;
-                return invoice;
+                return this.invoices[invoice.id];
             });
         },
         async fetchAllIfEmpty() {
