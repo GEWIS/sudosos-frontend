@@ -19,8 +19,8 @@ const invoiceStore = useInvoiceStore();
 
 const steps = [InvoiceStatusResponseStateEnum.Created,
   InvoiceStatusResponseStateEnum.Sent, InvoiceStatusResponseStateEnum.Paid, InvoiceStatusResponseStateEnum.Deleted];
-const activeStep = computed(() => steps.indexOf(props.invoice.currentState.state));
-const deleted = computed(() => props.invoice.currentState.state === InvoiceStatusResponseStateEnum.Deleted);
+const activeStep = computed(() => steps.indexOf(invoice.value.currentState.state));
+const deleted = computed(() => invoice.value.currentState.state === InvoiceStatusResponseStateEnum.Deleted);
 const loading = ref(false);
 
 const stepItems = steps.slice(0, 3).map((value, index) => {
@@ -35,13 +35,14 @@ const stepItems = steps.slice(0, 3).map((value, index) => {
 
 const updateStep = async (index: number, value: InvoiceStatusResponseStateEnum) => {
   loading.value = true;
-  await invoiceStore.updateInvoice(props.invoice.id, { state: value });
+  await invoiceStore.updateInvoice(invoice.value.id, { state: value });
   loading.value = false;
 };
 
+const invoice = computed(() => invoiceStore.getInvoice(props.invoiceId) as InvoiceResponse);
 const props = defineProps({
-  invoice: {
-    type: Object as PropType<InvoiceResponse>,
+  invoiceId: {
+    type: Number,
     required: true
   }
 });

@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import type { BaseInvoiceResponse, InvoiceResponse, UpdateInvoiceRequest } from "@sudosos/sudosos-client";
 import { fetchAllPages } from "@sudosos/sudosos-frontend-common";
 import ApiService from "@/services/ApiService";
+import { InvoiceStatusResponseStateEnum } from "@sudosos/sudosos-client/src/api";
 
 export const useInvoiceStore = defineStore('invoice', {
     state: () => ({
@@ -29,6 +30,14 @@ export const useInvoiceStore = defineStore('invoice', {
                 return this.invoices[id];
             }
             return this.fetchInvoice(id);
+        },
+        async deleteInvoice(id: number): Promise<void> {
+            await ApiService.invoices.updateInvoice(id, { state: InvoiceStatusResponseStateEnum.Deleted })
+              .then((res) => {
+                const invoice: BaseInvoiceResponse = res.data;
+                this.invoices[invoice.id] = { ...this.invoices[invoice.id], ...invoice };
+                return this.invoices[invoice.id];
+            });
         },
         async fetchInvoicePdf(id: number): Promise<string> {
             return await ApiService.invoices.getInvoicePdf(id).then((res) => {

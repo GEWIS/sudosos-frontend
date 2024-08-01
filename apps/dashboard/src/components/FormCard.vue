@@ -1,7 +1,7 @@
 <template>
   <CardComponent :header="header">
     <template #topAction>
-      <div v-if="enableEdit">
+      <div v-if="showEdit">
         <div v-if="!edit">
           <Button
               severity="primary"
@@ -31,9 +31,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits } from 'vue';
+import { ref, defineEmits, computed } from 'vue';
 import CardComponent from "@/components/CardComponent.vue";
 import Button from 'primevue/button';
+
+const showEdit = computed(() => props.enableEdit);
 
 const props = defineProps({
   header: {

@@ -11,33 +11,10 @@
       </div>
       <div class="flex flex-row gap-5 flex-wrap flex-grow justify-content-center">
         <div class="flex flex-column gap-5">
-          <InvoiceStepsCard :invoice="invoice"/>
-          <InvoiceSettingsCard :invoice="invoice"/>
-          <InvoiceAddressingCard :invoice="invoice"/>
-          <CardComponent :header="$t('c_invoiceInfo.Info')" v-if="invoice" >
-            <template #topAction>
-              <Button
-                  severity="primary"
-                  :label="$t('pdf.delete')"
-                  icon="pi pi-exclamation-triangle"
-                  @click="showDeleteDialog = true"
-              />
-            </template>
-            <div class="flex flex-column justify-content-between">
-              <InfoSpan :label="$t('c_invoiceInfo.id')"
-                        :value="invoice.id"/>
-
-              <InfoSpan :label="$t('c_invoiceInfo.For')"
-                        :value="invoice.to.firstName + ' ' + invoice.to.lastName + ' (' + invoice.to.id + ')'"/>
-
-              <InfoSpan :label="$t('c_invoiceInfo.Created on')"
-                        :value="formatDateTime(new Date(invoice.createdAt ? invoice.createdAt.toString() : ''))"/>
-
-              <InfoSpan :label="$t('c_invoiceInfo.Updated on')"
-                        :value="formatDateTime(new Date(invoice.updatedAt ? invoice.updatedAt.toString() : ''))"/>
-            </div>
-          </CardComponent>
-          <InvoiceDeleteDialog :visible="showDeleteDialog" :invoice="invoice"/>
+          <InvoiceStepsCard :invoiceId="invoice.id"/>
+          <InvoiceSettingsCard :invoiceId="invoice.id"/>
+          <InvoiceAddressingCard :invoiceId="invoice.id"/>
+          <InvoiceInfo :invoiceId="invoice.id"/>
         </div>
         <InvoicePdf v-if="invoice" :invoice="invoice"/>
       </div>
@@ -54,21 +31,17 @@ import { useToast } from "primevue/usetoast";
 import "vue3-pdf-app/dist/icons/main.css";
 import router from "@/router";
 import { useRoute } from "vue-router";
-import { formatDateTime } from "@/utils/formatterUtils";
-import CardComponent from "@/components/CardComponent.vue";
-import InfoSpan from "@/components/InfoSpan.vue";
 import InvoiceSettingsCard from "@/modules/financial/components/InvoiceSettingsCard.vue";
 import InvoiceAddressingCard from "@/modules/financial/components/InvoiceAddressingCard.vue";
 import InvoiceStepsCard from "@/modules/financial/components/InvoiceStepsCard.vue";
 import InvoicePdf from "@/modules/financial/components/InvoicePdf.vue";
-import InvoiceDeleteDialog from "@/modules/financial/components/InvoiceDeleteDialog.vue";
+import InvoiceInfo from "@/modules/financial/components/InvoiceInfo.vue";
 
 const toast = useToast();
 const route = useRoute();
 
 const invoice: Ref<InvoiceResponse | undefined> = ref(undefined);
 const invoiceStore = useInvoiceStore();
-const showDeleteDialog = ref(false);
 
 onBeforeMount(async () => {
   const id = Number(route.params.id);

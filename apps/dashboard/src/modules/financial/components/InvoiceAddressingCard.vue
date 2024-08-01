@@ -15,13 +15,16 @@ import InvoiceAddressingForm from "@/modules/financial/components/forms/InvoiceA
 import { updateInvoiceAddressingObject } from "@/utils/validation-schema";
 import { schemaToForm } from "@/utils/formUtils";
 import { InvoiceStatusResponseStateEnum } from "@sudosos/sudosos-client/src/api";
+import { useInvoiceStore } from "@/stores/invoice.store";
 
 const edit = ref(false);
-const deleted = computed(() => props.invoice.currentState.state === InvoiceStatusResponseStateEnum.Deleted);
+const invoiceStore = useInvoiceStore();
+const deleted = computed(() => invoice.value.currentState.state === InvoiceStatusResponseStateEnum.Deleted);
+const invoice = computed(() => invoiceStore.getInvoice(props.invoiceId) as InvoiceResponse);
 
 const props = defineProps({
-  invoice: {
-    type: Object as PropType<InvoiceResponse>,
+  invoiceId: {
+    type: Number,
     required: true
   }
 });
@@ -45,13 +48,13 @@ const updateFieldValues = (p: InvoiceResponse) => {
   form.context.setValues(values);
 };
 
-watch(() => props.invoice, (newValue) => {
+watch(() => invoice.value, (newValue) => {
   updateFieldValues(newValue);
 });
 
 onBeforeMount(() => {
-  if (props.invoice) {
-    updateFieldValues(props.invoice);
+  if (invoice.value) {
+    updateFieldValues(invoice.value);
   }
 });
 

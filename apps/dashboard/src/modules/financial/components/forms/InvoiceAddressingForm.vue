@@ -62,6 +62,7 @@ const toast = useToast();
 const emit = defineEmits(['update:edit']);
 const invoiceStore = useInvoiceStore();
 
+
 const props = defineProps({
   invoice: {
     type: Object as PropType<InvoiceResponse>,
