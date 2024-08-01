@@ -106,7 +106,7 @@ const sortedUsers = computed(() => {
   const fuzzed: UserResponse[] = new Fuse(
     full,
     {
-      keys: ['fullName', 'nickname'],
+      keys: [{ name: 'fullName', weight: 0.3 }, { name: 'nickname', weight: 0.7 }],
       isCaseSensitive: false,
       shouldSort: true,
       threshold: 0.2,
@@ -115,9 +115,8 @@ const sortedUsers = computed(() => {
 
   const filteredUsers = [...fuzzed].filter((user) => ["MEMBER", "LOCAL_USER", "LOCAL_ADMIN",
     "INVOICE", "AUTOMATIC_INVOICE"].includes(user.type));
-  const sortedOnId = filteredUsers.sort((a, b) => b.id - a.id);
-  const validUsers = sortedOnId.filter(user => user.active && user.acceptedToS !== "NOT_ACCEPTED");
-  const invalidUsers = sortedOnId.filter(user => !user.active || user.acceptedToS === "NOT_ACCEPTED");
+  const validUsers = filteredUsers.filter(user => user.active && user.acceptedToS !== "NOT_ACCEPTED");
+  const invalidUsers = filteredUsers.filter(user => !user.active || user.acceptedToS === "NOT_ACCEPTED");
   return [...validUsers, ...invalidUsers];
 });
 
