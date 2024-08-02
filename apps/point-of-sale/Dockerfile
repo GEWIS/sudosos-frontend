@@ -3,7 +3,7 @@ FROM node:20 as build
 WORKDIR /app
 COPY lib/common/ lib/common/
 COPY apps/point-of-sale/package.json apps/point-of-sale/
-COPY ./package.json ./package-lock.json ./
+COPY ./package.json ./yarn.lock ./
 RUN yarn install
 COPY apps/point-of-sale/ apps/point-of-sale/
 ARG GIT_COMMIT_BRANCH

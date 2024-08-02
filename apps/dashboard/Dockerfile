@@ -3,7 +3,7 @@ FROM node:20 as build
 WORKDIR /app
 COPY lib/common/ lib/common/
 COPY apps/dashboard/package.json apps/dashboard/
-COPY ./package.json ./package-lock.json ./
+COPY ./package.json ./yarn.lock ./
 RUN yarn install
 COPY apps/dashboard/ apps/dashboard/
 ARG GIT_COMMIT_BRANCH
