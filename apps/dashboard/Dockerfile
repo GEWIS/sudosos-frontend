@@ -6,6 +6,10 @@ COPY apps/dashboard/package.json apps/dashboard/
 COPY ./package.json ./package-lock.json ./
 RUN yarn install
 COPY apps/dashboard/ apps/dashboard/
+ARG GIT_COMMIT_BRANCH
+ENV VITE_GIT_COMMIT_BRANCH=${GIT_COMMIT_BRANCH}
+ARG GIT_COMMIT_SHA
+ENV VITE_GIT_COMMIT_SHA=${GIT_COMMIT_SHA}
 RUN yarn run build --workspace=sudosos-dashboard
 
 # The target image that will be run
