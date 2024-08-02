@@ -21,9 +21,7 @@
           </div>
           <div class="field">
             <label for="nickname">{{ $t("userDetails.nickname") }}</label>
-            <InputText id="nickname"
-                       v-model="nickname"
-                       v-bind="nicknameAttrs" class="w-full" />
+            <InputText id="nickname" v-model="nickname" v-bind="nicknameAttrs" class="w-full" />
           </div>
           <div class="field">
             <label for="email">{{ $t("userDetails.Email address") }}</label>
@@ -116,8 +114,6 @@ onBeforeMount(async () => {
   userId.value = route.params.userId;
   await apiService.user.getIndividualUser(userId.value).then((res) => {
     currentUser.value = res.data;
-
-    console.log(currentUser.value);
   }).catch((error: AxiosError) => {
     handleError(error, toast);
   });
@@ -153,7 +149,6 @@ const handleEditUser = handleSubmit(async (values) => {
     const response = await apiService.user.updateUser(userId, updateUserRequest);
     if (response.status === 200) {
       await router.push({ name: 'user', params: { userId } }).then(() => {
-        console.log(response);
         toast.add({
           severity: 'success',
           summary: t('successMessages.success'),
