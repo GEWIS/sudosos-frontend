@@ -4,9 +4,9 @@ WORKDIR /app
 COPY lib/common/ lib/common/
 COPY apps/dashboard/package.json apps/dashboard/
 COPY ./package.json ./package-lock.json ./
-RUN npm install
+RUN yarn install
 COPY apps/dashboard/ apps/dashboard/
-RUN npm run build --workspace=sudosos-dashboard
+RUN yarn run build --workspace=sudosos-dashboard
 
 # The target image that will be run
 FROM nginx:alpine as target

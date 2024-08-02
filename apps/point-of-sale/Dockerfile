@@ -5,9 +5,9 @@ COPY lib/common/ lib/common/
 COPY apps/point-of-sale/package.json apps/point-of-sale/
 COPY ./package.json ./package-lock.json ./
 COPY ./.git ./
-RUN npm install
+RUN yarn install
 COPY apps/point-of-sale/ apps/point-of-sale/
-RUN npm run build --workspace=sudosos-point-of-sale
+RUN yarn run build --workspace=sudosos-point-of-sale
 
 # The target image that will be run
 FROM nginx:alpine as target
