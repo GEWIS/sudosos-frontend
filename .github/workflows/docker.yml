@@ -45,6 +45,9 @@ jobs:
         with:
           path: .
 
+      - name: Safe directory
+        run: git config --global --add safe.directory '*'
+
       - name: Get commit branch
         run: echo "GIT_COMMIT_BRANCH=$(git branch --show-current)" >> $GITHUB_ENV
 
