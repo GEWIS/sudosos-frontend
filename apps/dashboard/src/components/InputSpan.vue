@@ -1,6 +1,7 @@
 <template>
   <div>
-    <span :class="['flex flex-wrap justify-content-between', column ? 'flex-column gap-1' : 'flex-row align-items-center gap-3']">
+    <span :class="['flex flex-wrap justify-content-between',
+     column ? 'flex-column gap-1' : 'flex-row align-items-center gap-3']">
       <p class="my-0">{{ label }}</p>
       <InputText v-if="type === 'text'"
                  :placeholder="placeholder"
@@ -30,7 +31,6 @@
 
 <script setup lang="ts">
 import { ref, watch, onMounted, type PropType } from 'vue';
-import type { Ref } from "vue";
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import Calendar from 'primevue/calendar';

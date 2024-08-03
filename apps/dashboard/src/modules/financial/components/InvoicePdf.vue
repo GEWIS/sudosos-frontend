@@ -27,7 +27,8 @@
       </div>
     </template>
     <div class="pdf-display" :class="{ hidden: showTable }">
-      <div v-if="missingPdf && pdfLoaded" class="w-full h-full flex flex-column justify-content-center align-items-center text-4xl text-red-500">
+      <div v-if="missingPdf && pdfLoaded" class="w-full h-full flex flex-column
+      justify-content-center align-items-center text-4xl text-red-500">
         <i class="pi pi-exclamation-triangle text-5xl"></i>
         {{ $t('pdf.Missing') }}
       </div>

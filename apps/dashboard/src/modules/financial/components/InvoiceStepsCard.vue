@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import CardComponent from "@/components/CardComponent.vue";
-import { computed, type PropType, ref } from "vue";
+import { computed, ref } from "vue";
 import type { InvoiceResponse } from "@sudosos/sudosos-client";
 import { InvoiceStatusResponseStateEnum } from "@sudosos/sudosos-client/src/api";
 import { useInvoiceStore } from "@/stores/invoice.store";

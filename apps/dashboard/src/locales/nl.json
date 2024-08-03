@@ -261,7 +261,8 @@
     "productContainerAdd": "Product is succesvol toegevoegd aan container.",
     "productContainerDelete": "Product is succesvol verwijderd van container.",
     "productCreate": "Product is succesvol aangemaakt.",
-    "updateContainer": "Container is succesvol geüpdatet."
+    "updateContainer": "Container is succesvol geüpdatet.",
+    "invoiceDeleted": "Factuur is succesvol verwijderd."
   },
   "termsOfService": {
     "acceptFirst": "Accepteer de Voorwaarden",
@@ -286,6 +287,7 @@
     "when": "Wanneer",
     "pos": "Verkooppunt",
     "createdBy": "Gecreëerd door",
+    "createdFor": "Gecreëerd voor",
     "balanceMutations": "Saldo mutaties",
     "createdTransactions": "Gecreëerde transacties",
     "recentTransactions": "Recente transacties"
@@ -329,7 +331,6 @@
     "Created on": "Aangemaakt op",
     "Updated on": "Geupdated op",
     "For": "Voor",
-    "Owner": "Eigenaar",
     "Addressing": "Adres",
     "Addressee": "Adres",
     "id": "ID",
@@ -343,10 +344,15 @@
     "Date": "Datum",
     "Progress": "Voortgang",
     "Settings": "Instellingen",
-    "Invoices": "Facturen",
     "InvoiceOverview": "Factuur Overzicht",
     "Deleted": "Factuur is verwijderd",
-    "Actions": "Acties"
+    "Actions": "Acties",
+    "Delete": "Verwijder",
+    "Cancel": "Annuleren",
+    "DeleteInvoice": "Factuur Verwijderen",
+    "AreYouSure": "Weet je zeker dat je deze factuur wilt verwijderen?",
+    "CreditNoteWarning": "Dit zal geen creditnota aanmaken.",
+    "Unrecoverable": "Dit verwijdert de factuur en kan niet ongedaan worden gemaakt."
   },
   "pdf": {
     "Table": "Tabel",
@@ -354,5 +360,10 @@
     "Reload": "Herladen",
     "Missing": "PDF is niet aanwezig of niet gegenereerd",
     "Invoice": "Factuur"
+  },
+  "c_formCard": {
+    "edit": "Bewerken",
+    "save": "Opslaan",
+    "close": "Sluiten"
   }
 }

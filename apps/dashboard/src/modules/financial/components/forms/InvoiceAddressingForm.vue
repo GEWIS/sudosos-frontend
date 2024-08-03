@@ -48,7 +48,7 @@
 import InputSpan from "@/components/InputSpan.vue";
 import { type PropType } from "vue";
 import type { InvoiceResponse } from "@sudosos/sudosos-client";
-import { type Form } from "@/utils/formUtils";
+import { type Form, setSubmit } from "@/utils/formUtils";
 import { updateInvoiceAddressingObject } from "@/utils/validation-schema";
 import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
@@ -79,7 +79,7 @@ const props = defineProps({
   },
 });
 
-props.form.submit = props.form.context.handleSubmit(async (values) => {
+setSubmit(props.form, async (values) => {
   if (!props.form.context.meta.value.dirty) {
     emit('update:edit', false);
     return;

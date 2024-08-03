@@ -5,7 +5,7 @@
         <div v-if="!edit">
           <Button
               severity="primary"
-              :label="$t('edit')"
+              :label="$t('c_formCard.edit')"
               icon="pi pi-pencil"
               @click="toggleEdit(true)"
           />
@@ -13,13 +13,13 @@
         <div v-else class="flex flex-row gap-2">
           <Button
               severity="primary"
-              :label="$t('save')"
+              :label="$t('c_formCard.save')"
               icon="pi pi-check"
               @click="handleSave"
           />
           <Button
               severity="secondary"
-              :label="$t('close')"
+              :label="$t('c_formCard.close')"
               icon="pi pi-times"
               @click="cancel"
           />

@@ -4,7 +4,7 @@
       <Button
           v-if="notDeleted"
           severity="primary"
-          :label="$t('pdf.delete')"
+          :label="$t('c_invoiceInfo.Delete')"
           icon="pi pi-exclamation-triangle"
           @click="visible = true"
       />

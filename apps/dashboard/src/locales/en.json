@@ -32,9 +32,6 @@
     "Price": "Price",
     "Balance after": "Balance after:"
   },
-  "invoice": {
-    "Invoice": "Invoice"
-  },
   "banner": {
     "Banners": "Banners",
     "active": "Active: ",
@@ -260,7 +257,8 @@
     "productContainerAdd": "Successfully added product to container.",
     "productContainerDelete": "Successfully deleted product from container.",
     "productCreate": "Successfully created product.",
-    "updateContainer": "Successfully updated container."
+    "updateContainer": "Successfully updated container.",
+    "invoiceDeleted": "Successfully deleted invoice."
   },
   "termsOfService": {
     "acceptFirst": "Accept the Terms of Service",
@@ -354,7 +352,13 @@
     "Settings": "Settings",
     "InvoiceOverview": "Invoice Overview",
     "Deleted": "Invoice is deleted",
-    "Actions": "Actions"
+    "Actions": "Actions",
+    "Delete": "Delete",
+    "Cancel": "Cancel",
+    "DeleteInvoice": "Delete Invoice",
+    "AreYouSure": "Are you sure you want to delete this invoice?",
+    "CreditNoteWarning": "This will not create a credit note.",
+    "Unrecoverable": "This deletes the invoice and cannot be undone."
   },
   "pdf": {
     "Table": "Table",
@@ -362,5 +366,10 @@
     "Reload": "Reload",
     "Missing": "PDF is missing or generation failed",
     "Invoice": "Invoice"
+  },
+  "c_formCard": {
+    "edit": "Edit",
+    "save": "Save",
+    "close": "Close"
   }
 }

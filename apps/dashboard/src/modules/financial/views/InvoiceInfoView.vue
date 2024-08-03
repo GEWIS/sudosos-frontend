@@ -3,9 +3,9 @@
     <div>
       <div class="page-title flex flex-row">
         <div class="flex flex-column">
-          <span>{{ $t("invoice.Invoice") }}</span>
+          <span>{{ $t("pdf.Invoice") }}</span>
           <small class="text-base">
-            BAC-2223-15: <i>{{ invoice.description }}</i>
+            {{ invoice.reference + ": " }} <i>{{ invoice.description }}</i>
           </small>
         </div>
       </div>

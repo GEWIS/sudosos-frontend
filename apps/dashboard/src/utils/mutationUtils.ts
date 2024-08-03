@@ -1,4 +1,5 @@
-import type { BaseTransactionResponse, BaseUserResponse, FinancialMutationResponse, PaginatedFinancialMutationResponse, TransferResponse } from "@sudosos/sudosos-client";
+import type { BaseTransactionResponse, BaseUserResponse, FinancialMutationResponse,
+  PaginatedFinancialMutationResponse, TransferResponse } from "@sudosos/sudosos-client";
 import type { Dinero } from "@sudosos/sudosos-client";
 import type { PaginatedBaseTransactionResponse } from "@sudosos/sudosos-client";
 
