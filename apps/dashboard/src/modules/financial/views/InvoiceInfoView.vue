@@ -45,7 +45,7 @@ const invoiceStore = useInvoiceStore();
 
 onBeforeMount(async () => {
   const id = Number(route.params.id);
-  await invoiceStore.getOrFetchInvoice(id).catch((error) => {
+  await invoiceStore.fetchInvoice(id).catch((error) => {
     handleError(error, toast);
   }).then((res) => {
     invoice.value = res as InvoiceResponse;

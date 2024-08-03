@@ -1,5 +1,10 @@
 import { defineStore } from "pinia";
-import type { BaseInvoiceResponse, InvoiceResponse, UpdateInvoiceRequest } from "@sudosos/sudosos-client";
+import type {
+    BaseInvoiceResponse,
+    InvoiceResponse,
+    PaginatedInvoiceResponse,
+    UpdateInvoiceRequest
+} from "@sudosos/sudosos-client";
 import { fetchAllPages } from "@sudosos/sudosos-frontend-common";
 import ApiService from "@/services/ApiService";
 import { InvoiceStatusResponseStateEnum } from "@sudosos/sudosos-client/src/api";
@@ -51,6 +56,17 @@ export const useInvoiceStore = defineStore('invoice', {
                 const invoice = res.data;
                 this.invoices[invoice.id] = invoice;
                 return this.invoices[invoice.id];
+            });
+        },
+        async fetchInvoices(take: number, skip: number, state?: InvoiceStatusResponseStateEnum):
+          Promise<PaginatedInvoiceResponse> {
+            return await ApiService.invoices.getAllInvoices(undefined, undefined, state ? state : undefined,
+              undefined, undefined, undefined, take, skip).then((res) => {
+                const invoices = res.data.records as InvoiceResponse[];
+              invoices.forEach((invoice) => {
+                    this.invoices[invoice.id] = invoice;
+                });
+                return res.data;
             });
         },
         async fetchAllIfEmpty() {
