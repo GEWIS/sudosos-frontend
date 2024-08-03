@@ -43,11 +43,9 @@ const props = defineProps({
   },
   value: {
     type: String,
-    required: true
   },
   attributes: {
     type: Object as PropType<any>,
-    required: true,
   },
   errors: {
     type: Object as PropType<any>,
@@ -80,11 +78,11 @@ const emit = defineEmits(['update:value']);
 const internalValue = ref('');
 
 onMounted(() => {
-  internalValue.value = props.value;
+  internalValue.value = props.value ?? '';
 });
 
 watch(() => props.value, (newValue) => {
-  internalValue.value = newValue;
+  internalValue.value = newValue ?? '';
 });
 
 watch(internalValue, (newValue) => {

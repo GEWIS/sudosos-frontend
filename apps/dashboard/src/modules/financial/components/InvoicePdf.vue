@@ -32,7 +32,7 @@
         {{ $t('pdf.missing') }}
       </div>
       <Skeleton v-if="!pdfLoaded" class="w-full h-full"/>
-      <vue-pdf-app v-if="showPdf" class="w-full h-full" :pdf="getInvoicePdfSrc(invoice.pdf)"/>
+      <vue-pdf-app v-if="showPdf" class="w-full h-full" :pdf="getInvoicePdfSrc(invoice.pdf ? invoice.pdf : '')"/>
     </div>
     <div class="pdf-display overflow-scroll" :class="{ hidden: !showTable }">
       <InvoiceEntriesTable :invoice="invoice"/>

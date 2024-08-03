@@ -16,7 +16,7 @@
   </DataTable>
   <div style="max-width: 20rem; margin-right:0;">
     <InfoSpan label="Total Excl. VAT" :value="formatPrice(exclVat)"/>
-    <InfoSpan v-for="key in Object.keys(vat)"  :label="`VAT ${key}%`" :value="formatPrice(vat[key])"/>
+    <InfoSpan v-for="key in Object.keys(vat)"  :label="`VAT ${key}%`" :value="formatPrice(vat[key as any])"/>
     <InfoSpan label="Total Incl. VAT" :value="formatPrice(inclVat)"/>
   </div>
 </template>

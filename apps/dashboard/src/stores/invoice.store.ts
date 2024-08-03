@@ -60,6 +60,8 @@ export const useInvoiceStore = defineStore('invoice', {
         },
         async fetchInvoices(take: number, skip: number, state?: InvoiceStatusResponseStateEnum):
           Promise<PaginatedInvoiceResponse> {
+            // Following line has a bug in the swagger generator
+            // @ts-ignore
             return await ApiService.invoices.getAllInvoices(undefined, undefined, state ? state : undefined,
               undefined, undefined, undefined, take, skip).then((res) => {
                 const invoices = res.data.records as InvoiceResponse[];

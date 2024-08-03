@@ -11,7 +11,7 @@
     </template>
     <div class="flex flex-column justify-content-between">
       <InfoSpan :label="$t('c_invoiceInfo.id')"
-                :value="invoice.id"/>
+                :value="String(invoice.id)"/>
 
       <InfoSpan :label="$t('c_invoiceInfo.For')"
                 :value="invoice.to.firstName + ' ' + invoice.to.lastName + ' (' + invoice.to.id + ')'"/>
@@ -53,13 +53,14 @@
 import { formatDateTime } from "@/utils/formatterUtils";
 import CardComponent from "@/components/CardComponent.vue";
 import InfoSpan from "@/components/InfoSpan.vue";
-import { computed, handleError, ref } from "vue";
+import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { addListenerOnDialogueOverlay } from "@/utils/dialogUtil";
 import Dialog from "primevue/dialog";
 import { InvoiceStatusResponseStateEnum } from "@sudosos/sudosos-client/src/api";
 import { useToast } from "primevue/usetoast";
 import { useInvoiceStore } from "@/stores/invoice.store";
+import { handleError } from "@/utils/errorUtils";
 
 const { t } = useI18n();
 
@@ -67,7 +68,7 @@ const toast = useToast();
 const invoiceStore = useInvoiceStore();
 const dialog = ref();
 const visible = ref(false);
-const notDeleted = computed(() => invoice.value.currentState.state !== InvoiceStatusResponseStateEnum.Deleted);
+const notDeleted = computed(() => invoice.value?.currentState.state !== InvoiceStatusResponseStateEnum.Deleted);
 const invoice = computed(() => invoiceStore.getInvoice(props.invoiceId));
 
 const props = defineProps({
@@ -82,7 +83,7 @@ const openDialog = () => {
 };
 
 const deleteInvoice = async () => {
-  await invoiceStore.deleteInvoice(invoice.value.id).then(() => {
+  await invoiceStore.deleteInvoice(props.invoiceId).then(() => {
     toast.add({
       summary: t('successMessages.success'),
       detail: t('successMessages.invoiceDeleted'),

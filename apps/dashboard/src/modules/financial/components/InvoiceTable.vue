@@ -93,7 +93,7 @@ const viewInvoice = async (id: number) => {
 
 const props = defineProps({
   state: {
-    type: InvoiceStatusResponseStateEnum,
+    type: Object as () => InvoiceStatusResponseStateEnum,
     required: true,
   }
 });
