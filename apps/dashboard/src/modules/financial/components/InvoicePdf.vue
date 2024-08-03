@@ -5,21 +5,21 @@
         <div>
           <Button
               severity="primary"
-              :label="$t('pdf.table')"
-              icon="pi pi-pencil"
+              :label="showTable ? $t('pdf.Invoice') : $t('pdf.Table')"
+              icon="pi pi-eye"
               @click="showTable = !showTable"
           />
         </div>
         <div class="flex flex-row gap-3">
           <Button
               severity="primary"
-              :label="$t('pdf.recompile')"
+              :label="$t('pdf.Recompile')"
               icon="pi pi-sync"
               @click="reloadPdf"
           />
           <Button
               severity="secondary"
-              :label="$t('pdf.reload')"
+              :label="$t('pdf.Reload')"
               icon="pi pi-refresh"
               @click="reloadPdf"
           />
@@ -29,7 +29,7 @@
     <div class="pdf-display" :class="{ hidden: showTable }">
       <div v-if="missingPdf && pdfLoaded" class="w-full h-full flex flex-column justify-content-center align-items-center text-4xl text-red-500">
         <i class="pi pi-exclamation-triangle text-5xl"></i>
-        {{ $t('pdf.missing') }}
+        {{ $t('pdf.Missing') }}
       </div>
       <Skeleton v-if="!pdfLoaded" class="w-full h-full"/>
       <vue-pdf-app v-if="showPdf" class="w-full h-full" :pdf="getInvoicePdfSrc(invoice.pdf ? invoice.pdf : '')"/>

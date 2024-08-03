@@ -1,14 +1,12 @@
 <template>
   <div class="page-container flex flex-column">
-    <div class="page-title">{{ $t('invoice.invoiceOverview') }}</div>
-      <div class="content-wrapper gap-5 flex md:flex-column flex-column">
-        <CardComponent :header="$t('c_invoiceInfo.Invoices')">
+    <div class="page-title">{{ $t('c_invoiceInfo.InvoiceOverview') }}</div>
+      <div class="content-wrapper">
           <TabView class="w-full">
             <TabPanel v-for="state in states" :key="state" :header="state">
               <InvoiceTable :state="state" />
             </TabPanel>
           </TabView>
-        </CardComponent>
       </div>
   </div>
 </template>

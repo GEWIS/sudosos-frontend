@@ -93,5 +93,4 @@ watch(internalValue, (newValue) => {
 </script>
 
 <style scoped lang="scss">
-/* Your styles here */
 </style>

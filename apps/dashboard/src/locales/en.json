@@ -23,7 +23,8 @@
     "Social drink cards": "Social drink cards",
     "Transactions": "Transactions",
     "User overview": "User overview",
-    "Promo": "Promo"
+    "Promo": "Promo",
+    "Invoices": "Invoices"
   },
   "balance": {
     "Balance increase amount": "Increase balance:",
@@ -32,8 +33,7 @@
     "Balance after": "Balance after:"
   },
   "invoice": {
-    "Invoice": "Invoice",
-    "info": "Info"
+    "Invoice": "Invoice"
   },
   "banner": {
     "Banners": "Banners",
@@ -123,7 +123,6 @@
     }
   },
   "c_currentBalance": {
-    "Increase balance": "Increase balance",
     "allIsFines": "All of which is a fine",
     "balance": "Balance",
     "someIsFines": "Of which {fine} is fines",
@@ -246,7 +245,6 @@
     "updateInfo": "Update user information"
   },
   "quickOverview": {
-    "quickOverview": "Quick Overview",
     "quickOverviewMessage": "Show this at the bar so we can help you faster"
   },
   "successMessages": {
@@ -284,13 +282,8 @@
     "title": "Title",
     "total": "Total:",
     "waivedFineDescr": "Your fines were waived.",
-    "what": "What",
     "when": "When",
     "pos": "Point of sale",
-    "from": "From",
-    "userBoughtAt": "You bought at {pos}",
-    "otherBoughtAt": "{user} bought at {pos}",
-    "putInBy": "Transaction put in by {createdBy}",
     "createdBy": "Created by",
     "createdFor": "Created for",
     "balanceMutations": "Balance mutations",
@@ -346,7 +339,6 @@
     "Created on": "Created",
     "Updated on": "Updated",
     "For": "For",
-    "Owner": "Owner",
     "Addressing": "Addressing",
     "Addressee": "Addressee",
     "id": "ID",
@@ -359,6 +351,16 @@
     "Description": "Description",
     "Date": "Date",
     "Progress": "Progress",
-    "Settings": "Settings"
+    "Settings": "Settings",
+    "InvoiceOverview": "Invoice Overview",
+    "Deleted": "Invoice is deleted",
+    "Actions": "Actions"
+  },
+  "pdf": {
+    "Table": "Table",
+    "Recompile": "Recompile",
+    "Reload": "Reload",
+    "Missing": "PDF is missing or generation failed",
+    "Invoice": "Invoice"
   }
 }
