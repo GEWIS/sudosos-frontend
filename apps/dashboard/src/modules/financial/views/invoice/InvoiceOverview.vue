@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import InvoiceTable from "@/modules/financial/components/InvoiceTable.vue";
+import InvoiceTable from "@/modules/financial/components/invoice/InvoiceTable.vue";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
 import { InvoiceStatusResponseStateEnum } from "@sudosos/sudosos-client/src/api";

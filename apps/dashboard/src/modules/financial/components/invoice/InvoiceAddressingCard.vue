@@ -1,18 +1,18 @@
 <template>
-  <FormCard :header="$t('c_invoiceInfo.Settings')" v-if="invoice" @cancel="updateFieldValues(invoice)"
+  <FormCard :header="$t('c_invoiceInfo.Addressing')" v-if="invoice" @cancel="form.context.resetForm"
             @update:modelValue="edit = $event" @save="formSubmit" :enableEdit="!deleted">
-      <div class="flex flex-column justify-content-between gap-2">
-        <InvoiceSettingsForm :invoice="invoice" :form="form" :edit="edit" @update:edit="edit = $event"/>
-      </div>
+    <div class="flex flex-column justify-content-between gap-2">
+      <InvoiceAddressingForm :invoice="invoice" :form="form" :edit="edit" @update:edit="edit = $event"/>
+    </div>
   </FormCard>
 </template>
 
 <script setup lang="ts">
 import FormCard from "@/components/FormCard.vue";
 import { computed, onBeforeMount, ref, watch } from "vue";
-import InvoiceSettingsForm from "@/modules/financial/components/forms/InvoiceSettingsForm.vue";
 import type { InvoiceResponse } from "@sudosos/sudosos-client";
-import { updateInvoiceSettingsObject } from "@/utils/validation-schema";
+import InvoiceAddressingForm from "@/modules/financial/components/invoice/forms/InvoiceAddressingForm.vue";
+import { updateInvoiceAddressingObject } from "@/utils/validation-schema";
 import { schemaToForm } from "@/utils/formUtils";
 import { InvoiceStatusResponseStateEnum } from "@sudosos/sudosos-client/src/api";
 import { useInvoiceStore } from "@/stores/invoice.store";
@@ -29,17 +29,22 @@ const props = defineProps({
   }
 });
 
-const form = schemaToForm(updateInvoiceSettingsObject);
+const form = schemaToForm(updateInvoiceAddressingObject);
 
 const formSubmit = () => {
   form.submit();
 };
 const updateFieldValues = (p: InvoiceResponse) => {
   if (!p) return;
-  const reference = p.reference;
-  const date = p.createdAt;
-  const description = p.description;
-  form.context.resetForm({ values: { reference, date, description } });
+  const values = {
+    addressee: p.addressee,
+    attention: p.attention,
+    street: p.street,
+    postalCode: p.postalCode,
+    city: p.city,
+    country: p.country,
+  };
+  form.context.resetForm({ values });
 };
 
 watch(() => invoice.value, (newValue) => {

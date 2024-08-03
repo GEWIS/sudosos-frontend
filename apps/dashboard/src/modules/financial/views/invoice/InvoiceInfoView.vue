@@ -31,11 +31,11 @@ import { useToast } from "primevue/usetoast";
 import "vue3-pdf-app/dist/icons/main.css";
 import router from "@/router";
 import { useRoute } from "vue-router";
-import InvoiceSettingsCard from "@/modules/financial/components/InvoiceSettingsCard.vue";
-import InvoiceAddressingCard from "@/modules/financial/components/InvoiceAddressingCard.vue";
-import InvoiceStepsCard from "@/modules/financial/components/InvoiceStepsCard.vue";
-import InvoicePdf from "@/modules/financial/components/InvoicePdf.vue";
-import InvoiceInfo from "@/modules/financial/components/InvoiceInfo.vue";
+import InvoiceSettingsCard from "@/modules/financial/components/invoice/InvoiceSettingsCard.vue";
+import InvoiceAddressingCard from "@/modules/financial/components/invoice/InvoiceAddressingCard.vue";
+import InvoiceStepsCard from "@/modules/financial/components/invoice/InvoiceStepsCard.vue";
+import InvoicePdf from "@/modules/financial/components/invoice/InvoicePdf.vue";
+import InvoiceInfo from "@/modules/financial/components/invoice/InvoiceInfo.vue";
 
 const toast = useToast();
 const route = useRoute();

@@ -73,7 +73,7 @@ setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
   }).catch((error) => {
     handleError(error, toast);
   });
-});
+}));
 </script>
 
 <style scoped lang="scss">

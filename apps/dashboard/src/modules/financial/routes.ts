@@ -2,8 +2,8 @@ import type { RouteRecordRaw } from "vue-router";
 import DashboardLayout from "@/layout/DashboardLayout.vue";
 import FineView from "@/modules/financial/views/FineView.vue";
 import { UserRole } from "@/utils/rbacUtils";
-import InvoiceOverview from "@/modules/financial/views/InvoiceOverview.vue";
-import InvoiceInfoView from "@/modules/financial/views/InvoiceInfoView.vue";
+import InvoiceOverview from "@/modules/financial/views/invoice/InvoiceOverview.vue";
+import InvoiceInfoView from "@/modules/financial/views/invoice/InvoiceInfoView.vue";
 
 export function financialRoutes(): RouteRecordRaw[] {
   return [
