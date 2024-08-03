@@ -9,7 +9,7 @@ export interface Form<T extends yup.AnyObject> {
   context: FormContext<T, T>;
   schema: TypedSchema<T>;
   model: { [K in keyof T]: { value: Ref<T[K]>, attr: Ref<BaseFieldProps & GenericObject> } };
-  submit: (args: any) => Promise<any>;
+  submit: () => Promise<any>;
 }
 
 
@@ -42,6 +42,6 @@ export function schemaToForm<T extends AnyObject>(yupSchema: yup.ObjectSchema<T>
   };
 }
 
-export function setSubmit(form: Form<any>, submit: (values: any) => Promise<any>) {
+export function setSubmit(form: Form<any>, submit: () => Promise<any>) {
   form.submit = submit;
 }

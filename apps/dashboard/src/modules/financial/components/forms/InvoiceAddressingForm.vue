@@ -79,7 +79,7 @@ const props = defineProps({
   },
 });
 
-setSubmit(props.form, async (values) => {
+setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
   if (!props.form.context.meta.value.dirty) {
     emit('update:edit', false);
     return;
@@ -95,7 +95,7 @@ setSubmit(props.form, async (values) => {
   }).catch((error) => {
     handleError(error, toast);
   });
-});
+}));
 </script>
 
 <style scoped lang="scss">
