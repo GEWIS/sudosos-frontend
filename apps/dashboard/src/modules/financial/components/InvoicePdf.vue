@@ -64,7 +64,7 @@
 import { getInvoicePdfSrc } from "@/utils/urlUtils";
 import { formatPrice } from "@/utils/formatterUtils";
 import { handleError } from "@/utils/errorUtils";
-import { computed, onMounted, ref, defineProps } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useInvoiceStore } from "@/stores/invoice.store";
 import { useToast } from "primevue/usetoast";
 import type { InvoiceResponse } from "@sudosos/sudosos-client";
@@ -76,10 +76,11 @@ import VuePdfApp from "vue3-pdf-app";
 
 const invoiceStore = useInvoiceStore();
 const toast = useToast();
+const invoice = computed(() => invoiceStore.getInvoice(props.invoiceId) as InvoiceResponse);
 
 const props = defineProps({
-  invoice: {
-    type: Object as PropType<InvoiceResponse>,
+  invoiceId: {
+    type: Number,
     required: true
   }
 });
@@ -91,15 +92,15 @@ const missingPdf = ref(false);
 
 onMounted(() => {
   pdfLoaded.value = true;
-  if (!props.invoice.pdf) {
+  if (!invoice.value.pdf) {
     missingPdf.value = true;
   }
 });
 
 const reloadPdf = () => {
-  if (!props.invoice) return;
+  if (!invoice.value) return;
   pdfLoaded.value = false;
-  invoiceStore.fetchInvoicePdf(props.invoice.id)
+  invoiceStore.fetchInvoicePdf(invoice.value.id)
     .catch(error => handleError(error, toast))
     .finally(() => {
       pdfLoaded.value = true;

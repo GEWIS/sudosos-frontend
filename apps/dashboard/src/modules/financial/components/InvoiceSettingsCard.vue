@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import FormCard from "@/components/FormCard.vue";
-import { computed, onBeforeMount, type PropType, ref, watch } from "vue";
+import { computed, onBeforeMount, ref, watch } from "vue";
 import InvoiceSettingsForm from "@/modules/financial/components/forms/InvoiceSettingsForm.vue";
 import type { InvoiceResponse } from "@sudosos/sudosos-client";
 import { updateInvoiceSettingsObject } from "@/utils/validation-schema";
@@ -39,8 +39,7 @@ const updateFieldValues = (p: InvoiceResponse) => {
   const reference = p.reference;
   const date = p.createdAt;
   const description = p.description;
-  form.context.resetForm();
-  form.context.setValues({ reference, date, description });
+  form.context.resetForm({ values: { reference, date, description } });
 };
 
 watch(() => invoice.value, (newValue) => {

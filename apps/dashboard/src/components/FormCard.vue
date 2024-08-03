@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits, computed } from 'vue';
+import { ref, computed } from 'vue';
 import CardComponent from "@/components/CardComponent.vue";
 import Button from 'primevue/button';
 
@@ -56,12 +56,10 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'save', 'cancel']);
 
 const edit = ref(props.modelValue);
-const enableEdit = ref(props.enableEdit);
 
 const toggleEdit = (value: boolean) => {
   edit.value = value;
   emit('update:modelValue', value);
-  if (!value) emit('cancel');
 };
 
 const cancel = () => {

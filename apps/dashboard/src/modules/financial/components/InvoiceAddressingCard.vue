@@ -1,5 +1,5 @@
 <template>
-  <FormCard :header="$t('c_invoiceInfo.Settings')" v-if="invoice" @cancel="updateFieldValues(invoice)"
+  <FormCard :header="$t('c_invoiceInfo.Addressing')" v-if="invoice" @cancel="form.context.resetForm"
             @update:modelValue="edit = $event" @save="formSubmit" :enableEdit="!deleted">
     <div class="flex flex-column justify-content-between gap-2">
       <InvoiceAddressingForm :invoice="invoice" :form="form" :edit="edit" @update:edit="edit = $event"/>
@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import FormCard from "@/components/FormCard.vue";
-import { computed, onBeforeMount, type PropType, ref, watch } from "vue";
+import { computed, onBeforeMount, ref, watch } from "vue";
 import type { InvoiceResponse } from "@sudosos/sudosos-client";
 import InvoiceAddressingForm from "@/modules/financial/components/forms/InvoiceAddressingForm.vue";
 import { updateInvoiceAddressingObject } from "@/utils/validation-schema";
@@ -44,8 +44,7 @@ const updateFieldValues = (p: InvoiceResponse) => {
     city: p.city,
     country: p.country,
   };
-  form.context.resetForm();
-  form.context.setValues(values);
+  form.context.resetForm({ values });
 };
 
 watch(() => invoice.value, (newValue) => {

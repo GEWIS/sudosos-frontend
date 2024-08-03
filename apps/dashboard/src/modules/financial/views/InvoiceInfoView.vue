@@ -16,7 +16,7 @@
           <InvoiceAddressingCard :invoiceId="invoice.id"/>
           <InvoiceInfo :invoiceId="invoice.id"/>
         </div>
-        <InvoicePdf v-if="invoice" :invoice="invoice"/>
+        <InvoicePdf v-if="invoice" :invoiceId="invoice.id"/>
       </div>
     </div>
   </div>
