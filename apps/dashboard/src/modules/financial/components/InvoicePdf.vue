@@ -34,45 +34,22 @@
       <Skeleton v-if="!pdfLoaded" class="w-full h-full"/>
       <vue-pdf-app v-if="showPdf" class="w-full h-full" :pdf="getInvoicePdfSrc(invoice.pdf)"/>
     </div>
-    <div class="pdf-display" :class="{ hidden: !showTable }">
-      <DataTable :value="invoice.invoiceEntries" class="w-full">
-        <Column field="description" :header="$t('transactions.description')"/>
-        <Column field="amount" :header="$t('transactions.amount')"/>
-        <Column field="priceInclVat" :header="$t('transactions.price')">
-          <template #body="slotProps">
-            {{ formatPrice(slotProps.data.priceInclVat) }}
-          </template>
-        </Column>
-        <Column field="vatPercentage" header="VAT"/>
-        <Column header="TOTAL">
-          <template #body="slotProps">
-            {{ formatPrice(slotProps.data.priceInclVat) }}
-          </template>
-        </Column>
-      </DataTable>
-      <div style="max-width: 20rem; margin-right:0;">
-        <InfoSpan label="Total Excl. VAT" :value="formatPrice(invoice.transfer.amountInclVat)"/>
-        <InfoSpan label="VAT LOW" :value="formatPrice(invoice.transfer.amountInclVat)"/>
-        <InfoSpan label="VAT HIGH" :value="formatPrice(invoice.transfer.amountInclVat)"/>
-        <InfoSpan label="Total Incl. VAT" :value="formatPrice(invoice.transfer.amountInclVat)"/>
-      </div>
+    <div class="pdf-display overflow-scroll" :class="{ hidden: !showTable }">
+      <InvoiceEntriesTable :invoice="invoice"/>
     </div>
   </CardComponent>
 </template>
 
 <script setup lang="ts">
 import { getInvoicePdfSrc } from "@/utils/urlUtils";
-import { formatPrice } from "@/utils/formatterUtils";
 import { handleError } from "@/utils/errorUtils";
 import { computed, onMounted, ref } from "vue";
 import { useInvoiceStore } from "@/stores/invoice.store";
 import { useToast } from "primevue/usetoast";
 import type { InvoiceResponse } from "@sudosos/sudosos-client";
 import CardComponent from "@/components/CardComponent.vue";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-import InfoSpan from "@/components/InfoSpan.vue";
 import VuePdfApp from "vue3-pdf-app";
+import InvoiceEntriesTable from "@/modules/financial/components/forms/InvoiceEntriesTable.vue";
 
 const invoiceStore = useInvoiceStore();
 const toast = useToast();
