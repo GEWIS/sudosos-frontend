@@ -40,3 +40,7 @@ export function schemaToForm<T extends AnyObject>(yupSchema: yup.ObjectSchema<T>
     submit: async () => console.error("Submit not implemented"),
   };
 }
+
+export function setSubmit(form: Form<any>, submit: () => Promise<any>) {
+  form.submit = submit;
+}

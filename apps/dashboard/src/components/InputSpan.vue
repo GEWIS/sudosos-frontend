@@ -1,0 +1,118 @@
+<template>
+  <div>
+    <span :class="['flex flex-wrap justify-content-between', column ? 'flex-column gap-1' : 'flex-row align-items-center gap-3']">
+      <p class="my-0">{{ label }}</p>
+      <InputText v-if="type === 'text'"
+                 :placeholder="placeholder"
+                 v-model="internalValue"
+                 v-bind="attributes"
+                 :disabled="disabled"/>
+
+      <Textarea v-if="type === 'textarea'"
+                :placeholder="placeholder"
+                v-model="internalValue"
+                v-bind="attributes"
+                autoResize
+                :disabled="disabled"/>
+
+      <!-- TODO fix date vs string  -->
+      <Calendar v-if="type === 'date'"
+                :placeholder="placeholder"
+                v-model="internalValue"
+                v-bind="attributes"
+                :disabled="disabled"/>
+
+      <InputNumber v-if="type === 'currency'"
+                 mode="currency" currency="EUR" locale="nl-NL"
+                 :min="0.0"
+                 :min-fraction-digits="0" :max-fraction-digits="2"
+                :placeholder="placeholder"
+                v-model="internalValue"
+                :disabled="disabled"/>
+
+    </span>
+    <div class="flex justify-content-end">
+      <ErrorSpan :error="errors"/>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, watch, onMounted, type PropType } from 'vue';
+import InputText from 'primevue/inputtext';
+import Textarea from 'primevue/textarea';
+import Calendar from 'primevue/calendar';
+import ErrorSpan from "@/components/ErrorSpan.vue";
+import type { HintedString } from "primevue/ts-helpers";
+import InputNumber from "primevue/inputnumber";
+
+// Define props with their types
+const props = defineProps({
+  label: {
+    type: String,
+    required: true
+  },
+  value: {
+    type: [String, Number],
+  },
+  attributes: {
+    type: Object as PropType<any>,
+    required: true,
+  },
+  errors: {
+    type: Object as PropType<any>,
+    required: false,
+  },
+  placeholder: {
+    type: String,
+    required: false,
+    default: ''
+  },
+  type: {
+    type: String as PropType<HintedString<'text' | 'textarea' | 'date' | 'currency'>>,
+    required: false,
+    default: 'text'
+  },
+  disabled: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
+  column: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
+});
+
+const emit = defineEmits(['update:value']);
+
+const stringInputs = ['text', 'textarea'];
+const numberInputs = ['currency', 'number'];
+
+const initialValue = () => {
+  if (stringInputs.includes(props.type)) return '';
+  if (numberInputs.includes(props.type)) return 0;
+  return '';
+};
+
+const internalValue = ref(initialValue());
+
+onMounted(() => {
+  internalValue.value = props.value;
+});
+
+watch(() => props.value, (newValue) => {
+  internalValue.value = newValue;
+});
+
+watch(internalValue, (newValue) => {
+  if (newValue !== props.value) {
+    emit('update:value', newValue);
+  }
+});
+</script>
+
+<style scoped lang="scss">
+/* Your styles here */
+</style>

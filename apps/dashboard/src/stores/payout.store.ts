@@ -1,11 +1,12 @@
 import type {
     BasePayoutRequestResponse,
-    PaginatedBasePayoutRequestResponse,
-    PayoutRequestResponse,
-    PayoutRequestStatusRequest
+    PaginatedBasePayoutRequestResponse, PayoutRequestRequest,
+    PayoutRequestResponse
 } from "@sudosos/sudosos-client";
 import { defineStore } from "pinia";
 import apiService from "@/services/ApiService";
+import { isArray } from "lodash";
+import { PayoutRequestStatusRequestStateEnum } from "@sudosos/sudosos-client";
 
 export type PayoutResponse = PayoutRequestResponse | BasePayoutRequestResponse;
 export const usePayoutStore = defineStore('payout', {
@@ -13,6 +14,16 @@ export const usePayoutStore = defineStore('payout', {
         payouts: {} as Record<number,PayoutResponse>,
     }),
     getters: {
+        getStatePayout: (state) => (payoutState: PayoutRequestStatusRequestStateEnum): PayoutResponse[] => {
+            return Object.values(state.payouts).filter((payout) => {
+                if (isArray(payout.status) && payout.status) {
+                    if (payout.status[payout.status.length - 1].state === payoutState) return true;
+                } else {
+                    if (payout.status && payout.status === payoutState) return true;
+                }
+                return false;
+            });
+        },
         getPayout: (state) => (id: number): PayoutResponse | null => {
             return state.payouts[id] || null;
         },
@@ -53,6 +64,12 @@ export const usePayoutStore = defineStore('payout', {
                 this.payouts[id].pdf = res.data.pdf;
                 return res.data.pdf;
             });
-        }
+        },
+        async createPayout(values: PayoutRequestRequest): Promise<PayoutRequestResponse> {
+            return apiService.payouts.createPayoutRequest(values).then((res) => {
+                this.payouts[res.data.id] = res.data;
+                return res.data;
+            });
+        },
     },
 });
