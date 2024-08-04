@@ -157,6 +157,10 @@ const leftItems = computed(() => [
         label: t('fine.fineOverview'),
         route: '/fine',
       },
+      {
+        label: t('payout.Payouts'),
+        route: '/payouts',
+      }
     ]
   },
   {
