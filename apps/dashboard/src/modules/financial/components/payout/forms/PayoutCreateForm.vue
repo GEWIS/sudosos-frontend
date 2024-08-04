@@ -70,7 +70,7 @@ const props = defineProps({
 
 const balanceError = ref<string>('');
 const validateAmount = () => {
-  if (userBalance.value && props.form.model.amount.value.value > userBalance.value.amount.amount) {
+  if (userBalance.value && props.form.model.amount.value.value > userBalance.value.amount.amount / 100) {
     balanceError.value = `${t('payout.AmountToHigh')}`;
   } else {
     balanceError.value = ''; // Clear error if valid

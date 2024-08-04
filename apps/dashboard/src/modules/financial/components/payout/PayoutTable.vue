@@ -90,12 +90,12 @@ const payoutStore = usePayoutStore(); // hypothetical store usage
 const totalRecords = ref<number>(0);
 const isLoading = ref<boolean>(true);
 
-const rows = ref<number>(10);
+const rows = ref<number>(5);
 const paginator = ref<boolean>(true);
 
 const payoutRequests = computed(() => Object.values(payoutStore.getStatePayout(props.state)));
 const rowValues = computed(() => {
-  if (!isLoading.value) Array(rows.value).fill(null);
+  if (isLoading.value) return Array(rows.value).fill(null);
   return payoutRequests.value;
 });
 
