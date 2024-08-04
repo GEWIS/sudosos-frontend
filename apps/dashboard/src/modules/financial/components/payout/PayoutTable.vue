@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-5">
     <DataTable
         :rows="rows"
-        :value="payoutRequests"
+        :value="rowValues"
         :rows-per-page-options="[5, 10, 25, 50, 100]"
         :paginator="paginator"
         lazy
@@ -21,7 +21,7 @@
       <Column field="status" :header="$t('payout.Progress')">
         <template #body="slotProps">
           <Skeleton v-if="isLoading" class="w-6 my-1 h-1rem surface-300" />
-          <span v-else>{{ slotProps.data.status }}</span>
+          <span v-else>{{ state }}</span>
         </template>
       </Column>
       <Column field="requestedBy.firstName" :header="$t('payout.RequestedBy')">
@@ -72,11 +72,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, type PropType, type Ref } from "vue";
+import { ref, onMounted, type PropType, type Ref, computed } from "vue";
 import { formatPrice, formatDateFromString } from "@/utils/formatterUtils";
-import type {
-  BasePayoutRequestResponse,
-  PaginatedBasePayoutRequestResponse
+import {
+  type BasePayoutRequestResponse,
+  type PaginatedBasePayoutRequestResponse, PayoutRequestStatusRequestStateEnum
 } from "@sudosos/sudosos-client";
 import { usePayoutStore } from "@/stores/payout.store";
 import { getPayoutPdfSrc } from "@/utils/urlUtils";
@@ -93,7 +93,11 @@ const isLoading = ref<boolean>(true);
 const rows = ref<number>(10);
 const paginator = ref<boolean>(true);
 
-const payoutRequests = ref<BasePayoutRequestResponse[]>(Array(rows.value).fill(null));
+const payoutRequests = computed(() => Object.values(payoutStore.getStatePayout(props.state)));
+const rowValues = computed(() => {
+  if (!isLoading.value) Array(rows.value).fill(null);
+  return payoutRequests.value;
+});
 
 const showModal: Ref<boolean> = ref(false);
 const dialog = ref();
@@ -107,7 +111,7 @@ const viewPayoutRequest = async (id: number) => {
 
 const props = defineProps({
   state: {
-    type: String as PropType<string>,
+    type: String as PropType<PayoutRequestStatusRequestStateEnum>,
     required: true,
   }
 });
@@ -127,7 +131,6 @@ async function loadPayoutRequests(skip = 0) {
   isLoading.value = true;
   const response: PaginatedBasePayoutRequestResponse = await payoutStore.fetchPayouts(rows.value, skip, props.state);
   if (response) {
-    payoutRequests.value = response.records as BasePayoutRequestResponse[];
     totalRecords.value = response._pagination.count || 0;
   }
   isLoading.value = false;

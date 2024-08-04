@@ -42,7 +42,7 @@
       <span class="font-italic text-sm">This payout request has been approved by {{ payout.approvedBy.firstName }} {{ payout.approvedBy.lastName }}</span>
     </div>
     <div class="flex flex-row gap-2 justify-content-end w-full mt-3">
-      <div v-if="!isApproved" class="flex flex-row gap-2">
+      <div v-if="isCreated" class="flex flex-row gap-2">
         <Button
             severity="success"
             :label="$t('approve')"
@@ -57,13 +57,13 @@
         />
       </div>
       <Button
+          v-else
           type="button"
           icon="pi pi-file-export"
           :disabled="downloadingPdf"
           severity="danger"
           :label="$t('download PDF')"
           @click="() => downloadPdf(payoutId)"
-          v-else
       />
       <Button
           severity="secondary"
@@ -105,6 +105,12 @@ const isApproved = computed(() => {
   if (!payout.value) return false;
   if (!isArray(payout.value.status)) return payout.value.status === PayoutRequestStatusRequestStateEnum.Approved;
   return payout.value.status.map((s) => s.state).includes(PayoutRequestStatusRequestStateEnum.Approved);
+});
+
+const isCreated = computed(() => {
+  if (!payout.value) return false;
+  if (!isArray(payout.value.status)) return payout.value.status === PayoutRequestStatusRequestStateEnum.Created;
+  return payout.value.status.length === 1;
 });
 
 const overBalance = computed(() => {

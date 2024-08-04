@@ -385,6 +385,7 @@
     "Progress": "Progress",
     "RequestedBy": "Requested By",
     "BankAccountName": "Bank Account Name",
+    "BankAccountNumber": "Bank Account Number",
     "Actions": "Actions"
   }
 }
