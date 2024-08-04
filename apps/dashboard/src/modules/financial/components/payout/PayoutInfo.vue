@@ -1,8 +1,16 @@
 <template>
   <div v-if="payout">
     <div class="flex flex-column gap-2">
-      <span>User: {{ payout.requestedBy.firstName }} {{ payout.requestedBy.lastName }}</span>
-
+      <span>Requested by <UserLink :user="payout.requestedBy"/></span>
+      <skeleton v-if="!isApproved && userBalance === null" class="w-6 my-1 h-0.5rem surface-300"/>
+      <div v-else-if="!isApproved"
+           :class="{'text-sm text-gray-700': !overBalance, 'text-red-500 font-bold': overBalance}">
+        <div class="flex flex-row gap-1">
+          <span v-if="overBalance"><i class="pi pi-exclamation-triangle text-red-500"></i></span>
+          <span>User has a current balance of</span>
+          <span v-if="userBalance">{{ formatPrice(userBalance?.amount) }}</span>
+        </div>
+      </div>
       <table class="table text-left my-1">
         <thead>
         <tr>
@@ -69,22 +77,27 @@
 
 <script setup lang="ts">
 import { type PayoutResponse, usePayoutStore } from "@/stores/payout.store";
-import { computed, type ComputedRef, onMounted, ref } from "vue";
+import { computed, type ComputedRef, onMounted, type Ref, ref } from "vue";
 import { useToast } from "primevue/usetoast";
 import { handleError } from "@/utils/errorUtils";
 import { formatDateFromString, formatPrice } from "sudosos-dashboard/src/utils/formatterUtils";
 import {
+  type BalanceResponse,
   PayoutRequestStatusRequestStateEnum
 } from "@sudosos/sudosos-client";
 import Skeleton from "primevue/skeleton";
 import Button from "primevue/button";
 import { isArray } from "lodash";
 import { getPayoutPdfSrc } from "@/utils/urlUtils";
+import UserLink from "@/components/UserLink.vue";
+import apiService from "@/services/ApiService";
 
 const toast = useToast();
 
 const payoutStore = usePayoutStore();
 const payout: ComputedRef<PayoutResponse | null> = computed(() => payoutStore.getPayout(props.payoutId));
+
+const userBalance: Ref<BalanceResponse | null | undefined> = ref(null);
 
 const loading = ref<boolean>(true);
 const downloadingPdf = ref<boolean>(false);
@@ -92,6 +105,12 @@ const isApproved = computed(() => {
   if (!payout.value) return false;
   if (!isArray(payout.value.status)) return payout.value.status === PayoutRequestStatusRequestStateEnum.Approved;
   return payout.value.status.map((s) => s.state).includes(PayoutRequestStatusRequestStateEnum.Approved);
+});
+
+const overBalance = computed(() => {
+  if (!payout.value) return false;
+  if (!userBalance.value) return false;
+  return userBalance.value.amount < payout.value.amount;
 });
 
 const emits = defineEmits(['close', 'payout:approved', 'payout:denied']);
@@ -109,6 +128,12 @@ onMounted(() => {
     handleError(err, toast);
   }).finally(() => {
     loading.value = false;
+  });
+  if (!payout.value) return;
+  apiService.balance.getBalanceId(payout.value.requestedBy.id).then((res) => {
+    userBalance.value = res.data;
+  }).catch((err) => {
+    userBalance.value = undefined;
   });
 });
 
