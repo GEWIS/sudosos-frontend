@@ -66,7 +66,7 @@
         :draggable="false"
         class="w-auto flex w-9 md:w-4"
         header="t('payout.PayoutDetails')">
-      <PayoutInfo :payoutId="payoutId"/>
+      <PayoutInfo :payoutId="payoutId" @close="showModal = false"/>
     </Dialog>
   </div>
 </template>
@@ -84,6 +84,7 @@ import DataTable, { type DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import { addListenerOnDialogueOverlay } from "@/utils/dialogUtil";
 import PayoutInfo from "@/modules/financial/components/payout/PayoutInfo.vue";
+import Button from "primevue/button";
 
 const payoutStore = usePayoutStore(); // hypothetical store usage
 const totalRecords = ref<number>(0);
@@ -102,7 +103,6 @@ const downloadingPdf = ref<boolean>(false);
 const viewPayoutRequest = async (id: number) => {
   showModal.value = true;
   payoutId.value = id;
-  // await router.push({ name: "payoutRequestInfo", params: { id } });
 };
 
 const props = defineProps({

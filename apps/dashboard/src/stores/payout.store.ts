@@ -1,16 +1,22 @@
-import type { PaginatedBasePayoutRequestResponse, PayoutRequestResponse } from "@sudosos/sudosos-client";
+import type {
+    BasePayoutRequestResponse,
+    PaginatedBasePayoutRequestResponse,
+    PayoutRequestResponse,
+    PayoutRequestStatusRequest
+} from "@sudosos/sudosos-client";
 import { defineStore } from "pinia";
 import apiService from "@/services/ApiService";
 
+export type PayoutResponse = PayoutRequestResponse | BasePayoutRequestResponse;
 export const usePayoutStore = defineStore('payout', {
     state: () => ({
-        payouts: {} as Record<number, PayoutRequestResponse>,
+        payouts: {} as Record<number,PayoutResponse>,
     }),
     getters: {
-        getPayout: (state) => (id: number): PayoutRequestResponse | null => {
+        getPayout: (state) => (id: number): PayoutResponse | null => {
             return state.payouts[id] || null;
         },
-        getAllPayouts(): Record<number, PayoutRequestResponse> {
+        getAllPayouts(): Record<number, PayoutResponse> {
             return this.payouts;
         }
     },
@@ -26,6 +32,18 @@ export const usePayoutStore = defineStore('payout', {
         },
         async fetchPayout(id: number): Promise<PayoutRequestResponse> {
             return apiService.payouts.getSinglePayoutRequest(id).then((res) => {
+                this.payouts[id] = res.data;
+                return res.data;
+            });
+        },
+        async denyPayout(id: number): Promise<PayoutRequestResponse> {
+            return apiService.payouts.setPayoutRequestStatus(id, { state: "DENIED" }).then((res) => {
+                this.payouts[id] = res.data;
+                return res.data;
+            });
+        },
+        async approvePayout(id: number): Promise<PayoutRequestResponse> {
+            return apiService.payouts.setPayoutRequestStatus(id, { state: "APPROVED" }).then((res) => {
                 this.payouts[id] = res.data;
                 return res.data;
             });
