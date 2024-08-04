@@ -377,5 +377,14 @@
     "edit": "Edit",
     "save": "Save",
     "close": "Close"
+  },
+  "payout": {
+    "Payouts": "Payouts",
+    "Payouts overview": "Payouts overview",
+    "Date": "Date",
+    "Progress": "Progress",
+    "RequestedBy": "Requested By",
+    "BankAccountName": "Bank Account Name",
+    "Actions": "Actions"
   }
 }
