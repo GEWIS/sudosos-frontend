@@ -337,6 +337,12 @@
   "tooltip": {
     "owner_revenue": "Note: Container owner gets the revenue, not the product owner"
   },
+  "common": {
+    "approve": "Approve",
+    "deny": "Deny",
+    "download PDF": "Download PDF",
+    "close": "Close"
+  },
   "c_invoiceInfo": {
     "Info": "Info",
     "Created on": "Created",
@@ -383,9 +389,19 @@
     "Payouts overview": "Payouts overview",
     "Date": "Date",
     "Progress": "Progress",
-    "RequestedBy": "Requested By",
+    "Requested by": "Requested by",
     "BankAccountName": "Bank Account Name",
     "BankAccountNumber": "Bank Account Number",
-    "Actions": "Actions"
+    "AccountName": "Account Name",
+    "Actions": "Actions",
+    "Create payout": "Create payout",
+    "Payout details": "Payout details",
+    "For": "For",
+    "Amount": "Amount",
+    "Current balance": "User has a current balance of {balance}",
+    "CreatedAt": "Created at",
+    "UpdatedAt": "Updated at",
+    "PayoutID": "Payout ID",
+    "ApprovedBy": "This payout request has been approved by {approvedBy}"
   }
 }

@@ -19,12 +19,12 @@
         </template>
       </Column>
       <Column field="status" :header="$t('payout.Progress')">
-        <template #body="slotProps">
+        <template #body>
           <Skeleton v-if="isLoading" class="w-6 my-1 h-1rem surface-300" />
           <span v-else>{{ state }}</span>
         </template>
       </Column>
-      <Column field="requestedBy.firstName" :header="$t('payout.RequestedBy')">
+      <Column field="requestedBy.firstName" :header="$t('payout.Requested by')">
         <template #body="slotProps">
           <Skeleton v-if="isLoading" class="w-6 my-1 h-1rem surface-300" />
           <span v-else>{{ slotProps.data.requestedBy.firstName }}</span>
@@ -65,7 +65,7 @@
         v-model:visible="showModal"
         :draggable="false"
         class="w-auto flex w-9 md:w-4"
-        header="t('payout.PayoutDetails')">
+        :header="$t('payout.Payout details')">
       <PayoutInfo :payoutId="payoutId" @close="showModal = false"/>
     </Dialog>
   </div>
@@ -75,7 +75,6 @@
 import { ref, onMounted, type PropType, type Ref, computed } from "vue";
 import { formatPrice, formatDateFromString } from "@/utils/formatterUtils";
 import {
-  type BasePayoutRequestResponse,
   type PaginatedBasePayoutRequestResponse, PayoutRequestStatusRequestStateEnum
 } from "@sudosos/sudosos-client";
 import { usePayoutStore } from "@/stores/payout.store";

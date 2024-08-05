@@ -19,7 +19,7 @@
         </TabView>
       </CardComponent>
     </div>
-    <FormDialog v-model="showDialog" :form="form">
+    <FormDialog v-model="showDialog" :form="form" :header="$t('payout.Create payout')">
       <template #form="slotProps">
         <PayoutCreateForm :form="slotProps.form" @submit:success="showDialog = false"/>
       </template>
