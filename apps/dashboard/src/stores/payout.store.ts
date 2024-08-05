@@ -12,6 +12,7 @@ export type PayoutResponse = PayoutRequestResponse | BasePayoutRequestResponse;
 export const usePayoutStore = defineStore('payout', {
     state: () => ({
         payouts: {} as Record<number,PayoutResponse>,
+        pending: 0,
     }),
     getters: {
         getStatePayout: (state) => (payoutState: PayoutRequestStatusRequestStateEnum): PayoutResponse[] => {
@@ -50,12 +51,14 @@ export const usePayoutStore = defineStore('payout', {
         async denyPayout(id: number): Promise<PayoutRequestResponse> {
             return apiService.payouts.setPayoutRequestStatus(id, { state: "DENIED" }).then((res) => {
                 this.payouts[id] = res.data;
+                this.pending--;
                 return res.data;
             });
         },
         async approvePayout(id: number): Promise<PayoutRequestResponse> {
             return apiService.payouts.setPayoutRequestStatus(id, { state: "APPROVED" }).then((res) => {
                 this.payouts[id] = res.data;
+                this.pending--;
                 return res.data;
             });
         },
@@ -68,7 +71,15 @@ export const usePayoutStore = defineStore('payout', {
         async createPayout(values: PayoutRequestRequest): Promise<PayoutRequestResponse> {
             return apiService.payouts.createPayoutRequest(values).then((res) => {
                 this.payouts[res.data.id] = res.data;
+                this.pending++;
                 return res.data;
+            });
+        },
+        async fetchPending(): Promise<number> {
+            return apiService.payouts.getAllPayoutRequests(undefined, undefined,undefined,
+              undefined, 'CREATED', 0, 0, undefined).then((res) => {
+                  this.pending = res.data._pagination.count;
+                  return this.pending;
             });
         },
     },
