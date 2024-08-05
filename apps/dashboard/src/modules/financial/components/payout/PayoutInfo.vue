@@ -1,28 +1,29 @@
 <template>
   <div v-if="payout">
     <div class="flex flex-column gap-2">
-      <span>Requested by <UserLink :user="payout.requestedBy"/></span>
+      <span>{{ $t('payout.Requested by') }} <UserLink :user="payout.requestedBy"/></span>
       <skeleton v-if="!isApproved && userBalance === null" class="w-6 my-1 h-0.5rem surface-300"/>
       <div v-else-if="!isApproved"
            :class="{'text-sm text-gray-700': !overBalance, 'text-red-500 font-bold': overBalance}">
         <div class="flex flex-row gap-1">
-          <span v-if="overBalance"><i class="pi pi-exclamation-triangle text-red-500"></i></span>
-          <span>User has a current balance of</span>
-          <span v-if="userBalance">{{ formatPrice(userBalance?.amount) }}</span>
+          <span v-if="overBalance"><i class="pi pi-exclamation-triangle"></i></span>
+          <span v-if="userBalance">
+            {{ t('payout.Current balance', { balance: formatPrice(userBalance.amount) }) }}
+          </span>
         </div>
       </div>
       <table class="table text-left my-1">
         <thead>
         <tr>
-          <th>Bank Account Number</th>
-          <th>Account Name</th>
-          <th>Amount</th>
+          <th>{{ $t('payout.BankAccountNumber') }}</th>
+          <th>{{ $t('payout.AccountName') }}</th>
+          <th>{{ $t('payout.Amount') }}</th>
         </tr>
         </thead>
         <tbody>
         <tr v-if="!loading">
-          <td>{{ payout.bankAccountNumber }}</td>
-          <td>{{ payout.bankAccountName }}</td>
+          <td>{{ (payout as PayoutRequestResponse).bankAccountNumber }}</td>
+          <td>{{ (payout as PayoutRequestResponse).bankAccountName }}</td>
           <td>{{ formatPrice(payout.amount) }}</td>
         </tr>
         <tr v-else>
@@ -33,25 +34,27 @@
         </tbody>
       </table>
       <div class="flex flex-column">
-        <span>Created At: {{ formatDateFromString(payout.createdAt) }}</span>
-        <span>Updated At: {{ formatDateFromString(payout.updatedAt) }}</span>
-        <span>Payout ID: {{ payout.id }}</span>
+        <span>{{ $t('payout.CreatedAt') + ': '}}{{ formatDateFromString(payout.createdAt) }}</span>
+        <span>{{ $t('payout.UpdatedAt') + ': '}}{{ formatDateFromString(payout.updatedAt) }}</span>
+        <span>{{ $t('payout.PayoutID') + ': ' }}{{ payout.id }}</span>
       </div>
     </div>
-    <div v-if="isApproved" class="mt-1">
-      <span class="font-italic text-sm">This payout request has been approved by {{ payout.approvedBy.firstName }} {{ payout.approvedBy.lastName }}</span>
+    <div v-if="isApproved && payout.approvedBy" class="mt-1">
+      <span class="font-italic text-sm">
+        {{ t('payout.ApprovedBy', {approvedBy: payout.approvedBy.firstName + ' ' + payout.approvedBy.lastName}) }}
+      </span>
     </div>
     <div class="flex flex-row gap-2 justify-content-end w-full mt-3">
       <div v-if="isCreated" class="flex flex-row gap-2">
         <Button
             severity="success"
-            :label="$t('approve')"
+            :label="$t('common.approve')"
             icon="pi pi-check"
             @click="approvePayout"
         />
         <Button
             severity="danger"
-            :label="$t('deny')"
+            :label="$t('common.deny')"
             icon="pi pi-times"
             @click="denyPayout"
         />
@@ -62,12 +65,12 @@
           icon="pi pi-file-export"
           :disabled="downloadingPdf"
           severity="danger"
-          :label="$t('download PDF')"
+          :label="$t('common.download PDF')"
           @click="() => downloadPdf(payoutId)"
       />
       <Button
           severity="secondary"
-          :label="$t('close')"
+          :label="$t('common.close')"
           icon="pi pi-times"
           @click="closeModal"
       />
@@ -78,29 +81,31 @@
 <script setup lang="ts">
 import { type PayoutResponse, usePayoutStore } from "@/stores/payout.store";
 import { computed, type ComputedRef, onMounted, type Ref, ref } from "vue";
+import type {
+   BalanceResponse, PayoutRequestResponse,
+} from "@sudosos/sudosos-client";
+import { PayoutRequestStatusRequestStateEnum } from "@sudosos/sudosos-client";
+import { isArray } from "lodash";
+import { useI18n } from "vue-i18n";
 import { useToast } from "primevue/usetoast";
 import { handleError } from "@/utils/errorUtils";
+import { getPayoutPdfSrc } from "@/utils/urlUtils";
 import { formatDateFromString, formatPrice } from "sudosos-dashboard/src/utils/formatterUtils";
-import {
-  type BalanceResponse,
-  PayoutRequestStatusRequestStateEnum
-} from "@sudosos/sudosos-client";
+import apiService from "@/services/ApiService";
 import Skeleton from "primevue/skeleton";
 import Button from "primevue/button";
-import { isArray } from "lodash";
-import { getPayoutPdfSrc } from "@/utils/urlUtils";
 import UserLink from "@/components/UserLink.vue";
-import apiService from "@/services/ApiService";
 
+const { t } = useI18n();
 const toast = useToast();
 
 const payoutStore = usePayoutStore();
 const payout: ComputedRef<PayoutResponse | null> = computed(() => payoutStore.getPayout(props.payoutId));
 
 const userBalance: Ref<BalanceResponse | null | undefined> = ref(null);
-
 const loading = ref<boolean>(true);
 const downloadingPdf = ref<boolean>(false);
+
 const isApproved = computed(() => {
   if (!payout.value) return false;
   if (!isArray(payout.value.status)) return payout.value.status === PayoutRequestStatusRequestStateEnum.Approved;
@@ -138,7 +143,7 @@ onMounted(() => {
   if (!payout.value) return;
   apiService.balance.getBalanceId(payout.value.requestedBy.id).then((res) => {
     userBalance.value = res.data;
-  }).catch((err) => {
+  }).catch(() => {
     userBalance.value = undefined;
   });
 });
