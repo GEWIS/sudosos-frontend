@@ -5,11 +5,11 @@
                    @update:value="form.context.setFieldValue('user', $event)"
                    :errors="form.context.errors.value.user"
                    id="name" placeholder="John Doe" type="text"/>
-    <skeleton v-if="loadingBalance" class="w-6 my-1 h-0.5rem surface-300"/>
+
+    <skeleton v-if="userBalance === null && form.model.user.value.value" class="w-6 my-1 h-0.5rem surface-300"/>
     <div v-else-if="userBalance" class="flex flex-row gap-1"
-         :class="{'text-gray-700': !false, 'text-red-500 font-bold': false}">
-      <span>User has a current balance of</span>
-      <span>{{ formatPrice(userBalance?.amount) }}</span>
+         :class="{'text-gray-700': !balanceError, 'text-red-500 font-bold': balanceError}">
+      <span>{{ t('payout.Current balance', { balance: formatPrice(userBalance.amount) }) }}</span>
     </div>
 
     <InputSpan :label="$t('payout.BankAccountNumber')"
@@ -32,34 +32,36 @@
                @update:value="form.context.setFieldValue('amount', $event)"
                :errors="form.context.errors.value.amount"
                id="name" placeholder="Amount" type="currency"/>
+
     <div class="flex w-full justify-content-end">
       <ErrorSpan :error="balanceError"/>
     </div>
+
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Form } from "@/utils/formUtils";
 import { type PropType, ref, type Ref, watch } from "vue";
 import * as yup from "yup";
+import { useI18n } from "vue-i18n";
+import { usePayoutStore } from "@/stores/payout.store";
+import apiService from "@/services/ApiService";
+import type { BalanceResponse, PayoutRequestRequest } from "@sudosos/sudosos-client";
 import type { createPayoutSchema } from "@/utils/validation-schema";
+import type { Form } from "@/utils/formUtils";
+import { setSubmit } from "@/utils/formUtils";
+import { formatPrice } from "@/utils/formatterUtils";
+import ErrorSpan from "@/components/ErrorSpan.vue";
+import { useToast } from "primevue/usetoast";
 import InputSpan from "@/components/InputSpan.vue";
 import InputUserSpan from "@/components/InputUserSpan.vue";
-import type { BalanceResponse, PayoutRequestRequest } from "@sudosos/sudosos-client";
-import apiService from "@/services/ApiService";
-import { formatPrice } from "@/utils/formatterUtils";
-import { useI18n } from "vue-i18n";
-import ErrorSpan from "@/components/ErrorSpan.vue";
-import { usePayoutStore } from "@/stores/payout.store";
-import { useToast } from "primevue/usetoast";
-
-const emit = defineEmits(['submit:success', 'submit:error']);
-
-const payoutStore = usePayoutStore();
+import { handleError } from "@/utils/errorUtils";
 
 const { t } = useI18n();
 const toast = useToast();
-const userBalance: Ref<BalanceResponse | null | undefined> = ref(null);
+const payoutStore = usePayoutStore();
+
+const emit = defineEmits(['submit:success', 'submit:error']);
 
 const props = defineProps({
   form: {
@@ -68,7 +70,9 @@ const props = defineProps({
   },
 });
 
+const userBalance: Ref<BalanceResponse | null | undefined> = ref(null);
 const balanceError = ref<string>('');
+
 const validateAmount = () => {
   if (userBalance.value && props.form.model.amount.value.value > userBalance.value.amount.amount / 100) {
     balanceError.value = `${t('payout.AmountToHigh')}`;
@@ -85,21 +89,18 @@ watch(() => props.form.model.amount.value.value, () => {
   validateAmount();
 });
 
-const loadingBalance = ref<boolean>(false);
-
+// fetch user balance when selected user changes
 watch(() => props.form.model.user.value.value, () => {
   if (props.form.model.user.value.value.id) {
-    loadingBalance.value = true;
     apiService.balance.getBalanceId(props.form.model.user.value.value.id).then((res) => {
       userBalance.value = res.data;
-      loadingBalance.value = false;
     }).catch(() => {
       userBalance.value = undefined;
     });
   }
 });
 
-props.form.submit = props.form.context.handleSubmit(async (values) => {
+setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
   const request: PayoutRequestRequest = {
     amount: {
       amount: Math.round(values.amount * 100),
@@ -115,19 +116,14 @@ props.form.submit = props.form.context.handleSubmit(async (values) => {
     toast.add({
       severity: 'success',
       summary: t('successMessages.success'),
-      detail: t('successMessages.payoutCreate'),
+      detail: t('successMessages.payoutCreated'),
       life: 3000,
     });
   }).catch((err) => {
     emit('submit:error', err);
-    toast.add({
-      severity: 'error',
-      summary: t('errorMessages.error'),
-      detail: err,
-      life: 3000,
-    });
+    handleError(err, toast);
   });
-});
+}));
 
 </script>
 

@@ -259,7 +259,11 @@
     "productCreate": "Successfully created product.",
     "updateContainer": "Successfully updated container.",
     "invoiceDeleted": "Successfully deleted invoice.",
-    "invoiceUpdated": "Successfully updated invoice."
+    "invoiceUpdated": "Successfully updated invoice.",
+    "payoutCreated": "Successfully created payout.",
+    "payoutDeleted": "Successfully deleted payout.",
+    "payoutApproved": "Successfully approved payout.",
+    "payoutDenied": "Successfully denied payout."
   },
   "termsOfService": {
     "acceptFirst": "Accept the Terms of Service",
@@ -402,6 +406,7 @@
     "CreatedAt": "Created at",
     "UpdatedAt": "Updated at",
     "PayoutID": "Payout ID",
-    "ApprovedBy": "This payout request has been approved by {approvedBy}"
+    "ApprovedBy": "This payout request has been approved by {approvedBy}",
+    "AmountToHigh": "Amount is higher than the user's balance"
   }
 }

@@ -160,7 +160,7 @@ onMounted(() => {
 const approvePayout = async () => {
   if (!payout.value) return;
   await payoutStore.approvePayout(payout.value.id).then(() => {
-    toast.add({ severity: 'success', summary: 'Success', detail: 'Payout approved successfully.' });
+    toast.add({ severity: 'success', summary: 'Success', detail: 'Payout approved successfully.', life: 3000 });
     emits('payout:approved');
     emits('close');
   }).catch((err) => handleError(err, toast));
@@ -169,7 +169,7 @@ const approvePayout = async () => {
 const denyPayout = async () => {
   if (!payout.value) return;
   await payoutStore.denyPayout(payout.value.id).then(() => {
-    toast.add({ severity: 'success', summary: 'Success', detail: 'Payout denied successfully.' });
+    toast.add({ severity: 'success', summary: 'Success', detail: 'Payout denied successfully.', life: 3000 });
     emits('payout:denied');
     emits('close');
   }).catch((err) => handleError(err, toast));

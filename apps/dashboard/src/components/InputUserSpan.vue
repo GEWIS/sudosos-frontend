@@ -2,7 +2,7 @@
   <div>
     <span :class="['flex flex-wrap justify-content-between',
      column ? 'flex-column gap-1' : 'flex-row align-items-center gap-3']">
-      <p class="my-0">{{ label }}</p>
+      <span class="my-0">{{ label }}</span>
       <FindUser  :placeholder="placeholder"
                  v-model="internalValue"
                  :disabled="disabled"/>
@@ -17,7 +17,7 @@
 import ErrorSpan from "@/components/ErrorSpan.vue";
 import { onMounted, type PropType, ref, watch } from "vue";
 import FindUser from "@/components/FindUser.vue";
-import type { UserResponse } from "@sudosos/sudosos-client";
+import type { BaseUserResponse } from "@sudosos/sudosos-client";
 
 const emit = defineEmits(['update:value']);
 
@@ -27,7 +27,7 @@ const props = defineProps({
     required: true
   },
   value: {
-    type: Object as PropType<UserResponse>,
+    type: Object as PropType<BaseUserResponse>,
   },
   errors: {
     type: Object as PropType<any>,
