@@ -27,7 +27,7 @@
                  :min="0.0"
                  :min-fraction-digits="0" :max-fraction-digits="2"
                 :placeholder="placeholder"
-                v-model="internalValue"
+                v-model="internalValue as number"
                 :disabled="disabled"/>
 
     </span>
@@ -38,7 +38,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, type PropType } from 'vue';
+import { ref, watch, onMounted } from 'vue';
+import type { PropType, Ref } from 'vue';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import Calendar from 'primevue/calendar';
@@ -96,7 +97,7 @@ const initialValue = () => {
   return '';
 };
 
-const internalValue = ref(initialValue());
+const internalValue: Ref<string | number | undefined> = ref(initialValue());
 
 onMounted(() => {
   internalValue.value = props.value;
@@ -114,5 +115,4 @@ watch(internalValue, (newValue) => {
 </script>
 
 <style scoped lang="scss">
-/* Your styles here */
 </style>
