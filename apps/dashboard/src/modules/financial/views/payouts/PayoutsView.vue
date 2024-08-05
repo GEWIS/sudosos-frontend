@@ -45,9 +45,7 @@ const states = [PayoutRequestStatusRequestStateEnum.Created, PayoutRequestStatus
 
 const showDialog: Ref<boolean> = ref(false);
 const form = schemaToForm(createPayoutSchema);
-
 </script>
 
 <style scoped lang="scss">
-
 </style>

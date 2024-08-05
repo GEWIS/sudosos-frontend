@@ -2,14 +2,19 @@
   <div v-if="payout">
     <div class="flex flex-column gap-2">
       <span>{{ $t('payout.Requested by') }} <UserLink :user="payout.requestedBy"/></span>
-      <skeleton v-if="!isApproved && userBalance === null" class="w-6 my-1 h-0.5rem surface-300"/>
-      <div v-else-if="!isApproved"
-           :class="{'text-sm text-gray-700': !overBalance, 'text-red-500 font-bold': overBalance}">
-        <div class="flex flex-row gap-1">
-          <span v-if="overBalance"><i class="pi pi-exclamation-triangle"></i></span>
-          <span v-if="userBalance">
+      <div v-if="isCreated">
+        <skeleton v-if="userBalance === null" class="w-6 my-1 h-0.5rem surface-300"/>
+        <div v-else
+             :class="{'text-sm text-gray-700': !overBalance, 'text-red-500 font-bold': overBalance}">
+          <div class="flex flex-row gap-1">
+            <span v-if="overBalance"><i class="pi pi-exclamation-triangle"></i></span>
+            <span v-if="userBalance">
             {{ t('payout.Current balance', { balance: formatPrice(userBalance.amount) }) }}
-          </span>
+            </span>
+            <span v-else>
+              {{ t('payout.Current balance', { balance: '-' }) }}
+            </span>
+          </div>
         </div>
       </div>
       <table class="table text-left my-1">
@@ -99,10 +104,22 @@ import UserLink from "@/components/UserLink.vue";
 const { t } = useI18n();
 const toast = useToast();
 
+const emits = defineEmits(['close', 'payout:approved', 'payout:denied']);
+
+const props = defineProps({
+  payoutId: {
+    type: Number,
+    required: true,
+  }
+});
+
+// Retrieve all payouts with the given state
 const payoutStore = usePayoutStore();
 const payout: ComputedRef<PayoutResponse | null> = computed(() => payoutStore.getPayout(props.payoutId));
 
+// null if the balance has not been fetched yet
 const userBalance: Ref<BalanceResponse | null | undefined> = ref(null);
+
 const loading = ref<boolean>(true);
 const downloadingPdf = ref<boolean>(false);
 
@@ -124,15 +141,7 @@ const overBalance = computed(() => {
   return userBalance.value.amount < payout.value.amount;
 });
 
-const emits = defineEmits(['close', 'payout:approved', 'payout:denied']);
-
-const props = defineProps({
-  payoutId: {
-    type: Number,
-    required: true,
-  }
-});
-
+// fetch payout details and user balance
 onMounted(() => {
   loading.value = true;
   payoutStore.fetchPayout(props.payoutId).catch((err) => {
