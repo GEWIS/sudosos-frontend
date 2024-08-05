@@ -19,15 +19,16 @@
 
 <script setup lang="ts">
 import { onMounted, type PropType, ref, watch } from "vue";
+import type { Ref } from "vue";
 import apiService from "@/services/ApiService";
 import { debounce } from "lodash";
-import type { UserResponse } from "@sudosos/sudosos-client";
+import type { BaseUserResponse, UserResponse } from "@sudosos/sudosos-client";
 
 const lastQuery = ref("");
 const selectedUser = ref(null);
 const loading = ref(false);
 
-const users = ref([]);
+const users: Ref<(BaseUserResponse & { fullName: string })[]> = ref([]);
 const emits = defineEmits(['update:value']);
 
 defineProps({
@@ -41,8 +42,8 @@ defineProps({
   },
 });
 
-const transformUsers = (userData) => {
-  return userData.map(user => ({
+const transformUsers = (userData: BaseUserResponse[]) => {
+  return userData.map((user: BaseUserResponse) => ({
     ...user,
     fullName: `${user.firstName} ${user.lastName}`
   }));

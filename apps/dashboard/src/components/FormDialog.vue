@@ -39,7 +39,7 @@ const props = defineProps({
     required: true,
   },
   form: {
-    type: Object as PropType<Form>,
+    type: Object as PropType<Form<any>>,
     required: true,
   },
   header: {
