@@ -85,7 +85,14 @@ import { addListenerOnDialogueOverlay } from "@/utils/dialogUtil";
 import PayoutInfo from "@/modules/financial/components/payout/PayoutInfo.vue";
 import Button from "primevue/button";
 
-const payoutStore = usePayoutStore(); // hypothetical store usage
+const props = defineProps({
+  state: {
+    type: String as PropType<PayoutRequestStatusRequestStateEnum>,
+    required: true,
+  }
+});
+
+const payoutStore = usePayoutStore();
 const totalRecords = ref<number>(0);
 const isLoading = ref<boolean>(true);
 
@@ -101,19 +108,12 @@ const rowValues = computed(() => {
 const showModal: Ref<boolean> = ref(false);
 const dialog = ref();
 const payoutId: Ref<number> = ref(0);
-
 const downloadingPdf = ref<boolean>(false);
+
 const viewPayoutRequest = async (id: number) => {
   showModal.value = true;
   payoutId.value = id;
 };
-
-const props = defineProps({
-  state: {
-    type: String as PropType<PayoutRequestStatusRequestStateEnum>,
-    required: true,
-  }
-});
 
 const downloadPdf = async (id: number) => {
   downloadingPdf.value = true;
@@ -130,6 +130,7 @@ async function loadPayoutRequests(skip = 0) {
   isLoading.value = true;
   const response: PaginatedBasePayoutRequestResponse = await payoutStore.fetchPayouts(rows.value, skip, props.state);
   if (response) {
+    // ignore the payouts in the response as we fetch them from the store
     totalRecords.value = response._pagination.count || 0;
   }
   isLoading.value = false;
