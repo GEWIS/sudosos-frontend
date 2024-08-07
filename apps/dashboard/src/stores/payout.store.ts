@@ -5,7 +5,6 @@ import type {
 } from "@sudosos/sudosos-client";
 import { defineStore } from "pinia";
 import apiService from "@/services/ApiService";
-import { isArray } from "lodash";
 import { PayoutRequestStatusRequestStateEnum } from "@sudosos/sudosos-client";
 
 export type PayoutResponse = PayoutRequestResponse | BasePayoutRequestResponse;
@@ -17,12 +16,7 @@ export const usePayoutStore = defineStore('payout', {
     getters: {
         getStatePayout: (state) => (payoutState: PayoutRequestStatusRequestStateEnum): PayoutResponse[] => {
             return Object.values(state.payouts).filter((payout) => {
-                if (isArray(payout.status) && payout.status) {
-                    if (payout.status[payout.status.length - 1].state === payoutState) return true;
-                } else {
-                    if (payout.status && payout.status === payoutState) return true;
-                }
-                return false;
+                return payout.status === payoutState;
             });
         },
         getPayout: (state) => (id: number): PayoutResponse | null => {

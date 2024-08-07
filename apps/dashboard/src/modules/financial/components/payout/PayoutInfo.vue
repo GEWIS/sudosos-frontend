@@ -90,7 +90,6 @@ import type {
    BalanceResponse, PayoutRequestResponse,
 } from "@sudosos/sudosos-client";
 import { PayoutRequestStatusRequestStateEnum } from "@sudosos/sudosos-client";
-import { isArray } from "lodash";
 import { useI18n } from "vue-i18n";
 import { useToast } from "primevue/usetoast";
 import { handleError } from "@/utils/errorUtils";
@@ -125,14 +124,12 @@ const downloadingPdf = ref<boolean>(false);
 
 const isApproved = computed(() => {
   if (!payout.value) return false;
-  if (!isArray(payout.value.status)) return payout.value.status === PayoutRequestStatusRequestStateEnum.Approved;
-  return payout.value.status.map((s) => s.state).includes(PayoutRequestStatusRequestStateEnum.Approved);
+  return payout.value.status === PayoutRequestStatusRequestStateEnum.Approved;
 });
 
 const isCreated = computed(() => {
   if (!payout.value) return false;
-  if (!isArray(payout.value.status)) return payout.value.status === PayoutRequestStatusRequestStateEnum.Created;
-  return payout.value.status.length === 1;
+  return payout.value.status === PayoutRequestStatusRequestStateEnum.Created;
 });
 
 const overBalance = computed(() => {
