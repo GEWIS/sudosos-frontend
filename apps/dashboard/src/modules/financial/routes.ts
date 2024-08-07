@@ -1,6 +1,7 @@
 import type { RouteRecordRaw } from "vue-router";
 import DashboardLayout from "@/layout/DashboardLayout.vue";
 import FineView from "@/modules/financial/views/FineView.vue";
+import PayoutsView from "@/modules/financial/views/payouts/PayoutsView.vue";
 import { UserRole } from "@/utils/rbacUtils";
 
 export function financialRoutes(): RouteRecordRaw[] {
@@ -19,6 +20,15 @@ export function financialRoutes(): RouteRecordRaw[] {
           rolesAllowed: [UserRole.BAC_PM]
         }
       },
+        {
+          path: '/payouts',
+          component: PayoutsView,
+          name: 'payouts',
+          meta: {
+            requiresAuth: true,
+            rolesAllowed: [UserRole.BAC_PM]
+          }
+        }
       ]
     }
   ];

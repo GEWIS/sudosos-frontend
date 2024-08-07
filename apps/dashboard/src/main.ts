@@ -11,6 +11,7 @@ import InputText from "primevue/inputtext";
 import Menubar from "primevue/menubar";
 import Panel from "primevue/panel";
 import DataTable from "primevue/datatable";
+import Calendar from 'primevue/calendar';
 import DataView from "primevue/dataview";
 import InputNumber from "primevue/inputnumber";
 import Dialog from "primevue/dialog";
@@ -75,6 +76,7 @@ app.component('ProgressSpinner', ProgressSpinner);
 app.component('SelectButton', SelectButton);
 app.directive('tooltip', Tooltip);
 app.component('ToggleButton', ToggleButton);
+app.component('Calendar', Calendar);
 
 populateStoresFromToken(apiService);
 app.mount('#app');
