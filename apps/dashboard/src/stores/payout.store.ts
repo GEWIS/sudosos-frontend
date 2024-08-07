@@ -36,7 +36,7 @@ export const usePayoutStore = defineStore('payout', {
         async fetchPayouts(take: number, skip: number, state?: string): Promise<PaginatedBasePayoutRequestResponse> {
             return apiService.payouts.getAllPayoutRequests(undefined, undefined,undefined,
               undefined, state, take, skip).then((res) => {
-                  res.data.records.forEach((payout: PayoutRequestResponse) => {
+                  res.data.records.forEach((payout: BasePayoutRequestResponse) => {
                       this.payouts[payout.id] = payout;
                   });
                   return res.data;
@@ -64,8 +64,9 @@ export const usePayoutStore = defineStore('payout', {
         },
         async fetchPdf(id: number): Promise<string> {
             return apiService.payouts.getPayoutRequestPdf(id).then((res) => {
-                this.payouts[id].pdf = res.data.pdf;
-                return res.data.pdf;
+                const pdf = (res.data as any as { pdf: string }).pdf;
+                this.payouts[id].pdf = pdf;
+                return pdf;
             });
         },
         async createPayout(values: PayoutRequestRequest): Promise<PayoutRequestResponse> {
