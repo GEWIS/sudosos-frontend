@@ -23,4 +23,4 @@ jobs:
         run: yarn build
       - run: |
           git config --global --add safe.directory /__w/sudosos-frontend/sudosos-frontend
-          git diff --relative=dist/ --exit-code
+          git diff --relative=lib/common/dist --exit-code
