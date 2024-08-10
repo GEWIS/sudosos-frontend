@@ -1,0 +1,26 @@
+name: Check lib
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  check-lib-common:
+    runs-on: ubuntu-latest
+    container:
+      image: node:18
+    steps:
+      - uses: actions/checkout@v4
+      - run: yarn install
+        working-directory: lib/common
+      - name: lint
+        working-directory: lib/common
+        run: yarn lint
+      - name: build
+        working-directory: lib/common
+        run: yarn build
+      - run: |
+          git config --global --add safe.directory /__w/sudosos-frontend/sudosos-frontend
+          git diff --relative=dist/ --exit-code
