@@ -262,7 +262,8 @@
     "productContainerDelete": "Product is succesvol verwijderd van container.",
     "productCreate": "Product is succesvol aangemaakt.",
     "updateContainer": "Container is succesvol geüpdatet.",
-    "invoiceDeleted": "Factuur is succesvol verwijderd."
+    "invoiceDeleted": "Factuur is succesvol verwijderd.",
+    "invoiceUpdated": "Factuur {reference} is succesvol geüpdatet."
   },
   "termsOfService": {
     "acceptFirst": "Accepteer de Voorwaarden",

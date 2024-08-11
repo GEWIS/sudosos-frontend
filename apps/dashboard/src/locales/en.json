@@ -258,7 +258,8 @@
     "productContainerDelete": "Successfully deleted product from container.",
     "productCreate": "Successfully created product.",
     "updateContainer": "Successfully updated container.",
-    "invoiceDeleted": "Successfully deleted invoice."
+    "invoiceDeleted": "Successfully deleted invoice.",
+    "invoiceUpdated": "Successfully updated invoice."
   },
   "termsOfService": {
     "acceptFirst": "Accept the Terms of Service",

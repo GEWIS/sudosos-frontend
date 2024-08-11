@@ -66,7 +66,7 @@ setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
     toast.add({
       severity: 'success',
       summary: t('successMessages.success'),
-      detail: values,
+      detail: t('successMessages.invoiceUpdated'),
       life: 3000,
     });
     emit('update:edit', false);
