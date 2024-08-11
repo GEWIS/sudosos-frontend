@@ -47,6 +47,7 @@
                 @click="() => viewPayoutRequest(slotProps.data.id)"
             />
             <Button
+                v-tooltip.top="$t('payout.Download PDF')"
                 type="button"
                 icon="pi pi-file-export"
                 class="p-button-rounded p-button-text p-button-plain"

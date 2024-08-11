@@ -13,14 +13,14 @@
           type="submit"
           icon="pi pi-check"
           :disabled="!props.form.context.meta.value.valid"
-          :label="$t('create')"
+          :label="$t('common.create')"
           @click="props.form.submit"
       />
       <Button
           type="button"
           severity="secondary"
           icon="pi pi-times"
-          :label="$t('close')"
+          :label="$t('common.close')"
           @click="visible = false"
       />
     </div>

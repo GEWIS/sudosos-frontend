@@ -1,23 +1,21 @@
 <template>
   <div class="page-container">
     <div class="page-title">{{ $t('payout.Payouts overview') }}</div>
-    <div class="content-wrapper flex flex-column gap-5">
-      <CardComponent :header="$t('payout.Payouts')" class="w-full">
-        <template #topAction>
-          <Button
-              type="button"
-              severity="secondary"
-              :label="$t('payout.Create payout')"
-              icon="pi pi-plus"
-              @click="showDialog = true"
-          />
-        </template>
-        <TabView class="w-full">
-          <TabPanel v-for="state in states" :key="state" :header="state">
-            <PayoutTable :state="state" />
-          </TabPanel>
-        </TabView>
-      </CardComponent>
+    <div class="content-wrapper flex flex-column">
+      <div class="flex flex-row justify-content-end w-full mt-3">
+        <Button
+            type="button"
+            severity="secondary"
+            :label="$t('payout.Create payout')"
+            icon="pi pi-plus"
+            @click="showDialog = true"
+        />
+      </div>
+      <TabView class="w-full">
+        <TabPanel v-for="state in states" :key="state" :header="state">
+          <PayoutTable :state="state"/>
+        </TabPanel>
+      </TabView>
     </div>
     <FormDialog v-model="showDialog" :form="form" :header="$t('payout.Create payout')">
       <template #form="slotProps">
