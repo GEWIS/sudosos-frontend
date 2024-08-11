@@ -2,10 +2,11 @@
   <div class="page-container">
     <div class="page-title">{{ $t('payout.Payouts overview') }}</div>
     <div class="content-wrapper flex flex-column">
-      <div class="flex flex-row justify-content-end w-full">
+      <div class="flex flex-row justify-content-end w-full -mb-5">
         <Button
             type="button"
             severity="primary"
+            class="z-5"
             :label="$t('payout.Create payout')"
             icon="pi pi-plus"
             @click="showDialog = true"
@@ -28,7 +29,6 @@
 <script setup lang="ts">
 import { PayoutRequestStatusRequestStateEnum } from "@sudosos/sudosos-client";
 import { type Ref, ref } from "vue";
-import CardComponent from "@/components/CardComponent.vue";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
 import PayoutTable from "@/modules/financial/components/payout/PayoutTable.vue";

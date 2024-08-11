@@ -119,6 +119,7 @@ setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
       detail: t('successMessages.payoutCreated'),
       life: 3000,
     });
+    props.form.context.resetForm();
   }).catch((err) => {
     emit('submit:error', err);
     handleError(err, toast);

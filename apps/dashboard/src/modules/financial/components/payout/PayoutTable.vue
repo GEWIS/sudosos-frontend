@@ -73,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, type PropType, type Ref, computed } from "vue";
+import { ref, onMounted, type PropType, type Ref, computed, watch } from "vue";
 import { formatPrice, formatDateFromString } from "@/utils/formatterUtils";
 import {
   type PaginatedBasePayoutRequestResponse, PayoutRequestStatusRequestStateEnum
@@ -100,7 +100,7 @@ const isLoading = ref<boolean>(true);
 const rows = ref<number>(5);
 const paginator = ref<boolean>(true);
 
-const payoutRequests = computed(() => Object.values(payoutStore.getStatePayout(props.state)));
+const payoutRequests = ref();
 const rowValues = computed(() => {
   if (isLoading.value) return Array(rows.value).fill(null);
   return payoutRequests.value;
@@ -131,7 +131,7 @@ async function loadPayoutRequests(skip = 0) {
   isLoading.value = true;
   const response: PaginatedBasePayoutRequestResponse = await payoutStore.fetchPayouts(rows.value, skip, props.state);
   if (response) {
-    // ignore the payouts in the response as we fetch them from the store
+    payoutRequests.value = response.records;
     totalRecords.value = response._pagination.count || 0;
   }
   isLoading.value = false;
@@ -140,6 +140,10 @@ async function loadPayoutRequests(skip = 0) {
 async function onPage(event: DataTablePageEvent) {
   await loadPayoutRequests(event.first);
 }
+
+watch(() => payoutStore.getUpdatedAt, () => {
+  loadPayoutRequests();
+});
 </script>
 
 <style scoped lang="scss">

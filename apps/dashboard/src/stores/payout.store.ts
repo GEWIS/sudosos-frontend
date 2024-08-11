@@ -11,6 +11,7 @@ export type PayoutResponse = PayoutRequestResponse | BasePayoutRequestResponse;
 export const usePayoutStore = defineStore('payout', {
     state: () => ({
         payouts: {} as Record<number,PayoutResponse>,
+        updatedAt: 0,
         pending: 0,
     }),
     getters: {
@@ -21,6 +22,9 @@ export const usePayoutStore = defineStore('payout', {
         },
         getPayout: (state) => (id: number): PayoutResponse | null => {
             return state.payouts[id] || null;
+        },
+        getUpdatedAt(): number {
+            return this.updatedAt;
         },
         getAllPayouts(): Record<number, PayoutResponse> {
             return this.payouts;
@@ -46,6 +50,7 @@ export const usePayoutStore = defineStore('payout', {
             return apiService.payouts.setPayoutRequestStatus(id, { state: "DENIED" }).then((res) => {
                 this.payouts[id] = res.data;
                 this.pending--;
+                this.updatedAt = Date.now();
                 return res.data;
             });
         },
@@ -53,6 +58,7 @@ export const usePayoutStore = defineStore('payout', {
             return apiService.payouts.setPayoutRequestStatus(id, { state: "APPROVED" }).then((res) => {
                 this.payouts[id] = res.data;
                 this.pending--;
+                this.updatedAt = Date.now();
                 return res.data;
             });
         },
@@ -67,6 +73,7 @@ export const usePayoutStore = defineStore('payout', {
             return apiService.payouts.createPayoutRequest(values).then((res) => {
                 this.payouts[res.data.id] = res.data;
                 this.pending++;
+                this.updatedAt = Date.now();
                 return res.data;
             });
         },
