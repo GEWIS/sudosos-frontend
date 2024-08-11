@@ -3,7 +3,7 @@
     <div>
       <div class="page-title flex flex-row">
         <div class="flex flex-column">
-          <span>{{ $t("pdf.Invoice") }}</span>
+          <span>{{ isCredit ? $t("pdf.Credit") : $t("pdf.Invoice") }}</span>
           <small class="text-base">
             {{ invoice.reference + ": " }} <i>{{ invoice.description }}</i>
           </small>
@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, ref, type Ref } from "vue";
+import { computed, onBeforeMount, ref, type Ref } from "vue";
 import { handleError } from "@/utils/errorUtils";
 import { useInvoiceStore } from "@/stores/invoice.store";
 import type { InvoiceResponse } from "@sudosos/sudosos-client";
@@ -42,6 +42,11 @@ const route = useRoute();
 
 const invoice: Ref<InvoiceResponse | undefined> = ref(undefined);
 const invoiceStore = useInvoiceStore();
+
+const isCredit = computed(() => {
+  if (!invoice.value) return false;
+  return invoice.value?.transfer?.to === undefined;
+});
 
 onBeforeMount(async () => {
   const id = Number(route.params.id);

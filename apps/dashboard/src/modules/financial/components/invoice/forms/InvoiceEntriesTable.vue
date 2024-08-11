@@ -1,25 +1,79 @@
 <template>
-  <DataTable :value="invoice.invoiceEntries" class="w-full">
-    <Column field="description" :header="$t('transactions.description')"/>
-    <Column field="amount" :header="$t('transactions.amount')"/>
-    <Column field="priceInclVat" :header="$t('transactions.price')">
-      <template #body="slotProps">
-        {{ formatPrice(slotProps.data.priceInclVat) }}
+  <DataTable
+      :value="invoice.invoiceEntries"
+      :pt="{
+        tfoot: 'font-bold'
+      }"
+  >
+    <Column field="amount" header="#" class="p-1">
+      <template #body="entry">
+        <span v-if="entry.index < totalRowCutoff">
+        {{ entry.data.amount }}
+        </span>
       </template>
     </Column>
-    <Column field="vatPercentage" header="VAT"/>
-    <Column header="TOTAL">
-      <template #body="slotProps">
-        {{ formatPrice(rowTotal(slotProps.data)) }}
+    <Column field="description" :header="$t('transactions.description')" class="p-1">
+      <template #body="entry">
+        <span v-if="entry.index < totalRowCutoff">
+          {{ entry.data.description }}
+        </span>
+      </template>
+    </Column>
+    <Column
+        field="priceInclVat"
+        :header="$t('transactions.price')"
+        class="p-1"
+    >
+      <template #body="entry">
+        <span v-if="entry.index < totalRowCutoff">
+          {{ formatPrice(entry.data.priceInclVat) }}
+        </span>
+      </template>
+    </Column>
+    <Column field="vatPercentage" header="VAT" class="p-1">
+      <template #body="entry">
+        <span v-if="entry.index < totalRowCutoff">
+          {{ entry.data.vatPercentage +  '%'}}
+        </span>
+        <span v-else class="font-bold">
+          {{entry.data.description}}
+        </span>
+      </template>
+    </Column>
+    <Column
+        field="totalPriceInclVat"
+        :header="$t('transactions.amount')"
+        class="p-1"
+    >
+      <template #body="entry">
+        <span :class="{ 'font-bold': entry.index >= totalRowCutoff }">
+          {{ formatPrice(rowTotal(entry.data)) }}
+        </span>
       </template>
     </Column>
   </DataTable>
-  <div style="max-width: 20rem; margin-right:0;">
-    <InfoSpan label="Total Excl. VAT" :value="formatPrice(exclVat)"/>
-    <InfoSpan v-for="key in Object.keys(vat)"  v-bind:key="key"
-              :label="`VAT ${key}%`" :value="formatPrice(vat[key as any])"/>
-    <InfoSpan label="Total Incl. VAT" :value="formatPrice(inclVat)"/>
-  </div>
+
+  <!--  <DataTable :value="invoice.invoiceEntries" class="w-full">-->
+  <!--    <Column field="description" :header="$t('transactions.description')"/>-->
+  <!--    <Column field="amount" :header="$t('transactions.amount')"/>-->
+  <!--    <Column field="priceInclVat" :header="$t('transactions.price')">-->
+  <!--      <template #body="slotProps">-->
+  <!--        {{ formatPrice(slotProps.data.priceInclVat) }}-->
+  <!--      </template>-->
+  <!--    </Column>-->
+  <!--    <Column field="vatPercentage" header="VAT"/>-->
+  <!--    <Column header="TOTAL">-->
+  <!--      <template #body="slotProps">-->
+  <!--        {{ formatPrice(rowTotal(slotProps.data)) }}-->
+  <!--      </template>-->
+  <!--    </Column>-->
+  <!--  </DataTable>-->
+  <!--  <div style="max-width: 20rem; margin-right:0;">-->
+  <!--    <InfoSpan label="Total Excl. VAT" :value="formatPrice(exclVat)"/>-->
+  <!--    <InfoSpan v-for="key in Object.keys(vat)"  v-bind:key="key"-->
+  <!--              :label="`VAT ${key}%`" :value="formatPrice(vat[key as any])"/>-->
+  <!--    <InfoSpan label="Total Incl. VAT" :value="formatPrice(inclVat)"/>-->
+  <!--  </div>-->
 </template>
 
 <script setup lang="ts">
@@ -27,8 +81,8 @@ import { formatPrice } from "@/utils/formatterUtils";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import InfoSpan from "@/components/InfoSpan.vue";
-import { onMounted, type PropType, type Ref, ref } from "vue";
-import type { InvoiceResponse } from "@sudosos/sudosos-client";
+import { computed, onMounted, type PropType, type Ref, ref } from "vue";
+import type { InvoiceEntryResponse, InvoiceResponse } from "@sudosos/sudosos-client";
 import type { DineroObject } from "dinero.js";
 
 const props = defineProps({
@@ -41,6 +95,10 @@ const props = defineProps({
 const exclVat: Ref<DineroObject> = ref({ amount: 0, precision: 2, currency: 'EUR' });
 const vat: Ref<Record<number, DineroObject>> = ref({});
 const inclVat: Ref<DineroObject> = ref({ amount: 0, precision: 2, currency: 'EUR' });
+const totalRows = [];
+const totalRowCutoff = computed(() => {
+  return props.invoice.invoiceEntries.length - totalRows.length;
+});
 
 const rowTotal = (row: any): DineroObject => {
   return {
@@ -64,9 +122,32 @@ onMounted(() => {
       vat.value[entry.vatPercentage] = { amount: vatAmount, precision: 2, currency: 'EUR' };
     }
   });
+
+  totalRows.push({
+    description: 'Total Excl. VAT',
+    amount: 1,
+    vatPercentage: 0,
+    priceInclVat: exclVat.value
+  });
+
+  for (const key in vat.value) {
+    totalRows.push({
+      description: `VAT ${key}%`,
+      amount: 1,
+      vatPercentage: key,
+      priceInclVat: vat.value[key]
+    });
+  }
+
+  totalRows.push({
+    description: 'Total Incl. VAT',
+    amount: 1,
+    vatPercentage: 0,
+    priceInclVat: props.invoice.transfer.amountInclVat
+  });
+
+  props.invoice.invoiceEntries.push(...totalRows);
 });
-
-
 
 </script>
 
