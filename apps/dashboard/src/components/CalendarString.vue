@@ -83,7 +83,7 @@ function dateToString(date: Date | null): string {
 }
 
 // Function to emit the updated string representation of the date
-function updateStringValue(newDate: Date) {
+function updateStringValue(newDate: any) {
   const newString = dateToString(newDate);
   emit('update:modelValue', newString); // Emit the string representation
 }
