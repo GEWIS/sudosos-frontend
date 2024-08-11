@@ -37,7 +37,7 @@ const formSubmit = () => {
 const updateFieldValues = (p: InvoiceResponse) => {
   if (!p) return;
   const reference = p.reference;
-  const date = p.createdAt;
+  const date = p.date;
   const description = p.description;
   form.context.resetForm({ values: { reference, date, description } });
 };

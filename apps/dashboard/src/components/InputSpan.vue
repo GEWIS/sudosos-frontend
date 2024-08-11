@@ -16,8 +16,7 @@
                 autoResize
                 :disabled="disabled"/>
 
-      <!-- TODO fix date vs string  -->
-      <Calendar v-if="type === 'date'"
+      <CalendarString v-if="type === 'date'"
                 :placeholder="placeholder"
                 v-model="internalValue"
                 v-bind="attributes"
@@ -35,6 +34,7 @@ import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import Calendar from 'primevue/calendar';
 import ErrorSpan from "@/components/ErrorSpan.vue";
+import CalendarString from "@/components/CalendarString.vue";
 
 const props = defineProps({
   label: {
