@@ -2,10 +2,10 @@
   <div class="page-container">
     <div class="page-title">{{ $t('payout.Payouts overview') }}</div>
     <div class="content-wrapper flex flex-column">
-      <div class="flex flex-row justify-content-end w-full mt-3">
+      <div class="flex flex-row justify-content-end w-full">
         <Button
             type="button"
-            severity="secondary"
+            severity="primary"
             :label="$t('payout.Create payout')"
             icon="pi pi-plus"
             @click="showDialog = true"

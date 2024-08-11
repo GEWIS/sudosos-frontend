@@ -42,7 +42,6 @@ import { ref, watch, onMounted } from 'vue';
 import type { PropType, Ref } from 'vue';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
-import Calendar from 'primevue/calendar';
 import ErrorSpan from "@/components/ErrorSpan.vue";
 import CalendarString from "@/components/CalendarString.vue";
 
