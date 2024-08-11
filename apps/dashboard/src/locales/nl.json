@@ -290,7 +290,10 @@
     "createdFor": "Gecreëerd voor",
     "balanceMutations": "Saldo mutaties",
     "createdTransactions": "Gecreëerde transacties",
-    "recentTransactions": "Recente transacties"
+    "recentTransactions": "Recente transacties",
+    "Incl": "Incl. BTW",
+    "Excl": "Excl. BTW",
+    "VAT": "BTW {vat}%"
   },
   "userDetails": {
     "Active": "Actief",
@@ -353,7 +356,8 @@
     "DeleteInvoice": "Factuur Verwijderen",
     "AreYouSure": "Weet je zeker dat je deze factuur wilt verwijderen?",
     "CreditNoteWarning": "Dit zal geen creditnota aanmaken.",
-    "Unrecoverable": "Dit verwijdert de factuur en kan niet ongedaan worden gemaakt."
+    "Unrecoverable": "Dit verwijdert de factuur en kan niet ongedaan worden gemaakt.",
+    "Credit": "Credit Factuur"
   },
   "pdf": {
     "Table": "Tabel",
