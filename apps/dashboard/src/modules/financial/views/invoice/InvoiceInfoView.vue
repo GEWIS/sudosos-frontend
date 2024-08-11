@@ -20,6 +20,7 @@
       </div>
     </div>
   </div>
+  <Skeleton v-else class="page-container align-items-center flex flex-column gap-5"/>
 </template>
 
 <script setup lang="ts">
@@ -31,6 +32,7 @@ import { useToast } from "primevue/usetoast";
 import "vue3-pdf-app/dist/icons/main.css";
 import router from "@/router";
 import { useRoute } from "vue-router";
+import Skeleton from "primevue/skeleton";
 import InvoiceSettingsCard from "@/modules/financial/components/invoice/InvoiceSettingsCard.vue";
 import InvoiceAddressingCard from "@/modules/financial/components/invoice/InvoiceAddressingCard.vue";
 import InvoiceStepsCard from "@/modules/financial/components/invoice/InvoiceStepsCard.vue";
