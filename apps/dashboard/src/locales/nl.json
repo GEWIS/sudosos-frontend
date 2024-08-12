@@ -263,7 +263,8 @@
     "productCreate": "Product is succesvol aangemaakt.",
     "updateContainer": "Container is succesvol geüpdatet.",
     "invoiceDeleted": "Factuur is succesvol verwijderd.",
-    "invoiceUpdated": "Factuur {reference} is succesvol geüpdatet."
+    "invoiceUpdated": "Factuur {reference} is succesvol geüpdatet.",
+    "pointOfSaleUpdated": "Point of sale is succesvol geüpdatet."
   },
   "termsOfService": {
     "acceptFirst": "Accepteer de Voorwaarden",
@@ -397,5 +398,11 @@
     "ApprovedBy": "Deze uitbetaling is goedgekeurd door {approvedBy}",
     "AmountToHigh": "Bedrag is hoger dan de balans van de gebruiker",
     "Download PDF": "Download PDF"
+  },
+  "c_posInfo": {
+    "overview": "Overzicht",
+    "name": "Naam",
+    "useAuthentication": "Gebruik van pin authenticatie",
+    "posName": "Naam van de POS"
   }
 }

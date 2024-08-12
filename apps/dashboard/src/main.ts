@@ -1,6 +1,5 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-import { createI18n } from 'vue-i18n';
 
 import App from './App.vue';
 import router from './router';
@@ -25,9 +24,7 @@ import FileUpload from "primevue/fileupload";
 import Tooltip from 'primevue/tooltip';
 import SelectButton from "primevue/selectbutton";
 import 'primeflex/primeflex.css';
-import { populateStoresFromToken } from "@sudosos/sudosos-frontend-common";
-import en from "./locales/en.json";
-import nl from "./locales/nl.json";
+import { clearTokenInStorage, populateStoresFromToken, useAuthStore } from "@sudosos/sudosos-frontend-common";
 import ToastService from "primevue/toastservice";
 import Toast from "primevue/toast";
 import 'primeflex/primeflex.css';
@@ -41,7 +38,6 @@ import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import ProgressSpinner from "primevue/progressspinner";
 import ToggleButton from "primevue/togglebutton";
-import { setLocale as yupSetLocale } from 'yup';
 import i18n from './utils/i18nUtils';
 
 const app = createApp(App);
@@ -80,5 +76,11 @@ app.component('ToggleButton', ToggleButton);
 app.component('Steps', Steps);
 app.component('Calendar', Calendar);
 
-populateStoresFromToken(apiService);
-app.mount('#app');
+populateStoresFromToken(apiService).then(() => {
+    app.mount('#app');
+}).catch(() => {
+    clearTokenInStorage();
+    const authStore = useAuthStore();
+    authStore.logout();
+    app.mount('#app');
+});

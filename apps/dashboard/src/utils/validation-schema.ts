@@ -77,3 +77,13 @@ export const createPayoutSchema =
     bankAccountName: yup.string().required(),
     user: yup.mixed<BaseUserResponse>().required(),
   });
+
+export const updatePointOfSaleObject =
+    yup.object({
+        name: yup.string().required(),
+        useAuthentication: yup.boolean().required(),
+        containers: yup.mixed<Array<number>>().required(),
+        id: yup.number().required(),
+        cashierRoleIds: yup.mixed<Array<number>>()
+    });
+

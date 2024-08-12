@@ -1,6 +1,16 @@
 <template>
   <CardComponent :header="$t('app.Points of Sale')" class="w-full">
-    <DataTable :value="listOfPOS">
+    <DataTable :rows="rows" :value="pointOfSales" :rowsPerPageOptions="[5, 10, 25, 50, 100]" paginator lazy
+               @page="onPage($event)" :totalRecords="totalRecords">
+      <template #header>
+        <div class="flex flex-row align-items-center justify-content-between">
+          <IconField iconPosition="left">
+            <InputIcon class="pi pi-search"> </InputIcon>
+            <InputText :placeholder="$t('app.Search')" />
+          </IconField>
+          <Button :label="$t('app.Create')" icon="pi pi-plus"/>
+        </div>
+      </template>
       <Column field="name" :header="$t('c_POSCreate.Title')">
         <template #body v-if="isLoading">
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
@@ -29,26 +39,44 @@
 </template>
 <script setup lang="ts">
 import CardComponent from "@/components/CardComponent.vue";
-import DataTable from 'primevue/datatable';
+import DataTable, { type DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import { onMounted, type Ref, ref } from "vue";
-import { useUserStore } from "@sudosos/sudosos-frontend-common";
-import { usePointOfSaleStore } from "@/stores/pos.store";
-import type { PointOfSaleResponse } from "@sudosos/sudosos-client";
+import type { PaginatedPointOfSaleResponse, PointOfSaleResponse } from "@sudosos/sudosos-client";
 import Skeleton from "primevue/skeleton";
+import IconField from "primevue/iconfield";
+import InputIcon from "primevue/inputicon";
+import InputText from "primevue/inputtext";
 import router from "@/router";
-const userStore = useUserStore();
-const pointOfSaleStore = usePointOfSaleStore();
-const listOfPOS: Ref<Array<PointOfSaleResponse>> = ref(new Array(10));
+const pointOfSales: Ref<PointOfSaleResponse[]> = ref(new Array(10));
+const totalRecords = ref<number>(0);
+const rows: Ref<number> = ref(10);
 const isLoading: Ref<boolean> = ref(true);
 
+const props = defineProps<{
+  getPointsOfSale: (take: number, skip: number) => Promise<PaginatedPointOfSaleResponse | undefined>,
+}>();
+
 onMounted(async () => {
-  const userId = userStore.getCurrentUser.user !== null ? userStore.getCurrentUser.user.id : undefined;
-  if (userId){
-    listOfPOS.value = await pointOfSaleStore.getUserPointsOfSale(userId).then((resp)=> {return resp.data.records;});
-  }
+  const initialPointOfSales = await props.getPointsOfSale(rows.value, 0);
+
+  if(!initialPointOfSales) return;
+
+  pointOfSales.value = initialPointOfSales.records;
+
+  totalRecords.value = initialPointOfSales._pagination.count || 0;
+
   isLoading.value = false;
 });
+
+async function onPage(event: DataTablePageEvent) {
+  const newPointOfSales = await props.getPointsOfSale(event.rows, event.first);
+  if(!newPointOfSales) {
+    isLoading.value = true;
+    return;
+  }
+  pointOfSales.value = newPointOfSales.records;
+}
 
 </script>
 
