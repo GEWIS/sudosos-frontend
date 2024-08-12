@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import POSOverviewTable from "@/modules/point-of-sale/components/POSOverviewTable.vue";
+import POSOverviewTable from "@/modules/seller/components/POSOverviewTable.vue";
 
 </script>
 
