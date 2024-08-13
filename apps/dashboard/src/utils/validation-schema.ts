@@ -87,3 +87,10 @@ export const updatePointOfSaleObject =
         cashierRoleIds: yup.mixed<Array<number>>()
     });
 
+export const createPointOfSaleObject =
+    yup.object({
+        name: yup.string().required(),
+        useAuthentication: yup.boolean().default(false).required(),
+        owner: yup.mixed<BaseUserResponse>().required(),
+    });
+

@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import type {
+    CreatePointOfSaleRequest,
     PointOfSaleResponse,
     PointOfSaleWithContainersResponse,
     UpdatePointOfSaleRequest
@@ -42,8 +43,8 @@ export const usePointOfSaleStore = defineStore('pointOfSale', {
         async getUserPointsOfSale(userId: number, take: number, skip: number) {
             return (await ApiService.user.getUsersPointsOfSale(userId, take, skip)).data;
         },
-        async createPointOfSale(name: string, useAuthentication: boolean, containers: Array<number>, ownerId: number){
-            return await ApiService.pos.createPointOfSale({ name, useAuthentication, containers, ownerId });
+        async createPointOfSale(createPointOfSaleRequest: CreatePointOfSaleRequest) {
+            return await ApiService.pos.createPointOfSale(createPointOfSaleRequest);
         },
         async updatePointOfSale(id: number, updatePointOfSale: UpdatePointOfSaleRequest): Promise<PointOfSaleResponse> {
             return await ApiService.pos.updatePointOfSale(id, updatePointOfSale).then((res) => {

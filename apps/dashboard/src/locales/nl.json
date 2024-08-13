@@ -265,7 +265,8 @@
     "invoiceDeleted": "Factuur is succesvol verwijderd.",
     "invoiceUpdated": "Factuur {reference} is succesvol geüpdatet.",
     "pointOfSaleUpdated": "Point of sale is succesvol geüpdatet.",
-    "pointOfSaleDeleted": "Successfully deleted point of sale."
+    "pointOfSaleDeleted": "Point of sale is successvol verwijdered.",
+    "pointOfSaleCreated": "Point of sale is successvol aangemaakt."
   },
   "termsOfService": {
     "acceptFirst": "Accepteer de Voorwaarden",
@@ -341,10 +342,12 @@
     "approve": "Goedkeuren",
     "deny": "Afwijzen",
     "download PDF": "Download PDF",
-    "close": "Sluit",
+    "close": "Sluiten",
     "create": "Aanmaken",
     "update": "Update",
-    "delete": "Verwijderen"
+    "delete": "Verwijderen",
+    "owner": "Eigenaar",
+    "name": "Naam"
   },
   "c_invoiceInfo": {
     "Info": "Info",

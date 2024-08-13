@@ -265,7 +265,8 @@
     "payoutApproved": "Successfully approved payout.",
     "payoutDenied": "Successfully denied payout.",
     "pointOfSaleUpdated": "Successfully updated point of sale.",
-    "pointOfSaleDeleted": "Successfully deleted point of sale."
+    "pointOfSaleDeleted": "Successfully deleted point of sale.",
+    "pointOfSaleCreated": "Successfully created point of sale."
   },
   "termsOfService": {
     "acceptFirst": "Accept the Terms of Service",
@@ -353,7 +354,9 @@
     "close": "Close",
     "create": "Create",
     "update": "Update",
-    "delete": "Delete"
+    "delete": "Delete",
+    "owner": "Owner",
+    "name": "Name"
   },
   "c_invoiceInfo": {
     "Info": "Info",

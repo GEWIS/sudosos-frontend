@@ -8,7 +8,7 @@
             <InputIcon class="pi pi-search"> </InputIcon>
             <InputText :placeholder="$t('app.Search')" />
           </IconField>
-          <Button :label="$t('app.Create')" icon="pi pi-plus"/>
+          <Button :label="$t('app.Create')" icon="pi pi-plus" @click="openCreatePOSModal"/>
         </div>
       </template>
       <Column field="name" :header="$t('c_POSCreate.Title')">
@@ -36,6 +36,7 @@
       </Column>
     </DataTable>
   </CardComponent>
+  <POSCreateModal v-model:is-visible="isCreateModalVisible"/>
 </template>
 <script setup lang="ts">
 import CardComponent from "@/components/CardComponent.vue";
@@ -48,6 +49,7 @@ import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import InputText from "primevue/inputtext";
 import router from "@/router";
+import POSCreateModal from "@/modules/seller/components/POSCreateModal.vue";
 const pointOfSales: Ref<PointOfSaleResponse[]> = ref(new Array(10));
 const totalRecords = ref<number>(0);
 const rows: Ref<number> = ref(10);
@@ -76,6 +78,12 @@ async function onPage(event: DataTablePageEvent) {
     return;
   }
   pointOfSales.value = newPointOfSales.records;
+}
+
+const isCreateModalVisible = ref(false);
+
+function openCreatePOSModal() {
+  isCreateModalVisible.value = true;
 }
 
 </script>

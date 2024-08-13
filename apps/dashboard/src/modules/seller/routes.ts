@@ -4,8 +4,6 @@ import ProductsContainersView from "@/modules/seller/views/ProductsContainersVie
 import { UserRole } from "@/utils/rbacUtils";
 import POSOverviewView from "@/modules/seller/views/POSOverviewView.vue";
 import POSInfoView from "@/modules/seller/views/POSInfoView.vue";
-import POSCreateView from "@/modules/seller/views/POSCreateView.vue";
-import POSEditView from "@/modules/seller/views/POSEditView.vue";
 
 export function sellerRoutes(): RouteRecordRaw[] {
   return [
@@ -41,26 +39,7 @@ export function sellerRoutes(): RouteRecordRaw[] {
             requiresAuth: true,
             rolesAllowed: [UserRole.SELLER]
           }
-        },
-        {
-          path: '/point-of-sale/request',
-          name: 'pointOfSaleCreate',
-          component: POSCreateView,
-          meta: {
-            requiresAuth: true,
-            rolesAllowed: [UserRole.SELLER]
-          }
-        },
-        {
-          path: '/point-of-sale/edit/:id',
-          name: 'pointOfSaleEdit',
-          component: POSEditView,
-          props: true,
-          meta: {
-            requiresAuth: true,
-            rolesAllowed: [UserRole.SELLER]
-          }
-        },
+        }
       ]
     }
   ];
