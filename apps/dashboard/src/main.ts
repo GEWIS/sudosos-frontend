@@ -39,6 +39,8 @@ import InputIcon from "primevue/inputicon";
 import ProgressSpinner from "primevue/progressspinner";
 import ToggleButton from "primevue/togglebutton";
 import i18n from './utils/i18nUtils';
+import ConfirmDialog from "primevue/confirmdialog";
+import ConfirmationService from 'primevue/confirmationservice';
 
 const app = createApp(App);
 
@@ -50,6 +52,7 @@ app.use(router);
 app.use(PrimeVue);
 
 app.use(ToastService);
+app.use(ConfirmationService);
 
 app.component('Button', Button);
 app.component('InputText', InputText);
@@ -75,6 +78,7 @@ app.directive('tooltip', Tooltip);
 app.component('ToggleButton', ToggleButton);
 app.component('Steps', Steps);
 app.component('Calendar', Calendar);
+app.component('ConfirmDialog', ConfirmDialog);
 
 populateStoresFromToken(apiService).then(() => {
     app.mount('#app');

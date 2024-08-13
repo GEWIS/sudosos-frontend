@@ -264,7 +264,8 @@
     "payoutDeleted": "Successfully deleted payout.",
     "payoutApproved": "Successfully approved payout.",
     "payoutDenied": "Successfully denied payout.",
-    "pointOfSaleUpdated": "Successfully updated point of sale."
+    "pointOfSaleUpdated": "Successfully updated point of sale.",
+    "pointOfSaleDeleted": "Successfully deleted point of sale."
   },
   "termsOfService": {
     "acceptFirst": "Accept the Terms of Service",
@@ -421,6 +422,7 @@
     "overview": "Overview",
     "name": "Name",
     "useAuthentication": "Use pin authentication",
-    "posName": "Name of the POS"
+    "posName": "Name of the POS",
+    "confirmDelete": "Are you sure you want to this Point of Sale? This can NOT be undone!"
   }
 }

@@ -264,7 +264,8 @@
     "updateContainer": "Container is succesvol geüpdatet.",
     "invoiceDeleted": "Factuur is succesvol verwijderd.",
     "invoiceUpdated": "Factuur {reference} is succesvol geüpdatet.",
-    "pointOfSaleUpdated": "Point of sale is succesvol geüpdatet."
+    "pointOfSaleUpdated": "Point of sale is succesvol geüpdatet.",
+    "pointOfSaleDeleted": "Successfully deleted point of sale."
   },
   "termsOfService": {
     "acceptFirst": "Accepteer de Voorwaarden",
@@ -336,6 +337,15 @@
   "tooltip": {
     "owner_revenue": "NB: De containereigenaar krijgt de opbrengst, niet de producteigenaar"
   },
+  "common": {
+    "approve": "Goedkeuren",
+    "deny": "Afwijzen",
+    "download PDF": "Download PDF",
+    "close": "Sluit",
+    "create": "Aanmaken",
+    "update": "Update",
+    "delete": "Verwijderen"
+  },
   "c_invoiceInfo": {
     "Info": "Info",
     "Created on": "Aangemaakt op",
@@ -403,6 +413,7 @@
     "overview": "Overzicht",
     "name": "Naam",
     "useAuthentication": "Gebruik van pin authenticatie",
-    "posName": "Naam van de POS"
+    "posName": "Naam van de POS",
+    "confirmDelete": "Are you sure you want to this Point of Sale? This can NOT be undone!"
   }
 }

@@ -3,7 +3,7 @@
     <div class="flex flex-row gap-5 justify-content-between align-items-stretch w-12">
       <POSSettingsCard :pos-id="id" class="flex-1 h-12" />
       <CardComponent header="Sales in the last week" class="flex-1" >
-        <div class="h-12 text-center text-5xl">{{ formattedTotalSales }}</div>
+        <div class="h-12 text-center text-5xl pb-3">{{ formattedTotalSales }}</div>
       </CardComponent>
     </div>
     <ContainerCard

@@ -3,6 +3,16 @@
             @update:modelValue="edit = $event" @save="formSubmit">
     <div class="flex flex-column justify-content-between gap-2">
       <POSSettingsForm :point-of-sale="pointOfSale" :form="form" :edit="edit" @update:edit="edit = $event"/>
+      <div class="flex flex-row justify-content-end">
+        <Button
+            :disabled="!edit"
+            @click="handleDelete"
+            icon="pi pi-trash"
+            :label="t('common.delete')"
+            outlined
+        />
+        <ConfirmDialog ref="deleteConfirm"></ConfirmDialog>
+      </div>
     </div>
   </FormCard>
 </template>
@@ -15,6 +25,13 @@ import { updatePointOfSaleObject } from "@/utils/validation-schema";
 import { schemaToForm } from "@/utils/formUtils";
 import { usePointOfSaleStore } from "@/stores/pos.store";
 import POSSettingsForm from "@/modules/seller/components/POSSettingsForm.vue";
+import { useConfirm } from "primevue/useconfirm";
+import router from "@/router";
+import { useI18n } from "vue-i18n";
+import { useToast } from "primevue/usetoast";
+import { handleError } from "@/utils/errorUtils";
+
+const confirm = useConfirm();
 
 const edit = ref(false);
 const posStore = usePointOfSaleStore();
@@ -43,6 +60,34 @@ const updateFieldValues = (p: PointOfSaleWithContainersResponse) => {
 
   form.context.resetForm({ values: { name, useAuthentication, id, cashierRoleIds, containers } });
 };
+
+const { t } = useI18n();
+const toast = useToast();
+
+const deleteConfirm = ref<HTMLElement | undefined>();
+function handleDelete() {
+  confirm.require({
+    message: t('c_posInfo.confirmDelete'),
+    target: deleteConfirm.value,
+    acceptLabel: t('common.delete'),
+    rejectLabel: t('common.close'),
+    acceptIcon: 'pi pi-trash',
+    rejectIcon: 'pi pi-times',
+    accept: async () => {
+      await posStore.deletePointOfSale(props.posId)
+          .catch((err) => {
+            handleError(err, toast);
+          });
+      router.push({ name: 'pointOfSale' });
+      toast.add({
+        summary: t('successMessages.success'),
+        detail: t('successMessages.pointOfSaleDeleted'),
+        severity: 'success',
+        life: 3000
+      });
+    }
+  });
+}
 
 watch(() => pointOfSale.value, (newValue) => {
   updateFieldValues(newValue!!);

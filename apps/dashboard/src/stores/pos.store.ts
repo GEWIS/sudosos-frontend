@@ -51,6 +51,11 @@ export const usePointOfSaleStore = defineStore('pointOfSale', {
                 this.pointsOfSale[pointOfSale.id] = pointOfSale;
                 return this.pointsOfSale[pointOfSale.id];
             });
+        },
+        async deletePointOfSale(id: number) {
+            delete this.pointsOfSale[id];
+            delete this.pointsOfSaleWithContainers[id];
+            return await ApiService.pos.deletePointOfSale(id);
         }
     },
 });
