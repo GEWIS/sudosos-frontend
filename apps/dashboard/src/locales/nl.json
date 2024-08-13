@@ -417,6 +417,7 @@
     "name": "Naam",
     "useAuthentication": "Gebruik van pin authenticatie",
     "posName": "Naam van de POS",
-    "confirmDelete": "Are you sure you want to this Point of Sale? This can NOT be undone!"
+    "confirmDelete": "Weet je zeker dat je deze point of sale wilt verwijderen? Dit kan niet ongedaan worden gemaakt!",
+    "lastWeekSales": "Verkoop van afgelopen week"
   }
 }
