@@ -1,6 +1,11 @@
 <template>
   <div class="page-container flex flex-column gap-5">
-    <POSSettingsCard :pos-id="id" />
+    <div class="flex flex-row gap-5 justify-content-between align-items-stretch w-12">
+      <POSSettingsCard :pos-id="id" class="flex-1 h-12" />
+      <CardComponent header="Sales in the last week" class="flex-1" >
+        <div class="h-12 text-center text-5xl">{{ formattedTotalSales }}</div>
+      </CardComponent>
+    </div>
     <ContainerCard
       class="container-card"
       v-if="pos && pos.containers"
@@ -19,13 +24,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type Ref } from 'vue';
+import { computed, onMounted, type Ref } from 'vue';
 import { onBeforeMount, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { usePointOfSaleStore } from '@/stores/pos.store';
 import type {
   PaginatedBaseTransactionResponse,
-  PointOfSaleWithContainersResponse
+  PointOfSaleWithContainersResponse,
+  Dinero as SudoSOSDinero
 } from '@sudosos/sudosos-client';
 import ContainerCard from '@/components/container/ContainerCard.vue';
 import router from '@/router';
@@ -34,6 +40,9 @@ import { useContainerStore } from "@/stores/container.store";
 import MutationPOSCard from "@/components/mutations/MutationsPOS.vue";
 import CardComponent from "@/components/CardComponent.vue";
 import POSSettingsCard from "@/modules/seller/components/POSSettingsCard.vue";
+import { useTransactionStore } from "@/stores/transaction.store";
+import { formatPrice } from "sudosos-dashboard/src/utils/formatterUtils";
+import Dinero from "dinero.js";
 
 const route = useRoute(); // Use the useRoute function to access the current route
 const id = ref();
@@ -52,6 +61,25 @@ onBeforeMount(async () => {
   if (!pos.value) {
     await router.replace('/error');
     return;
+  }
+});
+
+const totalSales = ref(Dinero({ amount: 0, currency: "EUR" }));
+
+const formattedTotalSales = computed(() => {
+  return formatPrice(totalSales.value.toObject() as SudoSOSDinero);
+});
+
+onMounted(async () => {
+  const transactionStore = useTransactionStore();
+  const transactionsInLastWeek = (await transactionStore.fetchTransactionsFromPointOfSale(
+      apiService,
+      id.value,
+      new Date(Date.now()-(7*24*60*60*1000)).toISOString(),
+      new Date().toISOString(), 500, 0)).data.records;
+
+  for (let transaction of transactionsInLastWeek) {
+    totalSales.value = totalSales.value.add(Dinero(transaction.value as Dinero.Options));
   }
 });
 
