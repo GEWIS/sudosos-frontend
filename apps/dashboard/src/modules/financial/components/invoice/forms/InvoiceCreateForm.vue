@@ -74,9 +74,10 @@ import { createInvoiceSchema } from "@/utils/validation-schema";
 import UserLink from "@/components/UserLink.vue";
 import InputSpan from "@/components/InputSpan.vue";
 import {useInvoiceStore} from "@/stores/invoice.store";
-import type {CreateInvoiceRequest} from "@sudosos/sudosos-client";
+import type {CreateInvoiceRequest, InvoiceResponse} from "@sudosos/sudosos-client";
 import {handleError} from "@/utils/errorUtils";
 import {useToast} from "primevue/usetoast";
+import {useRouter} from "vue-router";
 
 const props = defineProps({
   form: {
@@ -87,6 +88,7 @@ const props = defineProps({
 const { t } = useI18n();
 const invoiceStore = useInvoiceStore();
 const toast = useToast();
+const router = useRouter();
 
 const emit = defineEmits(['submit:success', 'submit:error']);
 
@@ -105,7 +107,8 @@ setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
     country: values.country,
     attention: values.attention,
   };
-  await invoiceStore.createInvoice(request).then(() => {
+  await invoiceStore.createInvoice(request).then((res: InvoiceResponse) => {
+    const invoiceId = res.id;
     emit('submit:success', request);
     toast.add({
       severity: 'success',
@@ -114,6 +117,7 @@ setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
       life: 3000,
     });
     props.form.context.resetForm();
+    router.push({ name: "invoiceInfo", params: { id: invoiceId } });
   }).catch((err) => {
     emit('submit:error', err);
     handleError(err, toast);
