@@ -25,6 +25,7 @@
 import ErrorSpan from "@/components/ErrorSpan.vue";
 import { computed, type PropType } from "vue";
 import { useAuthStore } from "@sudosos/sudosos-frontend-common";
+import type { BaseUserResponse } from "@sudosos/sudosos-client";
 
 const authStore = useAuthStore();
 
@@ -58,7 +59,7 @@ defineProps({
   },
 });
 
-const organ = defineModel('organ');
+const organ = defineModel<BaseUserResponse>('organ');
 
 </script>
 

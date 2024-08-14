@@ -24,7 +24,7 @@
 <script setup lang="ts">
 import ErrorSpan from "@/components/ErrorSpan.vue";
 import { computed, onBeforeMount, type PropType } from "vue";
-import { useContainerStore } from "@/stores/container.store";
+import { type ContainerInStore, useContainerStore } from "@/stores/container.store";
 
 const containerStore = useContainerStore();
 
@@ -62,7 +62,7 @@ defineProps({
   },
 });
 
-const container = defineModel('container');
+const container = defineModel<ContainerInStore>('container');
 
 </script>
 
