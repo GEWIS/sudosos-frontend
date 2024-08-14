@@ -99,4 +99,18 @@ export const addContainerObject =
     yup.object({
         container: yup.mixed<ContainerInStore>().required()
     });
-
+export const createInvoiceSchema =
+  yup.object({
+      for: yup.mixed<BaseUserResponse>().required(),
+      by: yup.mixed<BaseUserResponse>().required(),
+      addressee: yup.string().required(),
+      description: yup.string().required(),
+      date: yup.string().required(),
+      reference: yup.string().required(),
+      isCreditInvoice: yup.boolean().required().default(false),
+      street: yup.string().required(),
+      postalCode: yup.string().required(),
+      city: yup.string().required(),
+      country: yup.string().required(),
+      attention: yup.string().required(),
+  });

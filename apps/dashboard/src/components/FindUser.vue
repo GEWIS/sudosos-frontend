@@ -1,7 +1,8 @@
 <template>
+  selected: {{ selectedUser }}
   <Dropdown
       v-model="selectedUser"
-      :options="users"
+      :options="users.concat(defaultUser)"
       optionLabel="fullName"
       :loading="loading"
       :filter="true"
@@ -18,27 +19,32 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, type PropType, ref, watch } from "vue";
+import {onBeforeMount, onMounted, type PropType, ref, watch} from "vue";
 import type { Ref } from "vue";
 import apiService from "@/services/ApiService";
 import { debounce } from "lodash";
 import type { BaseUserResponse, UserResponse } from "@sudosos/sudosos-client";
 
 const lastQuery = ref("");
-const selectedUser = ref(null);
+const selectedUser: Ref<UserResponse | undefined> = ref(undefined);
 const loading = ref(false);
 
 const users: Ref<(BaseUserResponse & { fullName: string })[]> = ref([]);
-const emits = defineEmits(['update:value']);
+const emits = defineEmits(['update:modelValue']);
 
-defineProps({
-  value: {
+const props = defineProps({
+  modelValue: {
     type: Object as PropType<UserResponse>,
   },
   placeholder: {
     type: String,
     required: false,
     default: ''
+  },
+  disabled: {
+    type: Boolean,
+    required: false,
+    default: false
   },
 });
 
@@ -66,14 +72,29 @@ const filterUsers = (e: any) => {
   }
 };
 
+const defaultUser = ref([]);
+
+onBeforeMount(() => {
+  if (props.modelValue) {
+    defaultUser.value = transformUsers([props.modelValue]);
+  }
+});
+
+watch(
+    () => props.modelValue,
+    (newValue) => {
+      selectedUser.value = newValue;
+    }
+);
+
 onMounted(async () => {
   apiService.user.getAllUsers(10, 0).then((res) => {
-    users.value = transformUsers(res.data.records); // Transform users
+    users.value = transformUsers(res.data.records.concat(props.modelValue || [])); // Transform users
   });
 });
 
 watch(selectedUser, () => {
-  emits('update:value', selectedUser.value);
+  emits('update:modelValue', selectedUser.value);
 });
 
 </script>

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import type {
-    BaseInvoiceResponse,
+    BaseInvoiceResponse, CreateInvoiceRequest,
     InvoiceResponse,
     PaginatedInvoiceResponse,
     UpdateInvoiceRequest
@@ -28,6 +28,12 @@ export const useInvoiceStore = defineStore('invoice', {
                 // BaseInvoice does not contain entries, so we merge them
                 this.invoices[invoice.id] = { ...this.invoices[invoice.id], ...invoice };
                 return this.invoices[invoice.id];
+            });
+        },
+        async createInvoice(invoiceRequest: CreateInvoiceRequest): Promise<InvoiceResponse> {
+            return await ApiService.invoices.createInvoice(invoiceRequest).then((res) => {
+                this.invoices[res.data.id] = res.data;
+                return this.invoices[res.data.id];
             });
         },
         async getOrFetchInvoice(id: number): Promise<InvoiceResponse> {

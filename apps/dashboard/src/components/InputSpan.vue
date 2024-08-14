@@ -29,12 +29,9 @@
                 :placeholder="placeholder"
                 v-model="internalValue as number"
                 :disabled="disabled"/>
-
-      <Checkbox v-if="type === 'boolean'"
+      <InputSwitch v-if="type === 'switch'"
                    v-model="internalValue"
-                    binary
                    :disabled="disabled"/>
-
     </span>
     <div class="flex justify-content-end">
       <ErrorSpan :error="errors"/>
@@ -49,7 +46,7 @@ import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import ErrorSpan from "@/components/ErrorSpan.vue";
 import CalendarString from "@/components/CalendarString.vue";
-
+import InputSwitch from "primevue/inputswitch";
 import type { HintedString } from "primevue/ts-helpers";
 import InputNumber from "primevue/inputnumber";
 

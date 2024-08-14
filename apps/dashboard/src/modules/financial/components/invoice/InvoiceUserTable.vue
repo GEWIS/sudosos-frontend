@@ -21,7 +21,7 @@
                 type="button"
                 icon="pi pi-file-edit"
                 class="p-button-rounded p-button-text p-button-plain"
-                @click="() => console.log(slotProps.data.user.id)"
+                @click="() => handleCreateInvoice(slotProps.data.user)"
             />
             <Button
                 type="button"
@@ -35,6 +35,11 @@
 
     </DataTable>
   </CardComponent>
+  <FormDialog v-model="showDialog" :form="form" :header="$t('invoice.Create invoice')">
+    <template #form="slotProps">
+      <InvoiceCreateForm :form="slotProps.form" @submit:success="showDialog = false"/>
+    </template>
+  </FormDialog>
 </template>
 
 <script setup lang="ts">
@@ -44,21 +49,29 @@ import Column from 'primevue/column';
 import { onMounted, type Ref, ref } from "vue";
 import type { BalanceResponse, UserResponse } from "@sudosos/sudosos-client";
 import apiService from "@/services/ApiService";
-import {formatPrice} from "sudosos-dashboard/src/utils/formatterUtils";
+import { formatPrice } from "sudosos-dashboard/src/utils/formatterUtils";
+import FormDialog from "@/components/FormDialog.vue";
+import InvoiceCreateForm from "@/modules/financial/components/invoice/forms/InvoiceCreateForm.vue";
+import { schemaToForm } from "@/utils/formUtils";
+import { createInvoiceSchema } from "@/utils/validation-schema";
+import { useAuthStore, useUserStore } from "@sudosos/sudosos-frontend-common";
 
 interface InvoiceableUserWithBalance {
   user: UserResponse;
   balance: BalanceResponse;
 }
 
+const authStore = useAuthStore();
+const userStore = useUserStore();
 const invoiceableUsers: Ref<UserResponse[]> = ref([]);
 const balances: Ref<BalanceResponse[]> = ref([]);
 const invoiceableUsersWithBalance: Ref<InvoiceableUserWithBalance[]> = ref([]);
+const showDialog: Ref<boolean> = ref(false);
+const form = schemaToForm(createInvoiceSchema);
 
 onMounted(async () => {
   await getAllUsers(0);
   await getInvoiceableBalances(0);
-
   const usersMap = new Map(
       invoiceableUsers.value.map(user => [user.id, user])
   );
@@ -85,6 +98,27 @@ const getInvoiceableBalances = async (skip: number) => {
   if (response.data._pagination.count > response.data.records.length) {
     await getInvoiceableBalances(skip + response.data.records.length);
   }
+};
+
+const handleCreateInvoice = async (user: UserResponse) => {
+  const invoiceUserDefaults = await apiService.invoices.getSingleInvoiceUser(user.id);
+  showDialog.value = true;
+  const currentUser = userStore.getCurrentUser.user;
+  const values = {
+    for: user,
+    by: currentUser || undefined,
+    addressee: '',
+    description: '',
+    date: '',
+    reference: '',
+    isCreditInvoice: false,
+    street: invoiceUserDefaults.data.street || '',
+    postalCode: invoiceUserDefaults.data.postalCode || '',
+    city: invoiceUserDefaults.data.city || '',
+    country: invoiceUserDefaults.data.country || '',
+    attention: '',
+  };
+  form.context.resetForm({ values });
 };
 
 </script>
