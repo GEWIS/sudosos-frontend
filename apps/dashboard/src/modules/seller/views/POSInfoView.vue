@@ -1,26 +1,29 @@
 <template>
-  <div class="page-container flex flex-column gap-5">
-    <div class="flex flex-column md:flex-row gap-5 justify-content-between align-items-stretch w-12">
-      <POSSettingsCard :pos-id="id!" class="flex-1 h-12" />
-      <CardComponent :header="$t('c_posInfo.lastWeekSales')" class="flex-1" >
-        <div class="h-12 text-center text-5xl pb-3">{{ formattedTotalSales }}</div>
+  <div class="page-container flex flex-column">
+    <div class="page-title">{{ posName }}</div>
+    <div class="flex flex-column gap-5">
+      <div class="flex flex-column md:flex-row gap-5 justify-content-between align-items-stretch w-12">
+        <POSSettingsCard :pos-id="id!" class="flex-1 h-12" />
+        <CardComponent :header="$t('c_posInfo.lastWeekSales')" class="flex-1" >
+          <div class="h-12 text-center text-5xl pb-3">{{ formattedTotalSales }}</div>
+        </CardComponent>
+      </div>
+      <ContainerCard
+        class="container-card"
+        v-if="posContainers"
+        :containers="posContainers"
+        show-create
+        :associatedPos="pointsOfSaleWithContainers[id!]"
+      />
+      <CardComponent :header="$t('transactions.recentTransactions')">
+        <MutationPOSCard
+          class="pos-transactions"
+          :get-mutations="getPOSTransactions"
+          paginator
+          style="width: 100% !important"
+        />
       </CardComponent>
     </div>
-    <ContainerCard
-      class="container-card"
-      v-if="posContainers"
-      :containers="posContainers"
-      show-create
-      :associatedPos="pointsOfSaleWithContainers[id!]"
-    />
-    <CardComponent :header="$t('transactions.recentTransactions')">
-      <MutationPOSCard
-        class="pos-transactions"
-        :get-mutations="getPOSTransactions"
-        paginator
-        style="width: 100% !important"
-      />
-    </CardComponent>
   </div>
 </template>
 
@@ -44,6 +47,7 @@ import { useTransactionStore } from "@/stores/transaction.store";
 import { formatPrice } from "sudosos-dashboard/src/utils/formatterUtils";
 import Dinero from "dinero.js";
 import { storeToRefs } from "pinia";
+import { useI18n } from "vue-i18n";
 
 const route = useRoute(); // Use the useRoute function to access the current route
 const id = ref<number>();
@@ -52,6 +56,14 @@ const pointOfSaleStore = usePointOfSaleStore();
 const { pointsOfSaleWithContainers } = storeToRefs(pointOfSaleStore);
 
 const containerStore = useContainerStore();
+
+const { t } = useI18n();
+
+const posName = computed(() => {
+  return id.value && pointsOfSaleWithContainers.value[id.value]
+  ? pointsOfSaleWithContainers.value[id.value].name
+  : t('common.loading');
+});
 
 // Fetch containers from the container store, then the ContainerCard will be reactive.
 const posContainerIds = computed(() =>

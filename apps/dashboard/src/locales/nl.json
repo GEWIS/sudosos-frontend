@@ -349,7 +349,8 @@
     "delete": "Verwijderen",
     "owner": "Eigenaar",
     "name": "Naam",
-    "container": "Container"
+    "container": "Container",
+    "loading": "Laden..."
   },
   "c_invoiceInfo": {
     "Info": "Info",

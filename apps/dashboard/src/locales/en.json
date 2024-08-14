@@ -358,7 +358,8 @@
     "delete": "Delete",
     "owner": "Owner",
     "name": "Name",
-    "container": "Container"
+    "container": "Container",
+    "loading": "Loading..."
   },
   "c_invoiceInfo": {
     "Info": "Info",
