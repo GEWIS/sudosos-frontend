@@ -149,7 +149,8 @@
     "Security": "Beveiliging"
   },
   "containersOverview": {
-    "Containers": "Containers"
+    "Containers": "Containers",
+    "addExisting": "Voeg bestaande container toe"
   },
   "errorMessages": {
     "posNotFound": "Het gevraagde verkooppunt is niet gevonden."
@@ -347,7 +348,8 @@
     "update": "Update",
     "delete": "Verwijderen",
     "owner": "Eigenaar",
-    "name": "Naam"
+    "name": "Naam",
+    "container": "Container"
   },
   "c_invoiceInfo": {
     "Info": "Info",

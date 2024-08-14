@@ -46,12 +46,17 @@ export const usePointOfSaleStore = defineStore('pointOfSale', {
         async createPointOfSale(createPointOfSaleRequest: CreatePointOfSaleRequest) {
             return await ApiService.pos.createPointOfSale(createPointOfSaleRequest);
         },
-        async updatePointOfSale(id: number, updatePointOfSale: UpdatePointOfSaleRequest): Promise<PointOfSaleResponse> {
-            return await ApiService.pos.updatePointOfSale(id, updatePointOfSale).then((res) => {
-                const pointOfSale: PointOfSaleResponse = res.data;
-                this.pointsOfSale[pointOfSale.id] = pointOfSale;
-                return this.pointsOfSale[pointOfSale.id];
-            });
+        async updatePointOfSale(id: number, updatePointOfSale: UpdatePointOfSaleRequest):
+            Promise<PointOfSaleWithContainersResponse> {
+
+            return await ApiService.pos.updatePointOfSale(id, updatePointOfSale)
+                .then((res) => {
+                    const pointOfSale: PointOfSaleResponse = res.data;
+                    const pointOfSaleWithContainers: PointOfSaleWithContainersResponse = res.data;
+                    this.pointsOfSale[pointOfSale.id] = pointOfSale;
+                    this.pointsOfSaleWithContainers[pointOfSaleWithContainers.id] = pointOfSaleWithContainers;
+                    return this.pointsOfSaleWithContainers[pointOfSaleWithContainers.id];
+                });
         },
         async deletePointOfSale(id: number) {
             delete this.pointsOfSale[id];

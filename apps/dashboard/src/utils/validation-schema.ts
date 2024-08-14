@@ -4,6 +4,7 @@ import { ref } from "vue";
 import type { Ref } from "vue";
 import i18n from './i18nUtils';
 import type { BaseUserResponse } from "@sudosos/sudosos-client";
+import type { ContainerInStore } from "@/stores/container.store";
 
 const t = i18n.global.t;
 
@@ -92,5 +93,10 @@ export const createPointOfSaleObject =
         name: yup.string().required(),
         useAuthentication: yup.boolean().default(false).required(),
         owner: yup.mixed<BaseUserResponse>().required(),
+    });
+
+export const addContainerObject =
+    yup.object({
+        container: yup.mixed<ContainerInStore>().required()
     });
 
