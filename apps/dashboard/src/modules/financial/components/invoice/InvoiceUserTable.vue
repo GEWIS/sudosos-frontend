@@ -1,15 +1,15 @@
 <template>
-  <CardComponent header="Invoice Users" class="w-5">
+  <CardComponent :header="$t('c_invoiceInfo.InvoiceUsers')" class="w-5">
     <DataTable
         :value="invoiceableUsersWithBalance"
     >
-      <Column field="user.id" header="ID"/>
-      <Column header="Name" field="user.firstName">
+      <Column field="user.id" :header="$t('c_invoiceInfo.id')"/>
+      <Column :header="$t('c_invoiceInfo.Name')" field="user.firstName">
         <template #body="slotProps">
           {{ `${slotProps.data.user.firstName} ${slotProps.data.user.lastName}` }}
         </template>
       </Column>
-      <Column field="balance.amount" header="Balance">
+      <Column field="balance.amount" :header="$t('c_invoiceInfo.Balance')">
         <template #body="slotProps">
           {{ formatPrice(slotProps.data.balance.amount) }}
         </template>
@@ -35,7 +35,7 @@
 
     </DataTable>
   </CardComponent>
-  <FormDialog v-model="showDialog" :form="form" :header="$t('invoice.Create invoice')">
+  <FormDialog v-model="showDialog" :form="form" :header="$t('invoice.CreateInvoice')">
     <template #form="slotProps">
       <InvoiceCreateForm :form="slotProps.form" @submit:success="showDialog = false"/>
     </template>
@@ -61,7 +61,6 @@ interface InvoiceableUserWithBalance {
   balance: BalanceResponse;
 }
 
-const authStore = useAuthStore();
 const userStore = useUserStore();
 const invoiceableUsers: Ref<UserResponse[]> = ref([]);
 const balances: Ref<BalanceResponse[]> = ref([]);
