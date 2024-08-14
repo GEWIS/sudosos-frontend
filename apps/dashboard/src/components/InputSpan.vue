@@ -30,7 +30,7 @@
                 v-model="internalValue as number"
                 :disabled="disabled"/>
       <InputSwitch v-if="type === 'switch'"
-                   v-model="internalValue"
+                   v-model="internalValue as boolean"
                    :disabled="disabled"/>
     </span>
     <div class="flex justify-content-end">
@@ -92,7 +92,7 @@ const emit = defineEmits(['update:value']);
 
 const stringInputs = ['text', 'textarea'];
 const numberInputs = ['currency', 'number'];
-const booleanInputs = ['boolean'];
+const booleanInputs = ['boolean', 'switch'];
 
 const initialValue = () => {
   if (stringInputs.includes(props.type)) return '';

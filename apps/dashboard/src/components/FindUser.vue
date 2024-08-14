@@ -72,7 +72,7 @@ const filterUsers = (e: any) => {
   }
 };
 
-const defaultUser = ref([]);
+const defaultUser: Ref<Array<BaseUserResponse & { fullName: string }>> = ref([]);
 
 onBeforeMount(() => {
   if (props.modelValue) {

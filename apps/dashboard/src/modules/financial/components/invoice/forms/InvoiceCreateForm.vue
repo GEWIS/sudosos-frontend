@@ -1,5 +1,7 @@
 <template>
-  <span class="text-gray-700">{{ `Creating invoice for ${form.model.for.value.value.firstName} ${form.model.for.value.value.lastName} as ` }}</span>
+  <span class="text-gray-700">{{
+      `Creating invoice for ${form.model.for.value.value.firstName} ${form.model.for.value.value.lastName} as `
+    }}</span>
   <UserLink :user="form.model.by.value.value"/>
   <div class="flex flex-column justify-content-between gap-2">
     <InputSpan :label="$t('c_invoiceInfo.Description')"
@@ -68,16 +70,16 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import type { PropType } from "vue";
-import {type Form, setSubmit} from "@/utils/formUtils";
+import { type Form, setSubmit } from "@/utils/formUtils";
 import * as yup from "yup";
 import { createInvoiceSchema } from "@/utils/validation-schema";
 import UserLink from "@/components/UserLink.vue";
 import InputSpan from "@/components/InputSpan.vue";
-import {useInvoiceStore} from "@/stores/invoice.store";
-import type {CreateInvoiceRequest, InvoiceResponse} from "@sudosos/sudosos-client";
-import {handleError} from "@/utils/errorUtils";
-import {useToast} from "primevue/usetoast";
-import {useRouter} from "vue-router";
+import { useInvoiceStore } from "@/stores/invoice.store";
+import type { CreateInvoiceRequest, InvoiceResponse } from "@sudosos/sudosos-client";
+import { handleError } from "@/utils/errorUtils";
+import { useToast } from "primevue/usetoast";
+import { useRouter } from "vue-router";
 
 const props = defineProps({
   form: {

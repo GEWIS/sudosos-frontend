@@ -16,20 +16,12 @@
       </Column>
       <Column :header="$t('c_invoiceInfo.Actions')" style="width: 10%">
         <template #body="slotProps" >
-          <div class="flex flex-row ">
             <Button
                 type="button"
                 icon="pi pi-file-edit"
                 class="p-button-rounded p-button-text p-button-plain"
                 @click="() => handleCreateInvoice(slotProps.data.user)"
             />
-            <Button
-                type="button"
-                icon="pi pi-external-link"
-                class="p-button-rounded p-button-text p-button-plain"
-                @click="() => console.log(slotProps.data.user.id)"
-            />
-          </div>
         </template>
       </Column>
 
@@ -91,10 +83,16 @@ const getAllUsers = async (skip: number) => {
   }
 };
 
+
+// Typing is absolutely fucked in the api but it works
 const getInvoiceableBalances = async (skip: number) => {
+  //@ts-ignore-next-line
   const response = await apiService.balance.getAllBalance(undefined, undefined, -1, undefined, undefined, undefined, ["INVOICE"], undefined, undefined, false, Number.MAX_SAFE_INTEGER, skip);
+  //@ts-ignore-next-line
   balances.value.push(...response.data.records);
+  //@ts-ignore-next-line
   if (response.data._pagination.count > response.data.records.length) {
+    //@ts-ignore-next-line
     await getInvoiceableBalances(skip + response.data.records.length);
   }
 };
