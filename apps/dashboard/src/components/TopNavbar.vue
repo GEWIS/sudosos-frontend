@@ -176,10 +176,6 @@ const navItems = computed(() => [
       {
         label: t('app.Overview'),
         route: '/point-of-sale/overview',
-      },
-      {
-        label: t('app.Create POS'),
-        route: '/point-of-sale/request'
       }
     ]
   },

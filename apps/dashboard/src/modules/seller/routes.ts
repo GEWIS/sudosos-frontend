@@ -31,7 +31,7 @@ export function sellerRoutes(): RouteRecordRaw[] {
           }
         },
         {
-          path: '/point-of-sale/info/:id',
+          path: '/point-of-sale/:id',
           name: 'pointOfSaleInfo',
           component: POSInfoView,
           props: true,
