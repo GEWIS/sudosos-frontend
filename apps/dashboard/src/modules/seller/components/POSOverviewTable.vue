@@ -3,11 +3,8 @@
     <DataTable :rows="rows" :value="pointOfSales" :rowsPerPageOptions="[5, 10, 25, 50, 100]" paginator lazy
                @page="onPage($event)" :totalRecords="totalRecords">
       <template #header>
-        <div class="flex flex-row align-items-center justify-content-between">
-          <IconField iconPosition="left">
-            <InputIcon class="pi pi-search"> </InputIcon>
-            <InputText :placeholder="$t('app.Search')" />
-          </IconField>
+        <div class="flex flex-row align-items-center justify-content-end">
+
           <Button :label="$t('app.Create')" icon="pi pi-plus" @click="openCreatePOSModal"/>
         </div>
       </template>
@@ -45,9 +42,6 @@ import Column from 'primevue/column';
 import { onMounted, type Ref, ref } from "vue";
 import type { PaginatedPointOfSaleResponse, PointOfSaleResponse } from "@sudosos/sudosos-client";
 import Skeleton from "primevue/skeleton";
-import IconField from "primevue/iconfield";
-import InputIcon from "primevue/inputicon";
-import InputText from "primevue/inputtext";
 import router from "@/router";
 import POSCreateModal from "@/modules/seller/components/POSCreateModal.vue";
 const pointOfSales: Ref<PointOfSaleResponse[]> = ref(new Array(10));
