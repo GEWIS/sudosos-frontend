@@ -1,6 +1,9 @@
 <template>
   <CardComponent :header="$t('c_invoiceInfo.InvoiceUsers')" class="w-5">
+    <p class="my-0 font-italic text-sm  ">{{ $t('c_invoiceInfo.InvoiceUsersDescription') }}</p>
+    <p v-if="invoiceableUsersWithBalance.length === 0">{{ $t('c_invoiceInfo.NoInvoiceableUsers') }}</p>
     <DataTable
+        v-else
         :value="invoiceableUsersWithBalance"
     >
       <Column field="user.id" :header="$t('c_invoiceInfo.id')"/>

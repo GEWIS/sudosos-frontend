@@ -400,7 +400,9 @@
     "Name": "Name",
     "Balance": "Balance",
     "CreateInvoice": "Create Invoice",
-    "isCreditInvoice": "Is credit invoice"
+    "isCreditInvoice": "Is credit invoice",
+    "InvoiceUsersDescription": "Invoice user with oustanding debts.",
+    "NoInvoiceableUsers": "Currently, there are no users with outstanding debts."
   },
   "pdf": {
     "Table": "Table",
