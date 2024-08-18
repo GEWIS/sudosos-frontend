@@ -1,13 +1,12 @@
 <template>
   <CardComponent :header="$t('app.Points of Sale')" class="w-full">
+    <template #topAction>
+      <div class="flex flex-row align-items-center justify-content-end">
+        <Button :label="$t('app.Create')" icon="pi pi-plus" @click="openCreatePOSModal"/>
+      </div>
+    </template>
     <DataTable :rows="rows" :value="pointOfSales" :rowsPerPageOptions="[5, 10, 25, 50, 100]" paginator lazy
                @page="onPage($event)" :totalRecords="totalRecords">
-      <template #header>
-        <div class="flex flex-row align-items-center justify-content-end">
-
-          <Button :label="$t('app.Create')" icon="pi pi-plus" @click="openCreatePOSModal"/>
-        </div>
-      </template>
       <Column field="name" :header="$t('c_POSCreate.Title')">
         <template #body v-if="isLoading">
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
