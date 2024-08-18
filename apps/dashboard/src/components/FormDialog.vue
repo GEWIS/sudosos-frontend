@@ -2,26 +2,26 @@
   <Dialog
       modal
       ref="dialog"
-      @show="addListenerOnDialogueOverlay(dialog)"
+      @show="openDialog()"
       v-model:visible="visible"
       :draggable="false"
-      class="w-auto flex w-9 md:w-4"
+      class="w-auto flex"
       :header="header">
     <slot name="form" :form="form" />
     <div class="flex flex-row gap-2 justify-content-end w-full mt-3">
       <Button
-          type="submit"
-          icon="pi pi-check"
-          :disabled="!props.form.context.meta.value.valid"
-          :label="$t('common.create')"
-          @click="props.form.submit"
-      />
-      <Button
           type="button"
-          severity="secondary"
+          outlined
           icon="pi pi-times"
           :label="$t('common.close')"
           @click="visible = false"
+      />
+      <Button
+          type="submit"
+          icon="pi pi-check"
+          :disabled="!props.form.context.meta.value.valid"
+          :label="edit ? $t('common.edit')  : $t('common.save')"
+          @click="props.form.submit"
       />
     </div>
   </Dialog>
@@ -47,9 +47,14 @@ const props = defineProps({
     required: false,
     default: '',
   },
+  edit: {
+    type: Boolean,
+    required: false,
+    default: false
+  }
 });
 
-const emits = defineEmits(['update:modelValue']);
+const emits = defineEmits(['update:modelValue', 'show']);
 
 const dialog = ref();
 const visible = computed({
@@ -61,6 +66,11 @@ const visible = computed({
     emits('update:modelValue', value);
   },
 });
+
+const openDialog = () => {
+  addListenerOnDialogueOverlay(dialog.value);
+  emits('show');
+};
 </script>
 
 <style scoped lang="scss">

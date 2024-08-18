@@ -30,6 +30,15 @@
                 v-model="internalValue as number"
                 :disabled="disabled"/>
 
+      <InputNumber v-if="type === 'percentage'"
+                   mode="decimal"
+                   :min="0.0"
+                   :min-fraction-digits="0" :max-fraction-digits="2"
+                   :placeholder="placeholder"
+                   v-model="internalValue as number"
+                   :disabled="disabled"
+                   suffix="%"/>
+
       <Checkbox v-if="type === 'boolean'"
                    v-model="internalValue"
                     binary
@@ -75,7 +84,7 @@ const props = defineProps({
     default: ''
   },
   type: {
-    type: String as PropType<HintedString<'text' | 'textarea' | 'date' | 'currency'>>,
+    type: String as PropType<HintedString<'text' | 'textarea' | 'date' | 'currency' | 'percentage'>>,
     required: false,
     default: 'text'
   },
@@ -94,7 +103,7 @@ const props = defineProps({
 const emit = defineEmits(['update:value']);
 
 const stringInputs = ['text', 'textarea'];
-const numberInputs = ['currency', 'number'];
+const numberInputs = ['currency', 'percentage', 'number'];
 const booleanInputs = ['boolean'];
 
 const initialValue = () => {

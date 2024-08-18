@@ -25,7 +25,7 @@
         <div class="flex flex-column align-items-center gap-3">
           <div class="picture-container p-3">
             <img v-if="imageSrc" class="product-image" :src="imageSrc">
-            <img v-else class="product-image" src="@/assets/img/bier.png">
+            <img v-else class="product-image" src="../../../assets/img/bier.png">
           </div>
           <div v-if="edit">
             <FileUpload id="img" mode="basic" name="productImg" accept="image/*" @select="onImgUpload($event)"/>

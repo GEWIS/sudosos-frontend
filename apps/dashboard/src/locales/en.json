@@ -353,7 +353,7 @@
     }
   },
   "tooltip": {
-    "owner_revenue": "Note: Container owner gets the revenue, not the product owner"
+    "productOwner": "Note: Container owner gets the revenue, not the product owner. Owner cannot be edited after creation."
   },
   "common": {
     "approve": "Approve",
@@ -366,7 +366,8 @@
     "owner": "Owner",
     "name": "Name",
     "container": "Container",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "save": "Save"
   },
   "c_invoiceInfo": {
     "Info": "Info",
