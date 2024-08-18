@@ -6,6 +6,7 @@
               @close="closeDialog()"
               @delete="deleteProduct()"
               :deletable="product != null"
+              :delete-label="deleteLabel"
   >
     <template #form>
       <div class="flex flex-column gap-1">
@@ -49,9 +50,8 @@
             </div>
           </div>
         </div>
-
+        <ConfirmDialog ref="deleteConfirm"></ConfirmDialog>
       </div>
-
     </template>
   </FormDialog>
 </template>
@@ -61,7 +61,6 @@
 import {
   computed,
   type ComputedRef,
-  onBeforeMount,
   type PropType,
   ref,
   type Ref, watch
@@ -88,6 +87,7 @@ import apiService from "@/services/ApiService";
 import { formatDateTime } from "@/utils/formatterUtils";
 import { handleError } from "@/utils/errorUtils";
 import { useToast } from "primevue/usetoast";
+import { useConfirm } from "primevue/useconfirm";
 const toast = useToast();
 const { t } = useI18n();
 
@@ -243,7 +243,7 @@ setSubmit(form, form.context.handleSubmit(async (values) => {
   }
 
   // Add product to container
-  if(state.value.addToContainer) {
+  if(state.value.addToContainer && !inContainer.value) {
     if(selectExistingProduct.value) {
       await containerStore.addProductToContainer(props.container!, selectExistingProduct.value);
     } else if(createdProduct) {
@@ -278,8 +278,51 @@ setSubmit(form, form.context.handleSubmit(async (values) => {
   closeDialog();
 }));
 
-function deleteProduct() {
-  // TODO
+
+// Deleting a product from container or in general
+const deleteLabel = computed(() => {
+  return props.container
+  ? t("c_productContainerOperations.Delete From Container") : undefined;
+});
+
+const confirm = useConfirm();
+
+const deleteConfirm = ref<HTMLElement | undefined>();
+async function deleteProduct() {
+  if(props.product == undefined) return;
+  if(props.container) {
+    await containerStore.deleteProductFromContainer(props.container, props.product).then(() => {
+      toast.add({
+        severity: 'success',
+        summary: t('successMessages.success'),
+        detail: t('successMessages.productContainerDelete'),
+        life: 3000,
+      });
+      closeDialog();
+    }).catch((err) => handleError(err, toast));
+  } else {
+    confirm.require({
+      message: t('c_productContainerOperations.confirmDelete'),
+      target: deleteConfirm.value,
+      acceptLabel: t('common.delete'),
+      rejectLabel: t('common.close'),
+      acceptIcon: 'pi pi-trash',
+      rejectIcon: 'pi pi-times',
+      accept: async () => {
+        await productStore.deleteProduct(props.product!.id)
+            .catch((err) => {
+              handleError(err, toast);
+            });
+        toast.add({
+          summary: t('successMessages.success'),
+          detail: t('successMessages.productDeleted'),
+          severity: 'success',
+          life: 3000
+        });
+        closeDialog();
+      }
+    });
+  }
 }
 
 
@@ -325,6 +368,7 @@ const closeDialog = () => {
   selectExistingProduct.value = undefined;
   productImage.value = undefined;
   vatMap.edited = false;
+  visible.value = false;
 };
 
 

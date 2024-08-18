@@ -14,7 +14,7 @@
           v-if="deletable"
           type="button"
           icon="pi pi-trash"
-          :label="$t('common.delete')"
+          :label="deleteLabel || $t('common.delete')"
           outlined
           @click="emits('delete')"/>
       <div class="flex flex-row justify-content-end gap-2 flex-1">
@@ -61,8 +61,13 @@ const props = defineProps({
     type: Boolean,
     required: false,
     default: false
+  },
+  deleteLabel: {
+    type: String,
+    required: false
   }
 });
+
 
 const emits = defineEmits(['update:modelValue', 'show', 'close', 'delete']);
 

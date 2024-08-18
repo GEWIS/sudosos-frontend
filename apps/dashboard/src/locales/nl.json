@@ -117,7 +117,8 @@
     "Preferred": "Voorkeur",
     "Featured": "Promo",
     "Pricelist": "Prijslijst",
-    "AllProducts": "Alle producten"
+    "AllProducts": "Alle producten",
+    "confirmDelete": "Weet je zeker dat je dit product wilt verwijderen? Dit kan niet ongedaan worden gemaakt."
   },
   "c_recentTransactionsTable": {
     "all transactions": "alle transacties",
@@ -264,6 +265,7 @@
     "productUpdate": "Product is succesvol geüpdatet.",
     "productContainerAdd": "Product is succesvol toegevoegd aan container.",
     "productContainerDelete": "Product is succesvol verwijderd van container.",
+    "productDeleted": "Product is successvol verwijderd",
     "productCreate": "Product is succesvol aangemaakt.",
     "updateContainer": "Container is succesvol geüpdatet.",
     "invoiceDeleted": "Factuur is succesvol verwijderd.",
