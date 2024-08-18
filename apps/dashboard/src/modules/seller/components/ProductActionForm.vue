@@ -5,7 +5,7 @@
                :attributes="form.model.name.attr.value"
                @update:value="form.context.setFieldValue('name', $event)"
                :errors="form.context.errors.value.name"
-               id="name" placeholder="Product name (TODO)" type="text"
+               id="name" :placeholder="$t('c_productContainerOperations.Name')" type="text"
                :disabled="!isEditable"/>
     <span class="error-text-name block w15-rem" v-if="closeTo && !form.context.errors.value.name" @click="selectCloseTo">
                 {{ $t('c_productContainerOperations.Close To', {name: closeTo.name}) }}</span>
@@ -55,7 +55,7 @@
                       :organ="form.model.owner.value.value"
                       @update:organ="form.context.setFieldValue('owner', $event)"
                       :errors="form.context.errors.value.owner"
-                      :disabled="!isOrganEditable"/>
+                      :disabled="!isOrganEditable || !isEditable"/>
     </div>
 
     <div class="flex flex-column justify-content-between gap-1">

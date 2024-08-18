@@ -30,7 +30,7 @@
                 :products="!state.displayProduct ? products : undefined"
                 v-model:existing-product="selectExistingProduct"
                 :is-editable="isProductEditable"
-                :is-organ-editable="state.createProduct"/>
+                :is-organ-editable="state.createProduct || (state.addToContainer && isProductEditable)"/>
             <div class="flex flex-row justify-content-end gap-1">
             </div>
             <div>
