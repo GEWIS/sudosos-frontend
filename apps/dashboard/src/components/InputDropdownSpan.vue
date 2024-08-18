@@ -24,7 +24,7 @@
 
 <script setup lang="ts" generic="T">
 import ErrorSpan from "@/components/ErrorSpan.vue";
-import { onMounted, type PropType } from "vue";
+import { type PropType } from "vue";
 
 defineProps({
   label: {
@@ -61,10 +61,6 @@ defineProps({
 });
 
 const selectedOption = defineModel<T>('selectedOption');
-
-onMounted(() => {
-  console.log('dropdown',selectedOption.value);
-});
 
 
 </script>

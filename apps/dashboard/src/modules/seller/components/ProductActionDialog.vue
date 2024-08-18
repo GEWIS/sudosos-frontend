@@ -3,15 +3,18 @@
               :form="form"
               :header="header"
               @show="openDialog()"
+              @close="closeDialog()"
+              @delete="deleteProduct()"
+              :deletable="product != null"
   >
     <template #form>
       <div class="flex flex-column gap-1">
         <ProductActionExistingProductForm
             v-if="state.addToContainer"
             v-model:select-product="selectExistingProduct"
-            :products="products"/>
+            :products="dropdownProducts"/>
         <hr class="w-full opacity-50" v-if="state.addToContainer">
-        <div class="flex flex-row gap-4">
+        <div class="flex flex-column md:flex-row gap-4">
           <ProductActionImageForm
               :image-src="imageSrc"
               @upload:image="onImageUpload"
@@ -23,13 +26,10 @@
                 @submit:success="visible = false"
                 :product-categories="categories"
                 :vat-groups="vatGroups"
+                :products="!state.displayProduct ? products : undefined"
+                v-model:existing-product="selectExistingProduct"
                 :isEditable="isProductEditable"/>
             <div class="flex flex-row justify-content-end gap-1">
-              <Button
-                  type="button"
-                  icon="pi pi-trash"
-                  :label="$t('common.delete')"
-                  outlined/>
             </div>
             <div>
               <!-- Row for Added on -->
@@ -67,9 +67,9 @@ import {
 } from "vue";
 import type {
   BaseUserResponse,
-  ContainerWithProductsResponse,
+  ContainerWithProductsResponse, CreateProductRequest,
   ProductCategoryResponse,
-  ProductResponse,
+  ProductResponse, UpdateProductRequest,
   VatGroupResponse
 } from "@sudosos/sudosos-client";
 import { schemaToForm, setSubmit } from "@/utils/formUtils";
@@ -85,6 +85,9 @@ import ProductActionExistingProductForm from "@/modules/seller/components/Produc
 import { getProductImageSrc } from "@/utils/urlUtils";
 import apiService from "@/services/ApiService";
 import { formatDateTime } from "@/utils/formatterUtils";
+import { handleError } from "@/utils/errorUtils";
+import { useToast } from "primevue/usetoast";
+const toast = useToast();
 const { t } = useI18n();
 
 const props = defineProps({
@@ -111,14 +114,43 @@ const vatGroups: ComputedRef<VatGroupResponse[]> = computed(() => Object.values(
 const products: ComputedRef<ProductResponse[]> = computed(() => Object.values(productStore.getAllProducts));
 const organsList: ComputedRef<BaseUserResponse[]> = computed(() => userStore.organs);
 
+// List products to insta-add
+const dropdownProducts = computed(() => {
+  const c = props.container;
+  if (!c) return products.value;
+  // Ignore products that are already in the container
+  return products.value.filter((p) => !c.products.map((p) => p.id).includes(p.id));
+});
+
+// Smart automatic VAT percentage
+const vatMap: { [key: string | number]: any } = {
+  other: undefined,
+  modified: false,
+};
+
+const markVatEdited = () => {
+  vatMap.edited = true;
+};
+
+watch(form.model.category.value, () => {
+  if (vatMap.edited) return;
+
+  if (!form.model.category.value.value || !form.model.category.value.value.id) return;
+  const vatMapped = vatMap[form.model.category.value.value.id];
+  if (vatMapped) form.model.vat.value.value = vatMapped;
+  else if (vatMap.other) form.model.vat.value.value = vatMap.other;
+});
+
+watch(form.model.vat.value, markVatEdited);
+
 // Load all product information once
 onBeforeMount(async () => {
 
-  // const alcoholic = categories.value.find((c) => c.name === 'Alcoholic');
-  // if (alcoholic) {
-  //   vatMap[alcoholic.id] = vatGroups.value.find((v) => v.name === 'BTW Hoog');
-  //   vatMap.other = vatGroups.value.find((v) => v.name === 'BTW Laag');
-  // }
+  const alcoholic = categories.value.find((c) => c.name === 'Alcoholic');
+  if (alcoholic) {
+    vatMap[alcoholic.id] = vatGroups.value.find((v) => v.name === 'BTW Hoog');
+    vatMap.other = vatGroups.value.find((v) => v.name === 'BTW Laag');
+  }
 });
 
 // Handle image upload
@@ -135,9 +167,7 @@ const updateFieldValues = (p: ProductResponse) => {
   const category = categories.value.find((c) => c.id == p.category.id);
   const vat = vatGroups.value.find((c) => c.id == p.vat.id);
   const priceInclVat = p.priceInclVat.amount / 100;
-  console.log(organsList.value);
   const owner = organsList.value.find((o) => o.id == p.owner.id);
-  console.log(owner);
   const alcoholPercentage = p.alcoholPercentage;
   const preferred = p.preferred;
   const featured = p.featured;
@@ -188,24 +218,83 @@ watch(selectExistingProduct, () => {
 const isProductEditable = computed(() => selectExistingProduct.value == null);
 
 setSubmit(form, form.context.handleSubmit(async (values) => {
-  // Create a new product (or add a new product to container)
+  let createdProduct;
+
+  // Create a new product
   if(
-      state.value.createProduct ||
-      (state.value.addToContainer && selectExistingProduct.value == undefined)) {
+      (state.value.createProduct ||
+      state.value.addToContainer) && selectExistingProduct.value == undefined) {
+    const createProductRequest: CreateProductRequest = {
+      name: values.name,
+      priceInclVat: {
+        amount: Math.round(values.priceInclVat * 100),
+        currency: 'EUR',
+        precision: 2
+      },
+      vat: values.vat.id,
+      category: values.category.id,
+      alcoholPercentage: values.alcoholPercentage || 0,
+      ownerId: values.owner.id,
+      featured: values.featured,
+      preferred: values.preferred,
+      priceList: values.priceList,
+    };
+
+    createdProduct = await productStore.createProduct(createProductRequest, productImage.value)
+        .catch((err) => handleError(err, toast));
+    toast.add({
+      severity: 'success',
+      summary: t('successMessages.success'),
+      detail: t('successMessages.productCreate'),
+      life: 3000,
+    });
 
   }
 
   // Add product to container
   if(state.value.addToContainer) {
-
+    if(selectExistingProduct.value) {
+      await containerStore.addProductToContainer(props.container!, selectExistingProduct.value);
+    } else if(createdProduct) {
+      await containerStore.addProductToContainer(props.container!, createdProduct);
+    }
   }
 
 
   //
   if(state.value.displayProduct) {
-
+    if (form.context.meta.value.dirty) {
+      const updateProductRequest: UpdateProductRequest = {
+        name: values.name,
+        priceInclVat: {
+          amount: Math.round(values.priceInclVat * 100),
+          currency: 'EUR',
+          precision: 2
+        },
+        vat: values.vat.id,
+        category: values.category.id,
+        alcoholPercentage: values.alcoholPercentage || 0,
+        featured: values.featured,
+        preferred: values.preferred,
+        priceList: values.priceList,
+      };
+      await productStore.updateProduct(props.product!.id, updateProductRequest);
+    }
   }
+  visible.value = false;
+  closeDialog();
 }));
+
+function deleteProduct() {
+  // TODO
+}
+
+
+// When using the "alike product", disable add button if its already in container.
+const inContainer = computed(() => {
+  if (!props.container) return false;
+  return props.container.products.map((p) => p.id).includes(selectExistingProduct.value?.id as number);
+});
 
 const openDialog = async () => {
   await productStore.fetchAllIfEmpty();
@@ -213,19 +302,33 @@ const openDialog = async () => {
   selectExistingProduct.value = undefined;
   if (props.product) {
     updateFieldValues(props.product);
-    // vatMap.edited = true;
+    vatMap.edited = true;
   }
 };
 
-// const closeDialog = () => {
-//   resetForm();
-//   imageSrc.value = '';
-//   selectProduct.value = undefined;
-//   productImage.value = undefined;
-//   closeTo.value = null;
-//   vatMap.edited = false;
-//   emit('update:visible', false);
-// };
+
+const closeDialog = () => {
+  form.context.resetForm({
+    values: {
+      name: '',
+      category: undefined,
+      vat: undefined,
+      alcoholPercentage: 0,
+      priceInclVat: 0,
+      owner: undefined,
+      preferred: false,
+      featured: false,
+      priceList: false
+    }
+  });
+
+  imageSrc.value = '';
+  selectExistingProduct.value = undefined;
+  productImage.value = undefined;
+  vatMap.edited = false;
+};
+
+
 
 </script>
 <style scoped lang="scss">

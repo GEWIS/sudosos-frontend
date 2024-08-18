@@ -1,7 +1,7 @@
 <template>
   <div>
-    <span :class="['flex flex-wrap justify-content-between',
-     column ? 'flex-column gap-1' : 'flex-row align-items-center gap-3']">
+    <span :class="['flex justify-content-between',
+     column ? 'flex-column gap-1' : 'flex-row align-items-center gap-2']">
       <p class="my-0">{{ label }}</p>
       <InputText v-if="type === 'text'"
                  :placeholder="placeholder"
@@ -39,9 +39,8 @@
                    :disabled="disabled"
                    suffix="%"/>
 
-      <Checkbox v-if="type === 'boolean'"
+      <InputSwitch v-if="type === 'boolean'"
                    v-model="internalValue"
-                    binary
                    :disabled="disabled"/>
 
     </span>
@@ -60,7 +59,6 @@ import ErrorSpan from "@/components/ErrorSpan.vue";
 import CalendarString from "@/components/CalendarString.vue";
 
 import type { HintedString } from "primevue/ts-helpers";
-import InputNumber from "primevue/inputnumber";
 
 const props = defineProps({
   label: {
