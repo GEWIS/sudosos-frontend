@@ -109,7 +109,7 @@ export const createPointOfSaleObject =
     yup.object({
         name: yup.string().required(),
         useAuthentication: yup.boolean().default(false).required(),
-        owner: yup.mixed<BaseUserResponse>().required(),
+        owner: yup.mixed<UserResponse>().required(),
     });
 
 export const addContainerObject =

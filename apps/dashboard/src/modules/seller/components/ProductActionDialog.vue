@@ -100,7 +100,7 @@ const props = defineProps({
   },
 });
 
-const visible = defineModel('visible');
+const visible = defineModel<boolean>('visible', { required: true });
 
 const form = schemaToForm(createProductSchema);
 

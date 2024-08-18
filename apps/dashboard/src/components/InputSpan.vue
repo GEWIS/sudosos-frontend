@@ -40,7 +40,7 @@
                    suffix="%"/>
 
       <InputSwitch v-if="type === 'boolean'"
-                   v-model="internalValue"
+                   v-model="internalValue as boolean"
                    :disabled="disabled"/>
 
     </span>

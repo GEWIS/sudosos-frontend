@@ -134,7 +134,7 @@ import { FilterMatchMode } from "primevue/api";
 import ProductActionDialog from "@/modules/seller/components/ProductActionDialog.vue";
 
 const loading: Ref<boolean> = ref(true);
-const visible: Ref<Boolean> = ref(false);
+const visible: Ref<boolean> = ref(false);
 const product: Ref<ProductResponse | undefined> = ref(undefined);
 const fileInputs: Ref<{ [key: number]: any }> = ref({});
 
