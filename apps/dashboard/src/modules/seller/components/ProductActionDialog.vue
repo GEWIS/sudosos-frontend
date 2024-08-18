@@ -17,7 +17,7 @@
         <div class="flex flex-column md:flex-row gap-4">
           <ProductActionImageForm
               :image-src="imageSrc"
-              @upload:image="onImageUpload"
+              @upload="onImageUpload($event)"
               :isEditable="isProductEditable"
           />
           <div class="flex flex-column gap-3">
@@ -28,7 +28,8 @@
                 :vat-groups="vatGroups"
                 :products="!state.displayProduct ? products : undefined"
                 v-model:existing-product="selectExistingProduct"
-                :isEditable="isProductEditable"/>
+                :is-editable="isProductEditable"
+                :is-organ-editable="state.createProduct"/>
             <div class="flex flex-row justify-content-end gap-1">
             </div>
             <div>
@@ -143,16 +144,6 @@ watch(form.model.category.value, () => {
 
 watch(form.model.vat.value, markVatEdited);
 
-// Load all product information once
-onBeforeMount(async () => {
-
-  const alcoholic = categories.value.find((c) => c.name === 'Alcoholic');
-  if (alcoholic) {
-    vatMap[alcoholic.id] = vatGroups.value.find((v) => v.name === 'BTW Hoog');
-    vatMap.other = vatGroups.value.find((v) => v.name === 'BTW Laag');
-  }
-});
-
 // Handle image upload
 const productImage: Ref<File | undefined> = ref();
 const imageSrc = ref<string>();
@@ -261,7 +252,7 @@ setSubmit(form, form.context.handleSubmit(async (values) => {
   }
 
 
-  //
+  // Update product
   if(state.value.displayProduct) {
     if (form.context.meta.value.dirty) {
       const updateProductRequest: UpdateProductRequest = {
@@ -278,8 +269,10 @@ setSubmit(form, form.context.handleSubmit(async (values) => {
         preferred: values.preferred,
         priceList: values.priceList,
       };
+
       await productStore.updateProduct(props.product!.id, updateProductRequest);
     }
+    if(productImage.value) await productStore.updateProductImage(props.product!.id, productImage.value);
   }
   visible.value = false;
   closeDialog();
@@ -299,6 +292,12 @@ const inContainer = computed(() => {
 const openDialog = async () => {
   await productStore.fetchAllIfEmpty();
   await userStore.fetchAllOrgans(apiService);
+
+  const alcoholic = categories.value.find((c) => c.name === 'Alcoholic');
+  if (alcoholic) {
+    vatMap[alcoholic.id] = vatGroups.value.find((v) => v.name === 'BTW Hoog');
+    vatMap.other = vatGroups.value.find((v) => v.name === 'BTW Laag');
+  }
   selectExistingProduct.value = undefined;
   if (props.product) {
     updateFieldValues(props.product);
