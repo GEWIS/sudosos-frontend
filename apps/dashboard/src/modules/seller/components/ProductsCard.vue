@@ -105,15 +105,13 @@
           <Skeleton class="w-3 my-1 h-2rem surface-300"/>
         </template>
         <template #body="rowData" v-else>
-<!--          <Button-->
-<!--              @click="openEditModal(rowData.data.id)"-->
-<!--              type="button"-->
-<!--              link-->
-<!--              severity="secondary"-->
-<!--              icon="pi pi-info-circle"-->
-<!--          />-->
-          <i class="pi pi-info-circle cursor-pointer"
-             @click="openEditModal(rowData.data.id)" />
+          <Button
+              @click="openEditModal(rowData.data.id)"
+              type="button"
+              outlined
+              severity="secondary"
+              icon="pi pi-info-circle"
+          />
         </template>
       </Column>
     </DataTable>
