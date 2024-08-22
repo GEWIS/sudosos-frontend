@@ -11,7 +11,7 @@
           class="w-full md:w-15rem"
       >
     <template #option="slotProps">
-      {{ slotProps.option.firstName + " " + slotProps.option.lastName }}
+      {{ fullName(slotProps.option) }}
     </template>
   </Dropdown>
     </span>
@@ -25,6 +25,7 @@
 import ErrorSpan from "@/components/ErrorSpan.vue";
 import { computed, type PropType } from "vue";
 import { useAuthStore } from "@sudosos/sudosos-frontend-common";
+import { fullName } from "@/utils/formatterUtils";
 import type { BaseUserResponse } from "@sudosos/sudosos-client";
 
 const authStore = useAuthStore();
