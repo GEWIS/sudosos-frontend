@@ -1,8 +1,8 @@
 <template>
   <CardComponent
       :header="$t('c_currentBalance.balance')"
-      :func="userBalance?.fine ? waiveFines : null"
-      :action="userBalance?.fine ? $t('c_currentBalance.waiveFines') : null"
+      :func="userBalance?.fine ? waiveFines : undefined"
+      :action="userBalance?.fine ? $t('c_currentBalance.waiveFines') : undefined"
   >
     <div class="flex flex-column justify-content-center">
       <div v-if="isLoading">
