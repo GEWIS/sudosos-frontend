@@ -28,7 +28,6 @@
                 :placeholder="placeholder"
                 v-model="internalValue as number"
                 :disabled="disabled"/>
-
       <InputNumber v-if="type === 'percentage'"
                    mode="decimal"
                    :min="0.0"
@@ -37,11 +36,9 @@
                    v-model="internalValue as number"
                    :disabled="disabled"
                    suffix="%"/>
-
       <InputSwitch v-if="type === 'boolean'"
                    v-model="internalValue as boolean"
                    :disabled="disabled"/>
-
     </span>
     <div class="flex justify-content-end">
       <ErrorSpan :error="errors"/>

@@ -66,6 +66,7 @@
         </CardComponent>
     </div>
   </div>
+  <AdminUserInfoCard :user="currentUser" />
 </template>
 
 <script setup lang="ts">
@@ -87,6 +88,7 @@ import type { AxiosError } from "axios";
 import Button from "primevue/button";
 import { useI18n } from "vue-i18n";
 import MutationsBalanceCard from "@/components/mutations/MutationsBalance.vue";
+import AdminUserInfoCard from "@/modules/admin/components/users/AdminUserInfoCard.vue";
 
 const { defineField, handleSubmit, errors, setValues } = useForm({
   validationSchema: userDetailsSchema,
