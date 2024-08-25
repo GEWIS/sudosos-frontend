@@ -1,4 +1,9 @@
 <template>
+<!--  :header="$t('c_currentBalance.balance')"-->
+<!--  action="Create payout"-->
+<!--  :routerLink="getRouterLink"-->
+<!--  :routerParams="getRouterParams"-->
+<!--  class="w-19rem"-->
   <CardComponent
       :header="t('modules.admin.singleUser.balance.header')"
       :func="userBalance?.fine ? waiveFines : undefined"
@@ -40,15 +45,36 @@ const toast = useToast();
 
 const userBalance: Ref<BalanceResponse | null> = ref(null);
 const isLoading: Ref<boolean> = ref(true);
+const isOrgan = computed(() => props.user?.type == 'ORGAN');
+
+const emits = defineEmits(['update:value']);
+
+const getRouterLink = computed(() => {
+  if (isOrgan.value) {
+    return 'sellerPayouts';
+  }
+  return 'payouts';
+});
+
+const getRouterParams = computed(() => {
+  if (isOrgan.value) {
+    return { id: props.user.id, name: props.user.firstName };
+  }
+  return { id: undefined };
+});
+
 const updateUserBalance = async () => {
   if(props.user) {
     const response = await apiService.balance.getBalanceId(props.user.id);
     userBalance.value = response.data;
+    emits('update:value', userBalance.value);
     isLoading.value = false;
   }
 };
 
-onMounted(updateUserBalance);
+onMounted(async () => {
+  await updateUserBalance();
+});
 
 watch(() => props.user, () => {
   updateUserBalance();

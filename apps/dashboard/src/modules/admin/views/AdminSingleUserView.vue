@@ -38,6 +38,9 @@ import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 
+const isOrgan = computed(() => currentUser.value?.type == 'ORGAN');
+
+const userId = ref();
 const route = useRoute();
 const userStore = useUserStore();
 const toast = useToast();
