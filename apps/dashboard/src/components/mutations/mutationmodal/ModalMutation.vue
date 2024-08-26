@@ -123,7 +123,6 @@ const shouldShowPayoutRequest = computed(() => {
     props.type === FinancialMutationType.PAYOUT_REQUEST);
 });
 async function fetchTransferInfo() {
-  console.error("Fetching transfer info");
   if (transferDetails.value[props.id]) return; // We already have content!
   await transferStore.fetchIndividualTransfer(props.id, apiService).then(() => {
     transferDetails.value[props.id] = transferStore.transfer as TransferResponse;
