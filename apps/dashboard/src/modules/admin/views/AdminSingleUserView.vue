@@ -1,5 +1,3 @@
-<!--TODO: Extract input validation styling-->
-<!--See: https://github.com/GEWIS/sudosos-frontend-vue3/issues/52-->
 <template>
   <div class="page-container">
     <div class="page-title">{{ `${currentUser ? currentUser.firstName : ''}'s profile` }}</div>

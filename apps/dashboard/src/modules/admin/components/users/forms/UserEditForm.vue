@@ -92,13 +92,7 @@ const props = defineProps({
     required: false,
     default: false,
   },
-  test: {
-    type: String,
-    required: true,
-  }
 });
-
-const user: Ref<UserResponse> = ref(props.user);
 
 setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
   const updateUserRequest: UpdateUserRequest = {
