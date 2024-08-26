@@ -75,7 +75,7 @@
         </Column>
     </DataTable>
     <ModalMutation
-        v-if="openedMutationId && openedMutationType"
+        v-if="openedMutationId && openedMutationType !== undefined"
         v-model:visible="isModalVisible"
         :id="openedMutationId"
         :type="openedMutationType"
@@ -132,6 +132,7 @@ const openedMutationType = ref<FinancialMutationType>();
 const isModalVisible = ref<boolean>(false);
 
 function openModal(id: number, type: FinancialMutationType) {
+    console.error(id, type);
     openedMutationId.value = id;
     openedMutationType.value = type;
     isModalVisible.value = true;
