@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dashboard:dev": "yarn dev",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "build-only": "vite build",
@@ -15,8 +16,8 @@
   },
   "dependencies": {
     "@stripe/stripe-js": "^2.1.7",
-    "@sudosos/sudosos-frontend-common": "*",
     "@sudosos/sudosos-client": "github:GEWIS/sudosos-client#ba8d67e",
+    "@sudosos/sudosos-frontend-common": "workspace:^",
     "@types/dinero.js": "^1.9.4",
     "@vee-validate/rules": "^4.12.8",
     "@vee-validate/yup": "^4.11.1",
