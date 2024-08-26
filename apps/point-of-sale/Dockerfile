@@ -10,7 +10,7 @@ ARG GIT_COMMIT_BRANCH
 ENV VITE_GIT_COMMIT_BRANCH=${GIT_COMMIT_BRANCH}
 ARG GIT_COMMIT_SHA
 ENV VITE_GIT_COMMIT_SHA=${GIT_COMMIT_SHA}
-RUN yarn workspace sudosos-point-of-sale build
+RUN yarn run build-pos
 
 # The target image that will be run
 FROM nginx:alpine as target
