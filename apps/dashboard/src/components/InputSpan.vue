@@ -39,6 +39,13 @@
       <InputSwitch v-if="type === 'boolean'"
                    v-model="internalValue as boolean"
                    :disabled="disabled"/>
+      <Dropdown v-if="type === 'usertype'"
+                :options="userTypes"
+                optionLabel="name"
+                optionValue="value"
+                v-model="internalValue as number"
+                :placeholder="placeholder"
+                :disabled="disabled"/>
     </span>
     <div class="flex justify-content-end">
       <ErrorSpan :error="errors"/>
@@ -55,6 +62,8 @@ import ErrorSpan from "@/components/ErrorSpan.vue";
 import CalendarString from "@/components/CalendarString.vue";
 
 import type { HintedString } from "primevue/ts-helpers";
+import InputNumber from "primevue/inputnumber";
+import { userTypes } from "@/utils/validation-schema";
 
 const props = defineProps({
   label: {

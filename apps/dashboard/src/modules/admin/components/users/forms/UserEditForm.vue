@@ -21,7 +21,8 @@
                :errors="form.context.errors.value.nickname"
                :disabled="!edit"
                id="name" placeholder="Nick" type="text" />
-    <InputSpan :label="$t('userDetails.Email address')"
+    <InputSpan  v-if="!(user.type === 'MEMBER')"
+        :label="$t('userDetails.Email address')"
                :value="form.model.email?.value.value"
                :attributes="form.model.email?.attr.value"
                @update:value="form.context.setFieldValue('email', $event)"
@@ -33,7 +34,7 @@
                :attributes="form.model.userType?.attr.value"
                @update:value="form.context.setFieldValue('userType', $event)"
                :errors="form.context.errors.value.userType"
-               id="name" placeholder="Typey McTypeface" type="text" disabled/>
+               id="name" placeholder="Typey McTypeface" type="usertype" disabled/>
     <InputSpan :label="$t('userDetails.Active')"
                :value="form.model.isActive?.value.value"
                :attributes="form.model.isActive?.attr.value"
@@ -64,7 +65,7 @@ import { useI18n } from "vue-i18n";
 import { useToast } from "primevue/usetoast";
 import { type Form, setSubmit } from "@/utils/formUtils";
 import apiService from "@/services/ApiService";
-import type {UpdateUserRequest, UserResponse} from "@sudosos/sudosos-client";
+import type { UpdateUserRequest, UserResponse } from "@sudosos/sudosos-client";
 import { type PropType } from "vue";
 import * as yup from "yup";
 import { updateUserDetailsObject } from "@/utils/validation-schema";
