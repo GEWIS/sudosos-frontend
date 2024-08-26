@@ -1,5 +1,6 @@
 # Build in a different image to keep the target image clean
 FROM node:20 as build
+RUN corepack enable && yarn set version berry
 WORKDIR /app
 COPY lib/common/ lib/common/
 COPY apps/dashboard/package.json apps/dashboard/
