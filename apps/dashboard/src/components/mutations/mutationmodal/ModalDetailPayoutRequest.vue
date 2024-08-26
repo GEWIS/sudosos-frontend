@@ -56,7 +56,6 @@ const props = defineProps({
 });
 
 onMounted(async () => {
-  console.warn(props.payoutRequest);
   if (!props.payoutRequest.from) {
     await router.replace('/error');
     return;
