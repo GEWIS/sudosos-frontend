@@ -1,11 +1,12 @@
 <template>
   <div class="page-container">
     <div class="page-title">{{ `${currentUser ? currentUser.firstName : ''}'s profile` }}</div>
-    <div class="flex flex-column md:flex-row flex-wrap justify-content-between gap-5">
-      <!--      TODO: Refactor to extract this component-->
-      <!--      See: https://github.com/GEWIS/sudosos-frontend-vue3/issues/21-->
 
-      <AdminUserBalance :user="currentUser" />
+    <div class="flex flex-column gap-5">
+      <div class="flex flex-column  md:flex-row flex-wrap justify-content-between gap-5">
+        <AdminUserInfoCard :user="currentUser"/>
+        <AdminUserBalance :user="currentUser"/>
+      </div>
       <CardComponent
           :header="t('transactions.recentTransactions')"
           class="w-full">
@@ -14,12 +15,11 @@
             :header="t('userDetails.User Transactions')"
             paginator
             modal
-            :get-mutations="getUserMutations" />
+            :get-mutations="getUserMutations"/>
       </CardComponent>
     </div>
   </div>
-  <AdminUserInfoCard :user="currentUser" />
-</template>
+</template>s
 
 <script setup lang="ts">
 import { onBeforeMount, ref } from "vue";
@@ -40,17 +40,13 @@ import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 
-const userId = ref();
 const route = useRoute();
 const userStore = useUserStore();
 const toast = useToast();
 const currentUser: Ref<UserResponse | undefined> = ref();
 
-const isLocal: Ref<Boolean> = ref(false);
-
 onBeforeMount(async () => {
-  userId.value = route.params.userId;
-  await apiService.user.getIndividualUser(userId.value).then((res) => {
+  await apiService.user.getIndividualUser(Number(route.params.userId)).then((res) => {
     currentUser.value = res.data;
   }).catch((error: AxiosError) => {
     handleError(error, toast);
@@ -59,12 +55,11 @@ onBeforeMount(async () => {
     await router.replace({ path: '/error' });
     return;
   }
-  isLocal.value = currentUser.value.type == "LOCAL_USER";
 });
 
 const getUserMutations = async (take: number, skip: number):
     Promise<PaginatedFinancialMutationResponse | undefined> => {
-  await userStore.fetchUsersFinancialMutations(userId.value, apiService, take, skip)
+  await userStore.fetchUsersFinancialMutations(Number(route.params.userId), apiService, take, skip)
       .catch((err: AxiosError) => handleError(err, toast));
   return userStore.getCurrentUser.financialMutations;
 };
