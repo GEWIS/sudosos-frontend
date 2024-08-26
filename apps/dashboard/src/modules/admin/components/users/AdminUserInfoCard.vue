@@ -2,7 +2,7 @@
   <FormCard :header="$t('userDetails.User Information')"
             @update:modelValue="edit = $event" @save="formSubmit" :enableEdit="true">
       <div class="flex flex-column justify-content-between gap-2">
-        <UserEditForm :user="user" :form="form" :edit="edit" @update:edit="edit = $event"/>
+        <UserEditForm :user="props.user" :form="form" :edit="edit" @update:edit="edit = $event"/>
       </div>
   </FormCard>
 </template>
@@ -23,7 +23,7 @@ const props = defineProps({
 });
 
 const edit = ref(false);
-const user: Ref<UserResponse> = ref(props.user);
+// const user: Ref<UserResponse> = ref(props.user);
 
 const form = schemaToForm(updateUserDetailsObject);
 
@@ -47,13 +47,14 @@ const updateFieldValues = (p: UserResponse) => {
 };
 
 watch(() => user.value, (newValue: UserResponse) => {
-  updateFieldValues(newValue);
+  // updateFieldValues(newValue);
 });
 
 onBeforeMount(() => {
-  if (user.value) {
-    updateFieldValues(user.value);
-  }
+  console.log(props.user);
+  // if (user.value) {
+  //   updateFieldValues(user.value);
+  // }
 });
 </script>
 
