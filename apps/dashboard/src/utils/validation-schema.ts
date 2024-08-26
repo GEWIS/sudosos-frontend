@@ -90,9 +90,9 @@ export const createProductSchema =
         vat: yup.mixed<BaseVatGroupResponse>().required(),
         category: yup.mixed<ProductCategoryResponse>().required(),
         alcoholPercentage: yup.number().required().default(0),
-        featured: yup.boolean().required().default(false),
-        preferred: yup.boolean().required().default(false),
-        priceList: yup.boolean().required().default(false),
+        featured: yup.boolean().default(false),
+        preferred: yup.boolean().default(false),
+        priceList: yup.boolean().default(false),
         owner: yup.mixed<UserResponse>().required()
     });
 
