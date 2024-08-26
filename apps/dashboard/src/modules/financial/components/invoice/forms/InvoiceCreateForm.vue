@@ -29,8 +29,8 @@
                :errors="form.context.errors.value.addressee"
                id="addressee" placeholder="Addressee" type="text"/>
     <InputSpan :label="$t('c_invoiceInfo.Attention')"
-               :value="form.model.attention.value.value"
-               :attributes="form.model.attention.attr.value"
+               :value="form.model.attention?.value.value"
+               :attributes="form.model.attention?.attr.value"
                @update:value="form.context.setFieldValue('attention', $event)"
                :errors="form.context.errors.value.attention"
                id="attention" placeholder="Attention" type="text"/>
