@@ -3,8 +3,8 @@
     <div class="page-title">{{ `${currentUser ? currentUser.firstName : ''}'s profile` }}</div>
 
     <div class="flex flex-column gap-5">
-      <div class="flex flex-column  md:flex-row flex-wrap justify-content-between gap-5">
-        <AdminUserInfoCard :user="currentUser"/>
+      <div class="flex flex-column  md:flex-row justify-content-between gap-8">
+        <AdminUserInfoCard :user="currentUser" class="flex-grow-1"/>
         <AdminUserBalance :user="currentUser"/>
       </div>
       <CardComponent
