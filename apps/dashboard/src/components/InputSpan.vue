@@ -25,7 +25,6 @@
       <InputNumber v-if="type === 'currency'"
                  mode="currency" currency="EUR" locale="nl-NL"
                  :min="0.0"
-                 :min-fraction-digits="0" :max-fraction-digits="2"
                 :placeholder="placeholder"
                 v-model="internalValue as number"
                 :disabled="disabled"/>
