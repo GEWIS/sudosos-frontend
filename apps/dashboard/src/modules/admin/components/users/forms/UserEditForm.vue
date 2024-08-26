@@ -22,7 +22,8 @@
                :disabled="!edit"
                id="name" placeholder="Nick" type="text" />
     <!-- Use user.value.type instead of user.type -->
-    <InputSpan v-if="!(user.type === 'MEMBER')"
+    <InputSpan
+        v-if="!(props.user?.type === 'MEMBER')"
                :label="$t('userDetails.Email address')"
                :value="form.model.email?.value.value"
                :attributes="form.model.email?.attr.value"
@@ -67,7 +68,7 @@ import { useToast } from "primevue/usetoast";
 import { type Form, setSubmit } from "@/utils/formUtils";
 import apiService from "@/services/ApiService";
 import type { UpdateUserRequest, UserResponse } from "@sudosos/sudosos-client";
-import { type PropType, type Ref, ref } from "vue";
+import {onBeforeMount, onMounted, type PropType, type Ref, ref} from "vue";
 import * as yup from "yup";
 import { updateUserDetailsObject } from "@/utils/validation-schema";
 import { handleError } from "@/utils/errorUtils";
