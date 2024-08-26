@@ -112,5 +112,5 @@ export const createInvoiceSchema =
       postalCode: yup.string().required(),
       city: yup.string().required(),
       country: yup.string().required(),
-      attention: yup.string().required(),
+      attention: yup.string(),
   });
