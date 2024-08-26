@@ -21,8 +21,9 @@
                :errors="form.context.errors.value.nickname"
                :disabled="!edit"
                id="name" placeholder="Nick" type="text" />
-    <InputSpan  v-if="!(user.type === 'MEMBER')"
-        :label="$t('userDetails.Email address')"
+    <!-- Use user.value.type instead of user.type -->
+    <InputSpan v-if="!(user.type === 'MEMBER')"
+               :label="$t('userDetails.Email address')"
                :value="form.model.email?.value.value"
                :attributes="form.model.email?.attr.value"
                @update:value="form.context.setFieldValue('email', $event)"
@@ -66,7 +67,7 @@ import { useToast } from "primevue/usetoast";
 import { type Form, setSubmit } from "@/utils/formUtils";
 import apiService from "@/services/ApiService";
 import type { UpdateUserRequest, UserResponse } from "@sudosos/sudosos-client";
-import { type PropType } from "vue";
+import { type PropType, type Ref, ref } from "vue";
 import * as yup from "yup";
 import { updateUserDetailsObject } from "@/utils/validation-schema";
 import { handleError } from "@/utils/errorUtils";
@@ -79,7 +80,7 @@ const emit = defineEmits(['update:edit']);
 const props = defineProps({
   user: {
     type: Object as PropType<UserResponse>,
-    required: true
+    required: true,
   },
   form: {
     type: Object as PropType<Form<yup.InferType<typeof updateUserDetailsObject>>>,
@@ -90,7 +91,13 @@ const props = defineProps({
     required: false,
     default: false,
   },
+  test: {
+    type: String,
+    required: true,
+  }
 });
+
+const user: Ref<UserResponse> = ref(props.user);
 
 setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
   const updateUserRequest: UpdateUserRequest = {
@@ -115,7 +122,3 @@ setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
   });
 }));
 </script>
-
-<style scoped>
-
-</style>

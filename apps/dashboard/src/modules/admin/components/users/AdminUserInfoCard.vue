@@ -2,7 +2,7 @@
   <FormCard :header="$t('userDetails.User Information')"
             @update:modelValue="edit = $event" @save="formSubmit" :enableEdit="true">
       <div class="flex flex-column justify-content-between gap-2">
-        <UserEditForm :user="props.user" :form="form" :edit="edit" @update:edit="edit = $event"/>
+        <UserEditForm :user="props.user" :form="form" :edit="edit" @update:edit="edit = $event" test="test"/>
       </div>
   </FormCard>
 </template>
@@ -46,9 +46,9 @@ const updateFieldValues = (p: UserResponse) => {
   form.context.resetForm({ values });
 };
 
-watch(() => user.value, (newValue: UserResponse) => {
-  // updateFieldValues(newValue);
-});
+// watch(() => user.value, (newValue: UserResponse) => {
+//   updateFieldValues(newValue);
+// });
 
 onBeforeMount(() => {
   console.log(props.user);
