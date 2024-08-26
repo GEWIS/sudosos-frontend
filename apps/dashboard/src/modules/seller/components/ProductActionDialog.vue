@@ -271,6 +271,12 @@ setSubmit(form, form.context.handleSubmit(async (values) => {
       };
 
       await productStore.updateProduct(props.product!.id, updateProductRequest);
+      toast.add({
+        severity: 'success',
+        summary: t('successMessages.success'),
+        detail: t('successMessages.productUpdate'),
+        life: 3000,
+      });
     }
     if(productImage.value) await productStore.updateProductImage(props.product!.id, productImage.value);
   }
