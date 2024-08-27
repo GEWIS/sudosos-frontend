@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span :class="['flex flex-wrap justify-content-between',
+    <span :class="['flex justify-content-between',
      column ? 'flex-column gap-1' : 'flex-row align-items-center gap-3']">
       <span class="my-0">{{ label }}</span>
       <Dropdown

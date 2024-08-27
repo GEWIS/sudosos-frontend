@@ -48,7 +48,7 @@
                :disabled="!isEditable"/>
 
     <!-- If the organ is not editable, add a fake option menu so the dropdown still renders  -->
-    <div class="flex flex-row justify-content-between align-items-center">
+    <div class="flex flex-row justify-content-between align-items-center gap-1">
       <i class="pi pi-exclamation-circle text-red-500 cursor-pointer"
          v-tooltip.top="$t('tooltip.productOwner')"/>
       <InputOrganSpan :label="$t('c_POSCreate.Owner')"
@@ -59,6 +59,7 @@
                       @update:organ="form.context.setFieldValue('owner', $event)"
                       :errors="form.context.errors.value.owner"
                       :disabled="!isOrganEditable || !isEditable"/>
+
     </div>
 
     <div class="flex flex-column justify-content-between gap-1">
