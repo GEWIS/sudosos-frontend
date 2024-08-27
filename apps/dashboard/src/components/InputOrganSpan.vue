@@ -5,10 +5,11 @@
       <span class="my-0">{{ label }}</span>
       <Dropdown
           v-model="organ"
-          :options="organs"
+          :options="organs || userOrgans"
           optionLabel="firstName"
           :placeholder="placeholder"
           class="w-full md:w-15rem"
+          :disabled="disabled"
       >
     <template #option="slotProps">
       {{ fullName(slotProps.option) }}
@@ -30,7 +31,7 @@ import type { UserResponse } from "@sudosos/sudosos-client";
 
 const authStore = useAuthStore();
 
-const organs = computed(() => {
+const userOrgans = computed(() => {
   return authStore.organs;
 });
 
@@ -58,7 +59,12 @@ defineProps({
     required: false,
     default: false
   },
+  organs: {
+    type: Object as PropType<UserResponse[]>,
+    required: false
+  }
 });
+
 
 const organ = defineModel<UserResponse>('organ');
 

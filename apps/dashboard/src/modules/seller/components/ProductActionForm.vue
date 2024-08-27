@@ -7,7 +7,10 @@
                :errors="form.context.errors.value.name"
                id="name" :placeholder="$t('c_productContainerOperations.Name')" type="text"
                :disabled="!isEditable"/>
-    <span class="error-text-name block w15-rem" v-if="closeTo && !form.context.errors.value.name" @click="selectCloseTo">
+    <span
+        class="error-text-name block w15-rem"
+        v-if="closeTo && !form.context.errors.value.name"
+        @click="selectCloseTo">
                 {{ $t('c_productContainerOperations.Close To', {name: closeTo.name}) }}</span>
 
     <InputDropdownSpan
@@ -105,6 +108,8 @@ const props = defineProps<{
   isEditable?: boolean,
   isOrganEditable?: boolean
 }>();
+
+console.log(props.isOrganEditable);
 
 const selectExistingProduct = defineModel('existingProduct');
 
