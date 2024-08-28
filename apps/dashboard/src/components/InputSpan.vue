@@ -106,7 +106,8 @@ const props = defineProps({
 const emit = defineEmits(['update:value']);
 
 const stringInputs = ['text', 'textarea'];
-const numberInputs = ['currency', 'percentage', 'number'];
+
+const numberInputs = ['currency', 'number', 'usertype', 'percentage'];
 const booleanInputs = ['boolean'];
 
 const initialValue = () => {

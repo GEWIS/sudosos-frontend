@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import FormCard from "@/components/FormCard.vue";
-import {onBeforeMount, onMounted, type PropType, type Ref, ref, watch} from "vue";
+import { onMounted, type PropType, ref, watch} from "vue";
 import type { UserResponse } from "@sudosos/sudosos-client";
 import { schemaToForm } from "@/utils/formUtils";
 import { updateUserDetailsObject, userTypes } from "@/utils/validation-schema";
@@ -26,7 +26,6 @@ const props = defineProps({
 });
 
 const edit = ref(false);
-const user: Ref<UserResponse> = ref(props.user);
 
 const form = schemaToForm(updateUserDetailsObject);
 

@@ -60,7 +60,7 @@ export const updateUserDetailsObject = yup.object({
   lastName: yup.string(),
   email: yup.string().email(),
   nickname: yup.string(),
-  userType: yup.mixed().required(),
+  userType: yup.number().required(),
   isActive: yup.boolean().required().default(true),
   ofAge: yup.boolean().required().default(false),
   canGoIntoDebt: yup.boolean().required().default(false),

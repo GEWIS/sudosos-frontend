@@ -43,7 +43,7 @@ const { t } = useI18n();
 const route = useRoute();
 const userStore = useUserStore();
 const toast = useToast();
-const currentUser: Ref<UserResponse | undefined> = ref();
+const currentUser: Ref<UserResponse> = ref<UserResponse>(null!);
 
 onBeforeMount(async () => {
   await apiService.user.getIndividualUser(Number(route.params.userId)).then((res) => {
