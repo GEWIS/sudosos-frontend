@@ -6,7 +6,7 @@
                @update:value="form.context.setFieldValue('firstName', $event)"
                :errors="form.context.errors.value.firstName"
                :disabled="!edit"
-               id="name" placeholder="John" type="text" />
+               id="name" :placeholder="$t('userDetails.First name')" type="text" />
     <InputSpan :label="$t('userDetails.Last name')"
                :value="form.model.lastName?.value.value"
                :attributes="form.model.lastName?.attr.value"
@@ -20,7 +20,7 @@
                @update:value="form.context.setFieldValue('nickname', $event)"
                :errors="form.context.errors.value.nickname"
                :disabled="!edit"
-               id="name" placeholder="Nick" type="text" />
+               id="name" :placeholder="$t('userDetails.Nickname')" type="text" />
     <!-- Use user.value.type instead of user.type -->
     <InputSpan
         v-if="!(props.user?.type === 'MEMBER')"
@@ -30,34 +30,34 @@
                @update:value="form.context.setFieldValue('email', $event)"
                :errors="form.context.errors.value.email"
                :disabled="!edit"
-               id="name" placeholder="john.doe@example.com" type="text" />
+               id="name" placeholder="first.last@example.com" type="text" />
     <InputSpan :label="$t('userDetails.Usertype')"
                :value="form.model.userType?.value.value"
                :attributes="form.model.userType?.attr.value"
                @update:value="form.context.setFieldValue('userType', $event)"
                :errors="form.context.errors.value.userType"
-               id="name" placeholder="Typey McTypeface" type="usertype" disabled/>
+               id="name" :placeholder="$t('userDetails.Usertype')" type="usertype" disabled/>
     <InputSpan :label="$t('userDetails.Active')"
                :value="form.model.isActive?.value.value"
                :attributes="form.model.isActive?.attr.value"
                @update:value="form.context.setFieldValue('isActive', $event)"
                :errors="form.context.errors.value.isActive"
                :disabled="!edit"
-               id="name" placeholder="Typey McTypeface" type="boolean"/>
+               id="name" :placeholder="$t('userDetails.Active')" type="boolean"/>
     <InputSpan :label="$t('profile.ofAge')"
                :value="form.model.ofAge?.value.value"
                :attributes="form.model.ofAge?.attr.value"
                @update:value="form.context.setFieldValue('ofAge', $event)"
                :errors="form.context.errors.value.ofAge"
                :disabled="!edit"
-               id="name" placeholder="Typey McTypeface" type="boolean"/>
+               id="name" :placeholder="$t('profile.ofAge')" type="boolean"/>
     <InputSpan :label="$t('profile.canGoIntoDebt')"
                :value="form.model.canGoIntoDebt?.value.value"
                :attributes="form.model.canGoIntoDebt?.attr.value"
                @update:value="form.context.setFieldValue('canGoIntoDebt', $event)"
                :errors="form.context.errors.value.canGoIntoDebt"
                :disabled="!edit"
-               id="name" placeholder="Typey McTypeface" type="boolean"/>
+               id="name" :placeholder="$t('profile.canGoIntoDebt')" type="boolean"/>
   </div>
 </template>
 
@@ -68,7 +68,7 @@ import { useToast } from "primevue/usetoast";
 import { type Form, setSubmit } from "@/utils/formUtils";
 import apiService from "@/services/ApiService";
 import type { UpdateUserRequest, UserResponse } from "@sudosos/sudosos-client";
-import {onBeforeMount, onMounted, type PropType, type Ref, ref} from "vue";
+import { type PropType } from "vue";
 import * as yup from "yup";
 import { updateUserDetailsObject } from "@/utils/validation-schema";
 import { handleError } from "@/utils/errorUtils";

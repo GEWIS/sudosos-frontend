@@ -1,5 +1,5 @@
 <template>
-  <FormCard :header="$t('userDetails.User Information')"
+  <FormCard :header="$t('userDetails.userInformation')"
             @update:modelValue="edit = $event"
             @save="formSubmit"
             :enableEdit="true"
@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import FormCard from "@/components/FormCard.vue";
-import { onMounted, type PropType, ref, watch} from "vue";
+import { onMounted, type PropType, ref, watch } from "vue";
 import type { UserResponse } from "@sudosos/sudosos-client";
 import { schemaToForm } from "@/utils/formUtils";
 import { updateUserDetailsObject, userTypes } from "@/utils/validation-schema";

@@ -325,7 +325,8 @@
     "Usertype": "Gebruikerstype",
     "passwordUpdated": "Wachtwoord is succesvol geüpdatet",
     "updatedUserInfo": "Profiel is succesvol geüpdatet.",
-    "userInfoUpdated": "Profiel is succesvol aangepast"
+    "userInfoUpdated": "Profiel is succesvol aangepast",
+    "userInformation": "Gebruikersinformatie"
   },
   "validation": {
     "number": {
