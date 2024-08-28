@@ -39,7 +39,7 @@ export async function fetchAllPages<T>(
     allData = allData.concat(records);
     skip += take;
 
-    if (response.data._pagination.count <= (skip + take)) {
+    if (response.data._pagination.count <= skip) {
       // Reached the last page, exit the loop
       break;
     }
