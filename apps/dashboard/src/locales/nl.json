@@ -278,7 +278,8 @@
     "waiveFinesSuccess": "Boetes zijn succesvol kwijtgescholden.",
     "waiveFinesRejected": "Boetes zijn succesvol afgewezen.",
     "canceled": "Geannuleerd",
-    "userUpdated": "Gebruiker is succesvol geüpdatet."
+    "userUpdated": "Gebruiker is succesvol geüpdatet.",
+    "pinUpdated": "Pincode is succesvol geüpdatet."
   },
   "termsOfService": {
     "acceptFirst": "Accepteer de Voorwaarden",
@@ -329,6 +330,17 @@
     "updatedUserInfo": "Profiel is succesvol geüpdatet.",
     "userInfoUpdated": "Profiel is succesvol aangepast",
     "userInformation": "Gebruikersinformatie"
+  },
+  "userSettings": {
+    "userSettings": "Gebruikersinstellingen",
+    "changeCredentials": "Wijzig inloggegevens",
+    "changePin": "Wijzig pincode",
+    "changePassword": "Wijzig wachtwoord",
+    "apiKeys": "API-sleutels",
+    "changeApiKey": "Wijzig API-sleutel",
+    "deleteApiKey": "Verwijder API-sleutel",
+    "preferences": "Voorkeuren",
+    "dataAnalysis": "Uitgebreide Data Analyse"
   },
   "validation": {
     "number": {

@@ -46,6 +46,15 @@
                 v-model="internalValue as number"
                 :placeholder="placeholder"
                 :disabled="disabled"/>
+
+      <InputText v-if="type === 'pin'"
+                 class="w-3"
+                 size="small"
+                 type="password"
+                 :placeholder="placeholder"
+                 v-model="internalValue"
+                 v-bind="attributes"
+                 :disabled="disabled"/>
     </span>
     <div class="flex justify-content-end">
       <ErrorSpan :error="errors"/>

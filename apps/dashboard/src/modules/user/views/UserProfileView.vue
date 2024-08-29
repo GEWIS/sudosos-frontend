@@ -1,41 +1,18 @@
 <template>
   <div class="page-container">
-    <div class="page-title my-0">
-      {{ t('profile.myProfile')}}
+    <div class="page-title">
+      {{ $t('profile.myProfile')}}
     </div>
     <UserSettingsComponent :user="current.user as UserResponse"/>
-<!--    <div class="grid">-->
-<!--      <div class="col-6 md:col-6">-->
-<!--        <UserInfo :user="current.user as UserResponse"/>-->
-<!--      </div>-->
-<!--      <div class="col-6 md:col-6">-->
-<!--          <ChangePin />-->
-<!--      </div>-->
-<!--      <div class="col-6 md:col-6">-->
-<!--        <ChangePassword />-->
-<!--      </div>-->
-<!--      <div class="col-6 md:col-6">-->
-<!--        <ChangeApiKey v-if="isAdmin"/>-->
-<!--        <div class="flex flex-row mb-2 align-items-center">-->
-<!--          <h3 class="mr-3">{{ $t('profile.extensiveDataAnalysis') }}</h3>-->
-<!--          <InputSwitch v-model="dataAnalysis" @update:modelValue="handleChange" />-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
   </div>
 </template>
 
 <script setup lang="ts">
-import ChangePassword from "@/modules/user/components/ChangePassword.vue";
-import ChangePin from "@/modules/user/components/ChangePin.vue";
-import ChangeApiKey from "@/modules/user/components/ChangeApiKey.vue";
+
 import { useAuthStore, useUserStore } from "@sudosos/sudosos-frontend-common";
 import { storeToRefs } from "pinia";
-import UserInfo from "@/modules/user/components/UserInfo.vue";
-import type {GewisUserResponse, UserResponse} from "@sudosos/sudosos-client";
-import { computed, onMounted, type Ref, ref } from "vue";
-import { UserRole } from "@/utils/rbacUtils";
-import InputSwitch from "primevue/inputswitch";
+import type { GewisUserResponse, UserResponse } from "@sudosos/sudosos-client";
+import { onMounted, type Ref, ref } from "vue";
 import apiService from "@/services/ApiService";
 import router from "@/router";
 import { useToast } from "primevue/usetoast";
@@ -45,9 +22,6 @@ import UserSettingsComponent from "@/modules/user/components/UserSettingsCompone
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
-const isAdmin = computed(() => {
-  return userStore.current.rolesWithPermissions.findIndex(r => r.name == UserRole.BOARD) != -1;
-});
 const dataAnalysis: Ref<boolean> = ref(false);
 const { current } = storeToRefs(userStore);
 const toast = useToast();
