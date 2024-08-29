@@ -3,24 +3,25 @@
     <div class="page-title my-0">
       {{ t('profile.myProfile')}}
     </div>
-    <div class="grid">
-      <div class="col-6 md:col-6">
-        <UserInfo :user="gewisUser || current.user as GewisUserResponse"/>
-      </div>
-      <div class="col-6 md:col-6">
-          <ChangePin />
-      </div>
-      <div class="col-6 md:col-6">
-        <ChangePassword />
-      </div>
-      <div class="col-6 md:col-6">
-        <ChangeApiKey v-if="isAdmin"/>
-        <div class="flex flex-row mb-2 align-items-center">
-          <h3 class="mr-3">{{ t('profile.extensiveDataAnalysis') }}</h3>
-          <InputSwitch v-model="dataAnalysis" @update:modelValue="handleChange" />
-        </div>
-      </div>
-    </div>
+    <UserSettingsComponent :user="current.user as UserResponse"/>
+<!--    <div class="grid">-->
+<!--      <div class="col-6 md:col-6">-->
+<!--        <UserInfo :user="current.user as UserResponse"/>-->
+<!--      </div>-->
+<!--      <div class="col-6 md:col-6">-->
+<!--          <ChangePin />-->
+<!--      </div>-->
+<!--      <div class="col-6 md:col-6">-->
+<!--        <ChangePassword />-->
+<!--      </div>-->
+<!--      <div class="col-6 md:col-6">-->
+<!--        <ChangeApiKey v-if="isAdmin"/>-->
+<!--        <div class="flex flex-row mb-2 align-items-center">-->
+<!--          <h3 class="mr-3">{{ $t('profile.extensiveDataAnalysis') }}</h3>-->
+<!--          <InputSwitch v-model="dataAnalysis" @update:modelValue="handleChange" />-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -40,6 +41,7 @@ import router from "@/router";
 import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
 import { handleError } from "@/utils/errorUtils";
+import UserSettingsComponent from "@/modules/user/components/UserSettingsComponent.vue";
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
