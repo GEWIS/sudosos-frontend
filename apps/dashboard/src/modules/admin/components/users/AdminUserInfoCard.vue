@@ -1,5 +1,5 @@
 <template>
-  <FormCard :header="$t('userDetails.userInformation')"
+  <FormCard :header="t('userDetails.userInformation')"
             @update:modelValue="edit = $event"
             @save="formSubmit"
             :enableEdit="true"
@@ -17,6 +17,9 @@ import type { UserResponse } from "@sudosos/sudosos-client";
 import { schemaToForm } from "@/utils/formUtils";
 import { updateUserDetailsObject, userTypes } from "@/utils/validation-schema";
 import UserEditForm from "@/modules/admin/components/users/forms/UserEditForm.vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const props = defineProps({
   user: {
