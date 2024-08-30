@@ -36,14 +36,9 @@ const formSubmit = () => {
 const updateFieldValues = (p: UserResponse) => {
   if (!p) return;
   const values = {
-    firstName: p.firstName,
-    lastName: p.lastName,
-    email: p.email,
-    nickname: p.nickname,
-    isActive: p.active,
+    ...p,
     userType: userTypes.value.find(ut => ut.name === p.type)?.value || undefined,
-    ofAge: p.ofAge,
-    canGoIntoDebt: p.canGoIntoDebt,
+    isActive: p.active,
   };
   form.context.resetForm({ values });
 };

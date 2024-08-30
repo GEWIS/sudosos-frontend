@@ -21,7 +21,6 @@
                :errors="form.context.errors.value.nickname"
                :disabled="!edit"
                id="name" :placeholder="$t('userDetails.Nickname')" type="text" />
-    <!-- Use user.value.type instead of user.type -->
     <InputSpan
         v-if="!(props.user?.type === 'MEMBER')"
                :label="$t('userDetails.Email address')"
