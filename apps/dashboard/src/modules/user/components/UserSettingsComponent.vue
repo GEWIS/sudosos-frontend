@@ -44,7 +44,10 @@
       <h4 class="mt-0">{{ t('userSettings.preferences') }}</h4>
       <div class="flex flex-row align-items-center w-11">
         <p class="flex-grow-1 my-0">{{ t('userSettings.dataAnalysis') }}</p>
-        <InputSwitch />
+        <InputSwitch
+            @update:modelValue="handleChangeDataAnalysis"
+            v-model="dataAnalysis"
+        />
       </div>
     </div>
   </CardComponent>
@@ -70,16 +73,16 @@ import Divider from "primevue/divider";
 import InputSwitch from "primevue/inputswitch";
 import ChangePinForm from "@/modules/user/components/forms/ChangePinForm.vue";
 import FormDialog from "@/components/FormDialog.vue";
-import {editPasswordSchema, editPinSchema} from "@/utils/validation-schema";
+import { editPasswordSchema, editPinSchema } from "@/utils/validation-schema";
 import { schemaToForm } from "@/utils/formUtils";
 import FormSection from "@/components/FormSection.vue";
 import ChangePasswordForm from "@/modules/user/components/forms/ChangePasswordForm.vue";
-import {useConfirm} from "primevue/useconfirm";
-import {useToast} from "primevue/usetoast";
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
 import apiService from "@/services/ApiService";
-import {handleError} from "@/utils/errorUtils";
+import { handleError } from "@/utils/errorUtils";
 
-const props =defineProps({
+const props = defineProps({
   user: {
     type: Object as PropType<UserResponse>,
     required: true,
@@ -93,6 +96,23 @@ const passwordForm = schemaToForm(editPasswordSchema);
 const editPin = ref(true);
 const confirm = useConfirm();
 const toast = useToast();
+const dataAnalysis = ref(props.user.extensiveDataProcessing);
+
+const handleChangeDataAnalysis = (value: boolean) => {
+  apiService.user.updateUser(props.user.id, { extensiveDataProcessing: value })
+      .then(() => {
+        dataAnalysis.value = value;
+        toast.add({
+          severity: "success",
+          summary: t('successMessages.success'),
+          detail: t('successMessages.dataAnalysisChanged'),
+          life: 5000,
+        });
+      })
+      .catch((err) => {
+        handleError(err, toast);
+      });
+};
 
 const confirmChangeApiKey = () => {
   confirm.require({
