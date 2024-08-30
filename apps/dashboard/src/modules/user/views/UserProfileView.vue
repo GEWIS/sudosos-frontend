@@ -3,7 +3,10 @@
     <div class="page-title">
       {{ t('profile.myProfile')}}
     </div>
-    <UserSettingsComponent :user="current.user as UserResponse"/>
+    <div class="flex md:flex-row flex-column-reverse justify-content-between gap-8">
+      <UserSettingsComponent :user="current.user as UserResponse"/>
+      <UserInfo :user="gewisUser || current.user as GewisUserResponse"/>
+    </div>
   </div>
 </template>
 
@@ -19,6 +22,7 @@ import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
 import { handleError } from "@/utils/errorUtils";
 import UserSettingsComponent from "@/modules/user/components/UserSettingsComponent.vue";
+import UserInfo from "@/modules/user/components/UserInfo.vue";
 
 const userStore = useUserStore();
 const authStore = useAuthStore();

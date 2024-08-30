@@ -3,7 +3,7 @@
       :header="t('userSettings.userSettings')"
       :func="undefined"
       :action="undefined"
-      class="w-5"
+      class="w-full md:w-5"
   >
     <div class="flex flex-column">
       <FormSection

@@ -7,6 +7,7 @@
                :errors="form.context.errors.value.pin"
                id="pin" type="pin"
                :disabled="!edit"
+               autocomplete="new-password"
     />
     <InputSpan :label="t('profile.pinConfirm')"
                :value="form.model.pinConfirm.value.value"
