@@ -1,19 +1,19 @@
 <template>
   <div class="flex flex-column justify-content-between gap-2">
-    <InputSpan :label="t('profile.pinNew')"
-               :value="form.model.pin.value.value"
-               :attributes="form.model.pin.attr.value"
-               @update:value="form.context.setFieldValue('pin', $event)"
-               :errors="form.context.errors.value.pin"
-               id="pin" type="pin"
+    <InputSpan :label="t('profile.passwordNew')"
+               :value="form.model.password.value.value"
+               :attributes="form.model.password.attr.value"
+               @update:value="form.context.setFieldValue('password', $event)"
+               :errors="form.context.errors.value.password"
+               id="password" type="password"
                :disabled="!edit"
     />
-    <InputSpan :label="t('profile.pinConfirm')"
-               :value="form.model.pinConfirm.value.value"
-               :attributes="form.model.pinConfirm.attr.value"
-               @update:value="form.context.setFieldValue('pinConfirm', $event)"
-               :errors="form.context.errors.value.pinConfirm"
-               id="pinConfirm" type="pin"
+    <InputSpan :label="t('profile.passwordConfirm')"
+               :value="form.model.passwordConfirm.value.value"
+               :attributes="form.model.passwordConfirm.attr.value"
+               @update:value="form.context.setFieldValue('passwordConfirm', $event)"
+               :errors="form.context.errors.value.passwordConfirm"
+               id="passwordConfirm" type="password"
                :disabled="!edit"
     />
   </div>
@@ -24,7 +24,7 @@ import InputSpan from "@/components/InputSpan.vue";
 import { useI18n } from "vue-i18n";
 import { type Form, setSubmit } from "@/utils/formUtils";
 import * as yup from "yup";
-import type { editPinSchema } from "@/utils/validation-schema";
+import { editPasswordSchema } from "@/utils/validation-schema";
 import type { PropType } from "vue";
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
 import { useToast } from "primevue/usetoast";
@@ -33,7 +33,7 @@ import { handleError } from "@/utils/errorUtils";
 
 const props = defineProps({
   form: {
-    type: Object as PropType<Form<yup.InferType<typeof editPinSchema>>>,
+    type: Object as PropType<Form<yup.InferType<typeof editPasswordSchema>>>,
     required: true,
   },
   edit: {
@@ -50,15 +50,15 @@ const emit = defineEmits(['submit:success', 'submit:error']);
 
 setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
   if (userStore.getCurrentUser.user) {
-    apiService.user.updateUserPin(
+    apiService.user.updateUserLocalPassword(
         userStore.getCurrentUser.user.id,
-        { pin: values.pinConfirm })
+        { password: values.passwordConfirm })
         .then(() => {
           emit('submit:success', values);
           toast.add({
             severity: "success",
             summary: t('successMessages.success'),
-            detail: `${t('successMessages.pinUpdated')}`,
+            detail: `${t('successMessages.passwordUpdated')}`,
             life: 3000,
           });
           props.form.context.resetForm();

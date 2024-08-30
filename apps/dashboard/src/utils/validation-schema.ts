@@ -30,12 +30,11 @@ export const simpleUserDetailsSchema =
           email: yup.string().email(),
   });
 
-export const editPasswordSchema = toTypedSchema(
+export const editPasswordSchema =
   yup.object({
     password: yup.string().required(),
     passwordConfirm: yup.string().required().oneOf([yup.ref('password')], t('validation.password.match')),
-  })
-);
+  });
 
 export const updateInvoiceSettingsObject = yup.object({
   reference: yup.string().required(),
