@@ -20,7 +20,7 @@
       <div class="flex flex-row align-items-center w-11">
         <p class="flex-grow-1 my-1">{{ t('userSettings.changePassword') }}</p>
         <i
-            class="pi pi-external-link text-gray-500 flex align-items-center"
+            class="pi pi-arrow-up-right text-gray-500 flex align-items-center"
             @click="showPasswordDialog = true"
         />
       </div>
@@ -29,13 +29,15 @@
       <div class="flex flex-row align-items-center w-11">
         <p class="flex-grow-1 my-1">{{ t('userSettings.changeApiKey') }}</p>
         <i
-            class="pi pi-external-link text-gray-500 flex align-items-center"
+            class="pi pi-arrow-up-right text-gray-500 flex align-items-center"
+            @click="confirmChangeApiKey()"
         />
       </div>
       <div class="flex flex-row align-items-center w-11">
         <p class="flex-grow-1 my-1">{{ t('userSettings.deleteApiKey') }}</p>
         <i
-            class="pi pi-external-link text-gray-500 flex align-items-center"
+            class="pi pi-arrow-up-right text-gray-500 flex align-items-center"
+            @click="confirmDeleteApiKey()"
         />
       </div>
       <Divider />
@@ -55,6 +57,7 @@
       <ChangePasswordForm :form="slotProps.form" @submit:success="showPasswordDialog = false"/>
     </template>
   </FormDialog>
+  <ConfirmDialog />
 </template>
 
 <script setup lang="ts">
@@ -71,8 +74,12 @@ import {editPasswordSchema, editPinSchema} from "@/utils/validation-schema";
 import { schemaToForm } from "@/utils/formUtils";
 import FormSection from "@/components/FormSection.vue";
 import ChangePasswordForm from "@/modules/user/components/forms/ChangePasswordForm.vue";
+import {useConfirm} from "primevue/useconfirm";
+import {useToast} from "primevue/usetoast";
+import apiService from "@/services/ApiService";
+import {handleError} from "@/utils/errorUtils";
 
-defineProps({
+const props =defineProps({
   user: {
     type: Object as PropType<UserResponse>,
     required: true,
@@ -84,6 +91,52 @@ const showPasswordDialog = ref(false);
 const pinForm = schemaToForm(editPinSchema);
 const passwordForm = schemaToForm(editPasswordSchema);
 const editPin = ref(true);
+const confirm = useConfirm();
+const toast = useToast();
+
+const confirmChangeApiKey = () => {
+  confirm.require({
+    message: t('userSettings.confirmChangeApiKey'),
+    header: t('userSettings.changeApiKey'),
+    icon: 'pi pi-exclamation-triangle',
+    accept: () => {
+      apiService.user.updateUserKey(props.user.id)
+          .then((res) => {
+            toast.add({
+              severity: "success",
+              summary: t('successMessages.success'),
+              detail: `${t('successMessages.apiKeyChanged')} \n ${res.data.key}`,
+              life: 5000,
+            });
+          })
+          .catch((err) => {
+            handleError(err, toast);
+          });
+    },
+  });
+};
+
+const confirmDeleteApiKey = () => {
+  confirm.require({
+    message: t('userSettings.confirmDeleteApiKey'),
+    header: t('userSettings.deleteApiKey'),
+    icon: 'pi pi-exclamation-triangle',
+    accept: () => {
+      apiService.user.deleteUserKey(props.user.id)
+          .then(() => {
+            toast.add({
+              severity: "success",
+              summary: t('successMessages.success'),
+              detail: t('successMessages.apiKeyDeleted'),
+              life: 5000,
+            });
+          })
+          .catch((err) => {
+            handleError(err, toast);
+          });
+    },
+  });
+};
 
 </script>
 
