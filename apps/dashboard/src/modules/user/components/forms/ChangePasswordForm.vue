@@ -6,7 +6,6 @@
                @update:value="form.context.setFieldValue('password', $event)"
                :errors="form.context.errors.value.password"
                id="password" type="password"
-               :disabled="!edit"
     />
     <InputSpan :label="t('profile.passwordConfirm')"
                :value="form.model.passwordConfirm.value.value"
@@ -14,7 +13,6 @@
                @update:value="form.context.setFieldValue('passwordConfirm', $event)"
                :errors="form.context.errors.value.passwordConfirm"
                id="passwordConfirm" type="password"
-               :disabled="!edit"
     />
   </div>
 </template>

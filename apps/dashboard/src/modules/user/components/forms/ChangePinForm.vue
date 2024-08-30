@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-column justify-content-between gap-2">
     <InputSpan :label="t('profile.pinNew')"
-               :value="form.model.pin.value.value"
+               :value="form.model.pin.value.value || ''"
                :attributes="form.model.pin.attr.value"
                @update:value="form.context.setFieldValue('pin', $event)"
                :errors="form.context.errors.value.pin"

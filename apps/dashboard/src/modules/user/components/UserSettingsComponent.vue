@@ -21,6 +21,7 @@
         <p class="flex-grow-1 my-1">{{ t('userSettings.changePassword') }}</p>
         <i
             class="pi pi-external-link text-gray-500 flex align-items-center"
+            @click="showPasswordDialog = true"
         />
       </div>
       <Divider />
@@ -44,15 +45,14 @@
         <InputSwitch />
       </div>
     </div>
-
   </CardComponent>
   <FormDialog
-      v-model="showPinDialog"
-      :form="pinForm"
-      :header="$t('userSettings.changePin')"
+      v-model="showPasswordDialog"
+      :form="passwordForm"
+      :header="$t('userSettings.changePassword')"
   >
     <template #form="slotProps">
-      <ChangePinForm :form="slotProps.form" @submit:success="showPinDialog = false"/>
+      <ChangePasswordForm :form="slotProps.form" @submit:success="showPasswordDialog = false"/>
     </template>
   </FormDialog>
 </template>
@@ -67,9 +67,10 @@ import Divider from "primevue/divider";
 import InputSwitch from "primevue/inputswitch";
 import ChangePinForm from "@/modules/user/components/forms/ChangePinForm.vue";
 import FormDialog from "@/components/FormDialog.vue";
-import { editPinSchema } from "@/utils/validation-schema";
+import {editPasswordSchema, editPinSchema} from "@/utils/validation-schema";
 import { schemaToForm } from "@/utils/formUtils";
 import FormSection from "@/components/FormSection.vue";
+import ChangePasswordForm from "@/modules/user/components/forms/ChangePasswordForm.vue";
 
 defineProps({
   user: {
@@ -79,10 +80,10 @@ defineProps({
 });
 
 const { t } = useI18n();
-const showPinDialog = ref(false);
+const showPasswordDialog = ref(false);
 const pinForm = schemaToForm(editPinSchema);
+const passwordForm = schemaToForm(editPasswordSchema);
 const editPin = ref(true);
-
 
 </script>
 
