@@ -249,7 +249,8 @@
     "pinChange": "Verander PIN code",
     "pinConfirm": "Bevestig nieuwe PIN code",
     "pinNew": "Nieuwe PIN code",
-    "updateInfo": "Update gebruikersinformatie"
+    "updateInfo": "Update gebruikersinformatie",
+    "passwordNew": "Nieuw wachtwoord"
   },
   "quickOverview": {
     "quickOverviewMessage": "Laat dit aan de bar zien zodat we je sneller kunnen helpen.",
@@ -279,7 +280,11 @@
     "waiveFinesRejected": "Boetes zijn succesvol afgewezen.",
     "canceled": "Geannuleerd",
     "userUpdated": "Gebruiker is succesvol geüpdatet.",
-    "pinUpdated": "Pincode is succesvol geüpdatet."
+    "pinUpdated": "Pincode is succesvol geüpdatet.",
+    "dataAnalysisChanged": "Extensieve dataverwerking is succesvol gewijzigd.",
+    "apiKeyChanged": "API-sleutel is succesvol gewijzigd.",
+    "apiKeyDeleted": "API-sleutel is succesvol verwijderd.",
+    "passwordUpdated": "Wachtwoord is succesvol gewijzigd."
   },
   "termsOfService": {
     "acceptFirst": "Accepteer de Voorwaarden",
@@ -340,7 +345,9 @@
     "changeApiKey": "Wijzig API-sleutel",
     "deleteApiKey": "Verwijder API-sleutel",
     "preferences": "Voorkeuren",
-    "dataAnalysis": "Uitgebreide Data Analyse"
+    "dataAnalysis": "Uitgebreide Data Analyse",
+    "confirmChangeApiKey": "Weet je zeker dat je de API-sleutel wilt wijzigen? Dit kan niet ongedaan worden gemaakt!",
+    "confirmDeleteApiKey": "Weet je zeker dat je de API-sleutel wilt verwijderen? Dit kan niet ongedaan worden gemaakt!"
   },
   "validation": {
     "number": {

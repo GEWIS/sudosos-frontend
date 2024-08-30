@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
     <div class="page-title">
-      {{ $t('profile.myProfile')}}
+      {{ t('profile.myProfile')}}
     </div>
     <UserSettingsComponent :user="current.user as UserResponse"/>
   </div>

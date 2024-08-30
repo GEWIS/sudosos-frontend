@@ -1,11 +1,10 @@
 <template>
   <CardComponent
-      :header="$t('userSettings.userSettings')"
+      :header="t('userSettings.userSettings')"
       :func="undefined"
       :action="undefined"
       class="w-5"
   >
-
     <div class="flex flex-column">
       <FormSection
           :header="t('userSettings.changePin')"
