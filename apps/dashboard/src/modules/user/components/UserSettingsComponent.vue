@@ -5,15 +5,18 @@
       :action="undefined"
       class="w-5"
   >
+
     <div class="flex flex-column">
-      <h4 class="mt-0">{{ t('userSettings.changeCredentials') }}</h4>
-      <div class="flex flex-row align-items-center w-11">
-        <p class="flex-grow-1 my-1">{{ t('userSettings.changePin') }}</p>
-        <i
-            class="pi pi-external-link text-gray-500 flex align-items-center"
-            @click="showPinDialog = true"
-        />
-      </div>
+      <FormSection
+          :header="t('userSettings.changePin')"
+          @cancel="pinForm.context.resetForm"
+          @save="pinForm.submit"
+          :enableEdit="true"
+          :simpleSave="true"
+          @update:modelValue="editPin = $event"
+          divider>
+        <ChangePinForm :form="pinForm" :edit="editPin"/>
+      </FormSection>
       <div class="flex flex-row align-items-center w-11">
         <p class="flex-grow-1 my-1">{{ t('userSettings.changePassword') }}</p>
         <i
@@ -41,13 +44,12 @@
         <InputSwitch />
       </div>
     </div>
-  </CardComponent>
 
+  </CardComponent>
   <FormDialog
       v-model="showPinDialog"
       :form="pinForm"
       :header="$t('userSettings.changePin')"
-
   >
     <template #form="slotProps">
       <ChangePinForm :form="slotProps.form" @submit:success="showPinDialog = false"/>
@@ -67,6 +69,7 @@ import ChangePinForm from "@/modules/user/components/forms/ChangePinForm.vue";
 import FormDialog from "@/components/FormDialog.vue";
 import { editPinSchema } from "@/utils/validation-schema";
 import { schemaToForm } from "@/utils/formUtils";
+import FormSection from "@/components/FormSection.vue";
 
 defineProps({
   user: {
@@ -78,6 +81,9 @@ defineProps({
 const { t } = useI18n();
 const showPinDialog = ref(false);
 const pinForm = schemaToForm(editPinSchema);
+const editPin = ref(true);
+
+
 </script>
 
 <style scoped></style>

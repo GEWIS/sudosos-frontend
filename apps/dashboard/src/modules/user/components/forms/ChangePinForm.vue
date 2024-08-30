@@ -5,13 +5,17 @@
                :attributes="form.model.pin.attr.value"
                @update:value="form.context.setFieldValue('pin', $event)"
                :errors="form.context.errors.value.pin"
-               id="pin" type="pin"/>
+               id="pin" type="pin"
+               :disabled="!edit"
+    />
     <InputSpan :label="t('profile.pinConfirm')"
                :value="form.model.pinConfirm.value.value"
                :attributes="form.model.pinConfirm.attr.value"
                @update:value="form.context.setFieldValue('pinConfirm', $event)"
                :errors="form.context.errors.value.pinConfirm"
-               id="pinConfirm" type="pin"/>
+               id="pinConfirm" type="pin"
+               :disabled="!edit"
+    />
   </div>
 </template>
 
@@ -31,6 +35,11 @@ const props = defineProps({
   form: {
     type: Object as PropType<Form<yup.InferType<typeof editPinSchema>>>,
     required: true,
+  },
+  edit: {
+    type: Boolean,
+    required: false,
+    default: false,
   },
 });
 
