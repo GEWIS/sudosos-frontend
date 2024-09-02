@@ -4,14 +4,11 @@
     "error": "Error"
   },
   "app": {
-    "BAC": "BAC",
     "Seller": "Seller",
     "Financial": "Financial",
     "Banners": "Banners",
-    "Board": "Board",
     "Admin": "Admin",
     "Create": "Create",
-    "Create POS": "Create POS",
     "English": "English",
     "Manage products": "Manage products",
     "Netherlands": "Nederlands",
@@ -54,19 +51,12 @@
     "Select product": "Select product"
   },
   "c_POSCreate": {
-    "Create": "Create",
-    "Create Point of Sale": "Create Point of Sale",
-    "Edit Point of Sale": "Edit Point of Sale",
-    "General": "General",
     "Own containers": "Own containers",
     "Owner": "Owner",
     "Public containers": "Public containers",
     "Select owner": "Select Owner",
-    "Selected containers": "Selected containers",
     "Title": "POS Name",
-    "Use authentication": "Use Authentication",
-    "add container": "Add container",
-    "noContainersSelected": "There are no containers selected."
+    "add container": "Add container"
   },
   "c_confirmationModal": {
     "Save": "Save"
@@ -126,10 +116,7 @@
     "allIsFines": "All of which is a fine",
     "balance": "Balance",
     "someIsFines": "Of which {fine} is fines",
-    "topup": "You will be topping up with",
-    "waiveFines": "Waive fines",
-    "waiveFinesConfirmationTitle": "Confirm waive fines",
-    "waiveFinesConfirmation": "Are you sure you want to waive the users fines?"
+    "topup": "You will be topping up with"
   },
   "c_productContainerOperations": {
     "Manage Products": "Manage Products",
@@ -138,18 +125,13 @@
     "Category": "Category",
     "Image": "Image",
     "Name": "Name",
-    "Owner": "Owner",
     "Please select": "Please select a product category",
     "Please select VAT": "Please select a VAT group",
     "Price": "Price (in €)",
     "VAT": "VAT (in %)",
     "Added on": "Added on",
     "Updated on": "Updated on",
-    "Already In": "Product already in container",
-    "Add To Container": "Add to container",
     "Delete From Container": "Delete from container",
-    "Save": "Save",
-    "Create": "Create",
     "Close To": "Name is close to: {name} (click to pick)",
     "header": {
       "addProductToContainer": "Add product to container",
@@ -185,7 +167,6 @@
     "createUser": "Create user"
   },
   "errorMessages": {
-    "posNotFound": "The requested POS was not found."
   },
   "fine": {
     "apply": "Apply",
@@ -218,37 +199,25 @@
     "Overview": "Overview"
   },
   "posInfo": {
-    "Edit": "Edit",
-    "General": "General",
-    "Owner": "Owner",
-    "POS": "POS",
-    "Title": "Title",
-    "ownedBy": "Owned by"
+    "Edit": "Edit"
   },
   "profile": {
     "canGoIntoDebt": "User can go into debt",
     "changePassword": "Change password",
-    "changeUserInfo": "Change user info",
-    "emailAddress": "Email address",
-    "firstName": "First name",
     "extensiveDataAnalysis": "Extensive Data Analysis:",
     "keyGet": "Get API key",
     "keyGetNew": "Get new API key",
     "keyNotSaved": "NOTE: your API key is not saved so copy it now",
     "keyOldRemoved": "NOTE: any old API key will be replaced",
-    "lastName": "Last name",
     "myProfile": "My profile",
     "newKey": "Your new API key is: ",
-    "notManagedThroughSudoSOS": "This account is not managed through SudoSOS!",
     "ofAge": "User is of age",
     "password": "Password",
     "passwordConfirm": "Confirm password",
     "passwordUpdate": "Update password",
     "pinChange": "Change pin code",
     "pinConfirm": "Confirm new pin code",
-    "pinNew": "New pin code",
-    "updateInfo": "Update user information",
-    "passwordNew": "New password"
+    "pinNew": "New pin code"
   },
   "quickOverview": {
     "quickOverviewMessage": "Show this at the bar so we can help you faster",
@@ -256,7 +225,6 @@
   },
   "successMessages": {
     "createContainer": "Successfully created container.",
-    "editPOS": "Succesfully edited POS.",
     "fineDeleted": "Successfully deleted fine.",
     "finesHandedOut": "Successfully handed out fines",
     "finesNotified": "Succesfully notified users.",
@@ -264,7 +232,6 @@
     "transactionDeleted": "Successfully deleted transaction.",
     "resetPassword": "Successfully reset password.",
     "productUpdate": "Successfully updated product.",
-    "productContainerAdd": "Successfully added product to container.",
     "productContainerDelete": "Successfully deleted product from container.",
     "productDeleted": "Successfully deleted product.",
     "productCreate": "Successfully created product.",
@@ -273,9 +240,6 @@
     "invoiceDeleted": "Successfully deleted invoice.",
     "invoiceUpdated": "Successfully updated invoice.",
     "payoutCreated": "Successfully created payout.",
-    "payoutDeleted": "Successfully deleted payout.",
-    "payoutApproved": "Successfully approved payout.",
-    "payoutDenied": "Successfully denied payout.",
     "pointOfSaleUpdated": "Successfully updated point of sale.",
     "pointOfSaleDeleted": "Successfully deleted point of sale.",
     "pointOfSaleCreated": "Successfully created point of sale.",
@@ -313,9 +277,6 @@
     "waivedFineDescr": "Your fines were waived.",
     "when": "When",
     "pos": "Point of sale",
-    "userBoughtAt": "You bought at {pos}",
-    "otherBoughtAt": "{user} bought at {pos}",
-    "putInBy": "Transaction put in by {createdBy}",
     "createdBy": "Created by",
     "createdFor": "Created for",
     "balanceMutations": "Balance mutations",
@@ -331,13 +292,10 @@
     "First name": "First name",
     "Last name": "Last name",
     "Nickname": "Nickname",
-    "Personal Info": "Personal Info",
-    "Update information": "Update information",
     "User Transactions": "User Transactions",
     "Usertype": "Usertype",
     "passwordUpdated": "Password successfully updated",
     "updatedUserInfo": "Succesfully updated user info.",
-    "userInfoUpdated": "User information successfully updated",
     "userInformation": "User information"
   },
   "userSettings": {
@@ -391,8 +349,6 @@
     "deny": "Deny",
     "download PDF": "Download PDF",
     "close": "Close",
-    "create": "Create",
-    "update": "Update",
     "delete": "Delete",
     "owner": "Owner",
     "name": "Name",

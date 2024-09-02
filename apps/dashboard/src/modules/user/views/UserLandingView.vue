@@ -28,12 +28,12 @@ import BalanceWithTopupComponent from '@/modules/user/components/balance/Balance
 import MutationsBalanceCard from '@/components/mutations/MutationsBalance.vue';
 import { useAuthStore, useUserStore } from '@sudosos/sudosos-frontend-common';
 import apiService from '@/services/ApiService';
-import type {GewisUserResponse, PaginatedFinancialMutationResponse} from "@sudosos/sudosos-client";
+import type { GewisUserResponse, PaginatedFinancialMutationResponse } from "@sudosos/sudosos-client";
 import router from "@/router";
 import { handleError } from "@/utils/errorUtils";
 import { useToast } from "primevue/usetoast";
 import CardComponent from "@/components/CardComponent.vue";
-import {onMounted, ref, type Ref} from "vue";
+import { onMounted, ref, type Ref } from "vue";
 import UserInfo from "@/modules/user/components/UserInfo.vue";
 import { useI18n } from "vue-i18n";
 

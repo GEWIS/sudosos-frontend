@@ -26,7 +26,7 @@ import Dialog from 'primevue/dialog';
 import { ref } from 'vue';
 import termsOfService from '@/locales/termsOfService.md?raw';
 import { marked } from 'marked';
-import {useI18n} from "vue-i18n";
+import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 const tos = marked(termsOfService);
