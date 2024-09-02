@@ -140,8 +140,11 @@ import { useI18n } from "vue-i18n";
 import FormDialog from "@/components/FormDialog.vue";
 import UserCreateForm from "@/modules/admin/components/users/forms/UserCreateForm.vue";
 import { schemaToForm } from "@/utils/formUtils";
+import { useUserStore } from "@sudosos/sudosos-frontend-common";
+import router from "@/router";
 
 const { t } = useI18n();
+const userStore = useUserStore();
 
 const searchQuery: Ref<string> = ref('');
 
@@ -238,6 +241,13 @@ const sortedUsers = computed(() => {
   return fuzzed;
 });
 
+async function handleInfoPush(userId: number) {
+  const clickedUser: UserResponse | undefined = allUsers.value.find(
+      (record) => record.id == userId
+  );
+  if (clickedUser) userStore.addUser(clickedUser);
+  router.push({ name: 'user', params: { userId } });
+}
 </script>
 
 <style scoped>
