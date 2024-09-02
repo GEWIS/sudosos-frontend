@@ -21,7 +21,8 @@
     "Transactions": "Transacties",
     "User overview": "Gebruikers overzicht",
     "Promo": "Promo",
-    "Invoices": "Facturen"
+    "Invoices": "Facturen",
+    "you": "Jij"
   },
   "balance": {
     "Balance after": "Balans na opwaarderen:",
@@ -65,13 +66,10 @@
     "Public": "Publiek",
     "cancel": "Annuleren",
     "save": "Opslaan",
-    "Select owner": "Selecteer eigenaar",
-    "Owner": "Eigenaar",
     "header": {
       "edit": "Edit container",
       "create": "Container aanmaken"
-    },
-    "confirmDelete": "Weet je zeker dat je deze container wilt verwijderen? Dit kan niet ongedaan worden."
+    }
   },
   "c_currentBalance": {
     "allIsFines": "Waarvan alles een boete is",
@@ -243,182 +241,161 @@
     "productDeleted": "Product is successvol verwijderd",
     "productCreate": "Product is succesvol aangemaakt.",
     "updateContainer": "Container is succesvol geüpdatet.",
-    "containerDeleted": "Container is succesvol verwijderd.",
     "invoiceDeleted": "Factuur is succesvol verwijderd.",
     "invoiceUpdated": "Factuur {reference} is succesvol geüpdatet.",
     "pointOfSaleUpdated": "Point of sale is succesvol geüpdatet.",
     "pointOfSaleDeleted": "Point of sale is successvol verwijdered.",
     "pointOfSaleCreated": "Point of sale is successvol aangemaakt.",
-    "waiveFinesSuccess": "Boetes zijn succesvol kwijtgescholden.",
-    "waiveFinesRejected": "Boetes zijn succesvol afgewezen.",
-    "canceled": "Geannuleerd",
     "userUpdated": "Gebruiker is succesvol geüpdatet.",
-    "pinUpdated": "Pincode is succesvol geüpdatet.",
-    "dataAnalysisChanged": "Extensieve dataverwerking is succesvol gewijzigd.",
-    "apiKeyChanged": "API-sleutel is succesvol gewijzigd.",
-    "apiKeyDeleted": "API-sleutel is succesvol verwijderd.",
-    "passwordUpdated": "Wachtwoord is succesvol gewijzigd.",
-    "containerDeleteRejected": "Geannuleerd container verwijderen."
+    "payoutCreated": "Uitbetaling is succesvol aangemaakt."
   },
-    "termsOfService": {
-      "acceptFirst": "Accepteer de Voorwaarden",
-      "agreeData": "Ik ga akkoord met uitgebreidere dataverwerking voor mijn account (optioneel).",
-      "agreeToS": "Ik ga akkoord met de voorwaarden",
-      "description": "Voordat je SudoSOS kunt gebruiken, dien je de voorwaarden te accepteren. Je kunt de inhoud van de voorwaarden hieronder lezen.",
-      "termsOfService": "Voorwaarden"
+  "termsOfService": {
+    "acceptFirst": "Accepteer de Voorwaarden",
+    "agreeData": "Ik ga akkoord met uitgebreidere dataverwerking voor mijn account (optioneel).",
+    "agreeToS": "Ik ga akkoord met de voorwaarden",
+    "description": "Voordat je SudoSOS kunt gebruiken, dien je de voorwaarden te accepteren. Je kunt de inhoud van de voorwaarden hieronder lezen.",
+    "termsOfService": "Voorwaarden"
+  },
+  "transactions": {
+    "Transactions": "Transacties",
+    "amount": "Bedrag",
+    "depositDescr": "Je hebt geld gestort op SudoSOS",
+    "depositID": "Opwaardeer ID",
+    "description": "Omschrijving",
+    "fineAmount": "Boete",
+    "fineDescr": "Je hebt een boete ontvangen.",
+    "invoiceDescr": "Je hebt een factuur aan GEWIS betaald",
+    "price": "Prijs",
+    "title": "Titel",
+    "total": "Totaal:",
+    "waivedFineDescr": "Je boetes zijn kwijtgescholden.",
+    "when": "Wanneer",
+    "pos": "Verkooppunt",
+    "createdBy": "Gecreëerd door",
+    "createdFor": "Gecreëerd voor",
+    "balanceMutations": "Saldo mutaties",
+    "createdTransactions": "Gecreëerde transacties",
+    "recentTransactions": "Recente transacties",
+    "Incl": "Incl. BTW",
+    "Excl": "Excl. BTW",
+    "VAT": "BTW {vat}%",
+    "payoutRequestDescr": "Je hebt een uitbetaling aangevraagd."
+  },
+  "userDetails": {
+    "Active": "Actief",
+    "Email address": "Email adres",
+    "First name": "Voornaam",
+    "Last name": "Achternaam",
+    "Nickname": "Bijnaam",
+    "User Transactions": "Gebruikerstransacties",
+    "Usertype": "Gebruikerstype",
+    "passwordUpdated": "Wachtwoord is succesvol geüpdatet",
+    "updatedUserInfo": "Profiel is succesvol geüpdatet.",
+    "userInformation": "Gebruikersinformatie"
+  },
+  "validation": {
+    "number": {
+      "min": "Dit veld moet groter zijn dan ${min}"
     },
-    "transactions": {
-      "Transactions": "Transacties",
-      "amount": "Bedrag",
-      "depositDescr": "Je hebt geld gestort op SudoSOS",
-      "depositID": "Opwaardeer ID",
-      "description": "Omschrijving",
-      "fineAmount": "Boete",
-      "fineDescr": "Je hebt een boete ontvangen.",
-      "invoiceDescr": "Je hebt een factuur aan GEWIS betaald",
-      "price": "Prijs",
-      "title": "Titel",
-      "total": "Totaal:",
-      "waivedFineDescr": "Je boetes zijn kwijtgescholden.",
-      "when": "Wanneer",
-      "pos": "Verkooppunt",
-      "createdBy": "Gecreëerd door",
-      "createdFor": "Gecreëerd voor",
-      "balanceMutations": "Saldo mutaties",
-      "createdTransactions": "Gecreëerde transacties",
-      "recentTransactions": "Recente transacties",
-      "Incl": "Incl. BTW",
-      "Excl": "Excl. BTW",
-      "VAT": "BTW {vat}%"
+    "password": {
+      "match": "Wachtwoorden moeten overeenkomen."
     },
-    "userDetails": {
-      "Active": "Actief",
-      "Email address": "Email adres",
-      "First name": "Voornaam",
-      "Last name": "Achternaam",
-      "Nickname": "Bijnaam",
-      "User Transactions": "Gebruikerstransacties",
-      "Usertype": "Gebruikerstype",
-      "passwordUpdated": "Wachtwoord is succesvol geüpdatet",
-      "updatedUserInfo": "Profiel is succesvol geüpdatet.",
-      "userInformation": "Gebruikersinformatie"
+    "pin": {
+      "match": "PIN codes moeten overeenkomen.",
+      "onlyDigits": "PIN mag alleen cijfers bevatten."
     },
-    "userSettings": {
-      "userSettings": "Gebruikersinstellingen",
-      "changeCredentials": "Wijzig inloggegevens",
-      "changePin": "Wijzig pincode",
-      "changePassword": "Wijzig wachtwoord",
-      "apiKeys": "API-sleutels",
-      "changeApiKey": "Wijzig API-sleutel",
-      "deleteApiKey": "Verwijder API-sleutel",
-      "preferences": "Voorkeuren",
-      "dataAnalysis": "Uitgebreide Data Analyse",
-      "confirmChangeApiKey": "Weet je zeker dat je de API-sleutel wilt wijzigen? Dit kan niet ongedaan worden gemaakt!",
-      "confirmDeleteApiKey": "Weet je zeker dat je de API-sleutel wilt verwijderen? Dit kan niet ongedaan worden gemaakt!"
-    },
-    "validation": {
-      "number": {
-        "min": "Dit veld moet groter zijn dan {min}"
-      },
-      "password": {
-        "match": "Wachtwoorden moeten overeenkomen."
-      },
-      "pin": {
-        "match": "PIN codes moeten overeenkomen.",
-        "onlyDigits": "PIN mag alleen cijfers bevatten."
-      },
-      "required": "Dit veld is verplicht",
-      "string": {
-        "exact": "Dit veld moet precies {len} tekens bevatten.",
-        "max": "Dit veld mag maximaal {max} tekens bevatten.",
-        "min": "Dit veld moet minimaal {min} tekens bevatten."
-      }
-    },
-    "tooltip": {
-      "productOwner": "NB: De containereigenaar krijgt de opbrengst, niet de producteigenaar. Eigenaar kan niet gewijzigd worden na het aanmaken.",
-      "owner_revenue": "NB: De containereigenaar krijgt de opbrengst, niet de producteigenaar."
-    },
-    "common": {
-      "approve": "Goedkeuren",
-      "deny": "Afwijzen",
-      "download PDF": "Download PDF",
-      "close": "Sluiten",
-      "delete": "Verwijderen",
-      "owner": "Eigenaar",
-      "name": "Naam",
-      "container": "Container",
-      "loading": "Laden...",
-      "save": "Opslaan"
-    },
-    "c_invoiceInfo": {
-      "Info": "Info",
-      "Created on": "Aangemaakt op",
-      "Updated on": "Geupdated op",
-      "For": "Voor",
-      "Addressing": "Adres",
-      "Addressee": "Adres",
-      "id": "ID",
-      "Attention": "Attentie",
-      "Street": "Straat",
-      "Postal code": "Postcode",
-      "City": "Stad",
-      "Country": "Land",
-      "Reference": "Referentie",
-      "Description": "Omschrijving",
-      "Date": "Datum",
-      "Progress": "Voortgang",
-      "Settings": "Instellingen",
-      "InvoiceOverview": "Factuur Overzicht",
-      "Deleted": "Factuur is verwijderd",
-      "Actions": "Acties",
-      "Delete": "Verwijder",
-      "Cancel": "Annuleren",
-      "DeleteInvoice": "Factuur Verwijderen",
-      "AreYouSure": "Weet je zeker dat je deze factuur wilt verwijderen?",
-      "CreditNoteWarning": "Dit zal geen creditnota aanmaken.",
-      "Unrecoverable": "Dit verwijdert de factuur en kan niet ongedaan worden gemaakt.",
-      "Credit": "Credit Factuur"
-    },
-    "pdf": {
-      "Table": "Tabel",
-      "Recompile": "Hercompileer",
-      "Reload": "Herladen",
-      "Missing": "PDF is niet aanwezig of niet gegenereerd",
-      "Invoice": "Factuur"
-    },
-    "c_formCard": {
-      "edit": "Bewerken",
-      "save": "Opslaan",
-      "close": "Sluiten"
-    },
-    "payout": {
-      "Payouts": "Uitbetalingen",
-      "Payouts overview": "Uitbetalingen overzicht",
-      "Date": "Datum",
-      "Progress": "Voortgang",
-      "Requested by": "Aangevraagd door",
-      "BankAccountName": "Bank Account Name",
-      "BankAccountNumber": "Bank Account Number",
-      "AccountName": "Account Name",
-      "Actions": "Acties",
-      "Create payout": "Maak uitbetaling",
-      "Payout details": "Uitbetaling details",
-      "For": "Voor",
-      "Amount": "Bedrag",
-      "Current balance": "Gebruikers heeft een huidige balans van {balance}",
-      "CreatedAt": "Aangemaakt op",
-      "UpdatedAt": "Geüpdatet op",
-      "PayoutID": "Uitbetaling ID",
-      "ApprovedBy": "Deze uitbetaling is goedgekeurd door {approvedBy}",
-      "AmountToHigh": "Bedrag is hoger dan de balans van de gebruiker",
-      "Download PDF": "Download PDF"
-    },
-    "c_posInfo": {
-      "overview": "Overzicht",
-      "name": "Naam",
-      "useAuthentication": "Gebruik van pin authenticatie",
-      "posName": "Naam van de POS",
-      "confirmDelete": "Weet je zeker dat je deze point of sale wilt verwijderen? Dit kan niet ongedaan worden gemaakt!",
-      "lastWeekSales": "Verkoop van afgelopen week"
+    "required": "Dit veld is verplicht",
+    "string": {
+      "exact": "Dit veld moet precies ${len} tekens bevatten.",
+      "max": "Dit veld mag maximaal ${max} tekens bevatten.",
+      "min": "Dit veld moet minimaal ${min} tekens bevatten."
     }
+  },
+  "tooltip": {
+    "productOwner": "NB: De containereigenaar krijgt de opbrengst, niet de producteigenaar. Eigenaar kan niet gewijzigd worden na het aanmaken.",
+    "owner_revenue": "NB: De containereigenaar krijgt de opbrengst, niet de producteigenaar."
+  },
+  "common": {
+    "approve": "Goedkeuren",
+    "deny": "Afwijzen",
+    "download PDF": "Download PDF",
+    "close": "Sluiten",
+    "delete": "Verwijderen",
+    "owner": "Eigenaar",
+    "name": "Naam",
+    "container": "Container",
+    "loading": "Laden...",
+    "save": "Opslaan"
+  },
+  "c_invoiceInfo": {
+    "Info": "Info",
+    "Created on": "Aangemaakt op",
+    "Updated on": "Geupdated op",
+    "For": "Voor",
+    "Addressing": "Adres",
+    "Addressee": "Adres",
+    "id": "ID",
+    "Attention": "Attentie",
+    "Street": "Straat",
+    "Postal code": "Postcode",
+    "City": "Stad",
+    "Country": "Land",
+    "Reference": "Referentie",
+    "Description": "Omschrijving",
+    "Date": "Datum",
+    "Progress": "Voortgang",
+    "Settings": "Instellingen",
+    "InvoiceOverview": "Factuur Overzicht",
+    "Deleted": "Factuur is verwijderd",
+    "Actions": "Acties",
+    "Delete": "Verwijder",
+    "Cancel": "Annuleren",
+    "DeleteInvoice": "Factuur Verwijderen",
+    "AreYouSure": "Weet je zeker dat je deze factuur wilt verwijderen?",
+    "CreditNoteWarning": "Dit zal geen creditnota aanmaken.",
+    "Unrecoverable": "Dit verwijdert de factuur en kan niet ongedaan worden gemaakt.",
+    "Credit": "Credit Factuur"
+  },
+  "pdf": {
+    "Table": "Tabel",
+    "Recompile": "Hercompileer",
+    "Reload": "Herladen",
+    "Missing": "PDF is niet aanwezig of niet gegenereerd",
+    "Invoice": "Factuur"
+  },
+  "c_formCard": {
+    "edit": "Bewerken",
+    "save": "Opslaan",
+    "close": "Sluiten"
+  },
+  "payout": {
+    "Payouts": "Uitbetalingen",
+    "Payouts overview": "Uitbetalingen overzicht",
+    "Date": "Datum",
+    "Progress": "Voortgang",
+    "Requested by": "Aangevraagd door",
+    "BankAccountName": "Bank Account Name",
+    "BankAccountNumber": "Bank Account Number",
+    "AccountName": "Account Name",
+    "Actions": "Acties",
+    "Create payout": "Maak uitbetaling",
+    "Payout details": "Uitbetaling details",
+    "For": "Voor",
+    "Amount": "Bedrag",
+    "Current balance": "Gebruikers heeft een huidige balans van {balance}",
+    "CreatedAt": "Aangemaakt op",
+    "UpdatedAt": "Geüpdatet op",
+    "PayoutID":  "Uitbetaling ID",
+    "ApprovedBy": "Deze uitbetaling is goedgekeurd door {approvedBy}",
+    "AmountToHigh": "Bedrag is hoger dan de balans van de gebruiker",
+    "Download PDF": "Download PDF"
+  },
+  "c_posInfo": {
+    "overview": "Overzicht",
+    "name": "Naam",
+    "useAuthentication": "Gebruik van pin authenticatie",
+    "posName": "Naam van de POS",
+    "confirmDelete": "Weet je zeker dat je deze point of sale wilt verwijderen? Dit kan niet ongedaan worden gemaakt!",
+    "lastWeekSales": "Verkoop van afgelopen week"
+  }
 }

@@ -27,7 +27,7 @@
             <template #body="mutation" v-else>
                 {{
                 mutation.data.createdBy && currentUserId !== mutation.data.createdBy?.id ?
-                    `${mutation.data.createdBy.firstName} ${mutation.data.createdBy.lastName}` : "You"
+                    `${mutation.data.createdBy.firstName} ${mutation.data.createdBy.lastName}` : t('app.you')
                 }}
             </template>
         </Column>
