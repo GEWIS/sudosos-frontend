@@ -114,6 +114,8 @@
     "Public": "Public",
     "cancel": "Cancel",
     "save": "Save",
+    "Select owner": "Select owner",
+    "Owner": "Owner",
     "header": {
       "edit": "Edit container",
       "create": "Create container"

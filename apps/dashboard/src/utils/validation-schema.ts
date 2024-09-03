@@ -123,3 +123,10 @@ export const addContainerObject =
         container: yup.mixed<ContainerInStore>().required()
     });
 
+export const containerActionSchema =
+    yup.object({
+        name: yup.string().required(),
+        public: yup.boolean().required().default(false),
+        owner: yup.mixed<BaseUserResponse>().required()
+    });
+

@@ -1,7 +1,7 @@
 <template>
   <InputDropdownSpan
     :label="label"
-    :selected-option="organ"
+    v-model:selected-option="organ"
     :options="organs || userOrgans"
     :errors="errors"
     :disabled="disabled"
@@ -11,7 +11,7 @@
 <script setup lang="ts">
 import { computed, type PropType } from "vue";
 import { useAuthStore } from "@sudosos/sudosos-frontend-common";
-import type { UserResponse } from "@sudosos/sudosos-client";
+import type { BaseUserResponse } from "@sudosos/sudosos-client";
 import InputDropdownSpan from "@/components/InputDropdownSpan.vue";
 
 const authStore = useAuthStore();
@@ -45,13 +45,13 @@ defineProps({
     default: false
   },
   organs: {
-    type: Object as PropType<UserResponse[]>,
+    type: Object as PropType<BaseUserResponse[]>,
     required: false
   }
 });
 
 
-const organ = defineModel<UserResponse>('organ');
+const organ = defineModel<BaseUserResponse>('organ');
 
 </script>
 
