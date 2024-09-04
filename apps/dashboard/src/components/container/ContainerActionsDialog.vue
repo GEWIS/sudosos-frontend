@@ -12,13 +12,13 @@
       <ContainerActionsForm
           :is-organ-editable="state.create"
           :form="form"/>
-      <ConfirmDialog />
+      <ConfirmDialog group="containerDelete"/>
     </template>
   </FormDialog>
 </template>
 
 <script setup lang="ts">
-import { computed, type PropType, ref } from "vue";
+import { computed, type PropType } from "vue";
 import type {
   ContainerWithProductsResponse,
   CreateContainerRequest,
@@ -92,13 +92,15 @@ setSubmit(form, form.context.handleSubmit(async (values) => {
     };
 
     await containerStore.createContainer(createContainerRequest)
+        .then(() => {
+          toast.add({
+            severity: 'success',
+            summary: t('successMessages.success'),
+            detail: t('successMessages.createContainer'),
+            life: 3000,
+          });
+        })
         .catch((err) => handleError(err, toast));
-    toast.add({
-      severity: 'success',
-      summary: t('successMessages.success'),
-      detail: t('successMessages.createContainer'),
-      life: 3000,
-    });
   }
 
   if(state.value.edit) {
@@ -140,6 +142,7 @@ async function deleteProduct() {
     rejectLabel: t('common.close'),
     acceptIcon: 'pi pi-trash',
     rejectIcon: 'pi pi-times',
+    group: 'containerDelete',
     accept: async () => {
       await containerStore.deleteContainer(props.container!.id)
           .then(() => {
@@ -149,26 +152,15 @@ async function deleteProduct() {
               severity: 'success',
               life: 3000
             });
-            closeDialog();
             confirm.close();
+            closeDialog();
           })
           .catch((err) => {
             handleError(err, toast);
             confirm.close();
-          })
-          .finally(() => {
-            confirm.close();
+            closeDialog();
           });
-    },
-    reject: () => {
-      toast.add({
-        severity: 'info',
-        summary: t('successMessages.canceled'),
-        detail: t('successMessages.containerDeleteRejected'),
-        life: 3000
-      });
-      confirm.close();
-    },
+    }
   });
 
 }
