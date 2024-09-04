@@ -37,8 +37,7 @@ onMounted(async () => {
     await router.replace({ path: "/error" });
     return;
   }
-  await userStore.fetchUsers(apiService);
-  gewisUser.value = userStore.getUserById(userStore.current.user.id) as GewisUserResponse;
+  gewisUser.value = await userStore.fetchGewisUser(userStore.current.user.id, apiService);
   dataAnalysis.value = userStore.getUserById(userStore.current.user.id)?.extensiveDataProcessing || false;
 });
 
