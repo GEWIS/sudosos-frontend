@@ -5,7 +5,7 @@
         :attributes="form.model.name.attr.value"
         @update:value="form.context.setFieldValue('name', $event)"
         :errors="form.context.errors.value.name"
-        id="name" :placeholder="$t('common.name')"
+        id="name" :placeholder="t('common.name')"
         :label="t('common.name')"/>
 
     <InputOrganSpan
