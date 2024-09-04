@@ -80,7 +80,6 @@ const closeDialog = () => {
       public: false
     }
   });
-  console.log(1);
 };
 
 setSubmit(form, form.context.handleSubmit(async (values) => {
@@ -110,13 +109,16 @@ setSubmit(form, form.context.handleSubmit(async (values) => {
     };
 
     await containerStore.updateContainer(props.container!.id, updateContainerRequest)
+        .then(() => {
+          toast.add({
+            severity: 'success',
+            summary: t('successMessages.success'),
+            detail: t('successMessages.updateContainer'),
+            life: 3000,
+          });
+        })
         .catch((err) => handleError(err, toast));
-    toast.add({
-      severity: 'success',
-      summary: t('successMessages.success'),
-      detail: t('successMessages.updateContainer'),
-      life: 3000,
-    });
+
   }
 
   closeDialog();
@@ -144,15 +146,17 @@ async function deleteProduct() {
     rejectIcon: 'pi pi-times',
     accept: async () => {
       await containerStore.deleteContainer(props.container!.id)
+          .then(() => {
+            toast.add({
+              summary: t('successMessages.success'),
+              detail: t('successMessages.containerDeleted'),
+              severity: 'success',
+              life: 3000
+            });
+          })
           .catch((err) => {
             handleError(err, toast);
           });
-      toast.add({
-        summary: t('successMessages.success'),
-        detail: t('successMessages.containerDeleted'),
-        severity: 'success',
-        life: 3000
-      });
       closeDialog();
     }
   });
