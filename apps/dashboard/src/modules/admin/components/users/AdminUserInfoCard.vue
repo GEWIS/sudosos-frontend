@@ -1,5 +1,5 @@
 <template>
-  <FormCard :header="t('userDetails.userInformation')"
+  <FormCard :header="t('modules.admin.singleUser.userInfo.header')"
             @update:modelValue="edit = $event"
             @save="formSubmit"
             :enableEdit="true"

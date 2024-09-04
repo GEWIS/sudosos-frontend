@@ -9,5 +9,26 @@
     "edit": "Edit",
     "search": "Search",
     "save": "Save",
-    "close": "Close"
+    "close": "Close",
+    "placeholders": {
+        "selectType": "Select Type",
+        "email": "example@example.com"
+    },
+    "nickname": "Nickname",
+    "email": "Email address",
+    "usertype": "Usertype",
+    "canGoIntoDebt": "User can go into debt",
+    "toast": {
+        "success": {
+            "success": "Success",
+            "userUpdated": "Successfully updated user.",
+            "userCreated": "Successfully created user.",
+            "waiveFinesSuccess": "Successfully waived fines."
+        },
+        "canceled": "Canceled",
+        "reject": {
+            "waiveFinesRejected": "Canceled waiving fines.",
+            "userUpdateRejected": "Canceled updating user."
+        }
+    }
 }

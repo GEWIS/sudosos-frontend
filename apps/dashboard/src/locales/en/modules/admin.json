@@ -12,7 +12,12 @@
       "header": "User information"
     },
     "balance": {
-      "header": "Balance"
+      "header": "Balance",
+      "waiveFines": "Waive fines",
+      "allIsFines": "All of which is a fine",
+      "someIsFines": "Of which {fine} is fines",
+      "waiveFinesConfirmation": "Are you sure you want to waive the fines? This cannot be undone.",
+      "waiveFinesConfirmationTitle": "Waive fines"
     }
   },
   "banners": {
@@ -23,13 +28,16 @@
       "filterNotExpired": "Filter not expired",
       "active": "Active",
       "notActive": "Not active"
-    }
+    },
+    "seconds": "Second | Seconds",
+    "till": "till"
   },
   "forms": {
     "user":{
       "header": "Create user",
       "ofAge": "User is of age",
-      "active": "User is active"
+      "active": "User is active",
+      "canGoIntoDebt": "User can go into debt"
     },
     "banner": {
       "headerCreate": "Create banner",
@@ -37,7 +45,6 @@
       "noBannerFound": "No banner found, please upload one!",
       "duration": "Duration",
       "timeSpan": "Timespan",
-      "till": "till",
       "active": "Active"
     }
   }

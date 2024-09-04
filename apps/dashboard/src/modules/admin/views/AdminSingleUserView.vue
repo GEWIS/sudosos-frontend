@@ -1,7 +1,6 @@
 <template>
   <div class="page-container">
-    <div class="page-title">{{ `${currentUser ? currentUser.firstName : ''}'s profile` }}</div>
-
+    <div class="page-title">{{ t('modules.admin.singleUser.profile', {user: currentUser ? currentUser.firstName : ''}) }}</div>
     <div class="flex flex-column gap-5">
       <div class="flex flex-column  md:flex-row justify-content-between gap-8">
         <AdminUserInfoCard :user="currentUser" class="flex-grow-1"/>
