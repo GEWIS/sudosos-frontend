@@ -1,0 +1,13 @@
+{
+    "gewisId": "GEWIS ID",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "type": "Type",
+    "ofAge": "18+",
+    "active": "Active",
+    "create": "Create",
+    "edit": "Edit",
+    "search": "Search",
+    "save": "Save",
+    "close": "Close"
+}
