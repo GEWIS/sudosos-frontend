@@ -289,6 +289,8 @@
     "apiKeyChanged": "API-sleutel is succesvol gewijzigd.",
     "apiKeyDeleted": "API-sleutel is succesvol verwijderd.",
     "passwordUpdated": "Wachtwoord is succesvol gewijzigd."
+    "userUpdated": "Gebruiker is succesvol geüpdatet.",
+    "containerDeleteRejected": "Geannuleerd container verwijderen."
   },
   "termsOfService": {
     "acceptFirst": "Accepteer de Voorwaarden",

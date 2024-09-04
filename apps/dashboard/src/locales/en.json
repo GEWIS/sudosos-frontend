@@ -288,6 +288,8 @@
     "apiKeyChanged": "Successfully changed API key.",
     "apiKeyDeleted": "Successfully deleted API key.",
     "passwordUpdated": "Successfully changed password."
+    "userUpdated": "Successfully updated user.",
+    "containerDeleteRejected": "Canceled deleting container."
   },
   "termsOfService": {
     "acceptFirst": "Accept the Terms of Service",

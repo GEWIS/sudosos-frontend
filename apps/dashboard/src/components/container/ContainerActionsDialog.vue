@@ -12,7 +12,7 @@
       <ContainerActionsForm
           :is-organ-editable="state.create"
           :form="form"/>
-      <ConfirmDialog ref="deleteConfirm"></ConfirmDialog>
+      <ConfirmDialog />
     </template>
   </FormDialog>
 </template>
@@ -116,12 +116,10 @@ setSubmit(form, form.context.handleSubmit(async (values) => {
             detail: t('successMessages.updateContainer'),
             life: 3000,
           });
+          closeDialog();
         })
         .catch((err) => handleError(err, toast));
-
   }
-
-  closeDialog();
 }));
 
 const updateFieldValues = (p: ContainerWithProductsResponse) => {
@@ -134,12 +132,10 @@ const updateFieldValues = (p: ContainerWithProductsResponse) => {
 
 const confirm = useConfirm();
 
-const deleteConfirm = ref<HTMLElement | undefined>();
 async function deleteProduct() {
   if(props.container == undefined) return;
   confirm.require({
     message: t('c_containerEditModal.confirmDelete'),
-    target: deleteConfirm.value,
     acceptLabel: t('common.delete'),
     rejectLabel: t('common.close'),
     acceptIcon: 'pi pi-trash',
@@ -153,12 +149,26 @@ async function deleteProduct() {
               severity: 'success',
               life: 3000
             });
+            closeDialog();
+            confirm.close();
           })
           .catch((err) => {
             handleError(err, toast);
+            confirm.close();
+          })
+          .finally(() => {
+            confirm.close();
           });
-      closeDialog();
-    }
+    },
+    reject: () => {
+      toast.add({
+        severity: 'info',
+        summary: t('successMessages.canceled'),
+        detail: t('successMessages.containerDeleteRejected'),
+        life: 3000
+      });
+      confirm.close();
+    },
   });
 
 }
