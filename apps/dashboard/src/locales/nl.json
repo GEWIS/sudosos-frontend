@@ -351,7 +351,7 @@
   },
   "validation": {
     "number": {
-      "min": "Dit veld moet groter zijn dan ${min}"
+      "min": "Dit veld moet groter zijn dan {min}"
     },
     "password": {
       "match": "Wachtwoorden moeten overeenkomen."
@@ -362,9 +362,9 @@
     },
     "required": "Dit veld is verplicht",
     "string": {
-      "exact": "Dit veld moet precies ${len} tekens bevatten.",
-      "max": "Dit veld mag maximaal ${max} tekens bevatten.",
-      "min": "Dit veld moet minimaal ${min} tekens bevatten."
+      "exact": "Dit veld moet precies {len} tekens bevatten.",
+      "max": "Dit veld mag maximaal {max} tekens bevatten.",
+      "min": "Dit veld moet minimaal {min} tekens bevatten."
     }
   },
   "tooltip": {

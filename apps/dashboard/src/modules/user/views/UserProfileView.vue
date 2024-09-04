@@ -3,7 +3,7 @@
     <div class="page-title">
       {{ t('profile.myProfile')}}
     </div>
-    <div class="flex md:flex-row flex-column-reverse justify-content-between gap-8">
+    <div class="flex md:flex-row flex-column-reverse justify-content-between gap-4">
       <UserSettingsComponent :user="current.user as UserResponse"/>
       <UserInfo :user="gewisUser || current.user as GewisUserResponse"/>
     </div>

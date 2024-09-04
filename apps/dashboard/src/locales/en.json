@@ -361,7 +361,7 @@
   },
   "validation": {
     "number": {
-      "min": "This field must be greater than ${min}"
+      "min": "This field must be greater than {min}"
     },
     "password": {
       "match": "Passwords must match."
@@ -372,9 +372,9 @@
     },
     "required": "This field is required",
     "string": {
-      "exact": "This field must be exactly ${len} characters",
-      "max": "This field can't be greater than ${max} characters",
-      "min": "This field must be at least ${min} characters"
+      "exact": "This field must be exactly {len} characters",
+      "max": "This field can't be greater than {max} characters",
+      "min": "This field must be at least {min} characters"
     }
   },
   "tooltip": {

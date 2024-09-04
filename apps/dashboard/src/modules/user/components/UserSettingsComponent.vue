@@ -19,7 +19,7 @@
       <div class="flex flex-row align-items-center w-11">
         <p class="flex-grow-1 my-1">{{ t('userSettings.changePassword') }}</p>
         <i
-            class="pi pi-arrow-up-right text-gray-500 flex align-items-center"
+            class="pi pi-arrow-up-right text-gray-500 flex align-items-center cursor-pointer"
             @click="showPasswordDialog = true"
         />
       </div>
@@ -28,14 +28,14 @@
       <div class="flex flex-row align-items-center w-11">
         <p class="flex-grow-1 my-1">{{ t('userSettings.changeApiKey') }}</p>
         <i
-            class="pi pi-arrow-up-right text-gray-500 flex align-items-center"
+            class="pi pi-arrow-up-right text-gray-500 flex align-items-center cursor-pointer"
             @click="confirmChangeApiKey()"
         />
       </div>
       <div class="flex flex-row align-items-center w-11">
         <p class="flex-grow-1 my-1">{{ t('userSettings.deleteApiKey') }}</p>
         <i
-            class="pi pi-arrow-up-right text-gray-500 flex align-items-center"
+            class="pi pi-arrow-up-right text-gray-500 flex align-items-center cursor-pointer"
             @click="confirmDeleteApiKey()"
         />
       </div>
@@ -53,7 +53,7 @@
   <FormDialog
       v-model="showPasswordDialog"
       :form="passwordForm"
-      :header="$t('userSettings.changePassword')"
+      :header="t('userSettings.changePassword')"
   >
     <template #form="slotProps">
       <ChangePasswordForm :form="slotProps.form" @submit:success="showPasswordDialog = false"/>
