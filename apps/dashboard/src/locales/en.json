@@ -119,7 +119,8 @@
     "header": {
       "edit": "Edit container",
       "create": "Create container"
-    }
+    },
+    "confirmDelete": "Are you sure you want to delete this container? This cannot be undone"
   },
   "c_currentBalance": {
     "allIsFines": "All of which is a fine",
@@ -268,6 +269,7 @@
     "productDeleted": "Successfully deleted product.",
     "productCreate": "Successfully created product.",
     "updateContainer": "Successfully updated container.",
+    "containerDeleted": "Successfully deleted container.",
     "invoiceDeleted": "Successfully deleted invoice.",
     "invoiceUpdated": "Successfully updated invoice.",
     "payoutCreated": "Successfully created payout.",

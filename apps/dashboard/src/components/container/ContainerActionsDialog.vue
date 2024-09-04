@@ -5,17 +5,20 @@
    :header="header"
    @show="openDialog()"
    @close="closeDialog()"
+   @delete="deleteProduct()"
+   :deletable="state.edit"
   >
     <template #form>
       <ContainerActionsForm
           :is-organ-editable="state.create"
           :form="form"/>
+      <ConfirmDialog ref="deleteConfirm"></ConfirmDialog>
     </template>
   </FormDialog>
 </template>
 
 <script setup lang="ts">
-import { computed, type PropType } from "vue";
+import { computed, type PropType, ref } from "vue";
 import type {
   ContainerWithProductsResponse,
   CreateContainerRequest,
@@ -30,6 +33,7 @@ import { schemaToForm, setSubmit } from "@/utils/formUtils";
 import { containerActionSchema  } from "@/utils/validation-schema";
 import ContainerActionsForm from "@/components/container/ContainerActionsForm.vue";
 import FormDialog from "@/components/FormDialog.vue";
+import { useConfirm } from "primevue/useconfirm";
 const { t } = useI18n();
 
 const props = defineProps({
@@ -126,6 +130,34 @@ const updateFieldValues = (p: ContainerWithProductsResponse) => {
   form.model.public.value.value = p.public || false;
 };
 
+const confirm = useConfirm();
+
+const deleteConfirm = ref<HTMLElement | undefined>();
+async function deleteProduct() {
+  if(props.container == undefined) return;
+  confirm.require({
+    message: t('c_containerEditModal.confirmDelete'),
+    target: deleteConfirm.value,
+    acceptLabel: t('common.delete'),
+    rejectLabel: t('common.close'),
+    acceptIcon: 'pi pi-trash',
+    rejectIcon: 'pi pi-times',
+    accept: async () => {
+      await containerStore.deleteContainer(props.container!.id)
+          .catch((err) => {
+            handleError(err, toast);
+          });
+      toast.add({
+        summary: t('successMessages.success'),
+        detail: t('successMessages.containerDeleted'),
+        severity: 'success',
+        life: 3000
+      });
+      closeDialog();
+    }
+  });
+
+}
 
 </script>
 
