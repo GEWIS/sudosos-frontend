@@ -83,14 +83,14 @@ const props = defineProps({
 
 setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
   const createUserRequest: CreateUserRequest = {
-    firstName: values.firstName,
-    lastName: values.lastName,
+    ...values,
     email: values.email || '',
     nickname: values.nickname || '',
     type: values.userType,
     ofAge: values.ofAge,
     canGoIntoDebt: values.canGoIntoDebt,
   };
+
   await apiService.user.createUser(createUserRequest).then(() => {
     toast.add({
       severity: 'success',
