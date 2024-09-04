@@ -30,7 +30,7 @@ const dataAnalysis: Ref<boolean> = ref(false);
 const { current } = storeToRefs(userStore);
 const toast = useToast();
 const { t } = useI18n();
-const gewisUser: Ref<GewisUserResponse | undefined | void> = ref(undefined);
+const gewisUser: Ref<GewisUserResponse | undefined> = ref(undefined);
 
 onMounted(async () => {
   if (!userStore.current.user) {
