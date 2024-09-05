@@ -13,7 +13,7 @@
             </button>
         </span>
         <div v-else class="px-3 py-5 text-xl surface-hover text-center  relative">
-            {{ t('modules.admin.banners.list.noBannerFound') }}
+            {{ t('modules.admin.banners.list.noBannerFound') }} <br>
             <button ref="previewButton" type="button"
                 class="cursor-pointer image-preview-indicator p-image-preview-indicator fileupload"
                 @click="fileInput.click()">

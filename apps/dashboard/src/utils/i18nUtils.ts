@@ -13,10 +13,8 @@ const i18n = createI18n({
     messages: {
         en: {
             ...en,
-            common,
-            modules: {
-                admin
-            }
+            ...common,
+            ...admin,
         },
         nl
     },
