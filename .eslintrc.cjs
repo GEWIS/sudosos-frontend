@@ -29,7 +29,24 @@ module.exports = {
     },
     settings: {
         'vue-i18n': {
-            localeDir: './src/locales/*.{json,json5,yaml,yml}',
+            localeDir: [
+                // English locale configuration
+                {
+                    pattern: './src/locales/en/modules/**/*.json', // Match JSON files in the English 'modules' folder
+                    localeKey: 'path', // Use the path to detect locale
+                    localePattern: /^.*\/(?<locale>en)\/.*\.json$/ // Regex to capture 'en'
+                },
+                {
+                    pattern: './src/locales/en/common/**/*.json', // Match JSON files in the English 'common' folder
+                    localeKey: 'path',
+                    localePattern: /^.*\/(?<locale>en)\/.*\.json$/
+                },
+                {
+                    pattern: './src/locales/en/components/**/*.json', // Match JSON files in the English 'components' folder
+                    localeKey: 'path',
+                    localePattern: /^.*\/(?<locale>en)\/.*\.json$/
+                },
+            ],
             messageSyntaxVersion: '^9.2.2'
         }
     },
