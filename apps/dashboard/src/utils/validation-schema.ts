@@ -55,6 +55,10 @@ export const updateInvoiceAddressingObject = yup.object({
   country: yup.string().required(),
 });
 
+export const updateInvoiceAmountObject = yup.object({
+  amount: yup.number().required().default(0),
+});
+
 export const updateUserDetailsObject = yup.object({
   firstName: yup.string().required(),
   lastName: yup.string(),
