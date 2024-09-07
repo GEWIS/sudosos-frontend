@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
     <div class="page-title">
-      {{ t('profile.myProfile')}}
+      {{ t('modules.user.profile.title')}}
     </div>
     <div class="flex md:flex-row flex-column-reverse justify-content-between gap-4">
       <UserSettingsComponent :user="current.user as UserResponse"/>
@@ -49,8 +49,8 @@ function handleChange(value: boolean) {
   apiService.user.updateUser(authStore.user?.id, { extensiveDataProcessing: value }).then(() => {
     toast.add({
       severity: 'success',
-      summary: t('successMessages.success'),
-      detail: t('userDetails.updatedUserInfo'),
+      summary: t('common.toast.success.success'),
+      detail: t('common.toast.success.userUpdated'),
       life: 3000
     });
   }).catch((error) => {

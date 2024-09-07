@@ -1,12 +1,12 @@
 <template>
   <div class="page-container flex flex-column">
-    <div class="page-title">{{ t('home.Overview') }}</div>
+    <div class="page-title">{{ t('modules.user.landing.title') }}</div>
     <div class="content-wrapper gap-5 flex md:flex-column flex-column">
       <UserInfo :user="gewisUser || authStore.user as GewisUserResponse" class="md:hidden"/>
       <BalanceWithTopupComponent />
       <MutationsBalanceCard
         :getMutations="getUserMutations"
-        :header="t('c_recentTransactionsTable.recent transactions')"
+        :header="t('components.mutations.recent')"
         :paginator="false"
         :modal="false"
         :rows-amount=6
@@ -25,7 +25,6 @@ import type { GewisUserResponse, PaginatedFinancialMutationResponse } from "@sud
 import router from "@/router";
 import { handleError } from "@/utils/errorUtils";
 import { useToast } from "primevue/usetoast";
-import CardComponent from "@/components/CardComponent.vue";
 import { onMounted, ref, type Ref } from "vue";
 import UserInfo from "@/modules/user/components/UserInfo.vue";
 import { useI18n } from "vue-i18n";

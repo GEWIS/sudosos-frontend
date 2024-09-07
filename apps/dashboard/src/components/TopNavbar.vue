@@ -4,13 +4,17 @@
       <Menubar class="hidden mb:flex" :model="navItems">
           <template #start>
             <router-link to="/" class="no-underline text-white font-bold flex align-items-center flex-row py-1">
-              {{ t("login.SudoSOS") }}
+              {{ t("modules.auth.login.sudosos") }}
               <img class="h-4rem py-2" src="../assets/img/gewis-branding.svg" alt="SudoSOS" />
             </router-link>
           </template>
           <template #item="{ item, props, hasSubmenu }">
             <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
-              <a :href="href" v-bind="props.action" @click="navigate" class="flex align-items-center justify-content-between">
+              <a :href="href"
+                 v-bind="props.action"
+                 @click="navigate"
+                 class="flex align-items-center justify-content-between"
+              >
                 <span class="p-menuitem-text">{{ item.label }}</span>
                 <span v-if="item.notifications" class="p-badge p-badge-danger">{{ item.notifications }}</span>
               </a>
@@ -18,7 +22,11 @@
             <a v-else :href="item.url" :target="item.target" v-bind="props.action">
               <div class="flex align-items-center justify-content-between">
                 <span class="p-menuitem-text">{{ item.label }}</span>
-                <span v-if="item.notifications" class="p-badge p-badge-no-gutter p-badge-danger-inverse ml-2">{{ item.notifications }}</span>
+                <span
+                    v-if="item.notifications"
+                    class="p-badge p-badge-no-gutter p-badge-danger-inverse ml-2">
+                  {{ item.notifications }}
+                </span>
                 <span v-else-if="hasSubmenu" class="pi pi-fw pi-angle-down ml-2" />
               </div>
             </a>
@@ -26,7 +34,7 @@
       </Menubar>
       <Menubar class="hidden mb:flex" :model="profileItems">
         <template #start>
-          <img class="h-1rem" src="../assets/img/bier.png"/>
+          <img class="h-1rem" src="../assets/img/bier.png" alt="beer"/>
         </template>
         <template #item="{ item, props, hasSubmenu }">
           <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
@@ -47,7 +55,7 @@
       >
         <template #start>
           <router-link to="/" class="no-underline text-white font-bold flex align-items-center flex-row py-1">
-            {{ t("login.SudoSOS") }}
+            {{ t("modules.auth.login.sudosos") }}
             <img class="h-4rem py-2" src="../assets/img/gewis-branding.svg" alt="SudoSOS" />
           </router-link>
         </template>

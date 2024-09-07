@@ -1,1 +1,15 @@
-{}
+{
+  "modules": {
+    "user": {
+      "landing": {
+        "title": "Overview"
+      },
+      "profile": {
+        "title": "Profile"
+      },
+      "transactions": {
+        "title": "Transactions"
+      }
+    }
+  }
+}
