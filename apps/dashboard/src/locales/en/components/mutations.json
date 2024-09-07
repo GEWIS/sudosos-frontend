@@ -16,6 +16,8 @@
       "fine": "Fine",
       "other": "Other",
       "you": "You",
+      "payment": "Payment",
+      "topUp": "Top up",
       "user": "User transactions",
       "modal": {
         "header": "Transaction details",
@@ -25,7 +27,10 @@
         "fine": "Fine",
         "payoutRequestDescription": "You have requested a payout.",
         "waivedFineDescription": "Your fines were waived.",
-        "invoiceDescription": "You have paid an invoice to GEWIS"
+        "invoiceDescription": "You have paid an invoice to GEWIS",
+        "depositDescription": "You have deposited money to GEWIS",
+        "fineDescription": "You have paid a fine to GEWIS",
+        "unknown": "Unknown transaction"
       },
       "userBoughtAt": "You bought at {pos}",
       "otherBoughtAt": "{user} bought at {pos}",

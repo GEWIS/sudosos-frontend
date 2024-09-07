@@ -112,6 +112,26 @@
             "posOverview": "POS overview",
             "flaggedTransactions": "Flagged transactions",
             "fineOverview": "Fine overview"
-        }
+        },
+        "validation": {
+            "number": {
+                "min": "This field must be greater than {min}"
+            },
+            "password": {
+                "match": "Passwords must match."
+            },
+            "pin": {
+                "match": "PINs must match.",
+                "onlyDigits": "PIN must be only digits."
+            },
+            "required": "This field is required",
+            "string": {
+                "exact": "This field must be exactly {len} characters",
+                "max": "This field can't be greater than {max} characters",
+                "min": "This field must be at least {min} characters"
+            }
+        },
+        "apiError": "Error",
+        "errorMessage": "Something is going wrong, please open an issue on {link} describing the issue."
     }
 }

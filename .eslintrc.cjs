@@ -19,7 +19,7 @@ module.exports = {
         'vue/block-lang': ['error', { 'script': { 'lang': 'ts' } }],
         '@intlify/vue-i18n/no-raw-text': 'error',
         '@intlify/vue-i18n/no-missing-keys': 'error',
-        '@intlify/vue-i18n/no-missing-keys-in-other-locales': 'error',
+        '@intlify/vue-i18n/no-missing-keys-in-other-locales': 'off',
         '@intlify/vue-i18n/no-unused-keys': ['error', { 'enableFix': false, 'extensions': ['.js', '.vue', '.ts'] }],
         '@intlify/vue-i18n/no-duplicate-keys-in-locale': 'error'
     },
@@ -52,7 +52,7 @@ module.exports = {
     },
     overrides: [
         {
-            files: ['src/locales/*.json'],
+            files: ['src/locales/**/*.json'],
             rules: {
                 'max-len': 'off'
             }

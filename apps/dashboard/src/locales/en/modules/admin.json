@@ -8,7 +8,6 @@
         }
       },
       "singleUser": {
-        "title": "User overview",
         "profile": "{user}'s profile",
         "userInfo": {
           "header": "User information"

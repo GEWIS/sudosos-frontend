@@ -38,7 +38,7 @@
 
 
 
-        <Column field="change" :header="t('components.mutations.amount')">1
+        <Column field="change" :header="t('components.mutations.amount')">
             <template #body v-if="isLoading">
                 <Skeleton class="w-3 my-1 h-1rem surface-300" />
             </template>

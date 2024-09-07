@@ -77,24 +77,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type ComputedRef } from "vue";
+import { computed } from "vue";
 import { useAuthStore, useUserStore } from "@sudosos/sudosos-frontend-common";
 import { useRouter } from "vue-router";
 import { UserRole } from "@/utils/rbacUtils";
 import { useI18n } from "vue-i18n";
-import { formatPrice } from "@/utils/formatterUtils";
 import { usePendingPayouts } from "@/mixins/pendingPayoutsMixin";
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
 const router = useRouter();
 const { t, locale } = useI18n();
-
-const balance = computed((): string | undefined => {
-  const balanceInCents = userStore.getCurrentUser.balance;
-  if (!balanceInCents) return undefined;
-  return formatPrice(balanceInCents.amount);
-});
 
 const firstName = computed((): string | undefined => {
   return userStore.getCurrentUser.user ? userStore.getCurrentUser.user.firstName : undefined;
@@ -107,10 +100,6 @@ const handleLogout = () => {
 
 const isBoard = () => {
   return userStore.current.rolesWithPermissions.findIndex(r => r.name == UserRole.BOARD) != -1;
-};
-
-const isBAC = () => {
-  return userStore.current.rolesWithPermissions.findIndex(r => r.name == UserRole.BAC) != -1;
 };
 
 const isSeller = () => {

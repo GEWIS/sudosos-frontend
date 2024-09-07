@@ -35,18 +35,18 @@ const i18n = createI18n({
 
 setLocale({
     mixed: {
-        required: ({ path }) => i18n.global.t('validation.required',
-          { path: i18n.global.t(`validation.fieldNames.${path}`) }),
+        required: ({ path }) => i18n.global.t('common.validation.required',
+          { path: i18n.global.t(`common.validation.fieldNames.${path}`) }),
     },
     string: {
-        min: ({ path, min }) => i18n.global.t('validation.string.min',
-          { path: i18n.global.t(`validation.fieldNames.${path}`), min }),
-        max: ({ path, max }) => i18n.global.t('validation.string.max',
-          { path: i18n.global.t(`validation.fieldNames.${path}`), max }),
+        min: ({ path, min }) => i18n.global.t('common.validation.string.min',
+          { path: i18n.global.t(`common.validation.fieldNames.${path}`), min }),
+        max: ({ path, max }) => i18n.global.t('common.validation.string.max',
+          { path: i18n.global.t(`common.validation.fieldNames.${path}`), max }),
     },
     number: {
-        min: ({ path, min }) => i18n.global.t('validation.number.min',
-          { path: i18n.global.t(`validation.fieldNames.${path}`), min }),
+        min: ({ path, min }) => i18n.global.t('common.validation.number.min',
+          { path: i18n.global.t(`common.validation.fieldNames.${path}`), min }),
     },
 });
 

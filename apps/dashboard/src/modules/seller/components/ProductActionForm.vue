@@ -39,7 +39,7 @@
                id="alcoholPercentage" type="percentage"
                :disabled="!isEditable"/>
 
-    <InputSpan :label="t('modules.seller.productContainers.products.price')"
+    <InputSpan :label="t('common.price')"
                :value="form.model.priceInclVat.value.value"
                :attributes="form.model.priceInclVat.attr.value"
                @update:value="form.context.setFieldValue('priceInclVat', $event)"
