@@ -7,6 +7,7 @@
         "description": "Description",
         "id": "ID",
         "vat": "VAT",
+        "loading": "Loading",
         "excl": "Excl VAT",
         "incl": "Incl VAT",
         "firstName": "First name",
@@ -27,6 +28,7 @@
         "close": "Close",
         "cancel": "Cancel",
         "delete": "Delete",
+        "owner": "Owner",
         "back": "Back",
         "signOut": "Sign out",
         "createdAt": "Created at",
@@ -40,7 +42,13 @@
             "street": "Grote Kerkplein 15",
             "postalCode": "8011 PK",
             "city": "Zwolle",
-            "country": "Netherlands"
+            "country": "Netherlands",
+            "product": "Ice cream",
+            "pos": "GELIMBO"
+        },
+        "tooltip": {
+            "productOwner": "Note: Container owner gets the revenue, not the product owner. Owner cannot be edited after creation.",
+            "ownerRevenue": "Note: Container owner gets the revenue, not the product owner. Owner cannot be edited after creation."
         },
         "nickname": "Nickname",
         "email": "Email address",
@@ -62,7 +70,12 @@
                 "finesHandedOut": "Successfully handed out fines.",
                 "payoutCreated": "Successfully created payout.",
                 "invoiceDeleted": "Successfully deleted invoice.",
-                "invoiceUpdated": "Successfully updated invoice."
+                "invoiceUpdated": "Successfully updated invoice.",
+                "pointOfSaleDeleted": "Successfully deleted POS.",
+                "pointOfSaleUpdated": "Successfully updated POS.",
+                "pointOfSaleCreated": "Successfully created POS.",
+                "containerUpdated": "Successfully updated container.",
+                "containerCreated": "Successfully created container."
             },
             "canceled": "Canceled",
             "reject": {

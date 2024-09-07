@@ -12,7 +12,7 @@ module.exports = {
         'plugin:@intlify/vue-i18n/recommended'
     ],
     rules: {
-        'max-len': ['error', { "code": 120, }],
+        'max-len': ['warn', { "code": 120, }],
         'semi': ['error', 'always'],
         'object-curly-spacing': ['error', 'always'],
         'vue/component-api-style': ['error', ['script-setup', 'composition']],

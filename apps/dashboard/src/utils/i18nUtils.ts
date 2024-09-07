@@ -4,6 +4,8 @@ import common from "../locales/en/common/common.json";
 import mutations from "../locales/en/components/mutations.json";
 import auth from "../locales/en/modules/auth.json";
 import user from "../locales/en/modules/user.json";
+import seller from "../locales/en/modules/seller.json";
+import financial from "../locales/en/modules/financial.json";
 import { setLocale } from "yup";
 
 
@@ -15,10 +17,14 @@ const i18n = createI18n({
     messages: {
         en: {
             ...common,
-            ...admin,
-            ...auth,
             ...mutations,
-            ...user,
+            modules: {
+                ...auth.modules,
+                ...user.modules,
+                ...seller.modules,
+                ...financial.modules,
+                ...admin.modules,
+            }
         },
     },
 });

@@ -43,7 +43,7 @@
           "timespan": "Timespan",
           "active": "Active"
         },
-        "user":{
+        "user": {
           "header": "Create user",
           "ofAge": "User is of age",
           "active": "User is active",
