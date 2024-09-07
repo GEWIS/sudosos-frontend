@@ -29,7 +29,12 @@
                 "userUpdated": "Successfully updated user.",
                 "userCreated": "Successfully created user.",
                 "waiveFinesSuccess": "Successfully waived fines.",
-                "resetPasswordSuccess": "Successfully reset password."
+                "resetPasswordSuccess": "Successfully reset password.",
+                "dataAnalysis": "Successfully changed data analysis preference.",
+                "apiKeyChanged": "Successfully changed API key.",
+                "apiKeyDeleted": "Successfully deleted API key.",
+                "passwordUpdated": "Successfully updated password.",
+                "pinUpdated": "Successfully updated PIN."
             },
             "canceled": "Canceled",
             "reject": {

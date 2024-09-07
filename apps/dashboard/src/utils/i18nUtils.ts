@@ -3,7 +3,9 @@ import admin from "../locales/en/modules/admin.json";
 import common from "../locales/en/common/common.json";
 import mutations from "../locales/en/components/mutations.json";
 import auth from "../locales/en/modules/auth.json";
+import user from "../locales/en/modules/user.json";
 import { setLocale } from "yup";
+
 
 const i18n = createI18n({
     locale: localStorage.getItem('locale') || 'en',
@@ -16,6 +18,7 @@ const i18n = createI18n({
             ...admin,
             ...auth,
             ...mutations,
+            ...user,
         },
     },
 });
