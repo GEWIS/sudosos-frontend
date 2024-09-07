@@ -1,5 +1,5 @@
 <template>
-    <span class="tosLink" @click="visible = true">{{ t('termsOfService.termsOfService')}}</span>
+    <span class="tosLink" @click="visible = true">{{ t('components.footer.termsOfService')}}</span>
     <Dialog
         modal
         v-model:visible="visible"
@@ -7,7 +7,7 @@
         class="tosModal"
         >
         <template #header>
-           {{  t('termsOfService.termsOfService') }}
+           {{  t('components.footer.termsOfService') }}
         </template>
         <div>
           <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
