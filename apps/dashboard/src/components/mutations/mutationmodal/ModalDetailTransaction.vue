@@ -10,7 +10,7 @@
       v-if="
         transactionInfo.from.id == userStore.current.user!!.id
       "
-      keypath="transactions.userBoughtAt" tag="div">
+      keypath="components.mutations.userBoughtAt" tag="div">
       <template v-slot:pos>
         <span class="font-bold">{{ transactionInfo.pointOfSale.name }}</span>
       </template>
@@ -20,7 +20,7 @@
       v-if="
         transactionInfo.from.id != userStore.current.user!!.id
       "
-      keypath="transactions.otherBoughtAt" tag="div">
+      keypath="components.mutations.otherBoughtAt" tag="div">
       <template v-slot:user>
         <span
           class="font-bold">
@@ -39,7 +39,7 @@
         transactionInfo.createdBy
         && transactionInfo.createdBy.id != transactionInfo.from.id
       "
-      keypath="transactions.putInBy" tag="div">
+      keypath="components.mutations.putInBy" tag="div">
 
       <template v-slot:createdBy>
         <span class="font-bold">
@@ -57,20 +57,20 @@
       }"
     >
       <Column field="amount" header="#" class="p-1"></Column>
-      <Column field="product.name" :header="t('transactions.title')" class="p-1"></Column>
+      <Column field="product.name" :header="t('common.title')" class="p-1"></Column>
       <Column
         field="product.priceInclVat"
-        :header="t('transactions.price')"
+        :header="t('common.price')"
         class="p-1"
         footerClass="font-bold"
-        :footer="t('transactions.total')"
+        :footer="t('common.total')"
       >
         <template #body="product">
             {{ formatPrice(product.data.product.priceInclVat) }}
         </template></Column>
       <Column
         field="totalPriceInclVat"
-        :header="t('transactions.amount')"
+        :header="t('common.amount')"
         class="p-1"
         footerClass="font-bold"
         :footer="formatPrice(transactionInfo.totalPriceInclVat)"

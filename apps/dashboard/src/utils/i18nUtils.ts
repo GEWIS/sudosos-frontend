@@ -6,6 +6,7 @@ import auth from "../locales/en/modules/auth.json";
 import user from "../locales/en/modules/user.json";
 import seller from "../locales/en/modules/seller.json";
 import financial from "../locales/en/modules/financial.json";
+import footer from "../locales/en/components/footer.json";
 import { setLocale } from "yup";
 
 
@@ -17,7 +18,10 @@ const i18n = createI18n({
     messages: {
         en: {
             ...common,
-            ...mutations,
+            components: {
+                ...mutations.components,
+                ...footer.components,
+            },
             modules: {
                 ...auth.modules,
                 ...user.modules,
