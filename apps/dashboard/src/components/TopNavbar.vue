@@ -4,7 +4,7 @@
       <Menubar class="hidden mb:flex" :model="navItems">
           <template #start>
             <router-link to="/" class="no-underline text-white font-bold flex align-items-center flex-row py-1">
-              {{ t("modules.auth.login.sudosos") }}
+              {{ t("common.sudosos") }}
               <img class="h-4rem py-2" src="../assets/img/gewis-branding.svg" alt="SudoSOS" />
             </router-link>
           </template>
@@ -126,63 +126,63 @@ const getFinancialNotifications = () => pendingPayouts?.value;
 
 const navItems = computed(() => [
   {
-    label: t('app.Transactions'),
+    label: t('common.navigation.transactions'),
     route: '/transactions'
   },
   {
-    label: t('app.Admin'),
+    label: t('common.navigation.admin'),
     visible: isBoard(),
     items: [
       {
-        label: t('app.User overview'),
+        label: t('common.navigation.userOverview'),
         route: '/user-overview'
       },
       {
-        label: t('app.Banners'),
+        label: t('common.navigation.banners'),
         route: '/banners'
       },
     ],
   },
   {
-    label: t('app.Financial'),
+    label: t('common.navigation.financial'),
     visible: isBACPM(),
     notifications: getFinancialNotifications(),
     items: [
       {
-        label: t('app.User overview'),
+        label: t('common.navigation.userOverview'),
         route: '/user-overview',
       },
       {
-        label: t('flagged.Flagged transactions'),
+        label: t('common.navigation.flaggedTransactions'),
       },
       {
-        label: t('app.Social drink cards'),
+        label: t('common.navigation.socialDrinkCards'),
       },
       {
-        label: t('app.Invoices'),
+        label: t('common.navigation.invoices'),
         route: '/invoice',
       },
       {
-        label: t('fine.fineOverview'),
+        label: t('common.navigation.fineOverview'),
         route: '/fine',
       },
       {
-        label: t('payout.Payouts'),
+        label: t('common.navigation.payouts'),
         route: '/payouts',
         notifications: pendingPayouts?.value
       }
     ]
   },
   {
-    label: t('app.Seller'),
+    label: t('common.navigation.seller'),
     visible: isSeller(),
     items: [
       {
-        label: t('app.Manage products'),
+        label: t('common.navigation.manageProducts'),
         route: '/manage-products',
       },
       {
-        label: t('app.Overview'),
+        label: t('common.navigation.posOverview'),
         route: '/point-of-sale/overview',
       }
     ]
@@ -194,11 +194,11 @@ const profileItems = computed(() =>[
     label: firstName.value,
     items: [
       {
-        label: t('app.Profile'),
+        label: t('common.navigation.profile'),
         route: '/profile',
       },
       {
-        label: t('app.Sign out'),
+        label: t('common.navigation.signOut'),
         command: handleLogout,
       },
     ]
@@ -208,7 +208,7 @@ const profileItems = computed(() =>[
     icon: 'pi pi-globe',
     items: [
       {
-        label: t('app.Netherlands'),
+        label: t('common.navigation.dutch'),
         disabled: () => locale.value == 'nl',
         command: () => {
           locale.value = 'nl';
@@ -216,7 +216,7 @@ const profileItems = computed(() =>[
         },
       },
       {
-        label: t('app.English'),
+        label: t('common.navigation.english'),
         disabled: () => locale.value == 'en',
         command: () => {
           locale.value = 'en';

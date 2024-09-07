@@ -1,5 +1,6 @@
 {
     "common": {
+        "sudosos": "SudoSOS",
         "title": "Title",
         "total": "Total",
         "amount": "Amount",
@@ -86,6 +87,27 @@
                 "waiveFinesRejected": "Canceled waiving fines.",
                 "userUpdateRejected": "Canceled updating user."
             }
+        },
+        "navigation": {
+            "transactions": "Transactions",
+            "admin": "Admin",
+            "financial": "Financial",
+            "seller": "Seller",
+            "profile": "Profile",
+            "signOut": "Sign out",
+            "dutch": "Dutch",
+            "english": "English",
+            "userOverview": "User overview",
+            "banners": "Banners",
+            "user": "User",
+            "socialDrinkCards": "Social drink cards",
+            "invoices": "Invoices",
+            "fines": "Fines",
+            "payouts": "Payouts",
+            "manageProducts": "Manage products",
+            "posOverview": "POS overview",
+            "flaggedTransactions": "Flagged transactions",
+            "fineOverview": "Fine overview"
         }
     }
 }
