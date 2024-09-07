@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-column justify-content-between gap-2">
-    <InputUserSpan :label="t('modules.financial.forms.for')"
+    <InputUserSpan :label="t('modules.financial.forms.payout.for')"
                    :value="form.model.user.value.value"
                    @update:value="form.context.setFieldValue('user', $event)"
                    :errors="form.context.errors.value.user"
@@ -9,17 +9,17 @@
     <skeleton v-if="userBalance === null && form.model.user.value.value" class="w-6 my-1 h-0.5rem surface-300"/>
     <div v-else-if="userBalance" class="flex flex-row gap-1"
          :class="{'text-gray-700': !balanceError, 'text-red-500 font-bold': balanceError}">
-      <span>{{ t('modules.financial.forms.currentBalance', { balance: formatPrice(userBalance.amount) }) }}</span>
+      <span>{{ t('modules.financial.forms.payout.currentBalance', { balance: formatPrice(userBalance.amount) }) }}</span>
     </div>
 
-    <InputSpan :label="t('modules.financial.forms.bankAccountNumber')"
+    <InputSpan :label="t('modules.financial.forms.payout.bankAccountNumber')"
                :value="form.model.bankAccountNumber.value.value"
                :attributes="form.model.bankAccountNumber.attr.value"
                @update:value="form.context.setFieldValue('bankAccountNumber', $event)"
                :errors="form.context.errors.value.bankAccountNumber"
                id="name" :placeholder="t('common.placeholders.bankAccountNumber')" type="text"/>
 
-    <InputSpan :label="t('modules.financial.forms.bankAccountName')"
+    <InputSpan :label="t('modules.financial.forms.payout.bankAccountName')"
                :value="form.model.bankAccountName.value.value"
                :attributes="form.model.bankAccountName.attr.value"
                @update:value="form.context.setFieldValue('bankAccountName', $event)"
@@ -75,7 +75,7 @@ const balanceError = ref<string>('');
 
 const validateAmount = () => {
   if (userBalance.value && props.form.model.amount.value.value > userBalance.value.amount.amount / 100) {
-    balanceError.value = `${t('modules.financial.forms.amountTooHigh')}`;
+    balanceError.value = `${t('modules.financial.forms.payout.amountTooHigh')}`;
   } else {
     balanceError.value = ''; // Clear error if valid
   }
