@@ -24,6 +24,7 @@
       },
       "banners": {
         "title": "Banners",
+        "noBannerFound": "No banner found, please upload one!",
         "list": {
           "header": "Banner overview",
           "filterActive": "Filter active",
@@ -38,7 +39,6 @@
         "banner": {
           "headerCreate": "Create banner",
           "headerEdit": "Edit banner",
-          "noBannerFound": "No banner found, please upload one!",
           "duration": "Duration",
           "timespan": "Timespan",
           "active": "Active"

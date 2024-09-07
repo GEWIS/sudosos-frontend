@@ -3,6 +3,7 @@
         "gewisId": "GEWIS ID",
         "firstName": "First name",
         "lastName": "Last name",
+        "name": "Name",
         "type": "Type",
         "ofAge": "18+",
         "active": "Active",

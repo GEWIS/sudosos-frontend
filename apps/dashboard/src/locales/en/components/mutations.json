@@ -1,1 +1,17 @@
-{}
+{
+  "components": {
+    "mutations": {
+      "transactions": {
+        "header": "Transactions",
+        "type": "Type",
+        "amount": "Amount",
+        "date": "Date",
+        "reference": "Reference",
+        "transactionType": {
+          "Transfer": "Transfer",
+          "Transaction": "Transaction"
+        }
+      }
+    }
+  }
+}

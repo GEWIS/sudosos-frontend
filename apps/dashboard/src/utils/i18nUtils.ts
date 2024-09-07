@@ -1,6 +1,4 @@
 import { createI18n } from "vue-i18n";
-import en from "../locales/en.json";
-import nl from "../locales/nl.json";
 import admin from "../locales/en/modules/admin.json";
 import common from "../locales/en/common/common.json";
 import { setLocale } from "yup";
@@ -12,11 +10,9 @@ const i18n = createI18n({
     globalInjection: true,
     messages: {
         en: {
-            ...en,
             ...common,
             ...admin,
         },
-        nl
     },
 });
 

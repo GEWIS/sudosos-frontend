@@ -7,7 +7,7 @@
             image: 'w-full'
           }" />
         <div v-else class="px-3 py-5 text-xl surface-hover text-center">
-          {{ t('modules.admin.banners.list.noBannerFound') }}
+          {{ t('modules.admin.banners.noBannerFound') }}
         </div>
         <!--
                     Green when active and banner image is present

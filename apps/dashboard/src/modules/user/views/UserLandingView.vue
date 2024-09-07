@@ -4,21 +4,14 @@
     <div class="content-wrapper gap-5 flex md:flex-column flex-column">
       <UserInfo :user="gewisUser || authStore.user as GewisUserResponse" class="md:hidden"/>
       <BalanceWithTopupComponent />
-      <CardComponent
-          :header="t('transactions.recentTransactions')"
-          class="w-full"
-          :action="t('c_recentTransactionsTable.all transactions')"
-          routerLink="transaction-view">
-        <MutationsBalanceCard
-          :getMutations="getUserMutations"
-          :header="t('c_recentTransactionsTable.recent transactions')"
-
-          :paginator="false"
-          :modal="false"
-
-          :rows-amount=6
-        />
-      </CardComponent>
+      <MutationsBalanceCard
+        :getMutations="getUserMutations"
+        :header="t('c_recentTransactionsTable.recent transactions')"
+        :paginator="false"
+        :modal="false"
+        :rows-amount=6
+        :simple="false"
+      />
     </div>
   </div>
 </template>

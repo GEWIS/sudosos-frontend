@@ -13,7 +13,7 @@
             </button>
         </span>
         <div v-else class="px-3 py-5 text-xl surface-hover text-center  relative">
-            {{ t('modules.admin.banners.list.noBannerFound') }} <br>
+            {{ t('modules.admin.banners.noBannerFound') }} <br>
             <button ref="previewButton" type="button"
                 class="cursor-pointer image-preview-indicator p-image-preview-indicator fileupload"
                 @click="fileInput.click()">
@@ -36,7 +36,7 @@
         <div class="py-2">
             {{ t('modules.admin.forms.banner.timespan') }}<br>
             <Calendar v-model="startDate" showTime hourFormat="24" />
-            {{ t('modules.admin.forms.banner.till' )}}
+            {{ t('modules.admin.banners.till' )}}
             <Calendar v-model="endDate" showTime hourFormat="24" class="pt-1 md:pt-0" /><br>
             <span class="font-bold text-red-500">{{ errors['Start date'] }}</span><br>
             <span class="font-bold text-red-500">{{ errors['End date'] }}</span>

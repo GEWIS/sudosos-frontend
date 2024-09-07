@@ -1,21 +1,21 @@
 <template>
   <div class="page-container">
-    <div class="page-title">{{ t('modules.admin.singleUser.profile', {user: currentUser ? currentUser.firstName : ''}) }}</div>
+    <div class="page-title">
+      {{ t('modules.admin.singleUser.profile', {user: currentUser ? currentUser.firstName : ''}) }}
+    </div>
     <div class="flex flex-column gap-5">
       <div class="flex flex-column  md:flex-row justify-content-between gap-8">
         <AdminUserInfoCard :user="currentUser" class="flex-grow-1"/>
         <AdminUserBalance :user="currentUser"/>
       </div>
-      <CardComponent
-          :header="t('transactions.recentTransactions')"
-          class="w-full">
-        <MutationsBalanceCard
-            class="w-full"
-            :header="t('userDetails.User Transactions')"
-            paginator
-            modal
-            :get-mutations="getUserMutations"/>
-      </CardComponent>
+      <MutationsBalanceCard
+          class="w-full"
+          :header="t('userDetails.User Transactions')"
+          paginator
+          modal
+          :get-mutations="getUserMutations"
+          :simple="true"
+      />
     </div>
   </div>
 </template>
