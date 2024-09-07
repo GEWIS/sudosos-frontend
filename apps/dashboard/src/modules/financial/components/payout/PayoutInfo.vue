@@ -12,10 +12,10 @@
           <div class="flex flex-row gap-1">
             <span v-if="overBalance"><i class="pi pi-exclamation-triangle"></i></span>
             <span v-if="userBalance">
-            {{ t('modules.financial.forms.currentBalance', { balance: formatPrice(userBalance.amount) }) }}
+            {{ t('modules.financial.forms.payout.currentBalance', { balance: formatPrice(userBalance.amount) }) }}
             </span>
             <span v-else>
-              {{ t('modules.financial.forms.currentBalance', { balance: '-' }) }}
+              {{ t('modules.financial.forms.payout.currentBalance', { balance: '-' }) }}
             </span>
           </div>
         </div>
@@ -23,8 +23,8 @@
       <table class="table text-left my-1">
         <thead>
         <tr>
-          <th>{{ t('modules.financial.forms.bankAccountNumber') }}</th>
-          <th>{{ t('modules.financial.forms.bankAccountName') }}</th>
+          <th>{{ t('modules.financial.forms.payout.bankAccountNumber') }}</th>
+          <th>{{ t('modules.financial.forms.payout.bankAccountName') }}</th>
           <th>{{ t('common.amount') }}</th>
         </tr>
         </thead>

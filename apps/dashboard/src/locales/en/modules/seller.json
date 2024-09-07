@@ -33,7 +33,12 @@
           "preferred": "Preferred",
           "featured": "Featured",
           "priceList": "Pricelist",
-          "image": "Image"
+          "image": "Image",
+          "addToContainer": "Add product to container",
+          "createProduct": "Create product",
+          "productDetails": "Product details",
+          "productContainerDelete": "Delete product from container",
+          "confirmProductContainerDelete": "Are you sure you want to delete this product from this container?"
         }
       },
       "forms": {

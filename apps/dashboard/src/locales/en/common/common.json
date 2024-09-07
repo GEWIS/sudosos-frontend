@@ -80,7 +80,11 @@
                 "containerUpdated": "Successfully updated container.",
                 "containerCreated": "Successfully created container.",
                 "fineDeleted": "Successfully deleted fine.",
-                "transactionDeleted": "Successfully deleted transaction."
+                "transactionDeleted": "Successfully deleted transaction.",
+                "productCreated": "Successfully created product.",
+                "productUpdated": "Successfully updated product.",
+                "productContainerDeleted": "Successfully deleted product from container.",
+                "productDeleted": "Successfully deleted product."
             },
             "canceled": "Canceled",
             "reject": {
