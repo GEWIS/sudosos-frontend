@@ -2,6 +2,7 @@ import { createI18n } from "vue-i18n";
 import admin from "../locales/en/modules/admin.json";
 import common from "../locales/en/common/common.json";
 import mutations from "../locales/en/components/mutations.json";
+import auth from "../locales/en/modules/auth.json";
 import { setLocale } from "yup";
 
 const i18n = createI18n({
@@ -13,6 +14,7 @@ const i18n = createI18n({
         en: {
             ...common,
             ...admin,
+            ...auth,
             ...mutations,
         },
     },

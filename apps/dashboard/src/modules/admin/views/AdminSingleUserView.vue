@@ -10,7 +10,7 @@
       </div>
       <MutationsBalanceCard
           class="w-full"
-          :header="t('userDetails.User Transactions')"
+          :header="t('components.mutations.user')"
           paginator
           modal
           :get-mutations="getUserMutations"

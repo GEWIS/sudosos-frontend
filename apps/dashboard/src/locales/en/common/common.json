@@ -12,6 +12,8 @@
         "search": "Search",
         "save": "Save",
         "close": "Close",
+        "back": "Back",
+        "signOut": "Sign out",
         "placeholders": {
             "selectType": "Select Type",
             "email": "example@example.com"
@@ -25,7 +27,8 @@
                 "success": "Success",
                 "userUpdated": "Successfully updated user.",
                 "userCreated": "Successfully created user.",
-                "waiveFinesSuccess": "Successfully waived fines."
+                "waiveFinesSuccess": "Successfully waived fines.",
+                "resetPasswordSuccess": "Successfully reset password."
             },
             "canceled": "Canceled",
             "reject": {

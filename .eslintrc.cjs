@@ -12,7 +12,7 @@ module.exports = {
         'plugin:@intlify/vue-i18n/recommended'
     ],
     rules: {
-        'max-len': ['warn', { "code": 120 }],
+        'max-len': ['error', { "code": 120, }],
         'semi': ['error', 'always'],
         'object-curly-spacing': ['error', 'always'],
         'vue/component-api-style': ['error', ['script-setup', 'composition']],
@@ -20,7 +20,7 @@ module.exports = {
         '@intlify/vue-i18n/no-raw-text': 'error',
         '@intlify/vue-i18n/no-missing-keys': 'error',
         '@intlify/vue-i18n/no-missing-keys-in-other-locales': 'error',
-        '@intlify/vue-i18n/no-unused-keys': ['error', { 'enableFix': true, 'extensions': ['.js', '.vue', '.ts'] }],
+        '@intlify/vue-i18n/no-unused-keys': ['error', { 'enableFix': false, 'extensions': ['.js', '.vue', '.ts'] }],
         '@intlify/vue-i18n/no-duplicate-keys-in-locale': 'error'
     },
     ignorePatterns: ["/src/components/icons/*.vue", "package-lock.json"],

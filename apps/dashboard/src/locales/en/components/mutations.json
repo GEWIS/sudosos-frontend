@@ -15,7 +15,8 @@
       "waivedFine": "Waived fine",
       "fine": "Fine",
       "other": "Other",
-      "you": "You"
+      "you": "You",
+      "user": "User transactions"
     }
   }
 }
