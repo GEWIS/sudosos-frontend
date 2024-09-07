@@ -26,7 +26,6 @@ import type { Ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
 import type { PaginatedFinancialMutationResponse, UserResponse } from "@sudosos/sudosos-client";
-import CardComponent from "@/components/CardComponent.vue";
 import AdminUserBalance from "@/modules/admin/components/users/AdminUserBalance.vue";
 import apiService from "@/services/ApiService";
 import router from "@/router";

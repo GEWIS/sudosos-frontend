@@ -1,14 +1,14 @@
 <template>
   <CardComponent
-      :header="t('transactions.recentTransactions')"
+      :header="t('components.mutations.balance')"
       class="w-full"
-      :action="simple ? undefined: t('c_recentTransactionsTable.all transactions')"
+      :action="simple ? undefined: t('components.mutations.all')"
       :routerLink="simple ? undefined : 'transaction-view'"
 
   >
     <DataTable :rows="rows" :value="mutations" :rowsPerPageOptions="[5, 10, 25, 50, 100]" :paginator="paginator" lazy
                @page="onPage($event)" :totalRecords="totalRecords">
-      <Column field="moment" :header="t('transactions.when')">
+      <Column field="moment" :header="t('components.mutations.when')">
         <template #body v-if="isLoading">
           <Skeleton class="w-6 my-1 h-1rem surface-300"/>
         </template>
@@ -27,19 +27,20 @@
         </template>
       </Column>
 
-      <Column field="createdBy" :header="t('transactions.createdBy')">
+      <Column field="createdBy" :header="t('components.mutations.createdBy')">
         <template #body v-if="isLoading">
           <Skeleton class="w-6 my-1 h-1rem surface-300"/>
         </template>
         <template #body="mutation" v-else>
           {{
             mutation.data.createdBy && currentUserId !== mutation.data.createdBy?.id ?
-                `${mutation.data.createdBy.firstName} ${mutation.data.createdBy.lastName}` : t('app.you')
+                `${mutation.data.createdBy.firstName} ${mutation.data.createdBy.lastName}` :
+                t('components.mutations.you')
           }}
         </template>
       </Column>
 
-      <Column field="mutationPOS" class="hidden sm:block" :header="t('transactions.pos')">
+      <Column field="mutationPOS" class="hidden sm:block" :header="t('components.mutations.pos')">
         <template #body v-if="isLoading">
           <Skeleton class="w-6 my-1 h-1rem surface-300"/>
         </template>
@@ -48,7 +49,7 @@
         </template>
       </Column>
 
-      <Column field="change" :header="t('transactions.amount')">
+      <Column field="change" :header="t('components.mutations.amount')">
         <template #body v-if="isLoading">
           <Skeleton class="w-3 my-1 h-1rem surface-300"/>
         </template>

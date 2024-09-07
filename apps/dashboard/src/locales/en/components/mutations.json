@@ -1,17 +1,21 @@
 {
   "components": {
     "mutations": {
-      "transactions": {
-        "header": "Transactions",
-        "type": "Type",
-        "amount": "Amount",
-        "date": "Date",
-        "reference": "Reference",
-        "transactionType": {
-          "Transfer": "Transfer",
-          "Transaction": "Transaction"
-        }
-      }
+      "balance": "Balance mutations",
+      "recent": "Recent transactions",
+      "all": "All transactions",
+      "when": "When",
+      "created": "Created transactions",
+      "createdBy": "Created by",
+      "createdFor": "Created for",
+      "amount": "Amount",
+      "pos": "Point of sale",
+      "invoice": "Invoice",
+      "deposit": "Deposit",
+      "waivedFine": "Waived fine",
+      "fine": "Fine",
+      "other": "Other",
+      "you": "You"
     }
   }
 }
