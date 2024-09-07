@@ -1,11 +1,18 @@
 {
     "common": {
+        "amount": "Amount",
+        "actions": "Actions",
         "gewisId": "GEWIS ID",
+        "downloadPdf": "Download PDF",
+        "id": "ID",
         "firstName": "First name",
         "lastName": "Last name",
         "name": "Name",
         "type": "Type",
+        "date": "Date",
         "ofAge": "18+",
+        "info": "Info",
+        "status": "Status",
         "active": "Active",
         "create": "Create",
         "edit": "Edit",
@@ -15,9 +22,13 @@
         "delete": "Delete",
         "back": "Back",
         "signOut": "Sign out",
+        "createdAt": "Created at",
+        "updatedAt": "Updated at",
         "placeholders": {
             "selectType": "Select Type",
-            "email": "example@example.com"
+            "email": "example@example.com",
+            "bankAccountNumber": "NL69 ABNA 0012 3456 78",
+            "fullName": "John Doe"
         },
         "nickname": "Nickname",
         "email": "Email address",
@@ -34,7 +45,10 @@
                 "apiKeyChanged": "Successfully changed API key.",
                 "apiKeyDeleted": "Successfully deleted API key.",
                 "passwordUpdated": "Successfully updated password.",
-                "pinUpdated": "Successfully updated PIN."
+                "pinUpdated": "Successfully updated PIN.",
+                "finesNotified": "Successfully notified users.",
+                "finesHandedOut": "Successfully handed out fines.",
+                "payoutCreated": "Successfully created payout."
             },
             "canceled": "Canceled",
             "reject": {
