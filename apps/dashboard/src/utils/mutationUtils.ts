@@ -94,19 +94,19 @@ export function parseFinancialMutations(
 export function getDescription(mutation: FinancialMutation) {
   switch (mutation.type) {
     case FinancialMutationType.TRANSACTION: {
-      return t('components.mutations.payment');
+      return t('components.mutations.modal.payment');
     }
     case FinancialMutationType.DEPOSIT: {
-      return t('components.mutations.topUp');
+      return t('components.mutations.modal.topUp');
     }
     case FinancialMutationType.FINE: {
-      return t('components.mutations.fine');
+      return t('components.mutations.modal.fine');
     }
     case FinancialMutationType.WAIVED_FINE: {
-      return t('components.mutations.waivedFine');
+      return t('components.mutations.modal.waivedFine');
     }
     case FinancialMutationType.INVOICE: {
-      return t('components.mutations.invoice');
+      return t('components.mutations.modal.invoice');
     }
     default: {
       return t('components.mutations.modal.unknown');
