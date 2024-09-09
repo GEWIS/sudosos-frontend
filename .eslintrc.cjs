@@ -19,9 +19,10 @@ module.exports = {
         'object-curly-spacing': ['error', 'always'],
         'vue/component-api-style': ['error', ['script-setup', 'composition']],
         'vue/block-lang': ['error', { 'script': { 'lang': 'ts' } }],
+        "vue/mustache-interpolation-spacing": ["error", "always"],
         '@intlify/vue-i18n/no-raw-text': 'error',
         '@intlify/vue-i18n/no-missing-keys': 'error',
-        '@intlify/vue-i18n/no-missing-keys-in-other-locales': ['error', ],
+        '@intlify/vue-i18n/no-missing-keys-in-other-locales': ['error'],
         '@intlify/vue-i18n/no-unused-keys': ['warn', { 'enableFix': false, 'extensions': ['.js', '.vue', '.ts'] }],
         '@intlify/vue-i18n/no-duplicate-keys-in-locale': 'error'
     },

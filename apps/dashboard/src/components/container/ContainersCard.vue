@@ -6,7 +6,7 @@
             v-if="associatedPos"
             @click="openContainerAdd()"
             outlined>{{ t('modules.seller.productContainers.containers.addExisting') }}</Button>
-        <Button @click="openContainerEdit()">{{t('common.create')}}</Button>
+        <Button @click="openContainerEdit()">{{ t('common.create') }}</Button>
       </div>
     </template>
     <Accordion :activeIndex="0" class="block w-full" :multiple="true"

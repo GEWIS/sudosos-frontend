@@ -22,7 +22,7 @@
         </div>
         <Divider />
         <div class="py-2">
-            {{t('common.name')}} <br>
+            {{ t('common.name') }} <br>
             <InputText v-model="name" /> <br>
             <span class="font-bold text-red-500">{{ errors['Name'] }}</span>
         </div>
@@ -36,7 +36,7 @@
         <div class="py-2">
             {{ t('modules.admin.forms.banner.timespan') }}<br>
             <Calendar v-model="startDate" showTime hourFormat="24" />
-            {{ t('modules.admin.banners.till' )}}
+            {{ t('modules.admin.banners.till' ) }}
             <Calendar v-model="endDate" showTime hourFormat="24" class="pt-1 md:pt-0" /><br>
             <span class="font-bold text-red-500">{{ errors['Start date'] }}</span><br>
             <span class="font-bold text-red-500">{{ errors['End date'] }}</span>

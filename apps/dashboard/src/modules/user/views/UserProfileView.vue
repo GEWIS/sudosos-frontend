@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
     <div class="page-title">
-      {{ t('modules.user.profile.title')}}
+      {{ t('modules.user.profile.title') }}
     </div>
     <div class="flex md:flex-row flex-column-reverse justify-content-between gap-4">
       <UserSettingsComponent :user="current.user as UserResponse"/>

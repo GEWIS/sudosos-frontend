@@ -32,7 +32,7 @@
                 <Skeleton class="w-6 my-1 h-1rem surface-300" />
             </template>
             <template #body="mutation" v-else>
-                {{ mutation.data.from?.firstName + " " + mutation.data.from?.lastName}}
+                {{ mutation.data.from?.firstName + " " + mutation.data.from?.lastName }}
             </template>
         </Column>
 

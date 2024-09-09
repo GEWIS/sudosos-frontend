@@ -1,5 +1,5 @@
 <template>
-    <span class="tosLink" @click="visible = true">{{ t('components.footer.termsOfService')}}</span>
+    <span class="tosLink" @click="visible = true">{{ t('components.footer.termsOfService') }}</span>
     <Dialog
         modal
         v-model:visible="visible"

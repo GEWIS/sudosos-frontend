@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <div class="page-title">{{ t('modules.seller.productContainers.title')}}</div>
+    <div class="page-title">{{ t('modules.seller.productContainers.title') }}</div>
     <div class="flex flex-column gap-5">
       <ContainersCard
           v-if="containers"

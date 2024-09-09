@@ -42,8 +42,8 @@
         </tbody>
       </table>
       <div class="flex flex-column">
-        <span>{{ t('common.createdAt') + ': '}}{{ formatDateFromString(payout.createdAt) }}</span>
-        <span>{{ t('common.updatedAt') + ': '}}{{ formatDateFromString(payout.updatedAt) }}</span>
+        <span>{{ t('common.createdAt') + ': ' }}{{ formatDateFromString(payout.createdAt) }}</span>
+        <span>{{ t('common.updatedAt') + ': ' }}{{ formatDateFromString(payout.updatedAt) }}</span>
         <span>{{ t('common.id') + ': ' }}{{ payout.id }}</span>
       </div>
     </div>

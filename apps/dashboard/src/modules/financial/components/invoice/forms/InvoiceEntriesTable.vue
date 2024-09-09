@@ -33,10 +33,10 @@
     <Column field="vatPercentage" :header="t('common.vat')" class="p-1">
       <template #body="entry">
         <span v-if="entry.index < totalRowCutoff">
-          {{ entry.data.vatPercentage +  '%'}}
+          {{ entry.data.vatPercentage +  '%' }}
         </span>
         <span v-else class="font-bold">
-          {{entry.data.description}}
+          {{ entry.data.description }}
         </span>
       </template>
     </Column>
