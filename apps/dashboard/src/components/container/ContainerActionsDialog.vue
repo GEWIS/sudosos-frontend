@@ -137,7 +137,7 @@ const confirm = useConfirm();
 async function deleteProduct() {
   if(props.container == undefined) return;
   confirm.require({
-    message: t('c_containerEditModal.confirmDelete'),
+    message: t('modules.seller.productContainers.products.confirmDelete'),
     acceptLabel: t('common.delete'),
     rejectLabel: t('common.close'),
     acceptIcon: 'pi pi-trash',

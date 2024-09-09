@@ -50,8 +50,7 @@
             "pos": "GELIMBO"
         },
         "tooltip": {
-            "productOwner": "Note: Container owner gets the revenue, not the product owner. Owner cannot be edited after creation.",
-            "ownerRevenue": "Note: Container owner gets the revenue, not the product owner. Owner cannot be edited after creation."
+            "productOwner": "Note: Container owner gets the revenue, not the product owner. Owner cannot be edited after creation."
         },
         "nickname": "Nickname",
         "email": "Email address",
@@ -78,6 +77,7 @@
                 "pointOfSaleCreated": "Successfully created POS.",
                 "containerUpdated": "Successfully updated container.",
                 "containerCreated": "Successfully created container.",
+                "containerDeleted": "Successfully deleted container.",
                 "fineDeleted": "Successfully deleted fine.",
                 "transactionDeleted": "Successfully deleted transaction.",
                 "productCreated": "Successfully created product.",

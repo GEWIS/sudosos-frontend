@@ -38,6 +38,7 @@
           "createProduct": "Product aanmaken",
           "productDetails": "Productdetails",
           "productContainerDelete": "Product uit container verwijderen",
+          "confirmDelete": "Weet je zeker dat je dit product wilt verwijderen?",
           "confirmProductContainerDelete": "Weet je zeker dat je dit product uit deze container wilt verwijderen?"
         }
       },

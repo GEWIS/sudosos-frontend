@@ -38,7 +38,8 @@
           "createProduct": "Create product",
           "productDetails": "Product details",
           "productContainerDelete": "Delete product from container",
-          "confirmProductContainerDelete": "Are you sure you want to delete this product from this container?"
+          "confirmProductContainerDelete": "Are you sure you want to delete this product from this container?",
+          "confirmDelete": "Are you sure you want to delete this product?"
         }
       },
       "forms": {

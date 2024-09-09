@@ -50,8 +50,7 @@
             "pos": "GELIMBO"
         },
         "tooltip": {
-            "productOwner": "Opmerking: De eigenaar van de container krijgt de opbrengst, niet de producteigenaar. Eigenaar kan na aanmaak niet meer worden bewerkt.",
-            "ownerRevenue": "Opmerking: De eigenaar van de container krijgt de opbrengst, niet de producteigenaar. Eigenaar kan na aanmaak niet meer worden bewerkt."
+            "productOwner": "Opmerking: De eigenaar van de container krijgt de opbrengst, niet de producteigenaar. Eigenaar kan na aanmaak niet meer worden bewerkt."
         },
         "nickname": "Bijnaam",
         "email": "E-mailadres",
@@ -78,6 +77,7 @@
                 "pointOfSaleCreated": "POS succesvol aangemaakt.",
                 "containerUpdated": "Container succesvol bijgewerkt.",
                 "containerCreated": "Container succesvol aangemaakt.",
+                "containerDeleted": "Container succesvol verwijderd.",
                 "fineDeleted": "Boete succesvol verwijderd.",
                 "transactionDeleted": "Transactie succesvol verwijderd.",
                 "productCreated": "Product succesvol aangemaakt.",
