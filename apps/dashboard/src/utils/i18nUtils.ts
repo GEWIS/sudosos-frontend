@@ -7,6 +7,7 @@ import user_en from "../locales/en/modules/user.json";
 import seller_en from "../locales/en/modules/seller.json";
 import financial_en from "../locales/en/modules/financial.json";
 import footer_en from "../locales/en/components/footer.json";
+import general_en from "../locales/en/components/general.json";
 
 import admin_nl from "../locales/nl/modules/admin.json";
 import common_nl from "../locales/nl/common/common.json";
@@ -16,6 +17,7 @@ import user_nl from "../locales/nl/modules/user.json";
 import seller_nl from "../locales/nl/modules/seller.json";
 import financial_nl from "../locales/nl/modules/financial.json";
 import footer_nl from "../locales/nl/components/footer.json";
+import general_nl from "../locales/nl/components/general.json";
 
 import { setLocale } from "yup";
 
@@ -28,6 +30,7 @@ const i18n = createI18n({
         en: {
             ...common_en,
             components: {
+                ...general_en.components,
                 ...mutations_en.components,
                 ...footer_en.components,
             },
@@ -42,6 +45,7 @@ const i18n = createI18n({
         nl: {
             ...common_nl,
             components: {
+                ...general_nl.components,
                 ...mutations_nl.components,
                 ...footer_nl.components,
             },
