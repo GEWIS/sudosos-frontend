@@ -6,48 +6,21 @@
         timeStyle: 'short'
       }) }}
     </span>
-    <Translation
-      v-if="
-        transactionInfo.from.id == userStore.current.user!!.id
-      "
-      keypath="components.mutations.userBoughtAt" tag="div">
-      <template v-slot:pos>
-        <span class="font-bold">{{ transactionInfo.pointOfSale.name }}</span>
-      </template>
-    </Translation>
-
-    <Translation
-      v-if="
-        transactionInfo.from.id != userStore.current.user!!.id
-      "
-      keypath="components.mutations.otherBoughtAt" tag="div">
-      <template v-slot:user>
-        <span
-          class="font-bold">
-          {{ transactionInfo.from.firstName }}
-          {{ transactionInfo.from.lastName }}
-        </span>
-
-      </template>
-      <template v-slot:pos>
-        <span class="font-bold">{{ transactionInfo.pointOfSale.name }}</span>
-      </template>
-    </Translation>
-
-    <Translation
-      v-if="
+    <span v-if="transactionInfo.from.id == userStore.current.user!!.id">
+      {{ t('components.mutations.userBoughtAt', {pos: transactionInfo.pointOfSale.name}) }}
+    </span>
+    <span v-if="transactionInfo.from.id != userStore.current.user!!.id">
+      {{ t('components.mutations.otherBoughtAt',
+        {user: `${transactionInfo.from.firstName} ${transactionInfo.from.lastName}`,
+          pos: transactionInfo.pointOfSale.name}) }}
+    </span>
+    <span v-if="
         transactionInfo.createdBy
         && transactionInfo.createdBy.id != transactionInfo.from.id
-      "
-      keypath="components.mutations.putInBy" tag="div">
-
-      <template v-slot:createdBy>
-        <span class="font-bold">
-          {{ transactionInfo.createdBy.firstName }}
-          {{ transactionInfo.createdBy.lastName }}
-        </span>
-      </template>
-    </Translation>
+      ">
+      {{ t('components.mutations.putInBy',
+        {createdBy: `${transactionInfo.createdBy.firstName} ${transactionInfo.createdBy.lastName}`}) }}
+    </span>
 
     <br>
     <DataTable
@@ -89,7 +62,7 @@ import { formatPrice } from "@/utils/formatterUtils";
 import type { SubTransactionRowResponse } from "@sudosos/sudosos-client/src/api";
 import type { TransactionResponse } from "@sudosos/sudosos-client";
 import { useUserStore } from '@sudosos/sudosos-frontend-common';
-import { Translation, useI18n } from "vue-i18n";
+import { useI18n } from "vue-i18n";
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
