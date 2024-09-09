@@ -56,7 +56,6 @@
         "nickname": "Nickname",
         "email": "Email address",
         "usertype": "Usertype",
-        "canGoIntoDebt": "User can go into debt",
         "toast": {
             "success": {
                 "success": "Success",

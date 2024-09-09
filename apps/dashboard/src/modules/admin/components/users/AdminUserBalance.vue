@@ -10,7 +10,9 @@
       </div>
       <h1 v-else class="text-center font-medium text-6xl">{{ displayBalance }}</h1>
       <p class="text-center text-base font-semibold text-red-500" v-if="userBalance && userBalance.fine">
-        {{ isAllFine ? t('modules.admin.singleUser.balance.allIsFines') : t('modules.admin.singleUser.balance.someIsFines', { fine: displayFine }) }}
+        {{ isAllFine ?
+          t('modules.admin.singleUser.balance.allIsFines')
+          : t('modules.admin.singleUser.balance.someIsFines', { fine: displayFine }) }}
       </p>
     </div>
     <ConfirmDialog />
@@ -24,9 +26,9 @@ import type { BalanceResponse, UserResponse } from '@sudosos/sudosos-client';
 import apiService from '@/services/ApiService';
 import { formatPrice } from "@/utils/formatterUtils";
 import ConfirmDialog from "primevue/confirmdialog";
-import {useConfirm} from "primevue/useconfirm";
-import {useI18n} from "vue-i18n";
-import {useToast} from "primevue/usetoast";
+import { useConfirm } from "primevue/useconfirm";
+import { useI18n } from "vue-i18n";
+import { useToast } from "primevue/usetoast";
 
 const props = defineProps<{
     user: UserResponse | undefined;
@@ -73,7 +75,7 @@ const waiveFines = () => {
     header: t('modules.admin.singleUser.balance.waiveFinesConfirmationTitle'),
     icon: 'pi pi-exclamation-triangle',
     accept: async () => {
-      await apiService.user.waiveUserFines(<number>props.user?.id).then(() => {
+      await apiService.user.waiveUserFines(props.user?.id as number).then(() => { // Use 'as number' instead of <number>
         toast.add({
           severity: 'success',
           summary: t('common.toast.success.success'),
@@ -92,7 +94,7 @@ const waiveFines = () => {
       });
     },
   });
-}
+};
 </script>
 
 <style scoped lang="scss">
