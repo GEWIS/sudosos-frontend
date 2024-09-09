@@ -1,6 +1,8 @@
 /* eslint-env node */
 require('@rushstack/eslint-patch/modern-module-resolution');
 
+const path = require('path');
+
 module.exports = {
     root: true,
     plugins: ['import'],
@@ -32,35 +34,14 @@ module.exports = {
             localeDir: [
                 // English locale configuration
                 {
-                    pattern: './src/locales/en/modules/**/*.json', // Match JSON files in the English 'modules' folder
-                    localeKey: 'path', // Use the path to detect locale
-                    localePattern: /^.*\/(?<locale>en)\/.*\.json$/ // Regex to capture 'en'
+                    pattern: './src/locales/en/**/*.json', // Match JSON files in the English 'modules' folder
+                    localePattern: "^.*\\\\(?<locale>en)\\\\.*\\.json$", // Regex to capture 'en' in the path
+                    localeKey: 'path'
                 },
                 {
-                    pattern: './src/locales/en/common/**/*.json', // Match JSON files in the English 'common' folder
-                    localeKey: 'path',
-                    localePattern: /^.*\/(?<locale>en)\/.*\.json$/
-                },
-                {
-                    pattern: './src/locales/en/components/**/*.json', // Match JSON files in the English 'components' folder
-                    localeKey: 'path',
-                    localePattern: /^.*\/(?<locale>en)\/.*\.json$/
-                },
-                // Dutch locale configuration
-                {
-                    pattern: './src/locales/nl/modules/**/*.json', // Match JSON files in the Dutch 'modules' folder
-                    localeKey: 'path',
-                    localePattern: /^.*\/(?<locale>nl)\/.*\.json$/ // Regex to capture 'nl'
-                },
-                {
-                    pattern: './src/locales/nl/common/**/*.json', // Match JSON files in the Dutch 'common' folder
-                    localeKey: 'path',
-                    localePattern: /^.*\/(?<locale>nl)\/.*\.json$/
-                },
-                {
-                    pattern: './src/locales/nl/components/**/*.json', // Match JSON files in the Dutch 'components' folder
-                    localeKey: 'path',
-                    localePattern: /^.*\/(?<locale>nl)\/.*\.json$/
+                    pattern: './src/locales/nl/**/*.json', // Match JSON files in the English 'modules' folder
+                    localePattern: "^.*\\\\(?<locale>nl)\\\\.*\\.json$", // Regex to capture 'en' in the path
+                    localeKey: 'path'
                 },
             ],
             messageSyntaxVersion: '^9.2.2'
