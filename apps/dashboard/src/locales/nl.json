@@ -288,8 +288,7 @@
     "dataAnalysisChanged": "Extensieve dataverwerking is succesvol gewijzigd.",
     "apiKeyChanged": "API-sleutel is succesvol gewijzigd.",
     "apiKeyDeleted": "API-sleutel is succesvol verwijderd.",
-    "passwordUpdated": "Wachtwoord is succesvol gewijzigd."
-    "userUpdated": "Gebruiker is succesvol geüpdatet.",
+    "passwordUpdated": "Wachtwoord is succesvol gewijzigd.",
     "containerDeleteRejected": "Geannuleerd container verwijderen."
   },
   "termsOfService": {
