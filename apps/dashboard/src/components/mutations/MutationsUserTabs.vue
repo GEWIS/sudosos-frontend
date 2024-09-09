@@ -1,13 +1,13 @@
 <template>
         <TabView class="w-full">
-            <TabPanel :header="t('components.mutations.created')">
+            <TabPanel :header="t('components.mutations.balance')">
                     <MutationsBalance
                         :paginator="paginator"
                         :getMutations="props.getBalanceMutations"
                         :simple="true"
                     />
             </TabPanel>
-            <TabPanel :header="t('')">
+            <TabPanel :header="t('components.mutations.created')">
                     <MutationsSeller
                         :paginator="paginator"
                         :getMutations="props.getSellerMutations"

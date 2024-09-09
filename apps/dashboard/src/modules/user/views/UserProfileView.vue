@@ -40,23 +40,6 @@ onMounted(async () => {
   gewisUser.value = await userStore.fetchGewisUser(userStore.current.user.id, apiService);
   dataAnalysis.value = userStore.getUserById(userStore.current.user.id)?.extensiveDataProcessing || false;
 });
-
-function handleChange(value: boolean) {
-  if (!authStore.user){
-    router.replace({ path: "/error" });
-    return;
-  }
-  apiService.user.updateUser(authStore.user?.id, { extensiveDataProcessing: value }).then(() => {
-    toast.add({
-      severity: 'success',
-      summary: t('common.toast.success.success'),
-      detail: t('common.toast.success.userUpdated'),
-      life: 3000
-    });
-  }).catch((error) => {
-    handleError(error, toast);
-  });
-}
 </script>
 <style scoped lang="scss">
 </style>
