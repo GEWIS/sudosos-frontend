@@ -56,7 +56,6 @@
         "nickname": "Bijnaam",
         "email": "E-mailadres",
         "usertype": "Gebruikerstype",
-        "canGoIntoDebt": "Gebruiker kan schulden maken",
         "toast": {
             "success": {
                 "success": "Succes",
@@ -88,8 +87,7 @@
             },
             "canceled": "Geannuleerd",
             "reject": {
-                "waiveFinesRejected": "Kwijtschelding van boetes geannuleerd.",
-                "userUpdateRejected": "Bijwerken van gebruiker geannuleerd."
+                "waiveFinesRejected": "Kwijtschelding van boetes geannuleerd."
             }
         },
         "navigation": {
@@ -103,10 +101,8 @@
             "english": "Engels",
             "userOverview": "Gebruikersoverzicht",
             "banners": "Banners",
-            "user": "Gebruiker",
             "socialDrinkCards": "Sociale drinkkaarten",
             "invoices": "Facturen",
-            "fines": "Boetes",
             "payouts": "Uitbetalingen",
             "manageProducts": "Producten beheren",
             "posOverview": "POS overzicht",

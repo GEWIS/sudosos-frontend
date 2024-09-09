@@ -2,7 +2,7 @@
   <CardComponent
       :header="t('modules.admin.singleUser.balance.header')"
       :func="userBalance?.fine ? waiveFines : undefined"
-      :action="userBalance?.fine ? t('modules.admin.balance.waiveFines') : undefined"
+      :action="userBalance?.fine ? t('modules.admin.singleUser.balance.waiveFines') : undefined"
   >
     <div class="flex flex-column justify-content-center">
       <div v-if="isLoading">

@@ -39,13 +39,11 @@
           "headerCreate": "Create banner",
           "headerEdit": "Edit banner",
           "duration": "Duration",
-          "timespan": "Timespan",
-          "active": "Active"
+          "timespan": "Timespan"
         },
         "user": {
           "header": "Create user",
           "ofAge": "User is of age",
-          "active": "User is active",
           "canGoIntoDebt": "User can go into debt"
         }
       }

@@ -39,13 +39,11 @@
           "headerCreate": "Banner aanmaken",
           "headerEdit": "Banner bewerken",
           "duration": "Duur",
-          "timespan": "Tijdsbestek",
-          "active": "Actief"
+          "timespan": "Tijdsbestek"
         },
         "user": {
           "header": "Gebruiker aanmaken",
           "ofAge": "Gebruiker is meerderjarig",
-          "active": "Gebruiker is actief",
           "canGoIntoDebt": "Gebruiker kan schulden maken"
         }
       }

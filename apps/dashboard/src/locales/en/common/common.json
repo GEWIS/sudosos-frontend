@@ -87,8 +87,7 @@
             },
             "canceled": "Canceled",
             "reject": {
-                "waiveFinesRejected": "Canceled waiving fines.",
-                "userUpdateRejected": "Canceled updating user."
+                "waiveFinesRejected": "Canceled waiving fines."
             }
         },
         "navigation": {
@@ -102,10 +101,8 @@
             "english": "English",
             "userOverview": "User overview",
             "banners": "Banners",
-            "user": "User",
             "socialDrinkCards": "Social drink cards",
             "invoices": "Invoices",
-            "fines": "Fines",
             "payouts": "Payouts",
             "manageProducts": "Manage products",
             "posOverview": "POS overview",
