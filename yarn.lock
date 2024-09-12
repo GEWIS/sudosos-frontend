@@ -706,13 +706,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sudosos/sudosos-client@github:GEWIS/sudosos-client#6e4a91e1a636691ebcc0b9771acdc8524e181dc6":
+  version: 1.1.2
+  resolution: "@sudosos/sudosos-client@https://github.com/GEWIS/sudosos-client.git#commit=6e4a91e1a636691ebcc0b9771acdc8524e181dc6"
+  dependencies:
+    axios: "npm:^1.6.3"
+    swagger-axios-codegen: "npm:^0.16.4"
+  checksum: 10c0/c120015255476b9ca1ad037c9197a18c06d9e17ec3bbbde7e79268a8e5af595531182a058261a778c5e9b66723f209becd060dd1fff0513e3c15b2173c2a8f9c
+  languageName: node
+  linkType: hard
+
 "@sudosos/sudosos-frontend-common@workspace:^, @sudosos/sudosos-frontend-common@workspace:lib/common":
   version: 0.0.0-use.local
   resolution: "@sudosos/sudosos-frontend-common@workspace:lib/common"
   dependencies:
     "@babel/types": "npm:^7.23.6"
     "@rushstack/eslint-patch": "npm:^1.10.2"
-    "@sudosos/sudosos-client": "github:GEWIS/sudosos-client#3bf2ffe021b10165d0ba54285bb9bd1c4401d5bd"
+    "@sudosos/sudosos-client": "github:GEWIS/sudosos-client#6e4a91e1a636691ebcc0b9771acdc8524e181dc6"
     "@vitejs/plugin-vue": "npm:^5.0.4"
     "@vue/eslint-config-prettier": "npm:^9.0.0"
     "@vue/eslint-config-typescript": "npm:^13.0.0"
@@ -5578,7 +5588,7 @@ __metadata:
     "@intlify/eslint-plugin-vue-i18n": "npm:^2.0.0"
     "@rushstack/eslint-patch": "npm:^1.2.0"
     "@stripe/stripe-js": "npm:^4.4.0"
-    "@sudosos/sudosos-client": "github:GEWIS/sudosos-client#3bf2ffe021b10165d0ba54285bb9bd1c4401d5bd"
+    "@sudosos/sudosos-client": "github:GEWIS/sudosos-client#6e4a91e1a636691ebcc0b9771acdc8524e181dc6"
     "@sudosos/sudosos-frontend-common": "workspace:^"
     "@tsconfig/node18": "npm:^18.2.2"
     "@types/dinero.js": "npm:^1.9.4"

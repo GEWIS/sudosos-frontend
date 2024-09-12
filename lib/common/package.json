@@ -39,7 +39,7 @@
   "homepage": "https://gitlab.com/sudosos/sudosos-frontend-common#readme",
   "dependencies": {
     "@babel/types": "^7.23.6",
-    "@sudosos/sudosos-client": "github:GEWIS/sudosos-client#3bf2ffe021b10165d0ba54285bb9bd1c4401d5bd",
+    "@sudosos/sudosos-client": "github:GEWIS/sudosos-client#dfd2408e58d4ce4a8cca83aab90ffffdf85cef75",
     "axios": "^1.6.8",
     "jwt-decode": "^4.0.0",
     "pinia": "^2.1.7",
