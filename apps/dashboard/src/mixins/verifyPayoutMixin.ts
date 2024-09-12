@@ -8,6 +8,7 @@ export const verifyPayoutMixin = {
   setup() {
     const verifying = ref<boolean>(false);
     const verifySuccess = ref<boolean | null>(null);
+    const verifyAmount = ref<number | null>(null);
     const toast = useToast();
     const { t } = useI18n();
 
@@ -29,22 +30,22 @@ export const verifyPayoutMixin = {
           endDate.toISOString()
         );
 
+        verifyAmount.value = result.data.totalInclVat.amount;
         if (result.data.totalInclVat.amount === payout.amount.amount) {
           verifySuccess.value = true;
           toast.add({
             severity: 'success',
-            summary: 'Verification Success',
-            detail: 'Payout is verified.',
+            summary: t('common.toast.success.payout.verify'),
+            detail: t('common.toast.success.payout.details'),
             life: 3000,
           });
         } else {
           verifySuccess.value = false;
           toast.add({
             severity: 'error',
-            summary: 'Verification Failed',
-            detail: `Payout amount does not match the amount of purchases. ${formatPrice(
-              result.data.totalInclVat
-            )} vs. ${formatPrice(payout.amount)}`,
+            summary: t('common.toast.failed.failed'),
+            detail: t('common.toast.failed.payout.details', { amount: formatPrice(payout.amount),
+              totalInclVat: formatPrice(result.data.totalInclVat) }),
             life: 3000,
           });
         }
@@ -52,8 +53,8 @@ export const verifyPayoutMixin = {
         verifySuccess.value = false;
         toast.add({
           severity: 'error',
-          summary: 'Verification Failed',
-          detail: 'Unable to verify the payout.',
+          summary: t('common.toast.failed.failed'),
+          detail: t('common.toast.failed.payout.unable'),
           life: 3000,
         });
       } finally {
@@ -91,6 +92,7 @@ export const verifyPayoutMixin = {
       verifyButtonIcon,
       verifyButtonSeverity,
       verifyButtonClass,
+      verifyAmount,
     };
   },
 };

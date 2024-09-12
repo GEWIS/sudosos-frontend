@@ -51,8 +51,6 @@ watch(() => props.submitting, () => {
   updateResult();
   if (props.submitting) {
     buttonIcon.value = 'pi pi-spin pi-spinner';
-  } else {
-    buttonIcon.value = 'pi pi-check';
   }
 });
 </script>

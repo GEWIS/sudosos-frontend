@@ -11,7 +11,7 @@
                :value="form.model.toDate.value.value"
                :attributes="form.model.toDate.attr.value"
                @update:value="updateDate('toDate', $event)"
-               :errors="form.context.errors.value.tillDate" :disabled="disabled"
+               :errors="form.context.errors.value.toDate" :disabled="disabled"
                id="name" placeholder="From date" type="date"/>
 
     <InputSpan :label="t('modules.seller.payouts.payout.description')"
@@ -45,18 +45,21 @@ import InputNumber from "primevue/inputnumber";
 import InputSpan from "@/components/InputSpan.vue";
 import { createSellerPayoutObject } from "@/utils/validation-schema";
 import { type Form, setSubmit, setSuccess } from "@/utils/formUtils";
-import { computed, type PropType, ref, watch } from "vue";
+import { computed, type PropType, type Ref, ref, watch } from "vue";
 import ApiService from "@/services/ApiService";
 import type { CreateSellerPayoutRequest, UserResponse } from "@sudosos/sudosos-client";
 import { useI18n } from "vue-i18n";
 import { useSellerPayoutStore } from "@/stores/seller-payout.store";
 import { handleError } from "@/utils/errorUtils";
+import { useToast } from "primevue/usetoast";
+import * as yup from "yup";
 
 const { t } = useI18n();
+const toast = useToast();
 
 const props = defineProps({
   form: {
-    type: Object as PropType<Form<createSellerPayoutObject>>,
+    type:  Object as PropType<Form<yup.InferType<typeof createSellerPayoutObject>>>,
     required: true,
   },
   seller: {
@@ -70,7 +73,7 @@ const props = defineProps({
   }
 });
 
-const payoutAmount = ref(null);
+const payoutAmount: Ref<number | null> = ref(null);
 const sellerPayoutStore = useSellerPayoutStore();
 
 const datesSelected = computed(() => {
@@ -84,12 +87,13 @@ watch(() => props.form.model.toDate.value.value, () => {
   payoutAmount.value = null;
 });
 
-const updateDate = (field: string, value: string) => {
+const updateDate = (field: "toDate" | "fromDate", value: string) => {
   props.form.context.setFieldValue(field, value);
   payoutAmount.value = null;
 };
 
 const calculatePayoutAmount = async () => {
+  if (!props.seller.id) return;
   const amount = await ApiService.user.getUsersSalesReport(props.seller.id, props.form.model.fromDate.value.value,
       props.form.model.toDate.value.value);
   if (amount.data.totalInclVat.amount) {

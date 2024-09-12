@@ -49,7 +49,7 @@ const emits = defineEmits(['update:value']);
 
 const getAction = computed(() => {
   if (isOrgan.value) {
-    return t('modules.seller.payouts.PayoutsTable.CreatePayout');
+    return t('modules.seller.payouts.payout.CreatePayout');
   }
   return t('modules.admin.singleUser.balance.waiveFinesConfirmationTitle');
 });

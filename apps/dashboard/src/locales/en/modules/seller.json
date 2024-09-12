@@ -86,7 +86,9 @@
           "deleted": "Payout deleted",
           "deleteError": "Error deleting payout",
           "CreatePayout": "Create payout",
-          "actions": "Actions"
+          "actions": "Actions",
+          "report": "Reported amount is",
+          "update": "Update payout"
         }
       }
     }

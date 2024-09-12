@@ -86,7 +86,9 @@
           "deleted": "Uitbetaling verwijderd",
           "deleteError": "Fout bij het verwijderen van uitbetaling",
           "CreatePayout": "Uitbetaling aanmaken",
-          "actions": "Acties"
+          "actions": "Acties",
+          "report": "Verslag bedrag is",
+          "update": "Uitbetaling bijwerken"
         }
       }
     }

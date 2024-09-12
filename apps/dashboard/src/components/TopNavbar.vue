@@ -123,7 +123,7 @@ const getOrgans = async () => {
   for (let organ of authStore.organs) {
     promises.push(apiService.balance.getBalanceId(organ.id).then((res) => {
       organs.value.push({
-        label: `{${organ.firstName} ${organ.lastName}`,
+        label: `${organ.firstName} ${organ.lastName}`,
         route: '/user/' + organ.id,
         notifications: res.data.amount.amount > 0 ? ' ' : '',
       });

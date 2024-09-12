@@ -15,6 +15,7 @@
         "id": "ID",
         "vat": "BTW",
         "loading": "Bezig met laden",
+        "failed": "Gefaald",
         "excl": "Excl. BTW",
         "incl": "Incl. BTW",
         "firstName": "Voornaam",
@@ -87,11 +88,25 @@
                 "productCreated": "Product succesvol aangemaakt.",
                 "productUpdated": "Product succesvol bijgewerkt.",
                 "productContainerDeleted": "Product succesvol verwijderd uit container.",
-                "productDeleted": "Product succesvol verwijderd."
+                "productDeleted": "Product succesvol verwijderd.",
+                "payoutDeleted": "Uitbetaling succesvol verwijderd.",
+                "payoutUpdated": "Uitbetaling succesvol bijgewerkt.",
+                "payout": {
+                    "verify": "Verificatie succesvol",
+                    "details": "Uitbetaling is geverifieerd."
+                }
             },
             "canceled": "Geannuleerd",
             "reject": {
                 "waiveFinesRejected": "Kwijtschelding van boetes geannuleerd."
+            },
+            "failed": {
+                "failed": "Mislukt",
+                "payout": {
+                    "verify": "Verificatie mislukt",
+                    "details": "Uitbetaling heeft een ongeldige bedrag. {amount} vs. {totalInclVat}",
+                    "unable": "Kan de uitbetaling niet verifiëren."
+                }
             }
         },
         "navigation": {
