@@ -2,7 +2,8 @@
   "modules": {
     "user": {
       "landing": {
-        "title": "Overzicht"
+        "title": "Overzicht",
+        "motd": "We hebben meldingen gekregen van opwaarderingen die niet correct behandeld worden. Meestal wordt dit bedrag teruggestort binnen 48 uur. Mocht dit bij jouw account gebeuren, zou het enorm helpen om een mail te sturen naar sudosos@gewis.nl. Helaas krijgen we hier geen meldingen van omdat dit een probleem is tussen onze payment provider en iDeal."
       },
       "profile": {
         "title": "Profiel",

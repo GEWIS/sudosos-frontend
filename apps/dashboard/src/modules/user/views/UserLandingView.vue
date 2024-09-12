@@ -2,6 +2,7 @@
   <div class="page-container flex flex-column">
     <div class="page-title">{{ t('modules.user.landing.title') }}</div>
     <div class="content-wrapper gap-5 flex md:flex-column flex-column">
+      <Message v-if="true" severity="warn" class="w-full">{{ t('modules.user.landing.motd') }}</Message>
       <UserInfo :user="gewisUser || authStore.user as GewisUserResponse" class="md:hidden"/>
       <BalanceWithTopupComponent />
       <MutationsBalanceCard
