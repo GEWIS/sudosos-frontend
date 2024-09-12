@@ -82,6 +82,7 @@
                 "payoutCreated": "Uitbetaling succesvol aangemaakt.",
                 "invoiceDeleted": "Factuur succesvol verwijderd.",
                 "invoiceUpdated": "Factuur succesvol bijgewerkt.",
+                "invoiceAmountUpdated": "Factuurbedrag succesvol bijgewerkt.",
                 "pointOfSaleDeleted": "POS succesvol verwijderd.",
                 "pointOfSaleUpdated": "POS succesvol bijgewerkt.",
                 "pointOfSaleCreated": "POS succesvol aangemaakt.",

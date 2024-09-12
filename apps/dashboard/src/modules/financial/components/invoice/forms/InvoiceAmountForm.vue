@@ -1,13 +1,12 @@
 <template>
   <div class="flex flex-column justify-content-between gap-2">
-    <InputSpan :label="t('c_invoiceInfo.Amount')"
+    <InputSpan :label="t('modules.financial.invoice.transfer')"
                :value="form.model.amount.value.value"
                :attributes="form.model.amount.attr.value"
                @update:value="form.context.setFieldValue('amount', $event)"
                :errors="form.context.errors.value.amount"
                id="name" placeholder="0" type="currency" :disabled="!edit"/>
-    The current total on the invoice is {{ formatPrice(entryTotal) }}
-<!--    {{ entryTotal }}-->
+    {{ t('modules.financial.invoice.total', { total: formatPrice(entryTotal) }) }}
   </div>
 </template>
 
@@ -65,8 +64,8 @@ setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
     } }).then(() => {
     toast.add({
       severity: 'success',
-      summary: t('successMessages.success'),
-      detail: t('c_invoiceInfo.AmountUpdated'),
+      summary: t('common.toast.success.success'),
+      detail: t('common.toast.success.invoiceAmountUpdated'),
       life: 3000,
     });
     emit('update:edit', false);

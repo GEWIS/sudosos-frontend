@@ -1,5 +1,5 @@
 <template>
-  <FormCard :header="t('c_invoiceInfo.Amount')" v-if="invoice" @cancel="form.context.resetForm"
+  <FormCard :header="t('modules.financial.invoice.transfer')" v-if="invoice" @cancel="form.context.resetForm"
             @update:modelValue="edit = $event" @save="formSubmit" :enableEdit="!deleted">
     <div class="flex flex-column justify-content-between gap-2">
       <InvoiceAmountForm :invoice="invoice" :form="form" :edit="edit" @update:edit="edit = $event"/>
@@ -39,7 +39,7 @@ const formSubmit = () => {
 };
 
 const updateFieldValues = (p: InvoiceResponse) => {
-  if (!p) return;
+  if (!p || !p.transfer) return;
   const values = {
     amount: p.transfer.amountInclVat.amount / 100,
   };
