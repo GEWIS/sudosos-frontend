@@ -77,8 +77,8 @@ const exclVat: Ref<DineroObject> = ref({ amount: 0, precision: 2, currency: 'EUR
 const totalEntries: Ref<DineroObject> = ref({ amount: 0, precision: 2, currency: 'EUR' });
 const vat: Ref<Record<number, DineroObject>> = ref({});
 const inclVat: Ref<DineroObject> = ref({ amount: 0, precision: 2, currency: 'EUR' });
-const totalRows: InvoiceEntryResponse[] = [];
-const allRows = ref([]);
+const totalRows: (InvoiceEntryResponse & { class?: any })[] = [];
+const allRows: Ref<(InvoiceEntryResponse & { class?: any })[]> = ref([]);
 const totalRowCutoff = ref(0);
 
 
@@ -142,7 +142,7 @@ onMounted(() => {
 
   if (props.invoice.transfer && isDirty(props.invoice)) {
     totalRows.push({
-      description: t('common.transfer'),
+      description: t('modules.financial.invoice.transfer'),
       amount: 1,
       vatPercentage: 0,
       class: { 'text-red-500': true },
