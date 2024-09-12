@@ -3,7 +3,7 @@
     "user": {
       "landing": {
         "title": "Overview",
-        "motd": "We have had reports of top ups not being processed. Usually your balance will be refunded within 48 hours. It would help us a lot if you could send a mail to sudosos@gewis.nl if this happens to you. Sadly we cannot detect these things as this happens between our payment processor and iDeal."
+        "motd": "We have had reports of top ups not being processed. Usually your top up will be refunded within 48 hours. You can prevent unnecessary fines and help us by filling in {link}. Sadly we cannot detect these things as this happens between our payment processor and iDeal."
       },
       "profile": {
         "title": "Profile",
