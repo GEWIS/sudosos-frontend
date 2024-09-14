@@ -43,13 +43,11 @@
       </div>
     </div>
   </div>
-  <BannerDialog v-model:visible="isEditDialogVisible" v-model:banner="banner" />
 </template>
 <script setup lang="ts">
 import Image from 'primevue/image';
 import Tag from 'primevue/tag';
 
-import BannerDialog from '@/modules/admin/components/banners/BannerDialog.vue';
 
 import type { BannerResponse } from '@sudosos/sudosos-client';
 import { computed, ref } from 'vue';
