@@ -6,7 +6,7 @@
                 <div class="flex flex-column md:flex-row align-items-center justify-content-between">
                     <SelectButton v-model="filters" :options="options" optionLabel="name" multiple />
                     <Button class="mt-2 md:mt-0" :label="t('common.create')" icon="pi pi-plus"
-                        @click="isCreateDialogVisible = true" />
+                        @click="showDialog = true" />
                 </div>
             </template>
             <template #list="slotProps">
@@ -17,22 +17,58 @@
             </template>
         </DataView>
     </CardComponent>
-    <BannerDialog v-model:visible="isCreateDialogVisible" />
+  <FormDialog
+      :form="form"
+      :header="t('modules.admin.forms.banner.headerCreate')"
+      v-model:modelValue="showDialog">
+    <template #form="slotProps">
+      <BannerImageForm
+          :image-src="imageSrc"
+          @upload="onImageUpload($event)"
+          :isEditable="true"
+          class="mb-3"
+      />
+      <Divider />
+      <BannerCreateForm
+          :form="slotProps.form"
+          v-model:isVisible="showDialog"
+          @submit:success="showDialog = false"
+      />
+    </template>
+  </FormDialog>
 </template>
 <script setup lang="ts">
 import DataView from "primevue/dataview";
 import SelectButton from "primevue/selectbutton";
-
+import FormDialog from "@/components/FormDialog.vue";
+import BannerCreateForm from "@/modules/admin/components/banners/forms/BannerCreateForm.vue";
 import type {
-    BannerResponse,
+  BannerRequest,
+  BannerResponse,
 } from "@sudosos/sudosos-client";
-import { computed, ref } from "vue";
+import {computed, type Ref, ref} from "vue";
 import { useI18n } from "vue-i18n";
-const { t } = useI18n();
-
+import Divider from "primevue/divider";
 import BannerItem from "@/modules/admin/components/banners/BannerItem.vue";
 import CardComponent from "@/components/CardComponent.vue";
-import BannerDialog from "@/modules/admin/components/banners/BannerDialog.vue";
+import {schemaToForm, setSubmit} from "@/utils/formUtils";
+import { createBannerSchema } from "@/utils/validation-schema";
+import BannerImageForm from "@/modules/admin/components/banners/forms/BannerImageForm.vue";
+import apiService from "@/services/ApiService";
+import {handleError} from "@/utils/errorUtils";
+import {useToast} from "primevue/usetoast";
+import {useBannersStore} from "@/stores/banner.store";
+const { t } = useI18n();
+const toast = useToast();
+const bannerImage: Ref<File | undefined> = ref();
+const imageSrc = ref<string>();
+const bannerStore = useBannersStore();
+
+function onImageUpload(image: File) {
+    bannerImage.value = image;
+    imageSrc.value = URL.createObjectURL(image);
+}
+
 
 const props = defineProps<{
     banners: BannerResponse[],
@@ -40,8 +76,8 @@ const props = defineProps<{
     take?: number | undefined
 }>();
 
-const isCreateDialogVisible = ref<boolean>();
-
+const showDialog = ref<boolean>();
+const form = schemaToForm(createBannerSchema);
 
 // Filtering the banners
 const filters = ref<FilterOption[]>();
@@ -83,4 +119,42 @@ const displayedBanners = computed(() => {
         .sort((a, b) => Date.parse(b.startDate) - Date.parse(a.startDate));
 });
 
+const closeDialog = () => {
+  form.context.resetForm({
+    values: {
+      name: '',
+      duration: 0,
+      active: false,
+      daterange: []
+    }
+  });
+
+  imageSrc.value = '';
+  bannerImage.value = undefined;
+  showDialog.value = false;
+};
+
+setSubmit(form, form.context.handleSubmit(async (values) => {
+  const createBannerRequest: BannerRequest = {
+    name: values.name,
+    duration: values.duration,
+    active: values.active,
+    startDate: values.daterange[0],
+    endDate: values.daterange[1]
+  };
+
+  const bannerResponse = await bannerStore.createBanner(createBannerRequest);
+  bannerImage.value && await bannerStore.updateBannerImage(bannerResponse.data.id, bannerImage.value)
+      .catch((err) => handleError(err, toast));
+  await bannerStore.fetchBanners().then(() => {
+    toast.add({
+      severity: 'success',
+      summary: t('common.toast.success.success'),
+      detail: t('common.toast.success.bannerCreated'),
+      life: 3000,
+    });
+
+    closeDialog();
+  });
+}));
 </script>

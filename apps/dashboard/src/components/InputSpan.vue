@@ -15,13 +15,17 @@
                 v-bind="attributes"
                 autoResize
                 :disabled="disabled"/>
-
       <CalendarString v-if="type === 'date'"
                 :placeholder="placeholder"
                 v-model="internalValue"
                 v-bind="attributes"
                 :disabled="disabled"/>
-
+      <CalendarRangeStrings v-if="type === 'daterange'"
+                           type="daterange"
+                           :placeholder="placeholder"
+                           v-model="internalValue"
+                           v-bind="attributes"
+                           :disabled="disabled"/>
       <InputNumber v-if="type === 'currency'"
                  mode="currency" currency="EUR" locale="nl-NL"
                  :min="0.0"
@@ -36,6 +40,10 @@
                    v-model="internalValue as number"
                    :disabled="disabled"
                    suffix="%"/>
+      <InputNumber v-if="type === 'number'"
+                   :placeholder="placeholder"
+                   v-model="internalValue as number"
+                   :disabled="disabled"/>
       <InputSwitch v-if="type === 'boolean'"
                    v-model="internalValue as boolean"
                    :disabled="disabled"/>
@@ -46,7 +54,6 @@
                 v-model="internalValue as number"
                 :placeholder="placeholder"
                 :disabled="disabled"/>
-
       <InputText v-if="type === 'pin'"
                  class="w-3"
                  size="small"
@@ -80,6 +87,7 @@ import CalendarString from "@/components/CalendarString.vue";
 import type { HintedString } from "primevue/ts-helpers";
 import InputNumber from "primevue/inputnumber";
 import { userTypes } from "@/utils/validation-schema";
+import CalendarRangeStrings from "@/components/CalendarRangeStrings.vue";
 
 const props = defineProps({
   label: {

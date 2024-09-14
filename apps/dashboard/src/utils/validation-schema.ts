@@ -23,6 +23,14 @@ export const createUserSchema =
         canGoIntoDebt: yup.boolean().required().default(false),
     });
 
+export const createBannerSchema =
+    yup.object({
+        name: yup.string().required(),
+        duration: yup.number().required().moreThan(0).default(30),
+        daterange: yup.mixed<Array<string>>().required(),
+        active: yup.boolean().required().default(false),
+    });
+
 export const simpleUserDetailsSchema =
   yup.object({
           firstName: yup.string().required(),
