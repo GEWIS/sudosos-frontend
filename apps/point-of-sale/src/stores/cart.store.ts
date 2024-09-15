@@ -29,6 +29,7 @@ export const useCartStore = defineStore('cart', {
   state: (): CartState => ({
     products: [] as CartProduct[],
     buyer: null,
+    buyerBalance: null,
     createdBy: null,
     lockedIn: null,
   }),
