@@ -17,6 +17,7 @@ import Dropdown from "primevue/dropdown";
 import router from './router';
 import App from './App.vue';
 import { useSettingStore } from "@/stores/settings.store";
+import Message from "primevue/message";
 
 const app = createApp(App);
 
@@ -33,6 +34,8 @@ app.component('Panel', Panel);
 app.component('OverlayPanel', OverlayPanel);
 // eslint-disable-next-line
 app.component('Dropdown', Dropdown);
+// eslint-disable-next-line
+app.component('Message', Message);
 
 app.use(createPinia());
 app.mount('#app');

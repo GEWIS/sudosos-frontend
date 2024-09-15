@@ -4,7 +4,7 @@ import { usePointOfSaleStore } from "@/stores/pos.store";
 
 export const useSettingStore = defineStore('setting', {
   state: () => ({
-    alcoholTimeToday: Date.now()+24*60*60*1000,
+    alcoholTimeToday: Date.now()+24*60*60*1000, // Should always be recalculated
   }),
   getters: {
     isAuthenticatedPos(): boolean {
@@ -24,11 +24,14 @@ export const useSettingStore = defineStore('setting', {
     showAddToCartAnimation(): boolean {
       return this.isAuthenticatedPos;
     },
+    isAlcoholTime(): boolean {
+      return Date.now() >= this.alcoholTimeToday;
+    },
     getTargetCategory(): string {
       if (this.isBorrelmode) {
         return 'alcoholic';
       } else {
-        return Date.now() >= this.alcoholTimeToday ? 'alcoholic' : 'non-alcoholic';
+        return this.isAlcoholTime ? 'alcoholic' : 'non-alcoholic';
       }
     }
   },
@@ -44,6 +47,7 @@ export const useSettingStore = defineStore('setting', {
       const date = new Date().toISOString().split('T')[0];
       const alcTimeRes = await fetch('https://infoscherm.gewis.nl/backoffice/api.php?query=alcoholtijd');
 
+      // Default alcohol time is 16:30
       let alcTime = "16:30";
 
       if(alcTimeRes.ok) {
