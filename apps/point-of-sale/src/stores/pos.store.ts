@@ -4,7 +4,7 @@ import {
   PaginatedBaseTransactionResponse, PointOfSaleAssociateUsersResponse,
   PointOfSaleResponse,
   PointOfSaleWithContainersResponse,
-  ProductResponse, UserResponse
+  ProductResponse,
 } from '@sudosos/sudosos-client';
 import apiService from '@/services/ApiService';
 import { fetchAllPages } from "@sudosos/sudosos-frontend-common";
