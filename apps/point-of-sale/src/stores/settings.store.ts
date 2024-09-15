@@ -54,9 +54,12 @@ export const useSettingStore = defineStore('setting', {
           alcTime = alcTimeResText;
         }
       }
-      console.log(`${date}T${alcTime}:00.000-0${new Date().getTimezoneOffset()/-60}:00`);
-      this.alcoholTimeToday = Date.parse(`${date}T${alcTime}:00.000+0${new Date().getTimezoneOffset()/-60}:00`);
-      console.log(new Date(this.alcoholTimeToday));
+
+      // This code only works for timezones that are whole hours apart from UTC.
+      // Do not deploy SudoSOS POS in some parts of India, Australia and other countries.
+      const timezoneOffset = new Date().getTimezoneOffset()*60*1000;
+      this.alcoholTimeToday = Date.parse(`${date}T${alcTime}:00.000Z`)+timezoneOffset;
+      console.log(this.alcoholTimeToday);
       return this.alcoholTimeToday;
     }
   },
