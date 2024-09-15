@@ -4,6 +4,7 @@ import { usePointOfSaleStore } from "@/stores/pos.store";
 
 export const useSettingStore = defineStore('setting', {
   state: () => ({
+    alcoholTimeToday: Date.now()+24*60*60*1000,
   }),
   getters: {
     isAuthenticatedPos(): boolean {
@@ -27,11 +28,36 @@ export const useSettingStore = defineStore('setting', {
       if (this.isBorrelmode) {
         return 'alcoholic';
       } else {
-        const now = new Date();
-        return now.getHours() >= 16 ? 'alcoholic' : 'non-alcoholic';
+        return Date.now() >= this.alcoholTimeToday ? 'alcoholic' : 'non-alcoholic';
       }
     }
   },
   actions: {
+    /**
+     * Fetches the time of the current that the alcohol time will start.
+     * e.g. on 2024-09-12 this will be 2024-09-12T16:30:00.000Z.
+     * Assumes you are on the GEWIS network, because sudopos.gewis.nl is only accessible from the GEWIS network.
+     *
+     * This needs to be properly implemented with Aurora when this is done.
+     */
+    async fetchAlcoholTimeToday(): Promise<number> {
+      const date = new Date().toISOString().split('T')[0];
+      const alcTimeRes = await fetch('https://infoscherm.gewis.nl/backoffice/api.php?query=alcoholtijd');
+
+      let alcTime = "16:30";
+
+      if(alcTimeRes.ok) {
+        const alcTimeResText = await alcTimeRes.text();
+
+        // If time matches XX:XX regex
+        if(alcTimeResText.match(/^[0-2]?[0-9]:[0-6][0-9]$/)) {
+          alcTime = alcTimeResText;
+        }
+      }
+      console.log(`${date}T${alcTime}:00.000-0${new Date().getTimezoneOffset()/-60}:00`);
+      this.alcoholTimeToday = Date.parse(`${date}T${alcTime}:00.000+0${new Date().getTimezoneOffset()/-60}:00`);
+      console.log(new Date(this.alcoholTimeToday));
+      return this.alcoholTimeToday;
+    }
   },
 });

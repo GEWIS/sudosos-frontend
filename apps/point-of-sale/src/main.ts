@@ -16,6 +16,7 @@ import Dropdown from "primevue/dropdown";
 
 import router from './router';
 import App from './App.vue';
+import { useSettingStore } from "@/stores/settings.store";
 
 const app = createApp(App);
 
@@ -35,3 +36,6 @@ app.component('Dropdown', Dropdown);
 
 app.use(createPinia());
 app.mount('#app');
+useSettingStore().fetchAlcoholTimeToday();
+
+
