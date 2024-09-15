@@ -148,13 +148,6 @@ watch(shouldShowTransactions, () => {
 
 watch(
   () => cartStore.buyer,
-  async () => {
-    balance.value = await getBalance();
-  }
-);
-
-watch(
-  () => cartStore.buyer,
   () => {
     if (shouldShowTransactions.value) getUserRecentTransactions();
   }
