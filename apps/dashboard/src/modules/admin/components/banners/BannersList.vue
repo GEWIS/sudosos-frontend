@@ -59,12 +59,12 @@ import BannerImageForm from "@/modules/admin/components/banners/forms/BannerImag
 import { handleError } from "@/utils/errorUtils";
 import { useToast } from "primevue/usetoast";
 import { useBannersStore } from "@/stores/banner.store";
+import {getBannerImageSrc} from "@/utils/urlUtils";
 const { t } = useI18n();
 const toast = useToast();
 const bannerImage: Ref<File | undefined> = ref();
 const imageSrc = ref<string>();
 const bannerStore = useBannersStore();
-const selectedBanner = ref<BannerResponse | undefined>(undefined);
 
 function onImageUpload(image: File) {
     bannerImage.value = image;
@@ -122,10 +122,13 @@ const displayedBanners = computed(() => {
 });
 
 const openDialog = (banner? : BannerResponse) => {
-  if (banner) updateFieldValues(banner);
+  if (banner) {
+    updateFieldValues(banner);
+    if(banner.image) imageSrc.value = getBannerImageSrc(banner);
+  }
+
   showDialog.value = true;
 };
-
 
 const closeDialog = () => {
   form.context.resetForm({
