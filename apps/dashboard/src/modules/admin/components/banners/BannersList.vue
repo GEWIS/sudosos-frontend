@@ -6,13 +6,14 @@
                 <div class="flex flex-column md:flex-row align-items-center justify-content-between">
                     <SelectButton v-model="filters" :options="options" optionLabel="name" multiple />
                     <Button class="mt-2 md:mt-0" :label="t('common.create')" icon="pi pi-plus"
-                        @click="showDialog = true" />
+                        @click="openDialog" />
                 </div>
             </template>
             <template #list="slotProps">
                 <div class="grid grid-nogutter">
                     <BannerItem v-for="(item, index) in slotProps.items" :key="index" :index="index"
-                        :banner="item" />
+                        :banner="item"
+                    :openDialog="(banner: BannerResponse) => openDialog(banner)"/>
                 </div>
             </template>
         </DataView>
@@ -32,7 +33,8 @@
       <BannerCreateForm
           :form="slotProps.form"
           v-model:isVisible="showDialog"
-          @submit:success="showDialog = false"
+          @submit:success="closeDialog"
+
       />
     </template>
   </FormDialog>
@@ -46,23 +48,23 @@ import type {
   BannerRequest,
   BannerResponse,
 } from "@sudosos/sudosos-client";
-import {computed, type Ref, ref} from "vue";
+import { computed, type Ref, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import Divider from "primevue/divider";
 import BannerItem from "@/modules/admin/components/banners/BannerItem.vue";
 import CardComponent from "@/components/CardComponent.vue";
-import {schemaToForm, setSubmit} from "@/utils/formUtils";
+import { schemaToForm, setSubmit } from "@/utils/formUtils";
 import { createBannerSchema } from "@/utils/validation-schema";
 import BannerImageForm from "@/modules/admin/components/banners/forms/BannerImageForm.vue";
-import apiService from "@/services/ApiService";
-import {handleError} from "@/utils/errorUtils";
-import {useToast} from "primevue/usetoast";
-import {useBannersStore} from "@/stores/banner.store";
+import { handleError } from "@/utils/errorUtils";
+import { useToast } from "primevue/usetoast";
+import { useBannersStore } from "@/stores/banner.store";
 const { t } = useI18n();
 const toast = useToast();
 const bannerImage: Ref<File | undefined> = ref();
 const imageSrc = ref<string>();
 const bannerStore = useBannersStore();
+const selectedBanner = ref<BannerResponse | undefined>(undefined);
 
 function onImageUpload(image: File) {
     bannerImage.value = image;
@@ -119,6 +121,12 @@ const displayedBanners = computed(() => {
         .sort((a, b) => Date.parse(b.startDate) - Date.parse(a.startDate));
 });
 
+const openDialog = (banner? : BannerResponse) => {
+  if (banner) updateFieldValues(banner);
+  showDialog.value = true;
+};
+
+
 const closeDialog = () => {
   form.context.resetForm({
     values: {
@@ -157,4 +165,15 @@ setSubmit(form, form.context.handleSubmit(async (values) => {
     closeDialog();
   });
 }));
+
+const updateFieldValues = (b: BannerResponse) => {
+  form.context.resetForm({
+    values: {
+      name: b.name,
+      duration: b.duration,
+      active: b.active,
+      daterange: [b.startDate, b.endDate],
+    }
+  });
+};
 </script>
