@@ -43,6 +43,7 @@
         "createdAt": "Created at",
         "updatedAt": "Updated at",
         "placeholders": {
+            "banner": "BAC Weekend",
             "selectType": "Select Type",
             "email": "example@example.com",
             "bankAccountNumber": "NL69 ABNA 0012 3456 78",
@@ -53,8 +54,7 @@
             "city": "Zwolle",
             "country": "Netherlands",
             "product": "Ice cream",
-            "pos": "GELIMBO",
-            "banner": "BAC Weekend"
+            "pos": "GELIMBO"
         },
         "tooltip": {
             "productOwner": "Note: Container owner gets the revenue, not the product owner. Owner cannot be edited after creation."
@@ -100,6 +100,7 @@
                 "productDeleted": "Successfully deleted product.",
                 "payoutDeleted": "Successfully deleted payout.",
                 "payoutUpdated": "Successfully updated payout.",
+                "bannerCreated": "Successfully created banner.",
                 "payout": {
                     "verify": "Verification Success",
                     "details": "Payout is verified."

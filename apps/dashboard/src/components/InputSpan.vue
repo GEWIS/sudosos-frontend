@@ -95,7 +95,7 @@ const props = defineProps({
     required: true
   },
   value: {
-    type: [String, Number, Boolean],
+    type: [String, Number, Boolean, Array<string>],
   },
   attributes: {
     type: Object as PropType<any>,
@@ -130,18 +130,19 @@ const props = defineProps({
 const emit = defineEmits(['update:value']);
 
 const stringInputs = ['text', 'textarea', 'pin', 'password'];
-
+const stringArrayInputs = ['daterange'];
 const numberInputs = ['currency', 'number', 'usertype', 'percentage'];
 const booleanInputs = ['boolean'];
 
 const initialValue = () => {
   if (stringInputs.includes(props.type)) return '';
   if (numberInputs.includes(props.type)) return 0;
+  if (stringArrayInputs.includes(props.type)) return [];
   if (booleanInputs.includes(props.type)) return false;
   return '';
 };
 
-const internalValue: Ref<string | number | boolean | undefined> = ref(initialValue());
+const internalValue: Ref<string | number | boolean | undefined | string[]> = ref(initialValue());
 
 onMounted(() => {
   internalValue.value = props.value ?? '';

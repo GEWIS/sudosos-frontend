@@ -6,7 +6,7 @@
                 <div class="flex flex-column md:flex-row align-items-center justify-content-between">
                     <SelectButton v-model="filters" :options="options" optionLabel="name" multiple />
                     <Button class="mt-2 md:mt-0" :label="t('common.create')" icon="pi pi-plus"
-                        @click="openDialog" />
+                        @click="openDialog()" />
                 </div>
             </template>
             <template #list="slotProps">
@@ -20,7 +20,7 @@
     </CardComponent>
   <FormDialog
       :form="form"
-      :header="t('modules.admin.forms.banner.headerCreate')"
+      :header="edit ? t('modules.admin.forms.banner.headerEdit') : t('modules.admin.forms.banner.headerCreate')"
       v-model:modelValue="showDialog">
     <template #form="slotProps">
       <BannerImageForm
@@ -59,12 +59,13 @@ import BannerImageForm from "@/modules/admin/components/banners/forms/BannerImag
 import { handleError } from "@/utils/errorUtils";
 import { useToast } from "primevue/usetoast";
 import { useBannersStore } from "@/stores/banner.store";
-import {getBannerImageSrc} from "@/utils/urlUtils";
+import { getBannerImageSrc } from "@/utils/urlUtils";
 const { t } = useI18n();
 const toast = useToast();
 const bannerImage: Ref<File | undefined> = ref();
 const imageSrc = ref<string>();
 const bannerStore = useBannersStore();
+const edit: Ref<boolean> = ref(false);
 
 function onImageUpload(image: File) {
     bannerImage.value = image;
@@ -78,7 +79,7 @@ const props = defineProps<{
     take?: number | undefined
 }>();
 
-const showDialog = ref<boolean>();
+const showDialog = ref<boolean>(false);
 const form = schemaToForm(createBannerSchema);
 
 // Filtering the banners
@@ -123,6 +124,7 @@ const displayedBanners = computed(() => {
 
 const openDialog = (banner? : BannerResponse) => {
   if (banner) {
+    edit.value = true;
     updateFieldValues(banner);
     if(banner.image) imageSrc.value = getBannerImageSrc(banner);
   }
@@ -143,6 +145,7 @@ const closeDialog = () => {
   imageSrc.value = '';
   bannerImage.value = undefined;
   showDialog.value = false;
+  edit.value = false;
 };
 
 setSubmit(form, form.context.handleSubmit(async (values) => {

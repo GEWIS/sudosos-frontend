@@ -35,21 +35,16 @@
 
 import { useI18n } from "vue-i18n";
 import type { createBannerSchema } from "@/utils/validation-schema";
-import { type Form, setSubmit } from "@/utils/formUtils";
+import { type Form } from "@/utils/formUtils";
 import type { PropType } from "vue";
-import apiService from "@/services/ApiService";
-import type { BannerRequest } from "@sudosos/sudosos-client";
-import { handleError } from "@/utils/errorUtils";
 import InputSpan from "@/components/InputSpan.vue";
-import { useToast } from "primevue/usetoast";
 import * as yup from "yup";
 
 const { t } = useI18n();
-const toast = useToast();
 
-const emit = defineEmits(['update:edit']);
+defineEmits(['update:edit']);
 
-const props = defineProps({
+defineProps({
   form: {
     type: Object as PropType<Form<yup.InferType<typeof createBannerSchema>>>,
     required: true,
