@@ -32,7 +32,7 @@
             <span v-tooltip.top="startDate.toLocaleString()" class="font-semibold">
               {{ formatDateTime(startDate) }}
             </span>
-            {{ t('modules.admin.banners.till') }}
+            {{ t('common.till') }}
             <span v-tooltip.top="endDate.toLocaleString()" class="font-semibold">
               {{ formatDateTime(endDate) }}
             </span>
