@@ -38,7 +38,7 @@
             </span>
           </div>
           <!-- Add icon and delete button here -->
-          <Button @click="openDialog">{{ t('common.edit') }}</Button>
+          <Button @click="props.openDialog(banner)">{{ t('common.edit') }}</Button>
         </div>
       </div>
     </div>
@@ -50,14 +50,21 @@ import Tag from 'primevue/tag';
 
 
 import type { BannerResponse } from '@sudosos/sudosos-client';
-import { computed, ref } from 'vue';
+import {computed, type PropType, ref} from 'vue';
 import { getBannerImageSrc } from '@/utils/urlUtils';
 import { formatDateTime } from '@/utils/formatterUtils';
 import { useI18n } from 'vue-i18n';
 
-defineProps<{
-  index: number;
-}>();
+const props = defineProps({
+  index: {
+    type: Number,
+    required: true
+  },
+  openDialog: {
+    type: Function as PropType<(banner: BannerResponse) => void>,
+    required: true
+  }
+});
 
 const { t } = useI18n();
 
@@ -79,10 +86,4 @@ const endDate = computed(() => {
 const isExpired = computed(() => {
   return Date.now() > Date.parse(banner.value.endDate);
 });
-
-const isEditDialogVisible = ref<boolean>(false);
-
-const openDialog = () => {
-  isEditDialogVisible.value = true;
-};
 </script>
