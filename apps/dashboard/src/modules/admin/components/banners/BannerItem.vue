@@ -50,7 +50,7 @@ import Tag from 'primevue/tag';
 
 
 import type { BannerResponse } from '@sudosos/sudosos-client';
-import {computed, type PropType, ref} from 'vue';
+import { computed, type PropType } from 'vue';
 import { getBannerImageSrc } from '@/utils/urlUtils';
 import { formatDateTime } from '@/utils/formatterUtils';
 import { useI18n } from 'vue-i18n';
