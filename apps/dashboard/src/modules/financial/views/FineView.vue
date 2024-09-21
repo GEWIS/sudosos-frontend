@@ -4,74 +4,7 @@
   <div class="page-container">
     <div class="page-title">{{ t('modules.financial.fine.title') }}</div>
     <div class="content-wrapper flex flex-column gap-5">
-      <CardComponent :header="t('modules.financial.fine.eligibleUsers.header')" class="w-full">
-        <DataTable
-          paginator
-          :rows="10"
-          :rowsPerPageOptions="[5, 10, 25, 50, 100]"
-          :value="eligibleUsers"
-          dataKey="id"
-          v-model:selection="selection"
-        >
-          <template #header>
-            <div class="flex flex-column">
-              <div class="flex flex-row justify-content-between">
-                <form @submit.prevent="handlePickedDates" class="flex flex-row gap-3">
-                  <span class="p-float-label">
-                    <Calendar
-                      v-model="firstDate"
-                      id="firstDate"
-                      v-bind="firstDateAttrs"
-                      showTime
-                      hourFormat="24"
-                    />
-                    <label for="firstDate">{{ t('modules.financial.fine.eligibleUsers.firstDate') }}</label>
-                  </span>
-                  <span class="p-float-label">
-                    <Calendar
-                      v-model="secondDate"
-                      id="firstDate"
-                      v-bind="secondDateAttrs"
-                      showTime
-                      hourFormat="24"
-                    />
-                    <label for="secondDate">{{ t('modules.financial.fine.eligibleUsers.secondDate') }}</label>
-                  </span>
-                  <Button type="submit">{{ t('modules.financial.fine.eligibleUsers.apply') }}</Button>
-                  <Button
-                      @click="notifyUsers"
-                      severity="info">
-                    {{ t('modules.financial.fine.eligibleUsers.notify') }}
-                  </Button>
-                  <ProgressSpinner class="h-2rem ml-0" v-if="isNotifying"/>
-                </form>
-                <Button @click="handoutFines">{{ t('modules.financial.fine.eligibleUsers.handout') }}</Button>
-              </div>
-              <p class="text-red-500">
-                {{
-                  showMessage ? t('modules.financial.fine.eligibleUsers.info', {
-                    fines: formatPrice(totalFines),
-                    debt: formatPrice(totalDebt)
-                  }): t('modules.financial.fine.eligibleUsers.pleaseSelect')
-                }}
-              </p>
-            </div>
-          </template>
-          <Column selectionMode="multiple" />
-          <Column field="gewisId" :header="t('common.gewisId')" />
-          <Column field="fullName" :header="t('common.name')" />
-          <Column field="firstBalance" :header="t('modules.financial.fine.eligibleUsers.firstBalance')">
-            <template #body="slotProps">
-              {{ formatPrice(slotProps.data.firstBalance.amount) }}
-            </template>
-          </Column>
-          <Column field="lastBalance" :header="t('modules.financial.fine.eligibleUsers.lastBalance')">
-            <template #body="slotProps">
-              {{ formatPrice(slotProps.data.lastBalance.amount) }}
-            </template>
-          </Column>
-        </DataTable>
-      </CardComponent>
+      <FineActionCard/>
       <CardComponent
           :header="t('modules.financial.fine.handoutEvents.header')"
           class="w-full">
@@ -162,6 +95,7 @@ import type { AxiosError } from "axios";
 import { handleError } from "@/utils/errorUtils";
 import Skeleton from "primevue/skeleton";
 import ProgressSpinner from "primevue/progressspinner";
+import FineActionCard from "@/modules/financial/components/fine/FineActionCard.vue";
 
 const { t } = useI18n();
 const router = useRouter();

@@ -3,6 +3,11 @@
     "financial": {
       "fine":{
         "title": "Fine overview",
+        "action": {
+          "header": "Fine Actions",
+          "notify": "Notify",
+          "handout": "Hand out"
+        },
         "eligibleUsers": {
           "header": "Eligible users",
           "firstDate": "First date",
@@ -64,6 +69,10 @@
           "postalCode": "Postal code",
           "city": "City",
           "country": "Country"
+        },
+        "fine": {
+          "getEligibleHandout": "Handout fines (date range)",
+          "getEligibleNotify": "Notify users (single date)"
         }
       }
     }

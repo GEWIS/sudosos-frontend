@@ -144,3 +144,13 @@ export const createSellerPayoutObject =
     reference: yup.string().required(),
     user: yup.mixed<BaseUserResponse>().required(),
   });
+
+export const getFineEligibleHandoutSchema =
+    yup.object({
+        daterange: yup.mixed<Array<string>>().required(),
+    });
+
+export const getFineEligibleNotifySchema =
+    yup.object({
+        date: yup.string().required(),
+    });
