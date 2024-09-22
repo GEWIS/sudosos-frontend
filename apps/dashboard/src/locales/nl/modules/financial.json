@@ -38,7 +38,8 @@
         "missingPdf": "PDF ontbreekt of genereren is mislukt",
         "deleted": "Factuur is verwijderd.",
         "dirty": "De factuurbedrag komt niet overeen met de overboeking.",
-        "total": "Het huidige totaal op de factuur is {total}"
+        "total": "Het huidige totaal op de factuur is {total}",
+        "create": "Factuur aanmaken"
       },
       "payout": {
         "title": "Uitbetalingsoverzicht",
