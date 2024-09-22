@@ -58,7 +58,7 @@
 import { formatPrice } from "@/utils/formatterUtils";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
-import { computed, onMounted, type PropType, type Ref, ref } from "vue";
+import { onMounted, type PropType, type Ref, ref } from "vue";
 import type { InvoiceEntryResponse, InvoiceResponse } from "@sudosos/sudosos-client";
 import type { DineroObject } from "dinero.js";
 import { useI18n } from "vue-i18n";

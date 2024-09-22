@@ -3,7 +3,7 @@
     <div>
       <div class="page-title flex flex-row">
         <div class="flex flex-column">
-          <span>{{t("modules.financial.invoice.invoice") }}</span>
+          <span>{{ t("modules.financial.invoice.invoice") }}</span>
           <small class="text-base">
             {{ invoice.reference + ": " }} <i>{{ invoice.description }}</i>
           </small>
@@ -48,14 +48,13 @@ import InvoiceAmountCard from "@/modules/financial/components/invoice/InvoiceAmo
 import { isDirty } from "@/utils/invoiceUtil";
 
 const { t } = useI18n();
-
 const toast = useToast();
 const route = useRoute();
-
-const invoice: Ref<InvoiceResponse | undefined> = ref(undefined);
 const invoiceStore = useInvoiceStore();
 
-// Invoice is condired dirty if entry total does not match transfer total
+const invoice: Ref<InvoiceResponse | undefined> = ref(undefined);
+
+// Invoice is considered dirty if entry total does not match transfer total
 const dirty = computed(() => isDirty(invoice.value as InvoiceResponse));
 
 onBeforeMount(async () => {

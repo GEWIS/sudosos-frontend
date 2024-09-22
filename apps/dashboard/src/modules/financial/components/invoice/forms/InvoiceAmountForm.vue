@@ -19,26 +19,14 @@ import { computed, type PropType } from "vue";
 import type { InvoiceResponse } from "@sudosos/sudosos-client";
 import { type Form, setSubmit } from "@/utils/formUtils";
 import * as yup from "yup";
-import { updateInvoiceAddressingObject, updateInvoiceAmountObject } from "@/utils/validation-schema";
+import { updateInvoiceAmountObject } from "@/utils/validation-schema";
 import { handleError } from "@/utils/errorUtils";
 import { formatPrice } from "@/utils/formatterUtils";
 import type { DineroObject } from "dinero.js";
 
 const { t } = useI18n();
 const toast = useToast();
-
-const emit = defineEmits(['update:edit']);
 const invoiceStore = useInvoiceStore();
-
-const entryTotal = computed(() => {
-  const total: DineroObject = { amount: 0, precision: 2, currency: 'EUR' };
-  props.invoice.invoiceEntries.forEach((entry) => {
-    console.error(entry.amount, entry.priceInclVat.amount, entry.amount * entry.priceInclVat.amount);
-    total.amount += ((entry.amount * entry.priceInclVat.amount));
-  });
-  return total;
-});
-
 
 const props = defineProps({
   invoice: {
@@ -54,6 +42,16 @@ const props = defineProps({
     required: false,
     default: false,
   },
+});
+
+const emit = defineEmits(['update:edit']);
+
+const entryTotal = computed(() => {
+  const total: DineroObject = { amount: 0, precision: 2, currency: 'EUR' };
+  props.invoice.invoiceEntries.forEach((entry) => {
+    total.amount += ((entry.amount * entry.priceInclVat.amount));
+  });
+  return total;
 });
 
 setSubmit(props.form, props.form.context.handleSubmit(async (values) => {

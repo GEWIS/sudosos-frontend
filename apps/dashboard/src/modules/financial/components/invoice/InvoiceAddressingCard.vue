@@ -11,7 +11,7 @@
 import FormCard from "@/components/FormCard.vue";
 import { computed, onBeforeMount, ref, watch } from "vue";
 import type { InvoiceResponse } from "@sudosos/sudosos-client";
-import InvoiceAddressingForm from "@/modules/financial/components/invoice/forms/InvoiceAddressingForm.vue";
+import InvoiceAddressingForm from "@/modules/financial/components/invoice/forms/InvoiceUpdateAddressingForm.vue";
 import { updateInvoiceAddressingObject } from "@/utils/validation-schema";
 import { schemaToForm } from "@/utils/formUtils";
 import { InvoiceStatusResponseStateEnum } from "@sudosos/sudosos-client/src/api";

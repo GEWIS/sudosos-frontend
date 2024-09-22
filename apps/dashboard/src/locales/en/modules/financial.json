@@ -38,7 +38,16 @@
         "missingPdf": "PDF is missing or generation failed",
         "deleted": "Invoice has been deleted.",
         "dirty": "Invoice amount does not match transfer amount.",
-        "total": "The current total on the invoice is {total}"
+        "total": "The current total on the invoice is {total}",
+        "for": "Invoice for",
+        "create": {
+          "create": "Create Invoice",
+          "userBalance": "Selected users' balance",
+          "invocieAmount": "Proposed invoice amount",
+          "balanceAfter": "Balance after invoice",
+          "pos": "Points of sale included in the invoice:",
+          "warning": "Make sure to check the invoice before creating it."
+        }
       },
       "payout": {
         "title": "Payout overview",

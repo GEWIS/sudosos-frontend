@@ -55,7 +55,6 @@ onBeforeMount(() => {
     updateFieldValues(invoice.value);
   }
 });
-
 </script>
 
 <style scoped lang="scss">
