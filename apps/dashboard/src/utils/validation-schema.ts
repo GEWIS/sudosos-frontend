@@ -3,9 +3,8 @@ import { ref } from "vue";
 import type { Ref } from "vue";
 import i18n from './i18nUtils';
 import type {
-    BaseUserResponse,
-    BaseVatGroupResponse,
-    ProductCategoryResponse
+  BaseUserResponse,
+  BaseVatGroupResponse, ProductCategoryResponse
 } from "@sudosos/sudosos-client";
 import type { ContainerInStore } from "@/stores/container.store";
 
@@ -139,4 +138,21 @@ export const createSellerPayoutObject =
     toDate: yup.string().required(),
     reference: yup.string().required(),
     user: yup.mixed<BaseUserResponse>().required(),
+  });
+
+export const createInvoiceObject =
+  yup.object({
+    forId: yup.number().required(),
+    byId: yup.number().nullable(),
+    addressee: yup.string().nullable(),
+    description: yup.string().required(),
+    reference: yup.string().required(),
+    transactionIDs: yup.array().of(yup.number().required()).required(),
+    street: yup.string().nullable(),
+    postalCode: yup.string().nullable(),
+    city: yup.string().nullable(),
+    country: yup.string().nullable(),
+    date: yup.string().nullable(),
+    attention: yup.string().nullable(),
+    amount: yup.mixed<number>().required(),
   });
