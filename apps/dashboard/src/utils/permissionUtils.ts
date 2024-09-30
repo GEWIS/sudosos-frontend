@@ -1,4 +1,5 @@
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
+import { type BaseUserResponse } from "@sudosos/sudosos-client";
 
 
 const userStore = useUserStore();
@@ -20,9 +21,10 @@ const userStore = useUserStore();
  *    database entity, but it could also be a computed entity such as 'balance'.
  * @param attributes - The list of attributes to access. The wildcard '*' can be
  *    used to verify that the user is allowed to access all properties.
+ *    'any' can be used if there is any attribute that can be edited.
  * @returns {boolean} - True if access is allowed, false otherwise.
  */
-export function hasPermission(
+export function isAllowed(
     action: string,
     relations: string | string[],
     entity: string,
@@ -52,12 +54,26 @@ export function hasPermission(
 
     // If the user has a wildcard as attribute, they are allowed to access everything, so return true.
     const hasStar = applicableAttributes.some((a) => a === '*');
-    if (hasStar) {
-        return true;
-    }
+    if (hasStar) return true;
+
+    // If there just needs to be any attribute at least, then return true when there is atleast one applicable attribute
+    if (attributes.includes('any') && applicableAttributes.length > 0) return true;
 
     // Find all attributes that the user should have, but the current set of permissions does not provide
     const disallowedAttributes = attributes.filter((a) => !applicableAttributes.includes(a));
     // Return whether the user is allowed to access all attributes
-    return disallowedAttributes.length === 0;
+    return disallowedAttributes.length === 0 || disallowedAttributes.includes('any');
+}
+
+/**
+ * Get the relation of the current user to a certain user.
+ * @param user The user that the current user needs relation to.
+ * @returns {string} - The relation, usually own if self, organ if part of organ, and all if there is no relation
+ */
+export function getRelation(user: BaseUserResponse): string {
+    if (userStore.current.user?.id == user.id) return 'own';
+
+    const roles = userStore.current.rolesWithPermissions.map(r => r.id);
+    if (roles.includes(user.id)) return 'organ';
+    return 'all'; // No relation means the all relation
 }
