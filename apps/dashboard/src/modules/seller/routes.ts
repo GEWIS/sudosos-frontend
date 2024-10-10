@@ -22,7 +22,7 @@ export function sellerRoutes(): RouteRecordRaw[] {
           meta: {
             requiresAuth: true,
             rolesAllowed: [UserRole.SELLER],
-            isAllowed: isAllowed('get', ['own', 'organ'], 'SellerPayout', ['any'])
+            isAllowed: () => isAllowed('get', ['own', 'organ'], 'SellerPayout', ['any'])
           }
         },
         {
@@ -31,8 +31,7 @@ export function sellerRoutes(): RouteRecordRaw[] {
           name: 'products',
           meta: {
             requiresAuth: true,
-            rolesAllowed: [UserRole.SELLER],
-            isAllowed: isAllowed('get', ['own', 'organ'], 'Products', ['any'])
+            isAllowed: () => isAllowed('get', ['own', 'organ'], 'Products', ['any'])
           }
         },
         {
@@ -41,8 +40,7 @@ export function sellerRoutes(): RouteRecordRaw[] {
           component: POSOverviewView,
           meta: {
             requiresAuth: true,
-            rolesAllowed: [UserRole.SELLER],
-            isAllowed: isAllowed('get', ['own', 'organ'], 'PointOfSale', ['any'])
+            isAllowed: () => isAllowed('get', ['own', 'organ'], 'PointOfSale', ['any'])
           }
         },
         {
@@ -52,8 +50,7 @@ export function sellerRoutes(): RouteRecordRaw[] {
           props: true,
           meta: {
             requiresAuth: true,
-            rolesAllowed: [UserRole.SELLER],
-            isAllowed: isAllowed('get', ['own', 'organ'], 'PointOfSale', ['any'])
+            isAllowed: () => isAllowed('get', ['own', 'organ'], 'PointOfSale', ['any'])
           }
         }
       ]
