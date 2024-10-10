@@ -2,9 +2,9 @@ import type { RouteRecordRaw } from "vue-router";
 import DashboardLayout from "@/layout/DashboardLayout.vue";
 import FineView from "@/modules/financial/views/FineView.vue";
 import PayoutsView from "@/modules/financial/views/payouts/PayoutsView.vue";
-import { UserRole } from "@/utils/rbacUtils";
 import InvoiceOverview from "@/modules/financial/views/invoice/InvoiceOverview.vue";
 import InvoiceInfoView from "@/modules/financial/views/invoice/InvoiceInfoView.vue";
+import { isAllowed } from "@/utils/permissionUtils";
 
 export function financialRoutes(): RouteRecordRaw[] {
   return [
@@ -19,7 +19,7 @@ export function financialRoutes(): RouteRecordRaw[] {
         name: 'fine',
         meta: {
           requiresAuth: true,
-          rolesAllowed: [UserRole.BAC_PM]
+          isAllowed: () => isAllowed('get', ['own', 'organ'], 'Fine', ['any'])
         }
       },
       {
@@ -28,7 +28,7 @@ export function financialRoutes(): RouteRecordRaw[] {
         name: 'invoice',
         meta: {
           requiresAuth: true,
-          rolesAllowed: [UserRole.BAC_PM]
+          isAllowed: () => isAllowed('get', ['own', 'organ'], 'Invoice', ['any'])
         }
       },
       {
@@ -38,7 +38,7 @@ export function financialRoutes(): RouteRecordRaw[] {
         props: true,
         meta: {
           requiresAuth: true,
-          rolesAllowed: [UserRole.BAC_PM]
+          isAllowed: () => isAllowed('get', ['own', 'organ'], 'Invoice', ['any'])
         }
       },
       {
@@ -47,7 +47,7 @@ export function financialRoutes(): RouteRecordRaw[] {
         name: 'payouts',
         meta: {
           requiresAuth: true,
-          rolesAllowed: [UserRole.BAC_PM]
+          isAllowed: () => isAllowed('get', ['own', 'organ'], 'SellerPayout', ['any'])
         }
       }
       ]

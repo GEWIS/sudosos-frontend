@@ -1,10 +1,6 @@
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
 import { type BaseUserResponse } from "@sudosos/sudosos-client";
 
-
-const userStore = useUserStore();
-
-
 /**
  * Performs an access check for the given parameters.
  * This method can be used to verify if a user with the given role(s)
@@ -30,6 +26,7 @@ export function isAllowed(
     entity: string,
     attributes: string[]
 ) {
+    const userStore = useUserStore();
 
     // Convert relations to array if a single relation is given.
     let relationsArray: string[];
@@ -71,6 +68,8 @@ export function isAllowed(
  * @returns {string} - The relation, usually own if self, organ if part of organ, and all if there is no relation
  */
 export function getRelation(user: BaseUserResponse): string {
+    const userStore = useUserStore();
+
     if (userStore.current.user?.id == user.id) return 'own';
 
     const roles = userStore.current.rolesWithPermissions.map(r => r.id);
