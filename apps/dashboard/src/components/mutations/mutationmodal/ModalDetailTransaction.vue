@@ -54,9 +54,9 @@
       </Column>
     </DataTable>
 
-    <Button @click="sendEmail(transactionInfo, productsInfo)" class="w-full sm:w-4 justify-content-center">
+    <a @click="sendEmail(transactionInfo, productsInfo)" class="underline text-right cursor-pointer ">
       {{ t('components.mutations.notYou') }}
-    </Button>
+    </a>
   </div>
 </template>
 <script setup lang="ts">
