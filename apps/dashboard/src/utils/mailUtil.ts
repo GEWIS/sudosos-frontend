@@ -4,14 +4,13 @@ import { formatPrice } from '@/utils/formatterUtils';
 
 export function sendEmail(transactionInfo: TransactionResponse, productsInfo: Array<SubTransactionRowResponse>)
 {
-  console.log(productsInfo);
   window.open("mailto:" + getEmail()
     + "?subject=" + getSubject(transactionInfo)
     + "&body="+ getBody(transactionInfo, productsInfo));
 }
 
 function getEmail(): string {
-  return "xyz@yourapplicationdomain.com";
+  return import.meta.env.VITE_APP_TREASURER_EMAIL;
 }
 
 function getSubject(transactionInfo: TransactionResponse): string {
@@ -28,7 +27,7 @@ function getBody(transactionInfo: TransactionResponse, productsInfo: Array<SubTr
     + "Transaction by: " + transactionInfo.createdBy!.firstName
       + " " + transactionInfo.createdBy!.lastName + " (" + transactionInfo.createdBy!.id + ")%0D%0A"
     + "Transaction at: " + transactionInfo.pointOfSale.name + "%0D%0A"
-    + "%0D%0AProducts in transaction: " + "%0D%0A" + formatProducts(productsInfo) + "%0D%0A"
+    + "%0D%0AProducts in transaction: " + "%0D%0A" + formatProducts(productsInfo)
     + "________________________%0D%0A"
     + "DO NOT CHANGE ANY OF THE ABOVE INFO%0D%0A"
     + "Please add any additional information below:%0D%0A";
