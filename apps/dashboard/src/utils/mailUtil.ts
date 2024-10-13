@@ -4,9 +4,9 @@ import { formatPrice } from '@/utils/formatterUtils';
 
 export function sendEmail(transactionInfo: TransactionResponse, productsInfo: Array<SubTransactionRowResponse>)
 {
-  window.open("mailto:" + encodeURIComponent(getEmail())
-    + "?subject=" + encodeURIComponent(getSubject(transactionInfo))
-    + "&body="+ encodeURIComponent(getBody(transactionInfo, productsInfo)));
+  window.open(`mailto:${getEmail()}
+  ?subject=${getSubject(transactionInfo)}
+  &body=${getBody(transactionInfo, productsInfo)}`);
 }
 
 function getEmail(): string {
@@ -14,14 +14,14 @@ function getEmail(): string {
 }
 
 function getSubject(transactionInfo: TransactionResponse): string {
-  return "[FLAGGED TRANSACTION] "
+  return encodeURIComponent("[FLAGGED TRANSACTION] "
     + transactionInfo.from.firstName + " "
     + transactionInfo.from.lastName + " "
-    + getTime(transactionInfo);
+    + getTime(transactionInfo));
 }
 
 function getBody(transactionInfo: TransactionResponse, productsInfo: Array<SubTransactionRowResponse>): string {
-  return "Transaction Id: " + transactionInfo.id +  "\n"
+  return encodeURIComponent("Transaction Id: " + transactionInfo.id +  "\n"
     + "Transaction for: " + transactionInfo.from.firstName + " "
       + transactionInfo.from.lastName + " (" + transactionInfo.from.id + ")\n"
     + "Transaction by: " + transactionInfo.createdBy!.firstName
@@ -31,7 +31,7 @@ function getBody(transactionInfo: TransactionResponse, productsInfo: Array<SubTr
     + formatProducts(productsInfo)
     + "________________________\n"
     + "DO NOT CHANGE ANY OF THE ABOVE INFO\n"
-    + "Please add any additional information below:\n";
+    + "Please add any additional information below:\n");
 }
 
 function getTime(transactionInfo: TransactionResponse): string {
