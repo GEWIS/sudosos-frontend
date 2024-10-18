@@ -18,7 +18,8 @@ export function adminRoutes(): RouteRecordRaw[] {
           component: AdminUserOverView,
           meta: {
             requiresAuth: true,
-            isAllowed: () => isAllowed('get', ['all'], 'User', ['any'])
+            // TODO: Change to `action: get` after https://github.com/GEWIS/sudosos-backend/issues/62 is fully finished
+            isAllowed: () => isAllowed('update', ['all'], 'User', ['any'])
           }
         },
         {

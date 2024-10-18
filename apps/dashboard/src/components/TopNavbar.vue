@@ -80,11 +80,11 @@
 import { computed, onBeforeMount, ref, type Ref } from "vue";
 import { useAuthStore, useUserStore } from "@sudosos/sudosos-frontend-common";
 import { useRouter } from "vue-router";
-import { UserRole } from "@/utils/rbacUtils";
 import { useI18n } from "vue-i18n";
 import { usePendingPayouts } from "@/mixins/pendingPayoutsMixin";
 import apiService from "@/services/ApiService";
 import { GetAllUsersTypeEnum } from "@sudosos/sudosos-client";
+import { isAllowed } from "@/utils/permissionUtils";
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
@@ -100,20 +100,8 @@ const handleLogout = () => {
   router.push('/');
 };
 
-const isBoard = () => {
-  return userStore.current.rolesWithPermissions.findIndex(r => r.name == UserRole.BOARD) != -1;
-};
-
-const isSeller = () => {
-  return userStore.current.rolesWithPermissions.findIndex(r => r.name == UserRole.SELLER) != -1;
-};
-
-const isBACPM = () => {
-  return userStore.current.rolesWithPermissions.findIndex(r => r.name == UserRole.BAC_PM) != -1;
-};
-
 const { pendingPayouts } = usePendingPayouts();
-const getFinancialNotifications = () => pendingPayouts?.value;
+const getFinancialNotifications = () => isAllowed('update', ['all'], 'SellerPayout', ['any']) && pendingPayouts?.value;
 
 const organs: Ref<any[]> = ref([]);
 
@@ -163,59 +151,62 @@ const navItems = computed(() => [
   },
   {
     label: t('common.navigation.admin'),
-    visible: isBoard(),
+    visible: isAllowed('get', ['all'], 'User', ['any']),
     items: [
       {
         label: t('common.navigation.userOverview'),
-        route: '/user-overview'
+        route: '/user-overview',
+        visible: isAllowed('get', ['all'], 'User', ['any']),
       },
       {
         label: t('common.navigation.banners'),
-        route: '/banners'
+        route: '/banners',
+        visible: isAllowed('get', ['own'], 'Banner', ['any']),
       },
     ],
   },
   {
     label: t('common.navigation.financial'),
-    visible: isBACPM(),
     notifications: getFinancialNotifications(),
     items: [
       {
         label: t('common.navigation.userOverview'),
         route: '/user-overview',
-      },
-      {
-        label: t('common.navigation.flaggedTransactions'),
-      },
-      {
-        label: t('common.navigation.socialDrinkCards'),
+        // TODO: Change to `action: get` after https://github.com/GEWIS/sudosos-backend/issues/62 is fully finished
+        visible: isAllowed('update', ['all'], 'User', ['any']),
       },
       {
         label: t('common.navigation.invoices'),
         route: '/invoice',
+        visible: isAllowed('get', ['all'], 'Invoice', ['any']),
       },
       {
         label: t('common.navigation.fineOverview'),
         route: '/fine',
+        visible: isAllowed('get', ['all'], 'Fine', ['any']),
       },
       {
         label: t('common.navigation.payouts'),
         route: '/payouts',
+        visible: isAllowed('get', ['all'], 'SellerPayout', ['any']),
         notifications: pendingPayouts?.value
       }
     ]
   },
   {
     label: t('common.navigation.seller'),
-    visible: isSeller(),
     items: [
       {
         label: t('common.navigation.manageProducts'),
         route: '/manage-products',
+        // TODO: Change to `action: get` after https://github.com/GEWIS/sudosos-backend/issues/62 is fully finished
+        visible: isAllowed('update', ['own', 'organ'], 'Product', ['any']),
       },
       {
         label: t('common.navigation.posOverview'),
         route: '/point-of-sale/overview',
+        // TODO: Change to `action: get` after https://github.com/GEWIS/sudosos-backend/issues/62 is fully finished
+        visible: isAllowed('update', ['own', 'organ'], 'PointOfSale', ['any']),
       },
         ...organs.value,
     ]

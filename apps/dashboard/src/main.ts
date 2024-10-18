@@ -50,7 +50,6 @@ const app = createApp(App);
 
 app.use(i18n);
 app.use(createPinia());
-app.use(router);
 app.use(PrimeVue);
 
 app.use(ToastService);
@@ -85,10 +84,14 @@ app.component('Calendar', Calendar);
 app.component('ConfirmDialog', ConfirmDialog);
 
 populateStoresFromToken(apiService).then(() => {
+    // App can only be loaded after the user is loaded
+    app.use(router);
     app.mount('#app');
 }).catch(() => {
+    // If something went wrong with validating token, logout and try again
     clearTokenInStorage();
     const authStore = useAuthStore();
     authStore.logout();
+    app.use(router);
     app.mount('#app');
 });
