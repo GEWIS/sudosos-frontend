@@ -201,7 +201,7 @@ const navItems = computed(() => [
         label: t('common.navigation.productsContainers'),
         route: '/product',
         // TODO: Change to `action: get` after https://github.com/GEWIS/sudosos-backend/issues/62 is fully finished
-        visible: isAllowed('update', ['own', 'organ'], 'Product', ['any']),
+        visible: isAllowed('get', ['own', 'organ'], 'Product', ['any']),
       },
       {
         label: t('common.navigation.pos'),

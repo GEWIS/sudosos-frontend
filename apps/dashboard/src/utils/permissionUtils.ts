@@ -24,7 +24,7 @@ export function isAllowed(
     action: string,
     relations: string | string[],
     entity: string,
-    attributes: string[]
+    attributes?: string[] | undefined
 ) {
     const userStore = useUserStore();
 
@@ -41,6 +41,8 @@ export function isAllowed(
         relationsArray.push('all');
     }
 
+    // If no attributes are specified, any attribute is fine.
+    if (!attributes) attributes = ['any'];
 
     // For all found permission records, get a single list of all attributes the user is allowed to access
     const allPermissions = userStore.current.rolesWithPermissions.flatMap(r => r.permissions);

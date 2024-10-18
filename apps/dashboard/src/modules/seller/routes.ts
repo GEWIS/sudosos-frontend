@@ -31,7 +31,7 @@ export function sellerRoutes(): RouteRecordRaw[] {
           name: 'products',
           meta: {
             requiresAuth: true,
-            isAllowed: () => isAllowed('get', ['own', 'organ'], 'Products', ['any'])
+            isAllowed: () => isAllowed('get', ['own', 'organ'], 'Product', ['any'])
           }
         },
         {
