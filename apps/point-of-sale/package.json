@@ -32,7 +32,7 @@
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
-    "@intlify/eslint-plugin-vue-i18n": "^2.0.0",
+    "@intlify/eslint-plugin-vue-i18n": "^3.0.0",
     "@rushstack/eslint-patch": "^1.10.4",
     "@tsconfig/node18": "^18.2.4",
     "@types/eslint": "^9.6.1",
