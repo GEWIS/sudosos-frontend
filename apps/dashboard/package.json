@@ -43,7 +43,7 @@
     "@rushstack/eslint-patch": "^1.2.0",
     "@tsconfig/node18": "^18.2.2",
     "@types/lodash": "^4.14.198",
-    "@types/node": "^18.19.4",
+    "@types/node": "^22.7.6",
     "@types/uuid": "^9.0.2",
     "@vitejs/plugin-vue": "^5.0.2",
     "@vue/eslint-config-prettier": "^9.0.0",
