@@ -19,6 +19,7 @@
         "header": "Gebruikersinstellingen",
         "changePin": "PIN wijzigen",
         "changePassword": "Wachtwoord wijzigen",
+        "changeNFC": "NFC wijzigen",
         "apiKeys": "API-sleutels",
         "changeApiKey": "API-sleutel wijzigen",
         "deleteApiKey": "API-sleutel verwijderen",
