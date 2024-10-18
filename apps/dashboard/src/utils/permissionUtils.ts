@@ -44,6 +44,7 @@ export function isAllowed(
 
     // For all found permission records, get a single list of all attributes the user is allowed to access
     const allPermissions = userStore.current.rolesWithPermissions.flatMap(r => r.permissions);
+
     const applicableAttributes = allPermissions
         .filter(p => p.entity == entity).flatMap(p => p.actions)
         .filter(a => a.action == action).flatMap(a => a.relations)
@@ -59,7 +60,7 @@ export function isAllowed(
     // Find all attributes that the user should have, but the current set of permissions does not provide
     const disallowedAttributes = attributes.filter((a) => !applicableAttributes.includes(a));
     // Return whether the user is allowed to access all attributes
-    return disallowedAttributes.length === 0 || disallowedAttributes.includes('any');
+    return disallowedAttributes.length === 0;
 }
 
 /**
