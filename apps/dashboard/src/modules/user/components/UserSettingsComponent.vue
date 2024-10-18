@@ -23,6 +23,13 @@
             @click="showPasswordDialog = true"
         />
       </div>
+      <div class="flex flex-row align-items-center w-11">
+        <p class="flex-grow-1 my-1">{{ t('modules.user.settings.changeNFC') }}</p>
+        <i
+            class="pi pi-arrow-up-right text-gray-500 flex align-items-center cursor-pointer"
+            @click="showNFCDialog = true"
+        />
+      </div>
       <Divider />
       <h4 class="mt-0">{{ t('modules.user.settings.apiKeys') }}</h4>
       <div class="flex flex-row align-items-center w-11">
@@ -59,6 +66,15 @@
       <ChangePasswordForm :form="slotProps.form" @submit:success="showPasswordDialog = false"/>
     </template>
   </FormDialog>
+  <FormDialog
+      v-model="showNFCDialog"
+      :form="nfcForm"
+      :header="t('modules.user.settings.changeNFC')"
+  >
+    <template #form="slotProps">
+      <ChangeNFCForm :form="slotProps.form" @submit:success="showNFCDialog = false"/>
+    </template>
+  </FormDialog>
   <ConfirmDialog />
 </template>
 
@@ -72,10 +88,11 @@ import Divider from "primevue/divider";
 import InputSwitch from "primevue/inputswitch";
 import ChangePinForm from "@/modules/user/components/forms/ChangePinForm.vue";
 import FormDialog from "@/components/FormDialog.vue";
-import { editPasswordSchema, editPinSchema } from "@/utils/validation-schema";
+import { editNFCSchema, editPasswordSchema, editPinSchema } from "@/utils/validation-schema";
 import { schemaToForm } from "@/utils/formUtils";
 import FormSection from "@/components/FormSection.vue";
 import ChangePasswordForm from "@/modules/user/components/forms/ChangePasswordForm.vue";
+import ChangeNFCForm from "@/modules/user/components/forms/ChangeNFCForm.vue";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import apiService from "@/services/ApiService";
@@ -90,8 +107,10 @@ const props = defineProps({
 
 const { t } = useI18n();
 const showPasswordDialog = ref(false);
+const showNFCDialog = ref(false);
 const pinForm = schemaToForm(editPinSchema);
 const passwordForm = schemaToForm(editPasswordSchema);
+const nfcForm = schemaToForm(editNFCSchema);
 const editPin = ref(true);
 const confirm = useConfirm();
 const toast = useToast();
