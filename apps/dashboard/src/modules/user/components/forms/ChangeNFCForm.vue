@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-column justify-content-between gap-2">
-    <InputSpan :label="t('modules.user.profile.Change NFC')"
+    <InputSpan :label="t('modules.user.profile.nfcNew')"
                :value="form.model.nfcCode.value.value"
                :attributes="form.model.nfcCode.attr.value"
                @update:value="form.context.setFieldValue('nfcCode', $event)"
@@ -48,7 +48,7 @@ setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
           toast.add({
             severity: "success",
             summary: t('common.toast.success.success'),
-            detail: `${t('common.toast.success.nfcUpdated')}`,
+            detail: `${t('common.toast.success.nfcCodeUpdated')}`,
             life: 3000,
           });
           props.form.context.resetForm();
