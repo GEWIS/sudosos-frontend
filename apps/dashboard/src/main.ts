@@ -86,7 +86,7 @@ await beforeLoad();
 
 try {
   app.mount('#app');
-} catch (error) {
+} catch {
   clearTokenInStorage();
   const authStore = useAuthStore();
   authStore.logout();
