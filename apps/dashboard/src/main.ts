@@ -25,14 +25,12 @@ import FileUpload from "primevue/fileupload";
 import Tooltip from 'primevue/tooltip';
 import SelectButton from "primevue/selectbutton";
 import 'primeflex/primeflex.css';
-import { clearTokenInStorage, populateStoresFromToken, useAuthStore } from "@sudosos/sudosos-frontend-common";
 import ToastService from "primevue/toastservice";
 import Toast from "primevue/toast";
 import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css'; // Import PrimeIcons
 
 import 'primeflex/primeflex.css';
-import apiService from './services/ApiService';
 import Accordion from "primevue/accordion";
 import Skeleton from "primevue/skeleton";
 import IconField from "primevue/iconfield";
@@ -43,10 +41,10 @@ import i18n from './utils/i18nUtils';
 import ConfirmDialog from "primevue/confirmdialog";
 import ConfirmationService from 'primevue/confirmationservice';
 import InputSwitch from "primevue/inputswitch";
+import beforeLoad from '@/utils/beforeLoadUtil';
+import { clearTokenInStorage, useAuthStore } from '@sudosos/sudosos-frontend-common';
 
 const app = createApp(App);
-
-
 
 app.use(i18n);
 app.use(createPinia());
@@ -60,7 +58,7 @@ app.component('Button', Button);
 app.component('InputText', InputText);
 app.component('InputSwitch', InputSwitch);
 app.component('Menubar', Menubar);
-app.component('Message', Message)
+app.component('Message', Message);
 app.component('Panel', Panel);
 app.component('DataTable', DataTable);
 app.component('DataView', DataView);
@@ -84,11 +82,13 @@ app.component('Steps', Steps);
 app.component('Calendar', Calendar);
 app.component('ConfirmDialog', ConfirmDialog);
 
-populateStoresFromToken(apiService).then(() => {
-    app.mount('#app');
-}).catch(() => {
-    clearTokenInStorage();
-    const authStore = useAuthStore();
-    authStore.logout();
-    app.mount('#app');
-});
+await beforeLoad();
+
+try {
+  app.mount('#app');
+} catch (error) {
+  clearTokenInStorage();
+  const authStore = useAuthStore();
+  authStore.logout();
+  app.mount('#app');
+}
