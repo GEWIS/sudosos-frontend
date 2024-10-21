@@ -152,12 +152,13 @@ const navItems = computed(() => [
   },
   {
     label: t('common.navigation.admin'),
-    visible: isAllowed('get', ['all'], 'User', ['any']),
+    visible: isAllowed('update', ['all'], 'User', ['any'])
+        || isAllowed('get', ['all'], 'Banner', ['any']),
     items: [
       {
         label: t('common.navigation.userOverview'),
         route: '/user-overview',
-        visible: isAllowed('get', ['all'], 'User', ['any']),
+        visible: isAllowed('update', ['all'], 'User', ['any']),
       },
       {
         label: t('common.navigation.banners'),
@@ -169,6 +170,10 @@ const navItems = computed(() => [
   {
     label: t('common.navigation.financial'),
     notifications: getFinancialNotifications(),
+    visible: isAllowed('update', ['all'], 'User', ['any'])
+        || isAllowed('get', ['all'], 'Invoice', ['any'])
+        || isAllowed('get', ['all'], 'Fine', ['any'])
+        || isAllowed('get', ['all'], 'SellerPayout', ['any']),
     items: [
       {
         label: t('common.navigation.userOverview'),
@@ -207,7 +212,7 @@ const navItems = computed(() => [
         label: t('common.navigation.posOverview'),
         route: '/point-of-sale/overview',
         // TODO: Change to `action: get` after https://github.com/GEWIS/sudosos-backend/issues/62 is fully finished
-        visible: isAllowed('update', ['own', 'organ'], 'PointOfSale', ['any']),
+        visible: isAllowed('get', ['own', 'organ'], 'PointOfSale', ['any']),
       },
         ...organs.value,
     ]
