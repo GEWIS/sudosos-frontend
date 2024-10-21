@@ -42,7 +42,6 @@ import ConfirmDialog from "primevue/confirmdialog";
 import ConfirmationService from 'primevue/confirmationservice';
 import InputSwitch from "primevue/inputswitch";
 import beforeLoad from '@/utils/beforeLoadUtil';
-import { clearTokenInStorage, useAuthStore } from '@sudosos/sudosos-frontend-common';
 
 const app = createApp(App);
 
@@ -84,11 +83,4 @@ app.component('ConfirmDialog', ConfirmDialog);
 
 await beforeLoad();
 
-try {
-  app.mount('#app');
-} catch {
-  clearTokenInStorage();
-  const authStore = useAuthStore();
-  authStore.logout();
-  app.mount('#app');
-}
+app.mount('#app');
