@@ -19,8 +19,7 @@ import {
     UsersApi,
     VatGroupsApi, DebtorsApi, SellerPayoutsApi,
 } from '@sudosos/sudosos-client';
-import axios from "axios";
-import type { AxiosInstance } from "axios";
+import axios, { AxiosInstance } from "axios";
 import { AxiosResponse } from "axios";
 import { getTokenFromStorage, updateTokenIfNecessary } from "../helpers/TokenHelper";
 
