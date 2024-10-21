@@ -71,7 +71,7 @@ router.beforeEach((to, from, next) => {
   const userStore = useUserStore();
   const settingsStore = useSettingsStore();
 
-  if (!settingsStore.activeSettings.maintenanceMode && to.name !== 'maintenance') {
+  if (settingsStore.activeSettings.maintenanceMode && to.name !== 'maintenance') {
     next ({ name: 'maintenance' });
     return;
   }
