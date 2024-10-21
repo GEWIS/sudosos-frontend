@@ -3,7 +3,7 @@
     <template #topAction>
       <div v-if="showCreate || associatedPos" class="flex justify-content-endg gap-2">
         <Button
-            v-if="associatedPos"
+            v-if="posEditAllowed && associatedPos"
             @click="openContainerAdd()"
             outlined>{{ t('modules.seller.productContainers.containers.addExisting') }}</Button>
         <Button
@@ -88,6 +88,10 @@ const props = defineProps({
   },
   associatedPos: {
     type: Object as PropType<PointOfSaleWithContainersResponse>,
+    required: false
+  },
+  posEditAllowed: {
+    type: Boolean,
     required: false
   }
 });

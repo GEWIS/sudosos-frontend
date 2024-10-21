@@ -1,5 +1,4 @@
-import { useUserStore } from "@sudosos/sudosos-frontend-common";
-import { type BaseUserResponse } from "@sudosos/sudosos-client";
+import { useAuthStore, useUserStore } from "@sudosos/sudosos-frontend-common";
 
 /**
  * Performs an access check for the given parameters.
@@ -67,15 +66,16 @@ export function isAllowed(
 
 /**
  * Get the relation of the current user to a certain user.
- * @param user The user that the current user needs relation to.
+ * @param userid The user that the current user needs relation to.
  * @returns {string} - The relation, usually own if self, organ if part of organ, and all if there is no relation
  */
-export function getRelation(user: BaseUserResponse): string {
-    const userStore = useUserStore();
+export function getRelation(userid: number): string {
+    const authStore = useAuthStore();
 
-    if (userStore.current.user?.id == user.id) return 'own';
+    if (authStore.getUser?.id == userid) return 'own';
 
-    const roles = userStore.current.rolesWithPermissions.map(r => r.id);
-    if (roles.includes(user.id)) return 'organ';
+    const roles = authStore.getOrgans?.map(r => r.id);
+    if (!roles) return 'all';
+    if (roles.includes(userid)) return 'organ';
     return 'all'; // No relation means the all relation
 }
