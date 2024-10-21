@@ -883,6 +883,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash@npm:^4.17.12":
+  version: 4.17.12
+  resolution: "@types/lodash@npm:4.17.12"
+  checksum: 10c0/106008f628ea3c74ed7ee7842dee79e230c84e3721ac38c293700031adb5bd130113048c22f476dbde0d0c119506b0fc447d4bd62eca922682d11e00e1377967
+  languageName: node
+  linkType: hard
+
 "@types/minimatch@npm:^3.0.3":
   version: 3.0.5
   resolution: "@types/minimatch@npm:3.0.5"
@@ -5229,6 +5236,7 @@ __metadata:
     "@sudosos/sudosos-client": "github:GEWIS/sudosos-client#e876cfa72b0e7d5ff7cd7cd6a1a3a1fcb3bbda9c"
     "@tsconfig/node-lts": "npm:^20.1.3"
     "@types/dinero.js": "npm:^1.9.4"
+    "@types/lodash": "npm:^4.17.12"
     "@types/node": "npm:^18.19.4"
     "@vitejs/plugin-vue": "npm:^5.0.2"
     "@vue/eslint-config-prettier": "npm:^9.0.0"
@@ -5243,6 +5251,7 @@ __metadata:
     eslint-plugin-vue: "npm:^9.11.0"
     fuse.js: "npm:^7.0.0"
     jwt-decode: "npm:^4.0.0"
+    lodash: "npm:^4.17.21"
     npm-run-all: "npm:^4.1.5"
     pinia: "npm:^2.1.3"
     prettier: "npm:^3.1.1"
@@ -5250,7 +5259,7 @@ __metadata:
     primeicons: "npm:^6.0.1"
     primevue: "npm:^3.49.0"
     sass: "npm:^1.63.6"
-    typescript: "npm:^5.3.3"
+    typescript: "npm:~5.5.3"
     vite: "npm:^5.0.12"
     vue: "npm:^3.3.4"
     vue-router: "npm:^4.2.2"
@@ -5530,13 +5539,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.3.3":
-  version: 5.6.3
-  resolution: "typescript@npm:5.6.3"
+"typescript@npm:~5.5.3":
+  version: 5.5.4
+  resolution: "typescript@npm:5.5.4"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/44f61d3fb15c35359bc60399cb8127c30bae554cd555b8e2b46d68fa79d680354b83320ad419ff1b81a0bdf324197b29affe6cc28988cd6a74d4ac60c94f9799
+  checksum: 10c0/422be60f89e661eab29ac488c974b6cc0a660fb2228003b297c3d10c32c90f3bcffc1009b43876a082515a3c376b1eefcce823d6e78982e6878408b9a923199c
   languageName: node
   linkType: hard
 
@@ -5550,13 +5559,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.3.3#optional!builtin<compat/typescript>":
-  version: 5.6.3
-  resolution: "typescript@patch:typescript@npm%3A5.6.3#optional!builtin<compat/typescript>::version=5.6.3&hash=8c6c40"
+"typescript@patch:typescript@npm%3A~5.5.3#optional!builtin<compat/typescript>":
+  version: 5.5.4
+  resolution: "typescript@patch:typescript@npm%3A5.5.4#optional!builtin<compat/typescript>::version=5.5.4&hash=379a07"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/7c9d2e07c81226d60435939618c91ec2ff0b75fbfa106eec3430f0fcf93a584bc6c73176676f532d78c3594fe28a54b36eb40b3d75593071a7ec91301533ace7
+  checksum: 10c0/73409d7b9196a5a1217b3aaad929bf76294d3ce7d6e9766dd880ece296ee91cf7d7db6b16c6c6c630ee5096eccde726c0ef17c7dfa52b01a243e57ae1f09ef07
   languageName: node
   linkType: hard
 
