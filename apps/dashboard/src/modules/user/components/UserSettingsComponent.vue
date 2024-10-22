@@ -23,6 +23,13 @@
             @click="showPasswordDialog = true"
         />
       </div>
+      <div class="flex flex-row align-items-center w-11">
+        <p class="flex-grow-1 my-1">{{ t('modules.user.settings.changeNFC') }}</p>
+        <i
+            class="pi pi-arrow-up-right text-gray-500 flex align-items-center cursor-pointer"
+            @click="startScan()"
+        />
+      </div>
       <Divider />
       <h4 class="mt-0">{{ t('modules.user.settings.apiKeys') }}</h4>
       <div class="flex flex-row align-items-center w-11">
@@ -80,6 +87,58 @@ import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import apiService from "@/services/ApiService";
 import { handleError } from "@/utils/errorUtils";
+import { useUserStore } from "@sudosos/sudosos-frontend-common";
+
+const status: Ref<string> = ref("");
+
+async function startScan() {
+  try {
+    if (!('NDEFReader' in window)) {
+      status.value = "Web NFC is not supported on this device.";
+      console.log('no');
+      toast.add({
+            severity: "error",
+            summary: "Unsupported",
+            detail: "Browser is not mobile and does not have Web NFC.",
+            life: 3000,
+          });
+    } else {
+      const ndef = new (window as any).NDEFReader();
+      await ndef.scan();
+      toast.add({
+        severity: "info",
+        summary: "Scan started",
+        detail: "NFC Scan started, please hold your NFC card to your phone!",
+        life: 3000,
+      });
+
+      // Handle the NFC tag when it is detected
+      ndef.onreading = async (event: NDEFReadingEvent) => {
+
+        // Extract and log the NFC tag's ID (serial number)
+        const tagId = event.serialNumber;
+        toast.add({
+          severity: "success",
+          summary: "Scan finished",
+          detail: "NFC Scan finished, NFC ID added.",
+          life: 3000,
+        });
+        console.log(tagId);
+        await apiService.user.updateUserNfc(useUserStore().getCurrentUser.user.id, { nfcCode: tagId });
+      };
+    }
+  } catch (error) {
+    toast.add({
+      severity: "error",
+      summary: "Scan finished",
+      detail: "NFC Scan finished, NFC ID added.",
+      life: 3000,
+    });
+    console.error("Error starting NFC reader:", error);
+    status.value = "Error starting NFC reader";
+  }
+}
+
 
 const props = defineProps({
   user: {

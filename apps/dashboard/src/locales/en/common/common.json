@@ -71,6 +71,7 @@
                 "apiKeyChanged": "Successfully changed API key.",
                 "apiKeyDeleted": "Successfully deleted API key.",
                 "passwordUpdated": "Successfully updated password.",
+                "nfcCodeUpdated": "Successfully updated NFC code.",
                 "pinUpdated": "Successfully updated PIN.",
                 "finesNotified": "Successfully notified users.",
                 "finesHandedOut": "Successfully handed out fines.",
