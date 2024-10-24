@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import CardComponent from '@/components/CardComponent.vue';
-import { computed, ref, onMounted } from "vue";
+import { computed, ref, onMounted, watch } from "vue";
 import type { UserResponse } from '@sudosos/sudosos-client';
 import apiService from '@/services/ApiService';
 import { formatPrice } from "@/utils/formatterUtils";
@@ -66,10 +66,16 @@ const getRouterParams = computed(() => {
   return undefined;
 });
 
+// Ideally this is done less dirty, and instead of refreshing, we make the mutations from the store reactive
+const emit = defineEmits(['updateMutations']);
+watch(userBalance, () => {
+  emit('updateMutations');
+});
 
 onMounted(async () => {
   await userStore.fetchUserBalance(props.user.id, apiService);
 });
+
 
 const isAllFine = computed(() => {
   if (!userBalance.value?.fine) return false;
