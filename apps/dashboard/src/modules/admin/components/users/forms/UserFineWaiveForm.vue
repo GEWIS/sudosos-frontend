@@ -14,7 +14,7 @@ import InputSpan from "@/components/InputSpan.vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "primevue/usetoast";
 import { type Form, setSubmit } from "@/utils/formUtils";
-import type { UserResponse } from "@sudosos/sudosos-client";
+import type { BalanceResponse, UserResponse } from "@sudosos/sudosos-client";
 import { type PropType } from "vue";
 import * as yup from "yup";
 import { waiveUserFineSchema } from "@/utils/validation-schema";
@@ -30,7 +30,11 @@ const isVisible = defineModel('isVisible');
 const props = defineProps({
   user: {
     type: Object as PropType<UserResponse>,
-    required: true,
+    required: true
+  },
+  balance: {
+    type: Object as PropType<BalanceResponse>,
+    required: true
   },
   form: {
     type: Object as PropType<Form<yup.InferType<typeof waiveUserFineSchema>>>,
@@ -41,6 +45,11 @@ const props = defineProps({
 const userStore = useUserStore();
 
 setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
+  if (props.balance.fine && values.amount*100 > props.balance.fine.amount) {
+    props.form.context.setFieldError('amount', 'You cannot waive more than the fine of the user.');
+    return;
+  }
+
   await userStore.waiveUserFine(
       props.user.id,
       {
@@ -50,7 +59,7 @@ setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
       },
       apiService
   ).then(async () => {
-
+    props.form.context.setFieldValue('amount', 0);
     toast.add({
       severity: 'success',
       summary: t('common.toast.success.success'),
