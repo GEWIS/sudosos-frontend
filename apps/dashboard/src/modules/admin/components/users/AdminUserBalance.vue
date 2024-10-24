@@ -18,14 +18,14 @@
           : t('modules.admin.singleUser.balance.someIsFines', { fine: displayFine }) }}
       </p>
     </div>
-    <AdminUserFineWaiveModal :user="props.user" :is-visible="isFineWaiveModalVisible" />
+    <AdminUserFineWaiveModal :user="props.user" :balance="userBalance" v-model:is-visible="isFineWaiveModalVisible" />
   </CardComponent>
 </template>
 
 <script setup lang="ts">
 import CardComponent from '@/components/CardComponent.vue';
-import { computed, ref, onMounted, watch } from "vue";
-import type { UserResponse } from '@sudosos/sudosos-client';
+import { computed, ref, onMounted, watch, type ComputedRef } from "vue";
+import type { BalanceResponse, UserResponse } from '@sudosos/sudosos-client';
 import apiService from '@/services/ApiService';
 import { formatPrice } from "@/utils/formatterUtils";
 import { useI18n } from "vue-i18n";
@@ -39,7 +39,7 @@ const props = defineProps<{
 const { t } = useI18n();
 const userStore = useUserStore();
 
-const userBalance = computed(() => {
+const userBalance: ComputedRef<BalanceResponse> = computed(() => {
   return userStore.getBalanceById(props.user.id);
 });
 const isOrgan = computed(() => props.user?.type == 'ORGAN');
