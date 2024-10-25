@@ -18,7 +18,8 @@
           "allIsFines": "Alles hiervan is een boete",
           "someIsFines": "Waarvan {fine} boetes zijn",
           "waiveFinesConfirmation": "Weet je zeker dat je de boetes wilt kwijtschelden? Dit kan niet ongedaan worden gemaakt.",
-          "waiveFinesConfirmationTitle": "Boetes kwijtschelden"
+          "waiveFinesConfirmationTitle": "Boetes kwijtschelden",
+          "waiveFineTooMuch": "You cannot waive more than the fine of the user."
         }
       },
       "banners": {

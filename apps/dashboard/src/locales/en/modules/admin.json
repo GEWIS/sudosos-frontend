@@ -18,7 +18,8 @@
           "allIsFines": "All of which is a fine",
           "someIsFines": "Of which {fine} is fines",
           "waiveFinesConfirmation": "Are you sure you want to waive the fines? This cannot be undone.",
-          "waiveFinesConfirmationTitle": "Waive fines"
+          "waiveFinesConfirmationTitle": "Waive fines",
+          "waiveFineTooMuch": "You cannot waive more than the fine of the user."
         }
       },
       "banners": {

@@ -8,7 +8,7 @@
     class="w-19rem"
   >
     <div class="flex flex-column justify-content-center">
-      <div v-if="userBalance == null">
+      <div v-if="userBalance === null">
         <Skeleton class="h-4rem w-10rem mx-1rem my-6"/>
       </div>
       <h1 v-else class="text-center font-medium text-6xl">{{ displayBalance }}</h1>
@@ -18,7 +18,7 @@
           : t('modules.admin.singleUser.balance.someIsFines', { fine: displayFine }) }}
       </p>
     </div>
-    <AdminUserFineWaiveModal :user="props.user" :balance="userBalance" v-model:is-visible="isFineWaiveModalVisible" />
+    <AdminUserFineWaiveModal v-if="userBalance" :user="props.user" :balance="userBalance" v-model:is-visible="isFineWaiveModalVisible" />
   </CardComponent>
 </template>
 
@@ -39,7 +39,7 @@ const props = defineProps<{
 const { t } = useI18n();
 const userStore = useUserStore();
 
-const userBalance: ComputedRef<BalanceResponse> = computed(() => {
+const userBalance: ComputedRef<BalanceResponse | null> = computed(() => {
   return userStore.getBalanceById(props.user.id);
 });
 const isOrgan = computed(() => props.user?.type == 'ORGAN');

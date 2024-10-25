@@ -46,14 +46,17 @@ const userStore = useUserStore();
 
 setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
   if (props.balance.fine && values.amount*100 > props.balance.fine.amount) {
-    props.form.context.setFieldError('amount', 'You cannot waive more than the fine of the user.');
+    props.form.context.setFieldError(
+        'amount',
+        t('modules.admin.singleUser.balance.waiveFineTooMuch')
+    );
     return;
   }
 
   await userStore.waiveUserFine(
       props.user.id,
       {
-        amount: values.amount*100 || 0,
+        amount: values.amount*100,
         currency: 'EUR',
         precision: 2
       },
