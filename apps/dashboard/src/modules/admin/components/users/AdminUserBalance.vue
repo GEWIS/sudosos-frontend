@@ -18,7 +18,11 @@
           : t('modules.admin.singleUser.balance.someIsFines', { fine: displayFine }) }}
       </p>
     </div>
-    <AdminUserFineWaiveModal v-if="userBalance" :user="props.user" :balance="userBalance" v-model:is-visible="isFineWaiveModalVisible" />
+    <AdminUserFineWaiveModal
+        v-if="userBalance"
+        :user="props.user"
+        :balance="userBalance"
+        v-model:is-visible="isFineWaiveModalVisible" />
   </CardComponent>
 </template>
 
@@ -31,6 +35,7 @@ import { formatPrice } from "@/utils/formatterUtils";
 import { useI18n } from "vue-i18n";
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
 import AdminUserFineWaiveModal from "@/modules/admin/components/users/AdminUserFineWaiveModal.vue";
+import Dinero from "dinero.js";
 
 const props = defineProps<{
     user: UserResponse;
@@ -84,7 +89,10 @@ const isAllFine = computed(() => {
 
 const displayFine = computed(() => {
   if (!userBalance.value?.fine) return undefined;
-  return formatPrice(userBalance.value.fine || { amount: 0, currency: 'EUR', precision: 2 });
+  return formatPrice(
+      Dinero(userBalance.value.fine as Dinero.Options)
+          .subtract(Dinero(userBalance.value.fineWaived as Dinero.Options)).toObject()
+      || { amount: 0, currency: 'EUR', precision: 2 });
 });
 
 const displayBalance = computed(() => {
