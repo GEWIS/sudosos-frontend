@@ -13,7 +13,6 @@
       </div>
       <Divider />
       <UserFineWaiveForm
-
           :user="props.user"
           :balance="props.balance"
           :form="slotProps.form"
@@ -30,7 +29,7 @@ import { schemaToForm } from "@/utils/formUtils";
 import { useI18n } from "vue-i18n";
 import UserFineWaiveForm from "@/modules/admin/components/users/forms/UserFineWaiveForm.vue";
 import type { BalanceResponse, UserResponse } from "@sudosos/sudosos-client";
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { formatPrice } from "@/utils/formatterUtils";
 
 const { t } = useI18n();
@@ -43,6 +42,13 @@ const props = defineProps<{
   user: UserResponse,
   balance: BalanceResponse
 }>();
+
+onMounted(() => {
+  // If already fine waived then add that as placeholder.
+  if(props.balance.fineWaived) {
+    form.context.setFieldValue('amount', props.balance.fineWaived.amount/100);
+  }
+});
 
 const displayFine = computed(() => {
   return formatPrice(props.balance.fine

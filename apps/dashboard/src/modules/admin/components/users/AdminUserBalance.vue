@@ -91,7 +91,10 @@ const displayFine = computed(() => {
   if (!userBalance.value?.fine) return undefined;
   return formatPrice(
       Dinero(userBalance.value.fine as Dinero.Options)
-          .subtract(Dinero(userBalance.value.fineWaived as Dinero.Options)).toObject()
+          .subtract(
+              Dinero(userBalance.value.fineWaived as Dinero.Options
+                  || { amount: 0, currency: 'EUR', precision: 2 })
+          ).toObject()
       || { amount: 0, currency: 'EUR', precision: 2 });
 });
 

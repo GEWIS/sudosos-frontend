@@ -72,7 +72,6 @@ setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
       },
       apiService
   ).then(async () => {
-    props.form.context.setFieldValue('amount', 0);
     toast.add({
       severity: 'success',
       summary: t('common.toast.success.success'),
