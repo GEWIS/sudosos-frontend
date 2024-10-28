@@ -54,7 +54,9 @@ const getAction = computed(() => {
   if (isOrgan.value) {
     return t('modules.seller.payouts.payout.CreatePayout');
   }
-  return t('modules.admin.singleUser.balance.waiveFinesConfirmationTitle');
+  return userBalance.value?.fine
+      ? t('modules.admin.singleUser.balance.waiveFinesConfirmationTitle')
+      : null;
 });
 
 const getRouterLink = computed(() => {
