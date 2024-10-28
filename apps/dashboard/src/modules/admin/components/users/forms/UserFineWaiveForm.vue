@@ -1,11 +1,17 @@
 <template>
-  <div class="flex flex-column gap-2">
+  <div class="flex flex-column">
     <InputSpan :label="t('common.amount')"
                :value="form.model.amount.value.value"
                :attributes="form.model.amount.attr.value"
                @update:value="form.context.setFieldValue('amount', $event)"
                :errors="form.context.errors.value.amount"
                id="name" :placeholder="t('common.amount')" type="currency" />
+    <div
+        class="flex justify-content-end font-italic underline cursor-pointer text-color-secondary"
+        @click="setToWaiveAll"
+    >
+      {{ t('modules.admin.singleUser.balance.waiveAllFines') }}
+    </div>
   </div>
 </template>
 
@@ -43,6 +49,10 @@ const props = defineProps({
 });
 
 const userStore = useUserStore();
+
+function setToWaiveAll() {
+  props.form.context.setFieldValue('amount', props.balance.fine!.amount/100);
+}
 
 setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
   if (props.balance.fine && values.amount*100 > props.balance.fine.amount) {
