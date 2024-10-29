@@ -81,6 +81,6 @@ app.component('Steps', Steps);
 app.component('Calendar', Calendar);
 app.component('ConfirmDialog', ConfirmDialog);
 
-await beforeLoad();
-
-app.mount('#app');
+beforeLoad().then(() => {
+  app.mount('#app');
+});
