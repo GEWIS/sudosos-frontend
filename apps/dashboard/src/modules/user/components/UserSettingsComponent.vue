@@ -87,56 +87,52 @@ import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import apiService from "@/services/ApiService";
 import { handleError } from "@/utils/errorUtils";
-import { useUserStore } from "@sudosos/sudosos-frontend-common";
-
-const status: Ref<string> = ref("");
 
 async function startScan() {
-  try {
-    if (!('NDEFReader' in window)) {
-      status.value = "Web NFC is not supported on this device.";
-      console.log('no');
-      toast.add({
-            severity: "error",
-            summary: "Unsupported",
-            detail: "Browser is not mobile and does not have Web NFC.",
-            life: 3000,
-          });
-    } else {
-      const ndef = new (window as any).NDEFReader();
-      await ndef.scan();
-      toast.add({
-        severity: "info",
-        summary: "Scan started",
-        detail: "NFC Scan started, please hold your NFC card to your phone!",
-        life: 3000,
-      });
-
-      // Handle the NFC tag when it is detected
-      ndef.onreading = async (event: NDEFReadingEvent) => {
-
-        // Extract and log the NFC tag's ID (serial number)
-        const tagId = event.serialNumber;
-        toast.add({
-          severity: "success",
-          summary: "Scan finished",
-          detail: "NFC Scan finished, NFC ID added.",
+  if (!('NDEFReader' in window)) {
+    toast.add({
+          severity: "error",
+          summary: t("common.toast.error.error"),
+          detail: t("common.toast.error.unsupported"),
           life: 3000,
         });
-        console.log(tagId);
-        await apiService.user.updateUserNfc(useUserStore().getCurrentUser.user.id, { nfcCode: tagId });
-      };
-    }
-  } catch (error) {
+    return;
+  }
+
+  const ndef = new window.NDEFReader();
+  await ndef.scan().then(() => {
     toast.add({
-      severity: "error",
-      summary: "Scan finished",
-      detail: "NFC Scan finished, NFC ID added.",
+      severity: "info",
+      summary: t("common.toast.info.info"),
+      detail: t("common.toast.info.scanStarted"),
       life: 3000,
     });
-    console.error("Error starting NFC reader:", error);
-    status.value = "Error starting NFC reader";
-  }
+  });
+
+  // Handle the NFC tag when it is detected
+  ndef.onreading = async (event: NDEFReadingEvent) => {
+
+    // Extract and log the NFC tag's ID (serial number)
+    const tagId = event.serialNumber;
+    console.log(tagId);
+    await apiService.user.updateUserNfc(props.user.id, { nfcCode: tagId })
+        .then(() => {
+          toast.add({
+            severity: "success",
+            summary: t('common.toast.success.success'),
+            detail: t('common.toast.success.nfcCodeUpdated'),
+            life: 3000,
+          });
+        })
+        .catch(() => {
+          toast.add({
+            severity: "error",
+            summary: t("common.toast.error.error"),
+            detail: t("common.toast.error.scanNotStarted"),
+            life: 3000,
+          });
+        });
+  };
 }
 
 
