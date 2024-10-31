@@ -56,7 +56,7 @@ const getAction = computed(() => {
   }
   return userBalance.value?.fine
       ? t('modules.admin.singleUser.balance.waiveFinesConfirmationTitle')
-      : null;
+      : undefined;
 });
 
 const getRouterLink = computed(() => {
