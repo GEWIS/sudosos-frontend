@@ -61,6 +61,7 @@ onBeforeMount(() => {
 const loginViaGEWIS = () => {
   window.location.href = `https://gewis.nl/token/${import.meta.env.VITE_APP_GEWIS_TOKEN}`;
 };
+
 </script>
 
 <style scoped lang="scss">
