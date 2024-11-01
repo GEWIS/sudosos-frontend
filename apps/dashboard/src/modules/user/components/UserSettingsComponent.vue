@@ -114,7 +114,7 @@ async function startScan() {
 
     // Extract and log the NFC tag's ID (serial number)
     const tagId = event.serialNumber;
-    console.log(tagId);
+
     await apiService.user.updateUserNfc(props.user.id, { nfcCode: tagId })
         .then(() => {
           toast.add({
