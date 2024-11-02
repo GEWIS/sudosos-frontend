@@ -4,14 +4,13 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, PropType } from "vue";
+import { useToast } from "primevue/usetoast";
+
+const toast = useToast();
 
 const props = defineProps({
-  handleNfcLogin: {
+  handleNfcUpdate: {
     type: Function as PropType<(nfcCode: string) => Promise<void>>,
-    required: true
-  },
-  handleEanLogin: {
-    type: Function as PropType<(eanCode: string) => Promise<void>>,
     required: true
   }
 });
@@ -29,18 +28,21 @@ const onInput = (event: KeyboardEvent): void => {
       const checkCode = capturedCode.substring(0, 3);
       switch (checkCode) {
         case 'nfc':
-          props.handleNfcLogin(capturedCode.substring(3));
-          break;
-        case 'ean':
-          // capturedCode.substring(3)
+          props.handleNfcUpdate(capturedCode.substring(3)).then(() => {
+            toast.add({ severity: 'success', summary: 'NFC code accepted',
+              detail: 'Your NFC code has been accepted.' });
+          }).catch((err) => {
+            console.error(err);
+            toast.add({ severity: 'error', summary: 'NFC code not accepted',
+              detail: 'Your NFC code could not be accepted. Please try again.' });
+          });
           break;
         default:
           //TODO toast error for user
       }
       captures = [];
-  } else {
-    captures.push(event);
-    console.log(captures);
+    } else {
+      captures.push(event);
   }
 };
 

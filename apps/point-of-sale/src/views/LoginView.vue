@@ -169,8 +169,6 @@ const login = () => {
 };
 
 const nfcLogin = async (nfcCode: string) => {
-  console.log(nfcCode);
-  console.log("nfc");
   try {
     await authStore.nfcLogin(nfcCode, apiService).then(async () => {
       await loginSucces();
@@ -181,8 +179,6 @@ const nfcLogin = async (nfcCode: string) => {
 };
 
 const eanLogin = async (eanCode: string) => {
-  console.log(eanCode);
-  console.log("ean");
 
   try {
     await authStore.eanLogin(eanCode, apiService).then(async () => {
