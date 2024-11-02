@@ -1,8 +1,10 @@
 <template>
   <CardComponent header="User Selection">
+    <!-- TODO: Improve two way binding such that resetting the form will also reset the user selection -->
     <InputUserSpan :label="t('modules.financial.invoice.for')"
                    :type="GetAllUsersTypeEnum.Invoice"
                    @update:value="updateUser($event)"
+                   v-model:value="selectedUser"
                    class="mb-3"
     />
 
@@ -31,7 +33,7 @@
  * Component used to select the invoiced user and display the balance before and after the invoice.
  */
 
-import { computed, type PropType, type Ref, ref } from "vue";
+import {computed, type PropType, type Ref, ref, watch} from "vue";
 import { type Form, getProperty } from "@/utils/formUtils";
 import * as yup from "yup";
 import { createInvoiceObject } from "@/utils/validation-schema";
@@ -40,7 +42,7 @@ import {
   type DineroObjectResponse,
   type InvoiceUserResponse,
   GetAllUsersTypeEnum,
-  type UserResponse
+  type UserResponse, type BaseUserResponse
 } from "@sudosos/sudosos-client";
 import InputUserSpan from "@/components/InputUserSpan.vue";
 import { useI18n } from "vue-i18n";
@@ -55,6 +57,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+const selectedUser = ref<BaseUserResponse | undefined>(undefined);
 
 const transactionTotal = computed(() => {
   const total = getProperty(props.form, "transactionTotal");
@@ -92,6 +96,14 @@ const updateUser = (event: UserResponse ) => {
     updateDefaultUser(event.id);
   }
 };
+
+watch(() => props.form.model.forId.value.value, () => {
+  console.error("forId changed", props.form.model.forId.value.value);
+  if (props.form.model.forId.value.value === undefined) {
+    selectedUser.value = undefined;
+    userBalance.value = { precision: 2, currency: 'EUR', amount: 0 };
+  }
+});
 
 
 const userBalance: Ref<DineroObjectResponse> = ref({ precision: 2, currency: 'EUR', amount: 0 });
