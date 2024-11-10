@@ -68,7 +68,7 @@ const transactions = ref<BaseTransactionResponse[]>([]);
 
 const getUserRecentTransactions = () => {
   transactions.value = [];
-  if (cartStore.getBuyer) {
+  if (cartStore.getBuyer && cartStore.getBuyer.id === authStore.getUser?.id) {
     // todo clean up
     apiService.user
       .getUsersTransactions(
