@@ -11,7 +11,6 @@ import { usePointOfSaleStore } from '@/stores/pos.store';
 import apiService from '@/services/ApiService';
 import { useAuthStore } from "@sudosos/sudosos-frontend-common";
 import { DineroObjectResponse } from "@sudosos/sudosos-client/dist/api";
-import { useSettingStore } from "@/stores/settings.store";
 
 export interface CartProduct {
   container: ContainerResponse
@@ -56,11 +55,9 @@ export const useCartStore = defineStore('cart', {
       this.lockedIn = lockedIn;
     },
     async setBuyer(buyer: BaseUserResponse | null) {
-      const authStore = useAuthStore();
-      const settingStore = useSettingStore();
       this.buyer = buyer;
-      if (buyer && (buyer.id === authStore.getUser?.id || settingStore.isBorrelmode)) {
-        const response = await apiService.balance.getBalanceId(buyer.id);
+      if (buyer) {
+        const response = await apiService.balance.getBalanceId(buyer.id).catch(this.buyerBalance = null);
         this.buyerBalance = response.data.amount;
       } else {
         this.buyerBalance = null;
