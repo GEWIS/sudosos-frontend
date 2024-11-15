@@ -172,17 +172,13 @@ import { formatDateTime, formatPrice } from "@/utils/formatterUtils";
 import { useRouter } from "vue-router";
 import { type DineroObject } from 'dinero.js';
 import { floor, min } from "lodash";
-import type { FineHandoutEventResponse, GewisUserResponse, UserResponse } from "@sudosos/sudosos-client";
+import type { FineHandoutEventResponse, UserResponse } from "@sudosos/sudosos-client";
 import { fetchAllPages } from "@sudosos/sudosos-frontend-common";
 import { useToast } from "primevue/usetoast";
 import type { AxiosError } from "axios";
 import { handleError } from "@/utils/errorUtils";
 import Skeleton from "primevue/skeleton";
 import ProgressSpinner from "primevue/progressspinner";
-import UserCreateForm from "@/modules/admin/components/users/forms/UserCreateForm.vue";
-import FormDialog from "@/components/FormDialog.vue";
-import { schemaToForm } from "@/utils/formUtils";
-import { createUserSchema } from "@/utils/validation-schema";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -204,9 +200,6 @@ const [secondDate, secondDateAttrs] = defineField('secondDate');
 const showModal: Ref<boolean> = ref(false);
 const selectedHandoutEvent: Ref<FineHandoutEventResponse | undefined> = ref();
 const isLoading: Ref<boolean> = ref(true);
-const allUsers: Ref<GewisUserResponse[]> = ref(new Array(10));
-const showDialog: Ref<boolean> = ref(false);
-const form = schemaToForm(createUserSchema);
 const totalFines: Ref<DineroObject> = ref({
   amount: 0,
   currency: 'EUR',
@@ -272,7 +265,8 @@ const handlePickedDates = handleSubmit(async (values) => {
 });
 
 async function handleInfoPush(userId: number) {
-  router.push({ name: 'user', params: { userId } });
+  let route = router.resolve({ name: 'user', params: { userId } });
+  window.open(route.href, '_blank');
 }
 
 onMounted(async () => {
