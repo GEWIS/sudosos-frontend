@@ -94,7 +94,7 @@ async function startScan() {
   const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
   const isAndroid = /Android/i.test(navigator.userAgent);
 
-  if (!('NDEFReader' in window && !(isIOS || isAndroid))) {
+  if (!('NDEFReader' in window) && !(isIOS || isAndroid)) {
     toast.add({
       severity: "error",
       summary: t("common.toast.error.error"),
@@ -104,7 +104,7 @@ async function startScan() {
     return;
   }
 
-  if (!('NDEFReader' in window && isAndroid)) {
+  if (!('NDEFReader' in window) && isAndroid) {
     toast.add({
       severity: "error",
       summary: t("common.toast.error.error"),
@@ -113,7 +113,7 @@ async function startScan() {
     });
   }
 
-  if (!('NDEFReader' in window && isIOS)) {
+  if (!('NDEFReader' in window) && isIOS) {
     toast.add({
       severity: "error",
       summary: t("common.toast.error.error"),
@@ -157,7 +157,6 @@ async function startScan() {
         });
   };
 }
-
 
 const props = defineProps({
   user: {
