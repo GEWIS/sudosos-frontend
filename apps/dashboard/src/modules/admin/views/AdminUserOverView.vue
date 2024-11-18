@@ -191,19 +191,35 @@ function debounce(func: (skip: number) => Promise<void>, delay: number): (skip: 
 
 const apiCall: (skip: number) => Promise<void> = async (skip: number) => {
   await apiService.user
-    .getAllUsers(
-      Number.MAX_SAFE_INTEGER,
-      skip,
-      searchQuery.value.split(' ')[0] || '',
-      isActiveFilter.value,
-      ofAgeFilter.value,
-      undefined,
-      filters.value.type.value || undefined
-    )
-    .then((response) => {
-      totalRecords.value = response.data._pagination.count || 0;
-      allUsers.value = response.data.records;
-    });
+      .getAllUsers(
+          Number.MAX_SAFE_INTEGER,
+          skip,
+          searchQuery.value.split(' ')[0] || '',
+          isActiveFilter.value,
+          ofAgeFilter.value,
+          undefined,
+          filters.value.type.value || undefined
+      )
+      .then((response) => {
+        totalRecords.value = response.data._pagination.count || 0;
+        allUsers.value = response.data.records;
+      });
+  if ( !isActiveFilter.value ){
+    await apiService.user
+        .getAllUsers(
+            Number.MAX_SAFE_INTEGER,
+            skip,
+            searchQuery.value.split(' ')[0] || '',
+            !isActiveFilter.value,
+            ofAgeFilter.value,
+            undefined,
+            filters.value.type.value || undefined
+        )
+        .then((response) => {
+          totalRecords.value += (response.data._pagination.count || 0);
+          allUsers.value = allUsers.value.concat(response.data.records);
+        });
+  }
 };
 
 const delayedAPICall = debounce(apiCall, 250);
