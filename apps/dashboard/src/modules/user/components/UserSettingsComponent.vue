@@ -90,14 +90,36 @@ import { handleError } from "@/utils/errorUtils";
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
 
 async function startScan() {
-  if (!('NDEFReader' in window)) {
+
+  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const isAndroid = /Android/i.test(navigator.userAgent);
+
+  if (!('NDEFReader' in window && !(isIOS || isAndroid))) {
     toast.add({
-          severity: "error",
-          summary: t("common.toast.error.error"),
-          detail: t("common.toast.error.unsupported"),
-          life: 3000,
-        });
+      severity: "error",
+      summary: t("common.toast.error.error"),
+      detail: t("common.toast.error.desktopUnsupported"),
+      life: 3000,
+    });
     return;
+  }
+
+  if (!('NDEFReader' in window && isAndroid)) {
+    toast.add({
+      severity: "error",
+      summary: t("common.toast.error.error"),
+      detail: t("common.toast.error.androidUnsupported"),
+      life: 3000,
+    });
+  }
+
+  if (!('NDEFReader' in window && isIOS)) {
+    toast.add({
+      severity: "error",
+      summary: t("common.toast.error.error"),
+      detail: t("common.toast.error.iosUnsupported"),
+      life: 3000,
+    });
   }
 
   const ndef = new window.NDEFReader();
@@ -114,7 +136,7 @@ async function startScan() {
   ndef.onreading = async (event: NDEFReadingEvent) => {
 
     // Extract and log the NFC tag's ID (serial number)
-    const tagId = event.serialNumber;
+    const tagId = event.serialNumber.toLowerCase().replace(/[^a-z0-9]/g, '');
 
     await apiService.user.updateUserNfc(props.user.id, { nfcCode: tagId })
         .then(() => {
