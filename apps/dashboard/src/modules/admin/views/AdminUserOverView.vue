@@ -246,7 +246,7 @@ async function handleInfoPush(userId: number) {
       (record) => record.id == userId
   );
   if (clickedUser) userStore.addUser(clickedUser);
-  let route = router.resolve({ name: 'user', params: { userId } });
+  const route = router.resolve({ name: 'user', params: { userId } });
   window.open(route.href, '_blank');
 }
 </script>

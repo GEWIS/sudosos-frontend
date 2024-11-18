@@ -265,7 +265,7 @@ const handlePickedDates = handleSubmit(async (values) => {
 });
 
 async function handleInfoPush(userId: number) {
-  let route = router.resolve({ name: 'user', params: { userId } });
+  const route = router.resolve({ name: 'user', params: { userId } });
   window.open(route.href, '_blank');
 }
 
