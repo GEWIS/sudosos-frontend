@@ -93,6 +93,11 @@ export const useUserStore = defineStore('user', {
     async fetchUserBalance(id: number, service: ApiService) {
       this.balances[id] = (await service.balance.getBalanceId(id)).data;
     },
+    async fetchUserBalances(users: UserResponse[], service: ApiService) {
+      for (const user of users) {
+        await this.fetchUserBalance(user.id, service);
+      }
+    },
     async fetchUserRolesWithPermissions(id: number, service: ApiService) {
       this.current.rolesWithPermissions = (await service.user.getUserRoles(id)).data;
     },
@@ -138,6 +143,11 @@ export const useUserStore = defineStore('user', {
     },
     addUser(user: UserResponse) {
       this.users[user.id] = user;
+    },
+    addUsers(users: UserResponse[]) {
+      for (const user of users) {
+        this.addUser(user);
+      }
     },
     clearCurrent() {
       this.current.balance = null;

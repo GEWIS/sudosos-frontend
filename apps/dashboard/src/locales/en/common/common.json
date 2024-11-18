@@ -142,7 +142,8 @@
             "manageProducts": "Manage products",
             "posOverview": "POS overview",
             "flaggedTransactions": "Flagged transactions",
-            "fineOverview": "Fine overview"
+            "fineOverview": "Fine overview",
+            "invoiceAccounts": "Invoice Account Overview"
         },
         "validation": {
             "number": {

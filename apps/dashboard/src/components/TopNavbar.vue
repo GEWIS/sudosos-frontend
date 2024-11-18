@@ -196,6 +196,10 @@ const navItems = computed(() => [
         route: '/invoice',
       },
       {
+        label: t('common.navigation.invoiceAccounts'),
+        route: '/invoice/account/overview',
+      },
+      {
         label: t('common.navigation.fineOverview'),
         route: '/fine',
       },
