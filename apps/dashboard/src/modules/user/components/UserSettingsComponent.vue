@@ -130,9 +130,9 @@ async function startScan() {
   ndef.onreading = async (event: NDEFReadingEvent) => {
 
     // Extract and log the NFC tag's ID (serial number)
-    const tagId = event.serialNumber.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const nfcCode = event.serialNumber.toLowerCase().replace(/[^a-z0-9]/g, '');
 
-    await apiService.user.updateUserNfc(props.user.id, { nfcCode: tagId })
+    await apiService.user.updateUserNfc(props.user.id, { nfcCode })
         .then(() => {
           toast.add({
             severity: "success",
