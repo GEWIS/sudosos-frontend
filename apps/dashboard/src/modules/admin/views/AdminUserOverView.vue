@@ -123,6 +123,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, type Ref, watch } from "vue";
 import apiService from '@/services/ApiService';
+import { DEFAULT_PAGINATION_MAX } from '@/services/ApiService';
 import type { GewisUserResponse, UserResponse } from "@sudosos/sudosos-client";
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
@@ -192,7 +193,7 @@ function debounce(func: (skip: number) => Promise<void>, delay: number): (skip: 
 const apiCall: (skip: number) => Promise<void> = async (skip: number) => {
   await apiService.user
       .getAllUsers(
-          Number.MAX_SAFE_INTEGER,
+          DEFAULT_PAGINATION_MAX,
           skip,
           searchQuery.value.split(' ')[0] || '',
           isActiveFilter.value,
@@ -207,7 +208,7 @@ const apiCall: (skip: number) => Promise<void> = async (skip: number) => {
   if ( !isActiveFilter.value ){
     await apiService.user
         .getAllUsers(
-            Number.MAX_SAFE_INTEGER,
+            DEFAULT_PAGINATION_MAX,
             skip,
             searchQuery.value.split(' ')[0] || '',
             !isActiveFilter.value,
