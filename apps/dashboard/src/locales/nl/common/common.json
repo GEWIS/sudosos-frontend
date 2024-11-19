@@ -107,8 +107,8 @@
             "error": {
                 "error": "Error",
                 "scanNotStarted": "NFC scan niet gestart, kijk of NFC permissies kloppen.",
-                "desktopUnsupported": "Browser is niet mobiel.",
-                "androidUnsupported": "Alleen Chrome browsers bieden ondersteuning voor Web NFC",
+                "desktopUnsupported": "NFC scans kunnen alleen op telefoons gedaan worden.",
+                "androidUnsupported": "Alleen Chrome browsers bieden ondersteuning voor Web NFC.",
                 "iosUnsupported": "iOS heeft geen ondersteuning voor Web NFC."
             },
             "canceled": "Geannuleerd",

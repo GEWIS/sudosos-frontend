@@ -94,32 +94,26 @@ async function startScan() {
   const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
   const isAndroid = /Android/i.test(navigator.userAgent);
 
-  if (!('NDEFReader' in window) && !(isIOS || isAndroid)) {
-    toast.add({
-      severity: "error",
-      summary: t("common.toast.error.error"),
-      detail: t("common.toast.error.desktopUnsupported"),
-      life: 3000,
-    });
-    return;
-  }
+  if (!('NDEFReader' in window)) {
+    let detail = "";
+    if (isIOS) {
+      detail = t("common.toast.error.iosUnsupported");
+    }
+    else if (isAndroid) {
+      detail = t("common.toast.error.androidUnsupported");
+    }
+    else {
+      detail = t("common.toast.error.desktopUnsupported");
+    }
 
-  if (!('NDEFReader' in window) && isAndroid) {
     toast.add({
       severity: "error",
       summary: t("common.toast.error.error"),
-      detail: t("common.toast.error.androidUnsupported"),
+      detail: detail,
       life: 3000,
     });
-  }
 
-  if (!('NDEFReader' in window) && isIOS) {
-    toast.add({
-      severity: "error",
-      summary: t("common.toast.error.error"),
-      detail: t("common.toast.error.iosUnsupported"),
-      life: 3000,
-    });
+
   }
 
   const ndef = new window.NDEFReader();
