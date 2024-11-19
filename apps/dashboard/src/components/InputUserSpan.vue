@@ -6,7 +6,9 @@
       <FindUser  :placeholder="placeholder"
                  v-model="internalValue"
                  :disabled="disabled"
-                 :type="type"/>
+                 :type="type"
+                 :showPositive="props.showPositive"
+      />
     </span>
     <div class="flex justify-content-end">
       <ErrorSpan :error="errors"/>
@@ -53,6 +55,11 @@ const props = defineProps({
     type: String as PropType<GetAllUsersTypeEnum>,
     required: false,
     default: undefined
+  },
+  showPositive: {
+    type: Boolean,
+    required: false,
+    default: true
   }
 });
 

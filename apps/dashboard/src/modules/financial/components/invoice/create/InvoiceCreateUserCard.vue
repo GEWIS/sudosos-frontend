@@ -6,6 +6,7 @@
                    @update:value="updateUser($event)"
                    v-model:value="selectedUser"
                    class="mb-3"
+                   :showPositive="false"
     />
 
     <div class="flex flex-row justify-content-between">
