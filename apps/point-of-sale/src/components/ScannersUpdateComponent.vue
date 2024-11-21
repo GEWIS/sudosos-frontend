@@ -7,15 +7,15 @@
           :style="{ width: '30vw', class: ['container'] }"
           @show="addListenerOnDialogueOverlay(nfcModal)"
           :pt="{
-        header: () => ({class: ['dialog-header']}),
-        closeButton: () => ({class: ['dialog-close']})}" >
+            header: () => ({class: ['dialog-header']}),
+            closeButton: () => ({class: ['dialog-close']})}" >
 
     <div class="flex flex-column align-items-center">
       <div class="scanners" id="scanners"/>
       <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="6" fill="transparent"
                                animationDuration="1s" :style="{ display : 'flex' }"/>
       <b style="font-weight: bold!important;">Scan your NFC card now!</b><br>
-      <b>Note: Credit cards and ID cards will not work</b><br>
+      <b>Note: Banking cards, ID cards and phones will not work</b><br>
     </div>
   </Dialog>
 </template>
@@ -59,12 +59,20 @@ const onInput = (event: KeyboardEvent): void => {
       switch (checkCode) {
         case 'nfc':
           props.handleNfcUpdate(capturedCode.substring(3)).then(() => {
-            toast.add({ severity: 'success', summary: 'NFC code accepted',
-              detail: 'Your NFC code has been accepted.' });
+            toast.add({
+              severity: "success",
+              summary: "NFC code added!",
+              detail: "You can now login to the POS by using the scanned NFC card.",
+              life: 5000,
+            });
           }).catch((err) => {
             console.error(err);
-            toast.add({ severity: 'error', summary: 'NFC code not accepted',
-              detail: 'Your NFC code could not be accepted. Please try again.' });
+            toast.add({
+              severity: 'error',
+              summary: 'NFC code not added.',
+              detail: 'Something went wrong, please try again.',
+              life: 5000,
+            });
           });
           break;
         default:
