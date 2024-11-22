@@ -77,6 +77,17 @@
           "city": "Stad",
           "country": "Land"
         }
+      },
+      "debtor": {
+        "title": "Debiteurenoverzicht",
+        "header": "debiteurenoverzicht",
+        "balance": "Balans",
+        "totalFine": "Totale hoeveelheid boete",
+        "nrFines":"Aantal boetes",
+        "lastTransactionDate": "Laatste transactie",
+        "fineSince": "Boetes Sinds",
+        "makeInactive": "Maak inactief",
+        "writeOffAndClose": "Scheld kwijt en sluit"
       }
     }
   }

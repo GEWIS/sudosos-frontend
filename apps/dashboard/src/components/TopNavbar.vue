@@ -200,6 +200,10 @@ const navItems = computed(() => [
         route: '/fine',
       },
       {
+        label: t('common.navigation.debtorOverview'),
+        route: '/debtor',
+      },
+      {
         label: t('common.navigation.payouts'),
         route: '/payouts',
         notifications: pendingPayouts?.value

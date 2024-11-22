@@ -77,6 +77,17 @@
           "city": "City",
           "country": "Country"
         }
+      },
+      "debtor": {
+        "title": "Debtor overview",
+        "header": "debtor overview",
+        "balance": "Balance",
+        "totalFine": "Total fine",
+        "nrFines":"Number of fines",
+        "lastTransactionDate": "Last transaction date",
+        "fineSince": "Fines since",
+        "makeInactive": "Make inactive",
+        "writeOffAndClose": "Write off and close"
       }
     }
   }

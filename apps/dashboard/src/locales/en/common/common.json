@@ -102,7 +102,8 @@
                 "payout": {
                     "verify": "Verification Success",
                     "details": "Payout is verified."
-                }
+                },
+                "writeOffCreated": "Successfully created write off."
             },
             "error": {
                 "error": "Error",
@@ -144,7 +145,8 @@
             "manageProducts": "Manage products",
             "posOverview": "POS overview",
             "flaggedTransactions": "Flagged transactions",
-            "fineOverview": "Fine overview"
+            "fineOverview": "Fine overview",
+            "debtorOverview": "Debtor overview"
         },
         "validation": {
             "number": {
