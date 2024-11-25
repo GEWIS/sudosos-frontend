@@ -106,6 +106,11 @@ export const useUserStore = defineStore('user', {
     async fetchCurrentUserBalance(id: number, service: ApiService) {
       this.current.balance = (await service.balance.getBalanceId(id)).data;
     },
+    async fetchUserBalances(users: UserResponse[], service: ApiService) {
+      for (const user of users) {
+        await this.fetchUserBalance(user.id, service);
+      }
+    },
     async fetchUserBalance(id: number, service: ApiService) {
       this.balances[id] = (await service.balance.getBalanceId(id)).data;
     },
