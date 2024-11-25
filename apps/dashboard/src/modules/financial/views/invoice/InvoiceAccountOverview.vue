@@ -1,6 +1,5 @@
 <template>
-  <div class="page-container">
-    <div class="page-title">{{ t('modules.financial.invoice.account.title') }}</div>
+  <div class="full-width my-4">
     <CardComponent :header="t('modules.financial.invoice.account.header')" class="full-width">
       <DataTable
           v-model:filters="filters"
@@ -26,11 +25,6 @@
             <Button :label="t('common.create')" icon="pi pi-plus" @click="showDialog = true" />
           </div>
         </template>
-        <Column field="gewisId" :header="t('common.gewisId')">
-          <template #body v-if="isLoading">
-            <Skeleton class="w-6 my-1 h-1rem surface-300"/>
-          </template>
-        </Column>
         <Column field="firstName" :header="t('common.firstName')">
           <template #body v-if="isLoading">
             <Skeleton class="w-8 my-1 h-1rem surface-300"/>
@@ -41,27 +35,6 @@
             <Skeleton class="w-8 my-1 h-1rem surface-300"/>
           </template>
         </Column>
-        <Column field="type" :header="t('common.type')" :showFilterMatchModes="false">
-          <template #body v-if="isLoading">
-            <Skeleton class="w-5 my-1 h-1rem surface-300"/>
-          </template>
-        </Column>
-        <Column field="active" :showFilterMatchModes="false">
-          <template #header>
-            <div class="flex flex-row gap-2 align-items-center">
-              {{ t("common.active") }}
-              <Checkbox
-                  v-model="isActiveFilter"
-                  @change="onFilter()"
-                  binary
-              />
-            </div>
-          </template>
-          <template #body v-if="isLoading">
-            <Skeleton class="w-2 my-1 h-1rem surface-300"/>
-          </template>
-        </Column>
-
         <Column field="balance" :showFilterMatchModes="false">
           <template #header>
             <div class="flex flex-row gap-2 align-items-center">
@@ -85,7 +58,23 @@
                 @click="handleInfoPush(slotProps.data.id)"
                 type="button"
                 icon="pi pi-info-circle"
-                outlined
+                class="p-button-rounded p-button-text p-button-plain"
+            />
+          </template>
+
+        </Column>
+        <Column
+            headerStyle="width: 3rem; text-align: center"
+            bodyStyle="text-align: center; overflow: visible"
+        >
+          <template #body v-if="isLoading">
+            <Skeleton class="w-4 my-1 h-1rem surface-300"/>
+          </template>
+          <template #body="slotProps" v-else>
+            <Button icon="pi pi-file-edit"
+                    @click="handleInvoicePush(slotProps.data.id)"
+                    class="p-button-rounded p-button-text p-button-plain"
+                    type="button"
             />
           </template>
 
@@ -108,12 +97,11 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, type Ref, watch } from "vue";
-import apiService from '@/services/ApiService';
-import type { GewisUserResponse, UserResponse } from "@sudosos/sudosos-client";
+import apiService, { DEFAULT_PAGINATION_MAX } from '@/services/ApiService';
+import type { BaseUserResponse, GewisUserResponse, UserResponse } from "@sudosos/sudosos-client";
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import { FilterMatchMode } from 'primevue/api';
-import Checkbox from "primevue/checkbox";
 import InputText from 'primevue/inputtext';
 import { createUserSchema } from "@/utils/validation-schema";
 import Fuse from 'fuse.js';
@@ -150,13 +138,14 @@ const isLoading = ref(true);
 const totalRecords = ref(0);
 const allUsers: Ref<GewisUserResponse[]> = ref(new Array(10));
 const allUsersFullData: Ref<GewisUserResponse[]> = computed(() => {
-  return allUsers.value.map((user) => {
+  const userData : GewisUserResponse[] =  allUsers.value.map((user) => {
     return {
       ...user,
       fullName: `${user.firstName} ${user.lastName}`,
-      balance: formatPrice(userStore.balances[user.id].amount),
+      balance: formatPrice(userStore.getBalanceById(user.id).amount),
     };
   });
+  return userData.filter(isNotZero);
 });
 
 onMounted(() => {
@@ -180,10 +169,10 @@ function debounce(func: (skip: number) => Promise<void>, delay: number): (skip: 
 const apiCall: (skip: number) => Promise<void> = async (skip: number) => {
   await apiService.user
       .getAllUsers(
-          Number.MAX_SAFE_INTEGER,
+          DEFAULT_PAGINATION_MAX,
           skip,
           searchQuery.value.split(' ')[0] || '',
-          isActiveFilter.value,
+          isActiveFilter.value ? isActiveFilter.value : undefined,
           ofAgeFilter.value,
           undefined,
           "INVOICE" || undefined
@@ -194,24 +183,6 @@ const apiCall: (skip: number) => Promise<void> = async (skip: number) => {
         userStore.addUsers(allUsers.value);
         userStore.fetchUserBalances(allUsers.value, apiService);
       });
-  if ( !isActiveFilter.value ){
-    await apiService.user
-        .getAllUsers(
-            Number.MAX_SAFE_INTEGER,
-            skip,
-            searchQuery.value.split(' ')[0] || '',
-            !isActiveFilter.value,
-            ofAgeFilter.value,
-            undefined,
-            "INVOICE" || undefined
-        )
-        .then((response) => {
-          totalRecords.value += (response.data._pagination.count || 0);
-          allUsers.value = allUsers.value.concat(response.data.records);
-          userStore.addUsers(response.data.records);
-          userStore.fetchUserBalances(response.data.records, apiService);
-        });
-  }
 };
 
 const delayedAPICall = debounce(apiCall, 250);
@@ -256,6 +227,14 @@ async function handleInfoPush(userId: number) {
   if (clickedUser) userStore.addUser(clickedUser);
   let route = router.resolve({ name: 'user', params: { userId } });
   window.open(route.href, '_blank');
+}
+
+function handleInvoicePush(userId : number) {
+  router.push({ name: 'invoiceCreate', query: { userId: userId } });
+}
+
+function isNotZero(user: BaseUserResponse) {
+  return userStore.getBalanceById(user.id).amount.amount != 0;
 }
 </script>
 

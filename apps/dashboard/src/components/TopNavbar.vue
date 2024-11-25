@@ -85,6 +85,7 @@ import { useI18n } from "vue-i18n";
 import { usePendingPayouts } from "@/mixins/pendingPayoutsMixin";
 import apiService from "@/services/ApiService";
 import { GetAllUsersTypeEnum } from "@sudosos/sudosos-client";
+import { useOpenInvoiceAccounts } from "@/mixins/openInvoiceAccountsMixin";
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
@@ -113,7 +114,8 @@ const isBACPM = () => {
 };
 
 const { pendingPayouts } = usePendingPayouts();
-const getFinancialNotifications = () => pendingPayouts?.value;
+const { openInvoiceAccounts } = useOpenInvoiceAccounts();
+const getFinancialNotifications = () => pendingPayouts?.value + openInvoiceAccounts?.value;
 
 const organs: Ref<any[]> = ref([]);
 
@@ -194,10 +196,7 @@ const navItems = computed(() => [
       {
         label: t('common.navigation.invoices'),
         route: '/invoice',
-      },
-      {
-        label: t('common.navigation.invoiceAccounts'),
-        route: '/invoice/account/overview',
+        notifications: openInvoiceAccounts?.value
       },
       {
         label: t('common.navigation.fineOverview'),

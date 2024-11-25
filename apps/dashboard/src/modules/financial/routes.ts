@@ -37,10 +37,11 @@ export function financialRoutes(): RouteRecordRaw[] {
           path: '/invoice/create',
           component: InvoiceCreateView,
           name: 'invoiceCreate',
+          props: route => ({ userId: route.query.userId }),
           meta: {
             requiresAuth: true,
             rolesAllowed: [UserRole.BAC_PM]
-          }
+          },
         },
         {
           path: '/invoice/:id',
@@ -57,16 +58,6 @@ export function financialRoutes(): RouteRecordRaw[] {
           path: '/invoice/:id/info',
           name: 'invoiceInfo',
           component: InvoiceInfoView,
-          props: true,
-          meta: {
-            requiresAuth: true,
-            rolesAllowed: [UserRole.BAC_PM]
-          }
-        },
-        {
-          path: '/invoice/account/overview',
-          name: 'invoiceAccountOverview',
-          component: InvoiceAccountOverview,
           props: true,
           meta: {
             requiresAuth: true,

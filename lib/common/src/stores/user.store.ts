@@ -1,9 +1,9 @@
 import { createPinia, defineStore } from 'pinia';
 import {
   BalanceResponse, PaginatedBaseTransactionResponse, PaginatedFinancialMutationResponse,
-  UserResponse, RoleWithPermissionsResponse, GewisUserResponse, DineroObjectRequest
+  UserResponse, RoleWithPermissionsResponse, GewisUserResponse, DineroObjectRequest, BaseUserResponse
 } from "@sudosos/sudosos-client";
-import { ApiService } from "../services/ApiService";
+import  { ApiService } from "../services/ApiService";
 import { fetchAllPages } from "../helpers/PaginationHelper";
 
 createPinia();
@@ -86,6 +86,22 @@ export const useUserStore = defineStore('user', {
               this.organs = organs;
               return this.organs;
             });
+    },
+    async fetchInvoiceAccountsWithBalance(service: ApiService){
+          await fetchAllPages<UserResponse>((take, skip) =>
+              service.user.getAllUsers(
+              take,
+              skip,
+              undefined,
+              true,
+              true,
+              undefined,
+              "INVOICE"
+          )
+      ).then((users) => {
+            this.addUsers(users);
+            this.fetchUserBalances(users, service);
+          });
     },
     async fetchCurrentUserBalance(id: number, service: ApiService) {
       this.current.balance = (await service.balance.getBalanceId(id)).data;
