@@ -24,7 +24,8 @@ export function useOpenInvoiceAccounts() {
     function isNotZeroAndInvoice(user: BaseUserResponse) {
         if(userStore.getBalanceById(user.id) !== undefined) {
             return userStore.getBalanceById(user.id).amount.amount != 0 &&
-                userStore.getUserById(user.id).type == "INVOICE";
+                userStore.getUserById(user.id).type == "INVOICE" &&
+                userStore.getUserById(user.id).active == true;
         }
         else{
             return false;
