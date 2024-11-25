@@ -52,7 +52,7 @@ You can quickly start development directly in your browser by using [Codespaces]
 
 ### Local set up
 #### Step 0: Prerequisites
-- [Node.js Version 18+](https://nodejs.org)
+- [Node.js Version 20+](https://nodejs.org)
 - [Git](https://www.git-scm.com/) and possibly a Git manager 
 - (VSCode: [Vue extension](https://marketplace.visualstudio.com/items?itemName=Vue.volar))
 - Yarn version 4 (enable this by running `corepack enable && yarn set version berry` after installing node)
