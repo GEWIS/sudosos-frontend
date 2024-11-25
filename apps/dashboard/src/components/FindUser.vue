@@ -34,7 +34,7 @@ const props = defineProps({
     type: Object as PropType<UserResponse>,
   },
   default: {
-    type: Object as PropType<UserResponse>,
+    type: Object as PropType<BaseUserResponse>,
     required: false,
   },
   placeholder: {
