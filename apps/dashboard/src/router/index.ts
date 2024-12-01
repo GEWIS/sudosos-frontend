@@ -67,7 +67,6 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
-  const userStore = useUserStore();
   const settingsStore = useSettingsStore();
 
   if (settingsStore.activeSettings.maintenanceMode && to.name !== 'maintenance') {
