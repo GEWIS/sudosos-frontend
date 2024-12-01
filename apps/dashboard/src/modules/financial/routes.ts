@@ -2,7 +2,6 @@ import type { RouteRecordRaw } from "vue-router";
 import DashboardLayout from "@/layout/DashboardLayout.vue";
 import FineView from "@/modules/financial/views/FineView.vue";
 import PayoutsView from "@/modules/financial/views/payouts/PayoutsView.vue";
-import { UserRole } from "@/utils/rbacUtils";
 import InvoiceOverview from "@/modules/financial/views/invoice/InvoiceOverview.vue";
 import InvoiceInfoView from "@/modules/financial/views/invoice/InvoiceInfoView.vue";
 import { isAllowed } from "@/utils/permissionUtils";
@@ -34,24 +33,24 @@ export function financialRoutes(): RouteRecordRaw[] {
         }
       },
       {
-          path: '/invoice/create',
-          component: InvoiceCreateView,
-          name: 'invoiceCreate',
-          meta: {
-              requiresAuth: true,
-              isAllowed: () => isAllowed('create', ['own', 'organ'], 'Invoice', ['any'])
-          }
+        path: '/invoice/create',
+        component: InvoiceCreateView,
+        name: 'invoiceCreate',
+        meta: {
+          requiresAuth: true,
+          isAllowed: () => isAllowed('create', ['own', 'organ'], 'Invoice', ['any'])
+        }
       },
       {
-          path: '/invoice/:id',
-          redirect: to => {
-              const { id } = to.params;
-              return `/invoice/${id}/info`;
-          },
-          meta: {
-              requiresAuth: true,
-              isAllowed: () => isAllowed('get', ['own', 'organ'], 'Invoice', ['any'])
-          }
+        path: '/invoice/:id',
+        redirect: to => {
+            const { id } = to.params;
+            return `/invoice/${id}/info`;
+        },
+        meta: {
+        requiresAuth: true,
+            isAllowed: () => isAllowed('get', ['own', 'organ'], 'Invoice', ['any'])
+        }
       },
       {
         path: '/invoice/:id/info',
@@ -59,8 +58,8 @@ export function financialRoutes(): RouteRecordRaw[] {
         component: InvoiceInfoView,
         props: true,
         meta: {
-          requiresAuth: true,
-          isAllowed: () => isAllowed('get', ['own', 'organ'], 'Invoice', ['any'])
+            requiresAuth: true,
+            isAllowed: () => isAllowed('get', ['own', 'organ'], 'Invoice', ['any'])
         }
       },
       {
