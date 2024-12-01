@@ -19,7 +19,7 @@ export function userRoutes(): RouteRecordRaw[] {
         {
           path: '/transaction',
           component: UserTransactionsView,
-          name: 'transaction'
+          name: 'transactions'
         },
         {
           path: '/profile',
