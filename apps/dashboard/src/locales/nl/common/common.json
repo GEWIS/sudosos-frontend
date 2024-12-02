@@ -144,7 +144,8 @@
             "manageProducts": "Producten beheren",
             "posOverview": "POS overzicht",
             "flaggedTransactions": "Gemarkeerde transacties",
-            "fineOverview": "Boeteoverzicht"
+            "fineOverview": "Boeteoverzicht",
+            "invoiceAccounts": "Facturen Account Overzicht"
         },
         "validation": {
             "number": {

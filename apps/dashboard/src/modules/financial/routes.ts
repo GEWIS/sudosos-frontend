@@ -6,6 +6,7 @@ import { UserRole } from "@/utils/rbacUtils";
 import InvoiceOverview from "@/modules/financial/views/invoice/InvoiceOverview.vue";
 import InvoiceInfoView from "@/modules/financial/views/invoice/InvoiceInfoView.vue";
 import InvoiceCreateView from "@/modules/financial/views/invoice/InvoiceCreateView.vue";
+import InvoiceAccountOverview from "@/modules/financial/views/invoice/InvoiceAccountOverview.vue";
 
 export function financialRoutes(): RouteRecordRaw[] {
   return [
@@ -36,10 +37,11 @@ export function financialRoutes(): RouteRecordRaw[] {
           path: '/invoice/create',
           component: InvoiceCreateView,
           name: 'invoiceCreate',
+          props: route => ({ userId: route.query.userId }),
           meta: {
             requiresAuth: true,
             rolesAllowed: [UserRole.BAC_PM]
-          }
+          },
         },
         {
           path: '/invoice/:id',
