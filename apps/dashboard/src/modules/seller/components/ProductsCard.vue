@@ -53,29 +53,6 @@
                 }
               }"
           />
-
-<!--          <div-->
-<!--              class="h-4rem flex justify-content-center align-items-center background-white-->
-<!--                   w-4rem mx-1 cursor-pointer image-preview-container">-->
-<!--            <div class="h-4rem w-4rem">-->
-<!--              <img :src="getProductImageSrc(rowDataImg.data)" alt="img" class="h-4rem w-4rem product-image"/>-->
-<!--            </div>-->
-<!--            <button-->
-<!--                ref="previewButton"-->
-<!--                type="button"-->
-<!--                class="image-preview-indicator p-image-preview-indicator fileupload"-->
-<!--                @click="triggerFileInput(rowDataImg.data.id)"-->
-<!--            >-->
-<!--              <i class="pi pi-upload"></i>-->
-<!--              <input-->
-<!--                  :ref="(el) => (fileInputs[rowDataImg.data.id] = el)"-->
-<!--                  type="file"-->
-<!--                  accept="image/*"-->
-<!--                  id="fileInput"-->
-<!--                  @change="(e) => onImgUpload(e, rowDataImg.data.id)"-->
-<!--              />-->
-<!--            </button>-->
-<!--          </div>-->
         </template>
         <template #body v-else>
           <Skeleton class="w-8 my-1 h-4rem surface-300"/>
@@ -164,8 +141,6 @@ const { t } = useI18n();
 const loading: Ref<boolean> = ref(true);
 const visible: Ref<boolean> = ref(false);
 const product: Ref<ProductResponse | undefined> = ref(undefined);
-const fileInputs: Ref<{ [key: number]: any }> = ref({});
-
 const productStore = useProductStore();
 
 const products = computed<ProductResponse[]>(() => Object.values(productStore.getAllProducts)
