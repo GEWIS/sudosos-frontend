@@ -15,8 +15,7 @@
         :containers="posContainers"
         show-create
         :associatedPos="pointsOfSaleWithContainers[id!]"
-        :pos-edit-allowed="pointsOfSaleWithContainers[id!] &&
-        isAllowed('update', [getRelation(pointsOfSaleWithContainers[id!].owner!.id)], 'PointOfSale', ['any'])"
+        :pos-edit-allowed="canEditPos"
       />
       <CardComponent :header="t('components.mutations.recent')">
         <MutationPOSCard
@@ -65,6 +64,11 @@ const { pointsOfSaleWithContainers } = storeToRefs(pointOfSaleStore as StoreGene
 const containerStore = useContainerStore();
 
 const { t } = useI18n();
+
+const canEditPos = computed(() => {
+  return pointsOfSaleWithContainers.value[id.value!] &&
+  isAllowed('update', [getRelation(pointsOfSaleWithContainers.value[id.value!].owner!.id)], 'PointOfSale', ['any']);
+});
 
 const posName = computed(() => {
   return id.value && pointsOfSaleWithContainers.value[id.value]
