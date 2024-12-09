@@ -84,13 +84,15 @@ router.beforeEach((to, from, next) => {
 
   if (to.meta?.requiresAuth && !isAuth) {
     // If the route requires authentication and the user is not authenticated, redirect to login
+    sessionStorage.setItem('fromPath', window.location.pathname);
     next({ name: 'login' });
   } else if (isAuth && hasTOSAccepted() == 'NOT_ACCEPTED' && to.name !== 'tos') {
     // If the user is authenticated but user hasn't accepted the TOS, always redirect to TOS
     next({ name: 'tos' });
   } else if (!to.meta?.requiresAuth && isAuth && hasTOSAccepted() == 'ACCEPTED') {
     // If the route doesn't require authentication and the user is authenticated, redirect to home
-    next({ name: 'home' });
+    next(sessionStorage.getItem('fromPath') ||{ name: 'home' });
+    sessionStorage.removeItem('fromPath');
   } else {
     if(to.meta?.rolesAllowed) {
       // Test overlapping roles between the allowed roles and the roles the user has
