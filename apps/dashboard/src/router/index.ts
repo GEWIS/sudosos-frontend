@@ -89,15 +89,13 @@ router.beforeEach((to, from, next) => {
     next({ name: 'tos' });
   } else if (!to.meta?.requiresAuth && isAuth && hasTOSAccepted() == 'ACCEPTED') {
     // If the route doesn't require authentication and the user is authenticated, redirect to home
-    next(sessionStorage.getItem('fromPath') || { name: 'home' });
-    sessionStorage.removeItem('fromPath');
+    next({ name: 'home' });
   } else if (to.meta?.isAllowed) {
     // Permission guard present, so let's test is
     if(to.meta?.isAllowed()) {
       next();
     } else {
-      next(sessionStorage.getItem('fromPath') || { name: 'home' });
-      sessionStorage.removeItem('fromPath');
+      next({ name: 'home' });
     }
   } else {
     // Always allowed
