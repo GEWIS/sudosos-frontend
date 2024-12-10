@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import PublicLayout from "@/layout/PublicLayout.vue";
 import DashboardLayout from "@/layout/DashboardLayout.vue";
-import { isAuthenticated, useAuthStore, useUserStore } from "@sudosos/sudosos-frontend-common";
+import { isAuthenticated, useAuthStore } from "@sudosos/sudosos-frontend-common";
 import 'vue-router';
 import ErrorView from "@/views/ErrorView.vue";
 import { authRoutes } from "@/modules/auth/routes";
@@ -16,8 +16,7 @@ declare module 'vue-router' {
   interface RouteMeta {
     // must be declared by every route
     requiresAuth: boolean
-
-    rolesAllowed?: string[]
+    isAllowed?: () => boolean
   }
 }
 
@@ -68,7 +67,6 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
-  const userStore = useUserStore();
   const settingsStore = useSettingsStore();
 
   if (settingsStore.activeSettings.maintenanceMode && to.name !== 'maintenance') {
@@ -93,16 +91,16 @@ router.beforeEach((to, from, next) => {
     // If the route doesn't require authentication and the user is authenticated, redirect to home
     next(sessionStorage.getItem('fromPath') ||{ name: 'home' });
     sessionStorage.removeItem('fromPath');
-  } else {
-    if(to.meta?.rolesAllowed) {
-      // Test overlapping roles between the allowed roles and the roles the user has
-      const rolesUnion =
-          [...new Set([...to.meta.rolesAllowed, ...userStore.current.rolesWithPermissions.map(r => r.name)])];
-
-      // No overlapping roles -> No correct permissions -> Back to home
-      if(rolesUnion.length == 0) ({ name: 'home' });
+  } else if (to.meta?.isAllowed) {
+    // Permission guard present, so let's test is
+    if(to.meta?.isAllowed()) {
+      next();
+    } else {
+      next(sessionStorage.getItem('fromPath') ||{ name: 'home' });
+      sessionStorage.removeItem('fromPath');
     }
-
+  } else {
+    // Always allowed
     next();
   }
 });
