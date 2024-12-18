@@ -188,9 +188,8 @@ const navItems = computed(() => [
       {
         label: t('common.navigation.invoices'),
         route: '/invoice',
-        notifications: openInvoiceAccounts?.value
-        visible: isAllowed('get', ['all'], 'Invoice', ['any']),
-
+        notifications: openInvoiceAccounts?.value,
+        visible: isAllowed('get', ['all'], 'Invoice', ['any'])
       },
       {
         label: t('common.navigation.fineOverview'),
