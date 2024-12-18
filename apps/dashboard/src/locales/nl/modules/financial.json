@@ -77,6 +77,22 @@
           "city": "Stad",
           "country": "Land"
         }
+      },
+      "rbac": {
+        "selection": {
+          "title": "Rol Selectie",
+          "label": "Informatie over"
+        },
+        "users": {
+          "title": "Gebruikers per rol"
+        },
+        "permissions": {
+          "title": "Permissies per rol",
+          "entity": "Naam",
+          "crud": "CRUD",
+          "systemDefault": "Deze rol is standaard, daardoor kun je geen gebruikers aanpassen!"
+        },
+        "title": "Rollen onderhouden"
       }
     }
   }

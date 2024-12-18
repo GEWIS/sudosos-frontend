@@ -77,6 +77,22 @@
           "city": "City",
           "country": "Country"
         }
+      },
+      "rbac": {
+        "selection": {
+          "title": "Role Selection",
+          "label": "Information about"
+        },
+        "users": {
+          "title": "Users per Role"
+        },
+        "permissions": {
+          "title": "Permissions per Role",
+          "entity": "Name",
+          "crud": "CRUD",
+          "systemDefault": "This role is a system default you cannot edit the users."
+        },
+        "title": "Maintain roles"
       }
     }
   }

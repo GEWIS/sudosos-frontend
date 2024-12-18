@@ -3,6 +3,8 @@ import DashboardLayout from "@/layout/DashboardLayout.vue";
 import AdminUserOverView from "@/modules/admin/views/AdminUserOverView.vue";
 import AdminBannersView from "@/modules/admin/views/AdminBannersView.vue";
 import AdminSingleUserView from "@/modules/admin/views/AdminSingleUserView.vue";
+import { UserRole } from "@/utils/rbacUtils";
+import AdminRBACView from "../financial/views/rbac/AdminRBACView.vue";
 import { isAllowed } from "@/utils/permissionUtils";
 
 export function adminRoutes(): RouteRecordRaw[] {
@@ -41,6 +43,11 @@ export function adminRoutes(): RouteRecordRaw[] {
             isAllowed: () => isAllowed('get', ['all'], 'User', ['any'])
           }
         },
+        {
+          path:'/rbac',
+          component: AdminRBACView,
+          name: 'rbac',
+        }
       ],
     }
   ];

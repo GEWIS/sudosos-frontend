@@ -182,6 +182,16 @@ const navItems = computed(() => [
         visible: isAllowed('update', ['all'], 'User', ['any']),
       },
       {
+        label: t('common.rbac'),
+        route: '/rbac',
+      },
+      {
+        label: t('common.navigation.flaggedTransactions'),
+      },
+      {
+        label: t('common.navigation.socialDrinkCards'),
+      },
+      {
         label: t('common.navigation.invoices'),
         route: '/invoice',
         visible: isAllowed('get', ['all'], 'Invoice', ['any']),

@@ -4,7 +4,7 @@ import type { Ref } from "vue";
 import i18n from './i18nUtils';
 import type {
     BaseUserResponse,
-    BaseVatGroupResponse,
+    BaseVatGroupResponse, PermissionResponse,
     ProductCategoryResponse
 } from "@sudosos/sudosos-client";
 import type { ContainerInStore } from "@/stores/container.store";
@@ -168,3 +168,12 @@ export const createInvoiceObject =
     date: yup.string().required(),
     attention: yup.string(),
   });
+
+export const rbacSchema =
+    yup.object({
+       id: yup.number().required(),
+       name: yup.string().required(),
+       systemDefault: yup.boolean().default(false),
+       permissions: yup.array().of(yup.mixed<PermissionResponse>().required()),
+       currentPermission: yup.mixed<PermissionResponse>().required(),
+    });
