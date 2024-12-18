@@ -145,7 +145,8 @@
             "posOverview": "POS overzicht",
             "flaggedTransactions": "Gemarkeerde transacties",
             "fineOverview": "Boeteoverzicht",
-            "invoiceAccounts": "Facturen Account Overzicht"
+            "invoiceAccounts": "Facturen Account Overzicht",
+            "fines" : "Boetes"
         },
         "validation": {
             "number": {
