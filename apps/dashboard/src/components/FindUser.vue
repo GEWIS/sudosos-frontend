@@ -129,7 +129,5 @@ watch(selectedUser, () => {
 </script>
 
 <style scoped lang="scss">
-.broke {
 
-}
 </style>
