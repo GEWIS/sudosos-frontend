@@ -53,7 +53,8 @@
             "city": "Zwolle",
             "country": "Nederland",
             "product": "IJs",
-            "pos": "GELIMBO"
+            "pos": "GELIMBO",
+            "banner": "BAC Weekend"
         },
         "tooltip": {
             "productOwner": "Opmerking: De eigenaar van de container krijgt de opbrengst, niet de producteigenaar. Eigenaar kan na aanmaak niet meer worden bewerkt."
@@ -99,6 +100,7 @@
                 "productDeleted": "Product succesvol verwijderd.",
                 "payoutDeleted": "Uitbetaling succesvol verwijderd.",
                 "payoutUpdated": "Uitbetaling succesvol bijgewerkt.",
+                "bannerCreated": "Banner succesvol aangemaakt.",
                 "payout": {
                     "verify": "Verificatie succesvol",
                     "details": "Uitbetaling is geverifieerd."
