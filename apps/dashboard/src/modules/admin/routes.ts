@@ -3,7 +3,7 @@ import DashboardLayout from "@/layout/DashboardLayout.vue";
 import AdminUserOverView from "@/modules/admin/views/AdminUserOverView.vue";
 import AdminBannersView from "@/modules/admin/views/AdminBannersView.vue";
 import AdminSingleUserView from "@/modules/admin/views/AdminSingleUserView.vue";
-import { UserRole } from "@/utils/rbacUtils";
+import { isAllowed } from "@/utils/permissionUtils";
 
 export function adminRoutes(): RouteRecordRaw[] {
   return [
@@ -13,21 +13,22 @@ export function adminRoutes(): RouteRecordRaw[] {
       meta: { requiresAuth: true },
       children: [
         {
-          path: '/user-overview',
-          name: 'userOverview',
+          path: '/user',
+          name: 'users',
           component: AdminUserOverView,
           meta: {
             requiresAuth: true,
-            rolesAllowed: [UserRole.BAC_PM, UserRole.BAC, UserRole.BOARD]
+            // TODO: Change to `action: get` after https://github.com/GEWIS/sudosos-backend/issues/62 is fully finished
+            isAllowed: () => isAllowed('update', ['all'], 'User', ['any'])
           }
         },
         {
-          path: '/banners',
+          path: '/banner',
           component: AdminBannersView,
           name: 'banners',
           meta: {
             requiresAuth: true,
-            rolesAllowed: [UserRole.BOARD]
+            isAllowed: () => isAllowed('get', ['own', 'organ'], 'Banner', ['any'])
           }
         },
         {
@@ -35,6 +36,10 @@ export function adminRoutes(): RouteRecordRaw[] {
           component: AdminSingleUserView,
           name: 'user',
           props: true,
+          meta: {
+            requiresAuth: true,
+            isAllowed: () => isAllowed('get', ['all'], 'User', ['any'])
+          }
         },
       ],
     }

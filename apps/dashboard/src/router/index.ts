@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import PublicLayout from "@/layout/PublicLayout.vue";
 import DashboardLayout from "@/layout/DashboardLayout.vue";
-import { isAuthenticated, useAuthStore, useUserStore } from "@sudosos/sudosos-frontend-common";
+import { isAuthenticated, useAuthStore } from "@sudosos/sudosos-frontend-common";
 import 'vue-router';
 import ErrorView from "@/views/ErrorView.vue";
 import { authRoutes } from "@/modules/auth/routes";
@@ -16,8 +16,7 @@ declare module 'vue-router' {
   interface RouteMeta {
     // must be declared by every route
     requiresAuth: boolean
-
-    rolesAllowed?: string[]
+    isAllowed?: () => boolean
   }
 }
 
@@ -68,7 +67,6 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
-  const userStore = useUserStore();
   const settingsStore = useSettingsStore();
 
   if (settingsStore.activeSettings.maintenanceMode && to.name !== 'maintenance') {
@@ -84,6 +82,7 @@ router.beforeEach((to, from, next) => {
 
   if (to.meta?.requiresAuth && !isAuth) {
     // If the route requires authentication and the user is not authenticated, redirect to login
+    sessionStorage.setItem('fromPath', window.location.pathname);
     next({ name: 'login' });
   } else if (isAuth && hasTOSAccepted() == 'NOT_ACCEPTED' && to.name !== 'tos') {
     // If the user is authenticated but user hasn't accepted the TOS, always redirect to TOS
@@ -91,16 +90,15 @@ router.beforeEach((to, from, next) => {
   } else if (!to.meta?.requiresAuth && isAuth && hasTOSAccepted() == 'ACCEPTED') {
     // If the route doesn't require authentication and the user is authenticated, redirect to home
     next({ name: 'home' });
-  } else {
-    if(to.meta?.rolesAllowed) {
-      // Test overlapping roles between the allowed roles and the roles the user has
-      const rolesUnion =
-          [...new Set([...to.meta.rolesAllowed, ...userStore.current.rolesWithPermissions.map(r => r.name)])];
-
-      // No overlapping roles -> No correct permissions -> Back to home
-      if(rolesUnion.length == 0) ({ name: 'home' });
+  } else if (to.meta?.isAllowed) {
+    // Permission guard present, so let's test is
+    if(to.meta?.isAllowed()) {
+      next();
+    } else {
+      next({ name: 'home' });
     }
-
+  } else {
+    // Always allowed
     next();
   }
 });

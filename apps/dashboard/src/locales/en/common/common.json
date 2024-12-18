@@ -136,16 +136,17 @@
             "signOut": "Sign out",
             "dutch": "Dutch",
             "english": "English",
-            "userOverview": "User overview",
+            "users": "Users",
             "banners": "Banners",
             "socialDrinkCards": "Social drink cards",
             "invoices": "Invoices",
             "payouts": "Payouts",
-            "manageProducts": "Manage products",
-            "posOverview": "POS overview",
+            "productsContainers": "Products & containers",
+            "pos": "Points of sale",
             "flaggedTransactions": "Flagged transactions",
             "fineOverview": "Fine overview",
             "invoiceAccounts": "Invoice Account Overview"
+            "fines": "Fines"
         },
         "validation": {
             "number": {
@@ -166,6 +167,9 @@
             }
         },
         "apiError": "Error",
-        "errorMessage": "Something is going wrong, please open an issue on {link} describing the issue."
+        "errorMessage": "Something is going wrong, please open an issue on {link} describing the issue.",
+        "permissionMessages": {
+            "transactions": "You are not allowed to view these transactions."
+        }
     }
 }

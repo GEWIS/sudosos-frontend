@@ -5,6 +5,7 @@ import { UserRole } from "@/utils/rbacUtils";
 import POSOverviewView from "@/modules/seller/views/POSOverviewView.vue";
 import POSInfoView from "@/modules/seller/views/POSInfoView.vue";
 import SellerPayoutsView from "@/modules/seller/views/SellerPayoutsView.vue";
+import { isAllowed } from "@/utils/permissionUtils";
 
 export function sellerRoutes(): RouteRecordRaw[] {
   return [
@@ -20,25 +21,26 @@ export function sellerRoutes(): RouteRecordRaw[] {
           props: true,
           meta: {
             requiresAuth: true,
-            rolesAllowed: [UserRole.SELLER]
+            rolesAllowed: [UserRole.SELLER],
+            isAllowed: () => isAllowed('get', ['own', 'organ'], 'SellerPayout', ['any'])
           }
         },
         {
-          path: '/manage-products',
+          path: '/product',
           component: ProductsContainersView,
-          name: 'products-containers-overview',
+          name: 'products',
           meta: {
             requiresAuth: true,
-            rolesAllowed: [UserRole.SELLER]
+            isAllowed: () => isAllowed('get', ['own', 'organ'], 'Product', ['any'])
           }
         },
         {
-          path: '/point-of-sale/overview',
-          name: 'pointOfSale',
+          path: '/point-of-sale',
+          name: 'pointsOfSale',
           component: POSOverviewView,
           meta: {
             requiresAuth: true,
-            rolesAllowed: [UserRole.SELLER]
+            isAllowed: () => isAllowed('get', ['own', 'organ'], 'PointOfSale', ['any'])
           }
         },
         {
@@ -48,7 +50,7 @@ export function sellerRoutes(): RouteRecordRaw[] {
           props: true,
           meta: {
             requiresAuth: true,
-            rolesAllowed: [UserRole.SELLER]
+            isAllowed: () => isAllowed('get', ['own', 'organ'], 'PointOfSale', ['any'])
           }
         }
       ]
