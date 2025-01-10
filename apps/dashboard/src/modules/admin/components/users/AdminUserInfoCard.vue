@@ -158,7 +158,6 @@ async function startScan() {
   onMounted(() => {
     if (props.user) {
       updateFieldValues(props.user);
-      console.log(props.user.id);
     }
   });
 
