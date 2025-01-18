@@ -27,6 +27,32 @@
           "details": "Fine Handout Event Details"
         }
       },
+      "debtor": {
+        "title": "Debtor overview",
+        "debtorUsers": {
+          "header": "Debtors",
+          "firstDate": "First date",
+          "secondDate": "Primary date",
+          "apply": "Apply",
+          "notify": "Notify",
+          "handout": "Hand out",
+          "info": "Currently, eligible users have a total debt of {debt}. This would result in a total of {fines} in fines being handed out.",
+          "pleaseSelect": "Please apply two dates to see how much users are in debt.",
+          "firstBalance": "First balance",
+          "lastBalance": "Last balance",
+          "confirm": {
+            "handoutMessage": "Do you want to hand out fines for {count} users?",
+            "notifyMessage": "Do you want to send a fine warning to {count} users?"
+          }
+        },
+        "handoutEvents": {
+          "header": "Fine handout events",
+          "referenceDate": "Reference date",
+          "number": "Number of fines",
+          "total": "Total of fines",
+          "details": "Fine Handout Event Details"
+        }
+      },
       "invoice": {
         "title": "Invoice overview",
         "invoice": "Invoice",
