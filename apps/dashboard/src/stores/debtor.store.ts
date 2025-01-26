@@ -1,5 +1,5 @@
-import { defineStore } from "pinia";
-import type { UserResponse, UserToFineResponse } from "@sudosos/sudosos-client";
+import {defineStore} from "pinia";
+import type {UserResponse, UserToFineResponse} from "@sudosos/sudosos-client";
 import ApiService from "@/services/ApiService";
 
 interface DebtorState {
@@ -24,39 +24,51 @@ export const useDebtorStore = defineStore('debtor', {
         /**
          * Calculates and populates the user state
          *
-         * @param firstReferenceDate The first date for fine calculation
-         * @param secondReferenceDate The second date for fine calculation (usually today)
+         * @param primaryDate The first date for fine calculation
+         * @param secondaryDate The second date for fine calculation (usually today)
          */
-        async fetchCalculatedFines(firstReferenceDate: Date, secondReferenceDate?: Date) {
-            const dates = [firstReferenceDate.toISOString()];
-            if (secondReferenceDate) {
-                dates.push(secondReferenceDate.toISOString());
+        async fetchCalculatedFines(primaryDate: Date, secondaryDate?: Date) {
+            const dates = [primaryDate.toISOString()];
+            if (secondaryDate) {
+                dates.push(secondaryDate.toISOString());
             }
 
             // Don't calculate fines for ORGAN, VOUCHER, LOCAL_ADMIN, INVOICE, AUTOMATIC_INVOICE
-            const userToFine = (await ApiService.debtor.calculateFines(dates, [
+            this.userToFineResponse = (await ApiService.debtor.calculateFines(dates, [
                 "MEMBER",
                 "LOCAL_USER",
             ])).data;
-
-            this.userToFineResponse = userToFine;
         },
         /**
          * This functions turns the users received from `fetchCalculatedFines`
-         * into usuable objects together with the user response.
+         * into lazy loading objects together with the user response.
          *
          * @param take How much you want to take
          * @param skip How much you want to skip
+         * @param nameFilter Filter based on name
          * @return
          */
-        async fetchPaginatedDebtors(take: number, skip: number) {
+        async fetchLazyDebtors(take: number, skip: number, nameFilter: string) {
             const debtors: Record<number, {
                 fine: UserToFineResponse,
                 user: UserResponse,
-            }> = [];
+            }> = {};
 
-            for(let i = skip; i < skip+take; i++) {
+            let extra = 0;
+            for(let i = skip; i < skip+take+extra; i++) {
+                console.log(i);
                 if (this.userToFineResponse[i] == undefined) {
+                    continue;
+                }
+
+                if (!(
+                    this.userToFineResponse[i].balances[0].firstName
+                    + " "
+                    + this.userToFineResponse[i].balances[0].lastName)
+                    .toLowerCase()
+                    .includes(nameFilter.toLowerCase())
+                ) {
+                    extra++;
                     continue;
                 }
 
@@ -67,7 +79,7 @@ export const useDebtorStore = defineStore('debtor', {
                     fine: this.userToFineResponse[i]
                 };
             }
-
+            this.debtors = debtors;
             return debtors;
         }
     }
