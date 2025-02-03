@@ -20,10 +20,11 @@
   </div>
   <SettingsIconComponent />
   <ScannersUpdateComponent :handle-nfc-update="nfcUpdate"/>
+  <NfcSearchComponent :handle-nfc-search="nfcSearch"/>
 </template>
 <script setup lang="ts">
 import { PointOfSaleWithContainersResponse } from '@sudosos/sudosos-client';
-import { onMounted, Ref, ref, watch } from 'vue';
+import { onMounted, onUnmounted, PropType, Ref, ref, watch } from 'vue';
 import { usePointOfSaleStore } from '@/stores/pos.store';
 import PointOfSaleDisplayComponent from '@/components/PointOfSaleDisplay/PointOfSaleDisplayComponent.vue';
 import SettingsIconComponent from '@/components/SettingsIconComponent.vue';
@@ -33,6 +34,7 @@ import ActivityComponent from '@/components/ActivityComponent.vue';
 import UserSearchComponent from "@/components/UserSearch/UserSearchComponent.vue";
 import BuyerSelectionComponent from "@/components/BuyerSelect/BuyerSelectionComponent.vue";
 import ScannersUpdateComponent from "@/components/ScannersUpdateComponent.vue";
+import NfcSearchComponent from "@/components/NfcSearchComponent.vue";
 import { useAuthStore } from "@sudosos/sudosos-frontend-common";
 import apiService from "@/services/ApiService";
 
@@ -102,6 +104,13 @@ const nfcUpdate = async (nfcCode: string) => {
     console.error(error);
   }
 };
+
+const nfcSearch = async (nfcCode: string) => {
+  await apiService.user.findUserNfc(nfcCode).then(async (res) => {
+    //TODO
+  });
+};
+
 </script>
 <style scoped lang="scss">
 .wrapper {
