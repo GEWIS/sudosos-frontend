@@ -20,7 +20,7 @@
   </div>
   <SettingsIconComponent />
   <ScannersUpdateComponent :handle-nfc-update="nfcUpdate"/>
-  <NfcSearchComponent :handle-nfc-search="nfcSearch"/>
+  <NfcSearchComponent :handle-nfc-search="cartStore.setBuyerFromNfc"/>
 </template>
 <script setup lang="ts">
 import { PointOfSaleWithContainersResponse } from '@sudosos/sudosos-client';
@@ -37,12 +37,14 @@ import ScannersUpdateComponent from "@/components/ScannersUpdateComponent.vue";
 import NfcSearchComponent from "@/components/NfcSearchComponent.vue";
 import { useAuthStore } from "@sudosos/sudosos-frontend-common";
 import apiService from "@/services/ApiService";
+import { useCartStore } from "@/stores/cart.store";
 
 const authStore = useAuthStore();
 const posNotLoaded = ref(true);
 const currentPos: Ref<PointOfSaleWithContainersResponse | undefined> = ref(undefined);
 const pointOfSaleStore = usePointOfSaleStore();
 const activityStore = useActivityStore();
+const cartStore = useCartStore();
 
 
 enum PointOfSaleState {
@@ -103,12 +105,6 @@ const nfcUpdate = async (nfcCode: string) => {
   } catch (error) {
     console.error(error);
   }
-};
-
-const nfcSearch = async (nfcCode: string) => {
-  await apiService.user.findUserNfc(nfcCode).then(async (res) => {
-    //TODO
-  });
 };
 
 </script>
