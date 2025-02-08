@@ -3,7 +3,8 @@
     <div class="page-title">{{ t('modules.financial.debtor.title') }}</div>
     <div class="content-wrapper flex flex-column gap-5">
       <CardComponent :header="t('modules.financial.debtor.debtorUsers.header')" class="w-full">
-        <DataTable :value="debtorRows" paginator :rows="10" :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem"
+        <DataTable :value="debtorRows" paginator :rows="10"
+                   :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem"
                    removableSort lazy
                    filterDisplay="row"
                    @sort="event => console.log('event', event)"
@@ -22,7 +23,8 @@
             </template>
           </Column>
 
-          <Column field="secondaryBalance" filter-match-mode="notEquals" :header="secondaryBalanceHeader" sortable :showFilterMenu="false" style="width: 15%">
+          <Column field="secondaryBalance" filter-match-mode="notEquals"
+                  :header="secondaryBalanceHeader" sortable :showFilterMenu="false" style="width: 15%">
             <template #body="{ data }">
               {{ data.secondaryBalance }}
             </template>
@@ -37,7 +39,8 @@
             </template>
           </Column>
 
-          <Column field="primaryBalance" filter-match-mode="notEquals" :header="primaryBalanceHeader" sortable :showFilterMenu="false" style="width: 15%">
+          <Column field="primaryBalance" filter-match-mode="notEquals"
+                  :header="primaryBalanceHeader" sortable :showFilterMenu="false" style="width: 15%">
             <template #body="{ data }">
               {{ data.primaryBalance }}
             </template>
@@ -54,7 +57,7 @@
 
           <Column field="fine" header="Fine" sortable style="width: 20%"></Column>
 
-          <Column field="negativeSince" header="Negative since" style="width: 20%"></Column>
+          <Column field="fineSince" header="Fine since" style="width: 20%"></Column>
 
         </DataTable>
       </CardComponent>
@@ -122,7 +125,7 @@ watch(secondaryBalanceDate, updateCalculatedFines);
 async function updateCalculatedFines() {
   selectedUsers.value = [];
   await debtorStore.fetchCalculatedFines(primaryBalanceDate.value || new Date(), secondaryBalanceDate.value);
-  await updateLazyDebtors();
+  await updateDebtorsLazy();
 }
 
 // Filters that purely cosmetic
@@ -130,8 +133,8 @@ const nameFilter = ref<string>("");
 
 
 // Updates filter based on properties that are not related to calculated fines
-watch(nameFilter, updateLazyDebtors);
-async function updateLazyDebtors() {
+watch(nameFilter, updateDebtorsLazy);
+async function updateDebtorsLazy() {
   await debtorStore.fetchLazyDebtors(10, 0, nameFilter.value);
 }
 
@@ -158,7 +161,8 @@ const debtorRows: ComputedRef<DebtorRow[]> = computed(() => {
       secondaryBalance: debtor.fine.balances[1] && formatPrice(debtor.fine.balances[1].amount),
       fine: debtor.fine.balances[0].fine && formatPrice(
           debtor.fine.balances[0].fine
-      )
+      ),
+      fineSince: debtor.fine.balances[0].fineSince
     });
   }
 
