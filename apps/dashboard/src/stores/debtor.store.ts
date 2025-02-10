@@ -1,19 +1,44 @@
-import {defineStore} from "pinia";
-import type {UserResponse, UserToFineResponse} from "@sudosos/sudosos-client";
+import { defineStore } from "pinia";
+import type { UserResponse, UserToFineResponse } from "@sudosos/sudosos-client";
 import ApiService from "@/services/ApiService";
 
+export enum SortField {
+    NAME = "name",
+    FINE = "fine",
+    FINE_SINCE = "fineSince",
+    PRIMARY_BALANCE = "primaryBalance",
+    SECONDARY_BALANCE = "secondaryBalance",
+}
+
+export enum SortDirection {
+    NONE = 0,
+    ASCENDING = -1,
+    DESCENDING = 1,
+}
+
+export interface DebtorSort {
+    field: SortField | null;
+    direction: SortDirection | null;
+}
+
+export interface DebtorFilter {
+    name: string;
+}
+
+interface Debtor {
+    fine: UserToFineResponse,
+    user: UserResponse,
+}
+
 interface DebtorState {
-    debtors: Record<number, {
-        fine: UserToFineResponse,
-        user: UserResponse,
-    }>;
+    debtors: Debtor[];
     userToFineResponse: UserToFineResponse[];
     isLoading: boolean;
 }
 
 export const useDebtorStore = defineStore('debtor', {
     state: (): DebtorState => ({
-        debtors: {},
+        debtors: [],
         userToFineResponse: [],
         isLoading: false
     }),
@@ -45,41 +70,85 @@ export const useDebtorStore = defineStore('debtor', {
          *
          * @param take How much you want to take
          * @param skip How much you want to skip
-         * @param nameFilter Filter based on name
+         * @param filter Filter based on name
+         * @param sort Sort based on fine, fineSince, primaryBalance and secondaryBalance
          * @return
          */
-        async fetchLazyDebtors(take: number, skip: number, nameFilter: string) {
-            const debtors: Record<number, {
-                fine: UserToFineResponse,
-                user: UserResponse,
-            }> = {};
+        async fetchDebtorLazy(take: number, skip: number, filter: DebtorFilter, sort: DebtorSort) {
+            this.isLoading = true;
+            const debtors: Debtor[] = [];
+            const userToFineResponse = this.userToFineResponse.slice();
+            switch (sort.field) {
+                case SortField.NAME: {
+                    userToFineResponse.sort((a, b) => {
+                        const aFullName = (a.balances[0].firstName + " " + a.balances[0].lastName).toLowerCase();
+                        const bFullName = (b.balances[0].firstName + " " + b.balances[0].lastName).toLowerCase();
+
+                        return ((aFullName > bFullName)
+                            ? 1 : -1)
+                            * (sort.direction || 1)*-1;
+                    });
+                    break;
+                }
+                case SortField.FINE: {
+                    userToFineResponse.sort((a, b) => {
+                       return ((a.balances[0].fine?.amount || 0) - (b.balances[0].fine?.amount || 0))
+                           * (sort.direction || 1);
+                    });
+                    break;
+                }
+                case SortField.FINE_SINCE: {
+                    userToFineResponse.sort((a, b) => {
+                        const dateA = a.balances[0].fineSince
+                            ? new Date(a.balances[0].fineSince)
+                            : new Date();
+                        const dateB = b.balances[0].fineSince
+                            ? new Date(b.balances[0].fineSince)
+                            : new Date();
+                        return (dateA.getTime() - dateB.getTime()) * (sort.direction || 1)*-1;
+                    });
+                    break;
+                }
+                case SortField.PRIMARY_BALANCE: {
+                    userToFineResponse.sort((a, b) => {
+                        return (a.balances[0].amount.amount - b.balances[0].amount.amount) * (sort.direction || 1)*-1;
+                    });
+                    break;
+                }
+                case SortField.SECONDARY_BALANCE: {
+                    userToFineResponse.sort((a, b) => {
+                        return (a.balances[1].amount.amount - b.balances[1].amount.amount) * (sort.direction || 1)*-1;
+                    });
+                    break;
+                }
+            }
 
             let extra = 0;
             for(let i = skip; i < skip+take+extra; i++) {
-                console.log(i);
-                if (this.userToFineResponse[i] == undefined) {
+                if (userToFineResponse[i] == undefined) {
                     continue;
                 }
 
                 if (!(
-                    this.userToFineResponse[i].balances[0].firstName
+                    userToFineResponse[i].balances[0].firstName
                     + " "
-                    + this.userToFineResponse[i].balances[0].lastName)
+                    + userToFineResponse[i].balances[0].lastName)
                     .toLowerCase()
-                    .includes(nameFilter.toLowerCase())
+                    .includes(filter.name.toLowerCase())
                 ) {
                     extra++;
                     continue;
                 }
 
-                const user = (await ApiService.user.getIndividualUser(this.userToFineResponse[i].id)).data;
+                const user = (await ApiService.user.getIndividualUser(userToFineResponse[i].id)).data;
 
-                debtors[user.id] = {
+                debtors.push({
                     user: user,
-                    fine: this.userToFineResponse[i]
-                };
+                    fine: userToFineResponse[i]
+                });
             }
             this.debtors = debtors;
+            this.isLoading = false;
             return debtors;
         }
     }
