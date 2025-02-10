@@ -7,15 +7,25 @@
                    :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem"
                    removableSort lazy
                    filterDisplay="row"
-                   @sort="event => console.log('event', event)"
+                   @sort="onSortClick"
+                   @page="onPage($event)"
                    v-model:selection="selectedUsers">
 
-          <Column selectionMode="multiple" style="width: 2%" />
 
-          <Column field="id" header="Id" style="width: 5%"></Column>
+          <Column selectionMode="multiple" style="width: 2%" >
+          </Column>
 
-          <Column field="name" header="Name" sortable style="width: 15%">
-            <template #body="{ data }">
+          <Column field="id" header="Id" style="width: 5%">
+            <template #body v-if="debtorStore.isLoading">
+              <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
+            </template>
+          </Column>
+
+          <Column field="name" header="Name" :sortable="true" style="width: 15%">
+            <template #body v-if="debtorStore.isLoading">
+              <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
+            </template>
+            <template #body="{ data }" v-else>
               {{ data.name }}
             </template>
             <template #filter>
@@ -24,8 +34,11 @@
           </Column>
 
           <Column field="secondaryBalance" filter-match-mode="notEquals"
-                  :header="secondaryBalanceHeader" sortable :showFilterMenu="false" style="width: 15%">
-            <template #body="{ data }">
+                  :header="secondaryBalanceHeader" :sortable="true" :showFilterMenu="false" style="width: 15%">
+            <template #body v-if="debtorStore.isLoading">
+              <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
+            </template>
+            <template #body="{ data }" v-else>
               {{ data.secondaryBalance }}
             </template>
             <template #filter>
@@ -40,8 +53,11 @@
           </Column>
 
           <Column field="primaryBalance" filter-match-mode="notEquals"
-                  :header="primaryBalanceHeader" sortable :showFilterMenu="false" style="width: 15%">
-            <template #body="{ data }">
+                  :header="primaryBalanceHeader" :sortable="true" :showFilterMenu="false" style="width: 15%">
+            <template #body v-if="debtorStore.isLoading">
+              <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
+            </template>
+            <template #body="{ data }" v-else>
               {{ data.primaryBalance }}
             </template>
             <template #filter>
@@ -55,9 +71,22 @@
             </template>
           </Column>
 
-          <Column field="fine" header="Fine" sortable style="width: 20%"></Column>
+          <Column field="fine" header="Fine" :sortable="true" style="width: 20%">
+            <template #body v-if="debtorStore.isLoading">
+              <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
+            </template>
+          </Column>
 
-          <Column field="fineSince" header="Fine since" style="width: 20%"></Column>
+          <Column field="fineSince" header="Fine since" :sortable="true" style="width: 20%">
+            <template #body v-if="debtorStore.isLoading">
+              <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
+            </template>
+            <template #body="slotProps" v-else>
+              <span v-if="slotProps.data.fineSince" class="text-red-500 font-bold">
+                {{ formatTimeSince(new Date(slotProps.data.fineSince), new Date()) }}
+              </span>
+            </template>
+          </Column>
 
         </DataTable>
       </CardComponent>
@@ -78,11 +107,13 @@ Ideas:
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import CardComponent from "@/components/CardComponent.vue";
-import { useDebtorStore } from "@/stores/debtor.store";
+import { type DebtorSort, useDebtorStore, SortField } from "@/stores/debtor.store";
 import { computed, type ComputedRef, onMounted, ref, watch } from "vue";
 import Calendar from "primevue/calendar";
 import Column from "primevue/column";
-import { formatPrice } from "@/utils/formatterUtils";
+import { formatPrice, formatTimeSince } from "@/utils/formatterUtils";
+import type { DataTableSortEvent } from "primevue/datatable";
+import Skeleton from "primevue/skeleton";
 
 const { t } = useI18n();
 
@@ -105,7 +136,7 @@ const primaryBalanceHeader = computed(() => {
   }
 });
 
-// Primary balance
+// Secondary balance
 const secondaryBalanceDate = ref<Date>();
 const secondaryBalanceHeader = computed(() => {
   if(secondaryBalanceDate.value == undefined) {
@@ -128,14 +159,33 @@ async function updateCalculatedFines() {
   await updateDebtorsLazy();
 }
 
-// Filters that purely cosmetic
+
+
+// Filters and sorting that purely cosmetic (i.e. doesn't update calculated fines)
+const debtorSort = ref<DebtorSort>({
+  field: null,
+  direction: null
+});
+
 const nameFilter = ref<string>("");
+const debtorFilter = computed(() => {
+  return {
+    name: nameFilter.value,
+  };
+});
 
+async function onSortClick(sort: DataTableSortEvent) {
+  debtorSort.value = {
+    field: sort.sortField as SortField || null,
+    direction: sort.sortOrder || null
+  };
+}
 
-// Updates filter based on properties that are not related to calculated fines
-watch(nameFilter, updateDebtorsLazy);
+// Updates sorting and filter based on properties that are not related to calculated fines
+watch(debtorFilter, updateDebtorsLazy);
+watch(debtorSort, updateDebtorsLazy);
 async function updateDebtorsLazy() {
-  await debtorStore.fetchLazyDebtors(10, 0, nameFilter.value);
+  await debtorStore.fetchDebtorLazy(10, 0, debtorFilter.value, debtorSort.value);
 }
 
 
@@ -165,7 +215,6 @@ const debtorRows: ComputedRef<DebtorRow[]> = computed(() => {
       fineSince: debtor.fine.balances[0].fineSince
     });
   }
-
   return debtorRowsArr;
 });
 
