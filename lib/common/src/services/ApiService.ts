@@ -1,25 +1,26 @@
 import {
-  AuthenticateApi,
-  BalanceApi,
-  BannersApi,
-  VouchergroupsApi,
-  Configuration,
-  ContainersApi,
-  FilesApi,
-  InvoicesApi,
-  PayoutRequestsApi,
-  PointofsaleApi,
-  ProductCategoriesApi,
-  ProductsApi,
-  RbacApi,
-  RootApi,
-  StripeApi,
-  TransactionsApi,
-  TransfersApi,
-  UsersApi,
-  VatGroupsApi,
-  DebtorsApi,
-  SellerPayoutsApi,
+    AuthenticateApi,
+    BalanceApi,
+    BannersApi,
+    VouchergroupsApi,
+    Configuration,
+    ContainersApi,
+    FilesApi,
+    InvoicesApi,
+    PayoutRequestsApi,
+    PointofsaleApi,
+    ProductCategoriesApi,
+    ProductsApi,
+    RbacApi,
+    RootApi,
+    StripeApi,
+    TransactionsApi,
+    TransfersApi,
+    UsersApi,
+    VatGroupsApi,
+    DebtorsApi,
+    SellerPayoutsApi,
+    WriteoffsApi,
 } from '@sudosos/sudosos-client';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { getTokenFromStorage, updateTokenIfNecessary } from '../helpers/TokenHelper';
@@ -76,11 +77,13 @@ export class ApiService {
 
   private readonly _sellerPayoutsApi: SellerPayoutsApi;
 
+  private readonly _writeOffsApi: WriteoffsApi;
+
   constructor(basePath: string) {
     const withKeyConfiguration = new Configuration({
       accessToken: () => getTokenFromStorage().token,
     });
-
+    
     this._authenticateApi = new AuthenticateApi(withKeyConfiguration, basePath, axiosInstance);
     this._balanceApi = new BalanceApi(withKeyConfiguration, basePath, axiosInstance);
     this._debtorsApi = new DebtorsApi(withKeyConfiguration, basePath, axiosInstance);
@@ -102,6 +105,7 @@ export class ApiService {
     this._stripeApi = new StripeApi(withKeyConfiguration, basePath, axiosInstance);
     this._rbacApi = new RbacApi(withKeyConfiguration, basePath, axiosInstance);
     this._sellerPayoutsApi = new SellerPayoutsApi(withKeyConfiguration, basePath, axiosInstance);
+    this._writeOffsApi = new WriteoffsApi(withKeyConfiguration, basePath, axiosInstance);
   }
 
   get authenticate(): AuthenticateApi {
@@ -186,5 +190,9 @@ export class ApiService {
 
   get sellerPayouts(): SellerPayoutsApi {
     return this._sellerPayoutsApi;
+  }
+
+  get writeOffs(): WriteoffsApi {
+    return this._writeOffsApi;
   }
 }
