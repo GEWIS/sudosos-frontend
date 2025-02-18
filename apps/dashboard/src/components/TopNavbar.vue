@@ -201,6 +201,11 @@ const navItems = computed(() => [
         route: '/payout',
         visible: isAllowed('get', ['all'], 'SellerPayout', ['any']),
         notifications: pendingPayouts?.value
+      },
+      {
+        label: t('common.navigation.writeOffs'),
+        route: '/write-offs',
+        visible: isAllowed('get', ['all'], 'WriteOff', ['any']),
       }
     ]
   },
