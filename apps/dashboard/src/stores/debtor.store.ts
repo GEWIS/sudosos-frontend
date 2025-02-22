@@ -31,19 +31,88 @@ interface Debtor {
 }
 
 interface DebtorState {
-    debtors: Debtor[];
+    allDebtors: Debtor[];
     userToFineResponse: UserToFineResponse[];
     isLoading: boolean;
+    sort: DebtorSort;
+    filter: DebtorFilter;
 }
 
 export const useDebtorStore = defineStore('debtor', {
     state: (): DebtorState => ({
-        debtors: [],
+        allDebtors: [],
         userToFineResponse: [],
-        isLoading: false
+        isLoading: false,
+        sort: {
+            field: null,
+            direction: null
+        },
+        filter: {
+            name: ""
+        }
     }),
     getters: {
+        debtors: (state) => {
+            const debtors = state.allDebtors.filter((u) => {
+                return (u.fine.balances[0].firstName
+                + " "
+                + u.fine.balances[0].lastName)
+                .toLowerCase()
+                    .includes(state.filter.name.toLowerCase());
+            });
+            switch (state.sort.field) {
+                case SortField.NAME: {
+                    debtors.sort((a, b) => {
+                        const aFullName = (
+                            a.fine.balances[0].firstName + " " + a.fine.balances[0].lastName
+                        ).toLowerCase();
+                        const bFullName = (
+                            b.fine.balances[0].firstName + " " + b.fine.balances[0].lastName
+                        ).toLowerCase();
 
+                        return ((aFullName > bFullName)
+                                ? 1 : -1)
+                            * (state.sort.direction || 1)*-1;
+                    });
+                    break;
+                }
+                case SortField.FINE: {
+                    debtors.sort((a, b) => {
+                        return ((a.fine.balances[0].fine?.amount || 0) - (b.fine.balances[0].fine?.amount || 0))
+                            * (state.sort.direction || 1);
+                    });
+                    break;
+                }
+                case SortField.FINE_SINCE: {
+                    debtors.sort((a, b) => {
+                        const dateA = a.fine.balances[0].fineSince
+                            ? new Date(a.fine.balances[0].fineSince)
+                            : new Date();
+                        const dateB = b.fine.balances[0].fineSince
+                            ? new Date(b.fine.balances[0].fineSince)
+                            : new Date();
+                        return (dateA.getTime() - dateB.getTime()) * (state.sort.direction || 1)*-1;
+                    });
+                    break;
+                }
+                case SortField.PRIMARY_BALANCE: {
+                    debtors.sort((a, b) => {
+                        return (a.fine.balances[0].amount.amount - b.fine.balances[0].amount.amount)
+                            * (state.sort.direction || 1)*-1;
+                    });
+                    break;
+                }
+                case SortField.SECONDARY_BALANCE: {
+                    debtors.sort((a, b) => {
+                        return (a.fine.balances[1].amount.amount - b.fine.balances[1].amount.amount)
+                            * (state.sort.direction || 1)*-1;
+                    });
+                    break;
+                }
+            }
+
+            return debtors;
+        }
     },
     actions: {
         /**
@@ -53,6 +122,7 @@ export const useDebtorStore = defineStore('debtor', {
          * @param secondaryDate The second date for fine calculation (usually today)
          */
         async fetchCalculatedFines(primaryDate: Date, secondaryDate?: Date) {
+            this.isLoading = true;
             const dates = [primaryDate.toISOString()];
             if (secondaryDate) {
                 dates.push(secondaryDate.toISOString());
@@ -63,93 +133,31 @@ export const useDebtorStore = defineStore('debtor', {
                 "MEMBER",
                 "LOCAL_USER",
             ])).data;
+
+            await this.fetchDebtors();
+            this.isLoading = false;
         },
         /**
-         * This functions turns the users received from `fetchCalculatedFines`
-         * into lazy loading objects together with the user response.
-         *
-         * @param take How much you want to take
-         * @param skip How much you want to skip
-         * @param filter Filter based on name
-         * @param sort Sort based on fine, fineSince, primaryBalance and secondaryBalance
-         * @return
+         * Fetches the user responses associated with all the UserToFineResponses
+         * Useful for retrieving the GEWIS id
          */
-        async fetchDebtorLazy(take: number, skip: number, filter: DebtorFilter, sort: DebtorSort) {
-            this.isLoading = true;
-            const debtors: Debtor[] = [];
-            const userToFineResponse = this.userToFineResponse.slice();
-            switch (sort.field) {
-                case SortField.NAME: {
-                    userToFineResponse.sort((a, b) => {
-                        const aFullName = (a.balances[0].firstName + " " + a.balances[0].lastName).toLowerCase();
-                        const bFullName = (b.balances[0].firstName + " " + b.balances[0].lastName).toLowerCase();
+        async fetchDebtors() {
+            const users = await Promise.all(
+                this.userToFineResponse.map((user) => {
+                    return ApiService.user.getIndividualUser(user.id);
+                }),
+            );
 
-                        return ((aFullName > bFullName)
-                            ? 1 : -1)
-                            * (sort.direction || 1)*-1;
-                    });
-                    break;
-                }
-                case SortField.FINE: {
-                    userToFineResponse.sort((a, b) => {
-                       return ((a.balances[0].fine?.amount || 0) - (b.balances[0].fine?.amount || 0))
-                           * (sort.direction || 1);
-                    });
-                    break;
-                }
-                case SortField.FINE_SINCE: {
-                    userToFineResponse.sort((a, b) => {
-                        const dateA = a.balances[0].fineSince
-                            ? new Date(a.balances[0].fineSince)
-                            : new Date();
-                        const dateB = b.balances[0].fineSince
-                            ? new Date(b.balances[0].fineSince)
-                            : new Date();
-                        return (dateA.getTime() - dateB.getTime()) * (sort.direction || 1)*-1;
-                    });
-                    break;
-                }
-                case SortField.PRIMARY_BALANCE: {
-                    userToFineResponse.sort((a, b) => {
-                        return (a.balances[0].amount.amount - b.balances[0].amount.amount) * (sort.direction || 1)*-1;
-                    });
-                    break;
-                }
-                case SortField.SECONDARY_BALANCE: {
-                    userToFineResponse.sort((a, b) => {
-                        return (a.balances[1].amount.amount - b.balances[1].amount.amount) * (sort.direction || 1)*-1;
-                    });
-                    break;
-                }
-            }
+            const allDebtors = [];
 
-            let extra = 0;
-            for(let i = skip; i < skip+take+extra; i++) {
-                if (userToFineResponse[i] == undefined) {
-                    continue;
-                }
-
-                if (!(
-                    userToFineResponse[i].balances[0].firstName
-                    + " "
-                    + userToFineResponse[i].balances[0].lastName)
-                    .toLowerCase()
-                    .includes(filter.name.toLowerCase())
-                ) {
-                    extra++;
-                    continue;
-                }
-
-                const user = (await ApiService.user.getIndividualUser(userToFineResponse[i].id)).data;
-
-                debtors.push({
-                    user: user,
-                    fine: userToFineResponse[i]
+            for (const i in users) {
+                allDebtors.push({
+                    user: users[i].data,
+                    fine: this.userToFineResponse[i]
                 });
             }
-            this.debtors = debtors;
-            this.isLoading = false;
-            return debtors;
+
+            this.allDebtors = allDebtors;
         }
     }
 });
