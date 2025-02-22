@@ -3,14 +3,11 @@
     <div class="page-title">{{ t('modules.financial.debtor.title') }}</div>
     <div class="content-wrapper flex flex-column gap-5">
       <CardComponent :header="t('modules.financial.debtor.debtorUsers.header')" class="w-full">
-        <DataTable :value="debtorRows" paginator
-                   :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem"
+        <DataTable :value="debtorRows" tableStyle="min-width: 50rem"
                    removableSort lazy
                    filterDisplay="row"
                    @sort="onSortClick"
                    :totalRecords="debtorStore.userToFineResponse.length"
-                   v-model:first="skip"
-                   v-model:rows="take"
                    v-model:selection="selectedUsers">
 
 
@@ -109,13 +106,14 @@ Ideas:
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import CardComponent from "@/components/CardComponent.vue";
-import { type DebtorSort, useDebtorStore, SortField } from "@/stores/debtor.store";
+import { useDebtorStore, SortField } from "@/stores/debtor.store";
 import { computed, type ComputedRef, onMounted, ref, watch } from "vue";
 import Calendar from "primevue/calendar";
 import Column from "primevue/column";
 import { formatPrice, formatTimeSince } from "@/utils/formatterUtils";
 import DataTable, { type DataTableSortEvent } from "primevue/datatable";
 import Skeleton from "primevue/skeleton";
+import { debounce } from "lodash";
 
 const { t } = useI18n();
 
@@ -158,42 +156,30 @@ watch(secondaryBalanceDate, updateCalculatedFines);
 async function updateCalculatedFines() {
   selectedUsers.value = [];
   await debtorStore.fetchCalculatedFines(primaryBalanceDate.value || new Date(), secondaryBalanceDate.value);
-  await updateDebtorsLazy();
 }
 
 
-// Pagination
-const take = ref(10);
-const skip = ref(0);
-
-// Filters and sorting that purely cosmetic (i.e. doesn't update calculated fines)
-const debtorSort = ref<DebtorSort>({
-  field: null,
-  direction: null
-});
-
 const nameFilter = ref<string>("");
-const debtorFilter = computed(() => {
-  return {
-    name: nameFilter.value,
-  };
-});
 
-async function onSortClick(sort: DataTableSortEvent) {
-  debtorSort.value = {
+watch(nameFilter, debounce(() => {
+    console.log(2);
+    debtorStore.filter = {
+      name: nameFilter.value
+    };
+  }, 50));
+
+const onSortClick = (sort: DataTableSortEvent) => {
+  if (sort.sortField == SortField.SECONDARY_BALANCE
+        && secondaryBalanceDate.value == undefined) {
+    return;
+  }
+
+  debtorStore.sort = {
     field: sort.sortField as SortField || null,
     direction: sort.sortOrder || null
   };
-}
+};
 
-// Updates sorting and filter based on properties that are not related to calculated fines
-watch(debtorFilter, updateDebtorsLazy);
-watch(debtorSort, updateDebtorsLazy);
-watch(take, updateDebtorsLazy);
-watch(skip, updateDebtorsLazy);
-async function updateDebtorsLazy() {
-  await debtorStore.fetchDebtorLazy(take.value, skip.value, debtorFilter.value, debtorSort.value);
-}
 
 
 // Row in the datatable
