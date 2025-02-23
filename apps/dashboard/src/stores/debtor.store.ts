@@ -1,6 +1,13 @@
 import { defineStore } from "pinia";
-import type { UserResponse, UserToFineResponse } from "@sudosos/sudosos-client";
+import type {
+    BalanceResponse,
+    FineHandoutEventResponse,
+    GewisUserResponse,
+    UserToFineResponse
+} from "@sudosos/sudosos-client";
 import ApiService from "@/services/ApiService";
+import Dinero from "dinero.js";
+import { fetchAllPages } from "@sudosos/sudosos-frontend-common";
 
 export enum SortField {
     NAME = "name",
@@ -27,28 +34,44 @@ export interface DebtorFilter {
 
 interface Debtor {
     fine: UserToFineResponse,
-    user: UserResponse,
+    user: GewisUserResponse,
+}
+
+interface FinancialSummary {
+    totalNegative: Dinero.DineroObject;
+    totalPositive: Dinero.DineroObject;
+    total: Dinero.DineroObject;
 }
 
 interface DebtorState {
     allDebtors: Debtor[];
     userToFineResponse: UserToFineResponse[];
-    isLoading: boolean;
+    isDebtorsLoading: boolean;
     sort: DebtorSort;
     filter: DebtorFilter;
+    isFineHandoutEventsLoading: boolean;
+    fineHandoutEvents: FineHandoutEventResponse[];
+    summary: FinancialSummary;
 }
 
 export const useDebtorStore = defineStore('debtor', {
     state: (): DebtorState => ({
         allDebtors: [],
         userToFineResponse: [],
-        isLoading: false,
+        isDebtorsLoading: true,
         sort: {
             field: null,
             direction: null
         },
         filter: {
             name: ""
+        },
+        isFineHandoutEventsLoading: true,
+        fineHandoutEvents: [],
+        summary: {
+            totalNegative: { amount: 0, currency: "EUR", precision: 2 },
+            totalPositive: { amount: 0, currency: "EUR", precision: 2 },
+            total: { amount: 0, currency: "EUR", precision: 2 },
         }
     }),
     getters: {
@@ -122,7 +145,7 @@ export const useDebtorStore = defineStore('debtor', {
          * @param secondaryDate The second date for fine calculation (usually today)
          */
         async fetchCalculatedFines(primaryDate: Date, secondaryDate?: Date) {
-            this.isLoading = true;
+            this.isDebtorsLoading = true;
             const dates = [primaryDate.toISOString()];
             if (secondaryDate) {
                 dates.push(secondaryDate.toISOString());
@@ -135,7 +158,7 @@ export const useDebtorStore = defineStore('debtor', {
             ])).data;
 
             await this.fetchDebtors();
-            this.isLoading = false;
+            this.isDebtorsLoading = false;
         },
         /**
          * Fetches the user responses associated with all the UserToFineResponses
@@ -158,6 +181,51 @@ export const useDebtorStore = defineStore('debtor', {
             }
 
             this.allDebtors = allDebtors;
+        },
+        /**
+         * Fetch the financial summary of SudoSOS
+         */
+        async fetchFinancialSummary() {
+            if (this.summary.totalPositive.amount != 0) return;
+
+            // @ts-ignore
+            const allBalances = await fetchAllPages<BalanceResponse>(async (take, skip) => {
+                return  ApiService.balance.getAllBalance(
+                    undefined,undefined,undefined,undefined,undefined,
+                    // @ts-ignore
+                    undefined,[ "MEMBER", "LOCAL_USER" ],undefined,undefined, undefined,
+                    take, skip
+                );
+            });
+
+            let totalNegative = Dinero({
+               amount: 0,
+               currency: "EUR",
+               precision: 2
+            });
+            let totalPositive = Dinero({
+                amount: 0,
+                currency: "EUR",
+                precision: 2
+            });
+
+            for (const balance of allBalances) {
+                if (balance.amount.amount <= 0) {
+                    totalNegative = totalNegative.add(
+                        Dinero(balance.amount as Dinero.Options)
+                    );
+                } else {
+                    totalPositive = totalPositive.add(
+                        Dinero(balance.amount as Dinero.Options)
+                    );
+                }
+            }
+            this.summary.totalNegative = totalNegative.toObject();
+            this.summary.totalPositive = totalPositive.toObject();
+            this.summary.total =  totalNegative.add(totalPositive).toObject();
+        },
+        async fetchFineHandoutEvents(take: number, skip: number) {
+
         }
     }
 });
