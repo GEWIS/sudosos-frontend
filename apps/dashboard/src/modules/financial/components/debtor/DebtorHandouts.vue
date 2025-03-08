@@ -47,30 +47,6 @@
       </Column>
     </DataTable>
   </CardComponent>
-<!--  <Dialog-->
-<!--      v-model:visible="showModal"-->
-<!--      class="w-auto flex w-9 md:w-4"-->
-<!--      :header="t('modules.financial.fine.handoutEvents.details')">-->
-<!--    <div class="flex flex-column">-->
-<!--      <div class="flex flex-row justify-content-between">-->
-<!--        <p>{{ t("modules.financial.fine.handoutEvents.number") }}</p>-->
-<!--        <p>{{ selectedHandoutEvent?.fines.length }}</p>-->
-<!--      </div>-->
-<!--      <div class="flex flex-row justify-content-between">-->
-<!--        <p>{{ t("modules.financial.fine.handoutEvents.total") }}</p>-->
-<!--        <p>{{ formatPrice(modalTotalFines) }}-->
-<!--        </p>-->
-<!--      </div>-->
-<!--      <div class="flex flex-row justify-content-between">-->
-<!--        <p>{{ t("common.createdAt") }}</p>-->
-<!--        <p>{{ formatDateTime(new Date(selectedHandoutEvent?.createdAt || '')) }}</p>-->
-<!--      </div>-->
-<!--      <div class="flex flex-row justify-content-between">-->
-<!--        <p>{{ t("modules.financial.fine.handoutEvents.referenceDate") }}</p>-->
-<!--        <p>{{ formatDateTime(new Date(selectedHandoutEvent?.referenceDate || '')) }}</p>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </Dialog>-->
 </template>
 
 <script setup lang="ts">

@@ -12,6 +12,7 @@ Ideas:
 - Explaination
 - Summary at the top
 - default sorting
+- Handout goto button clickable in main oveview
 
 ---->
 <script setup lang="ts">
