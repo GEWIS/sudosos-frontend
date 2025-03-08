@@ -1,7 +1,4 @@
 <template>
-  <div>
-
-  </div>
   <CardComponent :header="t('modules.financial.debtor.debtorUsers.header')" class="w-full">
     <DataTable :value="debtorRows" tableStyle="min-width: 50rem"
                removableSort
@@ -9,7 +6,6 @@
                @sort="onSortClick"
                striped-rows
                v-model:selection="selectedUsers">
-
       <Column selectionMode="multiple" style="width: 2%" v-if="isEditable">
       </Column>
 
@@ -32,7 +28,7 @@
       </Column>
 
       <Column v-if="isEditable" field="secondaryBalance" filter-match-mode="notEquals"
-              :header="currentBalanceHeader" :sortable="true" :showFilterMenu="false" style="width: 15%">
+              :header="controlBalanceHeader" :sortable="true" :showFilterMenu="false" style="width: 15%">
         <template #body v-if="debtorStore.isDebtorsLoading">
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
         </template>
@@ -41,7 +37,7 @@
         </template>
         <template #filter v-if="isEditable">
           <Calendar
-              v-model="currentBalanceDate"
+              v-model="controlBalanceDate"
               id="firstDate"
               showTime
               hourFormat="24"
@@ -93,6 +89,23 @@
       </Column>
 
     </DataTable>
+    <Divider />
+    <div>
+      <table>
+        <tr>
+          <td>Total users:</td>
+          <td>{{ debtorStore.debtors.length }}</td>
+        </tr>
+        <tr>
+          <td>Total debt of users:</td>
+          <td>{{ formatPrice(debtorStore.totalDebt) }}</td>
+        </tr>
+        <tr>
+          <td>Total fines to be handed out:</td>
+          <td>{{ formatPrice(debtorStore.totalFine) }}</td>
+        </tr>
+      </table>
+    </div>
   </CardComponent>
 </template>
 
@@ -139,37 +152,37 @@ const referenceBalanceHeader = computed(() => {
   });
 
   if(referenceBalanceDate.value == undefined) {
-    return "Reference balance now";
+    return "Current balance (target)";
   } else {
-    return "Reference balance on " + referenceBalanceDate.value.toLocaleString('nl', {
+    return "Balance on " + referenceBalanceDate.value.toLocaleString('nl', {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
-    });
+    }) + " (target)";
   }
 });
 
 // Current balance
-const currentBalanceDate = ref<Date>();
-const currentBalanceHeader = computed(() => {
-  if(currentBalanceDate.value == undefined) {
-    return "Current balance";
+const controlBalanceDate = ref<Date>();
+const controlBalanceHeader = computed(() => {
+  if(controlBalanceDate.value == undefined) {
+    return "Current balance (control)";
   } else {
-    return "Balance on " + currentBalanceDate.value.toLocaleString('nl', {
+    return "Balance on " + controlBalanceDate.value.toLocaleString('nl', {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
-    });
+    }) + " (control)";
   }
 });
 
 // Fetch new calculated fines based on the dates
-watch([ referenceBalanceDate, currentBalanceDate ], updateCalculatedFines);
+watch([ referenceBalanceDate, controlBalanceDate ], updateCalculatedFines);
 async function updateCalculatedFines() {
   selectedUsers.value = [];
   await debtorStore.fetchCalculatedFines(
       referenceBalanceDate.value || new Date(),
-      currentBalanceDate.value || new Date(),
+      controlBalanceDate.value || new Date(),
       props.handoutEvent?.fines.map(f => f.user.id));
 }
 
@@ -192,7 +205,7 @@ watch(nameFilter, debounce(() => {
 
 const onSortClick = (sort: DataTableSortEvent) => {
   if (sort.sortField == SortField.SECONDARY_BALANCE
-      && currentBalanceDate.value == undefined) {
+      && controlBalanceDate.value == undefined) {
     return;
   }
 
@@ -256,14 +269,6 @@ const debtorRows: ComputedRef<DebtorRow[]> = computed(() => {
   }
 
   return debtorRowsArr;
-});
-
-const totalDebt = computed(() => {
-
-});
-
-const receiveTotalFine = computed(() => {
-
 });
 
 onMounted(() => {

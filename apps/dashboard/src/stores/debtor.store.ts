@@ -6,7 +6,7 @@ import type {
     UserToFineResponse
 } from "@sudosos/sudosos-client";
 import ApiService from "@/services/ApiService";
-import Dinero from "dinero.js";
+import Dinero, { type DineroObject } from "dinero.js";
 import { fetchAllPages } from "@sudosos/sudosos-frontend-common";
 
 export enum SortField {
@@ -77,7 +77,7 @@ export const useDebtorStore = defineStore('debtor', {
         }
     }),
     getters: {
-        debtors: (state) => {
+        debtors(state) {
             const debtors = state.allDebtors.filter((u) => {
                 return (u.fine.balances[0].firstName
                 + " "
@@ -137,6 +137,30 @@ export const useDebtorStore = defineStore('debtor', {
             }
 
             return debtors;
+        },
+        totalDebt(): DineroObject {
+            console.log(this.debtors
+                .reduce((accumulator: number, current: Debtor) => {
+                    return accumulator + current.fine.balances[0].amount.amount;
+                }, 0));
+            return {
+                amount: this.debtors
+                    .reduce((accumulator: number, current: Debtor) => {
+                        return accumulator + current.fine.balances[0].amount.amount;
+                    }, 0),
+                currency: "EUR",
+                precision: 2
+            };
+        },
+        totalFine(): DineroObject {
+            return {
+                amount: this.debtors
+                    .reduce((accumulator: number, current: Debtor) => {
+                        return accumulator + current.fine.fineAmount.amount; // Use getAmount() to access the value
+                    }, 0),
+                currency: "EUR",
+                precision: 2
+            };
         }
     },
     actions: {
