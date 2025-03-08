@@ -87,20 +87,25 @@
               </span>
         </template>
       </Column>
-
     </DataTable>
     <Divider />
-    <div class="flex flex-row">
+    <div class="flex flex-row justify-content-between">
       <table>
         <thead>
           <tr>
+            <th/>
             <th class="text-left">Total:</th>
+            <th class="text-left" v-if="isEditable">Selected:</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>Users:</td>
             <td>
+              <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
+              <template v-else>{{ debtorStore.debtors.length }}</template>
+            </td>
+            <td v-if="isEditable">
               <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
               <template v-else>{{ debtorStore.debtors.length }}</template>
             </td>
@@ -111,33 +116,7 @@
               <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
               <template v-else>{{ formatPrice(debtorStore.totalDebt) }}</template>
             </td>
-          </tr>
-          <tr>
-            <td>Sum of to be fined:</td>
-            <td>
-              <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
-              <template v-else>{{ formatPrice(debtorStore.totalFine) }}</template>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <table class="ml-5">
-        <thead>
-          <tr>
-            <th class="text-left">Selected:</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Users:</td>
-            <td>
-              <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
-              <template v-else>{{ debtorStore.debtors.length }}</template>
-            </td>
-          </tr>
-          <tr>
-            <td>Sum of debt:</td>
-            <td>
+            <td v-if="isEditable">
               <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
               <template v-else>{{ formatPrice(debtorStore.totalDebt) }}</template>
             </td>
@@ -148,9 +127,28 @@
               <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
               <template v-else>{{ formatPrice(debtorStore.totalFine) }}</template>
             </td>
+            <td v-if="isEditable">
+              <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
+              <template v-else>{{ formatPrice(debtorStore.totalFine) }}</template>
+            </td>
           </tr>
         </tbody>
       </table>
+      <div class="grid" v-if="isEditable && isAllowed('update', ['all'], 'Fine', ['any'])">
+        <div class="col-6">
+          <Button :disabled="debtorStore.isDebtorsLoading" outlined class="w-full justify-content-center">
+            Notify
+          </Button>
+        </div>
+        <div class="col-6">
+          <Button :disabled="debtorStore.isDebtorsLoading" class="w-full justify-content-center">Handout</Button>
+        </div>
+        <div class="col-12">
+          <Button :disabled="debtorStore.isDebtorsLoading" severity="contrast" class="w-full justify-content-center">
+            Lock till positive balance
+          </Button>
+        </div>
+      </div>
     </div>
   </CardComponent>
 </template>
@@ -168,6 +166,7 @@ import Skeleton from "primevue/skeleton";
 import { debounce } from "lodash";
 import { RouterLink } from "vue-router";
 import type { FineHandoutEventResponse } from "@sudosos/sudosos-client";
+import { isAllowed } from "@/utils/permissionUtils";
 
 const props = defineProps<{
   handoutEvent?: FineHandoutEventResponse;
@@ -324,5 +323,9 @@ onMounted(() => {
 
 
 <style scoped lang="scss">
+th,
+td {
+  padding: 0 0.5rem;
+}
 
 </style>
