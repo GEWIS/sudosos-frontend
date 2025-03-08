@@ -62,3 +62,15 @@ export function formatTimeSince(startDate: Date, now: Date) {
         return 'just now';
     }
 }
+
+export function formatFineTimeSince(startDate: Date, now: Date) {
+    const diff = now.getTime() - startDate.getTime();
+    const diffInDays = Math.floor(diff / (24 * 60*60*1000));
+
+
+    if (diff <= 0) {
+        return "";
+    } else {
+        return `${diffInDays} days ago`;
+    }
+}

@@ -14,7 +14,7 @@
         "build-pos": "yarn workspaces foreach -Rpt --from 'sudosos-point-of-sale' run build"
     },
     "dependencies": {
-        "@sudosos/sudosos-client": "github:GEWIS/sudosos-client#2d6105a0b440f6d62b024edbc7612508263970c2",
+        "@sudosos/sudosos-client": "github:GEWIS/sudosos-client#a42a71ab23845ab2d661e89a3800f4fc16297294",
         "axios": "^1.7.7",
         "dinero.js": "^1.9.1",
         "fuse.js": "^7.0.0",

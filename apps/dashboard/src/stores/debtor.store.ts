@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import type {
     BalanceResponse,
-    FineHandoutEventResponse,
+    BaseFineHandoutEventResponse, FineHandoutEventResponse,
     GewisUserResponse,
     UserToFineResponse
 } from "@sudosos/sudosos-client";
@@ -50,7 +50,8 @@ interface DebtorState {
     sort: DebtorSort;
     filter: DebtorFilter;
     isFineHandoutEventsLoading: boolean;
-    fineHandoutEvents: FineHandoutEventResponse[];
+    fineHandoutEvents: BaseFineHandoutEventResponse[];
+    totalFineHandoutEvents: number;
     summary: FinancialSummary;
 }
 
@@ -68,6 +69,7 @@ export const useDebtorStore = defineStore('debtor', {
         },
         isFineHandoutEventsLoading: true,
         fineHandoutEvents: [],
+        totalFineHandoutEvents: 10,
         summary: {
             totalNegative: { amount: 0, currency: "EUR", precision: 2 },
             totalPositive: { amount: 0, currency: "EUR", precision: 2 },
@@ -143,8 +145,9 @@ export const useDebtorStore = defineStore('debtor', {
          *
          * @param primaryDate The first date for fine calculation
          * @param secondaryDate The second date for fine calculation (usually today)
+         * @param userIds Only fetch of these user ids
          */
-        async fetchCalculatedFines(primaryDate: Date, secondaryDate?: Date) {
+        async fetchCalculatedFines(primaryDate: Date, secondaryDate?: Date, userIds?: number[]) {
             this.isDebtorsLoading = true;
             const dates = [primaryDate.toISOString()];
             if (secondaryDate) {
@@ -157,16 +160,19 @@ export const useDebtorStore = defineStore('debtor', {
                 "LOCAL_USER",
             ])).data;
 
-            await this.fetchDebtors();
+            await this.fetchDebtors(userIds);
             this.isDebtorsLoading = false;
         },
         /**
          * Fetches the user responses associated with all the UserToFineResponses
          * Useful for retrieving the GEWIS id
+         * @param userIds Only fetch these userIds
          */
-        async fetchDebtors() {
+        async fetchDebtors(userIds?: number[]) {
             const users = await Promise.all(
-                this.userToFineResponse.map((user) => {
+                this.userToFineResponse
+                    .filter((user) => userIds ? userIds.includes(user.id) : true)
+                    .map((user) => {
                     return ApiService.user.getIndividualUser(user.id);
                 }),
             );
@@ -225,7 +231,16 @@ export const useDebtorStore = defineStore('debtor', {
             this.summary.total =  totalNegative.add(totalPositive).toObject();
         },
         async fetchFineHandoutEvents(take: number, skip: number) {
+            this.isFineHandoutEventsLoading = true;
+            const handoutEvents = await ApiService.debtor.returnAllFineHandoutEvents(take, skip);
 
+            this.fineHandoutEvents = handoutEvents.data.records;
+            this.totalFineHandoutEvents = handoutEvents.data._pagination.count;
+            console.log(this.totalFineHandoutEvents);
+            this.isFineHandoutEventsLoading = false;
+        },
+        async fetchSingleHandoutEvent(id: number): Promise<FineHandoutEventResponse | undefined> {
+            return (await ApiService.debtor.returnSingleFineHandoutEvent(id)).data;
         }
     }
 });
