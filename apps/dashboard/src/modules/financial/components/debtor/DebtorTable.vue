@@ -90,20 +90,66 @@
 
     </DataTable>
     <Divider />
-    <div>
+    <div class="flex flex-row">
       <table>
-        <tr>
-          <td>Total users:</td>
-          <td>{{ debtorStore.debtors.length }}</td>
-        </tr>
-        <tr>
-          <td>Total debt of users:</td>
-          <td>{{ formatPrice(debtorStore.totalDebt) }}</td>
-        </tr>
-        <tr>
-          <td>Total fines to be handed out:</td>
-          <td>{{ formatPrice(debtorStore.totalFine) }}</td>
-        </tr>
+        <thead>
+          <tr>
+            <th class="text-left">Total:</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Users:</td>
+            <td>
+              <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
+              <template v-else>{{ debtorStore.debtors.length }}</template>
+            </td>
+          </tr>
+          <tr>
+            <td>Sum of debt:</td>
+            <td>
+              <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
+              <template v-else>{{ formatPrice(debtorStore.totalDebt) }}</template>
+            </td>
+          </tr>
+          <tr>
+            <td>Sum of to be fined:</td>
+            <td>
+              <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
+              <template v-else>{{ formatPrice(debtorStore.totalFine) }}</template>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="ml-5">
+        <thead>
+          <tr>
+            <th class="text-left">Selected:</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Users:</td>
+            <td>
+              <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
+              <template v-else>{{ debtorStore.debtors.length }}</template>
+            </td>
+          </tr>
+          <tr>
+            <td>Sum of debt:</td>
+            <td>
+              <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
+              <template v-else>{{ formatPrice(debtorStore.totalDebt) }}</template>
+            </td>
+          </tr>
+          <tr>
+            <td>Sum of to be fined:</td>
+            <td>
+              <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
+              <template v-else>{{ formatPrice(debtorStore.totalFine) }}</template>
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </CardComponent>
