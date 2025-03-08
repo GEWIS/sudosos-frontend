@@ -8,6 +8,7 @@ import { isAllowed } from "@/utils/permissionUtils";
 import InvoiceCreateView from "@/modules/financial/views/invoice/InvoiceCreateView.vue";
 import DebtorView from "@/modules/financial/views/debtor/DebtorView.vue";
 import InvoiceAccountOverview from "@/modules/financial/views/invoice/InvoiceAccountOverview.vue";
+import DebtorHandoutView from "@/modules/financial/views/debtor/DebtorHandoutView.vue";
 
 export function financialRoutes(): RouteRecordRaw[] {
   return [
@@ -29,6 +30,15 @@ export function financialRoutes(): RouteRecordRaw[] {
           path: '/debtor',
           component: DebtorView,
           name: 'Debtors',
+          meta: {
+            requiresAuth: true,
+            isAllowed: () => isAllowed('get', ['own', 'organ'], 'Fine', ['any'])
+          }
+        },
+        {
+          path: '/debtor/:id',
+          component: DebtorHandoutView,
+          name: 'debtorSingleHandout',
           meta: {
             requiresAuth: true,
             isAllowed: () => isAllowed('get', ['own', 'organ'], 'Fine', ['any'])

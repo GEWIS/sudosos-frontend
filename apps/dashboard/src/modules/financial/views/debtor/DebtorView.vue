@@ -10,9 +10,8 @@
 <!---
 Ideas:
 - Explaination
-- New fine preview
-- Summary stats (issues on backend open
-- Deal with waived fines
+- Summary at the top
+- default sorting
 
 ---->
 <script setup lang="ts">

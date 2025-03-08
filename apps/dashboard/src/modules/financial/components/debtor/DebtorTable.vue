@@ -1,4 +1,7 @@
 <template>
+  <div>
+
+  </div>
   <CardComponent :header="t('modules.financial.debtor.debtorUsers.header')" class="w-full">
     <DataTable :value="debtorRows" tableStyle="min-width: 50rem"
                removableSort
@@ -7,10 +10,10 @@
                striped-rows
                v-model:selection="selectedUsers">
 
-      <Column selectionMode="multiple" style="width: 2%" >
+      <Column selectionMode="multiple" style="width: 2%" v-if="isEditable">
       </Column>
 
-      <Column field="id" header="Id" style="width: 5%">
+      <Column field="gewisId" header="Id" style="width: 5%">
         <template #body v-if="debtorStore.isDebtorsLoading">
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
         </template>
@@ -21,24 +24,24 @@
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
         </template>
         <template #body="{ data }" v-else>
-          {{ data.name }}
+          <RouterLink class="text-color" :to="`/user/${data.id}`" target="_blank">{{ data.name }}</RouterLink>
         </template>
         <template #filter>
           <InputText v-model="nameFilter" type="text" class="p-column-filter" placeholder="Search" />
         </template>
       </Column>
 
-      <Column field="secondaryBalance" filter-match-mode="notEquals"
-              :header="secondaryBalanceHeader" :sortable="true" :showFilterMenu="false" style="width: 20%">
+      <Column v-if="isEditable" field="secondaryBalance" filter-match-mode="notEquals"
+              :header="currentBalanceHeader" :sortable="true" :showFilterMenu="false" style="width: 15%">
         <template #body v-if="debtorStore.isDebtorsLoading">
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
         </template>
         <template #body="{ data }" v-else>
           {{ data.secondaryBalance }}
         </template>
-        <template #filter>
+        <template #filter v-if="isEditable">
           <Calendar
-              v-model="secondaryBalanceDate"
+              v-model="currentBalanceDate"
               id="firstDate"
               showTime
               hourFormat="24"
@@ -48,16 +51,16 @@
       </Column>
 
       <Column field="primaryBalance" filter-match-mode="notEquals"
-              :header="primaryBalanceHeader" :sortable="true" :showFilterMenu="false" style="width: 20%">
+              :header="referenceBalanceHeader" :sortable="true" :showFilterMenu="false" style="width: 15%">
         <template #body v-if="debtorStore.isDebtorsLoading">
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
         </template>
         <template #body="{ data }" v-else>
           {{ data.primaryBalance }}
         </template>
-        <template #filter>
+        <template #filter v-if="isEditable">
           <Calendar
-              v-model="primaryBalanceDate"
+              v-model="referenceBalanceDate"
               id="firstDate"
               showTime
               hourFormat="24"
@@ -66,7 +69,13 @@
         </template>
       </Column>
 
-      <Column field="fine" header="Fine" :sortable="true" style="width: 10%">
+      <Column field="primaryBalanceFine" header="of which fine" :sortable="true" style="width: 10%">
+        <template #body v-if="debtorStore.isDebtorsLoading">
+          <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
+        </template>
+      </Column>
+
+      <Column field="fine" :header="fineHeader" :sortable="true" style="width: 10%">
         <template #body v-if="debtorStore.isDebtorsLoading">
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
         </template>
@@ -78,7 +87,7 @@
         </template>
         <template #body="slotProps" v-else>
               <span v-if="slotProps.data.fineSince" class="text-red-500 font-bold">
-                {{ formatTimeSince(new Date(slotProps.data.fineSince), new Date()) }}
+                {{ formatFineTimeSince(new Date(slotProps.data.fineSince), referenceBalanceDate || new Date()) }}
               </span>
         </template>
       </Column>
@@ -94,10 +103,20 @@ import { useDebtorStore, SortField } from "@/stores/debtor.store";
 import { computed, type ComputedRef, onMounted, ref, watch } from "vue";
 import Calendar from "primevue/calendar";
 import Column from "primevue/column";
-import { formatPrice, formatTimeSince } from "@/utils/formatterUtils";
+import { formatPrice, formatFineTimeSince } from "@/utils/formatterUtils";
 import DataTable, { type DataTableSortEvent } from "primevue/datatable";
 import Skeleton from "primevue/skeleton";
 import { debounce } from "lodash";
+import { RouterLink } from "vue-router";
+import type { FineHandoutEventResponse } from "@sudosos/sudosos-client";
+
+const props = defineProps<{
+  handoutEvent?: FineHandoutEventResponse;
+}>();
+
+const isEditable = computed(() => {
+  return props.handoutEvent == undefined;
+});
 
 const { t } = useI18n();
 
@@ -107,12 +126,22 @@ const debtorStore = useDebtorStore();
 const selectedUsers = ref();
 
 // Primary balance
-const primaryBalanceDate = ref<Date>();
-const primaryBalanceHeader = computed(() => {
-  if(primaryBalanceDate.value == undefined) {
-    return "Primary balance now ";
+const referenceBalanceDate = ref<Date | undefined>(
+    isEditable.value
+        ? undefined
+        : new Date(props.handoutEvent!.referenceDate)
+);
+const referenceBalanceHeader = computed(() => {
+  if (!isEditable.value) return "Balance on " + referenceBalanceDate.value!.toLocaleString('nl', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
+
+  if(referenceBalanceDate.value == undefined) {
+    return "Reference balance now";
   } else {
-    return "Primary balance on " + primaryBalanceDate.value.toLocaleString('nl', {
+    return "Reference balance on " + referenceBalanceDate.value.toLocaleString('nl', {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
@@ -120,13 +149,13 @@ const primaryBalanceHeader = computed(() => {
   }
 });
 
-// Secondary balance
-const secondaryBalanceDate = ref<Date>();
-const secondaryBalanceHeader = computed(() => {
-  if(secondaryBalanceDate.value == undefined) {
-    return "Secondary balance --/--/--";
+// Current balance
+const currentBalanceDate = ref<Date>();
+const currentBalanceHeader = computed(() => {
+  if(currentBalanceDate.value == undefined) {
+    return "Current balance";
   } else {
-    return "Secondary balance on " + secondaryBalanceDate.value.toLocaleString('nl', {
+    return "Balance on " + currentBalanceDate.value.toLocaleString('nl', {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
@@ -135,13 +164,22 @@ const secondaryBalanceHeader = computed(() => {
 });
 
 // Fetch new calculated fines based on the dates
-watch(primaryBalanceDate, updateCalculatedFines);
-watch(secondaryBalanceDate, updateCalculatedFines);
+watch([ referenceBalanceDate, currentBalanceDate ], updateCalculatedFines);
 async function updateCalculatedFines() {
   selectedUsers.value = [];
-  await debtorStore.fetchCalculatedFines(primaryBalanceDate.value || new Date(), secondaryBalanceDate.value);
+  await debtorStore.fetchCalculatedFines(
+      referenceBalanceDate.value || new Date(),
+      currentBalanceDate.value || new Date(),
+      props.handoutEvent?.fines.map(f => f.user.id));
 }
 
+const fineHeader = computed(() => {
+  if (isEditable.value) {
+    return "To be fined";
+  } else {
+    return "Was fined";
+  }
+});
 
 const nameFilter = ref<string>("");
 
@@ -154,7 +192,7 @@ watch(nameFilter, debounce(() => {
 
 const onSortClick = (sort: DataTableSortEvent) => {
   if (sort.sortField == SortField.SECONDARY_BALANCE
-      && secondaryBalanceDate.value == undefined) {
+      && currentBalanceDate.value == undefined) {
     return;
   }
 
@@ -168,10 +206,12 @@ const onSortClick = (sort: DataTableSortEvent) => {
 
 // Row in the datatable
 interface DebtorRow {
-  id: number | undefined;
+  id: number,
+  gewisId: number | undefined;
   name: string;
   primaryBalance: string;
   secondaryBalance: string;
+  primaryBalanceFine: string;
   fine?: string;
 }
 
@@ -183,20 +223,47 @@ const debtorRows: ComputedRef<DebtorRow[]> = computed(() => {
 
   const debtorRowsArr = [];
 
-  for (const debtorId in debtorStore.debtors) {
-    const debtor = debtorStore.debtors[debtorId];
+  for (const debtor of debtorStore.debtors) {
+
+    // Skip if we are viewing a handoutEvent but user is not in that handout
+    if (props.handoutEvent
+        && !props.handoutEvent.fines.map(f => f.user.id).includes(debtor.user.id)) {
+      continue;
+    }
+
+    // Take fine from handout event if present
+    let fine;
+    if (props.handoutEvent) {
+      fine = formatPrice(
+          props.handoutEvent.fines.find(f => f.user.id === debtor.user.id)!.amount
+      );
+    } else {
+      fine = debtor.fine.fineAmount && formatPrice(
+          debtor.fine.fineAmount
+      );
+    }
+
     debtorRowsArr.push({
-      id: debtor.user.gewisId,
+      id: debtor.user.id,
+      gewisId: debtor.user.gewisId,
       name: debtor.user.firstName + " " + debtor.user.lastName,
       primaryBalance: formatPrice(debtor.fine.balances[0].amount),
       secondaryBalance: debtor.fine.balances[1] && formatPrice(debtor.fine.balances[1].amount),
-      fine: debtor.fine.balances[0].fine && formatPrice(
-          debtor.fine.balances[0].fine
-      ),
+      primaryBalanceFine: debtor.fine.balances[0].fine && formatPrice(debtor.fine.balances[0].fine),
+      fine: fine,
       fineSince: debtor.fine.balances[0].fineSince
     });
   }
+
   return debtorRowsArr;
+});
+
+const totalDebt = computed(() => {
+
+});
+
+const receiveTotalFine = computed(() => {
+
 });
 
 onMounted(() => {
