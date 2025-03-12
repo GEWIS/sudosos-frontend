@@ -13,8 +13,8 @@ export enum SortField {
     NAME = "name",
     FINE = "fine",
     FINE_SINCE = "fineSince",
-    PRIMARY_BALANCE = "primaryBalance",
-    SECONDARY_BALANCE = "secondaryBalance",
+    REFERENCE_BALANCE = "referenceBalance",
+    CONTROL_BALANCE = "controlBalance",
 }
 
 export enum SortDirection {
@@ -32,7 +32,7 @@ export interface DebtorFilter {
     name: string;
 }
 
-interface Debtor {
+export interface Debtor {
     fine: UserToFineResponse,
     user: GewisUserResponse,
 }
@@ -61,8 +61,8 @@ export const useDebtorStore = defineStore('debtor', {
         userToFineResponse: [],
         isDebtorsLoading: true,
         sort: {
-            field: null,
-            direction: null
+            field: SortField.REFERENCE_BALANCE,
+            direction: SortDirection.ASCENDING,
         },
         filter: {
             name: ""
@@ -120,14 +120,14 @@ export const useDebtorStore = defineStore('debtor', {
                     });
                     break;
                 }
-                case SortField.PRIMARY_BALANCE: {
+                case SortField.REFERENCE_BALANCE: {
                     debtors.sort((a, b) => {
                         return (a.fine.balances[0].amount.amount - b.fine.balances[0].amount.amount)
                             * (state.sort.direction || 1)*-1;
                     });
                     break;
                 }
-                case SortField.SECONDARY_BALANCE: {
+                case SortField.CONTROL_BALANCE: {
                     debtors.sort((a, b) => {
                         return (a.fine.balances[1].amount.amount - b.fine.balances[1].amount.amount)
                             * (state.sort.direction || 1)*-1;
@@ -138,13 +138,9 @@ export const useDebtorStore = defineStore('debtor', {
 
             return debtors;
         },
-        totalDebt(): DineroObject {
-            console.log(this.debtors
-                .reduce((accumulator: number, current: Debtor) => {
-                    return accumulator + current.fine.balances[0].amount.amount;
-                }, 0));
+        totalDebt(state): DineroObject {
             return {
-                amount: this.debtors
+                amount: state.allDebtors
                     .reduce((accumulator: number, current: Debtor) => {
                         return accumulator + current.fine.balances[0].amount.amount;
                     }, 0),
@@ -152,9 +148,9 @@ export const useDebtorStore = defineStore('debtor', {
                 precision: 2
             };
         },
-        totalFine(): DineroObject {
+        totalFine(state): DineroObject {
             return {
-                amount: this.debtors
+                amount: state.allDebtors
                     .reduce((accumulator: number, current: Debtor) => {
                         return accumulator + current.fine.fineAmount.amount; // Use getAmount() to access the value
                     }, 0),
@@ -260,7 +256,6 @@ export const useDebtorStore = defineStore('debtor', {
 
             this.fineHandoutEvents = handoutEvents.data.records;
             this.totalFineHandoutEvents = handoutEvents.data._pagination.count;
-            console.log(this.totalFineHandoutEvents);
             this.isFineHandoutEventsLoading = false;
         },
         async fetchSingleHandoutEvent(id: number): Promise<FineHandoutEventResponse | undefined> {

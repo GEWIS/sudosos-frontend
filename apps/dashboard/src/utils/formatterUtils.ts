@@ -70,6 +70,10 @@ export function formatFineTimeSince(startDate: Date, now: Date) {
 
     if (diff <= 0) {
         return "";
+    } else if (diffInDays == 0) {
+        return "Today";
+    } else if (diffInDays == 1) {
+        return "Yesterday";
     } else {
         return `${diffInDays} days ago`;
     }

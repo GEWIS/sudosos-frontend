@@ -10,10 +10,13 @@
 <!---
 Ideas:
 - Explaination
-- Summary at the top
 - default sorting
 - Handout goto button clickable in main oveview
 
+- italics when cannotgoindebt
+
+
+- translations
 ---->
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";

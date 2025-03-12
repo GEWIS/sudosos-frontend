@@ -4,6 +4,8 @@
                removableSort
                filterDisplay="row"
                @sort="onSortClick"
+               :sort-field="debtorStore.sort.field || undefined"
+               :sort-order="debtorStore.sort.direction || undefined"
                striped-rows
                v-model:selection="selectedUsers">
       <Column selectionMode="multiple" style="width: 2%" v-if="isEditable">
@@ -27,13 +29,13 @@
         </template>
       </Column>
 
-      <Column v-if="isEditable" field="secondaryBalance" filter-match-mode="notEquals"
+      <Column v-if="isEditable" field="controlBalance" filter-match-mode="notEquals"
               :header="controlBalanceHeader" :sortable="true" :showFilterMenu="false" style="width: 15%">
         <template #body v-if="debtorStore.isDebtorsLoading">
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
         </template>
         <template #body="{ data }" v-else>
-          {{ data.secondaryBalance }}
+          {{ data.controlBalance }}
         </template>
         <template #filter v-if="isEditable">
           <Calendar
@@ -46,13 +48,13 @@
         </template>
       </Column>
 
-      <Column field="primaryBalance" filter-match-mode="notEquals"
+      <Column field="referenceBalance" filter-match-mode="notEquals"
               :header="referenceBalanceHeader" :sortable="true" :showFilterMenu="false" style="width: 15%">
         <template #body v-if="debtorStore.isDebtorsLoading">
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
         </template>
         <template #body="{ data }" v-else>
-          {{ data.primaryBalance }}
+          {{ data.referenceBalance }}
         </template>
         <template #filter v-if="isEditable">
           <Calendar
@@ -103,22 +105,22 @@
             <td>Users:</td>
             <td>
               <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
-              <template v-else>{{ debtorStore.debtors.length }}</template>
+              <template v-else>{{ debtorStore.allDebtors.length }}</template>
             </td>
             <td v-if="isEditable">
               <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
-              <template v-else>{{ debtorStore.debtors.length }}</template>
+              <template v-else>{{ selectedUsers.length }}</template>
             </td>
           </tr>
           <tr>
-            <td>Sum of debt:</td>
+            <td>Sum of current balance:</td>
             <td>
               <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
               <template v-else>{{ formatPrice(debtorStore.totalDebt) }}</template>
             </td>
             <td v-if="isEditable">
               <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
-              <template v-else>{{ formatPrice(debtorStore.totalDebt) }}</template>
+              <template v-else>{{ formatPrice(selectedTotalDebt) }}</template>
             </td>
           </tr>
           <tr>
@@ -129,20 +131,24 @@
             </td>
             <td v-if="isEditable">
               <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
-              <template v-else>{{ formatPrice(debtorStore.totalFine) }}</template>
+              <template v-else>{{ formatPrice(selectedTotalFine) }}</template>
             </td>
           </tr>
         </tbody>
       </table>
       <div class="grid" v-if="isEditable && isAllowed('update', ['all'], 'Fine', ['any'])">
         <div class="col-6">
-          <Button :disabled="debtorStore.isDebtorsLoading" outlined class="w-full justify-content-center">
+          <Button
+              @click="startNotify"
+              :disabled="debtorStore.isDebtorsLoading" outlined
+              class="w-full justify-content-center">
             Notify
           </Button>
         </div>
         <div class="col-6">
           <Button :disabled="debtorStore.isDebtorsLoading" class="w-full justify-content-center">Handout</Button>
         </div>
+        <Divider class="col-12 my-0"/>
         <div class="col-12">
           <Button :disabled="debtorStore.isDebtorsLoading" severity="contrast" class="w-full justify-content-center">
             Lock till positive balance
@@ -151,12 +157,13 @@
       </div>
     </div>
   </CardComponent>
+  <ConfirmDialog/>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import CardComponent from "@/components/CardComponent.vue";
-import { useDebtorStore, SortField } from "@/stores/debtor.store";
+import { useDebtorStore, SortField, type Debtor } from "@/stores/debtor.store";
 import { computed, type ComputedRef, onMounted, ref, watch } from "vue";
 import Calendar from "primevue/calendar";
 import Column from "primevue/column";
@@ -167,6 +174,7 @@ import { debounce } from "lodash";
 import { RouterLink } from "vue-router";
 import type { FineHandoutEventResponse } from "@sudosos/sudosos-client";
 import { isAllowed } from "@/utils/permissionUtils";
+import { useConfirm } from "primevue/useconfirm";
 
 const props = defineProps<{
   handoutEvent?: FineHandoutEventResponse;
@@ -180,8 +188,10 @@ const { t } = useI18n();
 
 const debtorStore = useDebtorStore();
 
+const confirm = useConfirm();
+
 // All the users that have been selected for actions
-const selectedUsers = ref();
+const selectedUsers = ref<DebtorRow[]>([]);
 
 // Primary balance
 const referenceBalanceDate = ref<Date | undefined>(
@@ -242,14 +252,13 @@ const fineHeader = computed(() => {
 const nameFilter = ref<string>("");
 
 watch(nameFilter, debounce(() => {
-  console.log(2);
   debtorStore.filter = {
     name: nameFilter.value
   };
 }, 50));
 
 const onSortClick = (sort: DataTableSortEvent) => {
-  if (sort.sortField == SortField.SECONDARY_BALANCE
+  if (sort.sortField == SortField.CONTROL_BALANCE
       && controlBalanceDate.value == undefined) {
     return;
   }
@@ -267,9 +276,9 @@ interface DebtorRow {
   id: number,
   gewisId: number | undefined;
   name: string;
-  primaryBalance: string;
-  secondaryBalance: string;
-  primaryBalanceFine: string;
+  referenceBalance: string;
+  controlBalance: string;
+  referenceBalanceFine: string;
   fine?: string;
 }
 
@@ -305,9 +314,9 @@ const debtorRows: ComputedRef<DebtorRow[]> = computed(() => {
       id: debtor.user.id,
       gewisId: debtor.user.gewisId,
       name: debtor.user.firstName + " " + debtor.user.lastName,
-      primaryBalance: formatPrice(debtor.fine.balances[0].amount),
-      secondaryBalance: debtor.fine.balances[1] && formatPrice(debtor.fine.balances[1].amount),
-      primaryBalanceFine: debtor.fine.balances[0].fine && formatPrice(debtor.fine.balances[0].fine),
+      referenceBalance: formatPrice(debtor.fine.balances[0].amount),
+      controlBalance: debtor.fine.balances[1] && formatPrice(debtor.fine.balances[1].amount),
+      referenceBalanceFine: debtor.fine.balances[0].fine && formatPrice(debtor.fine.balances[0].fine),
       fine: fine,
       fineSince: debtor.fine.balances[0].fineSince
     });
@@ -315,6 +324,51 @@ const debtorRows: ComputedRef<DebtorRow[]> = computed(() => {
 
   return debtorRowsArr;
 });
+
+const selectedTotalDebt = computed(() => {
+  return {
+    amount: selectedUsers.value
+        ?.map((r) => debtorStore.allDebtors.find((d) => d.user.id === r.id)!)
+        .reduce((accumulator: number, current: Debtor) => {
+          return accumulator + current.fine.balances[0].amount.amount;
+        }, 0) || 0,
+    currency: "EUR",
+    precision: 2
+  };
+});
+
+const selectedTotalFine = computed(() => {
+  return {
+    amount: selectedUsers.value
+        .map((r) => debtorStore.allDebtors.find((d) => d.user.id === r.id)!)
+        .reduce((accumulator: number, current: Debtor) => {
+          return accumulator + current.fine.fineAmount.amount;
+        }, 0) || 0,
+    currency: "EUR",
+    precision: 2
+  };
+});
+
+function startNotify() {
+  confirm.require({
+    header: t('common.areYouSure'),
+    message: t('modules.financial.fine.eligibleUsers.confirm.notifyMessage', { count: selectedUsers.value.length }),
+    icon: 'pi pi-question-circle',
+    acceptLabel: t('modules.financial.fine.eligibleUsers.notify'),
+    rejectLabel: t('common.cancel'),
+    accept: async () => {
+    }
+  });
+}
+
+
+function startHandout() {
+
+}
+
+function startCannotInDebt() {
+
+}
 
 onMounted(() => {
   updateCalculatedFines();
