@@ -6,6 +6,7 @@
                @sort="onSortClick"
                :sort-field="debtorStore.sort.field || undefined"
                :sort-order="debtorStore.sort.direction || undefined"
+               lazy
                striped-rows
                v-model:selection="selectedUsers">
       <Column selectionMode="multiple" style="width: 2%" v-if="isEditable">
@@ -85,7 +86,7 @@
         </template>
         <template #body="slotProps" v-else>
               <span v-if="slotProps.data.fineSince" class="text-red-500 font-bold">
-                {{ formatFineTimeSince(new Date(slotProps.data.fineSince), referenceBalanceDate || new Date()) }}
+                {{ formatFineTimeSince(new Date(slotProps.data.fineSince), referenceBalanceDate || nowDate) }}
               </span>
         </template>
       </Column>
@@ -136,21 +137,32 @@
           </tr>
         </tbody>
       </table>
-      <div class="grid" v-if="isEditable && isAllowed('update', ['all'], 'Fine', ['any'])">
+      <div class="grid w-20rem" v-if="isEditable && isAllowed('update', ['all'], 'Fine', ['any'])">
         <div class="col-6">
           <Button
               @click="startNotify"
-              :disabled="debtorStore.isDebtorsLoading" outlined
-              class="w-full justify-content-center">
-            Notify
+              :disabled="debtorStore.isDebtorsLoading || debtorStore.isNotifyLoading || selectedUsers.length === 0"
+              outlined
+              class="w-full h-full justify-content-center flex flex-row items-center justify-center">
+            <span
+                v-if="!debtorStore.isNotifyLoading"
+              >
+              Notify
+            </span>
+
+            <ProgressSpinner
+                class="w-1rem h-1rem"
+                v-else />
           </Button>
         </div>
         <div class="col-6">
-          <Button :disabled="debtorStore.isDebtorsLoading" class="w-full justify-content-center">Handout</Button>
+          <Button :disabled="debtorStore.isDebtorsLoading || selectedUsers.length === 0"
+                  class="w-full justify-content-center">Handout</Button>
         </div>
         <Divider class="col-12 my-0"/>
         <div class="col-12">
-          <Button :disabled="debtorStore.isDebtorsLoading" severity="contrast" class="w-full justify-content-center">
+          <Button :disabled="debtorStore.isDebtorsLoading || selectedUsers.length === 0"
+                  severity="contrast" class="w-full justify-content-center">
             Lock till positive balance
           </Button>
         </div>
@@ -175,6 +187,7 @@ import { RouterLink } from "vue-router";
 import type { FineHandoutEventResponse } from "@sudosos/sudosos-client";
 import { isAllowed } from "@/utils/permissionUtils";
 import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
 
 const props = defineProps<{
   handoutEvent?: FineHandoutEventResponse;
@@ -190,8 +203,15 @@ const debtorStore = useDebtorStore();
 
 const confirm = useConfirm();
 
+const toast = useToast();
+
 // All the users that have been selected for actions
 const selectedUsers = ref<DebtorRow[]>([]);
+
+/**
+ * Fix the nowDate so it is consequent between all function calls
+ */
+const nowDate = new Date();
 
 // Primary balance
 const referenceBalanceDate = ref<Date | undefined>(
@@ -236,8 +256,8 @@ watch([ referenceBalanceDate, controlBalanceDate ], updateCalculatedFines);
 async function updateCalculatedFines() {
   selectedUsers.value = [];
   await debtorStore.fetchCalculatedFines(
-      referenceBalanceDate.value || new Date(),
-      controlBalanceDate.value || new Date(),
+      referenceBalanceDate.value || nowDate,
+      controlBalanceDate.value || nowDate,
       props.handoutEvent?.fines.map(f => f.user.id));
 }
 
@@ -357,6 +377,18 @@ function startNotify() {
     acceptLabel: t('modules.financial.fine.eligibleUsers.notify'),
     rejectLabel: t('common.cancel'),
     accept: async () => {
+      debtorStore.notifyAboutFutureFines(
+          selectedUsers.value.map(s => s.id),
+          referenceBalanceDate.value || nowDate
+      )
+          .then(() => {
+            toast.add({
+              summary: t('common.toast.success.success'),
+              detail: t('common.toast.success.finesNotified'),
+              life: 3000,
+              severity: 'success',
+            });
+          });
     }
   });
 }

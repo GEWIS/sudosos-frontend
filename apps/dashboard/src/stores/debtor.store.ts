@@ -50,6 +50,9 @@ interface DebtorState {
     sort: DebtorSort;
     filter: DebtorFilter;
     isFineHandoutEventsLoading: boolean;
+    isNotifyLoading: boolean;
+    isHandoutLoading: boolean;
+    isLockLoading: boolean;
     fineHandoutEvents: BaseFineHandoutEventResponse[];
     totalFineHandoutEvents: number;
     summary: FinancialSummary;
@@ -68,6 +71,9 @@ export const useDebtorStore = defineStore('debtor', {
             name: ""
         },
         isFineHandoutEventsLoading: true,
+        isNotifyLoading: false,
+        isHandoutLoading: false,
+        isLockLoading: false,
         fineHandoutEvents: [],
         totalFineHandoutEvents: 10,
         summary: {
@@ -260,6 +266,14 @@ export const useDebtorStore = defineStore('debtor', {
         },
         async fetchSingleHandoutEvent(id: number): Promise<FineHandoutEventResponse | undefined> {
             return (await ApiService.debtor.returnSingleFineHandoutEvent(id)).data;
+        },
+        async notifyAboutFutureFines(userIds: number[], referenceDate: Date) {
+            this.isNotifyLoading = true;
+            await ApiService.debtor.notifyAboutFutureFines({
+                userIds: userIds,
+                referenceDate: referenceDate.toISOString()
+            });
+            this.isNotifyLoading = false;
         }
     }
 });
