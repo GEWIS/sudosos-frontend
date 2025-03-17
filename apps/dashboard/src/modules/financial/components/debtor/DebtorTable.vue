@@ -152,18 +152,38 @@
 
             <ProgressSpinner
                 class="w-1rem h-1rem"
+                stroke-width="10"
                 v-else />
           </Button>
         </div>
         <div class="col-6">
-          <Button :disabled="debtorStore.isDebtorsLoading || selectedUsers.length === 0"
-                  class="w-full justify-content-center">Handout</Button>
+          <Button :disabled="debtorStore.isDebtorsLoading || debtorStore.isHandoutLoading || selectedUsers.length === 0"
+                  @click="startHandout"
+                  class="w-full h-full justify-content-center flex flex-row items-center justify-center">
+            <span
+                v-if="!debtorStore.isHandoutLoading">
+              Handout
+            </span>
+
+            <ProgressSpinner
+                class="w-1rem h-1rem"
+                stroke-width="10"
+                v-else />
+          </Button>
         </div>
         <Divider class="col-12 my-0"/>
         <div class="col-12">
-          <Button :disabled="debtorStore.isDebtorsLoading || selectedUsers.length === 0"
-                  severity="contrast" class="w-full justify-content-center">
-            Lock till positive balance
+          <Button :disabled="debtorStore.isDebtorsLoading || debtorStore.isLockLoading || selectedUsers.length === 0"
+                  severity="contrast" class="w-full h-full justify-content-center flex flex-row items-center justify-center">
+            <span
+                v-if="!debtorStore.isLockLoading">
+              Lock till positive balance
+            </span>
+
+            <ProgressSpinner
+                class="w-1rem h-1rem"
+                stroke-width="10"
+                v-else />
           </Button>
         </div>
       </div>
@@ -377,7 +397,7 @@ function startNotify() {
     acceptLabel: t('modules.financial.fine.eligibleUsers.notify'),
     rejectLabel: t('common.cancel'),
     accept: async () => {
-      debtorStore.notifyAboutFutureFines(
+      debtorStore.notifyFines(
           selectedUsers.value.map(s => s.id),
           referenceBalanceDate.value || nowDate
       )
@@ -395,7 +415,27 @@ function startNotify() {
 
 
 function startHandout() {
-
+  confirm.require({
+    header: t('common.areYouSure'),
+    message: t('modules.financial.fine.eligibleUsers.confirm.handoutMessage', { count: selectedUsers.value.length }),
+    icon: 'pi pi-question-circle',
+    acceptLabel: t('modules.financial.fine.eligibleUsers.handout'),
+    rejectLabel: t('common.cancel'),
+    accept: async () => {
+      debtorStore.handoutFines(
+          selectedUsers.value.map(s => s.id),
+          referenceBalanceDate.value || nowDate
+      )
+          .then(() => {
+            toast.add({
+              summary: t('common.toast.success.success'),
+              detail: t('common.toast.success.finesHandedOut'),
+              life: 3000,
+              severity: 'success',
+            });
+          });
+    }
+  });
 }
 
 function startCannotInDebt() {
