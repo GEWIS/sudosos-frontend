@@ -267,13 +267,28 @@ export const useDebtorStore = defineStore('debtor', {
         async fetchSingleHandoutEvent(id: number): Promise<FineHandoutEventResponse | undefined> {
             return (await ApiService.debtor.returnSingleFineHandoutEvent(id)).data;
         },
-        async notifyAboutFutureFines(userIds: number[], referenceDate: Date) {
+        async notifyFines(userIds: number[], referenceDate: Date) {
             this.isNotifyLoading = true;
             await ApiService.debtor.notifyAboutFutureFines({
                 userIds: userIds,
                 referenceDate: referenceDate.toISOString()
             });
             this.isNotifyLoading = false;
+        },
+        async handoutFines(userIds: number[], referenceDate: Date) {
+            this.isHandoutLoading = true;
+            await ApiService.debtor.handoutFines({
+                userIds: userIds,
+                referenceDate: referenceDate.toISOString()
+            });
+            this.isHandoutLoading = false;
+        },
+        async lockTillPositive(userIds: number[]) {
+            this.isLockLoading = true;
+
+            const requests = 
+
+            this.isLockLoading = false;
         }
     }
 });
