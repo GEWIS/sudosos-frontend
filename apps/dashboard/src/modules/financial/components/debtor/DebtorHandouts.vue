@@ -41,8 +41,10 @@
         <template #body v-if="debtorStore.isFineHandoutEventsLoading">
           <Skeleton class="w-2 my-1 h-1rem surface-300"/>
         </template>
-        <template #body v-else>
-          <i class="pi pi-info-circle"/>
+        <template #body="{ data }" v-else>
+          <i
+              class="pi pi-info-circle cursor-pointer"
+              @click="() => navigateToHandoutEvent(data.id)"/>
         </template>
       </Column>
     </DataTable>
@@ -51,6 +53,7 @@
 
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
 import { formatDateTime } from "@/utils/formatterUtils";
 import Column from "primevue/column";
 import CardComponent from "@/components/CardComponent.vue";
@@ -62,6 +65,7 @@ import { useDebtorStore } from "@/stores/debtor.store";
 const { t } = useI18n();
 
 const debtorStore = useDebtorStore();
+const router = useRouter();
 
 const take = ref(10);
 const skip = ref(0);
@@ -70,6 +74,10 @@ watch([ take, skip ], () => updateFineHandoutEvents);
 const updateFineHandoutEvents = () => {
   debtorStore.fetchFineHandoutEvents(take.value, skip.value);
 };
+
+function navigateToHandoutEvent(handoutId: number) {
+  router.push({ name: "debtorSingleHandout", params: { id: handoutId } });
+}
 
 onMounted(() => {
   updateFineHandoutEvents();

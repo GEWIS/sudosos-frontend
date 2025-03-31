@@ -8,7 +8,8 @@
                :sort-order="debtorStore.sort.direction || undefined"
                lazy
                striped-rows
-               v-model:selection="selectedUsers">
+               v-model:selection="selectedUsers"
+               :row-class="data => !data?.canGoInDebt ? 'font-italic' : ''">
       <Column selectionMode="multiple" style="width: 2%" v-if="isEditable">
       </Column>
 
@@ -174,7 +175,8 @@
         <Divider class="col-12 my-0"/>
         <div class="col-12">
           <Button :disabled="debtorStore.isDebtorsLoading || debtorStore.isLockLoading || selectedUsers.length === 0"
-                  severity="contrast" class="w-full h-full justify-content-center flex flex-row items-center justify-center">
+                  severity="contrast"
+                  class="w-full h-full justify-content-center flex flex-row items-center justify-center">
             <span
                 v-if="!debtorStore.isLockLoading">
               Lock till positive balance
@@ -358,7 +360,8 @@ const debtorRows: ComputedRef<DebtorRow[]> = computed(() => {
       controlBalance: debtor.fine.balances[1] && formatPrice(debtor.fine.balances[1].amount),
       referenceBalanceFine: debtor.fine.balances[0].fine && formatPrice(debtor.fine.balances[0].fine),
       fine: fine,
-      fineSince: debtor.fine.balances[0].fineSince
+      fineSince: debtor.fine.balances[0].fineSince,
+      canGoInDebt: debtor.user.canGoIntoDebt
     });
   }
 
