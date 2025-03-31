@@ -10,11 +10,6 @@
 <!---
 Ideas:
 - Explaination
-- default sorting
-- Handout goto button clickable in main oveview
-
-- italics when cannotgoindebt
-
 
 - translations
 ---->
