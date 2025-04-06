@@ -1,6 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
 import DashboardLayout from "@/layout/DashboardLayout.vue";
-import FineView from "@/modules/financial/views/FineView.vue";
 import PayoutsView from "@/modules/financial/views/payouts/PayoutsView.vue";
 import InvoiceOverview from "@/modules/financial/views/invoice/InvoiceOverview.vue";
 import InvoiceInfoView from "@/modules/financial/views/invoice/InvoiceInfoView.vue";
@@ -17,15 +16,6 @@ export function financialRoutes(): RouteRecordRaw[] {
       component: DashboardLayout,
       meta: { requiresAuth: true },
       children: [
-        {
-          path: '/fine',
-          component: FineView,
-          name: 'fines',
-          meta: {
-              requiresAuth: true,
-              isAllowed: () => isAllowed('get', ['own', 'organ'], 'Fine', ['any'])
-          }
-        },
         {
           path: '/debtor',
           component: DebtorView,

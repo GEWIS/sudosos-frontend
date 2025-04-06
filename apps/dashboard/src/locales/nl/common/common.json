@@ -146,7 +146,7 @@
             "manageProducts": "Producten beheren",
             "posOverview": "POS overzicht",
             "flaggedTransactions": "Gemarkeerde transacties",
-            "fineOverview": "Boeteoverzicht",
+            "debtors": "Schuldigen",
             "invoiceAccounts": "Facturen Account Overzicht",
             "fines" : "Boetes"
         },
