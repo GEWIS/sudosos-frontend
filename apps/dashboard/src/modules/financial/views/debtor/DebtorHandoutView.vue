@@ -1,6 +1,6 @@
 <template>
   <div class="page-container-wide flex flex-column">
-    <div class="page-title">{{ t('modules.financial.debtor.handout.title') }}</div>
+    <div class="page-title">{{ t('modules.financial.debtor.handoutEvents.title') }}</div>
     <div class="content-wrapper flex flex-column gap-5">
       <DebtorTable
         v-if="handout"

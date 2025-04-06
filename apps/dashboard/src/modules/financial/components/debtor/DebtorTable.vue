@@ -1,5 +1,8 @@
 <template>
   <CardComponent :header="t('modules.financial.debtor.debtorUsers.header')" class="w-full">
+    <div class="mb-2">
+      {{ t('modules.financial.debtor.debtorUsers.explanation') }}
+    </div>
     <DataTable :value="debtorRows" tableStyle="min-width: 50rem"
                removableSort
                filterDisplay="row"
@@ -13,13 +16,13 @@
       <Column selectionMode="multiple" style="width: 2%" v-if="isEditable">
       </Column>
 
-      <Column field="gewisId" header="Id" style="width: 5%">
+      <Column field="gewisId" :header="t('common.gewisId')" style="width: 5%">
         <template #body v-if="debtorStore.isDebtorsLoading">
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
         </template>
       </Column>
 
-      <Column field="name" header="Name" :sortable="true" style="width: 15%">
+      <Column field="name" :header="t('common.name')" :sortable="true" style="width: 15%">
         <template #body v-if="debtorStore.isDebtorsLoading">
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
         </template>
@@ -69,7 +72,9 @@
         </template>
       </Column>
 
-      <Column field="primaryBalanceFine" header="of which fine" :sortable="true" style="width: 10%">
+      <Column field="primaryBalanceFine"
+              :header="t('modules.financial.debtor.debtorUsers.ofWhichFine')"
+              :sortable="true" style="width: 10%">
         <template #body v-if="debtorStore.isDebtorsLoading">
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
         </template>
@@ -81,7 +86,9 @@
         </template>
       </Column>
 
-      <Column field="fineSince" header="Fine since" :sortable="true" style="width: 10%">
+      <Column field="fineSince"
+              :header="t('modules.financial.debtor.debtorUsers.fineSince')"
+              :sortable="true" style="width: 10%">
         <template #body v-if="debtorStore.isDebtorsLoading">
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
         </template>
@@ -98,13 +105,13 @@
         <thead>
           <tr>
             <th/>
-            <th class="text-left">Total:</th>
-            <th class="text-left" v-if="isEditable">Selected:</th>
+            <th class="text-left">{{ t('common.total') + ':' }}</th>
+            <th class="text-left" v-if="isEditable">{{ t('common.selected') + ':' }}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Users:</td>
+            <td>{{ t('common.users') + ':' }}</td>
             <td>
               <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
               <template v-else>{{ debtorStore.allDebtors.length }}</template>
@@ -115,7 +122,7 @@
             </td>
           </tr>
           <tr>
-            <td>Sum of current balance:</td>
+            <td>{{ t('modules.financial.debtor.debtorUsers.sumCurrentBalance') + ':' }}</td>
             <td>
               <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
               <template v-else>{{ formatPrice(debtorStore.totalDebt) }}</template>
@@ -126,7 +133,7 @@
             </td>
           </tr>
           <tr>
-            <td>Sum of to be fined:</td>
+            <td>{{ t('modules.financial.debtor.debtorUsers.sumToBeFined') + ':' }}</td>
             <td>
               <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
               <template v-else>{{ formatPrice(debtorStore.totalFine) }}</template>
@@ -148,7 +155,7 @@
             <span
                 v-if="!debtorStore.isNotifyLoading"
               >
-              Notify
+              {{ t('modules.financial.debtor.debtorUsers.notify') }}
             </span>
 
             <ProgressSpinner
@@ -163,7 +170,7 @@
                   class="w-full h-full justify-content-center flex flex-row items-center justify-center">
             <span
                 v-if="!debtorStore.isHandoutLoading">
-              Handout
+              {{ t('modules.financial.debtor.debtorUsers.handout') }}
             </span>
 
             <ProgressSpinner
@@ -179,7 +186,7 @@
                   class="w-full h-full justify-content-center flex flex-row items-center justify-center">
             <span
                 v-if="!debtorStore.isLockLoading">
-              Lock till positive balance
+              {{ t('modules.financial.debtor.debtorUsers.lockPositive') }}
             </span>
 
             <ProgressSpinner
@@ -235,41 +242,47 @@ const selectedUsers = ref<DebtorRow[]>([]);
  */
 const nowDate = new Date();
 
-// Primary balance
+// Reference balance (for calculating the fine)
 const referenceBalanceDate = ref<Date | undefined>(
     isEditable.value
         ? undefined
         : new Date(props.handoutEvent!.referenceDate)
 );
 const referenceBalanceHeader = computed(() => {
-  if (!isEditable.value) return "Balance on " + referenceBalanceDate.value!.toLocaleString('nl', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  });
+  if (!isEditable.value) return t(
+      'modules.financial.debtor.debtorUsers.balanceOn',
+        {
+          date: referenceBalanceDate.value!.toLocaleString('nl', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        })
+      });
 
   if(referenceBalanceDate.value == undefined) {
-    return "Current balance (target)";
+    return t('modules.financial.debtor.debtorUsers.currentBalance')
+        + ' (' + t('modules.financial.debtor.debtorUsers.target') + ')';
   } else {
-    return "Balance on " + referenceBalanceDate.value.toLocaleString('nl', {
+    return t('modules.financial.debtor.debtorUsers.balanceOn', { date: referenceBalanceDate.value.toLocaleString('nl', {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
-    }) + " (target)";
+    }) }) + ' (' + t('modules.financial.debtor.debtorUsers.target') + ')';
   }
 });
 
-// Current balance
+// Control balance (for checking if they are still negative, usually current balance)
 const controlBalanceDate = ref<Date>();
 const controlBalanceHeader = computed(() => {
   if(controlBalanceDate.value == undefined) {
-    return "Current balance (control)";
+    return t('modules.financial.debtor.debtorUsers.currentBalance')
+        + ' (' + t('modules.financial.debtor.debtorUsers.control') + ')';
   } else {
-    return "Balance on " + controlBalanceDate.value.toLocaleString('nl', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    }) + " (control)";
+    return t('modules.financial.debtor.debtorUsers.balanceOn', { date: controlBalanceDate.value.toLocaleString('nl', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      }) }) + ' (' + t('modules.financial.debtor.debtorUsers.control') + ')';
   }
 });
 
@@ -285,9 +298,9 @@ async function updateCalculatedFines() {
 
 const fineHeader = computed(() => {
   if (isEditable.value) {
-    return "To be fined";
+    return t('modules.financial.debtor.debtorUsers.toBeFined');
   } else {
-    return "Was fined";
+    return t('modules.financial.debtor.debtorUsers.wasFined');
   }
 });
 
@@ -395,9 +408,9 @@ const selectedTotalFine = computed(() => {
 function startNotify() {
   confirm.require({
     header: t('common.areYouSure'),
-    message: t('modules.financial.fine.eligibleUsers.confirm.notifyMessage', { count: selectedUsers.value.length }),
+    message: t('modules.financial.debtor.debtorUsers.confirm.notifyMessage', { count: selectedUsers.value.length }),
     icon: 'pi pi-question-circle',
-    acceptLabel: t('modules.financial.fine.eligibleUsers.notify'),
+    acceptLabel: t('modules.financial.debtor.debtorUsers.notify'),
     rejectLabel: t('common.cancel'),
     accept: async () => {
       debtorStore.notifyFines(
@@ -420,9 +433,9 @@ function startNotify() {
 function startHandout() {
   confirm.require({
     header: t('common.areYouSure'),
-    message: t('modules.financial.fine.eligibleUsers.confirm.handoutMessage', { count: selectedUsers.value.length }),
+    message: t('modules.financial.debtor.debtorUsers.confirm.handoutMessage', { count: selectedUsers.value.length }),
     icon: 'pi pi-question-circle',
-    acceptLabel: t('modules.financial.fine.eligibleUsers.handout'),
+    acceptLabel: t('modules.financial.debtor.debtorUsers.handout'),
     rejectLabel: t('common.cancel'),
     accept: async () => {
       debtorStore.handoutFines(

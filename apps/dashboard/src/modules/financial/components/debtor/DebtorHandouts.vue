@@ -1,6 +1,6 @@
 <template>
   <CardComponent
-      :header="t('modules.financial.fine.handoutEvents.header')"
+      :header="t('modules.financial.debtor.handoutEvents.header')"
       class="w-full">
     <DataTable
         paginator
@@ -17,7 +17,7 @@
           <Skeleton class="w-4 my-1 h-1rem surface-300"/>
         </template>
       </Column>
-      <Column field="createdAt" id="date" :header="t('modules.financial.fine.handoutEvents.handoutDate')">
+      <Column field="createdAt" id="date" :header="t('modules.financial.debtor.handoutEvents.handoutDate')">
         <template #body v-if="debtorStore.isFineHandoutEventsLoading">
           <Skeleton class="w-7 my-1 h-1rem surface-300"/>
         </template>
@@ -26,13 +26,13 @@
       <Column
           field="referenceDate"
           id="referenceDate"
-          :header="t('modules.financial.fine.handoutEvents.referenceDate')">
+          :header="t('modules.financial.debtor.handoutEvents.referenceDate')">
         <template #body v-if="debtorStore.isFineHandoutEventsLoading">
           <Skeleton class="w-4 my-1 h-1rem surface-300"/>
         </template>
         <template #body="slotProps" v-else>{{ formatDateTime(new Date(slotProps.data.referenceDate)) }}</template>
       </Column>
-      <Column field="count" id="count" :header="t('common.count')">
+      <Column field="count" id="count" :header="t('common.users')">
         <template #body v-if="debtorStore.isFineHandoutEventsLoading">
           <Skeleton class="w-7 my-1 h-1rem surface-300"/>
         </template>

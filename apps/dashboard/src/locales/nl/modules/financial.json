@@ -1,26 +1,34 @@
 {
   "modules": {
     "financial": {
-      "fine": {
-        "title": "Boete overzicht",
-        "eligibleUsers": {
-          "header": "In aanmerking komende gebruikers",
-          "firstDate": "Eerste datum",
-          "secondDate": "Tweede datum",
+      "debtor": {
+        "title": "Debiteuren overzicht",
+        "debtorUsers": {
+          "header": "Debiteuren",
+          "currentBalance": "Huidig saldo",
+          "balanceOn": "Saldo op {date}",
+          "target": "doel",
+          "control": "controle",
+          "explanation": "De tabel hieronder selecteert alle gebruikers waarbij de gebruiker op beide data maximaal -€5 heeft. Boetes die uitgedeeld moeten worden, worden berekend op het saldo van de doeldatum.",
           "apply": "Toepassen",
           "notify": "Waarschuwen",
           "handout": "Uitreiken",
-          "info": "Momenteel hebben in aanmerking komende gebruikers een totale schuld van {debt}. Dit zou resulteren in een totaal van {fines} aan opgelegde boetes.",
-          "pleaseSelect": "Selecteer twee datums om te zien hoeveel schuld gebruikers hebben.",
-          "firstBalance": "Eerste saldo",
-          "lastBalance": "Laatste saldo",
+          "toBeFined": "Te beboeten",
+          "wasFined": "Is beboet",
+          "lockPositive": "Vergrendelen tot positief saldo",
+          "ofWhichFine": "Waarvan boete",
+          "fineSince": "Boete sinds",
+          "sumCurrentBalance": "Totaal van het huidige saldo",
+          "sumToBeFined": "Totaal van te beboeten",
           "confirm": {
-            "handoutMessage": "Wil je boetes opleggen voor {count} gebruikers?",
-            "notifyMessage": "Wil je een boete-waarschuwing sturen naar {count} gebruikers?"
+            "handoutMessage": "Wilt u boetes uitdelen aan {count} gebruikers?",
+            "notifyMessage": "Wilt u een boetewaarschuwing sturen naar {count} gebruikers?"
           }
         },
         "handoutEvents": {
-          "header": "Boete-uitreikings evenementen",
+          "title": "Boete uitreiking",
+          "header": "Boete-uitreiking evenementen",
+          "handoutDate": "Uitreik datum",
           "referenceDate": "Referentiedatum",
           "number": "Aantal boetes",
           "total": "Totaal aan boetes",

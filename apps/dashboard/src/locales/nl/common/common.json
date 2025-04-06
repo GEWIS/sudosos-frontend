@@ -43,6 +43,8 @@
         "signOut": "Uitloggen",
         "createdAt": "Aangemaakt op",
         "updatedAt": "Bijgewerkt op",
+        "selected": "Geselecteerd",
+        "users": "Gebruikers",
         "placeholders": {
             "selectType": "Selecteer Type",
             "email": "voorbeeld@voorbeeld.com",

@@ -43,6 +43,9 @@
         "signOut": "Sign out",
         "createdAt": "Created at",
         "updatedAt": "Updated at",
+        "selected": "Selected",
+        "users": "Users",
+        "count": "Count",
         "placeholders": {
             "selectType": "Select Type",
             "email": "example@example.com",
