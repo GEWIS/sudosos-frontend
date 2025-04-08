@@ -178,6 +178,23 @@
         "permissionMessages": {
           "transactions": "You are not allowed to view these transactions."
         },
+        "time": {
+            "today": "Today",
+            "yesterday": "Yesterday",
+            "yearsAgo": " year(s) ago",
+            "daysAgo": " days ago",
+            "hoursAgo": " hours ago",
+            "minutesAgo": " minutes ago",
+            "secondsAgo": " seconds ago",
+            "justNow": "just now",
+            "sunday": "Sunday",
+            "monday": "Monday",
+            "tuesday": "Tuesday",
+            "wednesday": "Wednesday",
+            "thursday": "Thursday",
+            "friday": "Friday",
+            "saturday": "Saturday"
+        },
         "wrapped": {
             "lastYear": "In the last year:",
             "total": "You spent in total:",

@@ -177,6 +177,23 @@
         "permissionMessages": {
           "transactions": "Je mag deze transacties niet bekijken."
         },
+        "time": {
+            "today": "Vandaag",
+            "yesterday": "Gisteren",
+            "yearsAgo": " jaar geleden",
+            "daysAgo": " dagen geleden",
+            "hoursAgo": " uren geleden",
+            "minutesAgo": " minuten geleden",
+            "secondsAgo": " seconden geleden",
+            "justNow": "net nu",
+            "sunday": "Zondag",
+            "monday": "Maandag",
+            "tuesday": "Dinsdag",
+            "wednesday": "Woensdag",
+            "thursday": "Donderdag",
+            "friday": "Vrijdag",
+            "saturday": "Zaterdag"
+        },
         "wrapped": {
             "lastYear": "In het afgelopen jaar:",
             "total": "Heb je in total uitgegeven:",
