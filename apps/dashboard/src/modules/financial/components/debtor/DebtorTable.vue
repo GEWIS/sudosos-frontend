@@ -27,7 +27,7 @@
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
         </template>
         <template #body="{ data }" v-else>
-          <RouterLink class="text-color" :to="`/user/${data.id}`" target="_blank">{{ data.name }}</RouterLink>
+          <UserLink :user="data.user" newTab/>
         </template>
         <template #filter>
           <InputText v-model="nameFilter" type="text" class="p-column-filter" placeholder="Search" />
@@ -222,6 +222,7 @@ import type { FineHandoutEventResponse } from "@sudosos/sudosos-client";
 import { isAllowed } from "@/utils/permissionUtils";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
+import UserLink from "@/components/UserLink.vue";
 
 const props = defineProps<{
   handoutEvent?: FineHandoutEventResponse;
@@ -373,7 +374,7 @@ const debtorRows: ComputedRef<DebtorRow[]> = computed(() => {
     debtorRowsArr.push({
       id: debtor.user.id,
       gewisId: debtor.user.gewisId,
-      name: debtor.user.firstName + " " + debtor.user.lastName,
+      user: debtor.user,
       referenceBalance: formatPrice(debtor.fine.balances[0].amount),
       controlBalance: debtor.fine.balances[1] && formatPrice(debtor.fine.balances[1].amount),
       referenceBalanceFine: debtor.fine.balances[0].fine && formatPrice(debtor.fine.balances[0].fine),
