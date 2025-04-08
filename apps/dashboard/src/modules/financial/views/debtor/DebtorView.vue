@@ -7,10 +7,6 @@
     </div>
   </div>
 </template>
-<!---
-Ideas:
-- Cannot go into debt button
----->
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import DebtorTable from "@/modules/financial/components/debtor/DebtorTable.vue";
