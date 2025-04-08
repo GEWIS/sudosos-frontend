@@ -46,6 +46,7 @@
         "selected": "Selected",
         "users": "Users",
         "count": "Count",
+        "confirm": "Confirm",
         "placeholders": {
             "selectType": "Select Type",
             "email": "example@example.com",
@@ -85,6 +86,7 @@
                 "pinUpdated": "Successfully updated PIN.",
                 "finesNotified": "Successfully notified users.",
                 "finesHandedOut": "Successfully handed out fines.",
+                "finesCannotGoIntoDebt": "Successfully disabled the ability to go into debt.",
                 "payoutCreated": "Successfully created payout.",
                 "invoiceDeleted": "Successfully deleted invoice.",
                 "invoiceCreated": "Successfully created invoice.",

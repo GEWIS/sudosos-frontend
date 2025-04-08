@@ -7,7 +7,7 @@
           "header": "Debtors",
           "currentBalance": "Current balance",
           "balanceOn": "Balance on {date}",
-          "target": "target",
+          "target": "reference",
           "control": "control",
           "explanation": "The table below selects all the users where the user has at most -€5 on both dates. Fines to be handed out are calculated on the balance of the target date.",
           "apply": "Apply",
@@ -15,14 +15,16 @@
           "handout": "Hand out",
           "toBeFined": "To be fined",
           "wasFined": "Was fined",
-          "lockPositive": "Lock till positive balance",
+          "cannotDebt": "Disable ability to go into debt",
           "ofWhichFine": "Of which fine",
           "fineSince": "Fine since",
-          "sumCurrentBalance": "Sum of current balance",
-          "sumToBeFined": "Sum of to be fined",
+          "sumCurrentBalance": "Sum of balances",
+          "sumToBeFined": "Sum of \"To be fined\"",
+          "sumWasFined": "Sum of \"Was fined\"",
           "confirm": {
             "handoutMessage": "Do you want to hand out fines for {count} users?",
-            "notifyMessage": "Do you want to send a fine warning to {count} users?"
+            "notifyMessage": "Do you want to send a fine warning to {count} users?",
+            "cannotGoInDebt": "Do you want disable the ability to go further into debt for {count} users?"
           }
         },
         "handoutEvents": {

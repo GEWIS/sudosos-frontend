@@ -1,6 +1,6 @@
 <template>
   <CardComponent :header="t('modules.financial.debtor.debtorUsers.header')" class="w-full">
-    <div class="mb-2">
+    <div v-if="isEditable" class="mb-2">
       {{ t('modules.financial.debtor.debtorUsers.explanation') }}
     </div>
     <DataTable :value="debtorRows" tableStyle="min-width: 50rem"
@@ -22,7 +22,7 @@
         </template>
       </Column>
 
-      <Column field="name" :header="t('common.name')" :sortable="true" style="width: 15%">
+      <Column field="name" :header="t('common.name')" :sortable="true" style="width: 10%">
         <template #body v-if="debtorStore.isDebtorsLoading">
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
         </template>
@@ -72,7 +72,7 @@
         </template>
       </Column>
 
-      <Column field="primaryBalanceFine"
+      <Column class="font-bold" field="referenceBalanceFine"
               :header="t('modules.financial.debtor.debtorUsers.ofWhichFine')"
               :sortable="true" style="width: 10%">
         <template #body v-if="debtorStore.isDebtorsLoading">
@@ -133,7 +133,11 @@
             </td>
           </tr>
           <tr>
-            <td>{{ t('modules.financial.debtor.debtorUsers.sumToBeFined') + ':' }}</td>
+            <td>{{
+                isEditable
+                ? t('modules.financial.debtor.debtorUsers.sumToBeFined')
+                : t('modules.financial.debtor.debtorUsers.sumWasFined')
+                + ':' }}</td>
             <td>
               <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
               <template v-else>{{ formatPrice(debtorStore.totalFine) }}</template>
@@ -182,11 +186,12 @@
         <Divider class="col-12 my-0"/>
         <div class="col-12">
           <Button :disabled="debtorStore.isDebtorsLoading || debtorStore.isLockLoading || selectedUsers.length === 0"
+                  @click="startCannotInDebt"
                   severity="contrast"
                   class="w-full h-full justify-content-center flex flex-row items-center justify-center">
             <span
                 v-if="!debtorStore.isLockLoading">
-              {{ t('modules.financial.debtor.debtorUsers.lockPositive') }}
+              {{ t('modules.financial.debtor.debtorUsers.cannotDebt') }}
             </span>
 
             <ProgressSpinner
@@ -455,7 +460,26 @@ function startHandout() {
 }
 
 function startCannotInDebt() {
-
+  confirm.require({
+    header: t('common.areYouSure'),
+    message: t('modules.financial.debtor.debtorUsers.confirm.cannotGoInDebt', { count: selectedUsers.value.length }),
+    icon: 'pi pi-question-circle',
+    acceptLabel: t('common.confirm'),
+    rejectLabel: t('common.cancel'),
+    accept: async () => {
+      debtorStore.cannotGoIntoDebt(
+          selectedUsers.value.map(s => s.id)
+      )
+          .then(() => {
+            toast.add({
+              summary: t('common.toast.success.success'),
+              detail: t('common.toast.success.finesCannotGoIntoDebt'),
+              life: 3000,
+              severity: 'success',
+            });
+          });
+    }
+  });
 }
 
 onMounted(() => {

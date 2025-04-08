@@ -45,6 +45,7 @@
         "updatedAt": "Bijgewerkt op",
         "selected": "Geselecteerd",
         "users": "Gebruikers",
+        "confirm": "Akkoord",
         "placeholders": {
             "selectType": "Selecteer Type",
             "email": "voorbeeld@voorbeeld.com",
@@ -84,6 +85,7 @@
                 "pinUpdated": "Pincode succesvol bijgewerkt.",
                 "finesNotified": "Gebruikers succesvol op de hoogte gebracht.",
                 "finesHandedOut": "Boetes succesvol uitgedeeld.",
+                "finesCannotGoIntoDebt": "Schuld mogelijkheid van gebruikers succesvol uitgeschakeld.",
                 "payoutCreated": "Uitbetaling succesvol aangemaakt.",
                 "invoiceDeleted": "Factuur succesvol verwijderd.",
                 "invoiceCreated": "Factuur succesvol aangemaakt.",

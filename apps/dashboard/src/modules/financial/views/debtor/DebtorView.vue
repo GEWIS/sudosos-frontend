@@ -9,9 +9,7 @@
 </template>
 <!---
 Ideas:
-- Explaination
-
-- translations
+- Cannot go into debt button
 ---->
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";

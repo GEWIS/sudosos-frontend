@@ -283,10 +283,16 @@ export const useDebtorStore = defineStore('debtor', {
             });
             this.isHandoutLoading = false;
         },
-        async lockTillPositive(userIds: number[]) {
+        async cannotGoIntoDebt(userIds: number[]) {
             this.isLockLoading = true;
 
-            const requests = 
+            const requests = userIds.map((id) => {
+               return ApiService.user.updateUser(id, {
+                   canGoIntoDebt: false
+               });
+            });
+
+            await Promise.all(requests);
 
             this.isLockLoading = false;
         }

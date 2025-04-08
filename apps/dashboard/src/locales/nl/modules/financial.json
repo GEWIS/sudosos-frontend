@@ -12,27 +12,29 @@
           "explanation": "De tabel hieronder selecteert alle gebruikers waarbij de gebruiker op beide data maximaal -€5 heeft. Boetes die uitgedeeld moeten worden, worden berekend op het saldo van de doeldatum.",
           "apply": "Toepassen",
           "notify": "Waarschuwen",
-          "handout": "Uitreiken",
+          "handout": "Uitdelen",
           "toBeFined": "Te beboeten",
           "wasFined": "Is beboet",
-          "lockPositive": "Vergrendelen tot positief saldo",
+          "cannotDebt": "Schakel schuld mogelijkheid uit",
           "ofWhichFine": "Waarvan boete",
           "fineSince": "Boete sinds",
-          "sumCurrentBalance": "Totaal van het huidige saldo",
-          "sumToBeFined": "Totaal van te beboeten",
+          "sumCurrentBalance": "Totaal van saldi",
+          "sumToBeFined": "Totaal van \"Te beboeten\"",
+          "sumWasFined": "Totaal van \"Is beboet\"",
           "confirm": {
             "handoutMessage": "Wilt u boetes uitdelen aan {count} gebruikers?",
-            "notifyMessage": "Wilt u een boetewaarschuwing sturen naar {count} gebruikers?"
+            "notifyMessage": "Wilt u een boetewaarschuwing sturen naar {count} gebruikers?",
+            "cannotGoInDebt": "Wilt u het niet meer mogelijk maken voor {count} gebruikers om verder de schulden in te gaan?"
           }
         },
         "handoutEvents": {
-          "title": "Boete uitreiking",
-          "header": "Boete-uitreiking evenementen",
-          "handoutDate": "Uitreik datum",
+          "title": "Boete uitdeel moment",
+          "header": "Boete uitdeel momenten",
+          "handoutDate": "Uitdeel datum",
           "referenceDate": "Referentiedatum",
           "number": "Aantal boetes",
           "total": "Totaal aan boetes",
-          "details": "Details van het boete-uitreikingsevenement"
+          "details": "Details van het boete uitdeel moment"
         }
       },
       "invoice": {
