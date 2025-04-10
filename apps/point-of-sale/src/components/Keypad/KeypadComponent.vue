@@ -47,7 +47,9 @@ const handleKeyClick = (key: string) => {
   height: var(--key-size);
   font-weight: bold;
   font-size: $font-size-larger;
-  user-select: none;
+  > * {
+    user-select: none;
+  }
 
   &-row {
     gap: var(--key-gap-size);
@@ -68,7 +70,6 @@ const handleKeyClick = (key: string) => {
 
   > * {
     color: #d40000!important;
-    user-select: none;
   }
 }
 </style>
