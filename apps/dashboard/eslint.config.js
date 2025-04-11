@@ -9,6 +9,9 @@ import root from "../../eslint.config.js";
 export default defineConfig([
     {
         extends: [root],
+        rules: {
+            '@typescript-eslint/no-unused-expressions': ['off', { 'extensions': ['.json'] }],
+        },
     },
     // linting for i18n
     {
