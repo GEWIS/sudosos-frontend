@@ -1,9 +1,9 @@
 <template>
-  <div class="user-row flex-container font-size-lg font-semibold
-   text-center shadow-1 border-round-xl my-1 py-3 my-3 bg-red-100"
+  <div
+class="bg-red-100 border-round-xl flex-container font-semibold font-size-lg my-1 my-3 py-3 shadow-1 text-center user-row"
        :class="{inactive: !active}" @click="selectUser">
     {{ displayName() }}
-    <i class="pi pi-user-minus" v-if="shouldShowAge()"/>
+    <i v-if="shouldShowAge()" class="pi pi-user-minus"/>
   </div>
 </template>
 
@@ -20,7 +20,7 @@ const props = defineProps({
 
 const cartStore = useCartStore();
 const selectUser = () => {
-  cartStore.setBuyer(props.user);
+  void cartStore.setBuyer(props.user);
 };
 
 const aged = ["MEMBER", "LOCAL_USER", "LOCAL_ADMIN"];
@@ -32,7 +32,6 @@ const shouldShowAge = () => {
 const displayName = () => {
   let name = props.user.firstName;
   if (props.user) {
-    // @ts-ignore
     if (props.user.nickname) name += ` "${props.user.nickname}"`;
   }
   name += ' ' + props.user.lastName;

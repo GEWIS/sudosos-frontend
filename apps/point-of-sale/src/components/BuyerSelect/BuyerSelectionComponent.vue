@@ -1,17 +1,18 @@
 <template>
-  <div class="point-of-sale mr-3">
+  <div class="mr-3 point-of-sale">
     <div class="header">
       <div class="header-row">
-        <div class="c-btn active square search-close icon-large" @click="cancelSelect()">
+        <div class="active c-btn icon-large search-close square" @click="cancelSelect()">
           <i class="pi pi-times text-4xl"/>
         </div>
-        <div class="w-full text-center text-2xl">
+        <div class="text-2xl text-center w-full">
           Select member of {{ organName }} to charge as:
         </div>
       </div>
     </div>
-    <div class="flex-container align-content-center justify-content-center flex-wrap w-full h-full gap-3">
-      <BuyerSelectButtonComponent v-for="associate in posAssociates"  :key="associate.id" :associate="associate"
+    <div class="align-content-center flex-container flex-wrap gap-3 h-full justify-content-center w-full">
+      <BuyerSelectButtonComponent
+v-for="associate in posAssociates"  :key="associate.id" :associate="associate"
                                   @cancel-select-creator="cancelSelect()"/>
     </div>
   </div>
@@ -31,7 +32,7 @@ const organName = computed(() => posStore.getPos?.owner?.firstName);
 
 const fetchIfEmpty = () => {
   if (!currentPos || !currentPos.owner) return;
-  if (!posAssociates.value) posStore.fetchPointOfSaleAssociates(currentPos.id);
+  if (!posAssociates.value) void posStore.fetchPointOfSaleAssociates(currentPos.id);
 };
 
 const cancelSelect = () => {

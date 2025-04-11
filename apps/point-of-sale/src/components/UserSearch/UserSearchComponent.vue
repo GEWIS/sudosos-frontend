@@ -2,24 +2,26 @@
   <div class="point-of-sale">
     <div class="header">
       <div class="header-row">
-        <div class="c-btn active square search-close icon-large" @click="cancelSearch()">
+        <div class="active c-btn icon-large search-close square" @click="cancelSearch()">
           <i class="pi pi-times text-4xl"/>
         </div>
-        <input type="text" ref="searchInput" class="flex-sm-grow-1" v-model="searchValue"
+        <input
+ref="searchInput" v-model="searchValue" autocomplete="off" class="flex-sm-grow-1"
                placeholder="Search user to charge..."
-               autocomplete="off"
+               type="text"
                @input="updateSearchQuery($event as InputEvent)"/>
-        <div class="c-btn active rounder text-xl" @click="selectSelf()" v-if="!settings.isBorrelmode">
+        <div v-if="!settings.isBorrelmode" class="active c-btn rounder text-xl" @click="selectSelf()">
           Charge yourself
         </div>
-        <div class="c-btn active rounder text-xl" @click="selectNone()" v-else-if="settings.isBorrelmode">
+        <div v-else-if="settings.isBorrelmode" class="active c-btn rounder text-xl" @click="selectNone()">
           Select no one
         </div>
       </div>
     </div>
     <div>
       <ScrollPanel class="custombar" style="width: 100%; height: 25rem;">
-        <UserSearchRowComponent v-for="user in getUsers" :user="user as UserResponse" :key="user.id"
+        <UserSearchRowComponent
+v-for="user in getUsers" :key="user.id" :user="user as UserResponse"
                                 @click="selectUser(user as UserResponse)"/>
       </ScrollPanel>
     </div>
@@ -28,21 +30,20 @@
 
 <script setup lang="ts">
 import { computed, onMounted, Ref, ref, watch } from "vue";
-import apiService from "@/services/ApiService";
 import {
   BaseUserResponse,
-  PaginatedBaseTransactionResponse,
   PaginatedUserResponse,
   UserResponse
 } from "@sudosos/sudosos-client";
-import UserSearchRowComponent from "@/components/UserSearch/UserSearchRowComponent.vue";
-import { useCartStore } from "@/stores/cart.store";
 import { useAuthStore } from "@sudosos/sudosos-frontend-common";
 import { debounce } from 'lodash';
 import type { AxiosResponse } from 'axios';
-import { useSettingStore } from "@/stores/settings.store";
 import ScrollPanel from "primevue/scrollpanel";
 import Fuse from "fuse.js";
+import { useSettingStore } from "@/stores/settings.store";
+import { useCartStore } from "@/stores/cart.store";
+import UserSearchRowComponent from "@/components/UserSearch/UserSearchRowComponent.vue";
+import apiService from "@/services/ApiService";
 import { usePointOfSaleStore } from "@/stores/pos.store";
 
 const searchValue = ref<string>('');
@@ -58,7 +59,7 @@ const getRecentUsers = async () => {
   if (!posStore.getPos?.id) return;
   const recentUsers: BaseUserResponse[] = [];
   await  apiService.pos.getTransactions(posStore.getPos?.id, 100).then((res) => {
-    const data = res.data as PaginatedBaseTransactionResponse;
+    const data = res.data;
     const ids = new Set<number>([]);
     data.records.map((u) => {
       if (!ids.has(u.from.id)) {
@@ -78,8 +79,8 @@ const updateSearchQuery = (event: InputEvent) => {
 };
 
 const delayedAPICall = debounce(() => {
-  apiService.user.getAllUsers(200, 0, searchQuery.value, true)
-    .then((res: AxiosResponse<PaginatedUserResponse, any>) => {
+  void apiService.user.getAllUsers(200, 0, searchQuery.value, true)
+    .then((res: AxiosResponse<PaginatedUserResponse>) => {
       users.value = res.data.records;
     });
 }, 50);
@@ -122,11 +123,11 @@ const sortedUsers = computed(() => {
 
 const searchInput = ref<null | HTMLInputElement>(null);
 
-onMounted(() => {
+onMounted(async () => {
   if (searchInput.value) searchInput.value.focus();
-  getRecentUsers().then((rec) => {
-    if (rec) recent.value = rec;
-  });
+  const rec = await getRecentUsers()
+
+  if (rec) recent.value = rec;
 });
 
 const emit = defineEmits(['cancelSearch']);
@@ -142,7 +143,7 @@ const selectNone = () => {
 };
 
 const selectUser = (user: UserResponse | null) => {
-  cartStore.setBuyer(user);
+  void cartStore.setBuyer(user);
   cancelSearch();
 };
 

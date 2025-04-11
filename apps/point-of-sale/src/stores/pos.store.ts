@@ -6,8 +6,8 @@ import {
   PointOfSaleWithContainersResponse,
   ProductResponse,
 } from '@sudosos/sudosos-client';
-import apiService from '@/services/ApiService';
 import { fetchAllPages } from "@sudosos/sudosos-frontend-common";
+import apiService from '@/services/ApiService';
 
 export type PointOfSaleAssociate = BaseUserResponse & { type: 'owner' | 'cashier' };
 
@@ -64,7 +64,6 @@ export const usePointOfSaleStore = defineStore('pointOfSale', {
     },
     async fetchUserPointOfSale(id: number): Promise<void> {
       this.usersPointOfSales = await fetchAllPages<PointOfSaleResponse>((take, skip) =>
-          // @ts-ignore
           apiService.user.getUsersPointsOfSale(id, take, skip)
       );
     },

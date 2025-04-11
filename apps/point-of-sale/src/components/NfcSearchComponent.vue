@@ -23,7 +23,7 @@ let captures: KeyboardEvent[] = [];
 const onInput = (event: KeyboardEvent): void => {
   if (event.code === 'Enter') {
     const capturedCode = captures.reduce((input, e) => input + e.key, '');
-    props.handleNfcSearch(capturedCode.substring(3));
+    void props.handleNfcSearch(capturedCode.substring(3));
     captures = [];
   } else {
     captures.push(event);

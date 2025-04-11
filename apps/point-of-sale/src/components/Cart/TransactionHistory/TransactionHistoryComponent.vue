@@ -7,13 +7,13 @@
 * option to show more information when clicked.
 */
 <template>
-  <div class="flex-column h-full gap-2 mt-2 overflow-y-auto">
-    <h1 class="font-medium text-xl" v-if="transactions.length > 0">Recent Purchases:</h1>
+  <div class="flex-column gap-2 h-full mt-2 overflow-y-auto">
+    <h1 v-if="transactions.length > 0" class="font-medium text-xl">Recent Purchases:</h1>
     <TransactionHistoryRowComponent
       v-for="transaction in transactions"
       :key="transaction.id"
-      :transaction="transaction"
       :open="shouldOpen(transaction)"
+      :transaction="transaction"
       @update:open="showMoreInfo($event)"
     />
   </div>

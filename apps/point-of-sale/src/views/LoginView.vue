@@ -1,6 +1,6 @@
 <template>
   <div class="main-content">
-    <div v-if="loggingIn" class="flex align-items-center justify-content-center h-full">
+    <div v-if="loggingIn" class="align-items-center flex h-full justify-content-center">
       <div>
         <ProgressSpinner aria-label="Loading" />
       </div>
@@ -9,20 +9,20 @@
       <div class="keypad-container m-auto pt-6">
         <div class="display-container" :class="displayContainerClasses">
           <KeypadDisplayComponent
-            :userId="userId"
-            :pinCode="pinCode"
-            :wrong-pin="wrongPin"
-            :isActive="enteringUserId"
             :external="external"
+            :is-active="enteringUserId"
+            :pin-code="pinCode"
+            :user-id="userId"
+            :wrong-pin="wrongPin"
             @focus:passcode="focusPasscode"
             @focus:userid="focusUserId"
           />
         </div>
         <KeypadComponent
-          @input="handleInput"
           @backspace="handleBackspace"
           @continue="handleContinue"
           @external="handleExternal"
+          @input="handleInput"
         />
       </div>
       <BannerComponent v-if="shouldShowBanner" />
@@ -31,8 +31,8 @@
   <SettingsIconComponent />
   <GitInfo/>
   <ScannersLoginComponent
-    :handle-nfc-login="nfcLogin"
     :handle-ean-login="eanLogin"
+    :handle-nfc-login="nfcLogin"
   />
 </template>
 
@@ -125,9 +125,9 @@ const loginSucces = async () => {
   const user = authStore.getUser;
   if (user === null) return;
 
-  if (userStore.getActiveUsers.length === 0) await userStore.fetchUsers;
+  if (userStore.getActiveUsers.length === 0) void userStore.fetchUsers(apiService);
   await useCartStore().setBuyer(user);
-  userStore.fetchCurrentUserBalance(user.id, apiService);
+  void userStore.fetchCurrentUserBalance(user.id, apiService);
 
   await router.push({ path: '/cashier' });
   userId.value = '';

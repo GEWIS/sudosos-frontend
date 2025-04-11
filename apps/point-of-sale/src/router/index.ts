@@ -1,19 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { clearTokenInStorage, useAuthStore } from '@sudosos/sudosos-frontend-common';
-import LoginView from '@/views/LoginView.vue';
 import CashierView from '../views/CashierView.vue';
+import LoginView from '@/views/LoginView.vue';
 import { getBasePath } from '@/utils/basePathUtils';
 
-const authGuard = (to: any, from: any, next: any) => {
+const authGuard = () => {
   const authStore = useAuthStore();
 
   if (authStore.getToken) {
     // User is logged in, allow navigation to the next route
-    next();
+    return;
   } else {
     clearTokenInStorage();
     // User is not logged in, redirect to the root path
-    next('/');
+    return '/';
   }
 };
 

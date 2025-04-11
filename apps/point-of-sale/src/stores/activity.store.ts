@@ -34,7 +34,7 @@ export const useActivityStore = defineStore('activity', {
 
         if (this.duration <= 0) {
           this.stopTimer();
-          this.onTimerEnd();
+          void this.onTimerEnd();
         }
       }, 1000); // Timer tick every 1 second
     },
@@ -55,7 +55,7 @@ export const useActivityStore = defineStore('activity', {
 
           if (this.duration <= 0) {
             this.stopTimer();
-            this.onTimerEnd();
+            void this.onTimerEnd();
           }
         }, 1000);
       }

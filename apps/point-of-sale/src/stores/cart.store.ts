@@ -7,10 +7,10 @@ import {
   TransactionRequest, UserResponse,
 } from '@sudosos/sudosos-client';
 import { SubTransactionRowRequest } from '@sudosos/sudosos-client/src/api';
-import { usePointOfSaleStore } from '@/stores/pos.store';
-import apiService from '@/services/ApiService';
 import { useAuthStore } from "@sudosos/sudosos-frontend-common";
 import { DineroObjectResponse } from "@sudosos/sudosos-client/dist/api";
+import { usePointOfSaleStore } from '@/stores/pos.store';
+import apiService from '@/services/ApiService';
 
 export interface CartProduct {
   container: ContainerResponse

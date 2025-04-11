@@ -11,13 +11,13 @@
 
 <script setup lang="ts">
 import { StoreGeneric, storeToRefs } from 'pinia';
-import { onUnmounted, ref, watch } from 'vue';
+import { onBeforeMount, onUnmounted, ref, watch } from 'vue';
 import { useBannerStore } from '@/stores/banner.store';
 import BannerDisplayComponent from '@/components/Banner/BannerDisplayComponent.vue';
 
 // Extract banners from the store
 const bannerStore = useBannerStore();
-bannerStore.fetchBanners();
+
 const { activeBanners } = storeToRefs(bannerStore as StoreGeneric);
 
 // Initialize the index and currentBanner with the first active banner
@@ -46,6 +46,10 @@ watch(activeBanners, (newBanners) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(switchToNextBanner, currentBanner.value.duration * 1000);
   }
+});
+
+onBeforeMount(() => {
+  void bannerStore.fetchBanners();
 });
 
 // Cleanup the interval when the component is unmounted

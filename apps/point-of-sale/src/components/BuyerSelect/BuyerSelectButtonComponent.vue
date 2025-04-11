@@ -1,6 +1,6 @@
 <template>
   <div
-    class="select-user active square flex-grow-1 fs-6 py-4 px-4"
+    class="active flex-grow-1 fs-6 px-4 py-4 select-user square"
     :class="{ 'c-btn': props.associate.type === 'owner', 'c-btn-outline': props.associate.type !== 'owner' }"
     @click="select()"
   >
@@ -26,16 +26,15 @@ const emit = defineEmits(['cancelSelectCreator']);
 const displayName = () => {
   let name = props.associate.firstName;
   if (props.associate) {
-    // @ts-ignore
     if (props.associate.nickname) name += ` "${props.associate.nickname}"`;
   }
   name += ' ' + props.associate.lastName;
   return name;
 };
 
-const select = () => {
+const select = async () => {
   cartStore.setCreatedBy(props.associate);
-  cartStore.checkout();
+  await cartStore.checkout();
   emit('cancelSelectCreator');
 };
 

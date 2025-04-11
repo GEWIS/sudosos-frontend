@@ -29,7 +29,7 @@ const onInput = (event: KeyboardEvent): void => {
       const checkCode = capturedCode.substring(0, 3);
       switch (checkCode) {
         case 'nfc':
-          props.handleNfcLogin(capturedCode.substring(3));
+          void props.handleNfcLogin(capturedCode.substring(3));
           break;
         case 'ean':
           // capturedCode.substring(3)

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="posNotLoaded" class="flex justify-content-center align-items-center h-full">
+  <div v-if="posNotLoaded" class="align-items-center flex h-full justify-content-center">
     <div>
       <ProgressSpinner aria-label="Loading" />
     </div>
@@ -9,13 +9,14 @@
       <div class="pos-wrapper">
         <TopUpWarningComponent></TopUpWarningComponent>
         <UserSearchComponent v-if="currentState === PointOfSaleState.SEARCH_USER" @cancel-search="cancelSearch()"/>
-        <PointOfSaleDisplayComponent :point-of-sale="currentPos" v-if="currentState === PointOfSaleState.DISPLAY_POS"/>
-        <BuyerSelectionComponent v-if="currentState === PointOfSaleState.SELECT_CREATOR"
+        <PointOfSaleDisplayComponent v-if="currentState === PointOfSaleState.DISPLAY_POS" :point-of-sale="currentPos"/>
+        <BuyerSelectionComponent
+v-if="currentState === PointOfSaleState.SELECT_CREATOR"
                                  @cancel-select-creator="cancelSelectCreator()"/>
         <ActivityComponent />
       </div>
       <div class="cart-wrapper">
-        <CartComponent @select-user="selectUser()" @select-creator="selectCreator()"/>
+        <CartComponent @select-creator="selectCreator()" @select-user="selectUser()"/>
       </div>
     </div>
   </div>
@@ -26,6 +27,7 @@
 <script setup lang="ts">
 import { PointOfSaleWithContainersResponse } from '@sudosos/sudosos-client';
 import { onMounted, Ref, ref, watch } from 'vue';
+import { useAuthStore } from "@sudosos/sudosos-frontend-common";
 import { usePointOfSaleStore } from '@/stores/pos.store';
 import PointOfSaleDisplayComponent from '@/components/PointOfSaleDisplay/PointOfSaleDisplayComponent.vue';
 import SettingsIconComponent from '@/components/SettingsIconComponent.vue';
@@ -36,7 +38,6 @@ import UserSearchComponent from "@/components/UserSearch/UserSearchComponent.vue
 import BuyerSelectionComponent from "@/components/BuyerSelect/BuyerSelectionComponent.vue";
 import ScannersUpdateComponent from "@/components/ScannersUpdateComponent.vue";
 import NfcSearchComponent from "@/components/NfcSearchComponent.vue";
-import { useAuthStore } from "@sudosos/sudosos-frontend-common";
 import apiService from "@/services/ApiService";
 import { useCartStore } from "@/stores/cart.store";
 import TopUpWarningComponent from "@/components/TopUpWarningComponent.vue";

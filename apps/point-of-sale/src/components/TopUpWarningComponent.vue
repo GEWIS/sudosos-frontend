@@ -1,33 +1,33 @@
 <template>
   <Dialog
     v-model:visible="showTopUpWarningDialog"
-    header="Please Top-Up your SudoSOS balance"
     :closable="false"
-    modal
-    :dismissable-mask="false"
     :content-style="{ width: '35rem' }"
+    :dismissable-mask="false"
+    header="Please Top-Up your SudoSOS balance"
+    modal
     :pt="{
         header: () => ({class: ['dialog-header']})}"
   >
-    <Message severity="warn" :closable="false" :icon="undefined">
+    <Message :closable="false" :icon="undefined" severity="warn">
       Your account balance is currently
       <span style="color: red; font-weight: bold;">€{{ formattedBuyerBalance }}</span><br>
       Please first Top-Up your balance before proceeding.<br>
     </Message>
     <div class="qr-code" style="display: flex; justify-content: center; margin-top: 1rem;">
-      <img src="@/assets/sudosos-qr.png" style="width: 25rem;" alt=""/>
+      <img alt="" src="@/assets/sudosos-qr.png" style="width: 25rem;"/>
     </div>
-    <div class="spinner-container" v-if="topUpProgress > 0">
+    <div v-if="topUpProgress > 0" class="spinner-container">
       <ProgressSpinner
-        strokeWidth="6"
+        animation-duration="5s"
+        stroke-width="6"
         style="width: 100px; height: 100px"
-        animationDuration="5s"
       />
       <div class="spinner-text">{{ topUpProgress }}</div>
     </div>
-    <div v-if="topUpProgress <= 0" class="text-center mt-4">
+    <div v-if="topUpProgress <= 0" class="mt-4 text-center">
       <button
-        class="c-btn rounder font-medium checkout text-3xl red-button"
+        class="c-btn checkout font-medium red-button rounder text-3xl"
         @click="closeDialog">
         I Understand
       </button>
@@ -67,7 +67,7 @@ const startTopUpCountdown = () => {
 
   const tickInterval = 1000;
 
-  topUpInterval = window.setInterval(async () => {
+  topUpInterval = window.setInterval(() => {
     if (topUpProgress.value > 0) {
       topUpProgress.value -= 1;
     } else {

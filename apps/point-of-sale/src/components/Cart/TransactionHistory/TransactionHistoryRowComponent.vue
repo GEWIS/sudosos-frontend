@@ -1,16 +1,16 @@
 <template>
   <div v-if="transaction" class="shadow-1">
-    <div class="flex-column content-body px-3 py-1" @click="toggleOpen" >
-    <div class="flex justify-content-between w-full font-size-lg font-medium">
+    <div class="content-body flex-column px-3 py-1" @click="toggleOpen" >
+    <div class="flex font-medium font-size-lg justify-content-between w-full">
       <div>{{ formattedDate }}</div>
       <div>{{ formattedTime }}</div>
       <div class="inline-flex justify-content-between">
         €
-        <div class="text-right min-w-65">{{ formattedValue }}</div>
+        <div class="min-w-65 text-right">{{ formattedValue }}</div>
       </div>
     </div>
       <div v-if="settings.isBorrelmode">
-        <div class="mt-1 fs-6">
+        <div class="fs-6 mt-1">
           Transaction for {{ transaction.from.firstName }} by {{ transaction.createdBy?.firstName }}
         </div>
       </div>
@@ -18,18 +18,18 @@
     <transition
       name="expand"
       @before-enter="beforeEnter"
-      @enter="enter"
       @before-leave="beforeLeave"
+      @enter="enter"
       @leave="leave"
     >
       <!-- The 'bottom' div will only be rendered when 'products' is truthy and 'open' is true -->
-      <div v-if="products && open" class="bottom" ref="bottomDiv">
+      <div v-if="products && open" ref="bottomDiv" class="bottom">
         <hr class="border-1 opacity-30"/>
         <div v-for="subTransaction in products.subTransactions" :key="subTransaction.id">
           <div
-            class="flex justify-content-between"
             v-for="row in subTransaction.subTransactionRows"
             :key="row.product.id"
+            class="flex justify-content-between"
           >
             <div class="flex gap-2">
               {{ row.amount }}x
@@ -38,7 +38,7 @@
             <span>{{ formatDineroObjectToString(row.totalPriceInclVat) }}</span>
           </div>
         </div>
-        <div class="created-by" v-if="isCreatedByDifferent && transaction.createdBy && !settings.isBorrelmode">
+        <div v-if="isCreatedByDifferent && transaction.createdBy && !settings.isBorrelmode" class="created-by">
           Created by {{ transaction.createdBy.firstName }} {{ transaction.createdBy.lastName }}
         </div>
       </div>
@@ -84,11 +84,10 @@ onMounted(async () => {
 
 watch(
   () => props.open,
-  () => {
+  async () => {
     if (!products.value) {
-      apiService.transaction.getSingleTransaction(props.transaction.id).then((res) => {
-        products.value = res.data;
-      });
+      const res = await apiService.transaction.getSingleTransaction(props.transaction.id)
+      products.value = res.data;
     }
   }
 );

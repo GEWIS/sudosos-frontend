@@ -1,19 +1,22 @@
 <template>
-  <div class="nfc-icon"
+  <div
+class="nfc-icon"
        @click="() => nfcModalVisible = true">
     <div class="pi pi-id-card text-6xl"/>
   </div>
-  <Dialog v-model:visible="nfcModalVisible" ref="nfcModal" modal header="Link NFC"
-          :style="{ width: '30vw', class: ['container'] }"
-          @show="addListenerOnDialogueOverlay(nfcModal)"
+  <Dialog
+ref="nfcModal" v-model:visible="nfcModalVisible" header="Link NFC" modal
           :pt="{
             header: () => ({class: ['dialog-header']}),
-            closeButton: () => ({class: ['dialog-close']})}" >
+            closeButton: () => ({class: ['dialog-close']})}"
+          :style="{ width: '30vw', class: ['container'] }"
+          @show="addListenerOnDialogueOverlay(nfcModal!)" >
 
-    <div class="flex flex-column align-items-center">
-      <div class="scanners" id="scanners"/>
-      <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="6" fill="transparent"
-                               animationDuration="1s" :style="{ display : 'flex' }"/>
+    <div class="align-items-center flex flex-column">
+      <div id="scanners" class="scanners"/>
+      <ProgressSpinner
+animation-duration="1s" fill="transparent" stroke-width="6"
+                               style="width: 50px; height: 50px" :style="{ display : 'flex' }"/>
       <b style="font-weight: bold!important;">Scan your NFC card now!</b><br>
       <b>Note: Banking cards, ID cards and phones will not work</b><br>
     </div>
@@ -21,14 +24,13 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from "vue";
+import { PropType , Ref, ref, watch } from "vue";
 import { useToast } from "primevue/usetoast";
-import { Ref, ref, watch } from 'vue';
 import { addListenerOnDialogueOverlay } from "@sudosos/sudosos-frontend-common";
 
 const toast = useToast();
 const nfcModalVisible: Ref<boolean> = ref < boolean > (false);
-const nfcModal: Ref<null | any> = ref(null);
+const nfcModal: Ref<{ mask: HTMLElement; close: () => void } | null> = ref(null);
 
 const props = defineProps({
   handleNfcUpdate: {

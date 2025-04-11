@@ -1,29 +1,29 @@
 <template>
   <Dialog
     v-model:visible="showDebtWarningDialog"
-    header="Warning!"
     :closable="true"
-    modal
     :content-style="{ width: '35rem' }"
-    @click="resetDialog"
+    header="Warning!"
+    modal
     :pt="{
         header: () => ({class: ['dialog-header']}),
         closeButton: () => ({class: ['dialog-close']})}"
+    @click="resetDialog"
   >
-    <Message severity="warn" :closable="false" :icon="undefined">
+    <Message :closable="false" :icon="undefined" severity="warn">
       You cannot checkout as you are a user that cannot go into debt! <br>
       Please remove items before you can continue.
     </Message>
   </Dialog>
   <div class="flex justify-content-between w-full">
     <button
-        class="c-btn rounder font-medium checkout text-3xl"
+        class="c-btn checkout font-medium rounder text-3xl"
         :class="{ countdown: checkingOut, disabled: !enabled, borrelMode }"
         @click="checkout"
     >
       {{ checkoutText }}
     </button>
-    <button class="c-btn clear icon-larger border-circle" @click="logout" v-if="!borrelMode">
+    <button v-if="!borrelMode" class="border-circle c-btn clear icon-larger" @click="logout">
       <i class="pi pi-times text-4xl"/>
     </button>
     <audio ref="sound"/>
@@ -96,7 +96,7 @@ const finalizeCheckout = async () => {
   stopCheckout();
   if (sound.value) {
     sound.value = new Audio('sounds/rct-cash.wav');
-    sound.value.play();
+    void sound.value.play();
   }
 
   await cartStore.checkout();
@@ -104,7 +104,7 @@ const finalizeCheckout = async () => {
   duration.value = 3;
   await logoutService();
 };
-const checkout = async () => {
+const checkout = () => {
   if (!enabled.value) return;
   if (unallowedUserInDebt.value) return stopCheckout();
 

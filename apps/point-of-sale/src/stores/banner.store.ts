@@ -12,7 +12,7 @@ export const useBannerStore = defineStore('banner', {
   actions: {
     async fetchBanners() {
       this.banners = await fetchAllPages<BannerResponse>((take, skip) =>
-        // @ts-ignore
+        // @ts-expect-error PaginatedBannerResponse is the same as PaginatedResult<BannerResponse>
         apiService.openBanner.getAllOpenBanners(take, skip)
       );
     }

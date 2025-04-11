@@ -63,7 +63,6 @@ export const useSettingStore = defineStore('setting', {
       // Do not deploy SudoSOS POS in some parts of India, Australia and other countries.
       const timezoneOffset = new Date().getTimezoneOffset()*60*1000;
       this.alcoholTimeToday = Date.parse(`${date}T${alcTime}:00.000Z`)+timezoneOffset;
-      console.log(this.alcoholTimeToday);
       return this.alcoholTimeToday;
     }
   },

@@ -1,10 +1,11 @@
 <template>
-  <div class="keypad flex-column">
-    <div class="key-row flex justify-content-center" v-for="row in keypadLayout" :key="row[0]">
-      <div :class="['key c-btn active square shadow-2',
-       { outlined: key === keypadBackspace || key === keypadExternal }]"
-        v-for="key in row" :key="key" @click="handleKeyClick(key)">
-        <i class="pi pi-delete-left text-6xl" v-if="key === keypadBackspace" />
+  <div class="flex-column keypad">
+    <div v-for="row in keypadLayout" :key="row[0]" class="flex justify-content-center key-row">
+      <div
+v-for="key in row"
+        :key="key" :class="['key c-btn active square shadow-2',
+       { outlined: key === keypadBackspace || key === keypadExternal }]" @click="handleKeyClick(key)">
+        <i v-if="key === keypadBackspace" class="pi pi-delete-left text-6xl" />
         {{ key !== keypadBackspace ? key : '' }}
       </div>
     </div>

@@ -1,11 +1,11 @@
 <template>
-  <div class="container-grid-wrapper flex-1 h-full mb-3 pr-6 mr-0 pl-1" ref="wrapper">
+  <div ref="wrapper" class="container-grid-wrapper flex-1 h-full mb-3 mr-0 pl-1 pr-6">
     <div class="container gap-2">
       <ProductComponent
           v-for="product in sortedProducts"
           :key="`${product.product.id}-${product.container.id}`"
-          :product="product.product"
           :container="product.container"
+          :product="product.product"
       />
     </div>
   </div>
@@ -19,24 +19,12 @@ import {
 import Fuse from "fuse.js";
 import ProductComponent from "@/components/ProductComponent.vue";
 
-const props = defineProps({
-  isProductSearch: {
-    type: Boolean,
-    required: true,
-  },
-  pointOfSale: {
-    type: Object as () => PointOfSaleWithContainersResponse | undefined,
-    required: true,
-  },
-  selectedCategoryId: {
-    type: String,
-    required: false,
-  },
-  searchQuery: {
-    type: String,
-    required: true,
-  },
-});
+const props = defineProps<{
+  isProductSearch: boolean,
+  pointOfSale?: PointOfSaleWithContainersResponse,
+  selectedCategoryId?: string
+  searchQuery: string
+}>()
 
 const searchQuery = ref(props.searchQuery);
 const wrapper = ref();

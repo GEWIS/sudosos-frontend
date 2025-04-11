@@ -3,28 +3,28 @@
     <div class="header">
       <div v-show="isSearchViewVisible">
         <div class="header-row">
-          <div class="c-btn square active icon-large search-close" @click="closeSearchView">
+          <div class="active c-btn icon-large search-close square" @click="closeSearchView">
             <i class="pi pi-times text-4xl"/>
           </div>
           <input
-            type="text"
-            ref="searchInput"
             id="searchInput"
+            ref="searchInput"
             v-model="searchQuery"
+            autocomplete="off"
             placeholder="Search..."
-            autocomplete="off"/>
+            type="text"/>
         </div>
       </div>
       <div v-show="!isSearchViewVisible">
-        <div class="flex w-full justify-content-between">
+        <div class="flex justify-content-between w-full">
           <div class="flex flex-wrap gap-2">
-            <label for="searchInput" class="c-btn icon-md search-close" @click="openSearchView">
+            <label class="c-btn icon-md search-close" for="searchInput" @click="openSearchView">
               <i class="pi pi-search text-4xl"/>
             </label>
             <div
-                class="c-btn square px-4 font-size-lg shadow-1"
                 v-for="category in computedCategories"
                 :key="category.id"
+                class="c-btn font-size-lg px-4 shadow-1 square"
                 :class="{ 'active': category.id === selectedCategoryId }"
                 @click="selectCategory(category.id)"
             >
@@ -34,16 +34,16 @@
       </div>
       </div>
     </div>
-    <Message v-if="isCategoryAlcoholic && !useSettingStore().isAlcoholTime" severity="warn" class="mr-4">
+    <Message v-if="isCategoryAlcoholic && !useSettingStore().isAlcoholTime" class="mr-4" severity="warn">
       Please note that today, alcoholic drinks are only allowed to be served after
       {{ new Date(useSettingStore().alcoholTimeToday)
       .toLocaleTimeString('nl-NL', { hour: "2-digit", minute: "2-digit" }) }}.
       This also applies to non-alcoholic alternatives on this page.
     </Message>
     <PointOfSaleProductsComponent
-        :search-query="searchQuery"
         :is-product-search="isSearchViewVisible"
         :point-of-sale="pointOfSale"
+        :search-query="searchQuery"
         :selected-category-id="selectedCategoryId"/>
   </div>
 </template>

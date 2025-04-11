@@ -15,11 +15,11 @@ import OverlayPanel from "primevue/overlaypanel";
 import Dropdown from "primevue/dropdown";
 import Toast from "primevue/toast";
 
+import Message from "primevue/message";
+import ToastService from "primevue/toastservice";
 import router from '@/router';
 import App from '@/App.vue';
 import { useSettingStore } from "@/stores/settings.store";
-import Message from "primevue/message";
-import ToastService from "primevue/toastservice";
 
 const app = createApp(App);
 
@@ -46,7 +46,7 @@ app.mount('#app');
 
 // Refresh alcohol time every hour.
 setInterval(() => {
-  useSettingStore().fetchAlcoholTimeToday();
+ void  useSettingStore().fetchAlcoholTimeToday();
 }, 1000*60*60);
 
 
