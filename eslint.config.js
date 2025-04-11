@@ -6,8 +6,5 @@ import { eslintConfig as prettier } from '@gewis/prettier-config';
 export default defineConfig([
     {
         extends: [common, vue, prettier],
-        rules: {
-            "no-unused-vars": "warn",
-        },
     },
 ]);
