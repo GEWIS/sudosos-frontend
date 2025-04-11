@@ -1,7 +1,7 @@
 import { createPinia, defineStore } from 'pinia';
 import {
   BalanceResponse, PaginatedBaseTransactionResponse, PaginatedFinancialMutationResponse,
-  UserResponse, RoleWithPermissionsResponse, GewisUserResponse, DineroObjectRequest, BaseUserResponse
+  UserResponse, RoleWithPermissionsResponse, GewisUserResponse, DineroObjectRequest
 } from "@sudosos/sudosos-client";
 import  { ApiService } from "../services/ApiService";
 import { fetchAllPages } from "../helpers/PaginationHelper";
@@ -100,7 +100,7 @@ export const useUserStore = defineStore('user', {
           )
       ).then((users) => {
             this.addUsers(users);
-            this.fetchUserBalances(users, service);
+            void this.fetchUserBalances(users, service);
           });
     },
     async fetchCurrentUserBalance(id: number, service: ApiService) {

@@ -7,10 +7,10 @@ import {
   UpdateLocalRequest,
   UserResponse, UpdateNfcRequest, AcceptTosRequest, AuthenticationNfcRequest
 } from "@sudosos/sudosos-client";
-import { useUserStore } from "./user.store";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { ApiService } from "../services/ApiService";
 import { clearTokenInStorage, getTokenFromStorage, setTokenInStorage } from "../helpers/TokenHelper";
+import { useUserStore } from "./user.store";
 
 interface AuthStoreState {
   user: UserResponse | null,
