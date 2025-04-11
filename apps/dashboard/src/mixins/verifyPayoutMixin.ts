@@ -1,8 +1,8 @@
 import { computed, ref } from "vue";
 import { useToast } from "primevue/usetoast";
+import { useI18n } from "vue-i18n";
 import { formatPrice } from "@/utils/formatterUtils";
 import ApiService from "@/services/ApiService";
-import { useI18n } from "vue-i18n";
 
 export const verifyPayoutMixin = {
   setup() {

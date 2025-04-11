@@ -1,20 +1,20 @@
 <template>
   <CardComponent
-      :header="t('modules.user.settings.header')"
-      :func="undefined"
       :action="undefined"
       class="w-full md:w-5"
+      :func="undefined"
+      :header="t('modules.user.settings.header')"
   >
     <div class="flex flex-column">
       <FormSection
+          divider
+          :enable-edit="true"
           :header="t('modules.user.settings.changePin')"
+          :simple-save="true"
           @cancel="pinForm.context.resetForm"
           @save="pinForm.submit"
-          :enableEdit="true"
-          :simpleSave="true"
-          @update:modelValue="editPin = $event"
-          divider>
-        <ChangePinForm :form="pinForm" :edit="editPin"/>
+          @update:model-value="editPin = $event">
+        <ChangePinForm :edit="editPin" :form="pinForm"/>
       </FormSection>
       <div class="flex flex-row align-items-center w-11">
         <p class="flex-grow-1 my-1">{{ t('modules.user.settings.changePassword') }}</p>
@@ -60,8 +60,8 @@
       <div class="flex flex-row align-items-center w-11">
         <p class="flex-grow-1 my-0">{{ t('modules.user.settings.dataAnalysis') }}</p>
         <InputSwitch
-            @update:modelValue="handleChangeDataAnalysis"
             v-model="dataAnalysis"
+            @update:model-value="handleChangeDataAnalysis"
         />
       </div>
     </div>
@@ -84,20 +84,20 @@ import { type PropType, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import type { UserResponse } from "@sudosos/sudosos-client";
 import { defineProps } from "vue";
-import CardComponent from "@/components/CardComponent.vue";
 import Divider from "primevue/divider";
 import InputSwitch from "primevue/inputswitch";
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
+import { useUserStore } from "@sudosos/sudosos-frontend-common";
+import CardComponent from "@/components/CardComponent.vue";
 import ChangePinForm from "@/modules/user/components/forms/ChangePinForm.vue";
 import FormDialog from "@/components/FormDialog.vue";
 import { editPasswordSchema, editPinSchema } from "@/utils/validation-schema";
 import { schemaToForm } from "@/utils/formUtils";
 import FormSection from "@/components/FormSection.vue";
 import ChangePasswordForm from "@/modules/user/components/forms/ChangePasswordForm.vue";
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
 import apiService from "@/services/ApiService";
 import { handleError } from "@/utils/errorUtils";
-import { useUserStore } from "@sudosos/sudosos-frontend-common";
 
 async function startScan() {
 

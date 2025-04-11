@@ -5,9 +5,10 @@ import type {
     GewisUserResponse,
     UserToFineResponse
 } from "@sudosos/sudosos-client";
-import ApiService from "@/services/ApiService";
-import Dinero, { type DineroObject } from "dinero.js";
+// eslint-disable-next-line import/no-named-as-default
+import Dinero from "dinero.js";
 import { fetchAllPages } from "@sudosos/sudosos-frontend-common";
+import ApiService from "@/services/ApiService";
 
 export enum SortField {
     NAME = "name",
@@ -144,7 +145,7 @@ export const useDebtorStore = defineStore('debtor', {
 
             return debtors;
         },
-        totalDebt(state): DineroObject {
+        totalDebt(state): Dinero.DineroObject {
             return {
                 amount: state.allDebtors
                     .reduce((accumulator: number, current: Debtor) => {
@@ -154,7 +155,7 @@ export const useDebtorStore = defineStore('debtor', {
                 precision: 2
             };
         },
-        totalFine(state): DineroObject {
+        totalFine(state): Dinero.DineroObject {
             return {
                 amount: state.allDebtors
                     .reduce((accumulator: number, current: Debtor) => {
@@ -203,14 +204,14 @@ export const useDebtorStore = defineStore('debtor', {
                 }),
             );
 
-            const allDebtors = [];
+            const allDebtors: Debtor[] = [];
 
-            for (const i in users) {
+            users.forEach((user, i) => {
                 allDebtors.push({
-                    user: users[i].data,
+                    user: user.data,
                     fine: this.userToFineResponse[i]
                 });
-            }
+            })
 
             this.allDebtors = allDebtors;
         },
@@ -220,11 +221,11 @@ export const useDebtorStore = defineStore('debtor', {
         async fetchFinancialSummary() {
             if (this.summary.totalPositive.amount != 0) return;
 
-            // @ts-ignore
+            // @ts-expect-error PaginatedBalanceResponse is the same as PaginatedResult<BalanceResponse>
             const allBalances = await fetchAllPages<BalanceResponse>(async (take, skip) => {
                 return  ApiService.balance.getAllBalance(
                     undefined,undefined,undefined,undefined,undefined,
-                    // @ts-ignore
+                    // @ts-expect-error not sure why typescript thinks this is wrong
                     undefined,[ "MEMBER", "LOCAL_USER" ],undefined,undefined, undefined,
                     take, skip
                 );

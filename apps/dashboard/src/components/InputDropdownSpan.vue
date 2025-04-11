@@ -1,15 +1,16 @@
 <template>
   <div>
-    <span :class="['flex justify-content-between',
+    <span
+:class="['flex justify-content-between',
      column ? 'flex-column gap-1' : 'flex-row align-items-center gap-3']">
       <span class="my-0">{{ label }}</span>
       <Dropdown
           v-model="selectedOption"
-          :options="options"
-          :optionLabel="optionLabel"
-          :placeholder="placeholder"
           class="w-full md:w-15rem"
           :disabled="disabled"
+          :option-label="optionLabel"
+          :options="options"
+          :placeholder="placeholder"
       >
         <template #option="slotProps">
           {{ slotProps.option[optionLabel] }}
@@ -23,8 +24,8 @@
 </template>
 
 <script setup lang="ts" generic="T">
-import ErrorSpan from "@/components/ErrorSpan.vue";
 import { type PropType } from "vue";
+import ErrorSpan from "@/components/ErrorSpan.vue";
 
 defineProps({
   label: {

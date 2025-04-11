@@ -1,10 +1,10 @@
 <template>
-  <CardComponent :header="t('modules.seller.productContainers.products.header')" class="w-full">
+  <CardComponent class="w-full" :header="t('modules.seller.productContainers.products.header')">
     <template #topAction>
       <div>
         <Button
-            @click="openCreateModal"
             v-if="isAllowed('create', ['own', 'organ'], 'Product')"
+            @click="openCreateModal"
         >
           {{ t('common.create') }}
         </Button>
@@ -12,37 +12,36 @@
     </template>
     <ProductActionDialog
         v-model:visible="visible"
-        :product="product"
         :is-update-allowed="isAllowed('update', ['own', 'organ'], 'Product')"
+        :product="product"
     />
     <DataTable
         v-model:filters="filters"
-        :value="products"
+        filter-display="menu"
+        :global-filter-fields="['name']"
         paginator
-        tableStyle="min-width: 50rem"
-        :rows="5"
-        :rowsPerPageOptions="[5, 10, 25, 50, 100]"
-        filterDisplay="menu"
-        :globalFilterFields="['name']"
         :pt="{
                   table: {
                     style: 'table-layout: fixed; width: 100%;'
                   }
               }"
+        :rows="5"
+        :rows-per-page-options="[5, 10, 25, 50, 100]"
+        table-style="min-width: 50rem"
+        :value="products"
     >
       <template #header>
         <div class="flex flex-row justify-content-between">
-          <IconField iconPosition="left">
+          <IconField icon-position="left">
             <InputIcon class="pi pi-search"></InputIcon>
             <InputText v-model="filters['global'].value" placeholder="Search"/>
           </IconField>
         </div>
       </template>
       <Column field="image" :header="t('modules.seller.productContainers.products.image')">
-        <template #body="rowDataImg" v-if="!loading">
+        <template v-if="!loading" #body="rowDataImg">
           <Image
-              :src="getProductImageSrc(rowDataImg.data)" preview
-              class="h-4rem w-4rem image-preview-container"
+              class="h-4rem w-4rem image-preview-container" preview
               :pt="{
                 image: {
                   class: 'h-4rem w-4rem',
@@ -52,65 +51,67 @@
                   }
                 }
               }"
+              :src="getProductImageSrc(rowDataImg.data)"
           />
         </template>
-        <template #body v-else>
+        <template v-else #body>
           <Skeleton class="w-8 my-1 h-4rem surface-300"/>
         </template>
       </Column>
       <Column field="name" :header="t('common.name')" style="width: 30%">
-        <template #body v-if="loading">
+        <template v-if="loading" #body>
           <Skeleton class="w-6 my-1 h-2rem surface-300"/>
         </template>
       </Column>
       <Column field="category" :header="t('modules.seller.productContainers.products.category')" style="width: 15%">
-        <template #body="rowData" v-if="!loading">
+        <template v-if="!loading" #body="rowData">
           {{ rowData.data.category.name }}
         </template>
-        <template #body v-else>
+        <template v-else #body>
           <Skeleton class="w-6 my-1 h-2rem surface-300"/>
         </template>
       </Column>
       <Column field="priceInclVat" :header="t('common.price')" style="width: 17%">
-        <template #body="rowData" v-if="!loading">
+        <template v-if="!loading" #body="rowData">
           {{ formatPrice(rowData.data.priceInclVat) }}
         </template>
-        <template #body v-else>
+        <template v-else #body>
           <Skeleton class="w-6 my-1 h-2rem surface-300"/>
         </template>
       </Column>
-      <Column field="alcoholPercentage"
+      <Column
+field="alcoholPercentage"
               :header="t('modules.seller.productContainers.products.alcoholPercentage')" style="width: 10%">
-        <template #body="rowData" v-if="!loading">
+        <template v-if="!loading" #body="rowData">
           {{ `${rowData.data.alcoholPercentage} %` }}
         </template>
-        <template #body v-else>
+        <template v-else #body>
           <Skeleton class="w-6 my-1 h-2rem surface-300"/>
         </template>
       </Column>
       <Column field="vat" :header="t('modules.seller.productContainers.products.vat')" style="width: 10%">
-        <template #body v-if="loading">
+        <template v-if="loading" #body>
           <Skeleton class="w-6 my-1 h-2rem surface-300"/>
         </template>
-        <template #body="rowData" v-else>
+        <template v-else #body="rowData">
           {{ `${rowData.data.vat.percentage} %` }}
         </template>
 
       </Column>
       <Column
-          bodyStyle="text-align:center"
+          body-style="text-align:center"
           style="width: 5%"
       >
-        <template #body v-if="loading">
+        <template v-if="loading" #body>
           <Skeleton class="w-3 my-1 h-2rem surface-300"/>
         </template>
-        <template #body="rowData" v-else>
+        <template v-else #body="rowData">
           <Button
-              @click="openEditModal(rowData.data.id)"
-              type="button"
+              icon="pi pi-info-circle"
               outlined
               severity="secondary"
-              icon="pi pi-info-circle"
+              type="button"
+              @click="openEditModal(rowData.data.id)"
           />
         </template>
       </Column>
@@ -119,10 +120,7 @@
 </template>
 
 <script setup lang="ts">
-import { getProductImageSrc } from "@/utils/urlUtils";
-import { formatPrice } from "@/utils/formatterUtils";
 import IconField from "primevue/iconfield";
-import CardComponent from "@/components/CardComponent.vue";
 import InputIcon from "primevue/inputicon";
 import Column from "primevue/column";
 import Skeleton from "primevue/skeleton";
@@ -130,10 +128,13 @@ import DataTable from "primevue/datatable";
 import InputText from "primevue/inputtext";
 import { computed, onBeforeMount, type Ref, ref } from "vue";
 import type { ProductResponse } from "@sudosos/sudosos-client";
-import { useProductStore } from "@/stores/product.store";
 import { FilterMatchMode } from "primevue/api";
-import ProductActionDialog from "@/modules/seller/components/ProductActionDialog.vue";
 import { useI18n } from "vue-i18n";
+import { useProductStore } from "@/stores/product.store";
+import ProductActionDialog from "@/modules/seller/components/ProductActionDialog.vue";
+import CardComponent from "@/components/CardComponent.vue";
+import { formatPrice } from "@/utils/formatterUtils";
+import { getProductImageSrc } from "@/utils/urlUtils";
 import { isAllowed } from "@/utils/permissionUtils";
 
 const { t } = useI18n();

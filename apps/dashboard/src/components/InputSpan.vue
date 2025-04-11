@@ -1,67 +1,77 @@
 <template>
   <div>
-    <span :class="['flex justify-content-between',
+    <span
+:class="['flex justify-content-between',
      column ? 'flex-column gap-1' : 'flex-row align-items-center gap-2']">
       <p class="my-0">{{ label }}</p>
-      <InputText v-if="type === 'text'"
-                 :placeholder="placeholder"
+      <InputText
+v-if="type === 'text'"
                  v-model="internalValue"
                  v-bind="attributes"
-                 :disabled="disabled"/>
+                 :disabled="disabled"
+                 :placeholder="placeholder"/>
 
-      <Textarea v-if="type === 'textarea'"
-                :placeholder="placeholder"
+      <Textarea
+v-if="type === 'textarea'"
                 v-model="internalValue"
                 v-bind="attributes"
-                autoResize
-                :disabled="disabled"/>
+                auto-resize
+                :disabled="disabled"
+                :placeholder="placeholder"/>
 
-      <CalendarString v-if="type === 'date'"
-                :placeholder="placeholder"
+      <CalendarString
+v-if="type === 'date'"
                 v-model="internalValue"
                 v-bind="attributes"
-                :disabled="disabled"/>
+                :disabled="disabled"
+                :placeholder="placeholder"/>
 
-      <InputNumber v-if="type === 'currency'"
-                 mode="currency" currency="EUR" locale="nl-NL"
-                 :min="0.0"
-                :placeholder="placeholder"
-                v-model="internalValue as number"
-                :disabled="disabled"/>
-      <InputNumber v-if="type === 'percentage'"
-                   mode="decimal"
-                   :min="0.0"
-                   :min-fraction-digits="0" :max-fraction-digits="2"
-                   :placeholder="placeholder"
+      <InputNumber
+v-if="type === 'currency'"
+                 v-model="internalValue as number" currency="EUR" :disabled="disabled"
+                 locale="nl-NL"
+                :min="0.0"
+                mode="currency"
+                :placeholder="placeholder"/>
+      <InputNumber
+v-if="type === 'percentage'"
                    v-model="internalValue as number"
                    :disabled="disabled"
+                   :max-fraction-digits="2" :min="0.0"
+                   :min-fraction-digits="0"
+                   mode="decimal"
+                   :placeholder="placeholder"
                    suffix="%"/>
-      <InputSwitch v-if="type === 'boolean'"
+      <InputSwitch
+v-if="type === 'boolean'"
                    v-model="internalValue as boolean"
                    :disabled="disabled"/>
-      <Dropdown v-if="type === 'usertype'"
-                :options="userTypes"
-                optionLabel="name"
-                optionValue="value"
+      <Dropdown
+v-if="type === 'usertype'"
                 v-model="internalValue as number"
-                :placeholder="placeholder"
-                :disabled="disabled"/>
+                :disabled="disabled"
+                option-label="name"
+                option-value="value"
+                :options="userTypes"
+                :placeholder="placeholder"/>
 
-      <InputText v-if="type === 'pin'"
+      <InputText
+v-if="type === 'pin'"
+                 v-model="internalValue"
                  class="w-3"
+                 v-bind="attributes"
+                 :disabled="disabled"
+                 :placeholder="placeholder"
                  size="small"
-                 type="password"
-                 :placeholder="placeholder"
+                 type="password"/>
+      <InputText
+v-if="type === 'password'"
                  v-model="internalValue"
-                 v-bind="attributes"
-                 :disabled="disabled"/>
-      <InputText v-if="type === 'password'"
                  class="w-5"
-                 type="password"
-                 :placeholder="placeholder"
-                 v-model="internalValue"
                  v-bind="attributes"
-                 :disabled="disabled"/>
+                 :disabled="disabled"
+                 :placeholder="placeholder"
+                 type="password"/>
     </span>
     <div class="flex justify-content-end">
       <ErrorSpan :error="errors"/>
@@ -74,11 +84,11 @@ import { ref, watch, onMounted } from 'vue';
 import type { PropType, Ref } from 'vue';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
+import type { HintedString } from "primevue/ts-helpers";
+import InputNumber from "primevue/inputnumber";
 import ErrorSpan from "@/components/ErrorSpan.vue";
 import CalendarString from "@/components/CalendarString.vue";
 
-import type { HintedString } from "primevue/ts-helpers";
-import InputNumber from "primevue/inputnumber";
 import { userTypes } from "@/utils/validation-schema";
 
 const props = defineProps({

@@ -1,16 +1,16 @@
 <template>
   <div class="flex flex-col gap-5">
     <DataTable
-        :rows="rows"
-        :value="rowValues"
-        :rows-per-page-options="[5, 10, 25, 50, 100]"
-        :paginator="paginator"
-        lazy
-        @page="onPage($event)"
-        :total-records="totalRecords"
-        data-key="id"
         class="w-full"
-        tableStyle="min-width: 50rem"
+        data-key="id"
+        lazy
+        :paginator="paginator"
+        :rows="rows"
+        :rows-per-page-options="[5, 10, 25, 50, 100]"
+        table-style="min-width: 50rem"
+        :total-records="totalRecords"
+        :value="rowValues"
+        @page="onPage($event)"
     >
       <Column field="date" :header="t('common.date')">
         <template #body="slotProps">
@@ -41,18 +41,18 @@
           <Skeleton v-if="isLoading" class="w-3 my-1 h-1rem surface-300" />
           <span v-else class="flex flex-row align-items-center">
             <Button
-                type="button"
-                icon="pi pi-eye"
                 class="p-button-rounded p-button-text p-button-plain"
+                icon="pi pi-eye"
+                type="button"
                 @click="() => viewPayoutRequest(slotProps.data.id)"
             />
             <Button
-                v-tooltip.top="t('common.downloadPdf')"
-                type="button"
-                icon="pi pi-file-export"
-                class="p-button-rounded p-button-text p-button-plain"
-                @click="() => downloadPdf(slotProps.data.id)"
                 v-if="!downloadingPdf"
+                v-tooltip.top="t('common.downloadPdf')"
+                class="p-button-rounded p-button-text p-button-plain"
+                icon="pi pi-file-export"
+                type="button"
+                @click="() => downloadPdf(slotProps.data.id)"
             />
             <Skeleton v-else class="w-3 my-1 h-2rem surface-300" />
           </span>
@@ -60,32 +60,32 @@
       </Column>
     </DataTable>
     <Dialog
-        modal
         ref="dialog"
-        @show="addListenerOnDialogueOverlay(dialog)"
         v-model:visible="showModal"
-        :draggable="false"
         class="w-auto flex w-9 md:w-4"
-        :header="t('modules.financial.payout.details', { payoutId })">
-      <PayoutInfo :payoutId="payoutId" @close="showModal = false"/>
+        :draggable="false"
+        :header="t('modules.financial.payout.details', { payoutId })"
+        modal
+        @show="addListenerOnDialogueOverlay(dialog)">
+      <PayoutInfo :payout-id="payoutId" @close="showModal = false"/>
     </Dialog>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, type PropType, type Ref, computed, watch } from "vue";
-import { formatPrice, formatDateFromString } from "@/utils/formatterUtils";
 import {
   type PaginatedBasePayoutRequestResponse, PayoutRequestStatusRequestStateEnum
 } from "@sudosos/sudosos-client";
-import { usePayoutStore } from "@/stores/payout.store";
-import { getPayoutPdfSrc } from "@/utils/urlUtils";
 import DataTable, { type DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
-import { addListenerOnDialogueOverlay } from "@/utils/dialogUtil";
-import PayoutInfo from "@/modules/financial/components/payout/PayoutInfo.vue";
 import Button from "primevue/button";
 import { useI18n } from "vue-i18n";
+import { addListenerOnDialogueOverlay } from '@sudosos/sudosos-frontend-common';
+import { formatPrice, formatDateFromString } from "@/utils/formatterUtils";
+import { usePayoutStore } from "@/stores/payout.store";
+import { getPayoutPdfSrc } from "@/utils/urlUtils";
+import PayoutInfo from "@/modules/financial/components/payout/PayoutInfo.vue";
 
 const { t } = useI18n();
 
@@ -114,7 +114,7 @@ const dialog = ref();
 const payoutId: Ref<number> = ref(0);
 const downloadingPdf = ref<boolean>(false);
 
-const viewPayoutRequest = async (id: number) => {
+const viewPayoutRequest = (id: number) => {
   showModal.value = true;
   payoutId.value = id;
 };
@@ -145,7 +145,7 @@ async function onPage(event: DataTablePageEvent) {
 }
 
 watch(() => payoutStore.getUpdatedAt, () => {
-  loadPayoutRequests();
+  void loadPayoutRequests();
 });
 </script>
 

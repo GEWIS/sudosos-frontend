@@ -1,18 +1,21 @@
 <template>
     <CardComponent :header="t('modules.admin.banners.list.header')">
-        <DataView :value="displayedBanners" data-key="id" paginator :first="props.skip && props.skip-1"
-            :rows="props.take">
+        <DataView
+data-key="id" :first="props.skip && props.skip-1" paginator :rows="props.take"
+            :value="displayedBanners">
             <template #header>
                 <div class="flex flex-column md:flex-row align-items-center justify-content-between">
-                    <SelectButton v-model="filters" :options="options" optionLabel="name" multiple />
-                    <Button class="mt-2 md:mt-0" :label="t('common.create')" icon="pi pi-plus"
+                    <SelectButton v-model="filters" multiple option-label="name" :options="options" />
+                    <Button
+class="mt-2 md:mt-0" icon="pi pi-plus" :label="t('common.create')"
                         @click="isCreateDialogVisible = true" />
                 </div>
             </template>
             <template #list="slotProps">
                 <div class="grid grid-nogutter">
-                    <BannerItem v-for="(item, index) in slotProps.items" :key="index" :index="index"
-                        :banner="item" />
+                    <BannerItem
+v-for="(item, index) in slotProps.items" :key="index" :banner="item"
+                        :index="index" />
                 </div>
             </template>
         </DataView>
@@ -28,11 +31,11 @@ import type {
 } from "@sudosos/sudosos-client";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
-const { t } = useI18n();
 
 import BannerItem from "@/modules/admin/components/banners/BannerItem.vue";
 import CardComponent from "@/components/CardComponent.vue";
 import BannerDialog from "@/modules/admin/components/banners/BannerDialog.vue";
+const { t } = useI18n();
 
 const props = defineProps<{
     banners: BannerResponse[],

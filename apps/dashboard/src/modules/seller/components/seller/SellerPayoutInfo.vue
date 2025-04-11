@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
     <div class="flex flex-column gap-2">
-      <div class="flex flex-column" v-if="payout">
+      <div v-if="payout" class="flex flex-column">
         <span><strong>{{ `${t('modules.seller.payouts.payout.id')}:` }}</strong> {{ `SDS-SP-${payout.id}` }}</span>
         <span>
           <strong>{{ `${t('modules.seller.payouts.payout.dates')}:` }}</strong>
@@ -9,11 +9,12 @@
         </span>
         <span><strong>{{ `${t('modules.seller.payouts.payout.amount')}:` }}
           </strong>
-          <InputNumber mode="currency" currency="EUR" locale="nl-NL"
+          <InputNumber
+v-model="payoutAmount as number" currency="EUR" :disabled="verifySuccess === null || verifySuccess"
+                       locale="nl-NL"
                        :min="0.0"
-                       v-model="payoutAmount as number"
-                       @update:model-value="touched = true"
-                       :disabled="verifySuccess === null || verifySuccess"/>
+                       mode="currency"
+                       @update:model-value="touched = true"/>
         </span>
         <span v-if="verifySuccess === false && verifyAmount" class="text-red-500 font-bold">
           <i class="pi pi-exclamation-triangle text-red-500"></i>
@@ -25,41 +26,41 @@
       <div class="flex flex-row gap-2 justify-content-between w-full mt-3">
         <div>
           <Button
-              type="button"
               icon="pi pi-trash"
               :label="t('common.delete')"
               severity="danger"
+              type="button"
               @click="deletePayout"
           />
         </div>
         <div class="flex flex-row gap-2 justify-content-end w-full">
           <ActionButton
+              v-if="touched"
               :label="t('modules.seller.payouts.payout.update')"
-              @click="updatePayoutAmount"
-              :submitting="submitting"
               :result="result"
-              v-if="touched"/>
+              :submitting="submitting"
+              @click="updatePayoutAmount"/>
           <Button
               v-else
-              :label="verifyButtonLabel"
-              :icon="verifyButtonIcon"
               :class="verifyButtonClass"
+              :icon="verifyButtonIcon"
+              :label="verifyButtonLabel"
+              :loading="verifying"
               :severity="verifyButtonSeverity"
               @click="verifyPayout(payout)"
-              :loading="verifying"
           />
           <Button
-              type="button"
-              icon="pi pi-file-export"
               :disabled="downloadingPdf"
-              severity="danger"
+              icon="pi pi-file-export"
               :label="t('common.downloadPdf')"
+              severity="danger"
+              type="button"
               @click="() => downloadPdf(payoutId)"
           />
           <Button
-              severity="secondary"
-              :label="t('common.close')"
               icon="pi pi-times"
+              :label="t('common.close')"
+              severity="secondary"
               @click="closeModal"
           />
         </div>
@@ -73,14 +74,14 @@ import { computed, ref, type ComputedRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'primevue/usetoast';
 import Button from 'primevue/button';
+import type { SellerPayoutResponse } from '@sudosos/sudosos-client';
+import InputNumber from "primevue/inputnumber";
 import { useSellerPayoutStore } from '@/stores/seller-payout.store';
 import { formatDateFromString, formatPrice } from '@/utils/formatterUtils';
-import type { SellerPayoutResponse } from '@sudosos/sudosos-client';
 import { verifyPayoutMixin } from "@/mixins/verifyPayoutMixin";
 import { getSellerPayoutPdfSrc } from "@/utils/urlUtils";
 import { handleError } from "@/utils/errorUtils";
 import ApiService from "@/services/ApiService";
-import InputNumber from "primevue/inputnumber";
 import ActionButton from "@/components/ActionButton.vue";
 
 const {

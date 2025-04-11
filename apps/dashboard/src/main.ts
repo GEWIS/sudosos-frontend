@@ -2,8 +2,6 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import '@gewis/splash';
 
-import App from './App.vue';
-import router from './router';
 import PrimeVue from 'primevue/config';
 import Button from "primevue/button";
 import "./styles/themes/sudosos-light/theme.scss";
@@ -29,21 +27,20 @@ import SelectButton from "primevue/selectbutton";
 import 'primeflex/primeflex.css';
 import ToastService from "primevue/toastservice";
 import Toast from "primevue/toast";
-import 'primeflex/primeflex.css';
-import 'primeicons/primeicons.css';
-import 'primeflex/primeflex.css';
 import Accordion from "primevue/accordion";
 import Skeleton from "primevue/skeleton";
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import ProgressSpinner from "primevue/progressspinner";
 import ToggleButton from "primevue/togglebutton";
-import i18n from './utils/i18nUtils';
 import ConfirmDialog from "primevue/confirmdialog";
 import ConfirmationService from 'primevue/confirmationservice';
 import InputSwitch from "primevue/inputswitch";
 import Divider from "primevue/divider";
 import Column from "primevue/column";
+import App from './App.vue';
+import router from './router';
+import i18n from './utils/i18nUtils';
 import beforeLoad from '@/utils/beforeLoadUtil';
 
 const app = createApp(App);
@@ -57,24 +54,35 @@ app.use(PrimeVue);
 app.use(ToastService);
 app.use(ConfirmationService);
 
+// eslint-disable-next-line vue/multi-word-component-names,vue/no-reserved-component-names
 app.component('Button', Button);
 app.component('InputText', InputText);
 app.component('InputSwitch', InputSwitch);
+// eslint-disable-next-line vue/multi-word-component-names
 app.component('Menubar', Menubar);
+// eslint-disable-next-line vue/multi-word-component-names
 app.component('Message', Message);
+// eslint-disable-next-line vue/multi-word-component-names
 app.component('Panel', Panel);
 app.component('DataTable', DataTable);
 app.component('DataView', DataView);
 app.component('InputNumber', InputNumber);
+// eslint-disable-next-line vue/multi-word-component-names
 app.component('Image', Image);
+// eslint-disable-next-line vue/multi-word-component-names
 app.component('Dialog', Dialog);
+// eslint-disable-next-line vue/multi-word-component-names
 app.component('Dropdown', Dropdown);
+// eslint-disable-next-line vue/multi-word-component-names
 app.component('Checkbox', Checkbox);
 app.component('TabView', TabView);
 app.component('ScrollPanel', ScrollPanel);
 app.component('FileUpload', FileUpload);
+// eslint-disable-next-line vue/multi-word-component-names
 app.component('Toast', Toast);
+// eslint-disable-next-line vue/multi-word-component-names
 app.component('Accordion', Accordion);
+// eslint-disable-next-line vue/multi-word-component-names
 app.component('Skeleton', Skeleton);
 app.component('InputIcon', InputIcon);
 app.component('IconField', IconField);
@@ -82,13 +90,17 @@ app.component('ProgressSpinner', ProgressSpinner);
 app.component('SelectButton', SelectButton);
 app.directive('tooltip', Tooltip);
 app.component('ToggleButton', ToggleButton);
+// eslint-disable-next-line vue/multi-word-component-names
 app.component('Steps', Steps);
+// eslint-disable-next-line vue/multi-word-component-names
 app.component('Calendar', Calendar);
 app.component('ConfirmDialog', ConfirmDialog);
+// eslint-disable-next-line vue/multi-word-component-names
 app.component('Divider', Divider);
+// eslint-disable-next-line vue/multi-word-component-names
 app.component('Column', Column);
 
-beforeLoad().then(() => {
+void beforeLoad().then(() => {
   app.use(router);
   app.mount('#app');
 });

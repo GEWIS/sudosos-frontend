@@ -11,7 +11,7 @@ export const useBannersStore = defineStore('banners', {
         async fetchBanners() {
             // TODO: Not fetch all banners (see #51)
             this.banners = await fetchAllPages<BannerResponse>((take, skip) =>
-                // @ts-ignore
+                // @ts-expect-error PaginatedBannerResponse is the same as PaginatedResult<BannerResponse>
                 apiService.openBanner.getAllOpenBanners(take, skip)
             );
         },

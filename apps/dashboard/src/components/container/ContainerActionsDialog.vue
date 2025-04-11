@@ -1,19 +1,19 @@
 <template>
   <FormDialog
    v-model:model-value="visible"
+   :deletable="state.edit"
    :form="form"
    :header="header"
-   @show="openDialog()"
+   :is-editable="state.edit || state.create"
    @close="closeDialog()"
    @delete="deleteProduct()"
-   :deletable="state.edit"
-   :is-editable="state.edit || state.create"
+   @show="openDialog()"
   >
     <template #form>
       <ContainerActionsForm
+          :form="form"
           :is-editable="state.edit || state.create"
-          :is-organ-editable="state.create"
-          :form="form"/>
+          :is-organ-editable="state.create"/>
       <ConfirmDialog group="containerDelete"/>
     </template>
   </FormDialog>
@@ -27,15 +27,15 @@ import type {
   PointOfSaleWithContainersResponse,
   UpdateContainerRequest
 } from "@sudosos/sudosos-client";
-import { useContainerStore } from "@/stores/container.store";
-import { handleError } from "@/utils/errorUtils";
 import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
+import { useConfirm } from "primevue/useconfirm";
+import { useContainerStore } from "@/stores/container.store";
+import { handleError } from "@/utils/errorUtils";
 import { schemaToForm, setSubmit } from "@/utils/formUtils";
 import { containerActionSchema  } from "@/utils/validation-schema";
 import ContainerActionsForm from "@/components/container/ContainerActionsForm.vue";
 import FormDialog from "@/components/FormDialog.vue";
-import { useConfirm } from "primevue/useconfirm";
 const { t } = useI18n();
 
 const props = defineProps({

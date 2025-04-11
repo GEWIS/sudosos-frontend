@@ -4,8 +4,8 @@ import type {
     PayoutRequestResponse
 } from "@sudosos/sudosos-client";
 import { defineStore } from "pinia";
-import apiService from "@/services/ApiService";
 import { PayoutRequestStatusRequestStateEnum } from "@sudosos/sudosos-client";
+import apiService from "@/services/ApiService";
 
 export type PayoutResponse = PayoutRequestResponse | BasePayoutRequestResponse;
 export const usePayoutStore = defineStore('payout', {
@@ -64,7 +64,7 @@ export const usePayoutStore = defineStore('payout', {
         },
         async fetchPdf(id: number): Promise<string> {
             return apiService.payouts.getPayoutRequestPdf(id).then((res) => {
-                const pdf = (res.data as any as { pdf: string }).pdf;
+                const pdf = (res.data as unknown as { pdf: string }).pdf;
                 this.payouts[id].pdf = pdf;
                 return pdf;
             });

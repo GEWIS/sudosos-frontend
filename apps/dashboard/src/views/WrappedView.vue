@@ -49,12 +49,12 @@
 <script setup lang="ts">
 
 import { computed, onBeforeMount, ref } from "vue";
-import apiService from "@/services/ApiService";
 import { useAuthStore } from "@sudosos/sudosos-frontend-common";
 import type { ReportProductEntryResponse, ReportResponse } from "@sudosos/sudosos-client";
-import { formatPrice } from "@/utils/formatterUtils";
-import Dinero from "dinero.js";
+import * as Dinero from "dinero.js";
 import { useI18n } from "vue-i18n";
+import { formatPrice } from "@/utils/formatterUtils";
+import apiService from "@/services/ApiService";
 
 const { t } = useI18n();
 
@@ -109,8 +109,8 @@ const topProducts = computed(() => {
 
   const allProducts: ReportProductEntryResponse[] = [];
 
-  for (let product of report.value.data.products!) {
-    let idx = allProducts.findIndex(p => p.product.id == product.product.id);
+  for (const product of report.value.data.products!) {
+    const idx = allProducts.findIndex(p => p.product.id == product.product.id);
     if (idx >= 0) {
       allProducts[idx].totalInclVat = Dinero(allProducts[idx].totalInclVat as Dinero.Options)
           .add(Dinero(product.totalInclVat as Dinero.Options)).toObject();
@@ -124,7 +124,7 @@ const topProducts = computed(() => {
 });
 
 onBeforeMount(async () => {
-  let authStore = useAuthStore();
+  const authStore = useAuthStore();
 
   report.value = (await apiService.user
       .getUsersPurchasesReport(authStore.getUser!.id, "2024-01-01", "2024-12-31")).data;

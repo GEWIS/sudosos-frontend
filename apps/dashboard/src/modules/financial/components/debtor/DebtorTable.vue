@@ -1,98 +1,103 @@
 <template>
-  <CardComponent :header="t('modules.financial.debtor.debtorUsers.header')" class="w-full">
+  <CardComponent class="w-full" :header="t('modules.financial.debtor.debtorUsers.header')">
     <div v-if="isEditable" class="mb-2">
       {{ t('modules.financial.debtor.debtorUsers.explanation') }}
     </div>
-    <DataTable :value="debtorRows" tableStyle="min-width: 50rem"
-               removableSort
-               filterDisplay="row"
-               @sort="onSortClick"
+    <DataTable
+v-model:selection="selectedUsers" filter-display="row"
+               lazy
+               removable-sort
+               :row-class="data => !data?.canGoInDebt ? 'font-italic' : ''"
                :sort-field="debtorStore.sort.field || undefined"
                :sort-order="debtorStore.sort.direction || undefined"
-               lazy
                striped-rows
-               v-model:selection="selectedUsers"
-               :row-class="data => !data?.canGoInDebt ? 'font-italic' : ''">
-      <Column selectionMode="multiple" style="width: 2%" v-if="isEditable">
+               table-style="min-width: 50rem"
+               :value="debtorRows"
+               @sort="onSortClick">
+      <Column v-if="isEditable" selection-mode="multiple" style="width: 2%">
       </Column>
 
       <Column field="gewisId" :header="t('common.gewisId')" style="width: 5%">
-        <template #body v-if="debtorStore.isDebtorsLoading">
+        <template v-if="debtorStore.isDebtorsLoading" #body>
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
         </template>
       </Column>
 
       <Column field="name" :header="t('common.name')" :sortable="true" style="width: 10%">
-        <template #body v-if="debtorStore.isDebtorsLoading">
+        <template v-if="debtorStore.isDebtorsLoading" #body>
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
         </template>
-        <template #body="{ data }" v-else>
-          <UserLink :user="data.user" newTab/>
+        <template v-else #body="{ data }">
+          <UserLink new-tab :user="data.user"/>
         </template>
         <template #filter>
-          <InputText v-model="nameFilter" type="text" class="p-column-filter" placeholder="Search" />
+          <InputText v-model="nameFilter" class="p-column-filter" placeholder="Search" type="text" />
         </template>
       </Column>
 
-      <Column v-if="isEditable" field="controlBalance" filter-match-mode="notEquals"
-              :header="controlBalanceHeader" :sortable="true" :showFilterMenu="false" style="width: 15%">
-        <template #body v-if="debtorStore.isDebtorsLoading">
+      <Column
+v-if="isEditable" field="controlBalance" filter-match-mode="notEquals"
+              :header="controlBalanceHeader" :show-filter-menu="false" :sortable="true" style="width: 15%">
+        <template v-if="debtorStore.isDebtorsLoading" #body>
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
         </template>
-        <template #body="{ data }" v-else>
+        <template v-else #body="{ data }">
           {{ data.controlBalance }}
         </template>
-        <template #filter v-if="isEditable">
+        <template v-if="isEditable" #filter>
           <Calendar
-              v-model="controlBalanceDate"
               id="firstDate"
-              showTime
-              hourFormat="24"
+              v-model="controlBalanceDate"
+              hour-format="24"
               placeholder="Click to change date"
+              show-time
           />
         </template>
       </Column>
 
-      <Column field="referenceBalance" filter-match-mode="notEquals"
-              :header="referenceBalanceHeader" :sortable="true" :showFilterMenu="false" style="width: 15%">
-        <template #body v-if="debtorStore.isDebtorsLoading">
+      <Column
+field="referenceBalance" filter-match-mode="notEquals"
+              :header="referenceBalanceHeader" :show-filter-menu="false" :sortable="true" style="width: 15%">
+        <template v-if="debtorStore.isDebtorsLoading" #body>
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
         </template>
-        <template #body="{ data }" v-else>
+        <template v-else #body="{ data }">
           {{ data.referenceBalance }}
         </template>
-        <template #filter v-if="isEditable">
+        <template v-if="isEditable" #filter>
           <Calendar
-              v-model="referenceBalanceDate"
               id="firstDate"
-              showTime
-              hourFormat="24"
+              v-model="referenceBalanceDate"
+              hour-format="24"
               placeholder="Click to change date"
+              show-time
           />
         </template>
       </Column>
 
-      <Column class="font-bold" field="referenceBalanceFine"
+      <Column
+class="font-bold" field="referenceBalanceFine"
               :header="t('modules.financial.debtor.debtorUsers.ofWhichFine')"
               :sortable="true" style="width: 10%">
-        <template #body v-if="debtorStore.isDebtorsLoading">
+        <template v-if="debtorStore.isDebtorsLoading" #body>
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
         </template>
       </Column>
 
       <Column field="fine" :header="fineHeader" :sortable="true" style="width: 10%">
-        <template #body v-if="debtorStore.isDebtorsLoading">
+        <template v-if="debtorStore.isDebtorsLoading" #body>
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
         </template>
       </Column>
 
-      <Column field="fineSince"
+      <Column
+field="fineSince"
               :header="t('modules.financial.debtor.debtorUsers.fineSince')"
               :sortable="true" style="width: 10%">
-        <template #body v-if="debtorStore.isDebtorsLoading">
+        <template v-if="debtorStore.isDebtorsLoading" #body>
           <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
         </template>
-        <template #body="slotProps" v-else>
+        <template v-else #body="slotProps">
               <span v-if="slotProps.data.fineSince" class="text-red-500 font-bold">
                 {{ formatFineTimeSince(new Date(slotProps.data.fineSince), referenceBalanceDate || nowDate) }}
               </span>
@@ -106,29 +111,29 @@
           <tr>
             <th/>
             <th class="text-left">{{ t('common.total') + ':' }}</th>
-            <th class="text-left" v-if="isEditable">{{ t('common.selected') + ':' }}</th>
+            <th v-if="isEditable" class="text-left">{{ t('common.selected') + ':' }}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>{{ t('common.users') + ':' }}</td>
             <td>
-              <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
+              <template v-if="debtorStore.isDebtorsLoading"><Skeleton class="mb-2" width="5rem"/></template>
               <template v-else>{{ debtorStore.allDebtors.length }}</template>
             </td>
             <td v-if="isEditable">
-              <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
+              <template v-if="debtorStore.isDebtorsLoading"><Skeleton class="mb-2" width="5rem"/></template>
               <template v-else>{{ selectedUsers.length }}</template>
             </td>
           </tr>
           <tr>
             <td>{{ t('modules.financial.debtor.debtorUsers.sumCurrentBalance') + ':' }}</td>
             <td>
-              <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
+              <template v-if="debtorStore.isDebtorsLoading"><Skeleton class="mb-2" width="5rem"/></template>
               <template v-else>{{ formatPrice(debtorStore.totalDebt) }}</template>
             </td>
             <td v-if="isEditable">
-              <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
+              <template v-if="debtorStore.isDebtorsLoading"><Skeleton class="mb-2" width="5rem"/></template>
               <template v-else>{{ formatPrice(selectedTotalDebt) }}</template>
             </td>
           </tr>
@@ -139,23 +144,23 @@
                 : t('modules.financial.debtor.debtorUsers.sumWasFined')
                 + ':' }}</td>
             <td>
-              <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
+              <template v-if="debtorStore.isDebtorsLoading"><Skeleton class="mb-2" width="5rem"/></template>
               <template v-else>{{ formatPrice(debtorStore.totalFine) }}</template>
             </td>
             <td v-if="isEditable">
-              <template v-if="debtorStore.isDebtorsLoading"><Skeleton width="5rem" class="mb-2"/></template>
+              <template v-if="debtorStore.isDebtorsLoading"><Skeleton class="mb-2" width="5rem"/></template>
               <template v-else>{{ formatPrice(selectedTotalFine) }}</template>
             </td>
           </tr>
         </tbody>
       </table>
-      <div class="grid w-20rem" v-if="isEditable && isAllowed('update', ['all'], 'Fine', ['any'])">
+      <div v-if="isEditable && isAllowed('update', ['all'], 'Fine', ['any'])" class="grid w-20rem">
         <div class="col-6">
           <Button
-              @click="startNotify"
+              class="w-full h-full justify-content-center flex flex-row items-center justify-center"
               :disabled="debtorStore.isDebtorsLoading || debtorStore.isNotifyLoading || selectedUsers.length === 0"
               outlined
-              class="w-full h-full justify-content-center flex flex-row items-center justify-center">
+              @click="startNotify">
             <span
                 v-if="!debtorStore.isNotifyLoading"
               >
@@ -163,41 +168,43 @@
             </span>
 
             <ProgressSpinner
+                v-else
                 class="w-1rem h-1rem"
-                stroke-width="10"
-                v-else />
+                stroke-width="10" />
           </Button>
         </div>
         <div class="col-6">
-          <Button :disabled="debtorStore.isDebtorsLoading || debtorStore.isHandoutLoading || selectedUsers.length === 0"
-                  @click="startHandout"
-                  class="w-full h-full justify-content-center flex flex-row items-center justify-center">
+          <Button
+class="w-full h-full justify-content-center flex flex-row items-center justify-center"
+                  :disabled="debtorStore.isDebtorsLoading || debtorStore.isHandoutLoading || selectedUsers.length === 0"
+                  @click="startHandout">
             <span
                 v-if="!debtorStore.isHandoutLoading">
               {{ t('modules.financial.debtor.debtorUsers.handout') }}
             </span>
 
             <ProgressSpinner
+                v-else
                 class="w-1rem h-1rem"
-                stroke-width="10"
-                v-else />
+                stroke-width="10" />
           </Button>
         </div>
         <Divider class="col-12 my-0"/>
         <div class="col-12">
-          <Button :disabled="debtorStore.isDebtorsLoading || debtorStore.isLockLoading || selectedUsers.length === 0"
-                  @click="startCannotInDebt"
+          <Button
+class="w-full h-full justify-content-center flex flex-row items-center justify-center"
+                  :disabled="debtorStore.isDebtorsLoading || debtorStore.isLockLoading || selectedUsers.length === 0"
                   severity="contrast"
-                  class="w-full h-full justify-content-center flex flex-row items-center justify-center">
+                  @click="startCannotInDebt">
             <span
                 v-if="!debtorStore.isLockLoading">
               {{ t('modules.financial.debtor.debtorUsers.cannotDebt') }}
             </span>
 
             <ProgressSpinner
+                v-else
                 class="w-1rem h-1rem"
-                stroke-width="10"
-                v-else />
+                stroke-width="10" />
           </Button>
         </div>
       </div>
@@ -208,21 +215,21 @@
 
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import CardComponent from "@/components/CardComponent.vue";
-import { useDebtorStore, SortField, type Debtor } from "@/stores/debtor.store";
 import { computed, type ComputedRef, onMounted, ref, watch } from "vue";
 import Calendar from "primevue/calendar";
 import Column from "primevue/column";
-import { formatPrice, formatFineTimeSince } from "@/utils/formatterUtils";
 import DataTable, { type DataTableSortEvent } from "primevue/datatable";
 import Skeleton from "primevue/skeleton";
 import { debounce } from "lodash";
-import { RouterLink } from "vue-router";
 import type { FineHandoutEventResponse } from "@sudosos/sudosos-client";
-import { isAllowed } from "@/utils/permissionUtils";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
+import { isAllowed } from "@/utils/permissionUtils";
+import { formatPrice, formatFineTimeSince } from "@/utils/formatterUtils";
+import { useDebtorStore, SortField, type Debtor } from "@/stores/debtor.store";
+import CardComponent from "@/components/CardComponent.vue";
 import UserLink from "@/components/UserLink.vue";
+import { handleError } from "@/utils/errorUtils";
 
 const props = defineProps<{
   handoutEvent?: FineHandoutEventResponse;
@@ -418,7 +425,7 @@ function startNotify() {
     icon: 'pi pi-question-circle',
     acceptLabel: t('modules.financial.debtor.debtorUsers.notify'),
     rejectLabel: t('common.cancel'),
-    accept: async () => {
+    accept: () => {
       debtorStore.notifyFines(
           selectedUsers.value.map(s => s.id),
           referenceBalanceDate.value || nowDate
@@ -430,6 +437,9 @@ function startNotify() {
               life: 3000,
               severity: 'success',
             });
+          })
+          .catch((err) => {
+            handleError(err, toast);
           });
     }
   });
@@ -443,7 +453,7 @@ function startHandout() {
     icon: 'pi pi-question-circle',
     acceptLabel: t('modules.financial.debtor.debtorUsers.handout'),
     rejectLabel: t('common.cancel'),
-    accept: async () => {
+    accept: () => {
       debtorStore.handoutFines(
           selectedUsers.value.map(s => s.id),
           referenceBalanceDate.value || nowDate
@@ -455,6 +465,9 @@ function startHandout() {
               life: 3000,
               severity: 'success',
             });
+          })
+          .catch((err) => {
+            handleError(err, toast);
           });
     }
   });
@@ -467,7 +480,7 @@ function startCannotInDebt() {
     icon: 'pi pi-question-circle',
     acceptLabel: t('common.confirm'),
     rejectLabel: t('common.cancel'),
-    accept: async () => {
+    accept: () => {
       debtorStore.cannotGoIntoDebt(
           selectedUsers.value.map(s => s.id)
       )
@@ -478,13 +491,16 @@ function startCannotInDebt() {
               life: 3000,
               severity: 'success',
             });
+          })
+          .catch((err) => {
+            handleError(err, toast);
           });
     }
   });
 }
 
 onMounted(() => {
-  updateCalculatedFines();
+  void updateCalculatedFines();
 });
 </script>
 

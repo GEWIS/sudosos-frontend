@@ -1,14 +1,16 @@
 <template>
   <div>
-    <span :class="['flex flex-wrap justify-content-between',
+    <span
+:class="['flex flex-wrap justify-content-between',
      column ? 'flex-column gap-1' : 'flex-row align-items-center gap-3']">
       <span class="my-0">{{ label }}</span>
-      <FindUser  :placeholder="placeholder"
-                 v-model:user="internalValue"
-                 :disabled="disabled"
-                 :type="type"
-                 :showPositive="props.showPositive"
+      <FindUser
+v-model:user="internalValue"
                  :default="props.default"
+                 :disabled="disabled"
+                 :placeholder="placeholder"
+                 :show-positive="props.showPositive"
+                 :type="type"
       />
     </span>
     <div class="flex justify-content-end">
@@ -18,10 +20,10 @@
 </template>
 
 <script setup lang="ts">
-import ErrorSpan from "@/components/ErrorSpan.vue";
 import { onMounted, type PropType, ref, watch } from "vue";
-import FindUser from "@/components/FindUser.vue";
 import { type BaseUserResponse, GetAllUsersTypeEnum } from "@sudosos/sudosos-client";
+import ErrorSpan from "@/components/ErrorSpan.vue";
+import FindUser from "@/components/FindUser.vue";
 
 const emit = defineEmits(['update:value']);
 

@@ -6,8 +6,8 @@
           {{ props.user.firstName }} {{ props.user.lastName }}
         </h1>
         <p
-            class="font-bold text-red-500 text-center"
-            v-if="!props.user.ofAge">
+            v-if="!props.user.ofAge"
+            class="font-bold text-red-500 text-center">
           {{ t("components.general.quickOverview.underAge") }}
         </p>
     </CardComponent>
@@ -15,8 +15,8 @@
 
 <script setup lang="ts">
 import type { GewisUserResponse, UserResponse } from "@sudosos/sudosos-client";
-import CardComponent from "@/components/CardComponent.vue";
 import { useI18n } from "vue-i18n";
+import CardComponent from "@/components/CardComponent.vue";
 
 const { t } = useI18n();
 

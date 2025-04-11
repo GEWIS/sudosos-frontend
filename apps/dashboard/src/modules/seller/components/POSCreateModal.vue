@@ -1,19 +1,20 @@
 <template>
-  <FormDialog :header="t('modules.seller.forms.pos.create')" v-model:modelValue="isVisible"
-              :form="form" :is-editable="true">
+  <FormDialog
+v-model:model-value="isVisible" :form="form"
+              :header="t('modules.seller.forms.pos.create')" :is-editable="true">
     <template #form="slotProps">
-      <POSCreateForm :form="slotProps.form" v-model:isVisible="isVisible"/>
+      <POSCreateForm v-model:is-visible="isVisible" :form="slotProps.form"/>
     </template>
 
   </FormDialog>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import { createPointOfSaleObject } from "@/utils/validation-schema";
 import FormDialog from "@/components/FormDialog.vue";
 import { schemaToForm } from "@/utils/formUtils";
 import POSCreateForm from "@/modules/seller/components/POSCreateForm.vue";
-import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 

@@ -1,18 +1,19 @@
 <template>
   <CardComponent
-      :header="t('components.mutations.balance')"
-      class="w-full"
       :action="simple ? undefined: t('components.mutations.all')"
-      :routerLink="simple ? undefined : 'transactions'"
+      class="w-full"
+      :header="t('components.mutations.balance')"
+      :router-link="simple ? undefined : 'transactions'"
 
   >
-    <DataTable :rows="rows" :value="mutations" :rowsPerPageOptions="[5, 10, 25, 50, 100]" :paginator="paginator" lazy
-               @page="onPage($event)" :totalRecords="totalRecords">
+    <DataTable
+lazy :paginator="paginator" :rows="rows" :rows-per-page-options="[5, 10, 25, 50, 100]" :total-records="totalRecords"
+               :value="mutations" @page="onPage($event)">
       <Column field="moment" :header="t('components.mutations.when')">
-        <template #body v-if="isLoading">
+        <template v-if="isLoading" #body>
           <Skeleton class="w-6 my-1 h-1rem surface-300"/>
         </template>
-        <template #body="mutation" v-else>
+        <template v-else #body="mutation">
                 <span class="hidden sm:block">{{
                     mutation.data.moment.toLocaleDateString(locale, {
                       dateStyle: 'full'
@@ -28,10 +29,10 @@
       </Column>
 
       <Column field="createdBy" :header="t('components.mutations.createdBy')">
-        <template #body v-if="isLoading">
+        <template v-if="isLoading" #body>
           <Skeleton class="w-6 my-1 h-1rem surface-300"/>
         </template>
-        <template #body="mutation" v-else>
+        <template v-else #body="mutation">
           {{
             mutation.data.createdBy && currentUserId !== mutation.data.createdBy?.id ?
                 `${mutation.data.createdBy.firstName} ${mutation.data.createdBy.lastName}` :
@@ -40,28 +41,29 @@
         </template>
       </Column>
 
-      <Column field="mutationPOS" class="hidden sm:block" :header="t('components.mutations.pos')">
-        <template #body v-if="isLoading">
+      <Column class="hidden sm:block" field="mutationPOS" :header="t('components.mutations.pos')">
+        <template v-if="isLoading" #body>
           <Skeleton class="w-6 my-1 h-1rem surface-300"/>
         </template>
-        <template #body="mutation" v-else>
+        <template v-else #body="mutation">
           {{ mutation.data.pos }}
         </template>
       </Column>
 
       <Column field="change" :header="t('components.mutations.amount')">
-        <template #body v-if="isLoading">
+        <template v-if="isLoading" #body>
           <Skeleton class="w-3 my-1 h-1rem surface-300"/>
         </template>
-        <template #body="mutation" v-else>
+        <template v-else #body="mutation">
           <!-- Deposits, Invoices, Waived fines all get green -->
-          <div v-if="isIncreasingTransfer(mutation.data.type)" style="color: #198754" class="font-bold">
+          <div v-if="isIncreasingTransfer(mutation.data.type)" class="font-bold" style="color: #198754">
             {{ formatPrice((mutation.data as FinancialMutation).amount) }}
           </div>
 
           <!-- Fines get red -->
-          <div v-else-if="isFine(mutation.data.type)" style="color: #d40000"
-               class="font-bold">
+          <div
+v-else-if="isFine(mutation.data.type)" class="font-bold"
+               style="color: #d40000">
             {{ formatPrice((mutation.data as FinancialMutation).amount, true) }}
           </div>
 
@@ -73,19 +75,20 @@
       </Column>
 
       <Column field="" style="width: 10%">
-        <template #body v-if="isLoading">
+        <template v-if="isLoading" #body>
           <Skeleton class="w-3 my-1 h-1rem surface-300"/>
         </template>
-        <template #body="mutation" v-else>
-          <i class="pi pi-info-circle cursor-pointer"
+        <template v-else #body="mutation">
+          <i
+class="pi pi-info-circle cursor-pointer"
              @click="() => openModal(mutation.data.id, mutation.data.type)"/>
         </template>
       </Column>
     </DataTable>
     <ModalMutation
         v-if="openedMutationId && openedMutationType !== undefined"
-        v-model:visible="isModalVisible"
         :id="openedMutationId"
+        v-model:visible="isModalVisible"
         :type="openedMutationType"
     />
   </CardComponent>
@@ -94,6 +97,9 @@
 import DataTable, { type DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import { computed, onMounted, type Ref, ref } from "vue";
+import { useUserStore } from "@sudosos/sudosos-frontend-common";
+import type { PaginatedFinancialMutationResponse } from "@sudosos/sudosos-client";
+import { useI18n } from "vue-i18n";
 import { formatPrice } from '@/utils/formatterUtils';
 import {
     type FinancialMutation,
@@ -103,9 +109,6 @@ import {
 import ModalMutation from "@/components/mutations/mutationmodal/ModalMutation.vue";
 import { isIncreasingTransfer, isFine } from "@/utils/mutationUtils";
 
-import { useUserStore } from "@sudosos/sudosos-frontend-common";
-import type { PaginatedFinancialMutationResponse } from "@sudosos/sudosos-client";
-import { useI18n } from "vue-i18n";
 import CardComponent from "@/components/CardComponent.vue";
 
 const { t, locale } = useI18n();

@@ -1,18 +1,18 @@
 <template>
   <DataTable
-      :value="allRows"
       :pt="{
         tfoot: 'font-bold'
       }"
+      :value="allRows"
   >
-    <Column field="amount" header="#" class="p-1">
+    <Column class="p-1" field="amount" header="#">
       <template #body="entry">
         <span v-if="entry.index < totalRowCutoff">
         {{ entry.data.amount }}
         </span>
       </template>
     </Column>
-    <Column field="description" :header="t('common.description')" class="p-1">
+    <Column class="p-1" field="description" :header="t('common.description')">
       <template #body="entry">
         <span v-if="entry.index < totalRowCutoff">
           {{ entry.data.description }}
@@ -20,9 +20,9 @@
       </template>
     </Column>
     <Column
+        class="p-1"
         field="priceInclVat"
         :header="t('common.price')"
-        class="p-1"
     >
       <template #body="entry">
         <span v-if="entry.index < totalRowCutoff">
@@ -30,7 +30,7 @@
         </span>
       </template>
     </Column>
-    <Column field="vatPercentage" :header="t('common.vat')" class="p-1">
+    <Column class="p-1" field="vatPercentage" :header="t('common.vat')">
       <template #body="entry">
         <span v-if="entry.index < totalRowCutoff">
           {{ entry.data.vatPercentage +  '%' }}
@@ -41,9 +41,9 @@
       </template>
     </Column>
     <Column
+        class="p-1"
         field="totalPriceInclVat"
         :header="t('common.amount')"
-        class="p-1"
     >
       <template #body="entry">
         <span :class="{ 'font-bold': entry.index >= totalRowCutoff, ...entry.data.class }">
@@ -55,13 +55,13 @@
 </template>
 
 <script setup lang="ts">
-import { formatPrice } from "@/utils/formatterUtils";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import { onMounted, type PropType, type Ref, ref } from "vue";
 import type { InvoiceEntryResponse, InvoiceResponse } from "@sudosos/sudosos-client";
 import type { DineroObject } from "dinero.js";
 import { useI18n } from "vue-i18n";
+import { formatPrice } from "@/utils/formatterUtils";
 import { isDirty } from "@/utils/invoiceUtil";
 
 const { t } = useI18n();
@@ -73,16 +73,18 @@ const props = defineProps({
   },
 });
 
+type RowEntry = InvoiceEntryResponse & { class?: string };
+
 const exclVat: Ref<DineroObject> = ref({ amount: 0, precision: 2, currency: 'EUR' });
 const totalEntries: Ref<DineroObject> = ref({ amount: 0, precision: 2, currency: 'EUR' });
 const vat: Ref<Record<number, DineroObject>> = ref({});
 const inclVat: Ref<DineroObject> = ref({ amount: 0, precision: 2, currency: 'EUR' });
-const totalRows: (InvoiceEntryResponse & { class?: any })[] = [];
-const allRows: Ref<(InvoiceEntryResponse & { class?: any })[]> = ref([]);
+const totalRows: RowEntry[] = [];
+const allRows: Ref<RowEntry[]> = ref([]);
 const totalRowCutoff = ref(0);
 
 
-const rowTotal = (row: any): DineroObject => {
+const rowTotal = (row: RowEntry): DineroObject => {
   return {
     ...row.priceInclVat,
     amount: row.amount * row.priceInclVat.amount,

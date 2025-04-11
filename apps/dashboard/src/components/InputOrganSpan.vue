@@ -1,11 +1,11 @@
 <template>
   <InputDropdownSpan
-    :label="label"
     v-model:selected-option="organ"
-    :options="organs || userOrgans"
-    :errors="errors"
     :disabled="disabled"
-    option-label="firstName"/>
+    :errors="errors"
+    :label="label"
+    option-label="firstName"
+    :options="organs || userOrgans"/>
 </template>
 
 <script setup lang="ts">

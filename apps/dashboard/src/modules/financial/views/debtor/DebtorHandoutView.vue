@@ -13,13 +13,13 @@
 <script setup lang="ts">
 
 import { onMounted, ref } from "vue";
-import { handleError } from "@/utils/errorUtils";
 import type { FineHandoutEventResponse } from "@sudosos/sudosos-client";
-import { useDebtorStore } from "@/stores/debtor.store";
 import { useRoute } from "vue-router";
 import { useToast } from "primevue/usetoast";
-import DebtorTable from "@/modules/financial/components/debtor/DebtorTable.vue";
 import { useI18n } from "vue-i18n";
+import DebtorTable from "@/modules/financial/components/debtor/DebtorTable.vue";
+import { useDebtorStore } from "@/stores/debtor.store";
+import { handleError } from "@/utils/errorUtils";
 
 const debtorStore = useDebtorStore();
 const route = useRoute();

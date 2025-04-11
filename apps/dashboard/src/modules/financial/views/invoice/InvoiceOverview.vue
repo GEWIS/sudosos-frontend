@@ -5,11 +5,11 @@
         <InvoiceAccountOverview />
         <div class="flex flex-row justify-content-end w-full -mb-5">
           <Button
-              type="button"
-              severity="primary"
               class="z-5"
-              :label="t('modules.financial.invoice.create.create')"
               icon="pi pi-plus"
+              :label="t('modules.financial.invoice.create.create')"
+              severity="primary"
+              type="button"
               @click="navigateToCreateInvoice"
           />
         </div>
@@ -23,11 +23,11 @@
 </template>
 
 <script setup lang="ts">
-import InvoiceTableState from "@/modules/financial/components/invoice/InvoiceTableState.vue";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
 import { useI18n } from "vue-i18n";
 import Button from "primevue/button";
+import InvoiceTableState from "@/modules/financial/components/invoice/InvoiceTableState.vue";
 import router from "@/router";
 import InvoiceAccountOverview from "@/modules/financial/views/invoice/InvoiceAccountOverview.vue";
 
@@ -40,7 +40,7 @@ const years = Array.from(
 
 
 const navigateToCreateInvoice = () => {
-  router.push({ name: 'invoiceCreate' });
+  void router.push({ name: 'invoiceCreate' });
 };
 </script>
 

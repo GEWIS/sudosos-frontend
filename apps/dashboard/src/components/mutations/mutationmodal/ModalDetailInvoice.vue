@@ -5,15 +5,16 @@
     </span>
     <span>{{ t("components.mutations.modal.invoiceDescription") }}</span>
     <br>
-    <DataTable :value="[invoiceInfo]" :pt="{
+    <DataTable
+:pt="{
           tfoot: 'font-bold'
-        }">
-      <Column field="description" :header="t('common.id')" class="p-1">
+        }" :value="[invoiceInfo]">
+      <Column class="p-1" field="description" :header="t('common.id')">
         <template #body="">
           <span class="text-sm xl:text-base">{{ invoiceInfo.description }}</span>
         </template>
       </Column>
-      <Column field="totalPriceInclVat" :header="t('common.amount')" class="p-1" footerClass="font-bold">
+      <Column class="p-1" field="totalPriceInclVat" footer-class="font-bold" :header="t('common.amount')">
         <template #body="">
           {{ formatPrice(invoiceInfo.amount) }}
         </template>
@@ -25,9 +26,9 @@
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { computed } from "vue";
-import { formatPrice } from "@/utils/formatterUtils";
 import type { TransferResponse } from "@sudosos/sudosos-client";
 import { useI18n } from "vue-i18n";
+import { formatPrice } from "@/utils/formatterUtils";
 
 const { t } = useI18n();
 
@@ -39,7 +40,7 @@ const { invoiceInfo } = defineProps({
 });
 
 const dateString = computed(() => {
-  return new Date(invoiceInfo.createdAt!!).toLocaleString('nl-NL', {
+  return new Date(invoiceInfo.createdAt!).toLocaleString('nl-NL', {
     dateStyle: 'short',
     timeStyle: 'short'
   });

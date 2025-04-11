@@ -2,23 +2,25 @@
 
 <template>
   <div class="flex flex-column justify-content-between gap-2">
-    <InputSpan :label="t('common.name')"
-               :value="form.model.name.value.value"
+    <InputSpan
+id="name"
                :attributes="form.model.name.attr.value"
-               @update:value="form.context.setFieldValue('name', $event)"
                :errors="form.context.errors.value.name"
-               id="name" :placeholder="t('common.placeholders.pos')" type="text"/>
-    <InputSpan :label="t('modules.seller.forms.pos.useAuthentication')"
-               :value="form.model.useAuthentication.value.value"
+               :label="t('common.name')"
+               :placeholder="t('common.placeholders.pos')"
+               type="text" :value="form.model.name.value.value" @update:value="form.context.setFieldValue('name', $event)"/>
+    <InputSpan
+id="useAuthentication"
                :attributes="form.model.useAuthentication.attr.value"
-               @update:value="form.context.setFieldValue('useAuthentication', $event)"
                :errors="form.context.errors.value.useAuthentication"
-               id="useAuthentication" type="boolean"/>
+               :label="t('modules.seller.forms.pos.useAuthentication')"
+               type="boolean"
+               :value="form.model.useAuthentication.value.value" @update:value="form.context.setFieldValue('useAuthentication', $event)"/>
 
     <InputOrganSpan
+        :errors="form.context.errors.value.owner"
         :label="t('common.owner')"
         :organ="form.model.owner.value.value"
-        :errors="form.context.errors.value.owner"
         @update:organ="form.context.setFieldValue('owner', $event)"
       />
   </div>
@@ -26,13 +28,13 @@
 
 <script setup lang="ts">
 
-import InputSpan from "@/components/InputSpan.vue";
 import * as yup from "yup";
+import { useI18n } from "vue-i18n";
+import { useToast } from "primevue/usetoast";
+import InputSpan from "@/components/InputSpan.vue";
 import type { createPointOfSaleObject } from "@/utils/validation-schema";
 import { type Form, setSubmit } from "@/utils/formUtils";
-import { useI18n } from "vue-i18n";
 import { usePointOfSaleStore } from "@/stores/pos.store";
-import { useToast } from "primevue/usetoast";
 import { handleError } from "@/utils/errorUtils";
 import InputOrganSpan from "@/components/InputOrganSpan.vue";
 
@@ -40,15 +42,15 @@ const props = defineProps<{
   form: Form<yup.InferType<typeof createPointOfSaleObject>>
 }>();
 
-const isVisible = defineModel('isVisible');
+const isVisible = defineModel<boolean>('isVisible');
 
 const { t } = useI18n();
 const pointOfSaleStore = usePointOfSaleStore();
 const toast = useToast();
 
-setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
+setSubmit(props.form, props.form.context.handleSubmit((values) => {
   isVisible.value = false;
-  await pointOfSaleStore.createPointOfSale({
+  pointOfSaleStore.createPointOfSale({
     name: values.name,
     useAuthentication: values.useAuthentication,
     ownerId: values.owner.id,

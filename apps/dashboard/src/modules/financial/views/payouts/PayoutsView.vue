@@ -4,11 +4,11 @@
     <div class="content-wrapper flex flex-column">
       <div class="flex flex-row justify-content-end w-full -mb-5">
         <Button
-            type="button"
-            severity="primary"
             class="z-5"
-            :label="t('modules.financial.payout.create')"
             icon="pi pi-plus"
+            :label="t('modules.financial.payout.create')"
+            severity="primary"
+            type="button"
             @click="showDialog = true"
         />
       </div>
@@ -31,13 +31,13 @@ import { PayoutRequestStatusRequestStateEnum } from "@sudosos/sudosos-client";
 import { type Ref, ref } from "vue";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
-import PayoutTable from "@/modules/financial/components/payout/PayoutTable.vue";
 import Button from "primevue/button";
+import { useI18n } from "vue-i18n";
+import PayoutTable from "@/modules/financial/components/payout/PayoutTable.vue";
 import { schemaToForm } from "@/utils/formUtils";
 import { createPayoutSchema } from "@/utils/validation-schema";
 import FormDialog from "@/components/FormDialog.vue";
 import PayoutCreateForm from "@/modules/financial/components/payout/forms/PayoutCreateForm.vue";
-import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 

@@ -1,20 +1,21 @@
 <template>
-  <CardComponent :header="t('modules.seller.productContainers.containers.header')" class="p-0">
+  <CardComponent class="p-0" :header="t('modules.seller.productContainers.containers.header')">
     <template #topAction>
       <div v-if="showCreate || associatedPos" class="flex justify-content-endg gap-2">
         <Button
             v-if="posEditAllowed && associatedPos"
-            @click="openContainerAdd()"
-            outlined>{{ t('modules.seller.productContainers.containers.addExisting') }}</Button>
+            outlined
+            @click="openContainerAdd()">{{ t('modules.seller.productContainers.containers.addExisting') }}</Button>
         <Button
-            @click="openContainerEdit()"
             v-if="isAllowed('create', ['own', 'organ'], 'Container', ['any'])"
+            @click="openContainerEdit()"
         >
           {{ t('common.create') }}
         </Button>
       </div>
     </template>
-    <Accordion :activeIndex="0" class="block w-full" :multiple="true"
+    <Accordion
+:active-index="0" class="block w-full" :multiple="true"
                @tab-open="(event: AccordionTabOpenEvent) => onTabOpen(event)">
       <AccordionTab v-for="container in containers" :key="container.id">
         <template #header>
@@ -24,18 +25,18 @@
             </span>
             <div>
               <div
-                  @click="(event) => handleEditClick(event, container.id)"
                   class="px-5"
+                  @click="(event) => handleEditClick(event, container.id)"
               >
-                <span class="mr-4 text-xs uppercase" v-if="container.public">
+                <span v-if="container.public" class="mr-4 text-xs uppercase">
                   {{ t('modules.seller.productContainers.containers.public') }}
                   <i
-                      class="pi pi-pencil"
                       v-if="isAllowed('update', ['own', 'organ'], 'Container', ['any'])"
+                      class="pi pi-pencil"
                   />
                   <i
-                     class="pi pi-info-circle"
-                      v-else
+                     v-else
+                      class="pi pi-info-circle"
                   />
 
                 </span>
@@ -47,30 +48,30 @@
       </AccordionTab>
     </Accordion>
     <ContainerActionsDialog
-        :container="selectedContainer"
         v-model:visible="visible"
-        :associatedPos="associatedPos"
+        :associated-pos="associatedPos"
+        :container="selectedContainer"
         :is-edit-allowed="isAllowed('update', ['own', 'organ'], 'Container', ['any'])"
     />
     <!-- For rendering in the point of sale view -->
     <POSAddContainerModal
         v-if="associatedPos"
-        :associated-pos="associatedPos"
-        v-model:is-visible="POSAddContainerIsVisible" />
+        v-model:is-visible="POSAddContainerIsVisible"
+        :associated-pos="associatedPos" />
   </CardComponent>
 
 </template>
 <script setup lang="ts">
-import ContainerProductGrid from "@/components/container/ContainerProductGrid.vue";
-import CardComponent from "../CardComponent.vue";
 import Accordion, { type AccordionTabOpenEvent } from "primevue/accordion";
 import AccordionTab from "primevue/accordiontab";
-import { type ContainerInStore, useContainerStore } from "@/stores/container.store";
 import { type PropType, type Ref, ref } from "vue";
-import ContainerActionsDialog from "@/components/container/ContainerActionsDialog.vue";
 import type { ContainerWithProductsResponse, PointOfSaleWithContainersResponse } from "@sudosos/sudosos-client";
-import POSAddContainerModal from "@/modules/seller/components/POSAddContainerModal.vue";
 import { useI18n } from "vue-i18n";
+import CardComponent from "../CardComponent.vue";
+import POSAddContainerModal from "@/modules/seller/components/POSAddContainerModal.vue";
+import ContainerActionsDialog from "@/components/container/ContainerActionsDialog.vue";
+import { type ContainerInStore, useContainerStore } from "@/stores/container.store";
+import ContainerProductGrid from "@/components/container/ContainerProductGrid.vue";
 import { isAllowed } from "@/utils/permissionUtils";
 
 const visible = ref(false);

@@ -1,30 +1,32 @@
 <template>
   <div class="flex flex-column justify-content-between gap-2">
-    <InputSpan :label="t('common.name')"
-               :value="form.model.name.value.value"
+    <InputSpan
+id="name"
                :attributes="form.model.name.attr.value"
-               @update:value="form.context.setFieldValue('name', $event)"
+               :disabled="!edit"
                :errors="form.context.errors.value.name"
-               id="name" :placeholder="t('modules.seller.posOverview.list.posName')" type="text" :disabled="!edit"/>
-    <InputSpan :label="t('modules.seller.forms.pos.useAuthentication')"
-               :value="form.model.useAuthentication.value.value"
+               :label="t('common.name')"
+               :placeholder="t('modules.seller.posOverview.list.posName')" type="text" :value="form.model.name.value.value" @update:value="form.context.setFieldValue('name', $event)"/>
+    <InputSpan
+id="useAuthentication"
                :attributes="form.model.useAuthentication.attr.value"
-               @update:value="form.context.setFieldValue('useAuthentication', $event)"
+               :disabled="!edit"
                :errors="form.context.errors.value.useAuthentication"
-               id="useAuthentication" type="boolean" :disabled="!edit"/>
+               :label="t('modules.seller.forms.pos.useAuthentication')"
+               type="boolean" :value="form.model.useAuthentication.value.value" @update:value="form.context.setFieldValue('useAuthentication', $event)"/>
 
   </div>
 </template>
 
 <script setup lang="ts">
-import InputSpan from "@/components/InputSpan.vue";
 import { type PropType } from "vue";
 import type { PointOfSaleResponse } from "@sudosos/sudosos-client";
-import { type Form, setSubmit } from "@/utils/formUtils";
-import { updatePointOfSaleObject } from "@/utils/validation-schema";
 import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
 import * as yup from "yup";
+import { updatePointOfSaleObject } from "@/utils/validation-schema";
+import { type Form, setSubmit } from "@/utils/formUtils";
+import InputSpan from "@/components/InputSpan.vue";
 import { handleError } from "@/utils/errorUtils";
 import { usePointOfSaleStore } from "@/stores/pos.store";
 

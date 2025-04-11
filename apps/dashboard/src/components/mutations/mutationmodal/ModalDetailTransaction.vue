@@ -14,7 +14,8 @@
         {user: `${transactionInfo.from.firstName} ${transactionInfo.from.lastName}`,
           pos: transactionInfo.pointOfSale.name}) }}
     </span>
-    <span v-if="
+    <span
+v-if="
         transactionInfo.createdBy
         && transactionInfo.createdBy.id != transactionInfo.from.id
       ">
@@ -24,29 +25,29 @@
 
     <br>
     <DataTable
-      :value="productsInfo"
       :pt="{
         tfoot: 'font-bold'
       }"
+      :value="productsInfo"
     >
-      <Column field="amount" header="#" class="p-1"></Column>
-      <Column field="product.name" :header="t('common.title')" class="p-1"></Column>
+      <Column class="p-1" field="amount" header="#"></Column>
+      <Column class="p-1" field="product.name" :header="t('common.title')"></Column>
       <Column
-        field="product.priceInclVat"
-        :header="t('common.price')"
         class="p-1"
-        footerClass="font-bold"
+        field="product.priceInclVat"
         :footer="t('common.total')"
+        footer-class="font-bold"
+        :header="t('common.price')"
       >
         <template #body="product">
             {{ formatPrice(product.data.product.priceInclVat) }}
         </template></Column>
       <Column
-        field="totalPriceInclVat"
-        :header="t('common.amount')"
         class="p-1"
-        footerClass="font-bold"
+        field="totalPriceInclVat"
         :footer="formatPrice(transactionInfo.totalPriceInclVat)"
+        footer-class="font-bold"
+        :header="t('common.amount')"
         >
         <template #body="product">
             {{ formatPrice(product.data.totalPriceInclVat) }}
@@ -54,20 +55,20 @@
       </Column>
     </DataTable>
 
-    <a @click="sendEmail(transactionInfo, productsInfo)" class="underline text-right cursor-pointer ">
+    <a class="underline text-right cursor-pointer " @click="sendEmail(transactionInfo, productsInfo)">
       {{ t('components.mutations.notYou') }}
     </a>
   </div>
 </template>
 <script setup lang="ts">
-import { formatPrice } from "@/utils/formatterUtils";
-import { sendEmail } from "@/utils/mailUtil";
 import type { SubTransactionRowResponse } from "@sudosos/sudosos-client/src/api";
 import type { TransactionResponse } from "@sudosos/sudosos-client";
 import { useUserStore } from '@sudosos/sudosos-frontend-common';
 import { useI18n } from "vue-i18n";
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import { sendEmail } from "@/utils/mailUtil";
+import { formatPrice } from "@/utils/formatterUtils";
 
 const { t } = useI18n();
 

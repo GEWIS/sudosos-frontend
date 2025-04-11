@@ -1,17 +1,18 @@
 <template>
-  <FormCard :header="t('modules.seller.forms.pos.overview')" v-if="pointOfSale" @cancel="updateFieldValues(pointOfSale)"
-            @update:modelValue="edit = $event" @save="formSubmit"
-            :enableEdit="isAllowed('update', ['own', 'organ'], 'PointOfSale', ['any'])">
+  <FormCard
+v-if="pointOfSale" :enable-edit="isAllowed('update', ['own', 'organ'], 'PointOfSale', ['any'])" :header="t('modules.seller.forms.pos.overview')"
+            @cancel="updateFieldValues(pointOfSale)" @save="formSubmit"
+            @update:model-value="edit = $event">
     <div class="flex flex-column justify-content-between gap-2">
-      <POSSettingsForm :point-of-sale="pointOfSale" :form="form" :edit="edit" @update:edit="edit = $event"/>
+      <POSSettingsForm :edit="edit" :form="form" :point-of-sale="pointOfSale" @update:edit="edit = $event"/>
       <div class="flex flex-row justify-content-end">
         <Button
             v-if="isAllowed('delete', ['own', 'organ'], 'PointOfSale', ['any'])"
             :disabled="!edit"
-            @click="handleDelete"
             icon="pi pi-trash"
             :label="t('common.delete')"
             outlined
+            @click="handleDelete"
         />
         <ConfirmDialog ref="deleteConfirm"></ConfirmDialog>
       </div>
@@ -20,17 +21,17 @@
 </template>
 
 <script setup lang="ts">
-import FormCard from "@/components/FormCard.vue";
 import { onBeforeMount, ref, watch } from "vue";
 import type { PointOfSaleWithContainersResponse } from "@sudosos/sudosos-client";
+import { useConfirm } from "primevue/useconfirm";
+import { useI18n } from "vue-i18n";
+import { useToast } from "primevue/usetoast";
+import FormCard from "@/components/FormCard.vue";
 import { updatePointOfSaleObject } from "@/utils/validation-schema";
 import { schemaToForm } from "@/utils/formUtils";
 import { usePointOfSaleStore } from "@/stores/pos.store";
 import POSSettingsForm from "@/modules/seller/components/POSSettingsForm.vue";
-import { useConfirm } from "primevue/useconfirm";
 import router from "@/router";
-import { useI18n } from "vue-i18n";
-import { useToast } from "primevue/usetoast";
 import { handleError } from "@/utils/errorUtils";
 import { isAllowed } from "@/utils/permissionUtils";
 
@@ -76,24 +77,26 @@ function handleDelete() {
     rejectLabel: t('common.close'),
     acceptIcon: 'pi pi-trash',
     rejectIcon: 'pi pi-times',
-    accept: async () => {
-      await posStore.deletePointOfSale(props.posId)
+    accept: () => {
+      posStore.deletePointOfSale(props.posId)
+          .then(() => {
+            void router.push({ name: 'pointOfSale' });
+            toast.add({
+              summary: t('common.toast.success.success'),
+              detail: t('common.toast.success.pointOfSaleDeleted'),
+              severity: 'success',
+              life: 3000
+            });
+          })
           .catch((err) => {
             handleError(err, toast);
           });
-      router.push({ name: 'pointOfSale' });
-      toast.add({
-        summary: t('common.toast.success.success'),
-        detail: t('common.toast.success.pointOfSaleDeleted'),
-        severity: 'success',
-        life: 3000
-      });
     }
   });
 }
 
 watch(() => pointOfSale.value, (newValue) => {
-  updateFieldValues(newValue!!);
+  updateFieldValues(newValue!);
 });
 
 onBeforeMount(async () => {

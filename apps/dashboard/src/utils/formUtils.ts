@@ -10,7 +10,7 @@ export interface Form<T extends yup.AnyObject> {
   context: FormContext<T, T>;
   schema: TypedSchema<T>;
   model: { [K in keyof T]: { value: Ref<T[K]>, attr: Ref<BaseFieldProps & GenericObject> } };
-  submit: () => Promise<any>;
+  submit: () => Promise<void>;
   success: Ref<boolean|null>;
 }
 
@@ -27,6 +27,7 @@ const schemaToFields = <T extends AnyObject>(yupSchema: yup.ObjectSchema<T, yup.
 };
 
 export function schemaToForm<T extends AnyObject>(yupSchema: yup.ObjectSchema<T>): Form<T> {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
   const schema = toTypedSchema(yupSchema) as TypedSchema<T>; // Convert to typed schema
 
   const context: FormContext<T,T> = useForm<T>({
@@ -39,16 +40,19 @@ export function schemaToForm<T extends AnyObject>(yupSchema: yup.ObjectSchema<T>
     context,
     schema,
     model,
-    submit: async () => console.error("Submit not implemented"),
+    // @ts-expect-error placeholder value
+    submit: () => {
+      console.error("Submit not implemented")
+    },
     success: ref(null),
   };
 }
 
-export function setSubmit(form: Form<any>, submit: () => Promise<any>) {
+export function setSubmit<T extends AnyObject>(form: Form<T>, submit: () => Promise<void>) {
   form.submit = submit;
 }
 
-export function setSuccess(form: Form<any>, success: boolean | null) {
+export function setSuccess<T extends AnyObject>(form: Form<T>, success: boolean | null) {
   form.success.value = success;
 }
 

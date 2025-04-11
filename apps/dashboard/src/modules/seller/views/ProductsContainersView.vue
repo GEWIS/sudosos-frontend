@@ -4,10 +4,10 @@
     <div class="flex flex-column gap-5">
       <ContainersCard
           v-if="containers"
-          :header="t('modules.seller.productContainers.containers.header')"
+          class="w-full"
           :containers="containers"
-          :show-create="true"
-          class="w-full"/>
+          :header="t('modules.seller.productContainers.containers.header')"
+          :show-create="true"/>
       <ProductsCard/>
     </div>
   </div>
@@ -15,10 +15,10 @@
 
 <script setup lang="ts">
 import { computed, onBeforeMount } from "vue";
+import { useI18n } from "vue-i18n";
 import ContainersCard from '@/components/container/ContainersCard.vue';
 import { type ContainerInStore, useContainerStore } from "@/stores/container.store";
 import ProductsCard from "@/modules/seller/components/ProductsCard.vue";
-import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 

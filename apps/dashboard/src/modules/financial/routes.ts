@@ -6,7 +6,6 @@ import InvoiceInfoView from "@/modules/financial/views/invoice/InvoiceInfoView.v
 import { isAllowed } from "@/utils/permissionUtils";
 import InvoiceCreateView from "@/modules/financial/views/invoice/InvoiceCreateView.vue";
 import DebtorView from "@/modules/financial/views/debtor/DebtorView.vue";
-import InvoiceAccountOverview from "@/modules/financial/views/invoice/InvoiceAccountOverview.vue";
 import DebtorHandoutView from "@/modules/financial/views/debtor/DebtorHandoutView.vue";
 
 export function financialRoutes(): RouteRecordRaw[] {
@@ -56,7 +55,7 @@ export function financialRoutes(): RouteRecordRaw[] {
           path: '/invoice/:id',
           redirect: to => {
               const { id } = to.params;
-              return `/invoice/${id}/info`;
+              return `/invoice/${id as string}/info`;
           },
           meta: {
             requiresAuth: true,

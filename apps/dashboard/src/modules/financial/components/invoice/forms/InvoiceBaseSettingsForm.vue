@@ -1,34 +1,37 @@
 <template>
   <div class="flex flex-column justify-content-between gap-2">
-    <InputSpan :label="t('modules.financial.forms.invoice.reference')"
-               :value="form.model.reference.value.value"
+    <InputSpan
+id="name"
                :attributes="form.model.reference.attr.value"
-               @update:value="form.context.setFieldValue('reference', $event)"
+               :disabled="!edit"
                :errors="form.context.errors.value.reference"
-               id="name" placeholder="BAC-2324-000" type="text" :disabled="!edit"/>
+               :label="t('modules.financial.forms.invoice.reference')"
+               placeholder="BAC-2324-000" type="text" :value="form.model.reference.value.value" @update:value="form.context.setFieldValue('reference', $event)"/>
 
-    <InputSpan :label="t('common.date')"
-               :value="form.model.date.value.value"
-               :attributes="form.model.date.attr.value"
-               @update:value="form.context.setFieldValue('date', $event)"
+    <InputSpan
+:attributes="form.model.date.attr.value"
+               :disabled="!edit"
                :errors="form.context.errors.value.date"
-               type="date" :disabled="!edit"/>
+               :label="t('common.date')"
+               type="date"
+               :value="form.model.date.value.value" @update:value="form.context.setFieldValue('date', $event)"/>
 
-    <InputSpan :label="t('common.description')"
-               :value="form.model.description.value.value"
+    <InputSpan
+id="name"
                :attributes="form.model.description.attr.value"
-               @update:value="form.context.setFieldValue('description', $event)"
+               column
+               :disabled="!edit"
                :errors="form.context.errors.value.description"
-               id="name" column type="textarea" :disabled="!edit"/>
+               :label="t('common.description')" type="textarea" :value="form.model.description.value.value" @update:value="form.context.setFieldValue('description', $event)"/>
   </div>
 </template>
 
 <script setup lang="ts">
-import InputSpan from "@/components/InputSpan.vue";
 import { useI18n } from "vue-i18n";
 import type { PropType } from "vue";
-import type { Form } from "@/utils/formUtils";
 import * as yup from "yup";
+import type { Form } from "@/utils/formUtils";
+import InputSpan from "@/components/InputSpan.vue";
 import { updateInvoiceSettingsObject } from "@/utils/validation-schema";
 
 const { t } = useI18n();

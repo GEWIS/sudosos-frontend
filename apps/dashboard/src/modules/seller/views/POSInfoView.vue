@@ -3,19 +3,19 @@
     <div class="page-title">{{ posName }}</div>
     <div class="flex flex-column gap-5">
       <div class="flex flex-column md:flex-row gap-5 justify-content-between align-items-stretch w-12">
-        <POSSettingsCard :pos-id="id!" class="flex-1 h-12" />
-        <CardComponent :header="t('modules.seller.singlePos.sales')" class="flex-1" >
-          <div class="h-12 text-center text-5xl pb-3" v-if="canLoadTransactions">{{ formattedTotalSales }}</div>
+        <POSSettingsCard class="flex-1 h-12" :pos-id="id!" />
+        <CardComponent class="flex-1" :header="t('modules.seller.singlePos.sales')" >
+          <div v-if="canLoadTransactions" class="h-12 text-center text-5xl pb-3">{{ formattedTotalSales }}</div>
           <div v-else>{{ t('common.permissionMessages.transactions') }}</div>
         </CardComponent>
       </div>
       <ContainerCard
-        class="container-card"
         v-if="posContainers"
+        :associated-pos="pointsOfSaleWithContainers[id!]"
+        class="container-card"
         :containers="posContainers"
-        show-create
-        :associatedPos="pointsOfSaleWithContainers[id!]"
         :pos-edit-allowed="canEditPos"
+        show-create
       />
       <CardComponent :header="t('components.mutations.recent')">
         <MutationPOSCard
@@ -32,14 +32,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
-import { onBeforeMount, ref } from 'vue';
+import { computed, onMounted , onBeforeMount, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { usePointOfSaleStore } from '@/stores/pos.store';
 import type {
   PaginatedBaseTransactionResponse,
   Dinero as SudoSOSDinero
 } from '@sudosos/sudosos-client';
+// eslint-disable-next-line import/no-named-as-default
+import Dinero from "dinero.js";
+import { type StoreGeneric, storeToRefs } from "pinia";
+import { useI18n } from "vue-i18n";
+import { type ContainerWithProductsResponse } from "@sudosos/sudosos-client/src/api";
+import { usePointOfSaleStore } from '@/stores/pos.store';
 import ContainerCard from '@/components/container/ContainersCard.vue';
 import router from '@/router';
 import apiService, { DEFAULT_PAGINATION_MAX } from '@/services/ApiService';
@@ -49,10 +53,6 @@ import CardComponent from "@/components/CardComponent.vue";
 import POSSettingsCard from "@/modules/seller/components/POSSettingsCard.vue";
 import { useTransactionStore } from "@/stores/transaction.store";
 import { formatPrice } from "sudosos-dashboard/src/utils/formatterUtils";
-import Dinero from "dinero.js";
-import { type StoreGeneric, storeToRefs } from "pinia";
-import { useI18n } from "vue-i18n";
-import { type ContainerWithProductsResponse } from "@sudosos/sudosos-client/src/api";
 import { getRelation, isAllowed } from "@/utils/permissionUtils";
 
 const route = useRoute(); // Use the useRoute function to access the current route
@@ -114,7 +114,7 @@ onMounted(async () => {
       new Date(Date.now()-(7*24*60*60*1000)).toISOString(),
       new Date().toISOString(), DEFAULT_PAGINATION_MAX, 0)).data.records;
 
-  for (let transaction of transactionsInLastWeek) {
+  for (const transaction of transactionsInLastWeek) {
     totalSales.value = totalSales.value.add(Dinero(transaction.value as Dinero.Options));
   }
 });

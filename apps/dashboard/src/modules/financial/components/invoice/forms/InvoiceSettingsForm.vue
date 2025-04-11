@@ -1,16 +1,16 @@
 <template>
-  <InvoiceBaseSettingsForm :form="form" :edit="edit"/>
+  <InvoiceBaseSettingsForm :edit="edit" :form="form"/>
 </template>
 
 <script setup lang="ts">
 import { type PropType } from "vue";
 import type { InvoiceResponse } from "@sudosos/sudosos-client";
-import { type Form, setSubmit } from "@/utils/formUtils";
-import { updateInvoiceSettingsObject } from "@/utils/validation-schema";
 import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
-import { useInvoiceStore } from "@/stores/invoice.store";
 import * as yup from "yup";
+import { type Form, setSubmit } from "@/utils/formUtils";
+import { updateInvoiceSettingsObject } from "@/utils/validation-schema";
+import { useInvoiceStore } from "@/stores/invoice.store";
 import { handleError } from "@/utils/errorUtils";
 import InvoiceBaseSettingsForm from "@/modules/financial/components/invoice/forms/InvoiceBaseSettingsForm.vue";
 

@@ -2,12 +2,12 @@
   <div class="flex gap-5 justify-content-end">
     <p class="prop">{{ t('modules.seller.productContainers.products.addExisting') }}</p>
     <Dropdown
-        :placeholder="t('modules.seller.forms.product.select')"
-        :options="products"
-        optionLabel="name"
         v-model="selectProduct"
-        :filter="true"
         class="w-15rem align-items-center"
+        :filter="true"
+        option-label="name"
+        :options="products"
+        :placeholder="t('modules.seller.forms.product.select')"
     />
   </div>
 </template>
@@ -19,7 +19,7 @@ import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 
-const selectProduct = defineModel('selectProduct');
+const selectProduct = defineModel<BaseProductResponse>('selectProduct');
 
 defineProps<{
   products: BaseProductResponse[]

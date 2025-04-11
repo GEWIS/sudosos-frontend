@@ -7,8 +7,8 @@ import type {
     UpdateInvoiceRequest
 } from "@sudosos/sudosos-client";
 import { fetchAllPages } from "@sudosos/sudosos-frontend-common";
-import ApiService from "@/services/ApiService";
 import { InvoiceStatusResponseStateEnum } from "@sudosos/sudosos-client/src/api";
+import ApiService from "@/services/ApiService";
 
 export const useInvoiceStore = defineStore('invoice', {
     state: () => ({
@@ -51,7 +51,7 @@ export const useInvoiceStore = defineStore('invoice', {
         },
         async fetchInvoicePdf(id: number): Promise<string> {
             return await ApiService.invoices.getInvoicePdf(id).then((res) => {
-                const pdf = (res.data as any).pdf;
+                const pdf = (res.data as unknown as { pdf: string }).pdf;
                 this.invoices[id].pdf = pdf;
                 return pdf;
             });
@@ -67,8 +67,7 @@ export const useInvoiceStore = defineStore('invoice', {
                     q: { state?: InvoiceStatusResponseStateEnum, fromDate?: string, tillDate?: string }):
           Promise<PaginatedInvoiceResponse> {
             const { state, fromDate, tillDate } = q;
-            // Following line has a bug in the swagger generator
-            // @ts-ignore
+            // @ts-expect-error Following line has a bug in the swagger generator
             return await ApiService.invoices.getAllInvoices(undefined, undefined, state ? state : undefined,
               undefined, fromDate, tillDate, take, skip).then((res) => {
                 const invoices = res.data.records as InvoiceResponse[];
@@ -85,7 +84,7 @@ export const useInvoiceStore = defineStore('invoice', {
         },
         async fetchAll(): Promise<Record<number, InvoiceResponse>> {
             return fetchAllPages<InvoiceResponse>(
-              // @ts-ignore
+                // @ts-expect-error PaginatedInvoiceResponse is the same as PaginatedResult<InvoiceResponse>
               (take, skip) => ApiService.invoices.getAllInvoices(null, null, null, null, null, null, take, skip)
             ).then((invoices) => {
                 invoices.forEach((invoice: InvoiceResponse) => {
@@ -101,7 +100,7 @@ export const useInvoiceStore = defineStore('invoice', {
         },
         async fetchAllNegativeInvoiceUsers(): Promise<Record<number, BalanceResponse>> {
             return fetchAllPages<BalanceResponse>(
-              // @ts-ignore
+                // @ts-expect-error PaginatedBalanceResponse is the same as PaginatedResult<BalanceResponse>
               (take, skip) => ApiService.balance.getAllBalance(null, null, -1, null, null, null,
                   "INVOICE", null, null, false, take, skip)
             ).then((users) => {

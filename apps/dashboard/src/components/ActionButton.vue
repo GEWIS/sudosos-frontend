@@ -1,9 +1,9 @@
 <template>
   <Button
-      :label="label"
       :icon="buttonIcon"
-      :severity="buttonSeverity"
+      :label="label"
       :loading="submitting"
+      :severity="buttonSeverity"
       @click="$emit('click')"
   />
 </template>

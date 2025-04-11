@@ -1,18 +1,18 @@
 <template>
   <CardComponent
-    :header="t('modules.admin.singleUser.balance.header')"
     :action="getAction"
-    :routerLink="getRouterLink"
-    :routerParams="getRouterParams"
-    :func="!isOrgan ? openFineWaiveModal : undefined"
     class="w-19rem"
+    :func="!isOrgan ? openFineWaiveModal : undefined"
+    :header="t('modules.admin.singleUser.balance.header')"
+    :router-link="getRouterLink"
+    :router-params="getRouterParams"
   >
     <div class="flex flex-column justify-content-center">
       <div v-if="userBalance === null">
         <Skeleton class="h-4rem w-10rem mx-1rem my-6"/>
       </div>
       <h1 v-else class="text-center font-medium text-6xl">{{ displayBalance }}</h1>
-      <p class="text-center text-base font-semibold text-red-500" v-if="userBalance && userBalance.fine">
+      <p v-if="userBalance && userBalance.fine" class="text-center text-base font-semibold text-red-500">
         {{ isAllFine ?
           t('modules.admin.singleUser.balance.allIsFines')
           : t('modules.admin.singleUser.balance.someIsFines', { fine: displayFine }) }}
@@ -20,22 +20,23 @@
     </div>
     <AdminUserFineWaiveModal
         v-if="userBalance"
-        :user="props.user"
+        v-model:is-visible="isFineWaiveModalVisible"
         :balance="userBalance"
-        v-model:is-visible="isFineWaiveModalVisible" />
+        :user="props.user" />
   </CardComponent>
 </template>
 
 <script setup lang="ts">
-import CardComponent from '@/components/CardComponent.vue';
 import { computed, ref, onMounted, watch, type ComputedRef } from "vue";
 import type { BalanceResponse, UserResponse } from '@sudosos/sudosos-client';
-import apiService from '@/services/ApiService';
-import { formatPrice } from "@/utils/formatterUtils";
 import { useI18n } from "vue-i18n";
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
-import AdminUserFineWaiveModal from "@/modules/admin/components/users/AdminUserFineWaiveModal.vue";
+// eslint-disable-next-line import/no-named-as-default
 import Dinero from "dinero.js";
+import apiService from '@/services/ApiService';
+import { formatPrice } from "@/utils/formatterUtils";
+import AdminUserFineWaiveModal from "@/modules/admin/components/users/AdminUserFineWaiveModal.vue";
+import CardComponent from '@/components/CardComponent.vue';
 
 const props = defineProps<{
     user: UserResponse;

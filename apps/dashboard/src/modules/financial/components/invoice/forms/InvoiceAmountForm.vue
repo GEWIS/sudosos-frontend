@@ -1,28 +1,29 @@
 <template>
   <div class="flex flex-column justify-content-between gap-2">
-    <InputSpan :label="t('modules.financial.invoice.transfer')"
-               :value="form.model.amount.value.value"
+    <InputSpan
+id="name"
                :attributes="form.model.amount.attr.value"
-               @update:value="form.context.setFieldValue('amount', $event)"
+               :disabled="!edit"
                :errors="form.context.errors.value.amount"
-               id="name" placeholder="0" type="currency" :disabled="!edit"/>
+               :label="t('modules.financial.invoice.transfer')"
+               placeholder="0" type="currency" :value="form.model.amount.value.value" @update:value="form.context.setFieldValue('amount', $event)"/>
     {{ t('modules.financial.invoice.total', { total: formatPrice(entryTotal) }) }}
   </div>
 </template>
 
 <script setup lang="ts">
-import InputSpan from "@/components/InputSpan.vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "primevue/usetoast";
-import { useInvoiceStore } from "@/stores/invoice.store";
 import { computed, type PropType } from "vue";
 import type { InvoiceResponse } from "@sudosos/sudosos-client";
-import { type Form, setSubmit } from "@/utils/formUtils";
 import * as yup from "yup";
+import type { DineroObject } from "dinero.js";
+import InputSpan from "@/components/InputSpan.vue";
+import { useInvoiceStore } from "@/stores/invoice.store";
+import { type Form, setSubmit } from "@/utils/formUtils";
 import { updateInvoiceAmountObject } from "@/utils/validation-schema";
 import { handleError } from "@/utils/errorUtils";
 import { formatPrice } from "@/utils/formatterUtils";
-import type { DineroObject } from "dinero.js";
 
 const { t } = useI18n();
 const toast = useToast();

@@ -1,8 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { isAuthenticated, useAuthStore } from "@sudosos/sudosos-frontend-common";
 import PublicLayout from "@/layout/PublicLayout.vue";
 import DashboardLayout from "@/layout/DashboardLayout.vue";
-import { isAuthenticated, useAuthStore } from "@sudosos/sudosos-frontend-common";
-import 'vue-router';
 import ErrorView from "@/views/ErrorView.vue";
 import { authRoutes } from "@/modules/auth/routes";
 import { adminRoutes } from "@/modules/admin/routes";

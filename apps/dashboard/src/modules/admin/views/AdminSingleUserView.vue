@@ -5,17 +5,17 @@
     </div>
     <div class="flex flex-column gap-5">
       <div class="flex flex-column  md:flex-row justify-content-between gap-8">
-        <AdminUserInfoCard v-if="currentUser" :user="currentUser" class="flex-grow-1"/>
+        <AdminUserInfoCard v-if="currentUser" class="flex-grow-1" :user="currentUser"/>
         <AdminUserBalance v-if="currentUser" :user="currentUser" @update-mutations="() => mutations?.refresh()"/>
       </div>
       <MutationsBalanceCard
-          class="w-full"
-          :header="t('components.mutations.user')"
-          paginator
-          modal
-          :get-mutations="getUserMutations"
-          :simple="true"
           ref="mutations"
+          class="w-full"
+          :get-mutations="getUserMutations"
+          :header="t('components.mutations.user')"
+          modal
+          paginator
+          :simple="true"
       />
     </div>
   </div>
@@ -27,15 +27,15 @@ import type { Ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
 import type { PaginatedFinancialMutationResponse, UserResponse } from "@sudosos/sudosos-client";
+import { useToast } from "primevue/usetoast";
+import type { AxiosError } from "axios";
+import { useI18n } from "vue-i18n";
 import AdminUserBalance from "@/modules/admin/components/users/AdminUserBalance.vue";
 import apiService from "@/services/ApiService";
 import router from "@/router";
 import { handleError } from "@/utils/errorUtils";
-import { useToast } from "primevue/usetoast";
-import type { AxiosError } from "axios";
 import MutationsBalanceCard from "@/components/mutations/MutationsBalance.vue";
 import AdminUserInfoCard from "@/modules/admin/components/users/AdminUserInfoCard.vue";
-import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 
@@ -43,6 +43,8 @@ const route = useRoute();
 const userStore = useUserStore();
 const toast = useToast();
 const currentUser: Ref<UserResponse> = ref<UserResponse>(null!);
+// TODO: Fix this somehow?
+// eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
 const mutations: Ref<InstanceType<typeof MutationsBalanceCard> | null> = ref(null);
 
 const getUser = async () => {

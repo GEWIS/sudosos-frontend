@@ -3,17 +3,18 @@
     <nav class="bg-primary w-full flex justify-content-around">
       <Menubar class="hidden mb:flex" :model="navItems">
           <template #start>
-            <router-link to="/" class="no-underline text-white font-bold flex align-items-center flex-row py-1">
+            <router-link class="no-underline text-white font-bold flex align-items-center flex-row py-1" to="/">
               {{ t("common.sudosos") }}
-              <img class="h-4rem py-2" src="../assets/img/gewis-branding.svg" alt="SudoSOS" />
+              <img alt="SudoSOS" class="h-4rem py-2" src="../assets/img/gewis-branding.svg" />
             </router-link>
           </template>
           <template #item="{ item, props, hasSubmenu }">
-            <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
-              <a :href="href"
-                 v-bind="props.action"
-                 @click="navigate"
+            <router-link v-if="item.route" v-slot="{ href, navigate }" custom :to="item.route">
+              <a
+v-bind="props.action"
                  class="flex align-items-center justify-content-between"
+                 :href="href"
+                 @click="navigate"
               >
                 <span class="p-menuitem-text">{{ item.label }}</span>
                 <span v-if="item.notifications" class="p-badge p-badge-danger">{{ item.notifications }}</span>
@@ -34,10 +35,10 @@
       </Menubar>
       <Menubar class="hidden mb:flex" :model="profileItems">
         <template #start>
-          <img class="h-1rem" src="../assets/img/bier.png" alt="beer"/>
+          <img alt="beer" class="h-1rem" src="../assets/img/bier.png"/>
         </template>
         <template #item="{ item, props, hasSubmenu }">
-          <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
+          <router-link v-if="item.route" v-slot="{ href, navigate }" custom :to="item.route">
             <a :href="href" v-bind="props.action" @click="navigate">
               <span class="p-menuitem-text">{{ item.label }}</span>
             </a>
@@ -54,13 +55,13 @@
         :model="mobileItems"
       >
         <template #start>
-          <router-link to="/" class="no-underline text-white font-bold flex align-items-center flex-row py-1">
+          <router-link class="no-underline text-white font-bold flex align-items-center flex-row py-1" to="/">
             {{ t("common.sudosos") }}
-            <img class="h-4rem py-2" src="../assets/img/gewis-branding.svg" alt="SudoSOS" />
+            <img alt="SudoSOS" class="h-4rem py-2" src="../assets/img/gewis-branding.svg" />
           </router-link>
         </template>
         <template #item="{ item, props, hasSubmenu }">
-          <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
+          <router-link v-if="item.route" v-slot="{ href, navigate }" custom :to="item.route">
             <a :href="href" v-bind="props.action" @click="navigate">
               <span class="p-menuitem-text">{{ item.label }}</span>
               <span v-if="item.icon" :class="item.icon" />
@@ -81,9 +82,9 @@ import { computed, onBeforeMount, ref, type Ref } from "vue";
 import { useAuthStore, useUserStore } from "@sudosos/sudosos-frontend-common";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { GetAllUsersTypeEnum } from "@sudosos/sudosos-client";
 import { usePendingPayouts } from "@/mixins/pendingPayoutsMixin";
 import apiService from "@/services/ApiService";
-import { GetAllUsersTypeEnum } from "@sudosos/sudosos-client";
 
 import { useOpenInvoiceAccounts } from "@/mixins/openInvoiceAccountsMixin";
 import { isAllowed } from "@/utils/permissionUtils";
@@ -111,7 +112,7 @@ const organs: Ref<any[]> = ref([]);
 const getOrgans = async () => {
   organs.value = [];
   const promises = [];
-  for (let organ of authStore.organs) {
+  for (const organ of authStore.organs) {
     promises.push(apiService.balance.getBalanceId(organ.id).then((res) => {
       organs.value.push({
         label: `${organ.firstName} ${organ.lastName}`,

@@ -16,15 +16,15 @@ import { useUserStore } from "@sudosos/sudosos-frontend-common";
 import { type StoreGeneric, storeToRefs } from "pinia";
 import type { GewisUserResponse, UserResponse } from "@sudosos/sudosos-client";
 import { onMounted, type Ref, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import apiService from "@/services/ApiService";
 import router from "@/router";
-import { useI18n } from "vue-i18n";
 import UserSettingsComponent from "@/modules/user/components/UserSettingsComponent.vue";
 import UserInfo from "@/modules/user/components/UserInfo.vue";
 
 const userStore = useUserStore();
 const dataAnalysis: Ref<boolean> = ref(false);
-const { current } = storeToRefs(userStore as StoreGeneric as StoreGeneric);
+const { current } = storeToRefs(userStore as StoreGeneric);
 const { t } = useI18n();
 const gewisUser: Ref<GewisUserResponse | undefined> = ref(undefined);
 

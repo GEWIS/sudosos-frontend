@@ -1,22 +1,23 @@
 <template>
-  <FormCard :header="t('modules.financial.forms.invoice.addressing')" v-if="invoice" @cancel="form.context.resetForm"
-            @update:modelValue="edit = $event" @save="formSubmit" :enableEdit="!deleted">
+  <FormCard
+v-if="invoice" :enable-edit="!deleted" :header="t('modules.financial.forms.invoice.addressing')"
+            @cancel="form.context.resetForm" @save="formSubmit" @update:model-value="edit = $event">
     <div class="flex flex-column justify-content-between gap-2">
-      <InvoiceAddressingForm :invoice="invoice" :form="form" :edit="edit" @update:edit="edit = $event"/>
+      <InvoiceAddressingForm :edit="edit" :form="form" :invoice="invoice" @update:edit="edit = $event"/>
     </div>
   </FormCard>
 </template>
 
 <script setup lang="ts">
-import FormCard from "@/components/FormCard.vue";
 import { computed, onBeforeMount, ref, watch } from "vue";
 import type { InvoiceResponse } from "@sudosos/sudosos-client";
+import { InvoiceStatusResponseStateEnum } from "@sudosos/sudosos-client/src/api";
+import { useI18n } from "vue-i18n";
+import FormCard from "@/components/FormCard.vue";
 import InvoiceAddressingForm from "@/modules/financial/components/invoice/forms/InvoiceUpdateAddressingForm.vue";
 import { updateInvoiceAddressingObject } from "@/utils/validation-schema";
 import { schemaToForm } from "@/utils/formUtils";
-import { InvoiceStatusResponseStateEnum } from "@sudosos/sudosos-client/src/api";
 import { useInvoiceStore } from "@/stores/invoice.store";
-import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 

@@ -2,6 +2,7 @@
   <div class="page-container">
     <div class="page-title">{{ t('common.apiError') }}</div>
     <div class="content-wrapper">
+      <!-- eslint-disable-next-line vue/no-v-html -->
       <p class="page-subtitle" v-html="errorMessage"></p>
     </div>
   </div>

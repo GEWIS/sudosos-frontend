@@ -1,7 +1,8 @@
 <template>
   <div class="flex flex-column gap-3">
-    <Calendar v-model="dates" inline showButtonBar :disabled="disabled" :key="transactionCalendar"
-              selectionMode="range" :manualInput="true" @clear-click="form.context.resetForm()" :pt='{
+    <Calendar
+:key="transactionCalendar" v-model="dates" :disabled="disabled" inline :manual-input="true"
+              :pt='{
       day: (options) => {
         const dateString = `${options.context.date.year}-${options.context.date.month}-${options.context.date.day}`;
         if (transactionsPerDay[dateString]) {
@@ -10,7 +11,7 @@
           }
         }
       }
-    }' @month-change="monthChange($event)"/>
+    }' selection-mode="range" show-button-bar @clear-click="form.context.resetForm()" @month-change="monthChange($event)"/>
 
     {{ t('modules.financial.invoice.create.pos') }}
     <span class="font-bold">{{ includedPOSString }}</span>
@@ -24,12 +25,18 @@
  */
 
 import { useI18n } from "vue-i18n";
-import type { createInvoiceObject } from "@/utils/validation-schema";
 import { computed, type ComputedRef, type PropType, type Ref, ref, watch } from "vue";
 import * as yup from "yup";
+import {
+  type BasePointOfSaleResponse,
+  type BaseTransactionResponse,
+  type TransactionResponse
+} from "@sudosos/sudosos-client";
+import { useToast } from "primevue/usetoast";
 import { type Form, getProperty } from "@/utils/formUtils";
-import { type BasePointOfSaleResponse, type BaseTransactionResponse } from "@sudosos/sudosos-client";
+import type { createInvoiceObject } from "@/utils/validation-schema";
 import apiService from "@/services/ApiService";
+import { handleError } from "@/utils/errorUtils";
 
 const { t } = useI18n();
 
@@ -41,7 +48,6 @@ const props = defineProps({
 });
 
 const dates = ref<(Date|null)[]>([]);
-const transactions: Ref<BaseTransactionResponse[]>= ref([]);
 const transactionCalendar = ref(0);
 const includedPOS: Ref<{ [key: number]: BasePointOfSaleResponse }> = ref({});
 const selectedUser: ComputedRef<number | undefined> = computed(() => getProperty(props.form, "forId"));
@@ -69,21 +75,25 @@ const getTransactions = () => {
 
   props.form.context.resetField('transactionTotal');
   apiService.invoices.getEligibleTransactions(selectedUser.value, fromDate.toISOString(),
-      toDate.toISOString()).then((res) => {
-    const t = res.data as any as BaseTransactionResponse[];
+      toDate.toISOString())
+      .then((res) => {
+        const t = res.data as unknown as TransactionResponse[];
 
-    transactions.value = t;
-    includedPOS.value = {};
+        includedPOS.value = {};
 
-    const transactionsIds: number[] = [];
-    t.forEach((transaction: BaseTransactionResponse) => {
-      // eslint-disable-next-line vue/no-mutating-props
-      props.form.model.transactionTotal.value.value.amount += (transaction as any).totalPriceInclVat.amount;
-      includedPOS.value[transaction.pointOfSale.id] = transaction.pointOfSale;
-      transactionsIds.push(transaction.id);
-    });
-    props.form.context.setFieldValue('transactionIDs', transactionsIds);
-  }).finally(() => {
+        const transactionsIds: number[] = [];
+        t.forEach((transaction: TransactionResponse) => {
+          // eslint-disable-next-line vue/no-mutating-props
+          props.form.model.transactionTotal.value.value.amount += transaction.totalPriceInclVat.amount;
+          includedPOS.value[transaction.pointOfSale.id] = transaction.pointOfSale;
+          transactionsIds.push(transaction.id);
+        });
+        props.form.context.setFieldValue('transactionIDs', transactionsIds);
+      })
+      .catch((err) => {
+        handleError(err, useToast());
+      })
+      .finally(() => {
     isLoading.value = false;
   });
 };
@@ -107,7 +117,6 @@ watch(selectedUser, () => {
     getTransactionsHeatMap({ month: now.getMonth() + 1, year: now.getFullYear() });
   }
   if (showTransactions()) getTransactions();
-  else transactions.value = [];
 });
 
 /**
@@ -115,7 +124,6 @@ watch(selectedUser, () => {
  */
 watch(dates, () => {
   if (showTransactions()) getTransactions();
-  else transactions.value = [];
 });
 
 // Mapping between the date and the transactions
@@ -139,16 +147,19 @@ const getTransactionsHeatMap = (event: { month: number, year: number }) => {
   toDate.setHours(0, 0, 0, 0);
 
   apiService.invoices.getEligibleTransactions(selectedUser.value,
-      fromDate.toISOString(), toDate.toISOString()).then((res) => {
-        const t = res.data as any as BaseTransactionResponse[];
+      fromDate.toISOString(), toDate.toISOString())
+      .then((res) => {
+        const t = res.data as unknown as BaseTransactionResponse[];
         t.forEach((transaction: BaseTransactionResponse) => {
           const date = new Date(transaction.createdAt as string);
           const dateKey = `${date.getFullYear()}-${date.getUTCMonth()}-${date.getDate()}`;
           transactionsPerDay.value[dateKey] = true;
         });
-  }).finally(() => {
-    loadingHeatmap.value = false;
-  });
+      })
+      .catch((err) => handleError(err, useToast()))
+      .finally(() => {
+        loadingHeatmap.value = false;
+      });
 };
 
 /**
@@ -160,10 +171,9 @@ const monthChange = (event: { month: number, year: number }) => {
 };
 
 /**
- * Clear the transactions and reset the heatmap.
+ * Reset the heatmap.
  */
 const clear = () => {
-  transactions.value = [];
   transactionsPerDay.value = {};
 };
 

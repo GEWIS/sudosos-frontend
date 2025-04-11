@@ -1,10 +1,10 @@
 <template>
     <span class="tosLink" @click="visible = true">{{ t('components.footer.termsOfService') }}</span>
     <Dialog
-        modal
         v-model:visible="visible"
-        :draggable="false"
         class="tosModal"
+        :draggable="false"
+        modal
         >
         <template #header>
            {{  t('components.footer.termsOfService') }}
@@ -16,7 +16,7 @@
             <div class="tosText" v-html="tos"></div>
         </div>
         <template #footer>
-            <Button label="Ok" @click="visible = false" autofocus />
+            <Button autofocus label="Ok" @click="visible = false" />
         </template>
     </Dialog>
 </template>
@@ -24,9 +24,9 @@
 <script setup lang="ts">
 import Dialog from 'primevue/dialog';
 import { ref } from 'vue';
-import termsOfService from '@/locales/termsOfService.md?raw';
 import { marked } from 'marked';
 import { useI18n } from "vue-i18n";
+import termsOfService from '@/locales/termsOfService.md?raw';
 
 const { t } = useI18n();
 const tos = marked(termsOfService);

@@ -65,7 +65,6 @@ export const useProductStore = defineStore('products', {
      */
     async fetchAllProducts() {
       return fetchAllPages<ProductResponse>(
-        // @ts-ignore
         (take, skip) => ApiService.products.getAllProducts(take, skip)
       ).then((productsArray) => {
         this.products = {};
@@ -79,7 +78,7 @@ export const useProductStore = defineStore('products', {
      */
     async fetchAllCategories() {
       return fetchAllPages<ProductCategoryResponse>(
-        // @ts-ignore
+        // @ts-expect-error PaginatedProductCategoryResponse is the same as PaginatedResult<ProductCategoryResponse>
         (take, skip) => ApiService.category.getAllProductCategories(take, skip)
       ).then((categories) => {
         this.categories = categories;
@@ -91,7 +90,6 @@ export const useProductStore = defineStore('products', {
      */
     async fetchAllVatGroups() {
       return fetchAllPages<VatGroupResponse>(
-        // @ts-ignore
         (take, skip) => ApiService.vatGroups.getAllVatGroups(undefined, undefined,undefined,
             false, take, skip)).then((vatGroups) => {
           this.vatGroups = vatGroups;
@@ -109,8 +107,8 @@ export const useProductStore = defineStore('products', {
       product.image = URL.createObjectURL(productImage);
       this.products[product.id] = product;
 
-      return ApiService.products.updateProductImage(id, productImage).then(async () => {
-        await (useContainerStore()).handleProductUpdate(product);
+      return ApiService.products.updateProductImage(id, productImage).then(() => {
+        (useContainerStore()).handleProductUpdate(product);
         return product;
       });
     },
@@ -129,10 +127,10 @@ export const useProductStore = defineStore('products', {
     },
     async updateProduct(productId: number, updateProductRequest: UpdateProductRequest): Promise<ProductResponse> {
       return ApiService.products
-        .updateProduct(productId, updateProductRequest).then(async (resp) => {
+        .updateProduct(productId, updateProductRequest).then((resp) => {
           const product = resp.data;
             this.products[product.id] = product;
-            await (useContainerStore()).handleProductUpdate(product);
+            (useContainerStore()).handleProductUpdate(product);
             return product;
           });
     },
@@ -140,13 +138,10 @@ export const useProductStore = defineStore('products', {
       const product = await ApiService.products.getSingleProduct(id).then((resp) => resp.data);
       this.products[product.id] = product;
     },
-    async addProduct(product: ProductResponse) {
-      this.products[product.id] = product;
-    },
     async deleteProduct(id: number) {
       await ApiService.products.deleteProduct(id);
       delete this.products[id];
-      await (useContainerStore()).handleProductDelete(id);
+      (useContainerStore()).handleProductDelete(id);
     }
   },
 });

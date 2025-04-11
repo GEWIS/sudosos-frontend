@@ -1,8 +1,9 @@
 <template>
-  <FormDialog :header="t('modules.admin.singleUser.balance.waiveFines')"
-              v-model:modelValue="isVisible"
-              :is-editable="true"
-              :form="form">
+  <FormDialog
+v-model:model-value="isVisible"
+              :form="form"
+              :header="t('modules.admin.singleUser.balance.waiveFines')"
+              :is-editable="true">
     <template #form="slotProps">
       <div>
         <i>
@@ -15,23 +16,23 @@
       </div>
       <Divider />
       <UserFineWaiveForm
-          :user="props.user"
+          v-model:is-visible="isVisible"
           :balance="props.balance"
           :form="slotProps.form"
-          v-model:isVisible="isVisible"/>
+          :user="props.user"/>
     </template>
 
   </FormDialog>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+import type { BalanceResponse, UserResponse } from "@sudosos/sudosos-client";
+import { computed, onMounted } from "vue";
 import { waiveUserFineSchema } from "@/utils/validation-schema";
 import FormDialog from "@/components/FormDialog.vue";
 import { schemaToForm } from "@/utils/formUtils";
-import { useI18n } from "vue-i18n";
 import UserFineWaiveForm from "@/modules/admin/components/users/forms/UserFineWaiveForm.vue";
-import type { BalanceResponse, UserResponse } from "@sudosos/sudosos-client";
-import { computed, onMounted } from "vue";
 import { formatPrice } from "@/utils/formatterUtils";
 
 const { t } = useI18n();

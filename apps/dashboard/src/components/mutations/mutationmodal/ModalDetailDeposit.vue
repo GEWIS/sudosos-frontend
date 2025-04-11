@@ -6,24 +6,24 @@
     <span>{{ t("components.mutations.modal.depositDescription") }}</span>
     <br>
     <DataTable
-      :value="[depositInfo]"
       :pt="{
         tfoot: 'font-bold'
       }"
+      :value="[depositInfo]"
     >
       <Column
+        class="p-1"
         field="description"
-        :header="t('common.id')"
-        class="p-1">
+        :header="t('common.id')">
         <template #body="">
           <span class="text-sm xl:text-base">{{ depositInfo.description }}</span>
         </template>
       </Column>
       <Column
-        field="totalPriceInclVat"
-        :header="t('common.amount')"
         class="p-1"
-        footerClass="font-bold"
+        field="totalPriceInclVat"
+        footer-class="font-bold"
+        :header="t('common.amount')"
         >
         <template #body="">
             {{ formatPrice(depositInfo.amount) }}
@@ -34,11 +34,11 @@
 </template>
 <script setup lang="ts">
 import type { TransferResponse } from "@sudosos/sudosos-client";
-import { formatPrice } from "@/utils/formatterUtils";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
+import { formatPrice } from "@/utils/formatterUtils";
 
 const { t } = useI18n();
 
@@ -51,7 +51,7 @@ const { depositInfo } = defineProps({
 
 
 const dateString = computed(() => {
-  return new Date(depositInfo.createdAt!!).toLocaleString('nl-NL', {
+  return new Date(depositInfo.createdAt!).toLocaleString('nl-NL', {
     dateStyle: 'short',
     timeStyle: 'short'
   });

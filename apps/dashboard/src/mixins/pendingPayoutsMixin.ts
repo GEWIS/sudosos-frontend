@@ -1,7 +1,7 @@
 // src/mixins/pendingPayoutsMixin.ts
 import { computed, watch } from 'vue';
-import { usePayoutStore } from '@/stores/payout.store';
 import { useUserStore } from '@sudosos/sudosos-frontend-common';
+import { usePayoutStore } from '@/stores/payout.store';
 import { UserRole } from '@/utils/rbacUtils';
 
 export function usePendingPayouts() {

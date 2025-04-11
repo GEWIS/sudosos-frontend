@@ -2,10 +2,11 @@
   <div class="col-12">
     <div class="flex flex-column md:flex-row py-3" :class="{ 'border-top-1 surface-border': index !== 0 }">
       <div class="w-full md:w-5 relative md:pr-2">
-        <Image preview class="w-full" v-if="banner.image" :src="getBannerImageSrc(banner)" :pt:image:alt="banner.name"
-          :pt="{
+        <Image
+v-if="banner.image" class="w-full" preview :pt="{
             image: 'w-full'
-          }" />
+          }" :pt:image:alt="banner.name"
+          :src="getBannerImageSrc(banner)" />
         <div v-else class="px-3 py-5 text-xl surface-hover text-center">
           {{ t('modules.admin.banners.noBannerFound') }}
         </div>
@@ -14,9 +15,10 @@
                     Yellow when active but banner image is not present
                     Red when not active
                 -->
-        <Tag :value="banner.active ? t('modules.admin.banners.list.active') : t('modules.admin.banners.list.notActive')"
-          :severity="banner.active ? (banner.image ? 'success' : 'warning') : 'danger'" class="absolute"
-          style="left: 4px; top: 4px" />
+        <Tag
+class="absolute"
+          :severity="banner.active ? (banner.image ? 'success' : 'warning') : 'danger'" style="left: 4px; top: 4px"
+          :value="banner.active ? t('modules.admin.banners.list.active') : t('modules.admin.banners.list.notActive')" />
       </div>
       <div class="flex flex-row justify-content-between w-full md:w-7">
         <div class="flex flex-column pr-3">
@@ -43,19 +45,19 @@
       </div>
     </div>
   </div>
-  <BannerDialog v-model:visible="isEditDialogVisible" v-model:banner="banner" />
+  <BannerDialog v-model:banner="banner" v-model:visible="isEditDialogVisible" />
 </template>
 <script setup lang="ts">
 import Image from 'primevue/image';
 import Tag from 'primevue/tag';
 
-import BannerDialog from '@/modules/admin/components/banners/BannerDialog.vue';
-
 import type { BannerResponse } from '@sudosos/sudosos-client';
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import BannerDialog from '@/modules/admin/components/banners/BannerDialog.vue';
+
 import { getBannerImageSrc } from '@/utils/urlUtils';
 import { formatDateTime } from '@/utils/formatterUtils';
-import { useI18n } from 'vue-i18n';
 
 defineProps<{
   index: number;

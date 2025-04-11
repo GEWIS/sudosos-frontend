@@ -1,10 +1,10 @@
 <template>
   <Calendar
       v-if="type === 'date'"
-      :placeholder="placeholder"
       v-model="internalDate"
       v-bind="attributes"
       :disabled="disabled"
+      :placeholder="placeholder"
       @input="updateStringValue"
   />
 </template>

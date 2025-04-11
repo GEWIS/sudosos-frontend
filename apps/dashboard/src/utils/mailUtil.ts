@@ -35,7 +35,7 @@ function getBody(transactionInfo: TransactionResponse, productsInfo: Array<SubTr
 }
 
 function getTime(transactionInfo: TransactionResponse): string {
-  return new Date(transactionInfo.createdAt!!).toLocaleString('nl-NL', {
+  return new Date(transactionInfo.createdAt!).toLocaleString('nl-NL', {
     dateStyle: 'short',
     timeStyle: 'short'
   });

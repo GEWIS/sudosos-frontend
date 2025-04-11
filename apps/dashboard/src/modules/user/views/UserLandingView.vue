@@ -2,13 +2,13 @@
   <div class="page-container flex flex-column">
     <div class="page-title">{{ t('modules.user.landing.title') }}</div>
     <div class="content-wrapper gap-5 flex md:flex-column flex-column">
-      <UserInfo :user="gewisUser || authStore.user as GewisUserResponse" class="md:hidden"/>
+      <UserInfo class="md:hidden" :user="gewisUser || authStore.user as GewisUserResponse"/>
       <BalanceWithTopupComponent />
       <MutationsBalanceCard
-        :getMutations="getUserMutations"
+        :get-mutations="getUserMutations"
         :header="t('components.mutations.recent')"
-        :paginator="false"
         :modal="false"
+        :paginator="false"
         :rows-amount=6
         :simple="false"
       />
@@ -17,17 +17,17 @@
 </template>
 
 <script setup lang="ts">
-import BalanceWithTopupComponent from '@/modules/user/components/balance/BalanceWithTopup.vue';
-import MutationsBalanceCard from '@/components/mutations/MutationsBalance.vue';
 import { useAuthStore, useUserStore } from '@sudosos/sudosos-frontend-common';
-import apiService from '@/services/ApiService';
 import type { GewisUserResponse, PaginatedFinancialMutationResponse } from "@sudosos/sudosos-client";
-import router from "@/router";
-import { handleError } from "@/utils/errorUtils";
 import { useToast } from "primevue/usetoast";
 import { onMounted, ref, type Ref } from "vue";
-import UserInfo from "@/modules/user/components/UserInfo.vue";
 import { useI18n } from "vue-i18n";
+import BalanceWithTopupComponent from '@/modules/user/components/balance/BalanceWithTopup.vue';
+import MutationsBalanceCard from '@/components/mutations/MutationsBalance.vue';
+import apiService from '@/services/ApiService';
+import router from "@/router";
+import { handleError } from "@/utils/errorUtils";
+import UserInfo from "@/modules/user/components/UserInfo.vue";
 
 const { t } = useI18n();
 
@@ -49,7 +49,7 @@ const getUserMutations = async (take: number, skip: number):
 const gewisUser: Ref<GewisUserResponse | undefined> = ref(undefined);
 onMounted(async () => {
 
-  await apiService.user.getIndividualUser(authStore.getUser?.id!).then((res) => {
+  await apiService.user.getIndividualUser(authStore.getUser!.id).then((res) => {
     gewisUser.value = res.data;
   });
 });

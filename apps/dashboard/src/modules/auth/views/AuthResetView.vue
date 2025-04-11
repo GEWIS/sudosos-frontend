@@ -1,11 +1,12 @@
 <template>
   <div>
-    <img class="max-h-9rem block mx-auto my-0" src="../../../assets/img/bier.png" alt="logo" />
+    <img alt="logo" class="max-h-9rem block mx-auto my-0" src="../../../assets/img/bier.png" />
     <div class="text-900 text-5xl mt-0 mx-auto mb-2 w-full">{{ t('modules.auth.reset.reset') }}</div>
     <form v-if="passwordResetMode === 0" class="flex flex-column" @submit="resetPasswordRequest">
       <span class="p-float-label with-error">
-        <InputText v-bind="email" id="email" size="large" name="email" class="input-field"
-          :class="{'p-invalid': emailForm.errors.value.email}" />
+        <InputText
+v-bind="email" id="email" class="input-field" :class="{'p-invalid': emailForm.errors.value.email}" name="email"
+          size="large" />
         <label
             :class="{'contains-text': email.modelValue }"
             for="email">
@@ -16,7 +17,7 @@
         <i class="pi pi-exclamation-circle" />
         {{ emailForm.errors.value.email }}
       </small>
-      <Button type="submit" id="reset-button">{{ t('modules.auth.reset.reset') }}</Button>
+      <Button id="reset-button" type="submit">{{ t('modules.auth.reset.reset') }}</Button>
       <div
           class="text-900 underline cursor-pointer"
           @click="backToLogin">
@@ -34,8 +35,9 @@
     </div>
     <form v-else class="login-form" @submit="setNewPassword">
       <span class="p-float-label with-error">
-        <InputText v-bind="password" id="password" size="large" name="password" type="password" class="input-field"
-          :class="{'p-invalid': passwordForm.errors.value.password}" />
+        <InputText
+v-bind="password" id="password" class="input-field" :class="{'p-invalid': passwordForm.errors.value.password}" name="password" size="large"
+          type="password" />
         <label
             :class="{'contains-text': password.modelValue }"
             for="password">
@@ -47,8 +49,9 @@
         {{ passwordForm.errors.value.password }}
       </small>
       <span class="p-float-label with-error">
-        <InputText v-bind="passwordConfirm" id="passwordConfirm" size="large" name="passwordConfirm" type="password"
-          class="input-field" :class="{'p-invalid': passwordForm.errors.value.passwordConfirm}" />
+        <InputText
+v-bind="passwordConfirm" id="passwordConfirm" class="input-field" :class="{'p-invalid': passwordForm.errors.value.passwordConfirm}" name="passwordConfirm"
+          size="large" type="password" />
         <label :class="{'contains-text': passwordConfirm.modelValue }" for="passwordConfirm">
           {{ t('modules.auth.reset.confirmPassword') }}
         </label>
@@ -57,7 +60,7 @@
         <i class="pi pi-exclamation-circle" />
         {{ passwordForm.errors.value.passwordConfirm }}
       </small>
-      <Button type="submit" id="reset-button">{{ t('modules.auth.reset.reset') }}</Button>
+      <Button id="reset-button" type="submit">{{ t('modules.auth.reset.reset') }}</Button>
       <div
           class="text-900 underline cursor-pointer"
           @click="backToLogin">
@@ -68,17 +71,17 @@
 </template>
 
 <script setup lang="ts">
-import apiService from "@/services/ApiService";
-import router from "@/router";
 import { useForm } from "vee-validate";
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
-import { handleError } from "@/utils/errorUtils";
 import { onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 import * as yup from "yup";
 import { toTypedSchema } from "@vee-validate/yup";
 import { useI18n } from "vue-i18n";
+import { handleError } from "@/utils/errorUtils";
+import router from "@/router";
+import apiService from "@/services/ApiService";
 
 const { t } = useI18n();
 const toast = useToast();
@@ -131,7 +134,7 @@ const passwordConfirm = passwordForm.defineComponentBinds('passwordConfirm');
 
 const route = useRoute();
 
-onBeforeMount(async () => {
+onBeforeMount(() => {
   if (route.query.token !== undefined && route.query.email !== undefined) {
     passwordResetMode.value = 2;
   }
@@ -148,7 +151,7 @@ const setNewPassword = passwordForm.handleSubmit(async (values) => {
   await apiService.authenticate.resetLocalWithToken({
     accountMail: route.query.email as string,
     token: route.query.token as string,
-    password: values.password as string,
+    password: values.password,
   }).then(() => {
     backToLogin();
     toast.add({
@@ -161,7 +164,7 @@ const setNewPassword = passwordForm.handleSubmit(async (values) => {
 });
 
 const backToLogin = () => {
-  router.push({ name: 'local' });
+  void router.push({ name: 'local' });
 };
 
 </script>

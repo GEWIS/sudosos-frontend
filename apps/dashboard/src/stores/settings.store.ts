@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import apiService from '@/services/ApiService';
 import type { ServerStatusResponse } from '@sudosos/sudosos-client';
+import apiService from '@/services/ApiService';
 
 export const useSettingsStore = defineStore('settings', {
   state: () => ({
@@ -21,8 +21,9 @@ export const useSettingsStore = defineStore('settings', {
       });
     },
     async fetchStripe(){
-      await apiService.stripe.getStripePublicKey().then((res) =>{
-        this.stripe = (res.data as any).publicKey as string;
+      await apiService.stripe.getStripePublicKey().then((res) => {
+        // The spec is wrong, that is why the type cast is there
+        this.stripe = (res.data as unknown as { publicKey: string }).publicKey;
       });
     },
     async fetchKeys(){
@@ -34,10 +35,10 @@ export const useSettingsStore = defineStore('settings', {
     activeSettings(): Partial<ServerStatusResponse> {
       return this.status;
     },
-    getToken(): String {
+    getToken(): string {
       return this.token;
     },
-    getStripe(): String {
+    getStripe(): string {
       return this.stripe;
     }
   }

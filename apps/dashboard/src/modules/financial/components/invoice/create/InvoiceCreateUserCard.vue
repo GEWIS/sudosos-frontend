@@ -1,13 +1,14 @@
 <template>
   <CardComponent header="User Selection">
     <!-- TODO: Improve two way binding such that resetting the form will also reset the user selection -->
-    <InputUserSpan :label="t('modules.financial.invoice.for')"
+    <InputUserSpan
+v-model:value="selectedUser"
+                   class="mb-3"
+                   :default="queryUser"
+                   :label="t('modules.financial.invoice.for')"
+                   :show-positive="false"
                    :type="GetAllUsersTypeEnum.Invoice"
                    @update:value="updateUser($event)"
-                   v-model:value="selectedUser"
-                   class="mb-3"
-                   :showPositive="false"
-                   :default="queryUser"
     />
 
     <div class="flex flex-row justify-content-between">
@@ -36,23 +37,24 @@
  */
 
 import { computed, onMounted, type PropType, type Ref, ref, watch } from "vue";
-import { type Form, getProperty } from "@/utils/formUtils";
 import * as yup from "yup";
-import { createInvoiceObject } from "@/utils/validation-schema";
-import CardComponent from "@/components/CardComponent.vue";
 import {
   type BaseUserResponse,
   type DineroObjectResponse,
   GetAllUsersTypeEnum,
-  type InvoiceUserResponse,
   type UserResponse
 } from "@sudosos/sudosos-client";
-import InputUserSpan from "@/components/InputUserSpan.vue";
 import { useI18n } from "vue-i18n";
-import { formatPrice } from "@/utils/formatterUtils";
-import apiService from "@/services/ApiService";
 import { useRoute } from "vue-router";
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
+import { useToast } from "primevue/usetoast";
+import { type Form, getProperty } from "@/utils/formUtils";
+import { createInvoiceObject } from "@/utils/validation-schema";
+import CardComponent from "@/components/CardComponent.vue";
+import InputUserSpan from "@/components/InputUserSpan.vue";
+import { formatPrice } from "@/utils/formatterUtils";
+import apiService from "@/services/ApiService";
+import { handleError } from "@/utils/errorUtils";
 
 const { t } = useI18n();
 
@@ -135,14 +137,16 @@ const updateUserBalance = () => {
  * @param forId - Invoice user id.
  */
 const updateDefaultUser = (forId: number) => {
-  apiService.invoices.getSingleInvoiceUser(forId).then((res) => {
-    const user = res.data as InvoiceUserResponse;
-    props.form.context.setFieldValue('addressee', user.user.firstName);
-    props.form.context.setFieldValue('street', user.street);
-    props.form.context.setFieldValue('postalCode', user.postalCode);
-    props.form.context.setFieldValue('city', user.city);
-    props.form.context.setFieldValue('country', user.country);
-  });
+  apiService.invoices.getSingleInvoiceUser(forId)
+      .then((res) => {
+        const user = res.data;
+        props.form.context.setFieldValue('addressee', user.user.firstName);
+        props.form.context.setFieldValue('street', user.street);
+        props.form.context.setFieldValue('postalCode', user.postalCode);
+        props.form.context.setFieldValue('city', user.city);
+        props.form.context.setFieldValue('country', user.country);
+      })
+      .catch((err) => handleError(err, useToast()));
 };
 
 const queryUser: Ref<BaseUserResponse | undefined> = ref(undefined);

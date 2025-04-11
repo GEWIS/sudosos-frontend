@@ -1,14 +1,14 @@
 <template>
   <Dropdown
       v-model="selectedUser"
-      :options="users"
-      optionLabel="fullName"
-      :loading="loading"
-      :filter="true"
-      autoFilterFocus
-      :filter-fields="['fullName']"
-      :placeholder="placeholder"
+      auto-filter-focus
       class="w-full md:w-15rem"
+      :filter="true"
+      :filter-fields="['fullName']"
+      :loading="loading"
+      option-label="fullName"
+      :options="users"
+      :placeholder="placeholder"
       @filter="filterUsers"
   >
   <template #option="slotProps" >
@@ -20,12 +20,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, type PropType, ref, watch } from "vue";
-import type { Ref } from "vue";
-import apiService from "@/services/ApiService";
+import { onMounted, type PropType, ref, watch , Ref } from "vue";
 import { debounce } from "lodash";
 import { type BaseUserResponse, GetAllUsersTypeEnum, type UserResponse } from "@sudosos/sudosos-client";
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
+import apiService from "@/services/ApiService";
 
 const emits = defineEmits(['update:user']);
 

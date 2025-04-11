@@ -6,23 +6,23 @@
     <span>{{ t("components.mutations.modal.waivedFineDescription") }}</span>
     <br>
     <DataTable
+      :pt="{
+        tfoot: 'font-bold'
+      }"
       :value="[{
         amount: waivedAmount,
         firstName: toFirstName,
         lastName: toLastName,
         description: description
       }]"
-      :pt="{
-        tfoot: 'font-bold'
-      }"
     >
-      <Column field="description" :header="t('common.description')" class="p-1">
+      <Column class="p-1" field="description" :header="t('common.description')">
       </Column>
       <Column
-        field="waivedAmount"
-        :header="t('common.amount')"
         class="p-1"
-        footerClass="font-bold"
+        field="waivedAmount"
+        footer-class="font-bold"
+        :header="t('common.amount')"
       >
         <template #body="product">
           {{ formatPrice(product.data.amount) }}
@@ -33,7 +33,6 @@
 </template>
 
 <script setup lang="ts">
-import { formatPrice } from "@/utils/formatterUtils";
 import { onMounted, type Ref, ref, computed } from "vue";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
@@ -41,8 +40,9 @@ import type {
   DineroObjectResponse,
   TransferResponse
 } from "@sudosos/sudosos-client";
-import router from "@/router";
 import { useI18n } from "vue-i18n";
+import router from "@/router";
+import { formatPrice } from "@/utils/formatterUtils";
 
 const { t } = useI18n();
 
@@ -71,7 +71,7 @@ onMounted(async () => {
 });
 
 const dateString = computed(() => {
-  return new Date(props.waivedFines.createdAt!!).toLocaleString('nl-NL', {
+  return new Date(props.waivedFines.createdAt!).toLocaleString('nl-NL', {
     dateStyle: 'short',
     timeStyle: 'short'
   });

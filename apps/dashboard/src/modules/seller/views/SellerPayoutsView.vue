@@ -3,12 +3,12 @@
     <div class="page-title"> {{ user?.firstName }} {{ t('modules.seller.payouts.title') }}</div>
     <div class="flex flex-column justify-content-between gap-5">
       <div class="flex flex-row gap-3 justify-content-between">
-        <FormCard :form="form" :create="!zeroBalance" :enable-edit="!zeroBalance" :header="t('modules.seller.payouts.title')" class="flex-grow-1" @cancel="form.context.resetForm()">
-          <SellerPayoutCreateForm :form="form" v-if="user" :seller="user" :disabled="zeroBalance"/>
+        <FormCard class="flex-grow-1" :create="!zeroBalance" :enable-edit="!zeroBalance" :form="form" :header="t('modules.seller.payouts.title')" @cancel="form.context.resetForm()">
+          <SellerPayoutCreateForm v-if="user" :disabled="zeroBalance" :form="form" :seller="user"/>
         </FormCard>
         <AdminUserBalance v-if="user" :user="user" @update:value="balance = $event"/>
       </div>
-      <CardComponent :header="t('modules.seller.payouts.title')" v-if="user">
+      <CardComponent v-if="user" :header="t('modules.seller.payouts.title')">
         <SellerPayoutsTable :seller="user"/>
       </CardComponent>
       <Skeleton v-else class="h-20rem w-full"/>
@@ -17,9 +17,11 @@
 </template>
 
 <script setup lang="ts">
-import ApiService from "@/services/ApiService";
 import type { BalanceResponse, UserResponse } from "@sudosos/sudosos-client";
 import { useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
+import { computed, onBeforeMount, ref, type Ref } from "vue";
+import ApiService from "@/services/ApiService";
 import SellerPayoutsTable from "@/modules/seller/components/seller/SellerPayoutsTable.vue";
 import CardComponent from "@/components/CardComponent.vue";
 import AdminUserBalance from "@/modules/admin/components/users/AdminUserBalance.vue";
@@ -27,8 +29,6 @@ import { schemaToForm } from "@/utils/formUtils";
 import { createSellerPayoutObject } from "@/utils/validation-schema";
 import FormCard from "@/components/FormCard.vue";
 import SellerPayoutCreateForm from "@/modules/seller/components/seller/forms/SellerPayoutCreateForm.vue";
-import { useI18n } from "vue-i18n";
-import { computed, onBeforeMount, ref, type Ref } from "vue";
 import router from "@/router";
 
 const { t } = useI18n();

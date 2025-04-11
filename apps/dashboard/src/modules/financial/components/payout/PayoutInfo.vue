@@ -7,7 +7,8 @@
       </span>
       <div v-if="isCreated">
         <skeleton v-if="userBalance === null" class="w-6 my-1 h-0.5rem surface-300"/>
-        <div v-else
+        <div
+v-else
              :class="{'text-sm text-gray-700': !overBalance, 'text-red-500 font-bold': overBalance}">
           <div class="flex flex-row gap-1">
             <span v-if="overBalance"><i class="pi pi-exclamation-triangle"></i></span>
@@ -55,31 +56,31 @@
     <div class="flex flex-row gap-2 justify-content-end w-full mt-3">
       <div v-if="isCreated" class="flex flex-row gap-2">
         <Button
-            severity="success"
-            :label="t('modules.financial.payout.approve')"
             icon="pi pi-check"
+            :label="t('modules.financial.payout.approve')"
+            severity="success"
             @click="approvePayout"
         />
         <Button
-            severity="danger"
-            :label="t('modules.financial.payout.deny')"
             icon="pi pi-times"
+            :label="t('modules.financial.payout.deny')"
+            severity="danger"
             @click="denyPayout"
         />
       </div>
       <Button
           v-else
-          type="button"
-          icon="pi pi-file-export"
           :disabled="downloadingPdf"
-          severity="danger"
+          icon="pi pi-file-export"
           :label="t('common.downloadPdf')"
+          severity="danger"
+          type="button"
           @click="() => downloadPdf(payoutId)"
       />
       <Button
-          severity="secondary"
-          :label="t('common.close')"
           icon="pi pi-times"
+          :label="t('common.close')"
+          severity="secondary"
           @click="closeModal"
       />
     </div>
@@ -87,7 +88,6 @@
 </template>
 
 <script setup lang="ts">
-import { type PayoutResponse, usePayoutStore } from "@/stores/payout.store";
 import { computed, type ComputedRef, onMounted, type Ref, ref } from "vue";
 import type {
    BalanceResponse, PayoutRequestResponse,
@@ -95,12 +95,13 @@ import type {
 import { PayoutRequestStatusRequestStateEnum } from "@sudosos/sudosos-client";
 import { useI18n } from "vue-i18n";
 import { useToast } from "primevue/usetoast";
+import Skeleton from "primevue/skeleton";
+import Button from "primevue/button";
 import { handleError } from "@/utils/errorUtils";
 import { getPayoutPdfSrc } from "@/utils/urlUtils";
 import { formatDateFromString, formatPrice } from "sudosos-dashboard/src/utils/formatterUtils";
 import apiService from "@/services/ApiService";
-import Skeleton from "primevue/skeleton";
-import Button from "primevue/button";
+import { type PayoutResponse, usePayoutStore } from "@/stores/payout.store";
 import UserLink from "@/components/UserLink.vue";
 
 const { t } = useI18n();

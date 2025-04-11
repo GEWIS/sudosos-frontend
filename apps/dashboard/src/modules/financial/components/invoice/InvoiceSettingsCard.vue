@@ -1,22 +1,23 @@
 <template>
-  <FormCard :header="t('modules.financial.forms.invoice.settings')" v-if="invoice" @cancel="updateFieldValues(invoice)"
-            @update:modelValue="edit = $event" @save="formSubmit" :enableEdit="!deleted">
+  <FormCard
+v-if="invoice" :enable-edit="!deleted" :header="t('modules.financial.forms.invoice.settings')"
+            @cancel="updateFieldValues(invoice)" @save="formSubmit" @update:model-value="edit = $event">
       <div class="flex flex-column justify-content-between gap-2">
-        <InvoiceSettingsForm :invoice="invoice" :form="form" :edit="edit" @update:edit="edit = $event"/>
+        <InvoiceSettingsForm :edit="edit" :form="form" :invoice="invoice" @update:edit="edit = $event"/>
       </div>
   </FormCard>
 </template>
 
 <script setup lang="ts">
-import FormCard from "@/components/FormCard.vue";
 import { computed, onBeforeMount, ref, watch } from "vue";
-import InvoiceSettingsForm from "@/modules/financial/components/invoice/forms/InvoiceSettingsForm.vue";
 import type { InvoiceResponse } from "@sudosos/sudosos-client";
+import { InvoiceStatusResponseStateEnum } from "@sudosos/sudosos-client/src/api";
+import { useI18n } from "vue-i18n";
+import FormCard from "@/components/FormCard.vue";
+import InvoiceSettingsForm from "@/modules/financial/components/invoice/forms/InvoiceSettingsForm.vue";
 import { updateInvoiceSettingsObject } from "@/utils/validation-schema";
 import { schemaToForm } from "@/utils/formUtils";
-import { InvoiceStatusResponseStateEnum } from "@sudosos/sudosos-client/src/api";
 import { useInvoiceStore } from "@/stores/invoice.store";
-import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 
@@ -35,7 +36,7 @@ const props = defineProps({
 const form = schemaToForm(updateInvoiceSettingsObject);
 
 const formSubmit = () => {
-  form.submit();
+  void form.submit();
 };
 const updateFieldValues = (p: InvoiceResponse) => {
   if (!p) return;

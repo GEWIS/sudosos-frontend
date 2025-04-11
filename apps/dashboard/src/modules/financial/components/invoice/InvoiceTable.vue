@@ -1,18 +1,18 @@
 <template>
   <div class="flex flex-col gap-5">
     <DataTable
-        :rows="rows"
-        :value="invoices"
-        :rows-per-page-options="[5, 10, 25, 50, 100]"
-        :paginator="true"
-        lazy
-        @page="onPage"
-        :total-records="totalRecords"
-        :filters="filters"
-        data-key="id"
         class="w-full"
-        tableStyle="min-width: 50rem"
-        filterDisplay="menu"
+        data-key="id"
+        filter-display="menu"
+        :filters="filters"
+        lazy
+        :paginator="true"
+        :rows="rows"
+        :rows-per-page-options="[5, 10, 25, 50, 100]"
+        table-style="min-width: 50rem"
+        :total-records="totalRecords"
+        :value="invoices"
+        @page="onPage"
     >
       <Column field="date" :header="t('common.date')">
         <template #body="slotProps">
@@ -27,21 +27,21 @@
 
       <Column
           field="currentState.state"
-          :header="t('common.status')"
           filter
-          filterMatchMode="equals"
-          :showFilterMatchModes="false"
-          :showApplyButton="false"
-          :showClearButton="false"
+          filter-match-mode="equals"
+          :header="t('common.status')"
+          :show-apply-button="false"
+          :show-clear-button="false"
+          :show-filter-match-modes="false"
       >
         <template #filter="{ filterModel }">
           <Dropdown
               v-model="filterModel.value"
-              @change="stateFilterChange"
+              option-label="name"
+              option-value="value"
               :options="states"
-              optionLabel="name"
-              optionValue="value"
               :placeholder="t('common.placeholders.selectType')"
+              @change="stateFilterChange"
           />
         </template>
         <template #body="slotProps">
@@ -93,9 +93,9 @@
             <Skeleton v-if="isLoading" class="skeleton-fixed w-3 surface-300" />
             <span v-else>
               <Button
-                  type="button"
-                  icon="pi pi-eye"
                   class="p-button-rounded p-button-text p-button-plain"
+                  icon="pi pi-eye"
+                  type="button"
                   @click="() => viewInvoice(slotProps.data.id)"
               />
             </span>
@@ -107,18 +107,18 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from 'primevue/datatable';
+import DataTable, { type DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import Skeleton from 'primevue/skeleton';
 import Button from 'primevue/button';
-import Dropdown from 'primevue/dropdown';
+import Dropdown, { type DropdownChangeEvent } from 'primevue/dropdown';
 import { useI18n } from 'vue-i18n';
-import { formatPrice, formatDateFromString } from "@/utils/formatterUtils";
-import router from "@/router";
 import { InvoiceStatusResponseStateEnum } from "@sudosos/sudosos-client/src/api";
 import { type Ref, ref } from "vue";
+import { formatPrice, formatDateFromString } from "@/utils/formatterUtils";
+import router from "@/router";
 
-const props = defineProps({
+defineProps({
   invoices: {
     type: Array,
     required: true
@@ -141,12 +141,11 @@ const emit = defineEmits(['page', 'stateFilterChange']);
 
 const { t } = useI18n();
 
-function onPage(event: any) {
+function onPage(event: DataTablePageEvent) {
   emit('page', event);
 }
 
-function stateFilterChange(e: any) {
-  console.log(e);
+function stateFilterChange(e: DropdownChangeEvent) {
   emit('stateFilterChange', e);
 }
 
@@ -158,8 +157,8 @@ const states: Ref<Array<{name: string, value: string | null}>> = ref([
   { name: 'ALL', value: null }
 ]);
 
-async function viewInvoice(id: number) {
-  let route = router.resolve({ name: 'invoiceInfo', params: { id } });
+function viewInvoice(id: number) {
+  const route = router.resolve({ name: 'invoiceInfo', params: { id } });
   window.open(route.href, '_blank');
 }
 

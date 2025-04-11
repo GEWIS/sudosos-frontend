@@ -1,7 +1,5 @@
 import type { BaseTransactionResponse, BaseUserResponse, FinancialMutationResponse,
-  PaginatedFinancialMutationResponse, TransferResponse } from "@sudosos/sudosos-client";
-import type { Dinero } from "@sudosos/sudosos-client";
-import type { PaginatedBaseTransactionResponse } from "@sudosos/sudosos-client";
+  PaginatedFinancialMutationResponse, TransferResponse , Dinero , PaginatedBaseTransactionResponse } from "@sudosos/sudosos-client";
 
 import i18n from '@/utils/i18nUtils';
 
@@ -23,7 +21,7 @@ export interface FinancialMutation {
     type: FinancialMutationType,
     moment: Date,
     id: number,
-    pos?: String,
+    pos?: string,
     createdBy?: BaseUserResponse | undefined,
 }
 
@@ -33,7 +31,7 @@ export function parseTransaction(transaction: BaseTransactionResponse): Financia
         to: undefined,
         from: transaction.from,
         type: FinancialMutationType.TRANSACTION,
-        moment: new Date(transaction.updatedAt!!),
+        moment: new Date(transaction.updatedAt!),
         id: transaction.id,
         pos: transaction.pointOfSale.name,
         createdBy: transaction.createdBy,
@@ -60,13 +58,15 @@ export function parseTransfer(transfer: TransferResponse): FinancialMutation {
         to: transfer.to,
         from: transfer.from,
         type: type,
-        moment: new Date(transfer.updatedAt!!),
+        moment: new Date(transfer.updatedAt!),
         id: transfer.id
     };
 }
 
-export function isPaginatedBaseTransactionResponse(obj: any): obj is PaginatedBaseTransactionResponse {
-  return obj.records && obj.records.length > 0 && 'id' in obj.records[0];
+export function isPaginatedBaseTransactionResponse(obj: unknown): obj is PaginatedBaseTransactionResponse {
+  return (obj as PaginatedBaseTransactionResponse).records
+      && (obj as PaginatedBaseTransactionResponse).records.length > 0
+      && 'id' in (obj as PaginatedBaseTransactionResponse).records[0];
 }
 
 export function parseFinancialMutations(

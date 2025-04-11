@@ -1,47 +1,47 @@
 <template>
   <CardComponent
-      :header="t('modules.financial.debtor.handoutEvents.header')"
-      class="w-full">
+      class="w-full"
+      :header="t('modules.financial.debtor.handoutEvents.header')">
     <DataTable
-        paginator
-        lazy
-        v-model:rows="take"
         v-model:first="skip"
-        :rowsPerPageOptions="[5, 10, 25, 50, 100]"
+        v-model:rows="take"
+        lazy
+        paginator
+        :rows-per-page-options="[5, 10, 25, 50, 100]"
         :total-records="debtorStore.totalFineHandoutEvents"
-        @page="updateFineHandoutEvents"
         :value="debtorStore.fineHandoutEvents"
+        @page="updateFineHandoutEvents"
     >
-      <Column field="id" id="id" :header="t('common.id')">
-        <template #body v-if="debtorStore.isFineHandoutEventsLoading">
+      <Column id="id" field="id" :header="t('common.id')">
+        <template v-if="debtorStore.isFineHandoutEventsLoading" #body>
           <Skeleton class="w-4 my-1 h-1rem surface-300"/>
         </template>
       </Column>
-      <Column field="createdAt" id="date" :header="t('modules.financial.debtor.handoutEvents.handoutDate')">
-        <template #body v-if="debtorStore.isFineHandoutEventsLoading">
+      <Column id="date" field="createdAt" :header="t('modules.financial.debtor.handoutEvents.handoutDate')">
+        <template v-if="debtorStore.isFineHandoutEventsLoading" #body>
           <Skeleton class="w-7 my-1 h-1rem surface-300"/>
         </template>
-        <template #body="slotProps" v-else>{{ formatDateTime(new Date(slotProps.data.createdAt)) }}</template>
+        <template v-else #body="slotProps">{{ formatDateTime(new Date(slotProps.data.createdAt)) }}</template>
       </Column>
       <Column
-          field="referenceDate"
           id="referenceDate"
+          field="referenceDate"
           :header="t('modules.financial.debtor.handoutEvents.referenceDate')">
-        <template #body v-if="debtorStore.isFineHandoutEventsLoading">
+        <template v-if="debtorStore.isFineHandoutEventsLoading" #body>
           <Skeleton class="w-4 my-1 h-1rem surface-300"/>
         </template>
-        <template #body="slotProps" v-else>{{ formatDateTime(new Date(slotProps.data.referenceDate)) }}</template>
+        <template v-else #body="slotProps">{{ formatDateTime(new Date(slotProps.data.referenceDate)) }}</template>
       </Column>
-      <Column field="count" id="count" :header="t('common.users')">
-        <template #body v-if="debtorStore.isFineHandoutEventsLoading">
+      <Column id="count" field="count" :header="t('common.users')">
+        <template v-if="debtorStore.isFineHandoutEventsLoading" #body>
           <Skeleton class="w-7 my-1 h-1rem surface-300"/>
         </template>
       </Column>
       <Column id="info" :header="t('common.info')" >
-        <template #body v-if="debtorStore.isFineHandoutEventsLoading">
+        <template v-if="debtorStore.isFineHandoutEventsLoading" #body>
           <Skeleton class="w-2 my-1 h-1rem surface-300"/>
         </template>
-        <template #body="{ data }" v-else>
+        <template v-else #body="{ data }">
           <i
               class="pi pi-info-circle cursor-pointer"
               @click="() => navigateToHandoutEvent(data.id)"/>
@@ -54,12 +54,12 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { formatDateTime } from "@/utils/formatterUtils";
 import Column from "primevue/column";
-import CardComponent from "@/components/CardComponent.vue";
 import Skeleton from "primevue/skeleton";
 import DataTable from "primevue/datatable";
 import { onMounted, ref, watch } from "vue";
+import CardComponent from "@/components/CardComponent.vue";
+import { formatDateTime } from "@/utils/formatterUtils";
 import { useDebtorStore } from "@/stores/debtor.store";
 
 const { t } = useI18n();
@@ -72,11 +72,11 @@ const skip = ref(0);
 
 watch([ take, skip ], () => updateFineHandoutEvents);
 const updateFineHandoutEvents = () => {
-  debtorStore.fetchFineHandoutEvents(take.value, skip.value);
+  void debtorStore.fetchFineHandoutEvents(take.value, skip.value);
 };
 
 function navigateToHandoutEvent(handoutId: number) {
-  router.push({ name: "debtorSingleHandout", params: { id: handoutId } });
+  void router.push({ name: "debtorSingleHandout", params: { id: handoutId } });
 }
 
 onMounted(() => {

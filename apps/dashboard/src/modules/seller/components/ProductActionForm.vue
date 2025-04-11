@@ -1,106 +1,111 @@
 <template>
   <div class="flex flex-column justify-content-between gap-2">
-    <InputSpan :label="t('common.name')"
-               :value="form.model.name.value.value"
+    <InputSpan
+id="name"
                :attributes="form.model.name.attr.value"
-               @update:value="form.context.setFieldValue('name', $event)"
+               :disabled="!isEditable"
                :errors="form.context.errors.value.name"
-               id="name" :placeholder="t('common.placeholders.product')" type="text"
-               :disabled="!isEditable"/>
+               :label="t('common.name')"
+               :placeholder="t('common.placeholders.product')" type="text" :value="form.model.name.value.value"
+               @update:value="form.context.setFieldValue('name', $event)"/>
     <span
-        class="error-text-name block w15-rem"
         v-if="closeTo && !form.context.errors.value.name"
+        class="error-text-name block w15-rem"
         @click="selectCloseTo">
                 {{ t('modules.seller.forms.product.closeTo', {name: closeTo.name}) }}</span>
 
     <InputDropdownSpan
+        :disabled="!isEditable"
         :label="t('modules.seller.productContainers.products.category')"
-        :options="productCategories"
         option-label="name"
-        :selected-option="form.model.category.value.value"
-        @update:selected-option="form.context.setFieldValue('category', $event)"
+        :options="productCategories"
         :placeholder="t('modules.seller.forms.product.selectCategory')"
-        :disabled="!isEditable"/>
+        :selected-option="form.model.category.value.value"
+        @update:selected-option="form.context.setFieldValue('category', $event)"/>
 
     <InputDropdownSpan
+        :disabled="!isEditable"
         :label="t('modules.seller.productContainers.products.vat')"
-        :options="vatGroups"
         option-label="name"
-        :selected-option="form.model.vat.value.value"
-        @update:selected-option="form.context.setFieldValue('vat', $event)"
+        :options="vatGroups"
         :placeholder="t('modules.seller.forms.product.selectVat')"
-        :disabled="!isEditable"/>
+        :selected-option="form.model.vat.value.value"
+        @update:selected-option="form.context.setFieldValue('vat', $event)"/>
 
-    <InputSpan :label="t('modules.seller.productContainers.products.alcoholPercentage')"
-               :value="form.model.alcoholPercentage.value.value"
+    <InputSpan
+id="alcoholPercentage"
                :attributes="form.model.alcoholPercentage.attr.value"
-               @update:value="form.context.setFieldValue('alcoholPercentage', $event)"
+               :disabled="!isEditable"
                :errors="form.context.errors.value.alcoholPercentage"
-               id="alcoholPercentage" type="percentage"
-               :disabled="!isEditable"/>
+               :label="t('modules.seller.productContainers.products.alcoholPercentage')"
+               type="percentage" :value="form.model.alcoholPercentage.value.value"
+               @update:value="form.context.setFieldValue('alcoholPercentage', $event)"/>
 
-    <InputSpan :label="t('common.price')"
-               :value="form.model.priceInclVat.value.value"
+    <InputSpan
+id="priceInclVat"
                :attributes="form.model.priceInclVat.attr.value"
-               @update:value="form.context.setFieldValue('priceInclVat', $event)"
+               :disabled="!isEditable"
                :errors="form.context.errors.value.priceInclVat"
-               id="priceInclVat" type="currency"
-               :disabled="!isEditable"/>
+               :label="t('common.price')"
+               type="currency" :value="form.model.priceInclVat.value.value"
+               @update:value="form.context.setFieldValue('priceInclVat', $event)"/>
 
     <!-- If the organ is not editable, add a fake option menu so the dropdown still renders  -->
     <div class="flex flex-row justify-content-between align-items-center gap-1">
-      <i class="pi pi-exclamation-circle text-red-500 cursor-pointer"
-         v-tooltip.top="t('common.tooltip.productOwner')"/>
-      <InputOrganSpan :label="t('modules.seller.productContainers.products.owner')"
+      <i
+v-tooltip.top="t('common.tooltip.productOwner')"
+         class="pi pi-exclamation-circle text-red-500 cursor-pointer"/>
+      <InputOrganSpan
+:disabled="!isOrganEditable || !isEditable"
+                      :errors="form.context.errors.value.owner"
+                      :label="t('modules.seller.productContainers.products.owner')"
+                      :organ="form.model.owner.value.value"
                       :organs="!isOrganEditable
                         ? [form.model.owner.value.value]
                         : undefined"
-                      :organ="form.model.owner.value.value"
-                      @update:organ="form.context.setFieldValue('owner', $event)"
-                      :errors="form.context.errors.value.owner"
-                      :disabled="!isOrganEditable || !isEditable"/>
+                      @update:organ="form.context.setFieldValue('owner', $event)"/>
 
     </div>
 
     <div class="flex flex-column justify-content-between gap-1">
       <InputSpan
-          :label="t('modules.seller.productContainers.products.preferred')"
-          :value="form.model.preferred.value.value"
+          id="preferred"
           :attributes="form.model.preferred.attr.value"
-          @update:value="form.context.setFieldValue('preferred', $event)"
+          :disabled="!isEditable"
           :errors="form.context.errors.value.preferred"
-          id="preferred" type="boolean"
-          :disabled="!isEditable"/>
+          :label="t('modules.seller.productContainers.products.preferred')"
+          type="boolean" :value="form.model.preferred.value.value"
+          @update:value="form.context.setFieldValue('preferred', $event)"/>
       <InputSpan
-          :label="t('modules.seller.productContainers.products.featured')"
-          :value="form.model.featured.value.value"
+          id="featured"
           :attributes="form.model.featured.attr.value"
-          @update:value="form.context.setFieldValue('featured', $event)"
+          :disabled="!isEditable"
           :errors="form.context.errors.value.featured"
-          id="featured" type="boolean"
-          :disabled="!isEditable"/>
+          :label="t('modules.seller.productContainers.products.featured')"
+          type="boolean" :value="form.model.featured.value.value"
+          @update:value="form.context.setFieldValue('featured', $event)"/>
       <InputSpan
-          :label="t('modules.seller.productContainers.products.priceList')"
-          :value="form.model.priceList.value.value"
+          id="priceList"
           :attributes="form.model.priceList.attr.value"
-          @update:value="form.context.setFieldValue('priceList', $event)"
+          :disabled="!isEditable"
           :errors="form.context.errors.value.priceList"
-          id="priceList" type="boolean"
-          :disabled="!isEditable"/>
+          :label="t('modules.seller.productContainers.products.priceList')"
+          type="boolean" :value="form.model.priceList.value.value"
+          @update:value="form.context.setFieldValue('priceList', $event)"/>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import InputSpan from "@/components/InputSpan.vue";
-import type { createProductSchema } from "@/utils/validation-schema";
-import { type Form } from "@/utils/formUtils";
 import * as yup from "yup";
-import InputOrganSpan from "@/components/InputOrganSpan.vue";
-import InputDropdownSpan from "@/components/InputDropdownSpan.vue";
 import type { BaseVatGroupResponse, ProductCategoryResponse, ProductResponse } from "@sudosos/sudosos-client";
 import { ref, watch } from "vue";
 import Fuse from "fuse.js";
 import { useI18n } from "vue-i18n";
+import InputSpan from "@/components/InputSpan.vue";
+import type { createProductSchema } from "@/utils/validation-schema";
+import { type Form } from "@/utils/formUtils";
+import InputOrganSpan from "@/components/InputOrganSpan.vue";
+import InputDropdownSpan from "@/components/InputDropdownSpan.vue";
 
 const { t } = useI18n();
 
@@ -113,7 +118,7 @@ const props = defineProps<{
   isOrganEditable?: boolean
 }>();
 
-const selectExistingProduct = defineModel('existingProduct');
+const selectExistingProduct = defineModel<ProductResponse | null>('existingProduct');
 
 // Give user a warning if making possible duplicate product
 const closeTo = ref<ProductResponse | null>(null);
@@ -137,7 +142,7 @@ watch(props.form.model.name.value, () => {
   if (!closest) {
     closeTo.value = null;
     return;
-  };
+  }
   if (closest.score && results.length > 0 && closest.score < 0.3) {
     closeTo.value = results[0].item;
   } else {

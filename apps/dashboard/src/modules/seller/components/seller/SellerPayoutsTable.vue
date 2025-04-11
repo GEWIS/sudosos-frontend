@@ -1,16 +1,16 @@
 <template>
   <div class="flex flex-col gap-5">
     <DataTable
-        :rows="rows"
-        :value="rowValues"
-        :rows-per-page-options="[12, 24, 48, 96, 120]"
-        :paginator="paginator"
-        lazy
-        @page="onPage($event)"
-        :total-records="totalRecords"
-        data-key="id"
         class="w-full"
-        tableStyle="min-width: 50rem"
+        data-key="id"
+        lazy
+        :paginator="paginator"
+        :rows="rows"
+        :rows-per-page-options="[12, 24, 48, 96, 120]"
+        table-style="min-width: 50rem"
+        :total-records="totalRecords"
+        :value="rowValues"
+        @page="onPage($event)"
     >
       <Column field="startDate" :header="t('modules.seller.payouts.payout.startDate')">
         <template #body="slotProps">
@@ -41,26 +41,26 @@
           <Skeleton v-if="isLoading" class="w-3 my-1 h-1rem surface-300" />
           <span v-else class="flex flex-row align-items-center">
             <Button
-                type="button"
-                icon="pi pi-eye"
                 class="p-button-rounded p-button-text p-button-plain"
+                icon="pi pi-eye"
+                type="button"
                 @click="() => viewPayout(slotProps.data.id)"
             />
             <Button
-                icon="pi pi-check"
-                type="button"
-                class="p-button-rounded p-button-text p-button-plain"
                 v-tooltip.top="t('common.verify')"
-                @click="verifyPayout(slotProps.data)"
+                class="p-button-rounded p-button-text p-button-plain"
+                icon="pi pi-check"
                 :loading="verifying"
+                type="button"
+                @click="verifyPayout(slotProps.data)"
             />
             <Button
-                v-tooltip.top="t('common.downloadPdf')"
-                type="button"
-                icon="pi pi-file-export"
-                class="p-button-rounded p-button-text p-button-plain"
-                @click="() => downloadPdf(slotProps.data.id)"
                 v-if="!downloadingPdf"
+                v-tooltip.top="t('common.downloadPdf')"
+                class="p-button-rounded p-button-text p-button-plain"
+                icon="pi pi-file-export"
+                type="button"
+                @click="() => downloadPdf(slotProps.data.id)"
             />
             <Skeleton v-else class="w-3 my-1 h-2rem surface-300" />
           </span>
@@ -68,36 +68,36 @@
       </Column>
     </DataTable>
     <Dialog
-        modal
         ref="dialog"
-        @show="addListenerOnDialogueOverlay(dialog)"
         v-model:visible="showModal"
-        :draggable="false"
         class="w-auto flex w-9 md:w-4"
-        :header="t('modules.seller.payouts.payout.details')">
-      <SellerPayoutInfo :payoutId="payoutId" @close="showModal = false"/>
+        :draggable="false"
+        :header="t('modules.seller.payouts.payout.details')"
+        modal
+        @show="addListenerOnDialogueOverlay(dialog)">
+      <SellerPayoutInfo :payout-id="payoutId" @close="showModal = false"/>
     </Dialog>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, type PropType, type Ref, computed } from "vue";
-import { formatPrice, formatDateFromString } from "@/utils/formatterUtils";
 import {
   type UserResponse
 } from "@sudosos/sudosos-client";
 import DataTable, { type DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
-import { addListenerOnDialogueOverlay } from "@/utils/dialogUtil";
 import Button from "primevue/button";
+import { useToast } from "primevue/usetoast";
+import { useI18n } from "vue-i18n";
+import { addListenerOnDialogueOverlay } from '@sudosos/sudosos-frontend-common';
+import { formatPrice, formatDateFromString } from "@/utils/formatterUtils";
 import ApiService from "@/services/ApiService";
 import { getSellerPayoutPdfSrc } from "@/utils/urlUtils";
 import SellerPayoutInfo from "@/modules/seller/components/seller/SellerPayoutInfo.vue";
 import { useSellerPayoutStore } from "@/stores/seller-payout.store";
-import { useToast } from "primevue/usetoast";
 import { handleError } from "@/utils/errorUtils";
 import { verifyPayoutMixin } from "@/mixins/verifyPayoutMixin";
-import { useI18n } from "vue-i18n";
 
 const { verifyPayout, verifying } = verifyPayoutMixin.setup();
 const toast = useToast();
@@ -128,7 +128,7 @@ const dialog = ref();
 const payoutId: Ref<number> = ref(0);
 const downloadingPdf = ref<boolean>(false);
 
-const viewPayout = async (id: number) => {
+const viewPayout = (id: number) => {
   showModal.value = true;
   payoutId.value = id;
 };
@@ -150,7 +150,7 @@ onMounted(async () => {
 
 async function loadPayoutRequests(skip = 0) {
   isLoading.value = true;
-  const response = await sellerPayoutStore.fetchPayoutsBy(props.seller.id, 12, skip).catch(async (e) => {
+  const response = await sellerPayoutStore.fetchPayoutsBy(props.seller.id, 12, skip).catch((e) => {
     handleError(e, toast);
     return;
   });

@@ -1,23 +1,26 @@
 <template>
-    <Dialog v-model:visible="visible" modal :draggable="false" :header="
+    <Dialog
+ref="dialog" v-model:visible="visible" class="w-full md:w-6" :draggable="false" :header="
             banner != undefined
             ? t('modules.admin.forms.banner.headerEdit')
             : t('modules.admin.forms.banner.headerCreate')
-        " ref="dialog" @show="addListenerOnDialogueOverlay(dialog)" class="w-full md:w-6">
+        " modal @show="addListenerOnDialogueOverlay(dialog)">
         <span v-if="imageSource" class=" w-full mx-1 image-preview-container">
             <img class="w-full" :src="imageSource" />
-            <button ref="previewButton" type="button"
-                class="image-preview-indicator p-image-preview-indicator fileupload" @click="fileInput.click()">
+            <button
+ref="previewButton" class="image-preview-indicator p-image-preview-indicator fileupload"
+                type="button" @click="fileInput.click()">
                 <i class="pi pi-upload"></i>
-                <input ref="fileInput" type="file" accept="image/*" @change="onImgUpload" />
+                <input ref="fileInput" accept="image/*" type="file" @change="onImgUpload" />
             </button>
         </span>
         <div v-else class="px-3 py-5 text-xl surface-hover text-center  relative">
             {{ t('modules.admin.banners.noBannerFound') }} <br>
-            <button ref="previewButton" type="button"
-                class="cursor-pointer image-preview-indicator p-image-preview-indicator fileupload"
+            <button
+ref="previewButton" class="cursor-pointer image-preview-indicator p-image-preview-indicator fileupload"
+                type="button"
                 @click="fileInput.click()">
-                <input ref="fileInput" type="file" accept="image/*" @change="onImgUpload" />
+                <input ref="fileInput" accept="image/*" type="file" @change="onImgUpload" />
             </button>
         </div>
         <Divider />
@@ -28,16 +31,17 @@
         </div>
         <div class="py-2">
             {{ t('modules.admin.forms.banner.duration') }}<br>
-            <InputNumber v-model="duration"
-                         :suffix="' ' + t('modules.admin.banners.seconds', duration || 0)" :maxFractionDigits="3" />
+            <InputNumber
+v-model="duration"
+                         :max-fraction-digits="3" :suffix="' ' + t('modules.admin.banners.seconds', duration || 0)" />
           <br>
             <span class="font-bold text-red-500">{{ errors['Duration'] }}</span>
         </div>
         <div class="py-2">
             {{ t('modules.admin.forms.banner.timespan') }}<br>
-            <Calendar v-model="startDate" showTime hourFormat="24" />
+            <Calendar v-model="startDate" hour-format="24" show-time />
             {{ t('modules.admin.banners.till' ) }}
-            <Calendar v-model="endDate" showTime hourFormat="24" class="pt-1 md:pt-0" /><br>
+            <Calendar v-model="endDate" class="pt-1 md:pt-0" hour-format="24" show-time /><br>
             <span class="font-bold text-red-500">{{ errors['Start date'] }}</span><br>
             <span class="font-bold text-red-500">{{ errors['End date'] }}</span>
         </div>
@@ -59,7 +63,6 @@ import InputSwitch from 'primevue/inputswitch';
 import Calendar from 'primevue/calendar';
 import Button from 'primevue/button';
 
-import { getBannerImageSrc } from '@/utils/urlUtils';
 
 import type { BannerRequest, BannerResponse } from '@sudosos/sudosos-client';
 import { addListenerOnDialogueOverlay } from '@sudosos/sudosos-frontend-common';
@@ -68,8 +71,9 @@ import { ref, watch, computed } from 'vue';
 import { useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/yup';
 import * as yup from 'yup';
-import { useBannersStore } from '@/stores/banner.store';
 import { useI18n } from "vue-i18n";
+import { useBannersStore } from '@/stores/banner.store';
+import { getBannerImageSrc } from '@/utils/urlUtils';
 
 const { t } = useI18n();
 
@@ -180,7 +184,7 @@ const onSubmit = handleSubmit(async (values) => {
 const onImgUpload = (e: Event) => {
     const el = (e.target as HTMLInputElement);
     if (el == null || el.files == null) return;
-    uploadedImage.value = el.files[0]!!;
+    uploadedImage.value = el.files[0]!;
 };
 </script>
 <style>

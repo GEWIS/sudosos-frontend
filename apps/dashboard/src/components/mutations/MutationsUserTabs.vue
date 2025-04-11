@@ -2,15 +2,15 @@
         <TabView class="w-full">
             <TabPanel :header="t('components.mutations.balance')">
                     <MutationsBalance
+                        :get-mutations="props.getBalanceMutations"
                         :paginator="paginator"
-                        :getMutations="props.getBalanceMutations"
                         :simple="true"
                     />
             </TabPanel>
             <TabPanel :header="t('components.mutations.created')">
                     <MutationsSeller
+                        :get-mutations="props.getSellerMutations"
                         :paginator="paginator"
-                        :getMutations="props.getSellerMutations"
                     />
             </TabPanel>
         </TabView>
@@ -19,10 +19,10 @@
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 
-import MutationsBalance from '@/components/mutations/MutationsBalance.vue';
-import MutationsSeller from '@/components/mutations/MutationsSeller.vue';
 import type { PaginatedBaseTransactionResponse, PaginatedFinancialMutationResponse } from "@sudosos/sudosos-client";
 import { useI18n } from "vue-i18n";
+import MutationsBalance from '@/components/mutations/MutationsBalance.vue';
+import MutationsSeller from '@/components/mutations/MutationsSeller.vue';
 
 const { t } = useI18n();
 

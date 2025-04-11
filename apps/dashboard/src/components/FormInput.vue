@@ -1,13 +1,17 @@
 <template>
-  <span :class="['flex flex-wrap justify-content-between',
+  <span
+:class="['flex flex-wrap justify-content-between',
   column ? 'flex-column gap-1' : 'flex-row align-items-center gap-3']">
     <p class="my-0">{{ label }}</p>
-      <InputText v-if="type === 'text'" :placeholder="placeholder"
-                 v-model="internalValue" v-bind="attributes" :disabled="disabled"/>
-      <Textarea v-if="type === 'textarea'" :placeholder="placeholder"
-                v-model="internalValue" v-bind="attributes" autoResize :disabled="disabled"/>
-      <Calendar v-if="type === 'date'" :placeholder="placeholder"
-                v-model="internalValue" v-bind="attributes" :disabled="disabled"/>
+      <InputText
+v-if="type === 'text'" v-model="internalValue"
+                 v-bind="attributes" :disabled="disabled" :placeholder="placeholder"/>
+      <Textarea
+v-if="type === 'textarea'" v-model="internalValue"
+                v-bind="attributes" auto-resize :disabled="disabled" :placeholder="placeholder"/>
+      <Calendar
+v-if="type === 'date'" v-model="internalValue"
+                v-bind="attributes" :disabled="disabled" :placeholder="placeholder"/>
   </span>
   <div class="flex justify-content-end">
     <ErrorSpan :error="errors"/>

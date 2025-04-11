@@ -23,7 +23,7 @@ export function isAllowed(
     action: string,
     relations: string | string[],
     entity: string,
-    attributes?: string[] | undefined
+    attributes?: string[]  
 ) {
     const userStore = useUserStore();
 

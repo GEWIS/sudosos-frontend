@@ -1,16 +1,16 @@
 <template>
   <div>
-      <img class="max-h-9rem block mx-auto my-0" src="../../../assets/img/bier.png" alt="logo"/>
+      <img alt="logo" class="max-h-9rem block mx-auto my-0" src="../../../assets/img/bier.png"/>
       <div class="text-900 text-5xl mt-0 mx-auto mb-2 w-full">{{ t('modules.auth.login.sudosos') }}</div>
       <form class="flex flex-column" @submit="loginHandler">
         <span class="p-float-label with-error">
           <InputText
-              type="text"
               v-bind="username"
-              size="large"
-              name="username"
               class="w-full pt-2 pb-0 cinput h-4rem"
               :class="{ 'p-invalid': loginForm.errors.value.username }"
+              name="username"
+              size="large"
+              type="text"
           />
           <label :class="{ 'contains-text': username.modelValue }" for="username"
           >{{ t('modules.auth.login.username') }}
@@ -22,12 +22,12 @@
         </span>
         <span class="p-float-label with-error">
           <InputText
-              type="password"
               v-bind="password"
-              size="large"
-              name="password"
               class="w-full pt-2 pb-0 cinput h-4rem"
               :class="{ 'p-invalid': loginForm.errors.value.password }"
+              name="password"
+              size="large"
+              type="password"
           />
           <label :class="{ 'contains-text': password.modelValue }" for="password"
           >{{ t('modules.auth.login.password') }}
@@ -38,16 +38,16 @@
           </small>
         </span>
         <Button
-            type="submit"
             id="login-button"
             class="mx-auto w-full flex justify-content-center align-items-center"
+            type="submit"
         >
           {{ t('modules.auth.login.login') }}
         </Button>
         <Button
-            @click="toHomeView"
-            :outlined="true"
             class="my-3 mx-auto w-full flex justify-content-center align-items-center"
+            :outlined="true"
+            @click="toHomeView"
         >
           {{ t('common.back') }}
         </Button>
@@ -62,16 +62,16 @@
 import { useRoute } from "vue-router";
 import { onBeforeMount } from "vue";
 import { useUserStore, useAuthStore } from "@sudosos/sudosos-frontend-common";
-import apiService from "@/services/ApiService";
-import router from "@/router";
 import { useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/yup';
 import * as yup from 'yup';
 import InputText from 'primevue/inputtext';
 import { useToast } from 'primevue/usetoast';
 import type { AxiosError } from 'axios';
-import { handleError } from "@/utils/errorUtils";
 import { useI18n } from "vue-i18n";
+import { handleError } from "@/utils/errorUtils";
+import router from "@/router";
+import apiService from "@/services/ApiService";
 
 
 const { t } = useI18n();
@@ -99,7 +99,7 @@ onBeforeMount(() => {
   if (route.query.token !== undefined) {
     const token = route.query.token as string;
     authStore.gewisWebLogin(crypto.randomUUID(), token, apiService).catch(() => {
-      router.replace({ path: "/error" });
+      void router.replace({ path: "/error" });
     });
   }
 });
@@ -136,11 +136,11 @@ const loginHandler = loginForm.handleSubmit(async (values) => {
 });
 
 const resetPassword = () => {
-  router.push({ name: 'passwordreset' });
+  void router.push({ name: 'passwordreset' });
 };
 
 const toHomeView = () => {
-  router.push(sessionStorage.getItem('fromPath') || { name: 'home' });
+  void router.push(sessionStorage.getItem('fromPath') || { name: 'home' });
   sessionStorage.removeItem('fromPath');
 };
 </script>

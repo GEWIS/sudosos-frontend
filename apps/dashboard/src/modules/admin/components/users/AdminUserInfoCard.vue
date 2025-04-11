@@ -1,11 +1,12 @@
 <template>
-  <FormCard :header="t('modules.admin.singleUser.userInfo.header')"
-            @update:modelValue="edit = $event"
+  <FormCard
+:enable-edit="true"
+            :header="t('modules.admin.singleUser.userInfo.header')"
             @save="formSubmit"
-            :enableEdit="true"
+            @update:model-value="edit = $event"
   >
     <div class="flex flex-column justify-content-between gap-2">
-        <UserEditForm :user="props.user" :form="form" :edit="edit" @update:edit="edit = $event"/>
+        <UserEditForm :edit="edit" :form="form" :user="props.user" @update:edit="edit = $event"/>
         <Divider />
       <h4 class="mt-0">{{ t('modules.user.settings.nfc') }}</h4>
       <div class="flex flex-row align-items-center w-11">
@@ -45,18 +46,18 @@
 </template>
 
 <script setup lang="ts">
-import FormCard from "@/components/FormCard.vue";
 import { onMounted, type PropType, ref, watch } from "vue";
 import type { UserResponse } from "@sudosos/sudosos-client";
-import { schemaToForm } from "@/utils/formUtils";
-import { updateUserDetailsObject } from "@/utils/validation-schema";
-import UserEditForm from "@/modules/admin/components/users/forms/UserEditForm.vue";
 import { useI18n } from "vue-i18n";
-import apiService from "@/services/ApiService";
-import { handleError } from "@/utils/errorUtils";
 import { useConfirm } from "primevue/useconfirm";
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
 import { useToast } from "primevue/usetoast";
+import FormCard from "@/components/FormCard.vue";
+import { schemaToForm } from "@/utils/formUtils";
+import { updateUserDetailsObject } from "@/utils/validation-schema";
+import UserEditForm from "@/modules/admin/components/users/forms/UserEditForm.vue";
+import apiService from "@/services/ApiService";
+import { handleError } from "@/utils/errorUtils";
 
 const { t } = useI18n();
 const confirm = useConfirm();

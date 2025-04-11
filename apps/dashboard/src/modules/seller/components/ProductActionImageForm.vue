@@ -6,7 +6,7 @@
       <img v-else class="product-image" src="../../../assets/img/bier.png">
     </div>
     <div v-if="isEditable">
-      <FileUpload id="img" mode="basic" name="productImg" accept="image/*" @select="emit('upload', $event.files[0])"/>
+      <FileUpload id="img" accept="image/*" mode="basic" name="productImg" @select="emit('upload', $event.files[0])"/>
     </div>
   </div>
 </template>

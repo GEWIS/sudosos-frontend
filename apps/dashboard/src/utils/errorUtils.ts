@@ -5,12 +5,13 @@ interface ErrorResponse {
   message: string;
 }
 
-export function isErrorResponse(data: any): data is ErrorResponse {
-  return data && typeof data.message === 'string';
+export function isErrorResponse(data: unknown): data is ErrorResponse {
+  return data as ErrorResponse
+      && (data as ErrorResponse).message !== undefined;
 }
 
-function isErrorMessage(data: any): data is string {
-  return typeof data === 'string';
+function isErrorMessage(data: unknown): data is string {
+  return (data as string).length !== undefined;
 }
 
 // Method to add a toast involving an AxiosError

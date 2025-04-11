@@ -1,4 +1,5 @@
 import { createI18n } from "vue-i18n";
+import { setLocale } from "yup";
 import admin_en from "../locales/en/modules/admin.json";
 import common_en from "../locales/en/common/common.json";
 import mutations_en from "../locales/en/components/mutations.json";
@@ -19,7 +20,6 @@ import financial_nl from "../locales/nl/modules/financial.json";
 import footer_nl from "../locales/nl/components/footer.json";
 import general_nl from "../locales/nl/components/general.json";
 
-import { setLocale } from "yup";
 
 const i18n = createI18n({
     locale: localStorage.getItem('locale') || 'en',

@@ -1,11 +1,11 @@
 <template>
   <BalanceTopupModal v-model:visible="visible" :amount="topupAmount!!" />
-  <CardComponent :header="t('modules.user.balance.balance')" class="w-full sm:w-full">
+  <CardComponent class="w-full sm:w-full" :header="t('modules.user.balance.balance')">
     <div class="flex flex-row justify-content-center">
       <div class="flex flex-column justify-content-center w-6">
         <Skeleton v-if="loading" class="h-4rem w-5 mx-auto" />
         <h1 v-else class="text-center font-medium text-5xl sm:text-7xl my-0">{{ displayBalance }}</h1>
-        <p class="text-center text-base font-semibold text-red-500" v-if="userBalance && userBalance.fine">
+        <p v-if="userBalance && userBalance.fine" class="text-center text-base font-semibold text-red-500">
           {{
           isAllFine
           ? t('modules.user.balance.allIsFines')
@@ -30,16 +30,20 @@
           <p class="font-bold">{{ t('modules.user.balance.increaseAmount') }}</p>
           <div class="w-full flex-1">
             <InputNumber
-                mode="currency"
+                v-model="topupAmount"
                 currency="EUR"
+                input-id="amount"
+                :input-props="{
+                inputmode: 'decimal',
+                class: 'w-full'
+              }"
                 locale="nl-NL"
-                :placeholder="t('modules.user.balance.price')"
+                :max-fraction-digits="2"
                 :min="0.0"
                 :min-fraction-digits="0"
-                :max-fraction-digits="2"
-                v-model="topupAmount"
-                inputId="amount"
-                @input="
+                mode="currency"
+                :placeholder="t('modules.user.balance.price')"
+              @input="
                 (data) => {
                   setFieldValue(
                     'Top up amount',
@@ -48,16 +52,12 @@
                   );
                   setTouched(true);
                 }
-              "
-              :inputProps="{
-                inputmode: 'decimal',
-                class: 'w-full'
-              }" />
+              " />
           </div>
           <span class="font-bold text-red-500">{{ errors['Top up amount'] }}</span>
         </div>
         <div class="flex justify-content-end my-2">
-          <Button @click="onSubmit" class="w-full sm:w-4 justify-content-center">
+          <Button class="w-full sm:w-4 justify-content-center" @click="onSubmit">
             {{ t('modules.user.balance.topUp') }}
           </Button>
         </div>
@@ -67,21 +67,22 @@
 </template>
 
 <script setup lang="ts">
-import CardComponent from '@/components/CardComponent.vue';
-import BalanceTopupModal from '@/modules/user/components/balance/BalanceTopupModal.vue';
 import { useAuthStore, useUserStore } from '@sudosos/sudosos-frontend-common';
 import { computed, ref, onMounted, type Ref, watch } from 'vue';
 import type { BalanceResponse } from '@sudosos/sudosos-client';
-import apiService from '@/services/ApiService';
-import { formatPrice } from '@/utils/formatterUtils';
 import { useForm } from 'vee-validate';
 import * as yup from 'yup';
 import { toTypedSchema } from '@vee-validate/yup';
 import Divider from 'primevue/divider';
+// eslint-disable-next-line import/no-named-as-default
 import Dinero from 'dinero.js';
 import InputNumber from 'primevue/inputnumber';
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { formatPrice } from '@/utils/formatterUtils';
+import apiService from '@/services/ApiService';
+import BalanceTopupModal from '@/modules/user/components/balance/BalanceTopupModal.vue';
+import CardComponent from '@/components/CardComponent.vue';
 
 const { t } = useI18n();
 
@@ -102,7 +103,7 @@ const productSchema = toTypedSchema(
         'is-total-less-than-150',
         `Your new balance cannot surpass €150.`,
         (value) => {
-          return userBalance.value!!.amount.amount + value*100 <= 15000;
+          return userBalance.value!.amount.amount + value*100 <= 15000;
         }
       )
   })

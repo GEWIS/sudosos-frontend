@@ -1,19 +1,19 @@
 <template>
   <div>
-        <img class="max-h-9rem block mx-auto my-0" src="../../../assets/img/bier.png" alt="logo"/>
+        <img alt="logo" class="max-h-9rem block mx-auto my-0" src="../../../assets/img/bier.png"/>
         <div class="text-900 text-5xl mt-0 mx-auto mb-2 w-full">{{ t('modules.auth.login.sudosos') }}</div>
         <Button
             id="login-gewis-button"
-            @click="loginViaGEWIS"
             class="my-3 mx-auto w-full flex justify-content-center align-items-center"
+            @click="loginViaGEWIS"
         >
-          <img class="mr-3 h-18" src="../../../assets/img/gewis-branding.svg" alt="GEWIS"/>
+          <img alt="GEWIS" class="mr-3 h-18" src="../../../assets/img/gewis-branding.svg"/>
           {{ t('modules.auth.login.gewis') }}
         </Button>
         <Button
             id="login-gewis-button"
-            @click="navigateToLocal"
             class="my-3 mx-auto w-full flex justify-content-center align-items-center"
+            @click="navigateToLocal"
         >
           {{ t('modules.auth.login.localAccount') }}
         </Button>
@@ -25,9 +25,9 @@
 import { useRoute } from "vue-router";
 import { onBeforeMount, ref } from "vue";
 import { useAuthStore } from "@sudosos/sudosos-frontend-common";
+import { useI18n } from "vue-i18n";
 import apiService from "@/services/ApiService";
 import router from "@/router";
-import { useI18n } from "vue-i18n";
 import { useSettingsStore } from "@/stores/settings.store";
 
 const { t } = useI18n();
@@ -38,7 +38,7 @@ const route = useRoute();
 const returning = ref();
 
 const navigateToLocal = () => {
-  router.push('/local');
+  void router.push('/local');
 };
 
 const hasToken = () => {
@@ -51,11 +51,11 @@ onBeforeMount(() => {
     const token = route.query.token as string;
     authStore.gewisWebLogin(crypto.randomUUID(), token, apiService)
     .then(() => {
-      router.push(sessionStorage.getItem('fromPath') || '/');
+      void router.push(sessionStorage.getItem('fromPath') || '/');
       sessionStorage.removeItem('fromPath');
     })
     .catch(() => {
-      router.replace({ path: "/error" });
+      void router.replace({ path: "/error" });
     });
   }
   returning.value = hasToken();

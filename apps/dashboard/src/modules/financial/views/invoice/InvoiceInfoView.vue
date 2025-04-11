@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container-wide align-items-center flex flex-column gap-5" v-if="invoice">
+  <div v-if="invoice" class="page-container-wide align-items-center flex flex-column gap-5">
     <div>
       <div class="page-title flex flex-row">
         <div class="flex flex-column">
@@ -15,13 +15,13 @@
       </div>
       <div class="flex flex-row gap-5 flex-wrap flex-grow justify-content-center">
         <div class="flex flex-column gap-5">
-          <InvoiceAmountCard v-if="dirty" :invoiceId="invoice.id"/>
-          <InvoiceStepsCard v-else :invoiceId="invoice.id"/>
-          <InvoiceSettingsCard :invoiceId="invoice.id"/>
-          <InvoiceAddressingCard :invoiceId="invoice.id"/>
-          <InvoiceInfo :invoiceId="invoice.id"/>
+          <InvoiceAmountCard v-if="dirty" :invoice-id="invoice.id"/>
+          <InvoiceStepsCard v-else :invoice-id="invoice.id"/>
+          <InvoiceSettingsCard :invoice-id="invoice.id"/>
+          <InvoiceAddressingCard :invoice-id="invoice.id"/>
+          <InvoiceInfo :invoice-id="invoice.id"/>
         </div>
-        <InvoicePdf v-if="invoice" :invoiceId="invoice.id"/>
+        <InvoicePdf v-if="invoice" :invoice-id="invoice.id"/>
       </div>
     </div>
   </div>
@@ -30,20 +30,20 @@
 
 <script setup lang="ts">
 import { computed, onBeforeMount, ref, type Ref } from "vue";
-import { handleError } from "@/utils/errorUtils";
-import { useInvoiceStore } from "@/stores/invoice.store";
 import type { InvoiceResponse } from "@sudosos/sudosos-client";
 import { useToast } from "primevue/usetoast";
-import "vue3-pdf-app/dist/icons/main.css";
-import router from "@/router";
+import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
 import Skeleton from "primevue/skeleton";
+import { handleError } from "@/utils/errorUtils";
+import { useInvoiceStore } from "@/stores/invoice.store";
+import "vue3-pdf-app/dist/icons/main.css";
+import router from "@/router";
 import InvoiceSettingsCard from "@/modules/financial/components/invoice/InvoiceSettingsCard.vue";
 import InvoiceAddressingCard from "@/modules/financial/components/invoice/InvoiceAddressingCard.vue";
 import InvoiceStepsCard from "@/modules/financial/components/invoice/InvoiceStepsCard.vue";
 import InvoicePdf from "@/modules/financial/components/invoice/InvoicePdf.vue";
 import InvoiceInfo from "@/modules/financial/components/invoice/InvoiceInfo.vue";
-import { useI18n } from "vue-i18n";
 import InvoiceAmountCard from "@/modules/financial/components/invoice/InvoiceAmountCard.vue";
 import { isDirty } from "@/utils/invoiceUtil";
 

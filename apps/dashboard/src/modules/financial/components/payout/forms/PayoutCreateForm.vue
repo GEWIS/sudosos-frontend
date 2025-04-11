@@ -1,40 +1,45 @@
 <template>
   <div class="flex flex-column justify-content-between gap-2">
-    <InputUserSpan :label="t('modules.financial.forms.payout.for')"
-                   :value="form.model.user.value.value"
-                   @update:value="form.context.setFieldValue('user', $event)"
+    <InputUserSpan
+id="name"
                    :errors="form.context.errors.value.user"
+                   :label="t('modules.financial.forms.payout.for')"
+                   placeholder="John Doe"
                    :show-positive="true"
-                   id="name" placeholder="John Doe"/>
+                   :value="form.model.user.value.value" @update:value="form.context.setFieldValue('user', $event)"/>
 
 <!-- TODO think about turning this into a component? -->
     <skeleton v-if="userBalance === null && form.model.user.value.value" class="w-6 my-1 h-0.5rem surface-300"/>
-    <div v-else-if="userBalance" class="flex flex-row gap-1"
+    <div
+v-else-if="userBalance" class="flex flex-row gap-1"
          :class="{'text-gray-700': !balanceError, 'text-red-500 font-bold': balanceError}">
       <span>
         {{ t('modules.financial.forms.payout.currentBalance', { balance: formatPrice(userBalance.amount) }) }}</span>
     </div>
 
-    <InputSpan :label="t('modules.financial.forms.payout.bankAccountNumber')"
-               :value="form.model.bankAccountNumber.value.value"
+    <InputSpan
+id="name"
                :attributes="form.model.bankAccountNumber.attr.value"
-               @update:value="form.context.setFieldValue('bankAccountNumber', $event)"
                :errors="form.context.errors.value.bankAccountNumber"
-               id="name" :placeholder="t('common.placeholders.bankAccountNumber')" type="text"/>
+               :label="t('modules.financial.forms.payout.bankAccountNumber')"
+               :placeholder="t('common.placeholders.bankAccountNumber')"
+               type="text" :value="form.model.bankAccountNumber.value.value" @update:value="form.context.setFieldValue('bankAccountNumber', $event)"/>
 
-    <InputSpan :label="t('modules.financial.forms.payout.bankAccountName')"
-               :value="form.model.bankAccountName.value.value"
+    <InputSpan
+id="name"
                :attributes="form.model.bankAccountName.attr.value"
-               @update:value="form.context.setFieldValue('bankAccountName', $event)"
                :errors="form.context.errors.value.bankAccountName"
-               id="name" :placeholder="t('common.placeholders.fullName')" type="text"/>
+               :label="t('modules.financial.forms.payout.bankAccountName')"
+               :placeholder="t('common.placeholders.fullName')"
+               type="text" :value="form.model.bankAccountName.value.value" @update:value="form.context.setFieldValue('bankAccountName', $event)"/>
 
-    <InputSpan :label="t('common.amount')"
-               :value="form.model.amount.value.value"
+    <InputSpan
+id="name"
                :attributes="form.model.amount.attr.value"
-               @update:value="form.context.setFieldValue('amount', $event)"
                :errors="form.context.errors.value.amount"
-               id="name" :placeholder="t('common.amount')" type="currency"/>
+               :label="t('common.amount')"
+               :placeholder="t('common.amount')"
+               type="currency" :value="form.model.amount.value.value" @update:value="form.context.setFieldValue('amount', $event)"/>
 
     <div class="flex w-full justify-content-end">
       <ErrorSpan :error="balanceError"/>
@@ -47,15 +52,15 @@
 import { type PropType, ref, type Ref, watch } from "vue";
 import * as yup from "yup";
 import { useI18n } from "vue-i18n";
+import type { BalanceResponse, PayoutRequestRequest } from "@sudosos/sudosos-client";
+import { useToast } from "primevue/usetoast";
 import { usePayoutStore } from "@/stores/payout.store";
 import apiService from "@/services/ApiService";
-import type { BalanceResponse, PayoutRequestRequest } from "@sudosos/sudosos-client";
 import type { createPayoutSchema } from "@/utils/validation-schema";
 import type { Form } from "@/utils/formUtils";
 import { setSubmit } from "@/utils/formUtils";
 import { formatPrice } from "@/utils/formatterUtils";
 import ErrorSpan from "@/components/ErrorSpan.vue";
-import { useToast } from "primevue/usetoast";
 import InputSpan from "@/components/InputSpan.vue";
 import InputUserSpan from "@/components/InputUserSpan.vue";
 import { handleError } from "@/utils/errorUtils";

@@ -4,7 +4,7 @@
     @click="visible = true"
   >
       <div class="h-8rem flex justify-content-center align-items-center background-white">
-        <img :src="imageSrc" :alt="product.name" class="p-1 h-8rem"/>
+        <img :alt="product.name" class="p-1 h-8rem" :src="imageSrc"/>
       </div>
       <div v-if="product.featured" class="promo-tag uppercase">
         {{ t('modules.seller.productContainers.products.promo') }}
@@ -12,19 +12,19 @@
       <p class="text-center m-2 text-base text-overflow-ellipsis font-bold">{{ product.name }}</p>
   </div>
   <ProductActionDialog
-      :container="container"
       v-model:visible="visible"
-      :product="product"
+      :container="container"
       :is-update-allowed="isAllowed('update', ['own', 'organ'], 'Product')"
+      :product="product"
   />
 </template>
 
 <script setup lang="ts">
 import type { ContainerWithProductsResponse, ProductResponse } from "@sudosos/sudosos-client";
-import { getProductImageSrc } from "@/utils/urlUtils";
 import { computed, ref } from "vue";
-import ProductActionDialog from "@/modules/seller/components/ProductActionDialog.vue";
 import { useI18n } from "vue-i18n";
+import { getProductImageSrc } from "@/utils/urlUtils";
+import ProductActionDialog from "@/modules/seller/components/ProductActionDialog.vue";
 import { isAllowed } from "@/utils/permissionUtils";
 
 const visible = ref(false);

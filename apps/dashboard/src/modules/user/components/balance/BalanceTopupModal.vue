@@ -1,23 +1,23 @@
 <template>
   <Dialog
     v-model:visible="visible"
-    modal
-    header="Increase Saldo"
-    :style="{ width: '500px' }"
-    position="top"
-    @show="pay"
-    @hide="cancelPay"
     :draggable="false"
+    header="Increase Saldo"
+    modal
+    position="top"
+    :style="{ width: '500px' }"
+    @hide="cancelPay"
+    @show="pay"
   >
     <p>{{ `${t('modules.user.balance.topUp')} ${formatPrice(dinero)}` }}</p>
-    <form ref="payment" id="payment-form" v-show="!loading">
+    <form v-show="!loading" id="payment-form" ref="payment">
       <div id="payment-element">
         <!--Stripe.js injects the Payment Element-->
       </div>
     </form>
 
     <template #footer>
-      <Button :label="t('modules.user.balance.pay').toUpperCase()" @click="submitPay" :disabled="loading"/>
+      <Button :disabled="loading" :label="t('modules.user.balance.pay').toUpperCase()" @click="submitPay"/>
     </template>
   </Dialog>
 </template>
@@ -28,12 +28,12 @@
 import { computed, onBeforeMount, ref } from 'vue';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import type { PaymentIntentResult } from "@stripe/stripe-js";
-import apiService from '@/services/ApiService';
 import type { Dinero } from "@sudosos/sudosos-client";
-import { formatPrice } from "@/utils/formatterUtils";
 import { useI18n } from "vue-i18n";
-import { useSettingsStore } from "@/stores/settings.store";
 import { useToast } from "primevue/usetoast";
+import apiService from '@/services/ApiService';
+import { formatPrice } from "@/utils/formatterUtils";
+import { useSettingsStore } from "@/stores/settings.store";
 
 const { t } = useI18n();
 
@@ -106,7 +106,7 @@ const submitPay = async () => {
   });
 };
 
-const cancelPay = async () => {
+const cancelPay = () => {
   visible.value = false;
   if (paymentElement.value) {
     paymentElement.value.destroy();

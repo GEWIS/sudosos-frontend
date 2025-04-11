@@ -89,7 +89,6 @@ export const useContainerStore = defineStore('container', {
          */
         async fetchAllContainers() {
             return fetchAllPages<ContainerResponse>(
-              // @ts-ignore
               (take, skip) => ApiService.container.getAllContainers(take, skip)
             ).then((containersArray) => {
                 containersArray.forEach((container: ContainerResponse) => {
@@ -166,7 +165,7 @@ export const useContainerStore = defineStore('container', {
          * Used for receiving and handling product updates from product store.
          * @param productResponse
          */
-        async handleProductUpdate(productResponse: ProductResponse) {
+        handleProductUpdate(productResponse: ProductResponse) {
             const containers = Object.values(this.containers).filter(isContainerWithProductsResponse);
             for (const container of containers) {
                 const productIndex = container.products.findIndex(p => p.id === productResponse.id);
@@ -179,7 +178,7 @@ export const useContainerStore = defineStore('container', {
          * Used for receiving and handling product deletions from product store.
          * @param id
          */
-        async handleProductDelete(id: Number) {
+        handleProductDelete(id: number) {
             const containers = Object.values(this.containers).filter(isContainerWithProductsResponse);
             for (const container of containers) {
                 container.products = container.products.filter(e => e.id !== id);

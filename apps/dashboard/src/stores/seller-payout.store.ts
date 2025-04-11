@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
-import ApiService from "@/services/ApiService";
 import type {
   CreateSellerPayoutRequest,
   PaginatedSellerPayoutResponse,
   SellerPayoutResponse
 } from "@sudosos/sudosos-client";
 import { fetchAllPages } from "@sudosos/sudosos-frontend-common";
+import ApiService from "@/services/ApiService";
 
 export const useSellerPayoutStore = defineStore('seller-payout', {
   state: () => ({
@@ -30,7 +30,7 @@ export const useSellerPayoutStore = defineStore('seller-payout', {
     async fetchPayouts(take: number, skip: number): Promise<PaginatedSellerPayoutResponse> {
       return await ApiService.sellerPayouts
         .getAllSellerPayouts(undefined, undefined, undefined, take, skip).then((res) => {
-          const payouts = res.data.records as SellerPayoutResponse[];
+          const payouts = res.data.records;
           payouts.forEach((payout) => {
             this.payouts[payout.id] = payout;
           });
@@ -41,7 +41,7 @@ export const useSellerPayoutStore = defineStore('seller-payout', {
       : Promise<PaginatedSellerPayoutResponse> {
       return await ApiService.sellerPayouts
         .getAllSellerPayouts(requestedById, undefined, undefined, take, skip).then((res) => {
-          const payouts = res.data.records as SellerPayoutResponse[];
+          const payouts = res.data.records;
           payouts.forEach((payout) => {
             this.payouts[payout.id] = payout;
           });
