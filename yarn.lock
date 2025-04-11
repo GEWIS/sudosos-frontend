@@ -2796,16 +2796,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-github-commit-hash@npm:^1.0.3":
-  version: 1.0.3
-  resolution: "eslint-plugin-github-commit-hash@npm:1.0.3"
-  peerDependencies:
-    eslint: ">=8.56.0"
-  checksum: 10c0/9ee315f9891b8cbd8593bb454b6219e3f1fbde3661de2258387ebc24412e613cbd24e5a6b243b3a8d22710f6d1f79d71b46c127c0303767615540aadbc66a611
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-import@npm:^2.27.5, eslint-plugin-import@npm:^2.31.0":
+"eslint-plugin-import@npm:^2.31.0":
   version: 2.31.0
   resolution: "eslint-plugin-import@npm:2.31.0"
   dependencies:
@@ -2851,24 +2842,6 @@ __metadata:
     eslint-config-prettier:
       optional: true
   checksum: 10c0/9911740a5edac7933d92671381908671c61ffa32a3cee7aed667ebab89831ee2c0b69eb9530f68dbe172ca9d4b3fa3d47350762dc1eb096a3ce125fa31c0e616
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-vue@npm:^9.11.0":
-  version: 9.32.0
-  resolution: "eslint-plugin-vue@npm:9.32.0"
-  dependencies:
-    "@eslint-community/eslint-utils": "npm:^4.4.0"
-    globals: "npm:^13.24.0"
-    natural-compare: "npm:^1.4.0"
-    nth-check: "npm:^2.1.1"
-    postcss-selector-parser: "npm:^6.0.15"
-    semver: "npm:^7.6.3"
-    vue-eslint-parser: "npm:^9.4.3"
-    xml-name-validator: "npm:^4.0.0"
-  peerDependencies:
-    eslint: ^6.2.0 || ^7.0.0 || ^8.0.0 || ^9.0.0
-  checksum: 10c0/69040947271b0d46132a34cccd54af5aeff9c017060ceba49c0cb689d4817468c27fb07881d655bc4453b40e2858715e3ab6a5155ee0846aa000013685185a81
   languageName: node
   linkType: hard
 
@@ -5839,9 +5812,6 @@ __metadata:
     concurrently: "npm:^8.2.2"
     dinero.js: "npm:^1.9.1"
     eslint: "npm:^9.24.0"
-    eslint-plugin-github-commit-hash: "npm:^1.0.3"
-    eslint-plugin-import: "npm:^2.27.5"
-    eslint-plugin-vue: "npm:^9.11.0"
     fuse.js: "npm:^7.0.0"
     jsonc-eslint-parser: "npm:^2.4.0"
     jwt-decode: "npm:^4.0.0"
