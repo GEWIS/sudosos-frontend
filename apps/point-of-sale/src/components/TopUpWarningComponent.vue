@@ -14,7 +14,7 @@
       Please first Top-Up your balance before continuing.<br>
     </Message>
     <div class="qr-code" style="display: flex; justify-content: center; margin-top: 1rem;">
-      <img src="@/assets/sudosos-qr.png" style="width: 25rem;" />
+      <img src="@/assets/sudosos-qr.png" style="width: 25rem;" alt=""/>
     </div>
     <div class="spinner-container" v-if="topUpProgress > 0">
       <ProgressSpinner
