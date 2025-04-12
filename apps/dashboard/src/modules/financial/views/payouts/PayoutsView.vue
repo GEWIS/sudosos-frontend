@@ -2,7 +2,7 @@
   <div class="page-container">
     <div class="page-title">{{ t('modules.financial.payout.title') }}</div>
     <div class="content-wrapper flex flex-column">
-      <div class="flex flex-row justify-content-end w-full -mb-5">
+      <div class="-mb-5 flex flex-row justify-content-end w-full">
         <Button
             class="z-5"
             icon="pi pi-plus"

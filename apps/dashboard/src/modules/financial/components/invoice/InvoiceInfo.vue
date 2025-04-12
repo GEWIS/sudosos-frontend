@@ -35,7 +35,7 @@
         modal
         @show="openDialog"
     >
-      <div class="flex flex-column justify-content-between gap-3">
+      <div class="flex flex-column gap-3 justify-content-between">
         <div>
           {{ t('modules.financial.invoice.confirmDelete') }}
           <br>
@@ -44,7 +44,7 @@
           <br>
           {{  t('modules.financial.invoice.unrecoverable') }}
         </div>
-        <div class="flex gap-3 flex-row justify-content-end align-items-end">
+        <div class="align-items-end flex flex-row gap-3 justify-content-end">
           <Button severity="secondary" @click="dialog.close()">{{ t('common.cancel') }}</Button>
           <Button @click="deleteInvoice">{{ t('common.delete') }}</Button>
         </div>

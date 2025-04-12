@@ -1,7 +1,7 @@
 <template>
-  <div class="page-container flex flex-column">
+  <div class="flex flex-column page-container">
     <div class="page-title"> {{ user?.firstName }} {{ t('modules.seller.payouts.title') }}</div>
-    <div class="flex flex-column justify-content-between gap-5">
+    <div class="flex flex-column gap-5 justify-content-between">
       <div class="flex flex-row gap-3 justify-content-between">
         <FormCard class="flex-grow-1" :create="!zeroBalance" :enable-edit="!zeroBalance" :form="form" :header="t('modules.seller.payouts.title')" @cancel="form.context.resetForm()">
           <SellerPayoutCreateForm v-if="user" :disabled="zeroBalance" :form="form" :seller="user"/>

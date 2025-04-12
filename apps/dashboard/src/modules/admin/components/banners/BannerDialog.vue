@@ -1,23 +1,23 @@
 <template>
     <Dialog
-ref="dialog" v-model:visible="visible" class="w-full md:w-6" :draggable="false" :header="
+ref="dialog" v-model:visible="visible" class="md:w-6 w-full" :draggable="false" :header="
             banner != undefined
             ? t('modules.admin.forms.banner.headerEdit')
             : t('modules.admin.forms.banner.headerCreate')
         " modal @show="addListenerOnDialogueOverlay(dialog)">
-        <span v-if="imageSource" class=" w-full mx-1 image-preview-container">
-            <img class="w-full" :src="imageSource" />
+        <span v-if="imageSource" class="image-preview-container mx-1 w-full">
+            <img alt="Banner" class="w-full" :src="imageSource" />
             <button
-ref="previewButton" class="image-preview-indicator p-image-preview-indicator fileupload"
+ref="previewButton" class="fileupload image-preview-indicator p-image-preview-indicator"
                 type="button" @click="fileInput.click()">
                 <i class="pi pi-upload"></i>
                 <input ref="fileInput" accept="image/*" type="file" @change="onImgUpload" />
             </button>
         </span>
-        <div v-else class="px-3 py-5 text-xl surface-hover text-center  relative">
+        <div v-else class="px-3 py-5 relative surface-hover text-center text-xl">
             {{ t('modules.admin.banners.noBannerFound') }} <br>
             <button
-ref="previewButton" class="cursor-pointer image-preview-indicator p-image-preview-indicator fileupload"
+ref="previewButton" class="cursor-pointer fileupload image-preview-indicator p-image-preview-indicator"
                 type="button"
                 @click="fileInput.click()">
                 <input ref="fileInput" accept="image/*" type="file" @change="onImgUpload" />
@@ -41,7 +41,7 @@ v-model="duration"
             {{ t('modules.admin.forms.banner.timespan') }}<br>
             <Calendar v-model="startDate" hour-format="24" show-time />
             {{ t('modules.admin.banners.till' ) }}
-            <Calendar v-model="endDate" class="pt-1 md:pt-0" hour-format="24" show-time /><br>
+            <Calendar v-model="endDate" class="md:pt-0 pt-1" hour-format="24" show-time /><br>
             <span class="font-bold text-red-500">{{ errors['Start date'] }}</span><br>
             <span class="font-bold text-red-500">{{ errors['End date'] }}</span>
         </div>
@@ -49,7 +49,7 @@ v-model="duration"
             {{ t('modules.admin.banners.till') }}<br>
             <InputSwitch v-model="active" />
         </div>
-        <div class="flex flex-column justify-content-end align-items-end">
+        <div class="align-items-end flex flex-column justify-content-end">
             <Button @click="onSubmit">{{ t('common.save') }}</Button>
         </div>
     </Dialog>

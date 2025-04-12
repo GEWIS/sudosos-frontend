@@ -1,18 +1,18 @@
 <template>
   <BalanceTopupModal v-model:visible="visible" :amount="topupAmount!!" />
-  <CardComponent class="w-full sm:w-full" :header="t('modules.user.balance.balance')">
+  <CardComponent class="sm:w-full w-full" :header="t('modules.user.balance.balance')">
     <div class="flex flex-row justify-content-center">
       <div class="flex flex-column justify-content-center w-6">
-        <Skeleton v-if="loading" class="h-4rem w-5 mx-auto" />
-        <h1 v-else class="text-center font-medium text-5xl sm:text-7xl my-0">{{ displayBalance }}</h1>
-        <p v-if="userBalance && userBalance.fine" class="text-center text-base font-semibold text-red-500">
+        <Skeleton v-if="loading" class="h-4rem mx-auto w-5" />
+        <h1 v-else class="font-medium my-0 sm:text-7xl text-5xl text-center">{{ displayBalance }}</h1>
+        <p v-if="userBalance && userBalance.fine" class="font-semibold text-base text-center text-red-500">
           {{
           isAllFine
           ? t('modules.user.balance.allIsFines')
           : t('modules.user.balance.someIsFines', { fine: displayFine })
           }}
         </p>
-        <div v-show="displayBalanceAfterTopup" class="text-center text-600 font-italic">
+        <div v-show="displayBalanceAfterTopup" class="font-italic text-600 text-center">
           {{ t('modules.user.balance.after') }}
           <span v-if="displayBalanceAfterTopup">{{
             formatPrice(
@@ -28,7 +28,7 @@
       <div class="flex flex-column w-6">
         <div>
           <p class="font-bold">{{ t('modules.user.balance.increaseAmount') }}</p>
-          <div class="w-full flex-1">
+          <div class="flex-1 w-full">
             <InputNumber
                 v-model="topupAmount"
                 currency="EUR"
@@ -57,7 +57,7 @@
           <span class="font-bold text-red-500">{{ errors['Top up amount'] }}</span>
         </div>
         <div class="flex justify-content-end my-2">
-          <Button class="w-full sm:w-4 justify-content-center" @click="onSubmit">
+          <Button class="justify-content-center sm:w-4 w-full" @click="onSubmit">
             {{ t('modules.user.balance.topUp') }}
           </Button>
         </div>

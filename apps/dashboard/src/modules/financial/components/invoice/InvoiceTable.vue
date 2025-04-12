@@ -17,7 +17,7 @@
       <Column field="date" :header="t('common.date')">
         <template #body="slotProps">
           <div class="cell-content">
-            <Skeleton v-if="isLoading" class="skeleton-fixed w-6 surface-300" />
+            <Skeleton v-if="isLoading" class="skeleton-fixed surface-300 w-6" />
             <span v-else>
               {{ formatDateFromString(slotProps.data.createdAt) }}
             </span>
@@ -46,7 +46,7 @@
         </template>
         <template #body="slotProps">
           <div class="cell-content">
-            <Skeleton v-if="isLoading" class="skeleton-fixed w-6 surface-300" />
+            <Skeleton v-if="isLoading" class="skeleton-fixed surface-300 w-6" />
             <span v-else>
               {{ slotProps.data.currentState.state }}
             </span>
@@ -57,7 +57,7 @@
       <Column field="to.firstName" :header="t('common.for')" style="max-width: 10rem;">
         <template #body="slotProps">
           <div class="cell-content">
-            <Skeleton v-if="isLoading" class="skeleton-fixed w-6 surface-300" />
+            <Skeleton v-if="isLoading" class="skeleton-fixed surface-300 w-6" />
             <span v-else class="truncate">
               {{ slotProps.data.to.firstName }}
             </span>
@@ -68,7 +68,7 @@
       <Column field="description" :header="t('common.description')" style="max-width: 15rem;">
         <template #body="slotProps">
           <div class="cell-content">
-            <Skeleton v-if="isLoading" class="skeleton-fixed w-6 surface-300" />
+            <Skeleton v-if="isLoading" class="skeleton-fixed surface-300 w-6" />
             <span v-else class="truncate">
               {{ slotProps.data.description }}
             </span>
@@ -79,7 +79,7 @@
       <Column field="transfer.amount" :header="t('common.amount')">
         <template #body="slotProps">
           <div class="cell-content">
-            <Skeleton v-if="isLoading" class="skeleton-fixed w-3 surface-300" />
+            <Skeleton v-if="isLoading" class="skeleton-fixed surface-300 w-3" />
             <span v-else>
               {{ formatPrice(slotProps.data.transfer?.amount) }}
             </span>
@@ -90,10 +90,10 @@
       <Column :header="t('common.actions')" style="width: 10%">
         <template #body="slotProps">
           <div class="cell-content">
-            <Skeleton v-if="isLoading" class="skeleton-fixed w-3 surface-300" />
+            <Skeleton v-if="isLoading" class="skeleton-fixed surface-300 w-3" />
             <span v-else>
               <Button
-                  class="p-button-rounded p-button-text p-button-plain"
+                  class="p-button-plain p-button-rounded p-button-text"
                   icon="pi pi-eye"
                   type="button"
                   @click="() => viewInvoice(slotProps.data.id)"

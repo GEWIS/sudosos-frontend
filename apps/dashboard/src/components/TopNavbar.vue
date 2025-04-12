@@ -1,9 +1,9 @@
 
 <template>
-    <nav class="bg-primary w-full flex justify-content-around">
+    <nav class="bg-primary flex justify-content-around w-full">
       <Menubar class="hidden mb:flex" :model="navItems">
           <template #start>
-            <router-link class="no-underline text-white font-bold flex align-items-center flex-row py-1" to="/">
+            <router-link class="align-items-center flex flex-row font-bold no-underline py-1 text-white" to="/">
               {{ t("common.sudosos") }}
               <img alt="SudoSOS" class="h-4rem py-2" src="../assets/img/gewis-branding.svg" />
             </router-link>
@@ -12,7 +12,7 @@
             <router-link v-if="item.route" v-slot="{ href, navigate }" custom :to="item.route">
               <a
 v-bind="props.action"
-                 class="flex align-items-center justify-content-between"
+                 class="align-items-center flex justify-content-between"
                  :href="href"
                  @click="navigate"
               >
@@ -21,14 +21,14 @@ v-bind="props.action"
               </a>
             </router-link>
             <a v-else :href="item.url" :target="item.target" v-bind="props.action">
-              <div class="flex align-items-center justify-content-between">
+              <div class="align-items-center flex justify-content-between">
                 <span class="p-menuitem-text">{{ item.label }}</span>
                 <span
                     v-if="item.notifications"
-                    class="p-badge p-badge-no-gutter p-badge-danger-inverse ml-2">
+                    class="ml-2 p-badge p-badge-danger-inverse p-badge-no-gutter">
                   {{ item.notifications }}
                 </span>
-                <span v-else-if="hasSubmenu" class="pi pi-fw pi-angle-down ml-2" />
+                <span v-else-if="hasSubmenu" class="ml-2 pi pi-angle-down pi-fw" />
               </div>
             </a>
           </template>
@@ -46,16 +46,16 @@ v-bind="props.action"
           <a v-else :href="item.url" :target="item.target" v-bind="props.action">
             <span class="p-menuitem-text">{{ item.label }}</span>
             <span v-if="item.icon" :class="item.icon" />
-            <span v-if="hasSubmenu" class="pi pi-fw pi-angle-down ml-2" />
+            <span v-if="hasSubmenu" class="ml-2 pi pi-angle-down pi-fw" />
           </a>
         </template>
       </Menubar>
       <Menubar
-        class="flex mb:hidden flex-row flex-wrap justify-content-between mx-2 my-2 transition-all w-full"
+        class="flex flex-row flex-wrap justify-content-between mb:hidden mx-2 my-2 transition-all w-full"
         :model="mobileItems"
       >
         <template #start>
-          <router-link class="no-underline text-white font-bold flex align-items-center flex-row py-1" to="/">
+          <router-link class="align-items-center flex flex-row font-bold no-underline py-1 text-white" to="/">
             {{ t("common.sudosos") }}
             <img alt="SudoSOS" class="h-4rem py-2" src="../assets/img/gewis-branding.svg" />
           </router-link>
@@ -70,7 +70,7 @@ v-bind="props.action"
           <a v-else :href="item.url" :target="item.target" v-bind="props.action">
             <span class="p-menuitem-text">{{ item.label }}</span>
               <span v-if="item.icon" :class="item.icon" />
-            <span v-if="hasSubmenu" class="pi pi-fw pi-angle-down ml-2" />
+            <span v-if="hasSubmenu" class="ml-2 pi pi-angle-down pi-fw" />
           </a>
         </template>
       </Menubar>

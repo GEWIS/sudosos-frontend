@@ -24,7 +24,7 @@ id="name"
                :errors="form.context.errors.value.reference" :label="t('modules.seller.payouts.payout.description')"
                placeholder="Enter payout description" type="textarea" :value="form.model.reference.value.value" @update:value="form.context.setFieldValue('reference', $event)"/>
     <div>
-                <span class="flex flex-wrap justify-content-between flex-row align-items-center gap-3">
+                <span class="align-items-center flex flex-row flex-wrap gap-3 justify-content-between">
                     <p class="my-0">{{ t('modules.seller.payouts.payout.amount') }}</p>
                         <InputNumber
 v-if="payoutAmount" v-model="payoutAmount" currency="EUR"
@@ -36,11 +36,11 @@ v-else class="w-6" :disabled="!datesSelected" severity="info"
                                 type="submit" @click="calculatePayoutAmount">{{ t('modules.seller.payouts.payout.calculateAmount') }}</Button>
                 </span>
     </div>
-    <span v-if="payoutAmount" class="flex flex-wrap justify-content-between flex-row align-items-center gap-3">
+    <span v-if="payoutAmount" class="align-items-center flex flex-row flex-wrap gap-3 justify-content-between">
           <p class="my-0 text-red-500"><i class="pi pi-exclamation-triangle red-500"/>  {{ t('modules.seller.payouts.payout.check') }}</p>
           <Button v-if="!pdfLoading" class="w-3" type="submit" @click="getReportPdf">
             {{ t('common.downloadPdf') }}</Button>
-          <ProgressSpinner v-else class="w-1 h-1"/>
+          <ProgressSpinner v-else class="h-1 w-1"/>
     </span>
   </div>
 </template>

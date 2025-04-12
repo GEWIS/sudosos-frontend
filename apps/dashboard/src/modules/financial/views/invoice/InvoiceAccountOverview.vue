@@ -17,7 +17,7 @@
             :sortable="true"
         >
           <template v-if="isLoading" #body>
-            <Skeleton class="w-8 my-1 h-1rem surface-300"/>
+            <Skeleton class="h-1rem my-1 surface-300 w-8"/>
           </template>
           <template v-else #body="{ data }">
             <UserLink new-tab :user="data" />
@@ -30,7 +30,7 @@
             :sortable="true"
         >
           <template v-if="isLoading" #body>
-            <Skeleton class="w-3 my-1 h-1rem surface-300"/>
+            <Skeleton class="h-1rem my-1 surface-300 w-3"/>
           </template>
           <template v-else #body="{ data }">
             <span class="text-right">{{ formatPrice(data.amount) }}</span>
@@ -43,7 +43,7 @@
             :sortable="true"
         >
           <template v-if="isLoading" #body>
-            <Skeleton class="w-3 my-1 h-1rem surface-300"/>
+            <Skeleton class="h-1rem my-1 surface-300 w-3"/>
           </template>
           <template v-else #body="{ data }">
             {{ formatDateFromString(data.lastTransactionDate) }}
@@ -54,12 +54,12 @@
             header-style="width: 3rem; text-align: center"
         >
           <template v-if="isLoading" #body>
-            <Skeleton class="w-4 my-1 h-1rem surface-300"/>
+            <Skeleton class="h-1rem my-1 surface-300 w-4"/>
           </template>
           <template v-else #body="{ data }">
             <Button
 v-tooltip="t('modules.financial.invoice.create.create')"
-                    class="p-button-rounded p-button-text p-button-plain"
+                    class="p-button-plain p-button-rounded p-button-text"
                     icon="pi pi-file-edit"
                     type="button"
                     @click="handleInvoicePush(data.id)"

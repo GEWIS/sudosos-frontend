@@ -1,7 +1,7 @@
 <template>
   <CardComponent class="p-0" :header="t('modules.seller.productContainers.containers.header')">
     <template #topAction>
-      <div v-if="showCreate || associatedPos" class="flex justify-content-endg gap-2">
+      <div v-if="showCreate || associatedPos" class="flex gap-2 justify-content-endg">
         <Button
             v-if="posEditAllowed && associatedPos"
             outlined

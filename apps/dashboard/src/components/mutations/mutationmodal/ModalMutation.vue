@@ -1,18 +1,18 @@
 <template>
   <Dialog
     ref="dialog"
-    class="w-auto flex w-11 md:w-4"
+    class="flex md:w-4 w-11 w-auto"
     :header="t('components.mutations.modal.header', {id} )"
     modal
     :visible="visible"
     @show="addListenerOnDialogueOverlay(dialog)"
   >
     <div v-if="isLoading">
-      <Skeleton class="surface-300 my-1 w-5 h-2rem"/>
-      <Skeleton class="surface-300 my-1 w-10 h-2rem"/>
+      <Skeleton class="h-2rem my-1 surface-300 w-5"/>
+      <Skeleton class="h-2rem my-1 surface-300 w-10"/>
       <br>
-      <Skeleton class="surface-300 my-1 w-11 h-2rem"/>
-      <Skeleton class="surface-300 my-1 w-11 h-2rem"/>
+      <Skeleton class="h-2rem my-1 surface-300 w-11"/>
+      <Skeleton class="h-2rem my-1 surface-300 w-11"/>
     </div>
 
     <TransactionDetailModal
@@ -30,7 +30,7 @@ v-if="
       !shouldShowDeposit &&
       !shouldShowInvoice &&
       shouldShowDeleteButton" #footer>
-      <div class="flex flex-column align-items-end">
+      <div class="align-items-end flex flex-column">
         <Button severity="danger" @click="deleteMutation">
           {{ t('common.delete').toUpperCase() }}
         </Button>

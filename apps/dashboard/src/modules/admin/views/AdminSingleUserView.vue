@@ -4,7 +4,7 @@
       {{ t('modules.admin.singleUser.profile', {user: currentUser ? currentUser.firstName : ''}) }}
     </div>
     <div class="flex flex-column gap-5">
-      <div class="flex flex-column  md:flex-row justify-content-between gap-8">
+      <div class="flex flex-column gap-8 justify-content-between md:flex-row">
         <AdminUserInfoCard v-if="currentUser" class="flex-grow-1" :user="currentUser"/>
         <AdminUserBalance v-if="currentUser" :user="currentUser" @update-mutations="() => mutations?.refresh()"/>
       </div>

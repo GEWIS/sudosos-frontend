@@ -1,45 +1,45 @@
 <template>
-  <div class="flex align-content-center flex-column">
-    <div class="py-4 text-center font-bold text-xl">
+  <div class="align-content-center flex flex-column">
+    <div class="font-bold py-4 text-center text-xl">
       {{ t("common.wrapped.lastYear") }}</div>
     <div class="text-center">{{ t("common.wrapped.total") }}</div>
-    <div class="text-center text-3xl">
+    <div class="text-3xl text-center">
       <div>{{ formatPrice(total!) }}</div>
     </div>
 
     <div class="text-center">{{ t("common.wrapped.totalBorrel") }}</div>
-    <div class="text-center text-3xl">
+    <div class="text-3xl text-center">
       <div>{{ formatPrice(totalBorrels!) }}</div>
     </div>
-    <div class="py-4 text-center font-bold text-xl">
+    <div class="font-bold py-4 text-center text-xl">
       {{ t("common.wrapped.depth") }}
     </div>
     <div class="text-center">{{ t("common.wrapped.totalAlc") }}</div>
-    <div class="text-center text-3xl">
+    <div class="text-3xl text-center">
       <div>{{ formatPrice(totalAlc!) }}</div>
     </div>
 
     <div class="text-center">{{ t("common.wrapped.totalSoda") }}</div>
-    <div class="text-center text-3xl">
+    <div class="text-3xl text-center">
       <div>{{ formatPrice(totalSoda!) }}</div>
     </div>
 
     <div class="text-center">{{ t("common.wrapped.totalSnacks") }}</div>
-    <div class="text-center text-3xl">
+    <div class="text-3xl text-center">
       <div>{{ formatPrice(totalSnacks!) }}</div>
     </div>
 
-    <div class="py-4 text-center font-bold text-xl">
+    <div class="font-bold py-4 text-center text-xl">
       {{ t("common.wrapped.fav") }}
     </div>
 
-    <div class="align-items-center flex-column flex">
+    <div class="align-items-center flex flex-column">
       <div v-for="p in topProducts" :key="p.product.id" class="w-7">
           {{ p.count + "x" }} {{ p.product.name + " - " }} {{ formatPrice(p.totalInclVat) }}
       </div>
     </div>
 
-    <div class="py-4 text-center font-bold text-xl">
+    <div class="font-bold py-4 text-center text-xl">
       {{ t("common.wrapped.christmas") }}
     </div>
 

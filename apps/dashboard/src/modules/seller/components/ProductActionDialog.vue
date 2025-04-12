@@ -16,8 +16,8 @@ v-model="visible"
             v-if="state.addToContainer"
             v-model:select-product="selectExistingProduct"
             :products="dropdownProducts"/>
-        <hr v-if="state.addToContainer" class="w-full opacity-50">
-        <div class="flex flex-column md:flex-row gap-4">
+        <hr v-if="state.addToContainer" class="opacity-50 w-full">
+        <div class="flex flex-column gap-4 md:flex-row">
           <ProductActionImageForm
               :image-src="imageSrc"
               :is-editable="isProductEditable"
@@ -33,7 +33,7 @@ v-model="visible"
                 :products="!state.displayProduct ? products : undefined"
                 :vat-groups="vatGroups"
                 @submit:success="visible = false"/>
-            <div class="flex flex-row justify-content-end gap-1">
+            <div class="flex flex-row gap-1 justify-content-end">
             </div>
             <div>
               <!-- Row for Added on -->

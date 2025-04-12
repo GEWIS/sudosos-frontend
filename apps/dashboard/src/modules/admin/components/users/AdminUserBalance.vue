@@ -9,10 +9,10 @@
   >
     <div class="flex flex-column justify-content-center">
       <div v-if="userBalance === null">
-        <Skeleton class="h-4rem w-10rem mx-1rem my-6"/>
+        <Skeleton class="h-4rem mx-1rem my-6 w-10rem"/>
       </div>
-      <h1 v-else class="text-center font-medium text-6xl">{{ displayBalance }}</h1>
-      <p v-if="userBalance && userBalance.fine" class="text-center text-base font-semibold text-red-500">
+      <h1 v-else class="font-medium text-6xl text-center">{{ displayBalance }}</h1>
+      <p v-if="userBalance && userBalance.fine" class="font-semibold text-base text-center text-red-500">
         {{ isAllFine ?
           t('modules.admin.singleUser.balance.allIsFines')
           : t('modules.admin.singleUser.balance.someIsFines', { fine: displayFine }) }}

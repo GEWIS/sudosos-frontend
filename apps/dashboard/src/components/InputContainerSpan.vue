@@ -6,7 +6,7 @@
       <span class="my-0">{{ label }}</span>
       <Dropdown
           v-model="container"
-          class="w-full md:w-15rem"
+          class="md:w-15rem w-full"
           option-label="name"
           :options="containers"
           :placeholder="placeholder"

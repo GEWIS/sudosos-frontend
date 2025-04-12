@@ -8,7 +8,7 @@ id="name"
                :placeholder="t('common.amount')"
                type="currency" :value="form.model.amount.value.value" @update:value="form.context.setFieldValue('amount', $event)" />
     <div
-        class="flex justify-content-end font-italic underline cursor-pointer text-color-secondary"
+        class="cursor-pointer flex font-italic justify-content-end text-color-secondary underline"
         @click="setToWaiveAll"
     >
       {{ t('modules.admin.singleUser.balance.waiveAllFines') }}

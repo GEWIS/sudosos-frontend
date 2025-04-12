@@ -41,7 +41,7 @@
       <Column field="image" :header="t('modules.seller.productContainers.products.image')">
         <template v-if="!loading" #body="rowDataImg">
           <Image
-              class="h-4rem w-4rem image-preview-container" preview
+              class="h-4rem image-preview-container w-4rem" preview
               :pt="{
                 image: {
                   class: 'h-4rem w-4rem',
@@ -55,12 +55,12 @@
           />
         </template>
         <template v-else #body>
-          <Skeleton class="w-8 my-1 h-4rem surface-300"/>
+          <Skeleton class="h-4rem my-1 surface-300 w-8"/>
         </template>
       </Column>
       <Column field="name" :header="t('common.name')" style="width: 30%">
         <template v-if="loading" #body>
-          <Skeleton class="w-6 my-1 h-2rem surface-300"/>
+          <Skeleton class="h-2rem my-1 surface-300 w-6"/>
         </template>
       </Column>
       <Column field="category" :header="t('modules.seller.productContainers.products.category')" style="width: 15%">
@@ -68,7 +68,7 @@
           {{ rowData.data.category.name }}
         </template>
         <template v-else #body>
-          <Skeleton class="w-6 my-1 h-2rem surface-300"/>
+          <Skeleton class="h-2rem my-1 surface-300 w-6"/>
         </template>
       </Column>
       <Column field="priceInclVat" :header="t('common.price')" style="width: 17%">
@@ -76,7 +76,7 @@
           {{ formatPrice(rowData.data.priceInclVat) }}
         </template>
         <template v-else #body>
-          <Skeleton class="w-6 my-1 h-2rem surface-300"/>
+          <Skeleton class="h-2rem my-1 surface-300 w-6"/>
         </template>
       </Column>
       <Column
@@ -86,12 +86,12 @@ field="alcoholPercentage"
           {{ `${rowData.data.alcoholPercentage} %` }}
         </template>
         <template v-else #body>
-          <Skeleton class="w-6 my-1 h-2rem surface-300"/>
+          <Skeleton class="h-2rem my-1 surface-300 w-6"/>
         </template>
       </Column>
       <Column field="vat" :header="t('modules.seller.productContainers.products.vat')" style="width: 10%">
         <template v-if="loading" #body>
-          <Skeleton class="w-6 my-1 h-2rem surface-300"/>
+          <Skeleton class="h-2rem my-1 surface-300 w-6"/>
         </template>
         <template v-else #body="rowData">
           {{ `${rowData.data.vat.percentage} %` }}
@@ -103,7 +103,7 @@ field="alcoholPercentage"
           style="width: 5%"
       >
         <template v-if="loading" #body>
-          <Skeleton class="w-3 my-1 h-2rem surface-300"/>
+          <Skeleton class="h-2rem my-1 surface-300 w-3"/>
         </template>
         <template v-else #body="rowData">
           <Button

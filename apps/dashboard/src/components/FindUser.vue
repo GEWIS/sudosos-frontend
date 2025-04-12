@@ -2,7 +2,7 @@
   <Dropdown
       v-model="selectedUser"
       auto-filter-focus
-      class="w-full md:w-15rem"
+      class="md:w-15rem w-full"
       :filter="true"
       :filter-fields="['fullName']"
       :loading="loading"

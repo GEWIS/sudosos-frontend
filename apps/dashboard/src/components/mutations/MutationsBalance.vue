@@ -11,7 +11,7 @@ lazy :paginator="paginator" :rows="rows" :rows-per-page-options="[5, 10, 25, 50,
                :value="mutations" @page="onPage($event)">
       <Column field="moment" :header="t('components.mutations.when')">
         <template v-if="isLoading" #body>
-          <Skeleton class="w-6 my-1 h-1rem surface-300"/>
+          <Skeleton class="h-1rem my-1 surface-300 w-6"/>
         </template>
         <template v-else #body="mutation">
                 <span class="hidden sm:block">{{
@@ -30,7 +30,7 @@ lazy :paginator="paginator" :rows="rows" :rows-per-page-options="[5, 10, 25, 50,
 
       <Column field="createdBy" :header="t('components.mutations.createdBy')">
         <template v-if="isLoading" #body>
-          <Skeleton class="w-6 my-1 h-1rem surface-300"/>
+          <Skeleton class="h-1rem my-1 surface-300 w-6"/>
         </template>
         <template v-else #body="mutation">
           {{
@@ -43,7 +43,7 @@ lazy :paginator="paginator" :rows="rows" :rows-per-page-options="[5, 10, 25, 50,
 
       <Column class="hidden sm:block" field="mutationPOS" :header="t('components.mutations.pos')">
         <template v-if="isLoading" #body>
-          <Skeleton class="w-6 my-1 h-1rem surface-300"/>
+          <Skeleton class="h-1rem my-1 surface-300 w-6"/>
         </template>
         <template v-else #body="mutation">
           {{ mutation.data.pos }}
@@ -52,7 +52,7 @@ lazy :paginator="paginator" :rows="rows" :rows-per-page-options="[5, 10, 25, 50,
 
       <Column field="change" :header="t('components.mutations.amount')">
         <template v-if="isLoading" #body>
-          <Skeleton class="w-3 my-1 h-1rem surface-300"/>
+          <Skeleton class="h-1rem my-1 surface-300 w-3"/>
         </template>
         <template v-else #body="mutation">
           <!-- Deposits, Invoices, Waived fines all get green -->
@@ -68,7 +68,7 @@ v-else-if="isFine(mutation.data.type)" class="font-bold"
           </div>
 
           <!-- Other transactions stay black -->
-          <div v-else severity="info">
+          <div v-else>
             {{ formatPrice((mutation.data as FinancialMutation).amount, true) }}
           </div>
         </template>
@@ -76,11 +76,11 @@ v-else-if="isFine(mutation.data.type)" class="font-bold"
 
       <Column field="" style="width: 10%">
         <template v-if="isLoading" #body>
-          <Skeleton class="w-3 my-1 h-1rem surface-300"/>
+          <Skeleton class="h-1rem my-1 surface-300 w-3"/>
         </template>
         <template v-else #body="mutation">
           <i
-class="pi pi-info-circle cursor-pointer"
+class="cursor-pointer pi pi-info-circle"
              @click="() => openModal(mutation.data.id, mutation.data.type)"/>
         </template>
       </Column>

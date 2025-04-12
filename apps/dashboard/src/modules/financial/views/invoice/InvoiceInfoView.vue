@@ -1,7 +1,7 @@
 <template>
-  <div v-if="invoice" class="page-container-wide align-items-center flex flex-column gap-5">
+  <div v-if="invoice" class="align-items-center flex flex-column gap-5 page-container-wide">
     <div>
-      <div class="page-title flex flex-row">
+      <div class="flex flex-row page-title">
         <div class="flex flex-column">
           <span>{{ t("modules.financial.invoice.invoice") }}</span>
           <small class="text-base">
@@ -13,7 +13,7 @@
           </span>
         </div>
       </div>
-      <div class="flex flex-row gap-5 flex-wrap flex-grow justify-content-center">
+      <div class="flex flex-grow flex-row flex-wrap gap-5 justify-content-center">
         <div class="flex flex-column gap-5">
           <InvoiceAmountCard v-if="dirty" :invoice-id="invoice.id"/>
           <InvoiceStepsCard v-else :invoice-id="invoice.id"/>
@@ -25,7 +25,7 @@
       </div>
     </div>
   </div>
-  <Skeleton v-else class="page-container align-items-center flex flex-column gap-5"/>
+  <Skeleton v-else class="align-items-center flex flex-column gap-5 page-container"/>
 </template>
 
 <script setup lang="ts">

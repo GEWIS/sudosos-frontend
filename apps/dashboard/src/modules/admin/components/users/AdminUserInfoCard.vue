@@ -5,38 +5,38 @@
             @save="formSubmit"
             @update:model-value="edit = $event"
   >
-    <div class="flex flex-column justify-content-between gap-2">
+    <div class="flex flex-column gap-2 justify-content-between">
         <UserEditForm :edit="edit" :form="form" :user="props.user" @update:edit="edit = $event"/>
         <Divider />
       <h4 class="mt-0">{{ t('modules.user.settings.nfc') }}</h4>
-      <div class="flex flex-row align-items-center w-11">
+      <div class="align-items-center flex flex-row w-11">
         <p class="flex-grow-1 my-1">{{ t('modules.user.settings.changeNFC') }}</p>
         <i
-            class="pi pi-arrow-up-right text-gray-500 flex align-items-center cursor-pointer"
+            class="align-items-center cursor-pointer flex pi pi-arrow-up-right text-gray-500"
             @click="startScan()"
         />
       </div>
-      <div class="flex flex-row align-items-center w-11">
+      <div class="align-items-center flex flex-row w-11">
         <p class="flex-grow-1 my-1">{{ t('modules.user.settings.deleteNFC') }}</p>
         <i
-            class="pi pi-arrow-up-right text-gray-500 flex align-items-center cursor-pointer"
+            class="align-items-center cursor-pointer flex pi pi-arrow-up-right text-gray-500"
             @click="confirmDeleteNFC()"
         />
       </div>
 
         <Divider />
         <h4 class="mt-0">{{ t('modules.user.settings.apiKeys') }}</h4>
-        <div class="flex flex-row align-items-center w-11">
+        <div class="align-items-center flex flex-row w-11">
           <p class="flex-grow-1 my-1">{{ t('modules.user.settings.changeApiKey') }}</p>
           <i
-              class="pi pi-arrow-up-right text-gray-500 flex align-items-center cursor-pointer"
+              class="align-items-center cursor-pointer flex pi pi-arrow-up-right text-gray-500"
               @click="confirmChangeApiKey()"
           />
         </div>
-        <div class="flex flex-row align-items-center w-11">
+        <div class="align-items-center flex flex-row w-11">
           <p class="flex-grow-1 my-1">{{ t('modules.user.settings.deleteApiKey') }}</p>
           <i
-              class="pi pi-arrow-up-right text-gray-500 flex align-items-center cursor-pointer"
+              class="align-items-center cursor-pointer flex pi pi-arrow-up-right text-gray-500"
               @click="confirmDeleteApiKey()"
           />
         </div>

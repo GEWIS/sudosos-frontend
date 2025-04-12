@@ -1,6 +1,6 @@
 <template>
   <CardComponent header="Create Invoice">
-    <div class="flex flex-column justify-content-between gap-2">
+    <div class="flex flex-column gap-2 justify-content-between">
       <span class="p-error"> <i class="pi pi-exclamation-circle"/>{{ " "+ t('modules.financial.invoice.create.warning') }}</span>
       <div class="flex flex-row justify-content-end">
       <ActionButton

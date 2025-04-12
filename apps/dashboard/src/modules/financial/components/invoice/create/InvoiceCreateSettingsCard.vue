@@ -1,6 +1,6 @@
 <template>
   <FormCard :enable-edit="false" :header="t('modules.financial.forms.invoice.settings')">
-    <div class="flex flex-column justify-content-between gap-2">
+    <div class="flex flex-column gap-2 justify-content-between">
       <InvoiceBaseSettingsForm  :edit="edit" :form="form"/>
     </div>
   </FormCard>

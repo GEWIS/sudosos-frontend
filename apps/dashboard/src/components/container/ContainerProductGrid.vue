@@ -1,16 +1,15 @@
 <template>
-  <div class="flex flex-row flex-wrap w-full gap-1 w-full justify-space-between">
+  <div class="flex flex-row flex-wrap gap-1 justify-space-between w-full w-full">
     <div v-for="product in container.products" :key="product.id" class="card">
       <ContainerProductDisplay :container="container" :product="product" />
     </div>
     <Button
         v-if="isAllowed('create', ['own', 'organ'], 'Product', ['any'])"
-        class="flex flex-column h-10rem w-8rem border-300
-    border-1 border-round-sm overflow-hidden"
+        class="border-1 border-300 border-round-sm flex flex-column h-10rem overflow-hidden w-8rem"
         :outlined="true"
         @click="visible = true"
     >
-      <i class="pi pi-plus text-5xl my-auto product-card"></i>
+      <i class="my-auto pi pi-plus product-card text-5xl"></i>
     </Button>
     <ProductActionDialog
         v-model:visible="visible"

@@ -1,7 +1,7 @@
 
 
 <template>
-  <div class="flex flex-column justify-content-between gap-2">
+  <div class="flex flex-column gap-2 justify-content-between">
     <InputContainerSpan
         :container="form.model.container.value.value"
         :errors="form.context.errors.value.container"

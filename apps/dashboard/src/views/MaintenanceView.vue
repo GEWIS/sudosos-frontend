@@ -1,14 +1,13 @@
 <template>
-  <div class="flex flex-column h-screen bg-primary">
+  <div class="bg-primary flex flex-column h-screen">
     <main
-class="flex flex-column align-items-center justify-content-center flex-grow text-center
-    h-full mx-auto my-7 max-w-30rem">
-      <img alt="logo" class="max-h-9rem block mx-auto mb-5" src="../assets/img/bier_grayscale.png"/>
-      <div v-if="isError" class="text-white font-bold text-3xl text-center">
+class="align-items-center flex flex-column flex-grow h-full justify-content-center max-w-30rem mx-auto my-7 text-center">
+      <img alt="logo" class="block max-h-9rem mb-5 mx-auto" src="../assets/img/bier_grayscale.png"/>
+      <div v-if="isError" class="font-bold text-3xl text-center text-white">
         {{ t('modules.auth.maintenance.unavailable') }}</div>
-      <div v-else class="text-white font-bold text-3xl text-center">
+      <div v-else class="font-bold text-3xl text-center text-white">
         {{ t('modules.auth.maintenance.maintenance') }}</div>
-      <div class="text-white text-2xl text-center">{{ t('modules.auth.maintenance.tryAgain') }}</div>
+      <div class="text-2xl text-center text-white">{{ t('modules.auth.maintenance.tryAgain') }}</div>
     </main>
   </div>
 </template>

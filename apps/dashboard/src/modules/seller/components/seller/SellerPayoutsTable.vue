@@ -14,41 +14,41 @@
     >
       <Column field="startDate" :header="t('modules.seller.payouts.payout.startDate')">
         <template #body="slotProps">
-          <Skeleton v-if="isLoading" class="w-6 my-1 h-1rem surface-300" />
+          <Skeleton v-if="isLoading" class="h-1rem my-1 surface-300 w-6" />
           <span v-else>{{ formatDateFromString(slotProps.data.startDate) }}</span>
         </template>
       </Column>
       <Column field="endDate" :header="t('modules.seller.payouts.payout.endDate')">
         <template #body="slotProps">
-          <Skeleton v-if="isLoading" class="w-6 my-1 h-1rem surface-300" />
+          <Skeleton v-if="isLoading" class="h-1rem my-1 surface-300 w-6" />
           <span v-else>{{ formatDateFromString(slotProps.data.endDate) }}</span>
         </template>
       </Column>
       <Column field="reference" :header="t('modules.seller.payouts.payout.reference')">
         <template #body="slotProps">
-          <Skeleton v-if="isLoading" class="w-6 my-1 h-1rem surface-300" />
+          <Skeleton v-if="isLoading" class="h-1rem my-1 surface-300 w-6" />
           <span v-else>{{ slotProps.data.reference }}</span>
         </template>
       </Column>
       <Column field="amount" :header="t('modules.seller.payouts.payout.amount')">
         <template #body="slotProps">
-          <Skeleton v-if="isLoading" class="w-3 my-1 h-1rem surface-300" />
+          <Skeleton v-if="isLoading" class="h-1rem my-1 surface-300 w-3" />
           <span v-else>{{ formatPrice(slotProps.data.amount) }}</span>
         </template>
       </Column>
       <Column :header="t('common.actions')" style="width: 10%">
         <template #body="slotProps">
-          <Skeleton v-if="isLoading" class="w-3 my-1 h-1rem surface-300" />
-          <span v-else class="flex flex-row align-items-center">
+          <Skeleton v-if="isLoading" class="h-1rem my-1 surface-300 w-3" />
+          <span v-else class="align-items-center flex flex-row">
             <Button
-                class="p-button-rounded p-button-text p-button-plain"
+                class="p-button-plain p-button-rounded p-button-text"
                 icon="pi pi-eye"
                 type="button"
                 @click="() => viewPayout(slotProps.data.id)"
             />
             <Button
                 v-tooltip.top="t('common.verify')"
-                class="p-button-rounded p-button-text p-button-plain"
+                class="p-button-plain p-button-rounded p-button-text"
                 icon="pi pi-check"
                 :loading="verifying"
                 type="button"
@@ -57,12 +57,12 @@
             <Button
                 v-if="!downloadingPdf"
                 v-tooltip.top="t('common.downloadPdf')"
-                class="p-button-rounded p-button-text p-button-plain"
+                class="p-button-plain p-button-rounded p-button-text"
                 icon="pi pi-file-export"
                 type="button"
                 @click="() => downloadPdf(slotProps.data.id)"
             />
-            <Skeleton v-else class="w-3 my-1 h-2rem surface-300" />
+            <Skeleton v-else class="h-2rem my-1 surface-300 w-3" />
           </span>
         </template>
       </Column>
@@ -70,7 +70,7 @@
     <Dialog
         ref="dialog"
         v-model:visible="showModal"
-        class="w-auto flex w-9 md:w-4"
+        class="flex md:w-4 w-9 w-auto"
         :draggable="false"
         :header="t('modules.seller.payouts.payout.details')"
         modal

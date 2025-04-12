@@ -4,10 +4,10 @@
 data-key="id" :first="props.skip && props.skip-1" paginator :rows="props.take"
             :value="displayedBanners">
             <template #header>
-                <div class="flex flex-column md:flex-row align-items-center justify-content-between">
+                <div class="align-items-center flex flex-column justify-content-between md:flex-row">
                     <SelectButton v-model="filters" multiple option-label="name" :options="options" />
                     <Button
-class="mt-2 md:mt-0" icon="pi pi-plus" :label="t('common.create')"
+class="md:mt-0 mt-2" icon="pi pi-plus" :label="t('common.create')"
                         @click="isCreateDialogVisible = true" />
                 </div>
             </template>

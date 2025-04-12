@@ -6,7 +6,7 @@
         <UserLink :user="payout.requestedBy"/>
       </span>
       <div v-if="isCreated">
-        <skeleton v-if="userBalance === null" class="w-6 my-1 h-0.5rem surface-300"/>
+        <skeleton v-if="userBalance === null" class="h-0.5rem my-1 surface-300 w-6"/>
         <div
 v-else
              :class="{'text-sm text-gray-700': !overBalance, 'text-red-500 font-bold': overBalance}">
@@ -21,7 +21,7 @@ v-else
           </div>
         </div>
       </div>
-      <table class="table text-left my-1">
+      <table class="my-1 table text-left">
         <thead>
         <tr>
           <th>{{ t('modules.financial.forms.payout.bankAccountNumber') }}</th>
@@ -36,9 +36,9 @@ v-else
           <td>{{ formatPrice(payout.amount) }}</td>
         </tr>
         <tr v-else>
-          <td><Skeleton class="w-6 my-1 h-1rem surface-300"/></td>
-          <td><Skeleton class="w-6 my-1 h-1rem surface-300"/></td>
-          <td><Skeleton class="w-6 my-1 h-1rem surface-300"/></td>
+          <td><Skeleton class="h-1rem my-1 surface-300 w-6"/></td>
+          <td><Skeleton class="h-1rem my-1 surface-300 w-6"/></td>
+          <td><Skeleton class="h-1rem my-1 surface-300 w-6"/></td>
         </tr>
         </tbody>
       </table>
@@ -53,7 +53,7 @@ v-else
           {approvedBy: payout.approvedBy.firstName + ' ' + payout.approvedBy.lastName}) }}
       </span>
     </div>
-    <div class="flex flex-row gap-2 justify-content-end w-full mt-3">
+    <div class="flex flex-row gap-2 justify-content-end mt-3 w-full">
       <div v-if="isCreated" class="flex flex-row gap-2">
         <Button
             icon="pi pi-check"

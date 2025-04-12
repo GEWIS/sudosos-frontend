@@ -1,7 +1,7 @@
 <template>
   <CardComponent class="w-full" :header="t('modules.seller.posOverview.list.header')">
     <template #topAction>
-      <div class="flex flex-row align-items-center justify-content-end">
+      <div class="align-items-center flex flex-row justify-content-end">
         <Button
             v-if="isAllowed('create', ['own', 'organ'], 'PointOfSale', ['any'])"
             icon="pi pi-plus"
@@ -15,17 +15,17 @@ lazy paginator :rows="rows" :rows-per-page-options="[5, 10, 25, 50, 100]" :total
                :value="pointOfSales" @page="onPage($event)">
       <Column field="name" :header="t('modules.seller.posOverview.list.posName')">
         <template v-if="isLoading" #body>
-          <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
+          <Skeleton class="h-2rem mr-8 my-1 surface-300 w-6"/>
         </template>
       </Column>
       <Column field="owner.firstName" :header="t('common.owner')">
         <template v-if="isLoading" #body>
-          <Skeleton class="w-6 my-1 h-2rem surface-300"/>
+          <Skeleton class="h-2rem my-1 surface-300 w-6"/>
         </template>
       </Column>
       <Column body-style="text-align: center; overflow: visible" header-style="width: 3rem; text-align: center">
         <template v-if="isLoading" #body>
-          <Skeleton class="w-6 my-1 h-2rem surface-300"/>
+          <Skeleton class="h-2rem my-1 surface-300 w-6"/>
         </template>
         <template v-else #body="slotProps">
           <Button

@@ -18,7 +18,7 @@
         @sort="onSort"
       >
         <template #header>
-          <div class="flex flex-row align-items-center justify-content-between">
+          <div class="align-items-center flex flex-row justify-content-between">
             <IconField icon-position="left">
               <InputIcon class="pi pi-search"> </InputIcon>
               <InputText v-model="searchQuery" :placeholder="t('common.search')" />
@@ -28,17 +28,17 @@
         </template>
         <Column field="gewisId" :header="t('common.gewisId')">
           <template v-if="isLoading" #body>
-            <Skeleton class="w-6 my-1 h-1rem surface-300"/>
+            <Skeleton class="h-1rem my-1 surface-300 w-6"/>
           </template>
         </Column>
         <Column field="firstName" :header="t('common.firstName')">
           <template v-if="isLoading" #body>
-            <Skeleton class="w-8 my-1 h-1rem surface-300"/>
+            <Skeleton class="h-1rem my-1 surface-300 w-8"/>
           </template>
         </Column>
         <Column field="lastName" :header="t('common.lastName')">
           <template v-if="isLoading" #body>
-            <Skeleton class="w-8 my-1 h-1rem surface-300"/>
+            <Skeleton class="h-1rem my-1 surface-300 w-8"/>
           </template>
         </Column>
         <Column field="type" :header="t('common.type')" :show-filter-match-modes="false">
@@ -53,12 +53,12 @@
             />
           </template>
           <template v-if="isLoading" #body>
-            <Skeleton class="w-5 my-1 h-1rem surface-300"/>
+            <Skeleton class="h-1rem my-1 surface-300 w-5"/>
           </template>
         </Column>
         <Column field="active" :show-filter-match-modes="false">
           <template #header>
-            <div class="flex flex-row gap-2 align-items-center">
+            <div class="align-items-center flex flex-row gap-2">
               {{ t("common.active") }}
               <Checkbox
                 v-model="isActiveFilter"
@@ -68,13 +68,13 @@
             </div>
           </template>
           <template v-if="isLoading" #body>
-            <Skeleton class="w-2 my-1 h-1rem surface-300"/>
+            <Skeleton class="h-1rem my-1 surface-300 w-2"/>
           </template>
         </Column>
 
         <Column field="ofAge">
           <template #header>
-            <div class="flex flex-row gap-2 align-items-center">
+            <div class="align-items-center flex flex-row gap-2">
               {{ t('common.ofAge') }}
               <Checkbox
                 v-model="ofAgeFilter"
@@ -84,7 +84,7 @@
             </div>
           </template>
           <template v-if="isLoading" #body>
-            <Skeleton class="w-3 my-1 h-1rem surface-300"/>
+            <Skeleton class="h-1rem my-1 surface-300 w-3"/>
           </template>
         </Column>
         <Column
@@ -92,7 +92,7 @@
           header-style="width: 3rem; text-align: center"
         >
           <template v-if="isLoading" #body>
-            <Skeleton class="w-4 my-1 h-1rem surface-300"/>
+            <Skeleton class="h-1rem my-1 surface-300 w-4"/>
           </template>
           <template v-else #body="slotProps">
             <Button

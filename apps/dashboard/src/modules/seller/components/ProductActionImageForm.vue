@@ -1,9 +1,9 @@
 
 <template>
-  <div class="flex flex-column align-items-center gap-3">
-    <div class="picture-container p-3">
-      <img v-if="imageSrc" class="product-image" :src="imageSrc">
-      <img v-else class="product-image" src="../../../assets/img/bier.png">
+  <div class="align-items-center flex flex-column gap-3">
+    <div class="p-3 picture-container">
+      <img v-if="imageSrc" alt="Product" class="product-image" :src="imageSrc">
+      <img v-else alt="Default product" class="product-image" src="../../../assets/img/bier.png">
     </div>
     <div v-if="isEditable">
       <FileUpload id="img" accept="image/*" mode="basic" name="productImg" @select="emit('upload', $event.files[0])"/>

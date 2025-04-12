@@ -1,13 +1,13 @@
 <template>
   <div class="col-12">
     <div class="flex flex-column md:flex-row py-3" :class="{ 'border-top-1 surface-border': index !== 0 }">
-      <div class="w-full md:w-5 relative md:pr-2">
+      <div class="md:pr-2 md:w-5 relative w-full">
         <Image
 v-if="banner.image" class="w-full" preview :pt="{
             image: 'w-full'
           }" :pt:image:alt="banner.name"
           :src="getBannerImageSrc(banner)" />
-        <div v-else class="px-3 py-5 text-xl surface-hover text-center">
+        <div v-else class="px-3 py-5 surface-hover text-center text-xl">
           {{ t('modules.admin.banners.noBannerFound') }}
         </div>
         <!--
@@ -20,15 +20,15 @@ class="absolute"
           :severity="banner.active ? (banner.image ? 'success' : 'warning') : 'danger'" style="left: 4px; top: 4px"
           :value="banner.active ? t('modules.admin.banners.list.active') : t('modules.admin.banners.list.notActive')" />
       </div>
-      <div class="flex flex-row justify-content-between w-full md:w-7">
+      <div class="flex flex-row justify-content-between md:w-7 w-full">
         <div class="flex flex-column pr-3">
           <span class="text-xl">{{ banner.name }}</span><br />
-          <span class="font-italic flex flex-row align-items-center">
-            <i class="pi pi-clock mr-1"></i>
+          <span class="align-items-center flex flex-row font-italic">
+            <i class="mr-1 pi pi-clock"></i>
             {{ displaySeconds }}
           </span>
         </div>
-        <div class="flex flex-column justify-content-between align-items-end">
+        <div class="align-items-end flex flex-column justify-content-between">
           <!-- Text will be grey when time is in the past -->
           <div class="text-right" :class="{ 'text-600 font-italic': isExpired }">
             <span v-tooltip.top="startDate.toLocaleString()" class="font-semibold">

@@ -2,7 +2,7 @@
   <FormCard
 v-if="invoice" :enable-edit="!deleted" :header="t('modules.financial.invoice.transfer')"
             @cancel="form.context.resetForm" @save="formSubmit" @update:model-value="edit = $event">
-    <div class="flex flex-column justify-content-between gap-2">
+    <div class="flex flex-column gap-2 justify-content-between">
       <InvoiceAmountForm :edit="edit" :form="form" :invoice="invoice" @update:edit="edit = $event"/>
     </div>
   </FormCard>

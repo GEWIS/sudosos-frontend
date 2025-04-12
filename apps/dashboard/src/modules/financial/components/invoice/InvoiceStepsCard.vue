@@ -1,7 +1,7 @@
 <template>
   <CardComponent v-if="invoice" :header="t('common.status')">
     <Steps v-if="!deleted" :active-step="activeStep" :model="stepItems" :readonly="false"></Steps>
-    <div v-else class="flex flex-column justify-content-center align-items-center">
+    <div v-else class="align-items-center flex flex-column justify-content-center">
       <i class="pi pi-exclamation-triangle text-5xl"></i>
       <p class="text-2xl">{{ t('modules.financial.invoice.deleted') }}</p>
     </div>

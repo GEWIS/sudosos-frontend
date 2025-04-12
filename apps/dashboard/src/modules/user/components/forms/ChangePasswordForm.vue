@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-column justify-content-between gap-2">
+  <div class="flex flex-column gap-2 justify-content-between">
     <InputSpan
 id="password"
                :attributes="form.model.password.attr.value"

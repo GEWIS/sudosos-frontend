@@ -7,7 +7,7 @@
     <template v-if="action" #footer>
       <Button
         id="bottom-left-button"
-        class="w-full border-none border-noround font-normal"
+        class="border-none border-noround font-normal w-full"
         @click="handleClick"
       >
         {{ action.toUpperCase() }}

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-column justify-content-between gap-2">
+  <div class="flex flex-column gap-2 justify-content-between">
     <InputSpan
 id="name"
                :attributes="form.model.name.attr.value"
@@ -10,7 +10,7 @@ id="name"
                @update:value="form.context.setFieldValue('name', $event)"/>
     <span
         v-if="closeTo && !form.context.errors.value.name"
-        class="error-text-name block w15-rem"
+        class="block error-text-name w15-rem"
         @click="selectCloseTo">
                 {{ t('modules.seller.forms.product.closeTo', {name: closeTo.name}) }}</span>
 
@@ -51,10 +51,10 @@ id="priceInclVat"
                @update:value="form.context.setFieldValue('priceInclVat', $event)"/>
 
     <!-- If the organ is not editable, add a fake option menu so the dropdown still renders  -->
-    <div class="flex flex-row justify-content-between align-items-center gap-1">
+    <div class="align-items-center flex flex-row gap-1 justify-content-between">
       <i
 v-tooltip.top="t('common.tooltip.productOwner')"
-         class="pi pi-exclamation-circle text-red-500 cursor-pointer"/>
+         class="cursor-pointer pi pi-exclamation-circle text-red-500"/>
       <InputOrganSpan
 :disabled="!isOrganEditable || !isEditable"
                       :errors="form.context.errors.value.owner"
@@ -67,7 +67,7 @@ v-tooltip.top="t('common.tooltip.productOwner')"
 
     </div>
 
-    <div class="flex flex-column justify-content-between gap-1">
+    <div class="flex flex-column gap-1 justify-content-between">
       <InputSpan
           id="preferred"
           :attributes="form.model.preferred.attr.value"

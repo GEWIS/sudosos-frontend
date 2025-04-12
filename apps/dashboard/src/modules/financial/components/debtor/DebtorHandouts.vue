@@ -14,12 +14,12 @@
     >
       <Column id="id" field="id" :header="t('common.id')">
         <template v-if="debtorStore.isFineHandoutEventsLoading" #body>
-          <Skeleton class="w-4 my-1 h-1rem surface-300"/>
+          <Skeleton class="h-1rem my-1 surface-300 w-4"/>
         </template>
       </Column>
       <Column id="date" field="createdAt" :header="t('modules.financial.debtor.handoutEvents.handoutDate')">
         <template v-if="debtorStore.isFineHandoutEventsLoading" #body>
-          <Skeleton class="w-7 my-1 h-1rem surface-300"/>
+          <Skeleton class="h-1rem my-1 surface-300 w-7"/>
         </template>
         <template v-else #body="slotProps">{{ formatDateTime(new Date(slotProps.data.createdAt)) }}</template>
       </Column>
@@ -28,22 +28,22 @@
           field="referenceDate"
           :header="t('modules.financial.debtor.handoutEvents.referenceDate')">
         <template v-if="debtorStore.isFineHandoutEventsLoading" #body>
-          <Skeleton class="w-4 my-1 h-1rem surface-300"/>
+          <Skeleton class="h-1rem my-1 surface-300 w-4"/>
         </template>
         <template v-else #body="slotProps">{{ formatDateTime(new Date(slotProps.data.referenceDate)) }}</template>
       </Column>
       <Column id="count" field="count" :header="t('common.users')">
         <template v-if="debtorStore.isFineHandoutEventsLoading" #body>
-          <Skeleton class="w-7 my-1 h-1rem surface-300"/>
+          <Skeleton class="h-1rem my-1 surface-300 w-7"/>
         </template>
       </Column>
       <Column id="info" :header="t('common.info')" >
         <template v-if="debtorStore.isFineHandoutEventsLoading" #body>
-          <Skeleton class="w-2 my-1 h-1rem surface-300"/>
+          <Skeleton class="h-1rem my-1 surface-300 w-2"/>
         </template>
         <template v-else #body="{ data }">
           <i
-              class="pi pi-info-circle cursor-pointer"
+              class="cursor-pointer pi pi-info-circle"
               @click="() => navigateToHandoutEvent(data.id)"/>
         </template>
       </Column>

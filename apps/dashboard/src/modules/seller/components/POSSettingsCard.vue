@@ -3,7 +3,7 @@
 v-if="pointOfSale" :enable-edit="isAllowed('update', ['own', 'organ'], 'PointOfSale', ['any'])" :header="t('modules.seller.forms.pos.overview')"
             @cancel="updateFieldValues(pointOfSale)" @save="formSubmit"
             @update:model-value="edit = $event">
-    <div class="flex flex-column justify-content-between gap-2">
+    <div class="flex flex-column gap-2 justify-content-between">
       <POSSettingsForm :edit="edit" :form="form" :point-of-sale="pointOfSale" @update:edit="edit = $event"/>
       <div class="flex flex-row justify-content-end">
         <Button

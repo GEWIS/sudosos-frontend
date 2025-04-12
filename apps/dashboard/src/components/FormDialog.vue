@@ -2,14 +2,14 @@
   <Dialog
       ref="dialog"
       v-model:visible="visible"
-      class="max-w-full w-auto flex"
+      class="flex max-w-full w-auto"
       :draggable="false"
       :header="header"
       modal
       @hide="emits('close')"
       @show="openDialog()">
     <slot :form="form" name="form" />
-    <div class="flex flex-row gap-2 justify-content-between w-full mt-3">
+    <div class="flex flex-row gap-2 justify-content-between mt-3 w-full">
       <Button
           v-if="isEditable && deletable"
           icon="pi pi-trash"
@@ -17,7 +17,7 @@
           outlined
           type="button"
           @click="emits('delete')"/>
-      <div class="flex flex-row justify-content-end gap-2 flex-1">
+      <div class="flex flex-1 flex-row gap-2 justify-content-end">
         <Button
             v-if="isEditable"
             icon="pi pi-times"

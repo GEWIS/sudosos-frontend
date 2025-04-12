@@ -16,14 +16,14 @@ v-model="payoutAmount as number" currency="EUR" :disabled="verifySuccess === nul
                        mode="currency"
                        @update:model-value="touched = true"/>
         </span>
-        <span v-if="verifySuccess === false && verifyAmount" class="text-red-500 font-bold">
+        <span v-if="verifySuccess === false && verifyAmount" class="font-bold text-red-500">
           <i class="pi pi-exclamation-triangle text-red-500"></i>
           {{ `${t('modules.seller.payouts.payout.report')}: ` }}{{ formatPrice({amount: verifyAmount, currency: 'EUR', precision: 2}) }}
         </span>
         <span><strong>{{ `${t('modules.seller.payouts.payout.description')}: ` }}</strong> {{ payout.reference }}</span>
       </div>
 
-      <div class="flex flex-row gap-2 justify-content-between w-full mt-3">
+      <div class="flex flex-row gap-2 justify-content-between mt-3 w-full">
         <div>
           <Button
               icon="pi pi-trash"

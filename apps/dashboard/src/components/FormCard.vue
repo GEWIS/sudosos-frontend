@@ -27,8 +27,8 @@
       </div>
     </template>
     <slot :edit="edit"></slot>
-    <div v-if="create && form" class="flex flex-row gap-2 justify-content-end w-full mt-3">
-      <div class="flex flex-row gap-2 justify-content-end w-full mt-3">
+    <div v-if="create && form" class="flex flex-row gap-2 justify-content-end mt-3 w-full">
+      <div class="flex flex-row gap-2 justify-content-end mt-3 w-full">
         <ActionButton
             :disabled="!props.form?.context.meta.value.valid"
             :label="t('common.create')"

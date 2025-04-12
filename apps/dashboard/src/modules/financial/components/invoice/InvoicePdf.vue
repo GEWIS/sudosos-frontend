@@ -28,15 +28,14 @@
     </template>
     <div class="pdf-display" :class="{ hidden: showTable }">
       <div
-v-if="missingPdf && pdfLoaded" class="w-full h-full flex flex-column
-      justify-content-center align-items-center text-4xl text-red-500">
+v-if="missingPdf && pdfLoaded" class="align-items-center flex flex-column h-full justify-content-center text-4xl text-red-500 w-full">
         <i class="pi pi-exclamation-triangle text-5xl"></i>
         {{ t('modules.financial.invoice.missingPdf') }}
       </div>
-      <Skeleton v-if="!pdfLoaded" class="w-full h-full"/>
-      <vue-pdf-app v-if="showPdf" class="w-full h-full" :pdf="getInvoicePdfSrc(invoice.pdf ? invoice.pdf : '')"/>
+      <Skeleton v-if="!pdfLoaded" class="h-full w-full"/>
+      <vue-pdf-app v-if="showPdf" class="h-full w-full" :pdf="getInvoicePdfSrc(invoice.pdf ? invoice.pdf : '')"/>
     </div>
-    <div class="pdf-display overflow-scroll" :class="{ hidden: !showTable }">
+    <div class="overflow-scroll pdf-display" :class="{ hidden: !showTable }">
       <InvoiceEntriesTable :invoice="invoice"/>
     </div>
   </CardComponent>

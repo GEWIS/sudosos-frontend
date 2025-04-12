@@ -24,7 +24,7 @@ v-model:value="selectedUser"
 
     <Divider />
 
-    <div class="flex flex-row justify-content-between font-bold">
+    <div class="flex flex-row font-bold justify-content-between">
       <span>{{ t('modules.financial.invoice.create.balanceAfter') }}</span>
       <span>{{ formatPrice(balanceAfterInvoice) }}</span>
     </div>

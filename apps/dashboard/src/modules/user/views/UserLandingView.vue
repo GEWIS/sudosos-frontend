@@ -1,7 +1,7 @@
 <template>
-  <div class="page-container flex flex-column">
+  <div class="flex flex-column page-container">
     <div class="page-title">{{ t('modules.user.landing.title') }}</div>
-    <div class="content-wrapper gap-5 flex md:flex-column flex-column">
+    <div class="content-wrapper flex flex-column gap-5 md:flex-column">
       <UserInfo class="md:hidden" :user="gewisUser || authStore.user as GewisUserResponse"/>
       <BalanceWithTopupComponent />
       <MutationsBalanceCard

@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container-wide flex flex-column">
+  <div class="flex flex-column page-container-wide">
     <div class="page-title">{{ t('modules.financial.debtor.handoutEvents.title') }}</div>
     <div class="content-wrapper flex flex-column gap-5">
       <DebtorTable

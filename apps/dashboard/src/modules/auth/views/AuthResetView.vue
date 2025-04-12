@@ -1,7 +1,7 @@
 <template>
   <div>
-    <img alt="logo" class="max-h-9rem block mx-auto my-0" src="../../../assets/img/bier.png" />
-    <div class="text-900 text-5xl mt-0 mx-auto mb-2 w-full">{{ t('modules.auth.reset.reset') }}</div>
+    <img alt="logo" class="block max-h-9rem mx-auto my-0" src="../../../assets/img/bier.png" />
+    <div class="mb-2 mt-0 mx-auto text-5xl text-900 w-full">{{ t('modules.auth.reset.reset') }}</div>
     <form v-if="passwordResetMode === 0" class="flex flex-column" @submit="resetPasswordRequest">
       <span class="p-float-label with-error">
         <InputText
@@ -19,7 +19,7 @@ v-bind="email" id="email" class="input-field" :class="{'p-invalid': emailForm.er
       </small>
       <Button id="reset-button" type="submit">{{ t('modules.auth.reset.reset') }}</Button>
       <div
-          class="text-900 underline cursor-pointer"
+          class="cursor-pointer text-900 underline"
           @click="backToLogin">
         {{ t('modules.auth.reset.backToLogin') }}
       </div>
@@ -28,7 +28,7 @@ v-bind="email" id="email" class="input-field" :class="{'p-invalid': emailForm.er
     <div v-else-if="passwordResetMode === 1" class="login-form">
       <div class="text-900">{{ t('modules.auth.reset.emailSent') }}</div>
       <div
-          class="text-900 underline cursor-pointer"
+          class="cursor-pointer text-900 underline"
           @click="backToLogin">
         {{ t('modules.auth.reset.backToLogin') }}
       </div>
@@ -62,7 +62,7 @@ v-bind="passwordConfirm" id="passwordConfirm" class="input-field" :class="{'p-in
       </small>
       <Button id="reset-button" type="submit">{{ t('modules.auth.reset.reset') }}</Button>
       <div
-          class="text-900 underline cursor-pointer"
+          class="cursor-pointer text-900 underline"
           @click="backToLogin">
         {{ t('modules.auth.reset.backToLogin') }}
       </div>

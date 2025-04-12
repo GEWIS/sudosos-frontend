@@ -7,7 +7,7 @@
         </h1>
         <p
             v-if="!props.user.ofAge"
-            class="font-bold text-red-500 text-center">
+            class="font-bold text-center text-red-500">
           {{ t("components.general.quickOverview.underAge") }}
         </p>
     </CardComponent>

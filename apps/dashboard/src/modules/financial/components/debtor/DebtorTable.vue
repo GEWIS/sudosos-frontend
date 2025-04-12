@@ -19,13 +19,13 @@ v-model:selection="selectedUsers" filter-display="row"
 
       <Column field="gewisId" :header="t('common.gewisId')" style="width: 5%">
         <template v-if="debtorStore.isDebtorsLoading" #body>
-          <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
+          <Skeleton class="h-2rem mr-8 my-1 surface-300 w-6"/>
         </template>
       </Column>
 
       <Column field="name" :header="t('common.name')" :sortable="true" style="width: 10%">
         <template v-if="debtorStore.isDebtorsLoading" #body>
-          <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
+          <Skeleton class="h-2rem mr-8 my-1 surface-300 w-6"/>
         </template>
         <template v-else #body="{ data }">
           <UserLink new-tab :user="data.user"/>
@@ -39,7 +39,7 @@ v-model:selection="selectedUsers" filter-display="row"
 v-if="isEditable" field="controlBalance" filter-match-mode="notEquals"
               :header="controlBalanceHeader" :show-filter-menu="false" :sortable="true" style="width: 15%">
         <template v-if="debtorStore.isDebtorsLoading" #body>
-          <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
+          <Skeleton class="h-2rem mr-8 my-1 surface-300 w-6"/>
         </template>
         <template v-else #body="{ data }">
           {{ data.controlBalance }}
@@ -59,7 +59,7 @@ v-if="isEditable" field="controlBalance" filter-match-mode="notEquals"
 field="referenceBalance" filter-match-mode="notEquals"
               :header="referenceBalanceHeader" :show-filter-menu="false" :sortable="true" style="width: 15%">
         <template v-if="debtorStore.isDebtorsLoading" #body>
-          <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
+          <Skeleton class="h-2rem mr-8 my-1 surface-300 w-6"/>
         </template>
         <template v-else #body="{ data }">
           {{ data.referenceBalance }}
@@ -80,13 +80,13 @@ class="font-bold" field="referenceBalanceFine"
               :header="t('modules.financial.debtor.debtorUsers.ofWhichFine')"
               :sortable="true" style="width: 10%">
         <template v-if="debtorStore.isDebtorsLoading" #body>
-          <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
+          <Skeleton class="h-2rem mr-8 my-1 surface-300 w-6"/>
         </template>
       </Column>
 
       <Column field="fine" :header="fineHeader" :sortable="true" style="width: 10%">
         <template v-if="debtorStore.isDebtorsLoading" #body>
-          <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
+          <Skeleton class="h-2rem mr-8 my-1 surface-300 w-6"/>
         </template>
       </Column>
 
@@ -95,10 +95,10 @@ field="fineSince"
               :header="t('modules.financial.debtor.debtorUsers.fineSince')"
               :sortable="true" style="width: 10%">
         <template v-if="debtorStore.isDebtorsLoading" #body>
-          <Skeleton class="w-6 mr-8 my-1 h-2rem surface-300"/>
+          <Skeleton class="h-2rem mr-8 my-1 surface-300 w-6"/>
         </template>
         <template v-else #body="slotProps">
-              <span v-if="slotProps.data.fineSince" class="text-red-500 font-bold">
+              <span v-if="slotProps.data.fineSince" class="font-bold text-red-500">
                 {{ formatFineTimeSince(new Date(slotProps.data.fineSince), referenceBalanceDate || nowDate) }}
               </span>
         </template>
@@ -157,7 +157,7 @@ field="fineSince"
       <div v-if="isEditable && isAllowed('update', ['all'], 'Fine', ['any'])" class="grid w-20rem">
         <div class="col-6">
           <Button
-              class="w-full h-full justify-content-center flex flex-row items-center justify-center"
+              class="flex flex-row h-full items-center justify-center justify-content-center w-full"
               :disabled="debtorStore.isDebtorsLoading || debtorStore.isNotifyLoading || selectedUsers.length === 0"
               outlined
               @click="startNotify">
@@ -169,13 +169,13 @@ field="fineSince"
 
             <ProgressSpinner
                 v-else
-                class="w-1rem h-1rem"
+                class="h-1rem w-1rem"
                 stroke-width="10" />
           </Button>
         </div>
         <div class="col-6">
           <Button
-class="w-full h-full justify-content-center flex flex-row items-center justify-center"
+class="flex flex-row h-full items-center justify-center justify-content-center w-full"
                   :disabled="debtorStore.isDebtorsLoading || debtorStore.isHandoutLoading || selectedUsers.length === 0"
                   @click="startHandout">
             <span
@@ -185,14 +185,14 @@ class="w-full h-full justify-content-center flex flex-row items-center justify-c
 
             <ProgressSpinner
                 v-else
-                class="w-1rem h-1rem"
+                class="h-1rem w-1rem"
                 stroke-width="10" />
           </Button>
         </div>
         <Divider class="col-12 my-0"/>
         <div class="col-12">
           <Button
-class="w-full h-full justify-content-center flex flex-row items-center justify-center"
+class="flex flex-row h-full items-center justify-center justify-content-center w-full"
                   :disabled="debtorStore.isDebtorsLoading || debtorStore.isLockLoading || selectedUsers.length === 0"
                   severity="contrast"
                   @click="startCannotInDebt">
@@ -203,7 +203,7 @@ class="w-full h-full justify-content-center flex flex-row items-center justify-c
 
             <ProgressSpinner
                 v-else
-                class="w-1rem h-1rem"
+                class="h-1rem w-1rem"
                 stroke-width="10" />
           </Button>
         </div>

@@ -1,5 +1,5 @@
 <template>
-  <a class="cursor-pointer text-red-500 hover:text-red-800" @click="goToUser">
+  <a class="cursor-pointer hover:text-red-800 text-red-500" @click="goToUser">
     {{ user.firstName }} {{ user.lastName }}
   </a>
 </template>

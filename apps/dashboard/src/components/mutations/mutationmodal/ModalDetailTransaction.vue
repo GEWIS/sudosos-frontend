@@ -55,7 +55,7 @@ v-if="
       </Column>
     </DataTable>
 
-    <a class="underline text-right cursor-pointer " @click="sendEmail(transactionInfo, productsInfo)">
+    <a class="cursor-pointer text-right underline" @click="sendEmail(transactionInfo, productsInfo)">
       {{ t('components.mutations.notYou') }}
     </a>
   </div>

@@ -1,12 +1,12 @@
 <template>
   <div>
-      <img alt="logo" class="max-h-9rem block mx-auto my-0" src="../../../assets/img/bier.png"/>
-      <div class="text-900 text-5xl mt-0 mx-auto mb-2 w-full">{{ t('modules.auth.login.sudosos') }}</div>
+      <img alt="logo" class="block max-h-9rem mx-auto my-0" src="../../../assets/img/bier.png"/>
+      <div class="mb-2 mt-0 mx-auto text-5xl text-900 w-full">{{ t('modules.auth.login.sudosos') }}</div>
       <form class="flex flex-column" @submit="loginHandler">
         <span class="p-float-label with-error">
           <InputText
               v-bind="username"
-              class="w-full pt-2 pb-0 cinput h-4rem"
+              class="cinput h-4rem pb-0 pt-2 w-full"
               :class="{ 'p-invalid': loginForm.errors.value.username }"
               name="username"
               size="large"
@@ -23,7 +23,7 @@
         <span class="p-float-label with-error">
           <InputText
               v-bind="password"
-              class="w-full pt-2 pb-0 cinput h-4rem"
+              class="cinput h-4rem pb-0 pt-2 w-full"
               :class="{ 'p-invalid': loginForm.errors.value.password }"
               name="password"
               size="large"
@@ -39,19 +39,19 @@
         </span>
         <Button
             id="login-button"
-            class="mx-auto w-full flex justify-content-center align-items-center"
+            class="align-items-center flex justify-content-center mx-auto w-full"
             type="submit"
         >
           {{ t('modules.auth.login.login') }}
         </Button>
         <Button
-            class="my-3 mx-auto w-full flex justify-content-center align-items-center"
+            class="align-items-center flex justify-content-center mx-auto my-3 w-full"
             :outlined="true"
             @click="toHomeView"
         >
           {{ t('common.back') }}
         </Button>
-        <div class="text-900 underline cursor-pointer" @click="resetPassword">
+        <div class="cursor-pointer text-900 underline" @click="resetPassword">
           {{ t('modules.auth.reset.passwordReset') }}
         </div>
       </form>

@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-column gap-2">
-    <div class="flex flex-row align-items-center">
+    <div class="align-items-center flex flex-row">
       <h4 class="flex-grow-1">{{ header }}</h4>
-      <div class="flex flex-row ">
+      <div class="flex flex-row">
         <Button v-if="simpleSave" class="my-0" icon="pi pi-save" label="Save" @click="handleSave()" ></Button>
         <Button v-else-if="!edit" class="my-0" icon="pi pi-pencil" label="Edit" @click="toggleEdit(true)" ></Button>
         <div v-else class="flex flex-row gap-2">
