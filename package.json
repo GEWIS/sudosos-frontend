@@ -13,8 +13,9 @@
         "build-libraries": "yarn workspace @sudosos/sudosos-frontend-common run build",
         "build-dashboard": "yarn workspaces foreach -Rpt --from 'sudosos-dashboard' run build",
         "build-pos": "yarn workspaces foreach -Rpt --from 'sudosos-point-of-sale' run build",
-        "lint": "eslint apps/dashboard/src",
-        "lint-fix": "eslint src --fix",
+        "build": "yarn workspaces foreach -Rpt --from '{sudosos-point-of-sale,sudosos-dashboard}' run build",
+        "lint": "yarn workspaces foreach -Rpt --from '{sudosos-point-of-sale,sudosos-dashboard}' run lint",
+        "lint-fix": "yarn workspaces foreach -Rpt --from '{sudosos-point-of-sale,sudosos-dashboard}' run lint-fix",
         "format": "prettier --ignore-path .gitignore --check .",
         "format-fix": "prettier --ignore-path .gitignore --write ."
     },
