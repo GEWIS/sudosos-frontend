@@ -14,11 +14,7 @@
       Please first Top-Up your balance before continuing.<br>
     </Message>
     <div class="qr-code" style="display: flex; justify-content: center; margin-top: 1rem;">
-      <img
-        src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Rickrolling_QR_code.png"
-        alt="QR Code"
-        style="max-width: 100%; height: auto;"
-      />
+      <img src="@/assets/sudosos-qr.png" style="width: 25rem;" />
     </div>
     <div class="spinner-container" v-if="topUpProgress > 0">
       <ProgressSpinner
