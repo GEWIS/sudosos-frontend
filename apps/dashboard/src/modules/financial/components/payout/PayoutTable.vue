@@ -1,16 +1,16 @@
 <template>
   <div class="flex flex-col gap-5">
     <DataTable
-        class="w-full"
-        data-key="id"
-        lazy
-        :paginator="paginator"
-        :rows="rows"
-        :rows-per-page-options="[5, 10, 25, 50, 100]"
-        table-style="min-width: 50rem"
-        :total-records="totalRecords"
-        :value="rowValues"
-        @page="onPage($event)"
+      class="w-full"
+      data-key="id"
+      lazy
+      :paginator="paginator"
+      :rows="rows"
+      :rows-per-page-options="[5, 10, 25, 50, 100]"
+      table-style="min-width: 50rem"
+      :total-records="totalRecords"
+      :value="rowValues"
+      @page="onPage($event)"
     >
       <Column field="date" :header="t('common.date')">
         <template #body="slotProps">
@@ -41,18 +41,18 @@
           <Skeleton v-if="isLoading" class="h-1rem my-1 surface-300 w-3" />
           <span v-else class="align-items-center flex flex-row">
             <Button
-                class="p-button-plain p-button-rounded p-button-text"
-                icon="pi pi-eye"
-                type="button"
-                @click="() => viewPayoutRequest(slotProps.data.id)"
+              class="p-button-plain p-button-rounded p-button-text"
+              icon="pi pi-eye"
+              type="button"
+              @click="() => viewPayoutRequest(slotProps.data.id)"
             />
             <Button
-                v-if="!downloadingPdf"
-                v-tooltip.top="t('common.downloadPdf')"
-                class="p-button-plain p-button-rounded p-button-text"
-                icon="pi pi-file-export"
-                type="button"
-                @click="() => downloadPdf(slotProps.data.id)"
+              v-if="!downloadingPdf"
+              v-tooltip.top="t('common.downloadPdf')"
+              class="p-button-plain p-button-rounded p-button-text"
+              icon="pi pi-file-export"
+              type="button"
+              @click="() => downloadPdf(slotProps.data.id)"
             />
             <Skeleton v-else class="h-2rem my-1 surface-300 w-3" />
           </span>
@@ -60,32 +60,31 @@
       </Column>
     </DataTable>
     <Dialog
-        ref="dialog"
-        v-model:visible="showModal"
-        class="flex md:w-4 w-9 w-auto"
-        :draggable="false"
-        :header="t('modules.financial.payout.details', { payoutId })"
-        modal
-        @show="addListenerOnDialogueOverlay(dialog)">
-      <PayoutInfo :payout-id="payoutId" @close="showModal = false"/>
+      ref="dialog"
+      v-model:visible="showModal"
+      class="flex md:w-4 w-9 w-auto"
+      :draggable="false"
+      :header="t('modules.financial.payout.details', { payoutId })"
+      modal
+      @show="addListenerOnDialogueOverlay(dialog)"
+    >
+      <PayoutInfo :payout-id="payoutId" @close="showModal = false" />
     </Dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, type PropType, type Ref, computed, watch } from "vue";
-import {
-  type PaginatedBasePayoutRequestResponse, PayoutRequestStatusRequestStateEnum
-} from "@sudosos/sudosos-client";
+import { ref, onMounted, type PropType, type Ref, computed, watch } from 'vue';
+import { type PaginatedBasePayoutRequestResponse, PayoutRequestStatusRequestStateEnum } from '@sudosos/sudosos-client';
 import DataTable, { type DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
-import Button from "primevue/button";
-import { useI18n } from "vue-i18n";
+import Button from 'primevue/button';
+import { useI18n } from 'vue-i18n';
 import { addListenerOnDialogueOverlay } from '@sudosos/sudosos-frontend-common';
-import { formatPrice, formatDateFromString } from "@/utils/formatterUtils";
-import { usePayoutStore } from "@/stores/payout.store";
-import { getPayoutPdfSrc } from "@/utils/urlUtils";
-import PayoutInfo from "@/modules/financial/components/payout/PayoutInfo.vue";
+import { formatPrice, formatDateFromString } from '@/utils/formatterUtils';
+import { usePayoutStore } from '@/stores/payout.store';
+import { getPayoutPdfSrc } from '@/utils/urlUtils';
+import PayoutInfo from '@/modules/financial/components/payout/PayoutInfo.vue';
 
 const { t } = useI18n();
 
@@ -93,7 +92,7 @@ const props = defineProps({
   state: {
     type: String as PropType<PayoutRequestStatusRequestStateEnum>,
     required: true,
-  }
+  },
 });
 
 const payoutStore = usePayoutStore();
@@ -144,10 +143,12 @@ async function onPage(event: DataTablePageEvent) {
   await loadPayoutRequests(event.first);
 }
 
-watch(() => payoutStore.getUpdatedAt, () => {
-  void loadPayoutRequests();
-});
+watch(
+  () => payoutStore.getUpdatedAt,
+  () => {
+    void loadPayoutRequests();
+  },
+);
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

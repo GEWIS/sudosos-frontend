@@ -28,17 +28,17 @@
         </template>
         <Column field="gewisId" :header="t('common.gewisId')">
           <template v-if="isLoading" #body>
-            <Skeleton class="h-1rem my-1 surface-300 w-6"/>
+            <Skeleton class="h-1rem my-1 surface-300 w-6" />
           </template>
         </Column>
         <Column field="firstName" :header="t('common.firstName')">
           <template v-if="isLoading" #body>
-            <Skeleton class="h-1rem my-1 surface-300 w-8"/>
+            <Skeleton class="h-1rem my-1 surface-300 w-8" />
           </template>
         </Column>
         <Column field="lastName" :header="t('common.lastName')">
           <template v-if="isLoading" #body>
-            <Skeleton class="h-1rem my-1 surface-300 w-8"/>
+            <Skeleton class="h-1rem my-1 surface-300 w-8" />
           </template>
         </Column>
         <Column field="type" :header="t('common.type')" :show-filter-match-modes="false">
@@ -53,22 +53,18 @@
             />
           </template>
           <template v-if="isLoading" #body>
-            <Skeleton class="h-1rem my-1 surface-300 w-5"/>
+            <Skeleton class="h-1rem my-1 surface-300 w-5" />
           </template>
         </Column>
         <Column field="active" :show-filter-match-modes="false">
           <template #header>
             <div class="align-items-center flex flex-row gap-2">
-              {{ t("common.active") }}
-              <Checkbox
-                v-model="isActiveFilter"
-                binary
-                @change="onFilter()"
-              />
+              {{ t('common.active') }}
+              <Checkbox v-model="isActiveFilter" binary @change="onFilter()" />
             </div>
           </template>
           <template v-if="isLoading" #body>
-            <Skeleton class="h-1rem my-1 surface-300 w-2"/>
+            <Skeleton class="h-1rem my-1 surface-300 w-2" />
           </template>
         </Column>
 
@@ -76,45 +72,35 @@
           <template #header>
             <div class="align-items-center flex flex-row gap-2">
               {{ t('common.ofAge') }}
-              <Checkbox
-                v-model="ofAgeFilter"
-                binary
-                @change="onFilter()"
-              />
+              <Checkbox v-model="ofAgeFilter" binary @change="onFilter()" />
             </div>
           </template>
           <template v-if="isLoading" #body>
-            <Skeleton class="h-1rem my-1 surface-300 w-3"/>
+            <Skeleton class="h-1rem my-1 surface-300 w-3" />
           </template>
         </Column>
-        <Column
-          body-style="text-align: center; overflow: visible"
-          header-style="width: 3rem; text-align: center"
-        >
+        <Column body-style="text-align: center; overflow: visible" header-style="width: 3rem; text-align: center">
           <template v-if="isLoading" #body>
-            <Skeleton class="h-1rem my-1 surface-300 w-4"/>
+            <Skeleton class="h-1rem my-1 surface-300 w-4" />
           </template>
           <template v-else #body="slotProps">
-            <Button
-              icon="pi pi-info-circle"
-              outlined
-              type="button"
-              @click="handleInfoPush(slotProps.data.id)"
-            />
+            <Button icon="pi pi-info-circle" outlined type="button" @click="handleInfoPush(slotProps.data.id)" />
           </template>
-
         </Column>
       </DataTable>
     </CardComponent>
     <FormDialog
-v-model:model-value="showDialog" :form="form"
-                :header="t('modules.admin.forms.user.header')" :is-editable="true">
+      v-model:model-value="showDialog"
+      :form="form"
+      :header="t('modules.admin.forms.user.header')"
+      :is-editable="true"
+    >
       <template #form="slotProps">
         <UserCreateForm
-            v-model:is-visible="showDialog"
-            :edit="true"
-            :form="slotProps.form"
-            @submit:success="showDialog = false"
+          v-model:is-visible="showDialog"
+          :edit="true"
+          :form="slotProps.form"
+          @submit:success="showDialog = false"
         />
       </template>
     </FormDialog>
@@ -122,27 +108,27 @@ v-model:model-value="showDialog" :form="form"
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, type Ref, watch } from "vue";
-import type { GewisUserResponse, UserResponse } from "@sudosos/sudosos-client";
+import { computed, onMounted, ref, type Ref, watch } from 'vue';
+import type { GewisUserResponse, UserResponse } from '@sudosos/sudosos-client';
 import DataTable, { type DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import { FilterMatchMode } from 'primevue/api';
-import Checkbox from "primevue/checkbox";
+import Checkbox from 'primevue/checkbox';
 import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
 import Fuse from 'fuse.js';
-import Skeleton from "primevue/skeleton";
-import IconField from "primevue/iconfield";
-import InputIcon from "primevue/inputicon";
-import { useI18n } from "vue-i18n";
-import { useUserStore } from "@sudosos/sudosos-frontend-common";
-import FormDialog from "@/components/FormDialog.vue";
-import UserCreateForm from "@/modules/admin/components/users/forms/UserCreateForm.vue";
-import { schemaToForm } from "@/utils/formUtils";
+import Skeleton from 'primevue/skeleton';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
+import { useI18n } from 'vue-i18n';
+import { useUserStore } from '@sudosos/sudosos-frontend-common';
+import FormDialog from '@/components/FormDialog.vue';
+import UserCreateForm from '@/modules/admin/components/users/forms/UserCreateForm.vue';
+import { schemaToForm } from '@/utils/formUtils';
 import CardComponent from '@/components/CardComponent.vue';
-import { createUserSchema, userTypes } from "@/utils/validation-schema";
+import { createUserSchema, userTypes } from '@/utils/validation-schema';
 import apiService, { DEFAULT_PAGINATION_MAX } from '@/services/ApiService';
-import router from "@/router";
+import router from '@/router';
 
 const { t } = useI18n();
 const userStore = useUserStore();
@@ -151,7 +137,6 @@ const searchQuery: Ref<string> = ref('');
 
 const showDialog: Ref<boolean> = ref(false);
 const form = schemaToForm(createUserSchema);
-
 
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -167,7 +152,7 @@ const allUsersWithFullName: Ref<GewisUserResponse[]> = computed(() => {
   return allUsers.value.map((user) => {
     return {
       ...user,
-      fullName: `${user.firstName} ${user.lastName}`
+      fullName: `${user.firstName} ${user.lastName}`,
     };
   });
 });
@@ -180,7 +165,7 @@ onMounted(() => {
 
 function debounce(func: (skip: number) => Promise<void>, delay: number): (skip: number) => void {
   let debounceTimer: ReturnType<typeof setTimeout> | null = null;
-  return function(...args: [number]) {
+  return function (...args: [number]) {
     if (debounceTimer !== null) {
       clearTimeout(debounceTimer);
     }
@@ -192,19 +177,19 @@ function debounce(func: (skip: number) => Promise<void>, delay: number): (skip: 
 
 const apiCall: (skip: number) => Promise<void> = async (skip: number) => {
   await apiService.user
-      .getAllUsers(
-          DEFAULT_PAGINATION_MAX,
-          skip,
-          searchQuery.value.split(' ')[0] || '',
-          isActiveFilter.value ? isActiveFilter.value : undefined,
-          ofAgeFilter.value,
-          undefined,
-          filters.value.type.value || undefined
-      )
-      .then((response) => {
-        totalRecords.value = response.data._pagination.count || 0;
-        allUsers.value = response.data.records;
-      });
+    .getAllUsers(
+      DEFAULT_PAGINATION_MAX,
+      skip,
+      searchQuery.value.split(' ')[0] || '',
+      isActiveFilter.value ? isActiveFilter.value : undefined,
+      ofAgeFilter.value,
+      undefined,
+      filters.value.type.value || undefined,
+    )
+    .then((response) => {
+      totalRecords.value = response.data._pagination.count || 0;
+      allUsers.value = response.data.records;
+    });
 };
 
 const delayedAPICall = debounce(apiCall, 250);
@@ -235,7 +220,7 @@ const sortedUsers = computed(() => {
     keys: ['fullName'],
     isCaseSensitive: false,
     shouldSort: true,
-    threshold: 0.2
+    threshold: 0.2,
   })
     .search(searchQuery.value || '')
     .map((r) => r.item);
@@ -243,14 +228,11 @@ const sortedUsers = computed(() => {
 });
 
 function handleInfoPush(userId: number) {
-  const clickedUser: UserResponse | undefined = allUsers.value.find(
-      (record) => record.id == userId
-  );
+  const clickedUser: UserResponse | undefined = allUsers.value.find((record) => record.id == userId);
   if (clickedUser) userStore.addUser(clickedUser);
   const route = router.resolve({ name: 'user', params: { userId } });
   window.open(route.href, '_blank');
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

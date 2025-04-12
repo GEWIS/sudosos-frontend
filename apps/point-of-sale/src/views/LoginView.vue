@@ -29,11 +29,8 @@
     </div>
   </div>
   <SettingsIconComponent />
-  <GitInfo/>
-  <ScannersLoginComponent
-    :handle-ean-login="eanLogin"
-    :handle-nfc-login="nfcLogin"
-  />
+  <GitInfo />
+  <ScannersLoginComponent :handle-ean-login="eanLogin" :handle-nfc-login="nfcLogin" />
 </template>
 
 <script setup lang="ts">
@@ -46,9 +43,9 @@ import router from '@/router';
 import { useCartStore } from '@/stores/cart.store';
 import apiService from '@/services/ApiService';
 import BannerComponent from '@/components/Banner/BannerComponent.vue';
-import ScannersLoginComponent from "@/components/ScannersLoginComponent.vue";
+import ScannersLoginComponent from '@/components/ScannersLoginComponent.vue';
 
-import GitInfo from "@/components/GitInfo.vue";
+import GitInfo from '@/components/GitInfo.vue';
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
@@ -70,7 +67,7 @@ const handleInput = (value: string) => {
   if (enteringUserId.value) {
     if (userId.value.length >= maxUserIdLength) return;
     userId.value += value;
-    if (userId.value.length === maxUserIdLength || Number(userId.value) * 10 > maxUserId && !external.value) {
+    if (userId.value.length === maxUserIdLength || (Number(userId.value) * 10 > maxUserId && !external.value)) {
       switchInput();
     }
   } else {
@@ -84,7 +81,7 @@ const handleInput = (value: string) => {
 
 const handleBackspace = () => {
   wrongPin.value = false;
-  if(userId.value.length == 0 && enteringUserId.value && external.value) external.value = false;
+  if (userId.value.length == 0 && enteringUserId.value && external.value) external.value = false;
 
   if (pinCode.value.length === 0 && !enteringUserId.value) {
     switchInput();
@@ -118,7 +115,7 @@ const displayContainerClasses = computed(() => ({
   to: enteringUserId.value,
   from: !enteringUserId.value,
   animating: animateSwitch.value,
-  switched: !enteringUserId.value && !animateSwitch.value
+  switched: !enteringUserId.value && !animateSwitch.value,
 }));
 
 const loginSucces = async () => {
@@ -179,7 +176,6 @@ const nfcLogin = async (nfcCode: string) => {
 };
 
 const eanLogin = async (eanCode: string) => {
-
   try {
     await authStore.eanLogin(eanCode, apiService).then(async () => {
       await loginSucces();

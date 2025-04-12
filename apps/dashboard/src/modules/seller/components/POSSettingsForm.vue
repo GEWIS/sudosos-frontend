@@ -1,34 +1,40 @@
 <template>
   <div class="flex flex-column gap-2 justify-content-between">
     <InputSpan
-id="name"
-               :attributes="form.model.name.attr.value"
-               :disabled="!edit"
-               :errors="form.context.errors.value.name"
-               :label="t('common.name')"
-               :placeholder="t('modules.seller.posOverview.list.posName')" type="text" :value="form.model.name.value.value" @update:value="form.context.setFieldValue('name', $event)"/>
+      id="name"
+      :attributes="form.model.name.attr.value"
+      :disabled="!edit"
+      :errors="form.context.errors.value.name"
+      :label="t('common.name')"
+      :placeholder="t('modules.seller.posOverview.list.posName')"
+      type="text"
+      :value="form.model.name.value.value"
+      @update:value="form.context.setFieldValue('name', $event)"
+    />
     <InputSpan
-id="useAuthentication"
-               :attributes="form.model.useAuthentication.attr.value"
-               :disabled="!edit"
-               :errors="form.context.errors.value.useAuthentication"
-               :label="t('modules.seller.forms.pos.useAuthentication')"
-               type="boolean" :value="form.model.useAuthentication.value.value" @update:value="form.context.setFieldValue('useAuthentication', $event)"/>
-
+      id="useAuthentication"
+      :attributes="form.model.useAuthentication.attr.value"
+      :disabled="!edit"
+      :errors="form.context.errors.value.useAuthentication"
+      :label="t('modules.seller.forms.pos.useAuthentication')"
+      type="boolean"
+      :value="form.model.useAuthentication.value.value"
+      @update:value="form.context.setFieldValue('useAuthentication', $event)"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { type PropType } from "vue";
-import type { PointOfSaleResponse } from "@sudosos/sudosos-client";
-import { useToast } from "primevue/usetoast";
-import { useI18n } from "vue-i18n";
-import * as yup from "yup";
-import { updatePointOfSaleObject } from "@/utils/validation-schema";
-import { type Form, setSubmit } from "@/utils/formUtils";
-import InputSpan from "@/components/InputSpan.vue";
-import { handleError } from "@/utils/errorUtils";
-import { usePointOfSaleStore } from "@/stores/pos.store";
+import { type PropType } from 'vue';
+import type { PointOfSaleResponse } from '@sudosos/sudosos-client';
+import { useToast } from 'primevue/usetoast';
+import { useI18n } from 'vue-i18n';
+import * as yup from 'yup';
+import { updatePointOfSaleObject } from '@/utils/validation-schema';
+import { type Form, setSubmit } from '@/utils/formUtils';
+import InputSpan from '@/components/InputSpan.vue';
+import { handleError } from '@/utils/errorUtils';
+import { usePointOfSaleStore } from '@/stores/pos.store';
 
 const { t } = useI18n();
 const toast = useToast();
@@ -39,7 +45,7 @@ const pointOfSaleStore = usePointOfSaleStore();
 const props = defineProps({
   pointOfSale: {
     type: Object as PropType<PointOfSaleResponse>,
-    required: true
+    required: true,
   },
   form: {
     type: Object as PropType<Form<yup.InferType<typeof updatePointOfSaleObject>>>,
@@ -52,12 +58,15 @@ const props = defineProps({
   },
 });
 
-setSubmit(props.form, props.form.context.handleSubmit((values) => {
-  if (!props.form.context.meta.value.dirty) {
-    emit('update:edit', false);
-    return;
-  }
-  pointOfSaleStore.updatePointOfSale(props.pointOfSale.id, values)
+setSubmit(
+  props.form,
+  props.form.context.handleSubmit((values) => {
+    if (!props.form.context.meta.value.dirty) {
+      emit('update:edit', false);
+      return;
+    }
+    pointOfSaleStore
+      .updatePointOfSale(props.pointOfSale.id, values)
       .then(() => {
         toast.add({
           severity: 'success',
@@ -70,9 +79,8 @@ setSubmit(props.form, props.form.context.handleSubmit((values) => {
       .catch((error) => {
         handleError(error, toast);
       });
-}));
+  }),
+);
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

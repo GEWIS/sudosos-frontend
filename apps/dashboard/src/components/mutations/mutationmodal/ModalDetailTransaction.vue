@@ -1,32 +1,36 @@
 <template>
   <div class="flex flex-column">
     <span>
-      {{ new Date(transactionInfo.createdAt!!).toLocaleString('nl-NL', {
-        dateStyle: 'short',
-        timeStyle: 'short'
-      }) }}
+      {{
+        new Date(transactionInfo.createdAt!!).toLocaleString('nl-NL', {
+          dateStyle: 'short',
+          timeStyle: 'short',
+        })
+      }}
     </span>
     <span v-if="transactionInfo.from.id == userStore.current.user!!.id">
-      {{ t('components.mutations.userBoughtAt', {pos: transactionInfo.pointOfSale.name}) }}
+      {{ t('components.mutations.userBoughtAt', { pos: transactionInfo.pointOfSale.name }) }}
     </span>
     <span v-if="transactionInfo.from.id != userStore.current.user!!.id">
-      {{ t('components.mutations.otherBoughtAt',
-        {user: `${transactionInfo.from.firstName} ${transactionInfo.from.lastName}`,
-          pos: transactionInfo.pointOfSale.name}) }}
+      {{
+        t('components.mutations.otherBoughtAt', {
+          user: `${transactionInfo.from.firstName} ${transactionInfo.from.lastName}`,
+          pos: transactionInfo.pointOfSale.name,
+        })
+      }}
     </span>
-    <span
-v-if="
-        transactionInfo.createdBy
-        && transactionInfo.createdBy.id != transactionInfo.from.id
-      ">
-      {{ t('components.mutations.putInBy',
-        {createdBy: `${transactionInfo.createdBy.firstName} ${transactionInfo.createdBy.lastName}`}) }}
+    <span v-if="transactionInfo.createdBy && transactionInfo.createdBy.id != transactionInfo.from.id">
+      {{
+        t('components.mutations.putInBy', {
+          createdBy: `${transactionInfo.createdBy.firstName} ${transactionInfo.createdBy.lastName}`,
+        })
+      }}
     </span>
 
-    <br>
+    <br />
     <DataTable
       :pt="{
-        tfoot: 'font-bold'
+        tfoot: 'font-bold',
       }"
       :value="productsInfo"
     >
@@ -40,17 +44,18 @@ v-if="
         :header="t('common.price')"
       >
         <template #body="product">
-            {{ formatPrice(product.data.product.priceInclVat) }}
-        </template></Column>
+          {{ formatPrice(product.data.product.priceInclVat) }}
+        </template></Column
+      >
       <Column
         class="p-1"
         field="totalPriceInclVat"
         :footer="formatPrice(transactionInfo.totalPriceInclVat)"
         footer-class="font-bold"
         :header="t('common.amount')"
-        >
+      >
         <template #body="product">
-            {{ formatPrice(product.data.totalPriceInclVat) }}
+          {{ formatPrice(product.data.totalPriceInclVat) }}
         </template>
       </Column>
     </DataTable>
@@ -61,14 +66,14 @@ v-if="
   </div>
 </template>
 <script setup lang="ts">
-import type { SubTransactionRowResponse } from "@sudosos/sudosos-client/src/api";
-import type { TransactionResponse } from "@sudosos/sudosos-client";
+import type { SubTransactionRowResponse } from '@sudosos/sudosos-client/src/api';
+import type { TransactionResponse } from '@sudosos/sudosos-client';
 import { useUserStore } from '@sudosos/sudosos-frontend-common';
-import { useI18n } from "vue-i18n";
+import { useI18n } from 'vue-i18n';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import { sendEmail } from "@/utils/mailUtil";
-import { formatPrice } from "@/utils/formatterUtils";
+import { sendEmail } from '@/utils/mailUtil';
+import { formatPrice } from '@/utils/formatterUtils';
 
 const { t } = useI18n();
 
@@ -81,7 +86,7 @@ defineProps({
   },
   productsInfo: {
     type: Object as () => Array<SubTransactionRowResponse>,
-      required: true
-    }
+    required: true,
+  },
 });
 </script>

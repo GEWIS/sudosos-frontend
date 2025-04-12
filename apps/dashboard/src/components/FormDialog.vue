@@ -1,38 +1,43 @@
 <template>
   <Dialog
-      ref="dialog"
-      v-model:visible="visible"
-      class="flex max-w-full w-auto"
-      :draggable="false"
-      :header="header"
-      modal
-      @hide="emits('close')"
-      @show="openDialog()">
+    ref="dialog"
+    v-model:visible="visible"
+    class="flex max-w-full w-auto"
+    :draggable="false"
+    :header="header"
+    modal
+    @hide="emits('close')"
+    @show="openDialog()"
+  >
     <slot :form="form" name="form" />
     <div class="flex flex-row gap-2 justify-content-between mt-3 w-full">
       <Button
-          v-if="isEditable && deletable"
-          icon="pi pi-trash"
-          :label="deleteLabel || t('common.delete')"
-          outlined
-          type="button"
-          @click="emits('delete')"/>
+        v-if="isEditable && deletable"
+        icon="pi pi-trash"
+        :label="deleteLabel || t('common.delete')"
+        outlined
+        type="button"
+        @click="emits('delete')"
+      />
       <div class="flex flex-1 flex-row gap-2 justify-content-end">
         <Button
-            v-if="isEditable"
-            icon="pi pi-times"
-            :label="t('common.close')"
-            outlined
-            type="button"
-            @click="visible = false; emits('close')"
+          v-if="isEditable"
+          icon="pi pi-times"
+          :label="t('common.close')"
+          outlined
+          type="button"
+          @click="
+            visible = false;
+            emits('close');
+          "
         />
         <Button
-            v-if="isEditable"
-            :disabled="!props.form.context.meta.value.valid"
-            icon="pi pi-check"
-            :label="t('common.save')"
-            type="submit"
-            @click="props.form.submit"
+          v-if="isEditable"
+          :disabled="!props.form.context.meta.value.valid"
+          icon="pi pi-check"
+          :label="t('common.save')"
+          type="submit"
+          @click="props.form.submit"
         />
       </div>
     </div>
@@ -41,28 +46,28 @@
 
 <script setup lang="ts" generic="T extends AnyObject">
 import { computed, ref } from 'vue';
-import Button from "primevue/button";
-import { useI18n } from "vue-i18n";
-import { type AnyObject } from "yup";
+import Button from 'primevue/button';
+import { useI18n } from 'vue-i18n';
+import { type AnyObject } from 'yup';
 import { addListenerOnDialogueOverlay } from '@sudosos/sudosos-frontend-common';
-import type { Form } from "@/utils/formUtils";
+import type { Form } from '@/utils/formUtils';
 
 const { t } = useI18n();
 
 const props = withDefaults(
-    defineProps<{
-      modelValue: boolean;
-      form: Form<T>;
-      header?: string;
-      isEditable: boolean;
-      deletable?: boolean;
-      deleteLabel?: string;
-    }>(),
-    {
-      header: '',
-      deletable: false,
-      deleteLabel: '',
-    }
+  defineProps<{
+    modelValue: boolean;
+    form: Form<T>;
+    header?: string;
+    isEditable: boolean;
+    deletable?: boolean;
+    deleteLabel?: string;
+  }>(),
+  {
+    header: '',
+    deletable: false,
+    deleteLabel: '',
+  },
 );
 
 const emits = defineEmits(['update:modelValue', 'show', 'close', 'delete']);
@@ -84,5 +89,4 @@ const openDialog = () => {
 };
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

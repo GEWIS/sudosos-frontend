@@ -4,7 +4,7 @@ import Toast from 'primevue/toast';
 
 <template>
   <Toast />
-  <RouterView/>
+  <RouterView />
   <img alt="Overlay Image" class="image-underlay" src="@/assets/splash.svg" />
 </template>
 

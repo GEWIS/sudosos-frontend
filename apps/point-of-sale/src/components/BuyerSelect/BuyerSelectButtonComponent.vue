@@ -9,8 +9,8 @@
 </template>
 
 <script setup lang="ts">
-import { useCartStore } from "@/stores/cart.store";
-import { PointOfSaleAssociate } from "@/stores/pos.store";
+import { useCartStore } from '@/stores/cart.store';
+import { PointOfSaleAssociate } from '@/stores/pos.store';
 
 const cartStore = useCartStore();
 
@@ -18,7 +18,7 @@ const props = defineProps({
   associate: {
     type: Object as () => PointOfSaleAssociate,
     required: true,
-  }
+  },
 });
 
 const emit = defineEmits(['cancelSelectCreator']);
@@ -37,7 +37,6 @@ const select = async () => {
   await cartStore.checkout();
   emit('cancelSelectCreator');
 };
-
 </script>
 
 <style scoped lang="scss">

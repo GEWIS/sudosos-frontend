@@ -1,19 +1,30 @@
 <template>
   <div class="settings-icon" @click="openSettings">
-    <div class="pi pi-cog text-6xl"/>
+    <div class="pi pi-cog text-6xl" />
   </div>
   <Dialog
-ref="settings" v-model:visible="visible" header="Settings" modal :pt="{
-        header: () => ({class: ['dialog-header']}),
-        closeButton: () => ({class: ['dialog-close']})}"
-          :style="{ width: '50vw' }"
-          @show="addListenerOnDialogueOverlay(settings!)" >
+    ref="settings"
+    v-model:visible="visible"
+    header="Settings"
+    modal
+    :pt="{
+      header: () => ({ class: ['dialog-header'] }),
+      closeButton: () => ({ class: ['dialog-close'] }),
+    }"
+    :style="{ width: '50vw' }"
+    @show="addListenerOnDialogueOverlay(settings!)"
+  >
     <div>
       <div v-if="pointOfSale">
         Switch POS to
         <Dropdown
-v-model="selectedPos" class="md:w-14rem w-full" :loading="loadingPos" option-label="Point of Sale"
-                  :options="options" placeholder="Select a POS">
+          v-model="selectedPos"
+          class="md:w-14rem w-full"
+          :loading="loadingPos"
+          option-label="Point of Sale"
+          :options="options"
+          placeholder="Select a POS"
+        >
           <template #value="slotProps">
             {{ slotProps.value.name }}
           </template>
@@ -22,10 +33,7 @@ v-model="selectedPos" class="md:w-14rem w-full" :loading="loadingPos" option-lab
           </template>
         </Dropdown>
         <div class="mt-2">
-          <button
-            class="active border-round-md c-btn font-medium p-2 text-base"
-            @click="forceExit"
-          >
+          <button class="active border-round-md c-btn font-medium p-2 text-base" @click="forceExit">
             Force logout and exit POS
           </button>
         </div>
@@ -35,13 +43,13 @@ v-model="selectedPos" class="md:w-14rem w-full" :loading="loadingPos" option-lab
 </template>
 
 <script setup lang="ts">
-import { computed, Ref, ref, watch } from "vue";
-import { addListenerOnDialogueOverlay, useAuthStore } from "@sudosos/sudosos-frontend-common";
-import { StoreGeneric, storeToRefs } from "pinia";
-import { PointOfSaleResponse } from "@sudosos/sudosos-client";
-import { usePointOfSaleStore } from "@/stores/pos.store";
-import { PointOfSaleSwitchService } from "@/services/PointOfSaleSwitchService";
-import { logoutService } from "@/services/logoutService";
+import { computed, Ref, ref, watch } from 'vue';
+import { addListenerOnDialogueOverlay, useAuthStore } from '@sudosos/sudosos-frontend-common';
+import { StoreGeneric, storeToRefs } from 'pinia';
+import { PointOfSaleResponse } from '@sudosos/sudosos-client';
+import { usePointOfSaleStore } from '@/stores/pos.store';
+import { PointOfSaleSwitchService } from '@/services/PointOfSaleSwitchService';
+import { logoutService } from '@/services/logoutService';
 
 const visible = ref(false);
 const settings: Ref<{ mask: HTMLElement; close: () => void } | null> = ref(null);
@@ -72,22 +80,20 @@ const openSettings = async () => {
   const user = authStore.getUser;
   if (user && !posStore.usersPointOfSales) {
     loadingPos.value = true;
-    await posStore.fetchUserPointOfSale(user.id)
+    await posStore.fetchUserPointOfSale(user.id);
     loadingPos.value = false;
   }
 };
-
-
 </script>
 
 <style lang="scss">
 .dialog-header {
-  background: var(--accent-color)!important;
-  color: white!important;
+  background: var(--accent-color) !important;
+  color: white !important;
 }
 
 .dialog-close {
-  color: white!important;
+  color: white !important;
 }
 .settings-icon {
   height: 100px;

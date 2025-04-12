@@ -3,10 +3,15 @@
     <div class="flex flex-column md:flex-row py-3" :class="{ 'border-top-1 surface-border': index !== 0 }">
       <div class="md:pr-2 md:w-5 relative w-full">
         <Image
-v-if="banner.image" class="w-full" preview :pt="{
-            image: 'w-full'
-          }" :pt:image:alt="banner.name"
-          :src="getBannerImageSrc(banner)" />
+          v-if="banner.image"
+          class="w-full"
+          preview
+          :pt="{
+            image: 'w-full',
+          }"
+          :pt:image:alt="banner.name"
+          :src="getBannerImageSrc(banner)"
+        />
         <div v-else class="px-3 py-5 surface-hover text-center text-xl">
           {{ t('modules.admin.banners.noBannerFound') }}
         </div>
@@ -16,13 +21,16 @@ v-if="banner.image" class="w-full" preview :pt="{
                     Red when not active
                 -->
         <Tag
-class="absolute"
-          :severity="banner.active ? (banner.image ? 'success' : 'warning') : 'danger'" style="left: 4px; top: 4px"
-          :value="banner.active ? t('modules.admin.banners.list.active') : t('modules.admin.banners.list.notActive')" />
+          class="absolute"
+          :severity="banner.active ? (banner.image ? 'success' : 'warning') : 'danger'"
+          style="left: 4px; top: 4px"
+          :value="banner.active ? t('modules.admin.banners.list.active') : t('modules.admin.banners.list.notActive')"
+        />
       </div>
       <div class="flex flex-row justify-content-between md:w-7 w-full">
         <div class="flex flex-column pr-3">
-          <span class="text-xl">{{ banner.name }}</span><br />
+          <span class="text-xl">{{ banner.name }}</span
+          ><br />
           <span class="align-items-center flex flex-row font-italic">
             <i class="mr-1 pi pi-clock"></i>
             {{ displaySeconds }}
@@ -66,7 +74,7 @@ defineProps<{
 const { t } = useI18n();
 
 const displaySeconds = computed(() => {
-  return `${(banner.value.duration).toLocaleString()}
+  return `${banner.value.duration.toLocaleString()}
    ${t('modules.admin.banners.seconds', banner.value.duration)}`;
 });
 

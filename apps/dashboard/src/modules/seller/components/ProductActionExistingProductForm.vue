@@ -2,32 +2,28 @@
   <div class="flex gap-5 justify-content-end">
     <p class="prop">{{ t('modules.seller.productContainers.products.addExisting') }}</p>
     <Dropdown
-        v-model="selectProduct"
-        class="align-items-center w-15rem"
-        :filter="true"
-        option-label="name"
-        :options="products"
-        :placeholder="t('modules.seller.forms.product.select')"
+      v-model="selectProduct"
+      class="align-items-center w-15rem"
+      :filter="true"
+      option-label="name"
+      :options="products"
+      :placeholder="t('modules.seller.forms.product.select')"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import Dropdown from "primevue/dropdown";
-import type { BaseProductResponse } from "@sudosos/sudosos-client";
-import { useI18n } from "vue-i18n";
+import Dropdown from 'primevue/dropdown';
+import type { BaseProductResponse } from '@sudosos/sudosos-client';
+import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
 const selectProduct = defineModel<BaseProductResponse>('selectProduct');
 
 defineProps<{
-  products: BaseProductResponse[]
+  products: BaseProductResponse[];
 }>();
-
 </script>
 
-
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

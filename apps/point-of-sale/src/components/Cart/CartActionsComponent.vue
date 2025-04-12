@@ -6,35 +6,36 @@
     header="Warning!"
     modal
     :pt="{
-        header: () => ({class: ['dialog-header']}),
-        closeButton: () => ({class: ['dialog-close']})}"
+      header: () => ({ class: ['dialog-header'] }),
+      closeButton: () => ({ class: ['dialog-close'] }),
+    }"
     @click="resetDialog"
   >
     <Message :closable="false" :icon="undefined" severity="warn">
-      You cannot checkout as you are a user that cannot go into debt! <br>
+      You cannot checkout as you are a user that cannot go into debt! <br />
       Please remove items before you can continue.
     </Message>
   </Dialog>
   <div class="flex justify-content-between w-full">
     <button
-        class="c-btn checkout font-medium rounder text-3xl"
-        :class="{ countdown: checkingOut, disabled: !enabled, borrelMode }"
-        @click="checkout"
+      class="c-btn checkout font-medium rounder text-3xl"
+      :class="{ countdown: checkingOut, disabled: !enabled, borrelMode }"
+      @click="checkout"
     >
       {{ checkoutText }}
     </button>
     <button v-if="!borrelMode" class="border-circle c-btn clear icon-larger" @click="logout">
-      <i class="pi pi-times text-4xl"/>
+      <i class="pi pi-times text-4xl" />
     </button>
-    <audio ref="sound"/>
+    <audio ref="sound" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
-import { logoutService } from "@/services/logoutService";
-import { useCartStore } from "@/stores/cart.store";
-import { useSettingStore } from "@/stores/settings.store";
+import { computed, ref, watch } from 'vue';
+import { logoutService } from '@/services/logoutService';
+import { useCartStore } from '@/stores/cart.store';
+import { useSettingStore } from '@/stores/settings.store';
 
 const emit = defineEmits(['selectCreator']);
 
@@ -69,12 +70,12 @@ const duration = ref(3);
 const checkingOut = ref(false);
 let intervalId: number | undefined;
 const checkoutTimer = () =>
-    setInterval(async () => {
-      duration.value -= 1;
-      if (duration.value <= 0 && checkingOut.value) {
-        await finalizeCheckout();
-      }
-    }, 1000);
+  setInterval(async () => {
+    duration.value -= 1;
+    if (duration.value <= 0 && checkingOut.value) {
+      await finalizeCheckout();
+    }
+  }, 1000);
 
 const stopCheckout = () => {
   duration.value = 3;
@@ -118,7 +119,6 @@ const checkout = () => {
   checkingOut.value = true;
   intervalId = checkoutTimer();
 };
-
 </script>
 
 <style scoped lang="scss">
@@ -147,11 +147,11 @@ const checkout = () => {
   }
 }
 .dialog-header {
-  background: var(--accent-color)!important;
-  color: white!important;
+  background: var(--accent-color) !important;
+  color: white !important;
 }
 
 .dialog-close {
-  color: white!important;
+  color: white !important;
 }
 </style>

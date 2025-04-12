@@ -5,11 +5,7 @@
     </template>
     <slot />
     <template v-if="action" #footer>
-      <Button
-        id="bottom-left-button"
-        class="border-none border-noround font-normal w-full"
-        @click="handleClick"
-      >
+      <Button id="bottom-left-button" class="border-none border-noround font-normal w-full" @click="handleClick">
         {{ action.toUpperCase() }}
       </Button>
     </template>
@@ -17,22 +13,22 @@
 </template>
 
 <script setup lang="ts">
-import { type RouteParamsRawGeneric, useRouter } from "vue-router";
+import { type RouteParamsRawGeneric, useRouter } from 'vue-router';
 
 const props = withDefaults(
-    defineProps<{
-      header: string;
-      routerLink?: string;
-      routerParams?: RouteParamsRawGeneric;
-      action?: string;
-      func?: () => void;
-    }>(),
-    {
-      routerLink: undefined,
-      routerParams: undefined,
-      action: undefined,
-      func: undefined,
-    }
+  defineProps<{
+    header: string;
+    routerLink?: string;
+    routerParams?: RouteParamsRawGeneric;
+    action?: string;
+    func?: () => void;
+  }>(),
+  {
+    routerLink: undefined,
+    routerParams: undefined,
+    action: undefined,
+    func: undefined,
+  },
 );
 
 const router = useRouter();
@@ -47,6 +43,4 @@ const handleClick = () => {
 };
 </script>
 
-<style scoped>
-</style>
-
+<style scoped></style>

@@ -2,12 +2,17 @@
   <div class="text-center product-card shadow-2 mb-2">
     <div class="image-container">
       <img
-ref="productImage" :alt="product.name"
-           class="product-card-image" :class="{ pulsing, featured: product.featured }" :src="image" @click="addToCart"/>
+        ref="productImage"
+        :alt="product.name"
+        class="product-card-image"
+        :class="{ pulsing, featured: product.featured }"
+        :src="image"
+        @click="addToCart"
+      />
       <div v-if="product.featured" class="promo-tag">PROMO</div>
     </div>
     <div class="product-name-wrapper">
-      <p class="product-name font-size-md font-semibold m-0 px-2" >{{ product.name }}</p>
+      <p class="product-name font-size-md font-semibold m-0 px-2">{{ product.name }}</p>
     </div>
     <p class="product-price font-size-sm m-0">€{{ productPrice }}</p>
   </div>
@@ -15,29 +20,28 @@ ref="productImage" :alt="product.name"
 
 <script setup lang="ts">
 import { ContainerWithProductsResponse, ProductResponse } from '@sudosos/sudosos-client';
-import { nextTick, ref } from "vue";
+import { nextTick, ref } from 'vue';
 import { useCartStore } from '@/stores/cart.store';
 import { getProductImageSrc } from '@/utils/imageUtils';
 import { formatPrice } from '@/utils/FormatUtils';
-import { useSettingStore } from "@/stores/settings.store";
+import { useSettingStore } from '@/stores/settings.store';
 
 const pulsing = ref(false);
 
 const props = defineProps({
   product: {
     type: Object as () => ProductResponse,
-    required: true
+    required: true,
   },
   container: {
     type: Object as () => ContainerWithProductsResponse,
-    required: true
-  }
+    required: true,
+  },
 });
 
 const image = getProductImageSrc(props.product);
 const productPrice = formatPrice(props.product?.priceInclVat.amount);
 const productImage = ref<HTMLElement | null>(null);
-
 
 const settings = useSettingStore();
 const cartStore = useCartStore();
@@ -51,13 +55,12 @@ const addToCart = () => {
   cartStore.addToCart({
     product: props.product,
     container: props.container,
-    count: 1
+    count: 1,
   });
 
   // Start the flying animation
   if (settings.showAddToCartAnimation) void startFlyingAnimation();
 };
-
 
 const startFlyingAnimation = async () => {
   await nextTick();
@@ -102,7 +105,6 @@ const startFlyingAnimation = async () => {
 
   flyElement.addEventListener('transitionend', removeFlyElement);
 };
-
 </script>
 
 <style scoped lang="scss">
@@ -133,7 +135,8 @@ const startFlyingAnimation = async () => {
   }
 }
 
-.product-name, .product-price {
+.product-name,
+.product-price {
   position: relative; /* Ensure text is positioned relative to its container for proper layering */
   z-index: 2; /* Higher z-index ensures it's on top if needed */
 }

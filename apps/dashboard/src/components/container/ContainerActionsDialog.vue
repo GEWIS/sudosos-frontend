@@ -1,41 +1,38 @@
 <template>
   <FormDialog
-   v-model:model-value="visible"
-   :deletable="state.edit"
-   :form="form"
-   :header="header"
-   :is-editable="state.edit || state.create"
-   @close="closeDialog()"
-   @delete="deleteProduct()"
-   @show="openDialog()"
+    v-model:model-value="visible"
+    :deletable="state.edit"
+    :form="form"
+    :header="header"
+    :is-editable="state.edit || state.create"
+    @close="closeDialog()"
+    @delete="deleteProduct()"
+    @show="openDialog()"
   >
     <template #form>
-      <ContainerActionsForm
-          :form="form"
-          :is-editable="state.edit || state.create"
-          :is-organ-editable="state.create"/>
-      <ConfirmDialog group="containerDelete"/>
+      <ContainerActionsForm :form="form" :is-editable="state.edit || state.create" :is-organ-editable="state.create" />
+      <ConfirmDialog group="containerDelete" />
     </template>
   </FormDialog>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed } from 'vue';
 import type {
   ContainerWithProductsResponse,
   CreateContainerRequest,
   PointOfSaleWithContainersResponse,
-  UpdateContainerRequest
-} from "@sudosos/sudosos-client";
-import { useToast } from "primevue/usetoast";
-import { useI18n } from "vue-i18n";
-import { useConfirm } from "primevue/useconfirm";
-import { useContainerStore } from "@/stores/container.store";
-import { handleError } from "@/utils/errorUtils";
-import { schemaToForm, setSubmit } from "@/utils/formUtils";
-import { containerActionSchema  } from "@/utils/validation-schema";
-import ContainerActionsForm from "@/components/container/ContainerActionsForm.vue";
-import FormDialog from "@/components/FormDialog.vue";
+  UpdateContainerRequest,
+} from '@sudosos/sudosos-client';
+import { useToast } from 'primevue/usetoast';
+import { useI18n } from 'vue-i18n';
+import { useConfirm } from 'primevue/useconfirm';
+import { useContainerStore } from '@/stores/container.store';
+import { handleError } from '@/utils/errorUtils';
+import { schemaToForm, setSubmit } from '@/utils/formUtils';
+import { containerActionSchema } from '@/utils/validation-schema';
+import ContainerActionsForm from '@/components/container/ContainerActionsForm.vue';
+import FormDialog from '@/components/FormDialog.vue';
 const { t } = useI18n();
 
 const props = defineProps<{
@@ -53,7 +50,7 @@ const toast = useToast();
 const state = computed(() => {
   return {
     create: props.container == undefined,
-    edit: props.container != undefined && props.isEditAllowed
+    edit: props.container != undefined && props.isEditAllowed,
   };
 });
 const header = computed(() => {
@@ -74,21 +71,24 @@ const closeDialog = () => {
     values: {
       name: '',
       owner: undefined,
-      public: false
-    }
+      public: false,
+    },
   });
 };
 
-setSubmit(form, form.context.handleSubmit((values) => {
-  if(state.value.create) {
-    const createContainerRequest: CreateContainerRequest = {
-      name: values.name,
-      ownerId: values.owner.id,
-      products: [],
-      public: values.public
-    };
+setSubmit(
+  form,
+  form.context.handleSubmit((values) => {
+    if (state.value.create) {
+      const createContainerRequest: CreateContainerRequest = {
+        name: values.name,
+        ownerId: values.owner.id,
+        products: [],
+        public: values.public,
+      };
 
-    containerStore.createContainer(createContainerRequest)
+      containerStore
+        .createContainer(createContainerRequest)
         .then(() => {
           toast.add({
             severity: 'success',
@@ -99,16 +99,17 @@ setSubmit(form, form.context.handleSubmit((values) => {
           closeDialog();
         })
         .catch((err) => handleError(err, toast));
-  }
+    }
 
-  if(state.value.edit) {
-    const updateContainerRequest: UpdateContainerRequest = {
-      name: values.name,
-      products: props.container!.products.map(p => p.id),
-      public: values.public
-    };
+    if (state.value.edit) {
+      const updateContainerRequest: UpdateContainerRequest = {
+        name: values.name,
+        products: props.container!.products.map((p) => p.id),
+        public: values.public,
+      };
 
-    containerStore.updateContainer(props.container!.id, updateContainerRequest)
+      containerStore
+        .updateContainer(props.container!.id, updateContainerRequest)
         .then(() => {
           toast.add({
             severity: 'success',
@@ -119,8 +120,9 @@ setSubmit(form, form.context.handleSubmit((values) => {
           closeDialog();
         })
         .catch((err) => handleError(err, toast));
-  }
-}));
+    }
+  }),
+);
 
 const updateFieldValues = (p: ContainerWithProductsResponse) => {
   if (!p) return;
@@ -133,7 +135,7 @@ const updateFieldValues = (p: ContainerWithProductsResponse) => {
 const confirm = useConfirm();
 
 function deleteProduct() {
-  if(props.container == undefined) return;
+  if (props.container == undefined) return;
   confirm.require({
     message: t('modules.seller.productContainers.products.confirmDelete'),
     acceptLabel: t('common.delete'),
@@ -142,27 +144,26 @@ function deleteProduct() {
     rejectIcon: 'pi pi-times',
     group: 'containerDelete',
     accept: () => {
-      containerStore.deleteContainer(props.container!.id)
-          .then(() => {
-            toast.add({
-              summary: t('common.toast.success.success'),
-              detail: t('common.toast.success.containerDeleted'),
-              severity: 'success',
-              life: 3000
-            });
-            confirm.close();
-            closeDialog();
-          })
-          .catch((err) => {
-            handleError(err, toast);
-            confirm.close();
-            closeDialog();
+      containerStore
+        .deleteContainer(props.container!.id)
+        .then(() => {
+          toast.add({
+            summary: t('common.toast.success.success'),
+            detail: t('common.toast.success.containerDeleted'),
+            severity: 'success',
+            life: 3000,
           });
-    }
+          confirm.close();
+          closeDialog();
+        })
+        .catch((err) => {
+          handleError(err, toast);
+          confirm.close();
+          closeDialog();
+        });
+    },
   });
-
 }
-
 </script>
 
 <style scoped lang="scss">

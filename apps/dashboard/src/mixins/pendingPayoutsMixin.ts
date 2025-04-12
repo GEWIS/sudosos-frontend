@@ -10,15 +10,18 @@ export function usePendingPayouts() {
   const pendingPayouts = computed(() => payoutStore.pending);
 
   function updatePendingPayouts() {
-   if (userStore.current.rolesWithPermissions.findIndex(r => r.name as UserRole == UserRole.BAC_PM) != -1) {
+    if (userStore.current.rolesWithPermissions.findIndex((r) => (r.name as UserRole) == UserRole.BAC_PM) != -1) {
       const payoutStore = usePayoutStore();
       void payoutStore.fetchPending();
     }
   }
 
-  watch(() => userStore.current.rolesWithPermissions, () => {
-    updatePendingPayouts();
-  });
+  watch(
+    () => userStore.current.rolesWithPermissions,
+    () => {
+      updatePendingPayouts();
+    },
+  );
 
   updatePendingPayouts();
   return { pendingPayouts };
