@@ -108,7 +108,7 @@ watch(() => props.form.model.user.value.value, () => {
   }
 });
 
-setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
+setSubmit(props.form, props.form.context.handleSubmit((values) => {
   const request: PayoutRequestRequest = {
     amount: {
       amount: Math.round(values.amount * 100),
@@ -119,19 +119,21 @@ setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
     bankAccountNumber: values.bankAccountNumber,
     forId: props.form.model.user.value.value.id,
   };
-  await payoutStore.createPayout(request).then(() => {
-    emit('submit:success', request);
-    toast.add({
-      severity: 'success',
-      summary: t('common.toast.success.success'),
-      detail: t('common.toast.success.payoutCreated'),
-      life: 3000,
-    });
-    props.form.context.resetForm();
-  }).catch((err) => {
-    emit('submit:error', err);
-    handleError(err, toast);
-  });
+  payoutStore.createPayout(request)
+      .then(() => {
+        emit('submit:success', request);
+        toast.add({
+          severity: 'success',
+          summary: t('common.toast.success.success'),
+          detail: t('common.toast.success.payoutCreated'),
+          life: 3000,
+        });
+        props.form.context.resetForm();
+      })
+      .catch((err) => {
+        emit('submit:error', err);
+        handleError(err, toast);
+      });
 }));
 
 </script>

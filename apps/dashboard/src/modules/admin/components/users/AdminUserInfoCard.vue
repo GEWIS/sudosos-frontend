@@ -70,7 +70,7 @@ async function startScan() {
   const isAndroid = /Android/i.test(navigator.userAgent);
 
   if (!('NDEFReader' in window)) {
-    let detail = "";
+    let detail;
     if (isIOS) {
       detail = t("common.toast.error.iosUnsupported");
     }
@@ -134,7 +134,7 @@ async function startScan() {
   const form = schemaToForm(updateUserDetailsObject);
 
   const formSubmit = () => {
-    form.submit();
+    void form.submit();
   };
 
   const updateFieldValues = (p: UserResponse) => {

@@ -21,7 +21,7 @@ id="name"
         :options="productCategories"
         :placeholder="t('modules.seller.forms.product.selectCategory')"
         :selected-option="form.model.category.value.value"
-        @update:selected-option="form.context.setFieldValue('category', $event)"/>
+        @update:selected-option="form.context.setFieldValue('category', $event!)"/>
 
     <InputDropdownSpan
         :disabled="!isEditable"
@@ -30,7 +30,7 @@ id="name"
         :options="vatGroups"
         :placeholder="t('modules.seller.forms.product.selectVat')"
         :selected-option="form.model.vat.value.value"
-        @update:selected-option="form.context.setFieldValue('vat', $event)"/>
+        @update:selected-option="form.context.setFieldValue('vat', $event!)"/>
 
     <InputSpan
 id="alcoholPercentage"
@@ -63,7 +63,7 @@ v-tooltip.top="t('common.tooltip.productOwner')"
                       :organs="!isOrganEditable
                         ? [form.model.owner.value.value]
                         : undefined"
-                      @update:organ="form.context.setFieldValue('owner', $event)"/>
+                      @update:organ="form.context.setFieldValue('owner', $event!)"/>
 
     </div>
 

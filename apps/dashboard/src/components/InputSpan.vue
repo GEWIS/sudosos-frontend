@@ -6,14 +6,14 @@
       <p class="my-0">{{ label }}</p>
       <InputText
 v-if="type === 'text'"
-                 v-model="internalValue"
+                 v-model="internalValue as string"
                  v-bind="attributes"
                  :disabled="disabled"
                  :placeholder="placeholder"/>
 
       <Textarea
 v-if="type === 'textarea'"
-                v-model="internalValue"
+                v-model="internalValue as string"
                 v-bind="attributes"
                 auto-resize
                 :disabled="disabled"
@@ -21,7 +21,7 @@ v-if="type === 'textarea'"
 
       <CalendarString
 v-if="type === 'date'"
-                v-model="internalValue"
+                v-model="internalValue as string"
                 v-bind="attributes"
                 :disabled="disabled"
                 :placeholder="placeholder"/>
@@ -57,7 +57,7 @@ v-if="type === 'usertype'"
 
       <InputText
 v-if="type === 'pin'"
-                 v-model="internalValue"
+                 v-model="internalValue as string"
                  class="w-3"
                  v-bind="attributes"
                  :disabled="disabled"
@@ -66,7 +66,7 @@ v-if="type === 'pin'"
                  type="password"/>
       <InputText
 v-if="type === 'password'"
-                 v-model="internalValue"
+                 v-model="internalValue as string"
                  class="w-5"
                  v-bind="attributes"
                  :disabled="disabled"
@@ -81,53 +81,41 @@ v-if="type === 'password'"
 
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue';
-import type { PropType, Ref } from 'vue';
+import type { Ref } from 'vue';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import type { HintedString } from "primevue/ts-helpers";
 import InputNumber from "primevue/inputnumber";
+import type { BaseFieldProps, GenericObject } from "vee-validate";
 import ErrorSpan from "@/components/ErrorSpan.vue";
 import CalendarString from "@/components/CalendarString.vue";
 
 import { userTypes } from "@/utils/validation-schema";
 
-const props = defineProps({
-  label: {
-    type: String,
-    required: true
-  },
-  value: {
-    type: [String, Number, Boolean],
-  },
-  attributes: {
-    type: Object as PropType<any>,
-    required: true,
-  },
-  errors: {
-    type: Object as PropType<any>,
-    required: false,
-  },
-  placeholder: {
-    type: String,
-    required: false,
-    default: ''
-  },
-  type: {
-    type: String as PropType<HintedString<'text' | 'textarea' | 'date' | 'currency' | 'percentage'>>,
-    required: false,
-    default: 'text'
-  },
-  disabled: {
-    type: Boolean,
-    required: false,
-    default: false
-  },
-  column: {
-    type: Boolean,
-    required: false,
-    default: false
-  },
-});
+
+type InputType = HintedString<'text' | 'textarea' | 'date' | 'currency' | 'percentage'>;
+
+const props = withDefaults(
+    defineProps<{
+      label: string;
+      value?: string | number | boolean;
+      attributes?: BaseFieldProps & GenericObject;
+      errors?: string;
+      placeholder?: string;
+      type?: InputType;
+      disabled?: boolean;
+      column?: boolean;
+    }>(),
+    {
+      value: undefined,
+      errors: undefined,
+      attributes: undefined,
+      placeholder: '',
+      type: 'text',
+      disabled: false,
+      column: false,
+    }
+);
 
 const emit = defineEmits(['update:value']);
 

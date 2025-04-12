@@ -23,45 +23,35 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, type PropType } from "vue";
+import { computed, onBeforeMount } from "vue";
 import ErrorSpan from "@/components/ErrorSpan.vue";
 import { type ContainerInStore, useContainerStore } from "@/stores/container.store";
 
 const containerStore = useContainerStore();
 
 onBeforeMount(() => {
-  containerStore.fetchAllIfEmpty();
+  void containerStore.fetchAllIfEmpty();
 });
 
 const containers = computed(() => {
   return Object.values(containerStore.getAllContainers);
 });
 
-defineProps({
-  label: {
-    type: String,
-    required: true
-  },
-  errors: {
-    type: Object as PropType<any>,
-    required: false,
-  },
-  placeholder: {
-    type: String,
-    required: false,
-    default: ''
-  },
-  disabled: {
-    type: Boolean,
-    required: false,
-    default: false
-  },
-  column: {
-    type: Boolean,
-    required: false,
-    default: false
-  },
-});
+withDefaults(
+    defineProps<{
+      label: string;
+      errors?: string;
+      placeholder?: string;
+      disabled?: boolean;
+      column?: boolean;
+    }>(),
+    {
+      placeholder: '',
+      disabled: false,
+      column: false,
+      errors: undefined,
+    }
+);
 
 const container = defineModel<ContainerInStore>('container');
 

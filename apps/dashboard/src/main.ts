@@ -1,3 +1,4 @@
+/* eslint vue/multi-word-component-names: 0 */
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import '@gewis/splash';
@@ -54,35 +55,27 @@ app.use(PrimeVue);
 app.use(ToastService);
 app.use(ConfirmationService);
 
-// eslint-disable-next-line vue/multi-word-component-names,vue/no-reserved-component-names
+// eslint-disable-next-line vue/no-reserved-component-names
 app.component('Button', Button);
 app.component('InputText', InputText);
 app.component('InputSwitch', InputSwitch);
-// eslint-disable-next-line vue/multi-word-component-names
 app.component('Menubar', Menubar);
-// eslint-disable-next-line vue/multi-word-component-names
 app.component('Message', Message);
-// eslint-disable-next-line vue/multi-word-component-names
 app.component('Panel', Panel);
 app.component('DataTable', DataTable);
 app.component('DataView', DataView);
 app.component('InputNumber', InputNumber);
-// eslint-disable-next-line vue/multi-word-component-names
+// eslint-disable-next-line vue/no-reserved-component-names
 app.component('Image', Image);
-// eslint-disable-next-line vue/multi-word-component-names
+// eslint-disable-next-line vue/no-reserved-component-names
 app.component('Dialog', Dialog);
-// eslint-disable-next-line vue/multi-word-component-names
 app.component('Dropdown', Dropdown);
-// eslint-disable-next-line vue/multi-word-component-names
 app.component('Checkbox', Checkbox);
 app.component('TabView', TabView);
 app.component('ScrollPanel', ScrollPanel);
 app.component('FileUpload', FileUpload);
-// eslint-disable-next-line vue/multi-word-component-names
 app.component('Toast', Toast);
-// eslint-disable-next-line vue/multi-word-component-names
 app.component('Accordion', Accordion);
-// eslint-disable-next-line vue/multi-word-component-names
 app.component('Skeleton', Skeleton);
 app.component('InputIcon', InputIcon);
 app.component('IconField', IconField);
@@ -90,14 +83,10 @@ app.component('ProgressSpinner', ProgressSpinner);
 app.component('SelectButton', SelectButton);
 app.directive('tooltip', Tooltip);
 app.component('ToggleButton', ToggleButton);
-// eslint-disable-next-line vue/multi-word-component-names
 app.component('Steps', Steps);
-// eslint-disable-next-line vue/multi-word-component-names
 app.component('Calendar', Calendar);
 app.component('ConfirmDialog', ConfirmDialog);
-// eslint-disable-next-line vue/multi-word-component-names
 app.component('Divider', Divider);
-// eslint-disable-next-line vue/multi-word-component-names
 app.component('Column', Column);
 
 void beforeLoad().then(() => {

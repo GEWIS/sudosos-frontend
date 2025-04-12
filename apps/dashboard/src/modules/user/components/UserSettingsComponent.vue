@@ -66,6 +66,7 @@
       </div>
     </div>
   </CardComponent>
+  <!-- @vue-generic {yup.InferType<typeof editPasswordSchema>} -->
   <FormDialog
       v-model="showPasswordDialog"
       :form="passwordForm"
@@ -80,15 +81,16 @@
 </template>
 
 <script setup lang="ts">
-import { type PropType, ref } from "vue";
+import { ref, defineProps } from "vue";
 import { useI18n } from "vue-i18n";
 import type { UserResponse } from "@sudosos/sudosos-client";
-import { defineProps } from "vue";
 import Divider from "primevue/divider";
 import InputSwitch from "primevue/inputswitch";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import { useUserStore } from "@sudosos/sudosos-frontend-common";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import * as yup from "yup";
 import CardComponent from "@/components/CardComponent.vue";
 import ChangePinForm from "@/modules/user/components/forms/ChangePinForm.vue";
 import FormDialog from "@/components/FormDialog.vue";
@@ -105,7 +107,7 @@ async function startScan() {
   const isAndroid = /Android/i.test(navigator.userAgent);
 
   if (!('NDEFReader' in window)) {
-    let detail = "";
+    let detail;
     if (isIOS) {
       detail = t("common.toast.error.iosUnsupported");
     }
@@ -157,12 +159,9 @@ async function startScan() {
   };
 }
 
-const props = defineProps({
-  user: {
-    type: Object as PropType<UserResponse>,
-    required: true,
-  },
-});
+const props = defineProps<{
+      user: UserResponse;
+    }>();
 
 const { t } = useI18n();
 const showPasswordDialog = ref(false);

@@ -64,7 +64,7 @@
 <script setup lang="ts">
 import Accordion, { type AccordionTabOpenEvent } from "primevue/accordion";
 import AccordionTab from "primevue/accordiontab";
-import { type PropType, type Ref, ref } from "vue";
+import { type Ref, ref } from "vue";
 import type { ContainerWithProductsResponse, PointOfSaleWithContainersResponse } from "@sudosos/sudosos-client";
 import { useI18n } from "vue-i18n";
 import CardComponent from "../CardComponent.vue";
@@ -78,24 +78,12 @@ const visible = ref(false);
 const POSAddContainerIsVisible = ref(false);
 const selectedContainer: Ref<ContainerWithProductsResponse | undefined> = ref(undefined);
 
-const props = defineProps({
-  containers: {
-    type: Array<ContainerInStore>,
-    required: true,
-  },
-  showCreate: {
-    type: Boolean,
-    default: false,
-  },
-  associatedPos: {
-    type: Object as PropType<PointOfSaleWithContainersResponse>,
-    required: false
-  },
-  posEditAllowed: {
-    type: Boolean,
-    required: false
-  }
-});
+const props = withDefaults(defineProps<{
+  containers: ContainerInStore[];
+  showCreate: boolean;
+  associatedPos?: PointOfSaleWithContainersResponse;
+  posEditAllowed?: boolean
+}>(), { associatedPos: undefined, showCreate: false, });
 
 const containerStore = useContainerStore();
 const { t } = useI18n();
@@ -117,7 +105,7 @@ const openContainerEdit = async (id?: number) => {
   visible.value = true;
 };
 
-const openContainerAdd = async () => {
+const openContainerAdd = () => {
   POSAddContainerIsVisible.value = true;
 };
 

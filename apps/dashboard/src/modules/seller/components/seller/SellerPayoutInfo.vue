@@ -47,7 +47,7 @@ v-model="payoutAmount as number" currency="EUR" :disabled="verifySuccess === nul
               :label="verifyButtonLabel"
               :loading="verifying"
               :severity="verifyButtonSeverity"
-              @click="verifyPayout(payout)"
+              @click="verifyPayout(payout!)"
           />
           <Button
               :disabled="downloadingPdf"
@@ -124,7 +124,7 @@ const closeModal = () => {
 const deletePayout = async () => {
   await sellerPayoutStore.deletePayout(props.payoutId).then(() => {
     toast.add({
-      severity: 'success', summary: t('common.success'),
+      severity: 'success', summary: t('common.toast.success'),
       detail: t('common.toast.success.payoutDeleted'),
       life: 3000
     });

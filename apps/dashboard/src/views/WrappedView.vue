@@ -51,7 +51,8 @@
 import { computed, onBeforeMount, ref } from "vue";
 import { useAuthStore } from "@sudosos/sudosos-frontend-common";
 import type { ReportProductEntryResponse, ReportResponse } from "@sudosos/sudosos-client";
-import * as Dinero from "dinero.js";
+// eslint-disable-next-line import/no-named-as-default
+import Dinero from "dinero.js";
 import { useI18n } from "vue-i18n";
 import { formatPrice } from "@/utils/formatterUtils";
 import apiService from "@/services/ApiService";

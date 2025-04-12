@@ -73,7 +73,7 @@ const props = defineProps({
   },
 });
 
-type RowEntry = InvoiceEntryResponse & { class?: string };
+type RowEntry = InvoiceEntryResponse & { class?: object };
 
 const exclVat: Ref<DineroObject> = ref({ amount: 0, precision: 2, currency: 'EUR' });
 const totalEntries: Ref<DineroObject> = ref({ amount: 0, precision: 2, currency: 'EUR' });
@@ -88,7 +88,7 @@ const rowTotal = (row: RowEntry): DineroObject => {
   return {
     ...row.priceInclVat,
     amount: row.amount * row.priceInclVat.amount,
-  };
+  } as DineroObject;
 };
 
 onMounted(() => {

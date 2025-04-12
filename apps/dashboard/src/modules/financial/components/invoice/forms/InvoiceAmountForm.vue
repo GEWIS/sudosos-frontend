@@ -55,22 +55,24 @@ const entryTotal = computed(() => {
   return total;
 });
 
-setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
-  await invoiceStore.updateInvoice(props.invoice.id, { amount: {
+setSubmit(props.form, props.form.context.handleSubmit((values) => {
+  invoiceStore.updateInvoice(props.invoice.id, { amount: {
       amount: Math.round(values.amount * 100),
       currency: 'EUR',
       precision: 2
-    } }).then(() => {
-    toast.add({
-      severity: 'success',
-      summary: t('common.toast.success.success'),
-      detail: t('common.toast.success.invoiceAmountUpdated'),
-      life: 3000,
-    });
-    emit('update:edit', false);
-  }).catch((error) => {
-    handleError(error, toast);
-  });
+    } })
+      .then(() => {
+        toast.add({
+          severity: 'success',
+          summary: t('common.toast.success.success'),
+          detail: t('common.toast.success.invoiceAmountUpdated'),
+          life: 3000,
+        });
+        emit('update:edit', false);
+      })
+      .catch((error) => {
+        handleError(error, toast);
+      });
 }));
 </script>
 

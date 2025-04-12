@@ -6,7 +6,7 @@
         :container="form.model.container.value.value"
         :errors="form.context.errors.value.container"
         :label="t('modules.seller.productContainers.containers.container')"
-        @update:container="form.context.setFieldValue('container', $event)"
+        @update:container="form.context.setFieldValue('container', $event!)"
     />
   </div>
 </template>

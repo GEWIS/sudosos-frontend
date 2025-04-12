@@ -11,34 +11,27 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import type { BaseFieldProps, GenericObject } from "vee-validate";
 
 // Define the component's props
-const props = defineProps({
-  modelValue: {
-    type: String,
-    default: ''
-  },
-  placeholder: {
-    type: String,
-    default: ''
-  },
-  attributes: {
-    type: Object,
-    default: () => ({})
-  },
-  disabled: {
-    type: Boolean,
-    default: false
-  },
-  type: {
-    type: String,
-    default: 'date'
-  },
-  dateFormat: {
-    type: String,
-    default: 'yyyy-MM-dd' // Default format, can be customized
-  }
-});
+const props = withDefaults(
+    defineProps<{
+      modelValue?: string;
+      placeholder?: string;
+      attributes?: BaseFieldProps & GenericObject;
+      disabled?: boolean;
+      type?: string;
+      dateFormat?: string;
+    }>(),
+    {
+      modelValue: '',
+      placeholder: '',
+      attributes: undefined,
+      disabled: false,
+      type: 'date',
+      dateFormat: 'yyyy-MM-dd',
+    }
+);
 
 // Define the component's events
 const emit = defineEmits(['update:modelValue']);
@@ -83,8 +76,8 @@ function dateToString(date: Date | null): string {
 }
 
 // Function to emit the updated string representation of the date
-function updateStringValue(newDate: any) {
-  const newString = dateToString(newDate);
+function updateStringValue(newDate: Event) {
+  const newString = dateToString(newDate as unknown as Date);
   emit('update:modelValue', newString); // Emit the string representation
 }
 </script>

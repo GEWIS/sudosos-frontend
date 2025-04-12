@@ -1,6 +1,7 @@
 import { computed, ref } from "vue";
 import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
+import type { SellerPayoutResponse } from "@sudosos/sudosos-client";
 import { formatPrice } from "@/utils/formatterUtils";
 import ApiService from "@/services/ApiService";
 
@@ -12,7 +13,7 @@ export const verifyPayoutMixin = {
     const toast = useToast();
     const { t } = useI18n();
 
-    const verifyPayout = async (payout: any) => {
+    const verifyPayout = async (payout: SellerPayoutResponse) => {
       if (!payout) return;
 
       verifying.value = true;
@@ -49,7 +50,7 @@ export const verifyPayoutMixin = {
             life: 3000,
           });
         }
-      } catch (error) {
+      } catch {
         verifySuccess.value = false;
         toast.add({
           severity: 'error',

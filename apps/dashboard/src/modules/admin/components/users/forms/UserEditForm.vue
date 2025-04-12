@@ -104,7 +104,7 @@ const updateType = (event: string) => {
   if (event) props.form.context.setFieldValue('userType', event);
 };
 
-setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
+setSubmit(props.form, props.form.context.handleSubmit((values) => {
   const updateUserRequest: UpdateUserRequest = {
     firstName: values.firstName,
     lastName: values.lastName,
@@ -114,16 +114,18 @@ setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
     ofAge: values.ofAge,
     canGoIntoDebt: values.canGoIntoDebt,
   };
-  await apiService.user.updateUser(props.user.id, updateUserRequest).then(() => {
-    toast.add({
-      severity: 'success',
-      summary: t('common.toast.success.success'),
-      detail: t('common.toast.success.userUpdated'),
-      life: 3000,
-    });
-    emit('update:edit', false);
-  }).catch((error) => {
-    handleError(error, toast);
-  });
+  apiService.user.updateUser(props.user.id, updateUserRequest)
+      .then(() => {
+        toast.add({
+          severity: 'success',
+          summary: t('common.toast.success.success'),
+          detail: t('common.toast.success.userUpdated'),
+          life: 3000,
+        });
+        emit('update:edit', false);
+      })
+      .catch((error) => {
+        handleError(error, toast);
+      });
 }));
 </script>

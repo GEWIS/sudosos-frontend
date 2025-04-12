@@ -17,38 +17,29 @@
 </template>
 
 <script setup lang="ts">
-// TODO: Clean up all the fucking important statements
-// See: https://github.com/gewis/sudosos-frontend-vue3/issues/14
-import { useRouter } from "vue-router";
+import { type RouteParamsRawGeneric, useRouter } from "vue-router";
 
-const props = defineProps({
-  header: {
-    type: String,
-    required: true,
-  },
-  routerLink: {
-    type: String,
-    required: false,
-  },
-  routerParams: {
-    type: Object,
-    required: false,
-  },
-  action: {
-    type: String,
-    required: false,
-  },
-  func: {
-    type: Function,
-    required: false,
-  },
-});
+const props = withDefaults(
+    defineProps<{
+      header: string;
+      routerLink?: string;
+      routerParams?: RouteParamsRawGeneric;
+      action?: string;
+      func?: () => void;
+    }>(),
+    {
+      routerLink: undefined,
+      routerParams: undefined,
+      action: undefined,
+      func: undefined,
+    }
+);
 
 const router = useRouter();
 const handleClick = () => {
   if (props.routerLink) {
     // If routerLink is defined, use router.push to navigate
-    router.push({ name: props.routerLink, params: { ...props.routerParams } });
+    void router.push({ name: props.routerLink, params: { ...props.routerParams } });
   } else if (props.func) {
     // If routerLink is not defined and func is provided, execute the func
     props.func();

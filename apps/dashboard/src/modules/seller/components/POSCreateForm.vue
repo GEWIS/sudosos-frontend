@@ -21,7 +21,7 @@ id="useAuthentication"
         :errors="form.context.errors.value.owner"
         :label="t('common.owner')"
         :organ="form.model.owner.value.value"
-        @update:organ="form.context.setFieldValue('owner', $event)"
+        @update:organ="form.context.setFieldValue('owner', $event!)"
       />
   </div>
 </template>

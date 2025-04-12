@@ -36,7 +36,7 @@ const props = defineProps({
 const form = schemaToForm(updateInvoiceAddressingObject);
 
 const formSubmit = () => {
-  form.submit();
+  void form.submit();
 };
 const updateFieldValues = (p: InvoiceResponse) => {
   if (!p) return;

@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import type { ContainerWithProductsResponse } from "@sudosos/sudosos-client";
-import { type Ref, ref, type PropType, onMounted } from "vue";
+import { type Ref, ref, type PropType } from "vue";
 import ContainerProductDisplay from "@/components/container/ContainerProductDisplay.vue";
 import ProductActionDialog from "@/modules/seller/components/ProductActionDialog.vue";
 import { isAllowed } from "@/utils/permissionUtils";
@@ -33,10 +33,6 @@ const props = defineProps({
     type: Object as PropType<ContainerWithProductsResponse>,
     required: true
   }
-});
-
-onMounted(() => {
-  console.log(isAllowed('update', ['own', 'organ'], 'Product'));
 });
 
 </script>

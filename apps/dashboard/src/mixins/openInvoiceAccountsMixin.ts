@@ -15,9 +15,9 @@ export function useOpenInvoiceAccounts() {
     );
 
     function updateOpenInvoiceAccounts() {
-        if (userStore.current.rolesWithPermissions.findIndex(r => r.name == UserRole.BAC_PM) != -1) {
+        if (userStore.current.rolesWithPermissions.findIndex(r => r.name as UserRole == UserRole.BAC_PM) != -1) {
             const invoiceStore = useInvoiceStore();
-            invoiceStore.fetchAllNegativeInvoiceUsers();
+            void invoiceStore.fetchAllNegativeInvoiceUsers();
         }
     }
 

@@ -20,55 +20,34 @@ v-model:user="internalValue"
 </template>
 
 <script setup lang="ts">
-import { onMounted, type PropType, ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { type BaseUserResponse, GetAllUsersTypeEnum } from "@sudosos/sudosos-client";
 import ErrorSpan from "@/components/ErrorSpan.vue";
 import FindUser from "@/components/FindUser.vue";
 
 const emit = defineEmits(['update:value']);
 
-const props = defineProps({
-  label: {
-    type: String,
-    required: true
-  },
-  default: {
-    type: Object as PropType<BaseUserResponse>,
-    required: false,
-  },
-  value: {
-    type: Object as PropType<BaseUserResponse>,
-  },
-  errors: {
-    type: Object as PropType<any>,
-    required: false,
-  },
-  placeholder: {
-    type: String,
-    required: false,
-    default: ''
-  },
-  disabled: {
-    type: Boolean,
-    required: false,
-    default: false
-  },
-  column: {
-    type: Boolean,
-    required: false,
-    default: false
-  },
-  type: {
-    type: String as PropType<GetAllUsersTypeEnum>,
-    required: false,
-    default: undefined
-  },
-  showPositive: {
-    type: Boolean,
-    required: false,
-    default: true
-  }
-});
+const props = withDefaults(
+    defineProps<{
+      label: string;
+      default?: BaseUserResponse;
+      value?: BaseUserResponse;
+      errors?: string;
+      placeholder?: string;
+      disabled?: boolean;
+      column?: boolean;
+      type?: GetAllUsersTypeEnum;
+      showPositive?: boolean;
+    }>(),
+    {
+      default: undefined,
+      value: undefined,
+      errors: undefined,
+      placeholder: '',
+      type: undefined,
+      showPositive: true,
+    }
+);
 
 const internalValue = ref();
 

@@ -20,7 +20,7 @@
         :organs="!isOrganEditable
                         ? [form.model.owner.value.value]
                         : undefined" :placeholder="t('modules.seller.forms.common.selectOwner')"
-        @update:organ="form.context.setFieldValue('owner', $event)"/>
+        @update:organ="form.context.setFieldValue('owner', $event!)"/>
 
     <InputSpan
         id="public"

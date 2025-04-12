@@ -32,7 +32,7 @@ import apiService from "@/services/ApiService";
 const { t } = useI18n();
 const toast = useToast();
 
-const isVisible = defineModel('isVisible');
+const isVisible = defineModel<boolean>('isVisible');
 
 const props = defineProps({
   user: {
@@ -55,7 +55,7 @@ function setToWaiveAll() {
   props.form.context.setFieldValue('amount', props.balance.fine!.amount/100);
 }
 
-setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
+setSubmit(props.form, props.form.context.handleSubmit((values) => {
   if (props.balance.fine && values.amount*100 > props.balance.fine.amount) {
     props.form.context.setFieldError(
         'amount',
@@ -64,7 +64,7 @@ setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
     return;
   }
 
-  await userStore.waiveUserFine(
+  userStore.waiveUserFine(
       props.user.id,
       {
         amount: values.amount*100,
@@ -72,17 +72,19 @@ setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
         precision: 2
       },
       apiService
-  ).then(async () => {
-    toast.add({
-      severity: 'success',
-      summary: t('common.toast.success.success'),
-      detail: t('common.toast.success.waiveFinesSuccess'),
-      life: 3000
-    });
-    await userStore.fetchUserBalance(props.user.id, apiService);
-    isVisible.value = false;
-  }).catch((error) => {
-    handleError(error, toast);
-  });
+  )
+      .then(async () => {
+        toast.add({
+          severity: 'success',
+          summary: t('common.toast.success.success'),
+          detail: t('common.toast.success.waiveFinesSuccess'),
+          life: 3000
+        });
+        await userStore.fetchUserBalance(props.user.id, apiService);
+        isVisible.value = false;
+      })
+      .catch((error) => {
+        handleError(error, toast);
+      });
 }));
 </script>

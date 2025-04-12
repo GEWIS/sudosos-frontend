@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type PropType } from "vue";
+import { computed } from "vue";
 import { useAuthStore } from "@sudosos/sudosos-frontend-common";
 import type { BaseUserResponse } from "@sudosos/sudosos-client";
 import InputDropdownSpan from "@/components/InputDropdownSpan.vue";
@@ -20,35 +20,23 @@ const userOrgans = computed(() => {
   return authStore.organs;
 });
 
-defineProps({
-  label: {
-    type: String,
-    required: true
-  },
-  errors: {
-    type: Object as PropType<any>,
-    required: false,
-  },
-  placeholder: {
-    type: String,
-    required: false,
-    default: ''
-  },
-  disabled: {
-    type: Boolean,
-    required: false,
-    default: false
-  },
-  column: {
-    type: Boolean,
-    required: false,
-    default: false
-  },
-  organs: {
-    type: Object as PropType<BaseUserResponse[]>,
-    required: false
-  }
-});
+withDefaults(
+    defineProps<{
+      label: string;
+      errors?: string;
+      placeholder?: string;
+      disabled?: boolean;
+      column?: boolean;
+      organs?: BaseUserResponse[];
+    }>(),
+    {
+      placeholder: '',
+      errors: undefined,
+      disabled: false,
+      column: false,
+      organs: undefined,
+    }
+);
 
 
 const organ = defineModel<BaseUserResponse>('organ');

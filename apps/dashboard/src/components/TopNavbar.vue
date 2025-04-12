@@ -82,7 +82,6 @@ import { computed, onBeforeMount, ref, type Ref } from "vue";
 import { useAuthStore, useUserStore } from "@sudosos/sudosos-frontend-common";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-import { GetAllUsersTypeEnum } from "@sudosos/sudosos-client";
 import { usePendingPayouts } from "@/mixins/pendingPayoutsMixin";
 import apiService from "@/services/ApiService";
 
@@ -99,7 +98,7 @@ const firstName = computed((): string | undefined => {
 
 const handleLogout = () => {
   authStore.logout();
-  router.push('/');
+  void router.push('/');
 };
 
 const { pendingPayouts } = usePendingPayouts();
@@ -107,7 +106,11 @@ const { openInvoiceAccounts } = useOpenInvoiceAccounts();
 const getFinancialNotifications = () => isAllowed('update', ['all'], 'SellerPayout', ['any']) && pendingPayouts?.value + openInvoiceAccounts?.value;
 
 
-const organs: Ref<any[]> = ref([]);
+const organs: Ref<{
+  label: string,
+  route: string,
+  notifications: string
+}[]> = ref([]);
 
 const getOrgans = async () => {
   organs.value = [];
@@ -121,26 +124,6 @@ const getOrgans = async () => {
       });
     }));
   }
-  await Promise.all(promises);
-  organs.value = organs.value.sort((a, b) => a.label.localeCompare(b.label));
-};
-
-const getAllOrgans = async () => {
-  organs.value = [];
-  const promises: Promise<any>[] = [];
-  await apiService.user.getAllUsers(100, undefined, undefined, undefined, undefined,
-      undefined, GetAllUsersTypeEnum.Organ).then((res) => {
-    const orgs = res.data.records;
-    orgs.forEach((organ) => {
-      promises.push(apiService.balance.getBalanceId(organ.id).then((res) => {
-        organs.value.push({
-          label: organ.firstName + ' ' + organ.lastName,
-          route: '/user/' + organ.id,
-          notifications: res.data.amount.amount > 0 ? ' ' : '',
-        });
-      }));
-    });
-  });
   await Promise.all(promises);
   organs.value = organs.value.sort((a, b) => a.label.localeCompare(b.label));
 };

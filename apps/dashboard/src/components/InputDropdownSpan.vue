@@ -24,42 +24,25 @@
 </template>
 
 <script setup lang="ts" generic="T">
-import { type PropType } from "vue";
 import ErrorSpan from "@/components/ErrorSpan.vue";
 
-defineProps({
-  label: {
-    type: String,
-    required: true
-  },
-  errors: {
-    type: Object as PropType<any>,
-    required: false,
-  },
-  placeholder: {
-    type: String,
-    required: false,
-    default: ''
-  },
-  disabled: {
-    type: Boolean,
-    required: false,
-    default: false
-  },
-  column: {
-    type: Boolean,
-    required: false,
-    default: false
-  },
-  options: {
-    type: Object as PropType<T[]>,
-    required: true
-  },
-  optionLabel: {
-    type: String,
-    required: true
-  }
-});
+withDefaults(
+    defineProps<{
+      label: string;
+      errors?: string;
+      placeholder?: string;
+      disabled?: boolean;
+      column?: boolean;
+      options: T[];
+      optionLabel: string;
+    }>(),
+    {
+      placeholder: '',
+      disabled: false,
+      column: false,
+      errors: undefined,
+    }
+);
 
 const selectedOption = defineModel<T>('selectedOption');
 

@@ -36,22 +36,24 @@ const props = defineProps({
   },
 });
 
-setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
+setSubmit(props.form, props.form.context.handleSubmit((values) => {
   if (!props.form.context.meta.value.dirty) {
     emit('update:edit', false);
     return;
   }
-  await invoiceStore.updateInvoice(props.invoice.id, values).then(() => {
-    toast.add({
-      severity: 'success',
-      summary: t('common.toast.success.success'),
-      detail: t('common.toast.success.invoiceUpdated'),
-      life: 3000,
-    });
-    emit('update:edit', false);
-  }).catch((error) => {
-    handleError(error, toast);
-  });
+  invoiceStore.updateInvoice(props.invoice.id, values)
+      .then(() => {
+        toast.add({
+          severity: 'success',
+          summary: t('common.toast.success.success'),
+          detail: t('common.toast.success.invoiceUpdated'),
+          life: 3000,
+        });
+        emit('update:edit', false);
+      })
+      .catch((error) => {
+        handleError(error, toast);
+      });
 }));
 </script>
 

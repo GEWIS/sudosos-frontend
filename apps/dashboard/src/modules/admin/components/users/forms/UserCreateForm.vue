@@ -87,7 +87,7 @@ const props = defineProps({
   },
 });
 
-setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
+setSubmit(props.form, props.form.context.handleSubmit((values) => {
   const createUserRequest: CreateUserRequest = {
     canGoIntoDebt: values.canGoIntoDebt,
     ofAge: values.ofAge,
@@ -98,17 +98,19 @@ setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
     type: values.userType
   };
 
-  await apiService.user.createUser(createUserRequest).then(() => {
-    toast.add({
-      severity: 'success',
-      summary: t('common.toast.success.success'),
-      detail: t('common.toast.success.userCreated'),
-      life: 3000,
-    });
-    emit('update:edit', false);
-  }).catch((error) => {
-    handleError(error, toast);
-  });
+  apiService.user.createUser(createUserRequest)
+      .then(() => {
+        toast.add({
+          severity: 'success',
+          summary: t('common.toast.success.success'),
+          detail: t('common.toast.success.userCreated'),
+          life: 3000,
+        });
+        emit('update:edit', false);
+      })
+      .catch((error) => {
+        handleError(error, toast);
+      });
 }));
 
 </script>

@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type PropType } from "vue";
+import { computed } from "vue";
 import type {
   ContainerWithProductsResponse,
   CreateContainerRequest,
@@ -38,20 +38,11 @@ import ContainerActionsForm from "@/components/container/ContainerActionsForm.vu
 import FormDialog from "@/components/FormDialog.vue";
 const { t } = useI18n();
 
-const props = defineProps({
-  container: {
-    type: Object as PropType<ContainerWithProductsResponse>,
-    required: false,
-  },
-  associatedPos: {
-    type: Object as PropType<PointOfSaleWithContainersResponse>,
-    required: false
-  },
-  isEditAllowed: {
-    type: Boolean,
-    required: false
-  }
-});
+const props = defineProps<{
+  container?: ContainerWithProductsResponse;
+  associatedPos?: PointOfSaleWithContainersResponse;
+  isEditAllowed?: boolean;
+}>();
 
 const containerStore = useContainerStore();
 
@@ -88,7 +79,7 @@ const closeDialog = () => {
   });
 };
 
-setSubmit(form, form.context.handleSubmit(async (values) => {
+setSubmit(form, form.context.handleSubmit((values) => {
   if(state.value.create) {
     const createContainerRequest: CreateContainerRequest = {
       name: values.name,
@@ -97,7 +88,7 @@ setSubmit(form, form.context.handleSubmit(async (values) => {
       public: values.public
     };
 
-    await containerStore.createContainer(createContainerRequest)
+    containerStore.createContainer(createContainerRequest)
         .then(() => {
           toast.add({
             severity: 'success',
@@ -117,7 +108,7 @@ setSubmit(form, form.context.handleSubmit(async (values) => {
       public: values.public
     };
 
-    await containerStore.updateContainer(props.container!.id, updateContainerRequest)
+    containerStore.updateContainer(props.container!.id, updateContainerRequest)
         .then(() => {
           toast.add({
             severity: 'success',
@@ -141,7 +132,7 @@ const updateFieldValues = (p: ContainerWithProductsResponse) => {
 
 const confirm = useConfirm();
 
-async function deleteProduct() {
+function deleteProduct() {
   if(props.container == undefined) return;
   confirm.require({
     message: t('modules.seller.productContainers.products.confirmDelete'),
@@ -150,8 +141,8 @@ async function deleteProduct() {
     acceptIcon: 'pi pi-trash',
     rejectIcon: 'pi pi-times',
     group: 'containerDelete',
-    accept: async () => {
-      await containerStore.deleteContainer(props.container!.id)
+    accept: () => {
+      containerStore.deleteContainer(props.container!.id)
           .then(() => {
             toast.add({
               summary: t('common.toast.success.success'),

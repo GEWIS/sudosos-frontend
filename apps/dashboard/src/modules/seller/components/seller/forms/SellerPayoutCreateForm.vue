@@ -145,7 +145,7 @@ const getReportPdf = async () => {
 };
 
 const emit = defineEmits(['update:edit']);
-setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
+setSubmit(props.form, props.form.context.handleSubmit( (values) => {
   if (!props.form.context.meta.value.dirty) {
     emit('update:edit', false);
     return;
@@ -156,13 +156,15 @@ setSubmit(props.form, props.form.context.handleSubmit(async (values) => {
     requestedById: values.user.id,
     startDate: values.fromDate,
   };
-  await sellerPayoutStore.createPayout(request).then(() => {
-    // TODO: Refresh or update
-    setSuccess(props.form, true);
-  }).catch((err) => {
-    handleError(err, toast);
-    setSuccess(props.form, false);
-  });
+  sellerPayoutStore.createPayout(request)
+      .then(() => {
+        // TODO: Refresh or update
+        setSuccess(props.form, true);
+      })
+      .catch((err) => {
+        handleError(err, toast);
+        setSuccess(props.form, false);
+      });
 }));
 
 </script>

@@ -49,10 +49,11 @@
   </CardComponent>
 </template>
 
-<script setup lang="ts">
-import { ref, computed, type PropType } from 'vue';
+<script setup lang="ts" generic="T extends AnyObject">
+import { ref, computed } from 'vue';
 import Button from 'primevue/button';
 import { useI18n } from "vue-i18n";
+import { type AnyObject } from "yup";
 import CardComponent from "@/components/CardComponent.vue";
 import { type Form, setSuccess } from "@/utils/formUtils";
 import ActionButton from "@/components/ActionButton.vue";
@@ -61,30 +62,21 @@ const { t } = useI18n();
 
 const showEdit = computed(() => props.enableEdit && !props.create);
 
-const props = defineProps({
-  header: {
-    type: String,
-    required: true
-  },
-  modelValue: {
-    type: Boolean,
-    required: false,
-  },
-  enableEdit: {
-    type: Boolean,
-    required: false,
-    default: true,
-  },
-  create: {
-    type: Boolean,
-    required: false,
-    default: false,
-  },
-  form: {
-    type: Object as PropType<Form<any>>,
-    required: false,
-  },
-});
+const props = withDefaults(
+    defineProps<{
+      header: string;
+      modelValue?: boolean;
+      enableEdit?: boolean;
+      create?: boolean;
+      form?: Form<T>;
+    }>(),
+    {
+      enableEdit: true,
+      create: false,
+      form: undefined,
+    }
+);
+
 
 const emit = defineEmits(['update:modelValue', 'save', 'cancel']);
 

@@ -39,42 +39,31 @@
   </Dialog>
 </template>
 
-<script setup lang="ts">
-import { computed, type PropType, ref } from 'vue';
+<script setup lang="ts" generic="T extends AnyObject">
+import { computed, ref } from 'vue';
 import Button from "primevue/button";
 import { useI18n } from "vue-i18n";
+import { type AnyObject } from "yup";
 import { addListenerOnDialogueOverlay } from '@sudosos/sudosos-frontend-common';
 import type { Form } from "@/utils/formUtils";
 
 const { t } = useI18n();
-const props = defineProps({
-  modelValue: {
-    type: Boolean,
-    required: true,
-  },
-  form: {
-    type: Object as PropType<Form<any>>,
-    required: true,
-  },
-  header: {
-    type: String,
-    required: false,
-    default: '',
-  },
-  isEditable: {
-    type: Boolean,
-    required: true
-  },
-  deletable: {
-    type: Boolean,
-    required: false,
-    default: false
-  },
-  deleteLabel: {
-    type: String,
-    required: false
-  }
-});
+
+const props = withDefaults(
+    defineProps<{
+      modelValue: boolean;
+      form: Form<T>;
+      header?: string;
+      isEditable: boolean;
+      deletable?: boolean;
+      deleteLabel?: string;
+    }>(),
+    {
+      header: '',
+      deletable: false,
+      deleteLabel: '',
+    }
+);
 
 const emits = defineEmits(['update:modelValue', 'show', 'close', 'delete']);
 

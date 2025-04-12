@@ -124,7 +124,7 @@ v-model:model-value="showDialog" :form="form"
 <script setup lang="ts">
 import { computed, onMounted, ref, type Ref, watch } from "vue";
 import type { GewisUserResponse, UserResponse } from "@sudosos/sudosos-client";
-import DataTable from 'primevue/datatable';
+import DataTable, { type DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import { FilterMatchMode } from 'primevue/api';
 import Checkbox from "primevue/checkbox";
@@ -210,7 +210,7 @@ const apiCall: (skip: number) => Promise<void> = async (skip: number) => {
 const delayedAPICall = debounce(apiCall, 250);
 
 const onPage = (event: DataTablePageEvent) => {
-  delayedAPICall(event.originalEvent.first);
+  delayedAPICall(event.first);
 };
 // TODO: Fix sorting
 // See: https://github.com/GEWIS/sudosos-frontend-vue3/issues/19
