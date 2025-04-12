@@ -102,7 +102,6 @@ const handleLogout = () => {
 };
 
 const { pendingPayouts } = usePendingPayouts();
-
 const { openInvoiceAccounts } = useOpenInvoiceAccounts();
 const getFinancialNotifications = () => isAllowed('update', ['all'], 'SellerPayout', ['any']) && pendingPayouts?.value + openInvoiceAccounts?.value;
 
@@ -192,8 +191,8 @@ const navItems = computed(() => [
         visible: isAllowed('get', ['all'], 'Invoice', ['any'])
       },
       {
-        label: t('common.navigation.fineOverview'),
-        route: '/fine',
+        label: t('common.navigation.debtors'),
+        route: '/debtor',
         visible: isAllowed('get', ['all'], 'Fine', ['any']),
       },
       {
