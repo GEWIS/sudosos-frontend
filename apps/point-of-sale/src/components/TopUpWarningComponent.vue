@@ -57,7 +57,7 @@ const startTopUpCountdown = () => {
   topUpProgress.value = 5;
   showConfirmButton.value = false;
 
-  const tickInterval = 1000; // 50ms per 1% step
+  const tickInterval = 1000;
 
   topUpInterval = window.setInterval(async () => {
     if (topUpProgress.value > 0) {
@@ -70,7 +70,7 @@ const startTopUpCountdown = () => {
 };
 
 const closeDialog = () => {
-  showTopUpWarning.value = false; // Close the dialog
+  showTopUpWarning.value = false;
 };
 
 onMounted(() => {
@@ -98,14 +98,14 @@ onMounted(() => {
 }
 
 .red-button {
-  background-color: red; /* Red background */
-  color: white; /* White text */
+  background-color: red;
+  color: white;
 }
 
 .text-center {
   display: flex;
-  justify-content: center;  /* Center horizontally */
-  align-items: center;      /* Center vertically */
-  height: 100%;             /* Ensure it takes the full height of the parent container */
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 </style>
