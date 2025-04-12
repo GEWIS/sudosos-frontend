@@ -7,7 +7,7 @@ export default defineConfig([
     {
         extends: [common, vue, prettier],
         rules: {
-            "no-unused-vars": "warn",
-        },
+            'vue/static-class-names-order': "error"
+        }
     },
 ]);
