@@ -10,8 +10,9 @@
         header: () => ({class: ['dialog-header']})}"
   >
     <Message severity="warn" :closable="false" :icon="undefined">
-      You are currently in debt<br>
-      Please first Top-Up your balance before continuing.<br>
+      Your account balance is currently
+      <span style="color: red; font-weight: bold;">€{{ formattedBuyerBalance }}</span><br>
+      Please first Top-Up your balance before proceeding.<br>
     </Message>
     <div class="qr-code" style="display: flex; justify-content: center; margin-top: 1rem;">
       <img src="@/assets/sudosos-qr.png" style="width: 25rem;" alt=""/>
@@ -38,6 +39,7 @@
 
 import { computed, onMounted, ref } from "vue";
 import { useCartStore } from "@/stores/cart.store";
+import { formatPrice } from "@/utils/FormatUtils";
 
 const cartStore = useCartStore();
 
@@ -47,6 +49,12 @@ const showTopUpWarningDialog = computed(() => {
 });
 
 const checkUserInDebt = computed( () => cartStore.checkBuyerInDebt());
+
+const formattedBuyerBalance = computed(() => {
+  if (cartStore.buyerBalance == null) return null;
+  const buyerBalance = cartStore.buyerBalance.amount;
+  return formatPrice(buyerBalance);
+});
 
 const topUpProgress = ref(5);
 let topUpInterval: number | undefined;
