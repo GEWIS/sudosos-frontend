@@ -2,13 +2,13 @@ import { defineConfig } from "eslint/config";
 import vueI18n from '@intlify/eslint-plugin-vue-i18n'
 import vueParser from "vue-eslint-parser"
 import * as typescriptParser from "@typescript-eslint/parser";
-// Very ironic, but without the extensions eslint does not work
-// eslint-disable-next-line import/extensions
-import root from "../../eslint.config.js";
+import { eslintConfig as common } from '@gewis/eslint-config-typescript';
+import { eslintConfig as vue } from '@gewis/eslint-config-vue';
+import { eslintConfig as prettier } from '@gewis/prettier-config';
 
 export default defineConfig([
     {
-        extends: [root],
+        extends: [common, vue, prettier],
         rules: {
             '@typescript-eslint/no-unused-expressions': ['off', { 'extensions': ['.json'] }],
         },
