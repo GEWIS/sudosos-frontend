@@ -1,8 +1,9 @@
 <template>
   <div class="text-center product-card shadow-2 mb-2">
     <div class="image-container">
-      <img ref="productImage" :class="{ pulsing, featured: product.featured }"
-           class="product-card-image" :src="image" :alt="product.name" @click="addToCart"/>
+      <img
+ref="productImage" :alt="product.name"
+           class="product-card-image" :class="{ pulsing, featured: product.featured }" :src="image" @click="addToCart"/>
       <div v-if="product.featured" class="promo-tag">PROMO</div>
     </div>
     <div class="product-name-wrapper">
@@ -14,10 +15,10 @@
 
 <script setup lang="ts">
 import { ContainerWithProductsResponse, ProductResponse } from '@sudosos/sudosos-client';
+import { nextTick, ref } from "vue";
 import { useCartStore } from '@/stores/cart.store';
 import { getProductImageSrc } from '@/utils/imageUtils';
 import { formatPrice } from '@/utils/FormatUtils';
-import { nextTick, ref } from "vue";
 import { useSettingStore } from "@/stores/settings.store";
 
 const pulsing = ref(false);
@@ -54,7 +55,7 @@ const addToCart = () => {
   });
 
   // Start the flying animation
-  if (settings.showAddToCartAnimation) startFlyingAnimation();
+  if (settings.showAddToCartAnimation) void startFlyingAnimation();
 };
 
 
