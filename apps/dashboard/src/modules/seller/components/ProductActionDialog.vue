@@ -1,53 +1,56 @@
 <template>
   <FormDialog
-v-model="visible"
-              :deletable="props.product != null"
-              :delete-label="deleteLabel"
-              :form="form"
-              :header="header"
-              :is-editable="props.isUpdateAllowed"
-              @close="closeDialog()"
-              @delete="deleteProduct()"
-              @show="openDialog()"
+    v-model="visible"
+    :deletable="props.product != null"
+    :delete-label="deleteLabel"
+    :form="form"
+    :header="header"
+    :is-editable="props.isUpdateAllowed"
+    @close="closeDialog()"
+    @delete="deleteProduct()"
+    @show="openDialog()"
   >
     <template #form>
       <div class="flex flex-column gap-1">
         <ProductActionExistingProductForm
-            v-if="state.addToContainer"
-            v-model:select-product="selectExistingProduct"
-            :products="dropdownProducts"/>
-        <hr v-if="state.addToContainer" class="opacity-50 w-full">
+          v-if="state.addToContainer"
+          v-model:select-product="selectExistingProduct"
+          :products="dropdownProducts"
+        />
+        <hr v-if="state.addToContainer" class="opacity-50 w-full" />
         <div class="flex flex-column gap-4 md:flex-row">
           <ProductActionImageForm
-              :image-src="imageSrc"
-              :is-editable="isProductEditable"
-              @upload="onImageUpload($event)"
+            :image-src="imageSrc"
+            :is-editable="isProductEditable"
+            @upload="onImageUpload($event)"
           />
           <div class="flex flex-column gap-3">
             <ProductActionForm
-                v-model:existing-product="selectExistingProduct"
-                :form="form"
-                :is-editable="isProductEditable"
-                :is-organ-editable="state.createProduct || (state.addToContainer && isProductEditable)"
-                :product-categories="categories"
-                :products="!state.displayProduct ? products : undefined"
-                :vat-groups="vatGroups"
-                @submit:success="visible = false"/>
-            <div class="flex flex-row gap-1 justify-content-end">
-            </div>
+              v-model:existing-product="selectExistingProduct"
+              :form="form"
+              :is-editable="isProductEditable"
+              :is-organ-editable="state.createProduct || (state.addToContainer && isProductEditable)"
+              :product-categories="categories"
+              :products="!state.displayProduct ? products : undefined"
+              :vat-groups="vatGroups"
+              @submit:success="visible = false"
+            />
+            <div class="flex flex-row gap-1 justify-content-end"></div>
             <div>
               <!-- Row for Added on -->
               <div v-if="state.displayProduct" class="flex flex-row flex-wrap justify-content-between">
-                <h4 class="my-0">{{ t("common.createdAt") }}</h4>
+                <h4 class="my-0">{{ t('common.createdAt') }}</h4>
                 <p v-if="props.product" class="my-0">
-                  {{ formatDateTime(new Date(props.product.createdAt ? props.product.createdAt.toString() : '')) }}</p>
+                  {{ formatDateTime(new Date(props.product.createdAt ? props.product.createdAt.toString() : '')) }}
+                </p>
               </div>
 
               <!-- Row for Updated on -->
               <div v-if="state.displayProduct" class="flex flex-row flex-wrap justify-content-between">
-                <h4 class="my-0">{{ t("common.updatedAt") }}</h4>
+                <h4 class="my-0">{{ t('common.updatedAt') }}</h4>
                 <p v-if="props.product" class="my-0">
-                  {{ formatDateTime(new Date(props.product.updatedAt ? props.product.updatedAt.toString() : '')) }}</p>
+                  {{ formatDateTime(new Date(props.product.updatedAt ? props.product.updatedAt.toString() : '')) }}
+                </p>
               </div>
             </div>
           </div>
@@ -59,43 +62,40 @@ v-model="visible"
 </template>
 
 <script setup lang="ts">
-
-import {
-  computed,
-  type ComputedRef,
-  ref,
-  type Ref, watch
-} from "vue";
+import { computed, type ComputedRef, ref, type Ref, watch } from 'vue';
 import type {
-  BaseUserResponse, BaseVatGroupResponse,
-  ContainerWithProductsResponse, CreateProductRequest,
+  BaseUserResponse,
+  BaseVatGroupResponse,
+  ContainerWithProductsResponse,
+  CreateProductRequest,
   ProductCategoryResponse,
-  ProductResponse, UpdateProductRequest,
-  VatGroupResponse
-} from "@sudosos/sudosos-client";
-import { useUserStore } from "@sudosos/sudosos-frontend-common";
-import { useI18n } from "vue-i18n";
-import { useToast } from "primevue/usetoast";
-import { useConfirm } from "primevue/useconfirm";
-import { schemaToForm, setSubmit } from "@/utils/formUtils";
-import { createProductSchema } from "@/utils/validation-schema";
-import FormDialog from "@/components/FormDialog.vue";
-import ProductActionForm from "@/modules/seller/components/ProductActionForm.vue";
-import { useProductStore } from "@/stores/product.store";
-import { useContainerStore } from "@/stores/container.store";
-import ProductActionImageForm from "@/modules/seller/components/ProductActionImageForm.vue";
-import ProductActionExistingProductForm from "@/modules/seller/components/ProductActionExistingProductForm.vue";
-import { getProductImageSrc } from "@/utils/urlUtils";
-import apiService from "@/services/ApiService";
-import { formatDateTime } from "@/utils/formatterUtils";
-import { handleError } from "@/utils/errorUtils";
+  ProductResponse,
+  UpdateProductRequest,
+  VatGroupResponse,
+} from '@sudosos/sudosos-client';
+import { useUserStore } from '@sudosos/sudosos-frontend-common';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'primevue/usetoast';
+import { useConfirm } from 'primevue/useconfirm';
+import { schemaToForm, setSubmit } from '@/utils/formUtils';
+import { createProductSchema } from '@/utils/validation-schema';
+import FormDialog from '@/components/FormDialog.vue';
+import ProductActionForm from '@/modules/seller/components/ProductActionForm.vue';
+import { useProductStore } from '@/stores/product.store';
+import { useContainerStore } from '@/stores/container.store';
+import ProductActionImageForm from '@/modules/seller/components/ProductActionImageForm.vue';
+import ProductActionExistingProductForm from '@/modules/seller/components/ProductActionExistingProductForm.vue';
+import { getProductImageSrc } from '@/utils/urlUtils';
+import apiService from '@/services/ApiService';
+import { formatDateTime } from '@/utils/formatterUtils';
+import { handleError } from '@/utils/errorUtils';
 const toast = useToast();
 const { t } = useI18n();
 
 const props = defineProps<{
-  container?: ContainerWithProductsResponse,
-  product?: ProductResponse,
-  isUpdateAllowed: boolean,
+  container?: ContainerWithProductsResponse;
+  product?: ProductResponse;
+  isUpdateAllowed: boolean;
 }>();
 
 const visible = defineModel<boolean>('visible', { required: true });
@@ -171,13 +171,12 @@ const updateFieldValues = (p: ProductResponse) => {
       alcoholPercentage,
       preferred,
       featured,
-      priceList
-    }
+      priceList,
+    },
   });
 
   productImage.value = undefined;
   imageSrc.value = getProductImageSrc(p);
-
 };
 
 // Current state / operations
@@ -206,28 +205,29 @@ watch(selectExistingProduct, () => {
 // We don't allow editing of dropdown products
 const isProductEditable = computed(() => props.isUpdateAllowed && selectExistingProduct.value == null);
 
-setSubmit(form, form.context.handleSubmit((values) => {
-  // Create a new product
-  if(
-      (state.value.createProduct ||
-      state.value.addToContainer) && selectExistingProduct.value == undefined) {
-    const createProductRequest: CreateProductRequest = {
-      name: values.name,
-      priceInclVat: {
-        amount: Math.round(values.priceInclVat * 100),
-        currency: 'EUR',
-        precision: 2
-      },
-      vat: values.vat.id,
-      category: values.category.id,
-      alcoholPercentage: values.alcoholPercentage || 0,
-      ownerId: values.owner.id,
-      featured: values.featured,
-      preferred: values.preferred,
-      priceList: values.priceList,
-    };
+setSubmit(
+  form,
+  form.context.handleSubmit((values) => {
+    // Create a new product
+    if ((state.value.createProduct || state.value.addToContainer) && selectExistingProduct.value == undefined) {
+      const createProductRequest: CreateProductRequest = {
+        name: values.name,
+        priceInclVat: {
+          amount: Math.round(values.priceInclVat * 100),
+          currency: 'EUR',
+          precision: 2,
+        },
+        vat: values.vat.id,
+        category: values.category.id,
+        alcoholPercentage: values.alcoholPercentage || 0,
+        ownerId: values.owner.id,
+        featured: values.featured,
+        preferred: values.preferred,
+        priceList: values.priceList,
+      };
 
-     productStore.createProduct(createProductRequest, productImage.value)
+      productStore
+        .createProduct(createProductRequest, productImage.value)
         .then((createdProduct) => {
           toast.add({
             severity: 'success',
@@ -237,41 +237,40 @@ setSubmit(form, form.context.handleSubmit((values) => {
           });
 
           // Add product to container
-          if(state.value.addToContainer) {
+          if (state.value.addToContainer) {
             void containerStore.addProductToContainer(props.container!, createdProduct);
           }
         })
         .catch((err) => handleError(err, toast));
-
-  }
-
-  // Add product to container
-  if(state.value.addToContainer && !inContainer.value) {
-    if(selectExistingProduct.value) {
-      void containerStore.addProductToContainer(props.container!, selectExistingProduct.value);
     }
-  }
 
+    // Add product to container
+    if (state.value.addToContainer && !inContainer.value) {
+      if (selectExistingProduct.value) {
+        void containerStore.addProductToContainer(props.container!, selectExistingProduct.value);
+      }
+    }
 
-  // Update product
-  if(state.value.displayProduct) {
-    if (form.context.meta.value.dirty) {
-      const updateProductRequest: UpdateProductRequest = {
-        name: values.name,
-        priceInclVat: {
-          amount: Math.round(values.priceInclVat * 100),
-          currency: 'EUR',
-          precision: 2
-        },
-        vat: values.vat.id,
-        category: values.category.id,
-        alcoholPercentage: values.alcoholPercentage || 0,
-        featured: values.featured,
-        preferred: values.preferred,
-        priceList: values.priceList,
-      };
+    // Update product
+    if (state.value.displayProduct) {
+      if (form.context.meta.value.dirty) {
+        const updateProductRequest: UpdateProductRequest = {
+          name: values.name,
+          priceInclVat: {
+            amount: Math.round(values.priceInclVat * 100),
+            currency: 'EUR',
+            precision: 2,
+          },
+          vat: values.vat.id,
+          category: values.category.id,
+          alcoholPercentage: values.alcoholPercentage || 0,
+          featured: values.featured,
+          preferred: values.preferred,
+          priceList: values.priceList,
+        };
 
-      productStore.updateProduct(props.product!.id, updateProductRequest)
+        productStore
+          .updateProduct(props.product!.id, updateProductRequest)
           .then(() => {
             toast.add({
               severity: 'success',
@@ -281,38 +280,41 @@ setSubmit(form, form.context.handleSubmit((values) => {
             });
           })
           .catch((err) => handleError(err, toast));
-    }
-    if(productImage.value) {
-      void productStore.updateProductImage(props.product!.id, productImage.value)
+      }
+      if (productImage.value) {
+        void productStore
+          .updateProductImage(props.product!.id, productImage.value)
           .catch((err) => handleError(err, toast));
+      }
     }
-  }
-  visible.value = false;
-  closeDialog();
-}));
-
+    visible.value = false;
+    closeDialog();
+  }),
+);
 
 // Deleting a product from container or in general
 const deleteLabel = computed(() => {
-  return props.container
-  ? t("modules.seller.productContainers.products.productContainerDelete") : undefined;
+  return props.container ? t('modules.seller.productContainers.products.productContainerDelete') : undefined;
 });
 
 const confirm = useConfirm();
 
 const deleteConfirm = ref<HTMLElement | undefined>();
 async function deleteProduct() {
-  if(props.product == undefined) return;
-  if(props.container) {
-    await containerStore.deleteProductFromContainer(props.container, props.product).then(() => {
-      toast.add({
-        severity: 'success',
-        summary: t('common.toast.success.success'),
-        detail: t('common.toast.success.productContainerDeleted'),
-        life: 3000,
-      });
-      closeDialog();
-    }).catch((err) => handleError(err, toast));
+  if (props.product == undefined) return;
+  if (props.container) {
+    await containerStore
+      .deleteProductFromContainer(props.container, props.product)
+      .then(() => {
+        toast.add({
+          severity: 'success',
+          summary: t('common.toast.success.success'),
+          detail: t('common.toast.success.productContainerDeleted'),
+          life: 3000,
+        });
+        closeDialog();
+      })
+      .catch((err) => handleError(err, toast));
   } else {
     confirm.require({
       message: t('modules.seller.productContainers.products.confirmProductContainerDelete'),
@@ -322,24 +324,24 @@ async function deleteProduct() {
       acceptIcon: 'pi pi-trash',
       rejectIcon: 'pi pi-times',
       accept: () => {
-          productStore.deleteProduct(props.product!.id)
-              .then(() => {
-                toast.add({
-                  summary: t('common.toast.success.success'),
-                  detail: t('common.toast.success.productDeleted'),
-                  severity: 'success',
-                  life: 3000
-                });
-                closeDialog();
-              })
-              .catch((err) => {
-                handleError(err, toast);
-              });
-      }
+        productStore
+          .deleteProduct(props.product!.id)
+          .then(() => {
+            toast.add({
+              summary: t('common.toast.success.success'),
+              detail: t('common.toast.success.productDeleted'),
+              severity: 'success',
+              life: 3000,
+            });
+            closeDialog();
+          })
+          .catch((err) => {
+            handleError(err, toast);
+          });
+      },
     });
   }
 }
-
 
 // When using the "alike product", disable add button if its already in container.
 const inContainer = computed(() => {
@@ -363,7 +365,6 @@ const openDialog = async () => {
   }
 };
 
-
 const closeDialog = () => {
   form.context.resetForm({
     values: {
@@ -375,8 +376,8 @@ const closeDialog = () => {
       owner: undefined,
       preferred: false,
       featured: false,
-      priceList: false
-    }
+      priceList: false,
+    },
   });
 
   imageSrc.value = '';
@@ -385,10 +386,5 @@ const closeDialog = () => {
   vatMap.edited = false;
   visible.value = false;
 };
-
-
-
 </script>
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

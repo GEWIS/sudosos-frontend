@@ -7,20 +7,20 @@
         <h1 v-else class="font-medium my-0 sm:text-7xl text-5xl text-center">{{ displayBalance }}</h1>
         <p v-if="userBalance && userBalance.fine" class="font-semibold text-base text-center text-red-500">
           {{
-          isAllFine
-          ? t('modules.user.balance.allIsFines')
-          : t('modules.user.balance.someIsFines', { fine: displayFine })
+            isAllFine
+              ? t('modules.user.balance.allIsFines')
+              : t('modules.user.balance.someIsFines', { fine: displayFine })
           }}
         </p>
         <div v-show="displayBalanceAfterTopup" class="font-italic text-600 text-center">
           {{ t('modules.user.balance.after') }}
           <span v-if="displayBalanceAfterTopup">{{
             formatPrice(
-            Dinero(userBalance?.amount!! as Dinero.Options)
-            .add(Dinero({ amount: Math.round(topupAmount!! * 100), currency: 'EUR' }))
-            .toObject()
+              Dinero(userBalance?.amount!! as Dinero.Options)
+                .add(Dinero({ amount: Math.round(topupAmount!! * 100), currency: 'EUR' }))
+                .toObject(),
             )
-            }}</span>
+          }}</span>
         </div>
       </div>
       <Divider layout="vertical" />
@@ -30,29 +30,26 @@
           <p class="font-bold">{{ t('modules.user.balance.increaseAmount') }}</p>
           <div class="flex-1 w-full">
             <InputNumber
-                v-model="topupAmount"
-                currency="EUR"
-                input-id="amount"
-                :input-props="{
+              v-model="topupAmount"
+              currency="EUR"
+              input-id="amount"
+              :input-props="{
                 inputmode: 'decimal',
-                class: 'w-full'
+                class: 'w-full',
               }"
-                locale="nl-NL"
-                :max-fraction-digits="2"
-                :min="0.0"
-                :min-fraction-digits="0"
-                mode="currency"
-                :placeholder="t('modules.user.balance.price')"
+              locale="nl-NL"
+              :max-fraction-digits="2"
+              :min="0.0"
+              :min-fraction-digits="0"
+              mode="currency"
+              :placeholder="t('modules.user.balance.price')"
               @input="
                 (data) => {
-                  setFieldValue(
-                    'Top up amount',
-                    data.value as number,
-                    errors['Top up amount'] !== undefined
-                  );
+                  setFieldValue('Top up amount', data.value as number, errors['Top up amount'] !== undefined);
                   setTouched(true);
                 }
-              " />
+              "
+            />
           </div>
           <span class="font-bold text-red-500">{{ errors['Top up amount'] }}</span>
         </div>
@@ -77,8 +74,8 @@ import Divider from 'primevue/divider';
 // eslint-disable-next-line import/no-named-as-default
 import Dinero from 'dinero.js';
 import InputNumber from 'primevue/inputnumber';
-import { useRouter } from "vue-router";
-import { useI18n } from "vue-i18n";
+import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { formatPrice } from '@/utils/formatterUtils';
 import apiService from '@/services/ApiService';
 import BalanceTopupModal from '@/modules/user/components/balance/BalanceTopupModal.vue';
@@ -92,34 +89,25 @@ const productSchema = toTypedSchema(
     'Top up amount': yup
       .number()
       .required()
-      .test(
-        'is-min10-or-balance',
-        `Top up should be more than €10 or settle debt exactly.`,
-        (value) => {
-          return value >= 10 || Math.round(value * -100) == userBalance.value?.amount.amount;
-        }
-      )
-      .test(
-        'is-total-less-than-150',
-        `Your new balance cannot surpass €150.`,
-        (value) => {
-          return userBalance.value!.amount.amount + value*100 <= 15000;
-        }
-      )
-  })
+      .test('is-min10-or-balance', `Top up should be more than €10 or settle debt exactly.`, (value) => {
+        return value >= 10 || Math.round(value * -100) == userBalance.value?.amount.amount;
+      })
+      .test('is-total-less-than-150', `Your new balance cannot surpass €150.`, (value) => {
+        return userBalance.value!.amount.amount + value * 100 <= 15000;
+      }),
+  }),
 );
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const { values, errors, defineField, meta, setFieldValue, setTouched, handleSubmit, validate } =
-  useForm({
-    validationSchema: productSchema
-  });
+const { values, errors, defineField, meta, setFieldValue, setTouched, handleSubmit, validate } = useForm({
+  validationSchema: productSchema,
+});
 
 const [topupAmount] = defineField('Top up amount', {
   validateOnChange: false,
   validateOnInput: false,
   validateOnModelUpdate: false,
-  validateOnBlur: false
+  validateOnBlur: false,
 });
 
 const onSubmit = handleSubmit(() => {
@@ -167,9 +155,7 @@ const displayBalance = computed(() => {
 });
 
 const displayBalanceAfterTopup = computed(() => {
-  return (
-    meta.value.touched && userBalance.value?.amount != undefined && topupAmount.value != undefined
-  );
+  return meta.value.touched && userBalance.value?.amount != undefined && topupAmount.value != undefined;
 });
 
 // Define the 'visible' ref variable to control dialog visibility

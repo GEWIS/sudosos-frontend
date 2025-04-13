@@ -17,7 +17,7 @@ const authGuard = () => {
   }
 };
 
-const baseUrl  = getBasePath();
+const baseUrl = getBasePath();
 
 const router = createRouter({
   history: createWebHistory(baseUrl),
@@ -26,18 +26,18 @@ const router = createRouter({
       path: '/cashier',
       name: 'cashier',
       component: CashierView,
-      beforeEnter: authGuard // Apply the navigation guard
+      beforeEnter: authGuard, // Apply the navigation guard
     },
     {
       path: '/',
       name: 'login',
-      component: LoginView
+      component: LoginView,
     },
     {
       path: '/:pathMatch(.*)*',
-      redirect: '/'
-    }
-  ]
+      redirect: '/',
+    },
+  ],
 });
 
 export default router;

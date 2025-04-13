@@ -5,9 +5,9 @@
 </template>
 
 <script setup lang="ts">
-import type { BaseUserResponse } from "@sudosos/sudosos-client";
-import type { PropType } from "vue";
-import router from "@/router";
+import type { BaseUserResponse } from '@sudosos/sudosos-client';
+import type { PropType } from 'vue';
+import router from '@/router';
 
 const props = defineProps({
   user: {
@@ -18,16 +18,13 @@ const props = defineProps({
     type: Boolean,
     required: false,
     default: false,
-  }
+  },
 });
 
 const goToUser = () => {
   const routeData = router.resolve({ name: 'user', params: { userId: props.user.id } });
   window.open(routeData.href, '_blank');
 };
-
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

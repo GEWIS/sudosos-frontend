@@ -1,36 +1,36 @@
 <template>
   <Calendar
-      v-if="type === 'date'"
-      v-model="internalDate"
-      v-bind="attributes"
-      :disabled="disabled"
-      :placeholder="placeholder"
-      @input="updateStringValue"
+    v-if="type === 'date'"
+    v-model="internalDate"
+    v-bind="attributes"
+    :disabled="disabled"
+    :placeholder="placeholder"
+    @input="updateStringValue"
   />
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import type { BaseFieldProps, GenericObject } from "vee-validate";
+import type { BaseFieldProps, GenericObject } from 'vee-validate';
 
 // Define the component's props
 const props = withDefaults(
-    defineProps<{
-      modelValue?: string;
-      placeholder?: string;
-      attributes?: BaseFieldProps & GenericObject;
-      disabled?: boolean;
-      type?: string;
-      dateFormat?: string;
-    }>(),
-    {
-      modelValue: '',
-      placeholder: '',
-      attributes: undefined,
-      disabled: false,
-      type: 'date',
-      dateFormat: 'yyyy-MM-dd',
-    }
+  defineProps<{
+    modelValue?: string;
+    placeholder?: string;
+    attributes?: BaseFieldProps & GenericObject;
+    disabled?: boolean;
+    type?: string;
+    dateFormat?: string;
+  }>(),
+  {
+    modelValue: '',
+    placeholder: '',
+    attributes: undefined,
+    disabled: false,
+    type: 'date',
+    dateFormat: 'yyyy-MM-dd',
+  },
 );
 
 // Define the component's events
@@ -41,12 +41,12 @@ const internalDate = ref<Date | null>(stringToDate(props.modelValue));
 
 // Watch for changes in modelValue and update internalDate accordingly
 watch(
-    () => props.modelValue,
-    (newValue) => {
-      if (newValue !== dateToString(internalDate.value)) {
-        internalDate.value = stringToDate(newValue);
-      }
+  () => props.modelValue,
+  (newValue) => {
+    if (newValue !== dateToString(internalDate.value)) {
+      internalDate.value = stringToDate(newValue);
     }
+  },
 );
 
 // Watch for changes in internalDate and emit updates to the modelValue

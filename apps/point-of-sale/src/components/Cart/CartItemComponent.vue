@@ -3,13 +3,14 @@
     <div class="flex-container gap-1">
       <div class="flex-container">
         <img
-:id="product.name" :alt="product.name" class="image mr-2 product-image"
-             :src="getProductImageSrc(product)"/>
+          :id="product.name"
+          :alt="product.name"
+          class="image mr-2 product-image"
+          :src="getProductImageSrc(product)"
+        />
       </div>
       <div class>
-        <h4 class="font-bold m-0 text-base text-overflow w-5rem" style="max-width: 100px;">{{
-            product.name
-          }}</h4>
+        <h4 class="font-bold m-0 text-base text-overflow w-5rem" style="max-width: 100px">{{ product.name }}</h4>
         <p class="font-size-sm m-0">{{ product.category.name }}</p>
       </div>
       <div class="flex-container gap-2 ml-auto">
@@ -24,7 +25,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { ProductResponse } from "@sudosos/sudosos-client";
+import { ProductResponse } from '@sudosos/sudosos-client';
 import { CartProduct, useCartStore } from '@/stores/cart.store';
 import { getProductImageSrc } from '@/utils/imageUtils';
 import { formatPrice } from '@/utils/FormatUtils';
@@ -34,8 +35,8 @@ const cartStore = useCartStore();
 const props = defineProps({
   cartProduct: {
     type: Object as () => CartProduct,
-    required: true
-  }
+    required: true,
+  },
 });
 
 const product = ref<ProductResponse>(props.cartProduct.product);

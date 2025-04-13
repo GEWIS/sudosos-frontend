@@ -4,11 +4,11 @@ import type {
   ProductCategoryResponse,
   ProductResponse,
   UpdateProductRequest,
-  VatGroupResponse
+  VatGroupResponse,
 } from '@sudosos/sudosos-client';
 import { fetchAllPages } from '@sudosos/sudosos-frontend-common';
-import ApiService from "@/services/ApiService";
-import { useContainerStore } from "@/stores/container.store";
+import ApiService from '@/services/ApiService';
+import { useContainerStore } from '@/stores/container.store';
 
 export const useProductStore = defineStore('products', {
   state: () => ({
@@ -17,32 +17,34 @@ export const useProductStore = defineStore('products', {
     categories: [] as ProductCategoryResponse[],
     vatGroups: [] as VatGroupResponse[],
   }),
-    getters: {
-        /**
-         * Get all products in the store
-         *
-         * This function returns a mapping of product IDs to their respective product objects.
-         * To convert this mapping into an array of container objects, use `Object.values`.
-         * The resulting array will be deeply reactive with the store, meaning any changes to
-         * the store's state will be reflected in the array.
-         *
-         * @returns {Record<number, ProductResponse>} A record of product IDs to their product objects.
-         *
-         * @example
-         * // reactive array of containers
-         * const productsArray = Object.values(useProductStore().getAllContainers());
-         */
-        getAllProducts(): Record<string, ProductResponse> {
-            return this.products;
-        },
-        /**
-         * Returns a single product from the store if it is loaded / exists.
-         * @param state
-         */
-        getSingleProduct: (state) => (id: number): ProductResponse | undefined => {
-            return state.products[id] || undefined;
-        }
+  getters: {
+    /**
+     * Get all products in the store
+     *
+     * This function returns a mapping of product IDs to their respective product objects.
+     * To convert this mapping into an array of container objects, use `Object.values`.
+     * The resulting array will be deeply reactive with the store, meaning any changes to
+     * the store's state will be reflected in the array.
+     *
+     * @returns {Record<number, ProductResponse>} A record of product IDs to their product objects.
+     *
+     * @example
+     * // reactive array of containers
+     * const productsArray = Object.values(useProductStore().getAllContainers());
+     */
+    getAllProducts(): Record<string, ProductResponse> {
+      return this.products;
     },
+    /**
+     * Returns a single product from the store if it is loaded / exists.
+     * @param state
+     */
+    getSingleProduct:
+      (state) =>
+      (id: number): ProductResponse | undefined => {
+        return state.products[id] || undefined;
+      },
+  },
   actions: {
     /**
      * Fetch all products, categories, and VAT groups if they are not already loaded.
@@ -64,14 +66,14 @@ export const useProductStore = defineStore('products', {
      * Note, this function will overwrite any existing products in the store.
      */
     async fetchAllProducts() {
-      return fetchAllPages<ProductResponse>(
-        (take, skip) => ApiService.products.getAllProducts(take, skip)
-      ).then((productsArray) => {
-        this.products = {};
-        productsArray.forEach((product) => {
-          this.products[product.id] = product;
-        });
-      });
+      return fetchAllPages<ProductResponse>((take, skip) => ApiService.products.getAllProducts(take, skip)).then(
+        (productsArray) => {
+          this.products = {};
+          productsArray.forEach((product) => {
+            this.products[product.id] = product;
+          });
+        },
+      );
     },
     /**
      * Fetch all product categories and store them in the store.
@@ -79,7 +81,7 @@ export const useProductStore = defineStore('products', {
     async fetchAllCategories() {
       return fetchAllPages<ProductCategoryResponse>(
         // @ts-expect-error PaginatedProductCategoryResponse is the same as PaginatedResult<ProductCategoryResponse>
-        (take, skip) => ApiService.category.getAllProductCategories(take, skip)
+        (take, skip) => ApiService.category.getAllProductCategories(take, skip),
       ).then((categories) => {
         this.categories = categories;
         return categories;
@@ -89,11 +91,11 @@ export const useProductStore = defineStore('products', {
      * Fetch all VAT groups and store them in the store.
      */
     async fetchAllVatGroups() {
-      return fetchAllPages<VatGroupResponse>(
-        (take, skip) => ApiService.vatGroups.getAllVatGroups(undefined, undefined,undefined,
-            false, take, skip)).then((vatGroups) => {
-          this.vatGroups = vatGroups;
-          return this.vatGroups;
+      return fetchAllPages<VatGroupResponse>((take, skip) =>
+        ApiService.vatGroups.getAllVatGroups(undefined, undefined, undefined, false, take, skip),
+      ).then((vatGroups) => {
+        this.vatGroups = vatGroups;
+        return this.vatGroups;
       });
     },
     /**
@@ -108,7 +110,7 @@ export const useProductStore = defineStore('products', {
       this.products[product.id] = product;
 
       return ApiService.products.updateProductImage(id, productImage).then(() => {
-        (useContainerStore()).handleProductUpdate(product);
+        useContainerStore().handleProductUpdate(product);
         return product;
       });
     },
@@ -126,13 +128,12 @@ export const useProductStore = defineStore('products', {
       return product;
     },
     async updateProduct(productId: number, updateProductRequest: UpdateProductRequest): Promise<ProductResponse> {
-      return ApiService.products
-        .updateProduct(productId, updateProductRequest).then((resp) => {
-          const product = resp.data;
-            this.products[product.id] = product;
-            (useContainerStore()).handleProductUpdate(product);
-            return product;
-          });
+      return ApiService.products.updateProduct(productId, updateProductRequest).then((resp) => {
+        const product = resp.data;
+        this.products[product.id] = product;
+        useContainerStore().handleProductUpdate(product);
+        return product;
+      });
     },
     async fetchProduct(id: number) {
       const product = await ApiService.products.getSingleProduct(id).then((resp) => resp.data);
@@ -141,7 +142,7 @@ export const useProductStore = defineStore('products', {
     async deleteProduct(id: number) {
       await ApiService.products.deleteProduct(id);
       delete this.products[id];
-      (useContainerStore()).handleProductDelete(id);
-    }
+      useContainerStore().handleProductDelete(id);
+    },
   },
 });

@@ -1,22 +1,22 @@
 <template>
   <InvoiceTable
-      :invoices="invoices"
-      :is-loading="isLoading"
-      :rows="rows"
-      :total-records="totalRecords"
-      @page="onPage"
-      @state-filter-change="onStateFilterChange"
+    :invoices="invoices"
+    :is-loading="isLoading"
+    :rows="rows"
+    :total-records="totalRecords"
+    @page="onPage"
+    @state-filter-change="onStateFilterChange"
   />
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import type { InvoiceResponse } from "@sudosos/sudosos-client";
-import { InvoiceStatusResponseStateEnum } from "@sudosos/sudosos-client/src/api";
-import type { DropdownChangeEvent } from "primevue/dropdown";
-import type { DataTablePageEvent } from "primevue/datatable";
-import InvoiceTable from "@/modules/financial/components/invoice/InvoiceTable.vue";
-import { useInvoiceStore } from "@/stores/invoice.store";
+import { ref, onMounted } from 'vue';
+import type { InvoiceResponse } from '@sudosos/sudosos-client';
+import { InvoiceStatusResponseStateEnum } from '@sudosos/sudosos-client/src/api';
+import type { DropdownChangeEvent } from 'primevue/dropdown';
+import type { DataTablePageEvent } from 'primevue/datatable';
+import InvoiceTable from '@/modules/financial/components/invoice/InvoiceTable.vue';
+import { useInvoiceStore } from '@/stores/invoice.store';
 
 const invoiceStore = useInvoiceStore();
 
@@ -28,8 +28,8 @@ const page = ref<number>(0);
 const filterState = ref<InvoiceStatusResponseStateEnum | null>(null);
 
 const props = defineProps<{
-  state?: InvoiceStatusResponseStateEnum,
-  year: number,
+  state?: InvoiceStatusResponseStateEnum;
+  year: number;
 }>();
 
 onMounted(async () => {
@@ -41,7 +41,7 @@ async function loadInvoices() {
 
   // If a year is provided, compute the date range based on the year.
   // Example: for year 2025, fromDate = "2024-07-01" and tillDate = "2025-07-01"
-  const queryParams: Record<string, string> = { };
+  const queryParams: Record<string, string> = {};
   if (props.year) {
     queryParams.fromDate = `${props.year - 1}-07-01T00:00:00.000Z`;
     queryParams.tillDate = `${props.year}-07-01T00:00:00.000Z`;

@@ -1,92 +1,89 @@
-
 <template>
-    <nav class="bg-primary flex justify-content-around w-full">
-      <Menubar class="hidden mb:flex" :model="navItems">
-          <template #start>
-            <router-link class="align-items-center flex flex-row font-bold no-underline py-1 text-white" to="/">
-              {{ t("common.sudosos") }}
-              <img alt="SudoSOS" class="h-4rem py-2" src="../assets/img/gewis-branding.svg" />
-            </router-link>
-          </template>
-          <template #item="{ item, props, hasSubmenu }">
-            <router-link v-if="item.route" v-slot="{ href, navigate }" custom :to="item.route">
-              <a
-v-bind="props.action"
-                 class="align-items-center flex justify-content-between"
-                 :href="href"
-                 @click="navigate"
-              >
-                <span class="p-menuitem-text">{{ item.label }}</span>
-                <span v-if="item.notifications" class="p-badge p-badge-danger">{{ item.notifications }}</span>
-              </a>
-            </router-link>
-            <a v-else :href="item.url" :target="item.target" v-bind="props.action">
-              <div class="align-items-center flex justify-content-between">
-                <span class="p-menuitem-text">{{ item.label }}</span>
-                <span
-                    v-if="item.notifications"
-                    class="ml-2 p-badge p-badge-danger-inverse p-badge-no-gutter">
-                  {{ item.notifications }}
-                </span>
-                <span v-else-if="hasSubmenu" class="ml-2 pi pi-angle-down pi-fw" />
-              </div>
-            </a>
-          </template>
-      </Menubar>
-      <Menubar class="hidden mb:flex" :model="profileItems">
-        <template #start>
-          <img alt="beer" class="h-1rem" src="../assets/img/bier.png"/>
-        </template>
-        <template #item="{ item, props, hasSubmenu }">
-          <router-link v-if="item.route" v-slot="{ href, navigate }" custom :to="item.route">
-            <a :href="href" v-bind="props.action" @click="navigate">
-              <span class="p-menuitem-text">{{ item.label }}</span>
-            </a>
-          </router-link>
-          <a v-else :href="item.url" :target="item.target" v-bind="props.action">
+  <nav class="bg-primary flex justify-content-around w-full">
+    <Menubar class="hidden mb:flex" :model="navItems">
+      <template #start>
+        <router-link class="align-items-center flex flex-row font-bold no-underline py-1 text-white" to="/">
+          {{ t('common.sudosos') }}
+          <img alt="SudoSOS" class="h-4rem py-2" src="../assets/img/gewis-branding.svg" />
+        </router-link>
+      </template>
+      <template #item="{ item, props, hasSubmenu }">
+        <router-link v-if="item.route" v-slot="{ href, navigate }" custom :to="item.route">
+          <a
+            v-bind="props.action"
+            class="align-items-center flex justify-content-between"
+            :href="href"
+            @click="navigate"
+          >
+            <span class="p-menuitem-text">{{ item.label }}</span>
+            <span v-if="item.notifications" class="p-badge p-badge-danger">{{ item.notifications }}</span>
+          </a>
+        </router-link>
+        <a v-else :href="item.url" :target="item.target" v-bind="props.action">
+          <div class="align-items-center flex justify-content-between">
+            <span class="p-menuitem-text">{{ item.label }}</span>
+            <span v-if="item.notifications" class="ml-2 p-badge p-badge-danger-inverse p-badge-no-gutter">
+              {{ item.notifications }}
+            </span>
+            <span v-else-if="hasSubmenu" class="ml-2 pi pi-angle-down pi-fw" />
+          </div>
+        </a>
+      </template>
+    </Menubar>
+    <Menubar class="hidden mb:flex" :model="profileItems">
+      <template #start>
+        <img alt="beer" class="h-1rem" src="../assets/img/bier.png" />
+      </template>
+      <template #item="{ item, props, hasSubmenu }">
+        <router-link v-if="item.route" v-slot="{ href, navigate }" custom :to="item.route">
+          <a :href="href" v-bind="props.action" @click="navigate">
+            <span class="p-menuitem-text">{{ item.label }}</span>
+          </a>
+        </router-link>
+        <a v-else :href="item.url" :target="item.target" v-bind="props.action">
+          <span class="p-menuitem-text">{{ item.label }}</span>
+          <span v-if="item.icon" :class="item.icon" />
+          <span v-if="hasSubmenu" class="ml-2 pi pi-angle-down pi-fw" />
+        </a>
+      </template>
+    </Menubar>
+    <Menubar
+      class="flex flex-row flex-wrap justify-content-between mb:hidden mx-2 my-2 transition-all w-full"
+      :model="mobileItems"
+    >
+      <template #start>
+        <router-link class="align-items-center flex flex-row font-bold no-underline py-1 text-white" to="/">
+          {{ t('common.sudosos') }}
+          <img alt="SudoSOS" class="h-4rem py-2" src="../assets/img/gewis-branding.svg" />
+        </router-link>
+      </template>
+      <template #item="{ item, props, hasSubmenu }">
+        <router-link v-if="item.route" v-slot="{ href, navigate }" custom :to="item.route">
+          <a :href="href" v-bind="props.action" @click="navigate">
             <span class="p-menuitem-text">{{ item.label }}</span>
             <span v-if="item.icon" :class="item.icon" />
-            <span v-if="hasSubmenu" class="ml-2 pi pi-angle-down pi-fw" />
           </a>
-        </template>
-      </Menubar>
-      <Menubar
-        class="flex flex-row flex-wrap justify-content-between mb:hidden mx-2 my-2 transition-all w-full"
-        :model="mobileItems"
-      >
-        <template #start>
-          <router-link class="align-items-center flex flex-row font-bold no-underline py-1 text-white" to="/">
-            {{ t("common.sudosos") }}
-            <img alt="SudoSOS" class="h-4rem py-2" src="../assets/img/gewis-branding.svg" />
-          </router-link>
-        </template>
-        <template #item="{ item, props, hasSubmenu }">
-          <router-link v-if="item.route" v-slot="{ href, navigate }" custom :to="item.route">
-            <a :href="href" v-bind="props.action" @click="navigate">
-              <span class="p-menuitem-text">{{ item.label }}</span>
-              <span v-if="item.icon" :class="item.icon" />
-            </a>
-          </router-link>
-          <a v-else :href="item.url" :target="item.target" v-bind="props.action">
-            <span class="p-menuitem-text">{{ item.label }}</span>
-              <span v-if="item.icon" :class="item.icon" />
-            <span v-if="hasSubmenu" class="ml-2 pi pi-angle-down pi-fw" />
-          </a>
-        </template>
-      </Menubar>
-    </nav>
+        </router-link>
+        <a v-else :href="item.url" :target="item.target" v-bind="props.action">
+          <span class="p-menuitem-text">{{ item.label }}</span>
+          <span v-if="item.icon" :class="item.icon" />
+          <span v-if="hasSubmenu" class="ml-2 pi pi-angle-down pi-fw" />
+        </a>
+      </template>
+    </Menubar>
+  </nav>
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, ref, type Ref } from "vue";
-import { useAuthStore, useUserStore } from "@sudosos/sudosos-frontend-common";
-import { useRouter } from "vue-router";
-import { useI18n } from "vue-i18n";
-import { usePendingPayouts } from "@/mixins/pendingPayoutsMixin";
-import apiService from "@/services/ApiService";
+import { computed, onBeforeMount, ref, type Ref } from 'vue';
+import { useAuthStore, useUserStore } from '@sudosos/sudosos-frontend-common';
+import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import { usePendingPayouts } from '@/mixins/pendingPayoutsMixin';
+import apiService from '@/services/ApiService';
 
-import { useOpenInvoiceAccounts } from "@/mixins/openInvoiceAccountsMixin";
-import { isAllowed } from "@/utils/permissionUtils";
+import { useOpenInvoiceAccounts } from '@/mixins/openInvoiceAccountsMixin';
+import { isAllowed } from '@/utils/permissionUtils';
 const userStore = useUserStore();
 const authStore = useAuthStore();
 const router = useRouter();
@@ -103,26 +100,30 @@ const handleLogout = () => {
 
 const { pendingPayouts } = usePendingPayouts();
 const { openInvoiceAccounts } = useOpenInvoiceAccounts();
-const getFinancialNotifications = () => isAllowed('update', ['all'], 'SellerPayout', ['any']) && pendingPayouts?.value + openInvoiceAccounts?.value;
+const getFinancialNotifications = () =>
+  isAllowed('update', ['all'], 'SellerPayout', ['any']) && pendingPayouts?.value + openInvoiceAccounts?.value;
 
-
-const organs: Ref<{
-  label: string,
-  route: string,
-  notifications: string
-}[]> = ref([]);
+const organs: Ref<
+  {
+    label: string;
+    route: string;
+    notifications: string;
+  }[]
+> = ref([]);
 
 const getOrgans = async () => {
   organs.value = [];
   const promises = [];
   for (const organ of authStore.organs) {
-    promises.push(apiService.balance.getBalanceId(organ.id).then((res) => {
-      organs.value.push({
-        label: `${organ.firstName} ${organ.lastName}`,
-        route: '/user/' + organ.id,
-        notifications: res.data.amount.amount > 0 ? ' ' : '',
-      });
-    }));
+    promises.push(
+      apiService.balance.getBalanceId(organ.id).then((res) => {
+        organs.value.push({
+          label: `${organ.firstName} ${organ.lastName}`,
+          route: '/user/' + organ.id,
+          notifications: res.data.amount.amount > 0 ? ' ' : '',
+        });
+      }),
+    );
   }
   await Promise.all(promises);
   organs.value = organs.value.sort((a, b) => a.label.localeCompare(b.label));
@@ -135,12 +136,11 @@ onBeforeMount(async () => {
 const navItems = computed(() => [
   {
     label: t('common.navigation.transactions'),
-    route: '/transaction'
+    route: '/transaction',
   },
   {
     label: t('common.navigation.admin'),
-    visible: isAllowed('update', ['all'], 'User', ['any'])
-        || isAllowed('get', ['all'], 'Banner', ['any']),
+    visible: isAllowed('update', ['all'], 'User', ['any']) || isAllowed('get', ['all'], 'Banner', ['any']),
     items: [
       {
         label: t('common.navigation.users'),
@@ -157,10 +157,11 @@ const navItems = computed(() => [
   {
     label: t('common.navigation.financial'),
     notifications: getFinancialNotifications(),
-    visible: isAllowed('update', ['all'], 'User', ['any'])
-        || isAllowed('get', ['all'], 'Invoice', ['any'])
-        || isAllowed('get', ['all'], 'Fine', ['any'])
-        || isAllowed('get', ['all'], 'SellerPayout', ['any']),
+    visible:
+      isAllowed('update', ['all'], 'User', ['any']) ||
+      isAllowed('get', ['all'], 'Invoice', ['any']) ||
+      isAllowed('get', ['all'], 'Fine', ['any']) ||
+      isAllowed('get', ['all'], 'SellerPayout', ['any']),
     items: [
       {
         label: t('common.navigation.users'),
@@ -172,7 +173,7 @@ const navItems = computed(() => [
         label: t('common.navigation.invoices'),
         route: '/invoice',
         notifications: openInvoiceAccounts?.value,
-        visible: isAllowed('get', ['all'], 'Invoice', ['any'])
+        visible: isAllowed('get', ['all'], 'Invoice', ['any']),
       },
       {
         label: t('common.navigation.debtors'),
@@ -183,9 +184,9 @@ const navItems = computed(() => [
         label: t('common.navigation.payouts'),
         route: '/payout',
         visible: isAllowed('get', ['all'], 'SellerPayout', ['any']),
-        notifications: pendingPayouts?.value
-      }
-    ]
+        notifications: pendingPayouts?.value,
+      },
+    ],
   },
   {
     label: t('common.navigation.seller'),
@@ -202,12 +203,12 @@ const navItems = computed(() => [
         // TODO: Change to `action: get` after https://github.com/GEWIS/sudosos-backend/issues/62 is fully finished
         visible: isAllowed('update', ['own', 'organ'], 'PointOfSale', ['any']),
       },
-        ...organs.value,
-    ]
+      ...organs.value,
+    ],
   },
 ]);
 
-const profileItems = computed(() =>[
+const profileItems = computed(() => [
   {
     label: firstName.value,
     items: [
@@ -219,7 +220,7 @@ const profileItems = computed(() =>[
         label: t('common.navigation.signOut'),
         command: handleLogout,
       },
-    ]
+    ],
   },
   {
     label: '',
@@ -241,15 +242,11 @@ const profileItems = computed(() =>[
           localStorage.setItem('locale', 'en');
         },
       },
-    ]
+    ],
   },
 ]);
 
-const mobileItems = computed(() => [
-  ...navItems.value,
-  ...profileItems.value,
-]);
-
+const mobileItems = computed(() => [...navItems.value, ...profileItems.value]);
 </script>
 
 <style scoped lang="scss">

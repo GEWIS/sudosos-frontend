@@ -7,39 +7,32 @@
     header="Please Top-Up your SudoSOS balance"
     modal
     :pt="{
-        header: () => ({class: ['dialog-header']})}"
+      header: () => ({ class: ['dialog-header'] }),
+    }"
   >
     <Message :closable="false" :icon="undefined" severity="warn">
       Your account balance is currently
-      <span style="color: red; font-weight: bold;">€{{ formattedBuyerBalance }}</span><br>
-      Please first Top-Up your balance before proceeding.<br>
+      <span style="color: red; font-weight: bold">€{{ formattedBuyerBalance }}</span
+      ><br />
+      Please first Top-Up your balance before proceeding.<br />
     </Message>
-    <div class="qr-code" style="display: flex; justify-content: center; margin-top: 1rem;">
-      <img alt="" src="@/assets/sudosos-qr.png" style="width: 25rem;"/>
+    <div class="qr-code" style="display: flex; justify-content: center; margin-top: 1rem">
+      <img alt="" src="@/assets/sudosos-qr.png" style="width: 25rem" />
     </div>
     <div v-if="topUpProgress > 0" class="spinner-container">
-      <ProgressSpinner
-        animation-duration="5s"
-        stroke-width="6"
-        style="width: 100px; height: 100px"
-      />
+      <ProgressSpinner animation-duration="5s" stroke-width="6" style="width: 100px; height: 100px" />
       <div class="spinner-text">{{ topUpProgress }}</div>
     </div>
     <div v-if="topUpProgress <= 0" class="mt-4 text-center">
-      <button
-        class="c-btn checkout font-medium red-button rounder text-3xl"
-        @click="closeDialog">
-        I Understand
-      </button>
+      <button class="c-btn checkout font-medium red-button rounder text-3xl" @click="closeDialog">I Understand</button>
     </div>
   </Dialog>
 </template>
 
 <script setup lang="ts">
-
-import { computed, onMounted, ref } from "vue";
-import { useCartStore } from "@/stores/cart.store";
-import { formatPrice } from "@/utils/FormatUtils";
+import { computed, onMounted, ref } from 'vue';
+import { useCartStore } from '@/stores/cart.store';
+import { formatPrice } from '@/utils/FormatUtils';
 
 const cartStore = useCartStore();
 
@@ -48,7 +41,7 @@ const showTopUpWarningDialog = computed(() => {
   return checkUserInDebt.value && showTopUpWarning.value;
 });
 
-const checkUserInDebt = computed( () => cartStore.checkBuyerInDebt());
+const checkUserInDebt = computed(() => cartStore.checkBuyerInDebt());
 
 const formattedBuyerBalance = computed(() => {
   if (cartStore.buyerBalance == null) return null;

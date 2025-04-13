@@ -4,7 +4,7 @@
     <div class="flex flex-column gap-5">
       <div class="align-items-stretch flex flex-column gap-5 justify-content-between md:flex-row w-12">
         <POSSettingsCard class="flex-1 h-12" :pos-id="id!" />
-        <CardComponent class="flex-1" :header="t('modules.seller.singlePos.sales')" >
+        <CardComponent class="flex-1" :header="t('modules.seller.singlePos.sales')">
           <div v-if="canLoadTransactions" class="h-12 pb-3 text-5xl text-center">{{ formattedTotalSales }}</div>
           <div v-else>{{ t('common.permissionMessages.transactions') }}</div>
         </CardComponent>
@@ -19,7 +19,7 @@
       />
       <CardComponent :header="t('components.mutations.recent')">
         <MutationPOSCard
-            v-if="canLoadTransactions"
+          v-if="canLoadTransactions"
           class="pos-transactions"
           :get-mutations="getPOSTransactions"
           paginator
@@ -32,28 +32,25 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted , onBeforeMount, ref } from 'vue';
+import { computed, onMounted, onBeforeMount, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import type {
-  PaginatedBaseTransactionResponse,
-  Dinero as SudoSOSDinero
-} from '@sudosos/sudosos-client';
+import type { PaginatedBaseTransactionResponse, Dinero as SudoSOSDinero } from '@sudosos/sudosos-client';
 // eslint-disable-next-line import/no-named-as-default
-import Dinero from "dinero.js";
-import { type StoreGeneric, storeToRefs } from "pinia";
-import { useI18n } from "vue-i18n";
-import { type ContainerWithProductsResponse } from "@sudosos/sudosos-client/src/api";
+import Dinero from 'dinero.js';
+import { type StoreGeneric, storeToRefs } from 'pinia';
+import { useI18n } from 'vue-i18n';
+import { type ContainerWithProductsResponse } from '@sudosos/sudosos-client/src/api';
 import { usePointOfSaleStore } from '@/stores/pos.store';
 import ContainerCard from '@/components/container/ContainersCard.vue';
 import router from '@/router';
 import apiService, { DEFAULT_PAGINATION_MAX } from '@/services/ApiService';
-import { useContainerStore } from "@/stores/container.store";
-import MutationPOSCard from "@/components/mutations/MutationsPOS.vue";
-import CardComponent from "@/components/CardComponent.vue";
-import POSSettingsCard from "@/modules/seller/components/POSSettingsCard.vue";
-import { useTransactionStore } from "@/stores/transaction.store";
-import { formatPrice } from "sudosos-dashboard/src/utils/formatterUtils";
-import { getRelation, isAllowed } from "@/utils/permissionUtils";
+import { useContainerStore } from '@/stores/container.store';
+import MutationPOSCard from '@/components/mutations/MutationsPOS.vue';
+import CardComponent from '@/components/CardComponent.vue';
+import POSSettingsCard from '@/modules/seller/components/POSSettingsCard.vue';
+import { useTransactionStore } from '@/stores/transaction.store';
+import { formatPrice } from 'sudosos-dashboard/src/utils/formatterUtils';
+import { getRelation, isAllowed } from '@/utils/permissionUtils';
 
 const route = useRoute(); // Use the useRoute function to access the current route
 const id = ref<number>();
@@ -66,14 +63,16 @@ const containerStore = useContainerStore();
 const { t } = useI18n();
 
 const canEditPos = computed(() => {
-  return pointsOfSaleWithContainers.value[id.value!] &&
-  isAllowed('update', [getRelation(pointsOfSaleWithContainers.value[id.value!].owner!.id)], 'PointOfSale', ['any']);
+  return (
+    pointsOfSaleWithContainers.value[id.value!] &&
+    isAllowed('update', [getRelation(pointsOfSaleWithContainers.value[id.value!].owner!.id)], 'PointOfSale', ['any'])
+  );
 });
 
 const posName = computed(() => {
   return id.value && pointsOfSaleWithContainers.value[id.value]
-  ? pointsOfSaleWithContainers.value[id.value].name
-  : t('common.loading');
+    ? pointsOfSaleWithContainers.value[id.value].name
+    : t('common.loading');
 });
 
 const canLoadTransactions = computed(() => {
@@ -83,11 +82,13 @@ const canLoadTransactions = computed(() => {
 
 // Fetch containers from the container store, then the ContainerCard will be reactive.
 const posContainerIds = computed(() =>
-    pointsOfSaleWithContainers.value[id.value!]?.containers
-        .map((container: ContainerWithProductsResponse) => container.id)
+  pointsOfSaleWithContainers.value[id.value!]?.containers.map(
+    (container: ContainerWithProductsResponse) => container.id,
+  ),
 );
-const posContainers = computed(() => Object.values(containerStore.getAllContainers)
-    .filter((container) => posContainerIds.value?.includes(container.id)));
+const posContainers = computed(() =>
+  Object.values(containerStore.getAllContainers).filter((container) => posContainerIds.value?.includes(container.id)),
+);
 
 onBeforeMount(async () => {
   id.value = Number(route.params.id);
@@ -99,7 +100,7 @@ onBeforeMount(async () => {
   }
 });
 
-const totalSales = ref(Dinero({ amount: 0, currency: "EUR" }));
+const totalSales = ref(Dinero({ amount: 0, currency: 'EUR' }));
 
 const formattedTotalSales = computed(() => {
   return formatPrice(totalSales.value.toObject() as SudoSOSDinero);
@@ -108,11 +109,16 @@ const formattedTotalSales = computed(() => {
 onMounted(async () => {
   if (!canLoadTransactions.value) return;
   const transactionStore = useTransactionStore();
-  const transactionsInLastWeek = (await transactionStore.fetchTransactionsFromPointOfSale(
+  const transactionsInLastWeek = (
+    await transactionStore.fetchTransactionsFromPointOfSale(
       apiService,
       id.value!,
-      new Date(Date.now()-(7*24*60*60*1000)).toISOString(),
-      new Date().toISOString(), DEFAULT_PAGINATION_MAX, 0)).data.records;
+      new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+      new Date().toISOString(),
+      DEFAULT_PAGINATION_MAX,
+      0,
+    )
+  ).data.records;
 
   for (const transaction of transactionsInLastWeek) {
     totalSales.value = totalSales.value.add(Dinero(transaction.value as Dinero.Options));
@@ -121,12 +127,10 @@ onMounted(async () => {
 
 const getPOSTransactions = async (
   take: number,
-  skip: number
+  skip: number,
 ): Promise<PaginatedBaseTransactionResponse | undefined> => {
   return await apiService.pos.getTransactions(id.value!, take, skip).then((res) => res.data);
 };
-
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

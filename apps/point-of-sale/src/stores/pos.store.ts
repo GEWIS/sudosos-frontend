@@ -1,12 +1,13 @@
 import { defineStore } from 'pinia';
 import {
   BaseUserResponse,
-  PaginatedBaseTransactionResponse, PointOfSaleAssociateUsersResponse,
+  PaginatedBaseTransactionResponse,
+  PointOfSaleAssociateUsersResponse,
   PointOfSaleResponse,
   PointOfSaleWithContainersResponse,
   ProductResponse,
 } from '@sudosos/sudosos-client';
-import { fetchAllPages } from "@sudosos/sudosos-frontend-common";
+import { fetchAllPages } from '@sudosos/sudosos-frontend-common';
 import apiService from '@/services/ApiService';
 
 export type PointOfSaleAssociate = BaseUserResponse & { type: 'owner' | 'cashier' };
@@ -36,8 +37,10 @@ export const usePointOfSaleStore = defineStore('pointOfSale', {
     getPointOfSaleAssociates(): PointOfSaleAssociate[] | null {
       if (this.pointOfSaleAssociates == null) return null;
 
-      const owners: PointOfSaleAssociate[] = this.pointOfSaleAssociates.ownerMembers
-        .map((u) => ({ ...u, type: 'owner' }));
+      const owners: PointOfSaleAssociate[] = this.pointOfSaleAssociates.ownerMembers.map((u) => ({
+        ...u,
+        type: 'owner',
+      }));
       const cashiers: PointOfSaleAssociate[] = this.pointOfSaleAssociates.cashiers
         // Owner overrides cashier (so we avoid duplicates)
         .filter((u1) => !owners.some((u2) => u1.id === u2.id))
@@ -45,7 +48,7 @@ export const usePointOfSaleStore = defineStore('pointOfSale', {
 
       const associates = owners.concat(cashiers);
       return associates.sort((a, b) => a.id - b.id);
-    }
+    },
   },
   actions: {
     async fetchRecentPosTransactions(): Promise<PaginatedBaseTransactionResponse | null> {
@@ -64,14 +67,10 @@ export const usePointOfSaleStore = defineStore('pointOfSale', {
     },
     async fetchUserPointOfSale(id: number): Promise<void> {
       this.usersPointOfSales = await fetchAllPages<PointOfSaleResponse>((take, skip) =>
-          apiService.user.getUsersPointsOfSale(id, take, skip)
+        apiService.user.getUsersPointsOfSale(id, take, skip),
       );
     },
-    getProduct(
-      productId: number,
-      revision: number,
-      containerId: number
-    ): ProductResponse | undefined {
+    getProduct(productId: number, revision: number, containerId: number): ProductResponse | undefined {
       if (this.pointOfSale) {
         const container = this.pointOfSale.containers.find((c) => c.id === containerId);
         if (container) {
@@ -79,6 +78,6 @@ export const usePointOfSaleStore = defineStore('pointOfSale', {
         }
       }
       return undefined;
-    }
-  }
+    },
+  },
 });

@@ -10,17 +10,14 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { computed } from "vue";
+import { computed } from 'vue';
 
 const { t } = useI18n();
 
 const errorMessage = computed(() => {
-  const linkHtml =
-    `<a href="https://github.com/gewis/sudosos-frontend-vue3/issues/new/choose" target="_blank">GitHub</a>`;
+  const linkHtml = `<a href="https://github.com/gewis/sudosos-frontend-vue3/issues/new/choose" target="_blank">GitHub</a>`;
   return t('common.errorMessage', { link: linkHtml });
 });
-
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

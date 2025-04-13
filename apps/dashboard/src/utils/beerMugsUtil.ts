@@ -42,12 +42,7 @@ function setResetFlag() {
 //
 // A performant way to set your beerMug's position and size
 //
-function setTransform(
-  xPos: number,
-  yPos: number,
-  scale: number,
-  el: { style: { transform: string; }; },
-) {
+function setTransform(xPos: number, yPos: number, scale: number, el: { style: { transform: string } }) {
   el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0) scale(${scale}, ${scale})`;
 }
 
@@ -90,7 +85,7 @@ class BeerMug {
     this.counter += this.speed / 5000;
     this.xPos += (this.sign * this.speed * Math.cos(this.counter)) / 40;
     this.yPos += Math.sin(this.counter) / 40 + this.speed / 30;
-    this.scale = 0.5 + (Math.abs(10 * Math.cos(this.counter)) / 20);
+    this.scale = 0.5 + Math.abs(10 * Math.cos(this.counter)) / 20;
 
     // setting our beerMug's position
     setTransform(Math.round(this.xPos), Math.round(this.yPos), this.scale, this.element);
@@ -164,10 +159,7 @@ function generateBeerMugs() {
     const speed = 5 + Math.random() * 40;
 
     // create our BeerMug object
-    const beerMugObject = new BeerMug(beerMugClone as unknown as HTMLElement,
-      speed,
-      initialXPos,
-      initialYPos);
+    const beerMugObject = new BeerMug(beerMugClone as unknown as HTMLElement, speed, initialXPos, initialYPos);
     beerMugsUtil.push(beerMugObject);
   }
 

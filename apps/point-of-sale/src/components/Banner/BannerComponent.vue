@@ -1,10 +1,6 @@
-/**
-* This component handles the display and rotation of banners.
-* It fetches banners from the store and switches to the next banner
-* at a specified interval. It also updates the banner and interval
-* when new banners are fetched. The interval is cleaned up when
-* the component is unmounted.
-*/
+/** * This component handles the display and rotation of banners. * It fetches banners from the store and switches to
+the next banner * at a specified interval. It also updates the banner and interval * when new banners are fetched. The
+interval is cleaned up when * the component is unmounted. */
 <template>
   <BannerDisplayComponent v-if="currentBanner" :banner="currentBanner" />
 </template>

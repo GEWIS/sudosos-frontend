@@ -1,18 +1,22 @@
 <template>
   <FormCard
-v-if="pointOfSale" :enable-edit="isAllowed('update', ['own', 'organ'], 'PointOfSale', ['any'])" :header="t('modules.seller.forms.pos.overview')"
-            @cancel="updateFieldValues(pointOfSale)" @save="formSubmit"
-            @update:model-value="edit = $event">
+    v-if="pointOfSale"
+    :enable-edit="isAllowed('update', ['own', 'organ'], 'PointOfSale', ['any'])"
+    :header="t('modules.seller.forms.pos.overview')"
+    @cancel="updateFieldValues(pointOfSale)"
+    @save="formSubmit"
+    @update:model-value="edit = $event"
+  >
     <div class="flex flex-column gap-2 justify-content-between">
-      <POSSettingsForm :edit="edit" :form="form" :point-of-sale="pointOfSale" @update:edit="edit = $event"/>
+      <POSSettingsForm :edit="edit" :form="form" :point-of-sale="pointOfSale" @update:edit="edit = $event" />
       <div class="flex flex-row justify-content-end">
         <Button
-            v-if="isAllowed('delete', ['own', 'organ'], 'PointOfSale', ['any'])"
-            :disabled="!edit"
-            icon="pi pi-trash"
-            :label="t('common.delete')"
-            outlined
-            @click="handleDelete"
+          v-if="isAllowed('delete', ['own', 'organ'], 'PointOfSale', ['any'])"
+          :disabled="!edit"
+          icon="pi pi-trash"
+          :label="t('common.delete')"
+          outlined
+          @click="handleDelete"
         />
         <ConfirmDialog ref="deleteConfirm"></ConfirmDialog>
       </div>
@@ -21,19 +25,19 @@ v-if="pointOfSale" :enable-edit="isAllowed('update', ['own', 'organ'], 'PointOfS
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, ref, watch } from "vue";
-import type { PointOfSaleWithContainersResponse } from "@sudosos/sudosos-client";
-import { useConfirm } from "primevue/useconfirm";
-import { useI18n } from "vue-i18n";
-import { useToast } from "primevue/usetoast";
-import FormCard from "@/components/FormCard.vue";
-import { updatePointOfSaleObject } from "@/utils/validation-schema";
-import { schemaToForm } from "@/utils/formUtils";
-import { usePointOfSaleStore } from "@/stores/pos.store";
-import POSSettingsForm from "@/modules/seller/components/POSSettingsForm.vue";
-import router from "@/router";
-import { handleError } from "@/utils/errorUtils";
-import { isAllowed } from "@/utils/permissionUtils";
+import { onBeforeMount, ref, watch } from 'vue';
+import type { PointOfSaleWithContainersResponse } from '@sudosos/sudosos-client';
+import { useConfirm } from 'primevue/useconfirm';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'primevue/usetoast';
+import FormCard from '@/components/FormCard.vue';
+import { updatePointOfSaleObject } from '@/utils/validation-schema';
+import { schemaToForm } from '@/utils/formUtils';
+import { usePointOfSaleStore } from '@/stores/pos.store';
+import POSSettingsForm from '@/modules/seller/components/POSSettingsForm.vue';
+import router from '@/router';
+import { handleError } from '@/utils/errorUtils';
+import { isAllowed } from '@/utils/permissionUtils';
 
 const confirm = useConfirm();
 
@@ -44,8 +48,8 @@ const pointOfSale = ref<PointOfSaleWithContainersResponse>();
 const props = defineProps({
   posId: {
     type: Number,
-    required: true
-  }
+    required: true,
+  },
 });
 
 const form = schemaToForm(updatePointOfSaleObject);
@@ -58,9 +62,9 @@ const updateFieldValues = (p: PointOfSaleWithContainersResponse) => {
 
   const name = p.name;
   const useAuthentication = p.useAuthentication;
-  const containers = p.containers.map(c => c.id);
+  const containers = p.containers.map((c) => c.id);
   const id = p.id;
-  const cashierRoleIds = p.cashierRoles.map(c => c.id);
+  const cashierRoleIds = p.cashierRoles.map((c) => c.id);
 
   form.context.resetForm({ values: { name, useAuthentication, id, cashierRoleIds, containers } });
 };
@@ -78,26 +82,30 @@ function handleDelete() {
     acceptIcon: 'pi pi-trash',
     rejectIcon: 'pi pi-times',
     accept: () => {
-      posStore.deletePointOfSale(props.posId)
-          .then(() => {
-            void router.push({ name: 'pointOfSale' });
-            toast.add({
-              summary: t('common.toast.success.success'),
-              detail: t('common.toast.success.pointOfSaleDeleted'),
-              severity: 'success',
-              life: 3000
-            });
-          })
-          .catch((err) => {
-            handleError(err, toast);
+      posStore
+        .deletePointOfSale(props.posId)
+        .then(() => {
+          void router.push({ name: 'pointOfSale' });
+          toast.add({
+            summary: t('common.toast.success.success'),
+            detail: t('common.toast.success.pointOfSaleDeleted'),
+            severity: 'success',
+            life: 3000,
           });
-    }
+        })
+        .catch((err) => {
+          handleError(err, toast);
+        });
+    },
   });
 }
 
-watch(() => pointOfSale.value, (newValue) => {
-  updateFieldValues(newValue!);
-});
+watch(
+  () => pointOfSale.value,
+  (newValue) => {
+    updateFieldValues(newValue!);
+  },
+);
 
 onBeforeMount(async () => {
   pointOfSale.value = await posStore.getPointOfSale(props.posId);
@@ -105,9 +113,6 @@ onBeforeMount(async () => {
     updateFieldValues(pointOfSale.value);
   }
 });
-
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>
