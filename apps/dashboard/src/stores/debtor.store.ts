@@ -217,8 +217,8 @@ export const useDebtorStore = defineStore('debtor', {
           undefined,
           undefined,
           undefined,
-          // @ts-expect-error not sure why typescript thinks this is wrong
           undefined,
+          // @ts-expect-error not sure why typescript thinks this is wrong
           ['MEMBER', 'LOCAL_USER'],
           undefined,
           undefined,

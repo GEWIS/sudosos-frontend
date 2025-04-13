@@ -70,8 +70,8 @@ export const useInvoiceStore = defineStore('invoice', {
       q: { state?: InvoiceStatusResponseStateEnum; fromDate?: string; tillDate?: string },
     ): Promise<PaginatedInvoiceResponse> {
       const { state, fromDate, tillDate } = q;
-      // @ts-expect-error Following line has a bug in the swagger generator
       return await ApiService.invoices
+        // @ts-expect-error Following line has a bug in the swagger generator
         .getAllInvoices(undefined, undefined, state ? state : undefined, undefined, fromDate, tillDate, take, skip)
         .then((res) => {
           const invoices = res.data.records as InvoiceResponse[];
@@ -103,10 +103,9 @@ export const useInvoiceStore = defineStore('invoice', {
       }
     },
     async fetchAllNegativeInvoiceUsers(): Promise<Record<number, BalanceResponse>> {
-      return fetchAllPages<BalanceResponse>(
+      return fetchAllPages<BalanceResponse>((take, skip) =>
         // @ts-expect-error PaginatedBalanceResponse is the same as PaginatedResult<BalanceResponse>
-        (take, skip) =>
-          ApiService.balance.getAllBalance(null, null, -1, null, null, null, 'INVOICE', null, null, false, take, skip),
+        ApiService.balance.getAllBalance(null, null, -1, null, null, null, 'INVOICE', null, null, false, take, skip),
       ).then((users) => {
         users.forEach((user: BalanceResponse) => {
           this.negativeInvoiceUsers[user.id] = user;
