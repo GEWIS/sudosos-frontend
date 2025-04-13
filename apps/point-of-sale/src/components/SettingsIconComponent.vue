@@ -9,7 +9,7 @@ ref="settings" v-model:visible="visible" header="Settings" modal :pt="{
           :style="{ width: '50vw' }"
           @show="addListenerOnDialogueOverlay(settings!)" >
     <div>
-      <p v-if="pointOfSale">
+      <div v-if="pointOfSale">
         Switch POS to
         <Dropdown
 v-model="selectedPos" class="md:w-14rem w-full" :loading="loadingPos" option-label="Point of Sale"
@@ -29,8 +29,7 @@ v-model="selectedPos" class="md:w-14rem w-full" :loading="loadingPos" option-lab
             Force logout and exit POS
           </button>
         </div>
-      <!-- eslint-disable-next-line -->
-      </p>
+      </div>
     </div>
   </Dialog>
 </template>
