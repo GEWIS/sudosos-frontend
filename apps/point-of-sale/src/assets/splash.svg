@@ -3,7 +3,7 @@
     <defs>
         <style>
             .cls-1 {
-            fill: #d40100;
+            fill: var(--accent-color, #d40100);
             stroke-width: 0px;
             }
         </style>
