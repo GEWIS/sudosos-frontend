@@ -6,7 +6,7 @@ import { splashImage } from "@/services/PointOfSaleSwitchService";
 <template>
   <Toast />
   <RouterView/>
-  <img class="image-underlay" :src="splashImage" alt="Overlay Image" />
+  <img class="image-underlay" alt="Overlay Image" :src="splashImage"/>
 </template>
 
 <style lang="scss">

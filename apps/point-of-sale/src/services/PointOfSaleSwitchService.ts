@@ -1,9 +1,9 @@
+import { ref } from 'vue';
 import { PointOfSaleResponse } from '@sudosos/sudosos-client';
 import { useAuthStore } from '@sudosos/sudosos-frontend-common';
 import { usePointOfSaleStore } from '@/stores/pos.store';
 import { useCartStore } from '@/stores/cart.store';
 import { useActivityStore } from '@/stores/activity.store';
-import { ref } from 'vue';
 import splash from '@/assets/splash.svg';
 import borrelSplash from '@/assets/borrel-splash.svg';
 
