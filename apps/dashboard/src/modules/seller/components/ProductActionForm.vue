@@ -62,7 +62,7 @@
     />
 
     <!-- If the organ is not editable, add a fake option menu so the dropdown still renders  -->
-    <div class="align-items-center flex flex-row gap-1 justify-between">
+    <div class="items-center flex flex-row gap-1 justify-between">
       <i
         v-tooltip.top="t('common.tooltip.productOwner')"
         class="cursor-pointer pi pi-exclamation-circle text-red-500"

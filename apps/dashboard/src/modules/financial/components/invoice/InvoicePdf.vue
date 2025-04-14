@@ -29,7 +29,7 @@
     <div class="pdf-display" :class="{ hidden: showTable }">
       <div
         v-if="missingPdf && pdfLoaded"
-        class="align-items-center flex flex-col h-full justify-center text-4xl text-red-500 w-full"
+        class="items-center flex flex-col h-full justify-center text-4xl text-red-500 w-full"
       >
         <i class="pi pi-exclamation-triangle text-5xl"></i>
         {{ t('modules.financial.invoice.missingPdf') }}
