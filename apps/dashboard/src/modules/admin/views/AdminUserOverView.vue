@@ -18,7 +18,7 @@
         @sort="onSort"
       >
         <template #header>
-          <div class="align-items-center flex flex-row justify-content-between">
+          <div class="align-items-center flex flex-row justify-between">
             <IconField icon-position="left">
               <InputIcon class="pi pi-search"> </InputIcon>
               <InputText v-model="searchQuery" :placeholder="t('common.search')" />

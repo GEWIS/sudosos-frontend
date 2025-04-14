@@ -2,7 +2,7 @@
   <div>
     <span
       :class="[
-        'flex flex-wrap justify-content-between',
+        'flex flex-wrap justify-between',
         column ? 'flex-col gap-1' : 'flex-row align-items-center gap-3',
       ]"
     >

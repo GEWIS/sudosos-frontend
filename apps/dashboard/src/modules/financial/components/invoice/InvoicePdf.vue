@@ -1,7 +1,7 @@
 <template>
   <CardComponent header="">
     <template #topAction>
-      <div class="flex flex-row gap-1 justify-content-between" style="width: 40vw">
+      <div class="flex flex-row gap-1 justify-between" style="width: 40vw">
         <div>
           <Button
             icon="pi pi-eye"

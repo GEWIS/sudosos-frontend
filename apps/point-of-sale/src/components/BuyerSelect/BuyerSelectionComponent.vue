@@ -8,7 +8,7 @@
         <div class="text-2xl text-center w-full">Select member of {{ organName }} to charge as:</div>
       </div>
     </div>
-    <div class="align-content-center flex-container flex-wrap gap-3 h-full justify-content-center w-full">
+    <div class="align-content-center flex-container flex-wrap gap-3 h-full justify-center w-full">
       <BuyerSelectButtonComponent
         v-for="associate in posAssociates"
         :key="associate.id"

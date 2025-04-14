@@ -9,7 +9,7 @@
         @click="visible = true"
       />
     </template>
-    <div class="flex flex-col justify-content-between">
+    <div class="flex flex-col justify-between">
       <InfoSpan :label="t('common.id')" :value="String(invoice.id)" />
 
       <InfoSpan
@@ -36,7 +36,7 @@
       modal
       @show="openDialog"
     >
-      <div class="flex flex-col gap-3 justify-content-between">
+      <div class="flex flex-col gap-3 justify-between">
         <div>
           {{ t('modules.financial.invoice.confirmDelete') }}
           <br />

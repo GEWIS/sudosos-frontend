@@ -22,7 +22,7 @@
       <div v-if="wrongPin" class="text-5xl">WRONG PIN</div>
       <div
         v-else
-        class="align-items-center flex h-full justify-content-between w-full"
+        class="align-items-center flex h-full justify-between w-full"
         @click="
           () => {
             emits('focus:passcode');

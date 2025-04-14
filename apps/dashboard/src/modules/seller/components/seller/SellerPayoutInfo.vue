@@ -31,7 +31,7 @@
         >
       </div>
 
-      <div class="flex flex-row gap-2 justify-content-between mt-3 w-full">
+      <div class="flex flex-row gap-2 justify-between mt-3 w-full">
         <div>
           <Button
             icon="pi pi-trash"

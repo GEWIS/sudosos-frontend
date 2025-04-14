@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col h-full">
-    <div class="flex-container flex-row flex-wrap justify-content-between">
+    <div class="flex-container flex-row flex-wrap justify-between">
       <p class="accent-text font-bold font-size-lg mb-0">Current order for</p>
       <div class="active c-btn px-3 py-1 square text-2xl" @click="selectUser">
         <i class="pi pi-user pr-2 text-2xl" />
@@ -28,7 +28,7 @@
       </div>
       <div
         v-if="cartStore.buyerBalance != null"
-        class="align-items-end flex-container font-size-md justify-content-between pt-2"
+        class="align-items-end flex-container font-size-md justify-between pt-2"
       >
         <span><i class="pi pi-exclamation-triangle" /> Debit after purchase: </span>
         €{{ formattedBalanceAfter }}

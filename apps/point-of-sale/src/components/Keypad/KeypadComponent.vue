@@ -1,6 +1,6 @@
 <template>
   <div class="flex-col keypad">
-    <div v-for="row in keypadLayout" :key="row[0]" class="flex justify-content-center key-row">
+    <div v-for="row in keypadLayout" :key="row[0]" class="flex justify-center key-row">
       <div
         v-for="key in row"
         :key="key"

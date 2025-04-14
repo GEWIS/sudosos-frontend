@@ -11,7 +11,7 @@
         <router-link v-if="item.route" v-slot="{ href, navigate }" custom :to="item.route">
           <a
             v-bind="props.action"
-            class="align-items-center flex justify-content-between"
+            class="align-items-center flex justify-between"
             :href="href"
             @click="navigate"
           >
@@ -20,7 +20,7 @@
           </a>
         </router-link>
         <a v-else :href="item.url" :target="item.target" v-bind="props.action">
-          <div class="align-items-center flex justify-content-between">
+          <div class="align-items-center flex justify-between">
             <span class="p-menuitem-text">{{ item.label }}</span>
             <span v-if="item.notifications" class="ml-2 p-badge p-badge-danger-inverse p-badge-no-gutter">
               {{ item.notifications }}
@@ -48,7 +48,7 @@
       </template>
     </Menubar>
     <Menubar
-      class="flex flex-row flex-wrap justify-content-between mb:hidden mx-2 my-2 transition-all w-full"
+      class="flex flex-row flex-wrap justify-between mb:hidden mx-2 my-2 transition-all w-full"
       :model="mobileItems"
     >
       <template #start>

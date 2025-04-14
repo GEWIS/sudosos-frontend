@@ -17,7 +17,7 @@
         </div>
       </div>
       <div v-show="!isSearchViewVisible">
-        <div class="flex justify-content-between w-full">
+        <div class="flex justify-between w-full">
           <div class="flex flex-wrap gap-2">
             <label class="c-btn icon-md search-close" for="searchInput" @click="openSearchView">
               <i class="pi pi-search text-4xl" />

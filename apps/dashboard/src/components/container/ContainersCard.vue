@@ -18,7 +18,7 @@
     >
       <AccordionTab v-for="container in containers" :key="container.id">
         <template #header>
-          <div class="flex justify-content-between w-full">
+          <div class="flex justify-between w-full">
             <span>
               {{ container.name }}
             </span>
