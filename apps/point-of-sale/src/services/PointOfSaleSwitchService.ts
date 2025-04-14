@@ -4,6 +4,8 @@ import { usePointOfSaleStore } from '@/stores/pos.store';
 import { useCartStore } from '@/stores/cart.store';
 import { useActivityStore } from '@/stores/activity.store';
 import { ref } from 'vue';
+import splash from '@/assets/splash.svg';
+import borrelSplash from '@/assets/borrel-splash.svg';
 
 export const rowBackground = ref<string>('bg-red-100'); // Default background color
 export const splashImage = ref<string>(splash);
