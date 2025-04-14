@@ -9,19 +9,4 @@ import SplashComponent from '@/components/SplashComponent.vue';
   <SplashComponent />
 </template>
 
-<style lang="scss">
-.image-underlay {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 1;
-  pointer-events: none;
-  z-index: -10;
-  overflow: hidden;
-
-  position: fixed;
-  top: -25%;
-  right: 0;
-  height: 175%;
-}
-</style>
+<style lang="scss"></style>
