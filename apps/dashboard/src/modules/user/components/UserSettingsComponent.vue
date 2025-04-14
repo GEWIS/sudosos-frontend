@@ -32,26 +32,17 @@
       </div>
       <div class="items-center flex flex-row w-11">
         <p class="flex-grow-1 my-1">{{ t('modules.user.settings.deleteNFC') }}</p>
-        <i
-          class="items-center cursor-pointer flex pi pi-arrow-up-right text-gray-500"
-          @click="confirmDeleteNFC()"
-        />
+        <i class="items-center cursor-pointer flex pi pi-arrow-up-right text-gray-500" @click="confirmDeleteNFC()" />
       </div>
       <Divider />
       <h4 class="mt-0">{{ t('modules.user.settings.apiKeys') }}</h4>
       <div class="items-center flex flex-row w-11">
         <p class="flex-grow-1 my-1">{{ t('modules.user.settings.changeApiKey') }}</p>
-        <i
-          class="items-center cursor-pointer flex pi pi-arrow-up-right text-gray-500"
-          @click="confirmChangeApiKey()"
-        />
+        <i class="items-center cursor-pointer flex pi pi-arrow-up-right text-gray-500" @click="confirmChangeApiKey()" />
       </div>
       <div class="items-center flex flex-row w-11">
         <p class="flex-grow-1 my-1">{{ t('modules.user.settings.deleteApiKey') }}</p>
-        <i
-          class="items-center cursor-pointer flex pi pi-arrow-up-right text-gray-500"
-          @click="confirmDeleteApiKey()"
-        />
+        <i class="items-center cursor-pointer flex pi pi-arrow-up-right text-gray-500" @click="confirmDeleteApiKey()" />
       </div>
       <Divider />
       <h4 class="mt-0">{{ t('modules.user.settings.preferences') }}</h4>
@@ -88,8 +79,6 @@ import InputSwitch from 'primevue/inputswitch';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
 import { useUserStore } from '@sudosos/sudosos-frontend-common';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import * as yup from 'yup';
 import CardComponent from '@/components/CardComponent.vue';
 import ChangePinForm from '@/modules/user/components/forms/ChangePinForm.vue';
 import FormDialog from '@/components/FormDialog.vue';

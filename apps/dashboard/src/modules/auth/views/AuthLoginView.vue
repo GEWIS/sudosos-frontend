@@ -2,11 +2,7 @@
   <div>
     <img alt="logo" class="block max-h-9rem mx-auto my-0" src="../../../assets/img/bier.png" />
     <div class="mb-2 mt-0 mx-auto text-5xl text-900 w-full">{{ t('modules.auth.login.sudosos') }}</div>
-    <Button
-      id="login-gewis-button"
-      class="items-center flex justify-center mx-auto my-3 w-full"
-      @click="loginViaGEWIS"
-    >
+    <Button id="login-gewis-button" class="items-center flex justify-center mx-auto my-3 w-full" @click="loginViaGEWIS">
       <img alt="GEWIS" class="h-18 mr-3" src="../../../assets/img/gewis-branding.svg" />
       {{ t('modules.auth.login.gewis') }}
     </Button>
