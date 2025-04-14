@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute font-bold opacity-80 tag text-white">
+  <div class="absolute !font-bold opacity-80 tag text-white">
     <b>{{ localBuild ? `Local build` : `${branch}#${commit}` }}</b>
   </div>
 </template>

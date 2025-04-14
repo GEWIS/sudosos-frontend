@@ -4,10 +4,10 @@
       <div
         v-for="key in row"
         :key="key"
-        :class="['key c-btn active square shadow-2', { outlined: key === keypadBackspace || key === keypadExternal }]"
+        :class="['key c-btn active square shadow-md', { outlined: key === keypadBackspace || key === keypadExternal }]"
         @click="handleKeyClick(key)"
       >
-        <i v-if="key === keypadBackspace" class="pi pi-delete-left text-6xl" />
+        <i v-if="key === keypadBackspace" class="pi pi-delete-left" style="font-size: 3rem" />
         {{ key !== keypadBackspace ? key : '' }}
       </div>
     </div>

@@ -4,7 +4,7 @@
     style="color: #d40000; margin-left: -60px; font-size: 35px; margin-top: 80px; margin-right: 28px"
     @click="() => (howToModalVisible = true)"
   >
-    <i class="pi pi-question-circle text-4xl" />
+    <i class="pi pi-question-circle" style="font-size: 2rem" />
   </div>
 
   <Dialog

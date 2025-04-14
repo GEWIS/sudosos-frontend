@@ -4,7 +4,7 @@ array. * The TransactionHistoryRowComponent displays the details of each transac
 more information when clicked. */
 <template>
   <div class="flex-col gap-2 h-full mt-2 overflow-y-auto">
-    <h1 v-if="transactions.length > 0" class="font-medium text-xl">Recent Purchases:</h1>
+    <h1 v-if="transactions.length > 0" class="font-medium text-xl mb-2">Recent Purchases:</h1>
     <TransactionHistoryRowComponent
       v-for="transaction in transactions"
       :key="transaction.id"
