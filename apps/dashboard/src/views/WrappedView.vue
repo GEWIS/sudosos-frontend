@@ -34,7 +34,7 @@
       {{ t('common.wrapped.fav') }}
     </div>
 
-    <div class="align-items-center flex flex-col">
+    <div class="items-center flex flex-col">
       <div v-for="p in topProducts" :key="p.product.id" class="w-7">
         {{ p.count + 'x' }} {{ p.product.name + ' - ' }} {{ formatPrice(p.totalInclVat) }}
       </div>

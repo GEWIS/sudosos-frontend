@@ -3,7 +3,7 @@
     <p class="prop">{{ t('modules.seller.productContainers.products.addExisting') }}</p>
     <Dropdown
       v-model="selectProduct"
-      class="align-items-center w-15rem"
+      class="items-center w-15rem"
       :filter="true"
       option-label="name"
       :options="products"

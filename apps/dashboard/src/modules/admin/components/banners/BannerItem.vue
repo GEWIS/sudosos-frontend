@@ -31,7 +31,7 @@
         <div class="flex flex-col pr-3">
           <span class="text-xl">{{ banner.name }}</span
           ><br />
-          <span class="align-items-center flex flex-row font-italic">
+          <span class="items-center flex flex-row font-italic">
             <i class="mr-1 pi pi-clock"></i>
             {{ displaySeconds }}
           </span>

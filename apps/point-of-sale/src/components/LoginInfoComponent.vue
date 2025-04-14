@@ -15,7 +15,7 @@
     modal
     @show="addListenerOnDialogueOverlay(howToModal!)"
   >
-    <div class="align-items-center flex flex-col">
+    <div class="items-center flex flex-col">
       <div>
         <b style="font-weight: bold !important">User id:</b> You can use your GEWIS number as user id. <br />
         <b style="font-weight: bold !important">Pin:</b> You can (re)set your pin at https://sudosos.gewis.nl/

@@ -2,7 +2,7 @@
   <nav class="flex justify§-around w-full" :class="isBeta ? 'bg-green-500' : 'bg-primary'">
     <Menubar class="hidden mb:flex" :model="navItems">
       <template #start>
-        <router-link class="align-items-center flex flex-row font-bold no-underline py-1 text-white" to="/">
+        <router-link class="items-center flex flex-row font-bold no-underline py-1 text-white" to="/">
           {{ t('common.sudosos') }}
           <img alt="SudoSOS" class="h-4rem py-2" src="../assets/img/gewis-branding.svg" />
         </router-link>
@@ -11,7 +11,7 @@
         <router-link v-if="item.route" v-slot="{ href, navigate }" custom :to="item.route">
           <a
             v-bind="props.action"
-            class="align-items-center flex justify-between"
+            class="items-center flex justify-between"
             :href="href"
             @click="navigate"
           >
@@ -20,7 +20,7 @@
           </a>
         </router-link>
         <a v-else :href="item.url" :target="item.target" v-bind="props.action">
-          <div class="align-items-center flex justify-between">
+          <div class="items-center flex justify-between">
             <span class="p-menuitem-text">{{ item.label }}</span>
             <span v-if="item.notifications" class="ml-2 p-badge p-badge-danger-inverse p-badge-no-gutter">
               {{ item.notifications }}
@@ -52,7 +52,7 @@
       :model="mobileItems"
     >
       <template #start>
-        <router-link class="align-items-center flex flex-row font-bold no-underline py-1 text-white" to="/">
+        <router-link class="items-center flex flex-row font-bold no-underline py-1 text-white" to="/">
           {{ t('common.sudosos') }}
           <img alt="SudoSOS" class="h-4rem py-2" src="../assets/img/gewis-branding.svg" />
         </router-link>

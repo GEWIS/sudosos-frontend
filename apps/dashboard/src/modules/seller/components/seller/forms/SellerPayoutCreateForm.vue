@@ -37,7 +37,7 @@
       @update:value="form.context.setFieldValue('reference', $event)"
     />
     <div>
-      <span class="align-items-center flex flex-row flex-wrap gap-3 justify-between">
+      <span class="items-center flex flex-row flex-wrap gap-3 justify-between">
         <p class="my-0">{{ t('modules.seller.payouts.payout.amount') }}</p>
         <InputNumber
           v-if="payoutAmount"
@@ -61,7 +61,7 @@
         >
       </span>
     </div>
-    <span v-if="payoutAmount" class="align-items-center flex flex-row flex-wrap gap-3 justify-between">
+    <span v-if="payoutAmount" class="items-center flex flex-row flex-wrap gap-3 justify-between">
       <p class="my-0 text-red-500">
         <i class="pi pi-exclamation-triangle red-500" /> {{ t('modules.seller.payouts.payout.check') }}
       </p>

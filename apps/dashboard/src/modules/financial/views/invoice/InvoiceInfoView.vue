@@ -1,5 +1,5 @@
 <template>
-  <div v-if="invoice" class="align-items-center flex flex-col gap-5 page-container-wide">
+  <div v-if="invoice" class="items-center flex flex-col gap-5 page-container-wide">
     <div>
       <div class="flex flex-row page-title">
         <div class="flex flex-col">
@@ -25,7 +25,7 @@
       </div>
     </div>
   </div>
-  <Skeleton v-else class="align-items-center flex flex-col gap-5 page-container" />
+  <Skeleton v-else class="items-center flex flex-col gap-5 page-container" />
 </template>
 
 <script setup lang="ts">
