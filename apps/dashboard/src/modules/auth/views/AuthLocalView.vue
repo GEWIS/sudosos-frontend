@@ -37,11 +37,11 @@
           {{ loginForm.errors.value.password }}
         </small>
       </span>
-      <Button id="login-button" class="align-items-center flex justify-content-center mx-auto w-full" type="submit">
+      <Button id="login-button" class="align-items-center flex justify-center mx-auto w-full" type="submit">
         {{ t('modules.auth.login.login') }}
       </Button>
       <Button
-        class="align-items-center flex justify-content-center mx-auto my-3 w-full"
+        class="align-items-center flex justify-center mx-auto my-3 w-full"
         :outlined="true"
         @click="toHomeView"
       >

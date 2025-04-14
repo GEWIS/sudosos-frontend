@@ -3,7 +3,7 @@
     class="border-1 border-300 border-round-sm cursor-pointer flex flex-col h-12rem overflow-hidden relative w-8rem"
     @click="visible = true"
   >
-    <div class="align-items-center background-white flex h-8rem justify-content-center">
+    <div class="align-items-center background-white flex h-8rem justify-center">
       <img :alt="product.name" class="h-8rem p-1" :src="imageSrc" />
     </div>
     <div v-if="product.featured" class="promo-tag uppercase">

@@ -13,7 +13,7 @@
           </span>
         </div>
       </div>
-      <div class="flex flex-grow flex-row flex-wrap gap-5 justify-content-center">
+      <div class="flex flex-grow flex-row flex-wrap gap-5 justify-center">
         <div class="flex flex-col gap-5">
           <InvoiceAmountCard v-if="dirty" :invoice-id="invoice.id" />
           <InvoiceStepsCard v-else :invoice-id="invoice.id" />

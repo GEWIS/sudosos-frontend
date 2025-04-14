@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col h-screen">
     <main
-      class="align-items-center flex flex-col flex-grow h-full justify-content-center max-w-21rem mx-auto my-7 text-center"
+      class="align-items-center flex flex-col flex-grow h-full justify-center max-w-21rem mx-auto my-7 text-center"
     >
       <RouterView />
     </main>
