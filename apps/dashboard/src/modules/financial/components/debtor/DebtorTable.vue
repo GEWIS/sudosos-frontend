@@ -122,7 +122,7 @@
       </Column>
     </DataTable>
     <Divider />
-    <div class="flex flex-row justify-content-between">
+    <div class="flex flex-row justify-between">
       <table>
         <thead>
           <tr>

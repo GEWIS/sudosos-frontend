@@ -27,7 +27,7 @@
           :value="banner.active ? t('modules.admin.banners.list.active') : t('modules.admin.banners.list.notActive')"
         />
       </div>
-      <div class="flex flex-row justify-content-between md:w-7 w-full">
+      <div class="flex flex-row justify-between md:w-7 w-full">
         <div class="flex flex-col pr-3">
           <span class="text-xl">{{ banner.name }}</span
           ><br />
@@ -36,7 +36,7 @@
             {{ displaySeconds }}
           </span>
         </div>
-        <div class="align-items-end flex flex-col justify-content-between">
+        <div class="align-items-end flex flex-col justify-between">
           <!-- Text will be grey when time is in the past -->
           <div class="text-right" :class="{ 'text-600 font-italic': isExpired }">
             <span v-tooltip.top="startDate.toLocaleString()" class="font-semibold">

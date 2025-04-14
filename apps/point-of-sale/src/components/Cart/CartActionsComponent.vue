@@ -16,7 +16,7 @@
       Please remove items before you can continue.
     </Message>
   </Dialog>
-  <div class="flex justify-content-between w-full">
+  <div class="flex justify-between w-full">
     <button
       class="c-btn checkout font-medium rounder text-3xl"
       :class="{ countdown: checkingOut, disabled: !enabled, borrelMode }"

@@ -28,7 +28,7 @@
       :value="products"
     >
       <template #header>
-        <div class="flex flex-row justify-content-between">
+        <div class="flex flex-row justify-between">
           <IconField icon-position="left">
             <InputIcon class="pi pi-search"></InputIcon>
             <InputText v-model="filters['global'].value" placeholder="Search" />

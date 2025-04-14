@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span :class="['flex justify-content-between', column ? 'flex-col gap-1' : 'flex-row align-items-center gap-3']">
+    <span :class="['flex justify-between', column ? 'flex-col gap-1' : 'flex-row align-items-center gap-3']">
       <span class="my-0">{{ label }}</span>
       <Dropdown
         v-model="selectedOption"
