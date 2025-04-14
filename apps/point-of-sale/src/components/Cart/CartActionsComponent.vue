@@ -24,9 +24,15 @@
     >
       {{ checkoutText }}
     </button>
-    <button v-if="!borrelMode" class="border-circle c-btn clear icon-larger" @click="logout">
-      <i class="pi pi-times text-4xl" />
-    </button>
+    <div class="flex justify-center items-center">
+      <button
+        v-if="!borrelMode"
+        class="rounded-full p-3 text-2xl bg-red-500 text-white flex items-center justify-center w-16 h-16"
+        @click="logout"
+      >
+        <i class="pi pi-times" style="font-size: 2rem" />
+      </button>
+    </div>
     <audio ref="sound" />
   </div>
 </template>
