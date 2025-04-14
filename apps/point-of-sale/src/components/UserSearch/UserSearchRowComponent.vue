@@ -1,6 +1,7 @@
 <template>
   <div
-    class="bg-red-100 rounded-xl flex items-center font-semibold text-lg my-1 md:my-3 py-5 shadow-sm text-center user-row h-16"j
+    class="bg-red-100 rounded-xl flex items-center font-semibold text-lg my-1 md:my-3 py-5 shadow-sm text-center user-row h-16"
+    j
     :class="{ inactive: !active }"
     @click="selectUser"
   >
