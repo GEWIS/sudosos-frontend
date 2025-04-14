@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-column gap-2 justify-content-between">
+  <div class="flex flex-col gap-2 justify-content-between">
     <InputSpan
       id="name"
       :attributes="form.model.name.attr.value"
@@ -77,7 +77,7 @@
       />
     </div>
 
-    <div class="flex flex-column gap-1 justify-content-between">
+    <div class="flex flex-col gap-1 justify-content-between">
       <InputSpan
         id="preferred"
         :attributes="form.model.preferred.attr.value"

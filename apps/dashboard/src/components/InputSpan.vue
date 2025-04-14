@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span :class="['flex justify-content-between', column ? 'flex-column gap-1' : 'flex-row align-items-center gap-2']">
+    <span :class="['flex justify-content-between', column ? 'flex-col gap-1' : 'flex-row align-items-center gap-2']">
       <p class="my-0">{{ label }}</p>
       <InputText
         v-if="type === 'text'"

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-column">
+  <div class="flex flex-col">
     <InputSpan
       id="name"
       :attributes="form.model.amount.attr.value"

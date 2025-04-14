@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-column page-container">
+  <div class="flex flex-col page-container">
     <div class="page-title">{{ t('modules.financial.invoice.title') }}</div>
-    <div class="content-wrapper flex flex-column">
+    <div class="content-wrapper flex flex-col">
       <InvoiceAccountOverview />
       <div class="-mb-5 flex flex-row justify-content-end w-full">
         <Button

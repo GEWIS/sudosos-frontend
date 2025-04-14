@@ -2,7 +2,7 @@
   <div>
     <img alt="logo" class="block max-h-9rem mx-auto my-0" src="../../../assets/img/bier.png" />
     <div class="mb-2 mt-0 mx-auto text-5xl text-900 w-full">{{ t('modules.auth.login.sudosos') }}</div>
-    <form class="flex flex-column" @submit="loginHandler">
+    <form class="flex flex-col" @submit="loginHandler">
       <span class="p-float-label with-error">
         <InputText
           v-bind="username"

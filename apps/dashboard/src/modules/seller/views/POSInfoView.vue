@@ -1,8 +1,8 @@
 <template>
-  <div class="flex flex-column page-container">
+  <div class="flex flex-col page-container">
     <div class="page-title">{{ posName }}</div>
-    <div class="flex flex-column gap-5">
-      <div class="align-items-stretch flex flex-column gap-5 justify-content-between md:flex-row w-12">
+    <div class="flex flex-col gap-5">
+      <div class="align-items-stretch flex flex-col gap-5 justify-content-between md:flex-row w-12">
         <POSSettingsCard class="flex-1 h-12" :pos-id="id!" />
         <CardComponent class="flex-1" :header="t('modules.seller.singlePos.sales')">
           <div v-if="canLoadTransactions" class="h-12 pb-3 text-5xl text-center">{{ formattedTotalSales }}</div>

@@ -1,6 +1,6 @@
 <template>
   <div class="col-12">
-    <div class="flex flex-column md:flex-row py-3" :class="{ 'border-top-1 surface-border': index !== 0 }">
+    <div class="flex flex-col md:flex-row py-3" :class="{ 'border-top-1 surface-border': index !== 0 }">
       <div class="md:pr-2 md:w-5 relative w-full">
         <Image
           v-if="banner.image"
@@ -28,7 +28,7 @@
         />
       </div>
       <div class="flex flex-row justify-content-between md:w-7 w-full">
-        <div class="flex flex-column pr-3">
+        <div class="flex flex-col pr-3">
           <span class="text-xl">{{ banner.name }}</span
           ><br />
           <span class="align-items-center flex flex-row font-italic">
@@ -36,7 +36,7 @@
             {{ displaySeconds }}
           </span>
         </div>
-        <div class="align-items-end flex flex-column justify-content-between">
+        <div class="align-items-end flex flex-col justify-content-between">
           <!-- Text will be grey when time is in the past -->
           <div class="text-right" :class="{ 'text-600 font-italic': isExpired }">
             <span v-tooltip.top="startDate.toLocaleString()" class="font-semibold">

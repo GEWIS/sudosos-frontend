@@ -14,7 +14,7 @@
     :style="{ width: '30vw', class: ['container'] }"
     @show="addListenerOnDialogueOverlay(nfcModal!)"
   >
-    <div class="align-items-center flex flex-column">
+    <div class="align-items-center flex flex-col">
       <div id="scanners" class="scanners" />
       <ProgressSpinner
         animation-duration="1s"

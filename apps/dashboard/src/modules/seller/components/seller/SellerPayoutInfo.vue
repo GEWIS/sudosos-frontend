@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
-    <div class="flex flex-column gap-2">
-      <div v-if="payout" class="flex flex-column">
+    <div class="flex flex-col gap-2">
+      <div v-if="payout" class="flex flex-col">
         <span
           ><strong>{{ `${t('modules.seller.payouts.payout.id')}:` }}</strong> {{ `SDS-SP-${payout.id}` }}</span
         >

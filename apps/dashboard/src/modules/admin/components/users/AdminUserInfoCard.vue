@@ -5,7 +5,7 @@
     @save="formSubmit"
     @update:model-value="edit = $event"
   >
-    <div class="flex flex-column gap-2 justify-content-between">
+    <div class="flex flex-col gap-2 justify-content-between">
       <UserEditForm :edit="edit" :form="form" :user="props.user" @update:edit="edit = $event" />
       <Divider />
       <h4 class="mt-0">{{ t('modules.user.settings.nfc') }}</h4>

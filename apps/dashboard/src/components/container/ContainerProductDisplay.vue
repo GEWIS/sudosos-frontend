@@ -1,6 +1,6 @@
 <template>
   <div
-    class="border-1 border-300 border-round-sm cursor-pointer flex flex-column h-12rem overflow-hidden relative w-8rem"
+    class="border-1 border-300 border-round-sm cursor-pointer flex flex-col h-12rem overflow-hidden relative w-8rem"
     @click="visible = true"
   >
     <div class="align-items-center background-white flex h-8rem justify-content-center">
