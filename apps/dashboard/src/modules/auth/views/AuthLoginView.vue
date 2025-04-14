@@ -4,7 +4,7 @@
     <div class="mb-2 mt-0 mx-auto text-5xl text-900 w-full">{{ t('modules.auth.login.sudosos') }}</div>
     <Button
       id="login-gewis-button"
-      class="align-items-center flex justify-content-center mx-auto my-3 w-full"
+      class="align-items-center flex justify-center mx-auto my-3 w-full"
       @click="loginViaGEWIS"
     >
       <img alt="GEWIS" class="h-18 mr-3" src="../../../assets/img/gewis-branding.svg" />
@@ -12,7 +12,7 @@
     </Button>
     <Button
       id="login-gewis-button"
-      class="align-items-center flex justify-content-center mx-auto my-3 w-full"
+      class="align-items-center flex justify-center mx-auto my-3 w-full"
       @click="navigateToLocal"
     >
       {{ t('modules.auth.login.localAccount') }}
