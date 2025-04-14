@@ -45,7 +45,7 @@
           <br />
           {{ t('modules.financial.invoice.unrecoverable') }}
         </div>
-        <div class="align-items-end flex flex-row gap-3 justify-content-end">
+        <div class="items-end flex flex-row gap-3 justify-content-end">
           <Button severity="secondary" @click="dialog.close()">{{ t('common.cancel') }}</Button>
           <Button @click="deleteInvoice">{{ t('common.delete') }}</Button>
         </div>

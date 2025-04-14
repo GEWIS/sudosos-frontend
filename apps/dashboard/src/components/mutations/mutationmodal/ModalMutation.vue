@@ -26,7 +26,7 @@
     <PayoutRequestDetailModal v-else-if="shouldShowPayoutRequest" :payout-request="transferDetails[props.id]" />
     <WaivedFineDetailModal v-else-if="shouldShowWaivedFine" :waived-fines="transferDetails[props.id]" />
     <template v-if="!shouldShowDeposit && !shouldShowInvoice && shouldShowDeleteButton" #footer>
-      <div class="align-items-end flex flex-col">
+      <div class="items-end flex flex-col">
         <Button severity="danger" @click="deleteMutation">
           {{ t('common.delete').toUpperCase() }}
         </Button>
