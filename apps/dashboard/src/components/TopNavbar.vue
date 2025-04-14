@@ -9,12 +9,7 @@
       </template>
       <template #item="{ item, props, hasSubmenu }">
         <router-link v-if="item.route" v-slot="{ href, navigate }" custom :to="item.route">
-          <a
-            v-bind="props.action"
-            class="items-center flex justify-between"
-            :href="href"
-            @click="navigate"
-          >
+          <a v-bind="props.action" class="items-center flex justify-between" :href="href" @click="navigate">
             <span class="p-menuitem-text">{{ item.label }}</span>
             <span v-if="item.notifications" class="p-badge p-badge-danger">{{ item.notifications }}</span>
           </a>

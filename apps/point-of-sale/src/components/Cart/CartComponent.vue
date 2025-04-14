@@ -26,10 +26,7 @@
         <div class="font-semibold">Total</div>
         <div class="font-bold font-size-lg">€{{ formatPrice(totalPrice) }}</div>
       </div>
-      <div
-        v-if="cartStore.buyerBalance != null"
-        class="items-end flex-container font-size-md justify-between pt-2"
-      >
+      <div v-if="cartStore.buyerBalance != null" class="items-end flex-container font-size-md justify-between pt-2">
         <span><i class="pi pi-exclamation-triangle" /> Debit after purchase: </span>
         €{{ formattedBalanceAfter }}
       </div>

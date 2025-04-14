@@ -40,11 +40,7 @@
       <Button id="login-button" class="items-center flex justify-center mx-auto w-full" type="submit">
         {{ t('modules.auth.login.login') }}
       </Button>
-      <Button
-        class="items-center flex justify-center mx-auto my-3 w-full"
-        :outlined="true"
-        @click="toHomeView"
-      >
+      <Button class="items-center flex justify-center mx-auto my-3 w-full" :outlined="true" @click="toHomeView">
         {{ t('common.back') }}
       </Button>
       <div class="cursor-pointer text-900 underline" @click="resetPassword">
