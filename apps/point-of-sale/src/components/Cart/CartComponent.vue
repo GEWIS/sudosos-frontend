@@ -28,7 +28,7 @@
       </div>
       <div
         v-if="cartStore.buyerBalance != null"
-        class="align-items-end flex-container font-size-md justify-between pt-2"
+        class="items-end flex-container font-size-md justify-between pt-2"
       >
         <span><i class="pi pi-exclamation-triangle" /> Debit after purchase: </span>
         €{{ formattedBalanceAfter }}

@@ -62,7 +62,7 @@
       {{ t('modules.admin.banners.till') }}<br />
       <InputSwitch v-model="active" />
     </div>
-    <div class="align-items-end flex flex-col justify-content-end">
+    <div class="items-end flex flex-col justify-content-end">
       <Button @click="onSubmit">{{ t('common.save') }}</Button>
     </div>
   </Dialog>
