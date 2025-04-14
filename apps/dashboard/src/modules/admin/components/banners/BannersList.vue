@@ -19,7 +19,7 @@
         </div>
       </template>
       <template #list="slotProps">
-        <div class="grid grid-nogutter">
+        <div class="grid gap-0">
           <BannerItem v-for="(item, index) in slotProps.items" :key="index" :banner="item" :index="index" />
         </div>
       </template>
