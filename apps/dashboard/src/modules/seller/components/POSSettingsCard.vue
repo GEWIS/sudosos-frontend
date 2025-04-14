@@ -7,7 +7,7 @@
     @save="formSubmit"
     @update:model-value="edit = $event"
   >
-    <div class="flex flex-column gap-2 justify-content-between">
+    <div class="flex flex-col gap-2 justify-content-between">
       <POSSettingsForm :edit="edit" :form="form" :point-of-sale="pointOfSale" @update:edit="edit = $event" />
       <div class="flex flex-row justify-content-end">
         <Button

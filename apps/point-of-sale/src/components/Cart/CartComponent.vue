@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-column h-full">
+  <div class="flex flex-col h-full">
     <div class="flex-container flex-row flex-wrap justify-content-between">
       <p class="accent-text font-bold font-size-lg mb-0">Current order for</p>
       <div class="active c-btn px-3 py-1 square text-2xl" @click="selectUser">
@@ -15,7 +15,7 @@
         <i class="text-4xl" :class="lockIcon" />
       </button>
     </div>
-    <div v-if="!shouldShowTransactions || !showHistory" class="flex-column flex-grow-1 gap-2 mt-4 overflow-y-auto">
+    <div v-if="!shouldShowTransactions || !showHistory" class="flex-col flex-grow-1 gap-2 mt-4 overflow-y-auto">
       <div v-for="item in cartItems" :key="item.product.id">
         <CartItemComponent :cart-product="item" />
       </div>
@@ -34,7 +34,7 @@
         €{{ formattedBalanceAfter }}
       </div>
     </div>
-    <div class="flex-column mt-3">
+    <div class="flex-col mt-3">
       <CartActionsComponent @select-creator="emit('selectCreator')" />
     </div>
   </div>

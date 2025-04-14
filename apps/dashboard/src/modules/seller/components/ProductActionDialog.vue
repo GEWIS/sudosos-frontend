@@ -11,20 +11,20 @@
     @show="openDialog()"
   >
     <template #form>
-      <div class="flex flex-column gap-1">
+      <div class="flex flex-col gap-1">
         <ProductActionExistingProductForm
           v-if="state.addToContainer"
           v-model:select-product="selectExistingProduct"
           :products="dropdownProducts"
         />
         <hr v-if="state.addToContainer" class="opacity-50 w-full" />
-        <div class="flex flex-column gap-4 md:flex-row">
+        <div class="flex flex-col gap-4 md:flex-row">
           <ProductActionImageForm
             :image-src="imageSrc"
             :is-editable="isProductEditable"
             @upload="onImageUpload($event)"
           />
-          <div class="flex flex-column gap-3">
+          <div class="flex flex-col gap-3">
             <ProductActionForm
               v-model:existing-product="selectExistingProduct"
               :form="form"

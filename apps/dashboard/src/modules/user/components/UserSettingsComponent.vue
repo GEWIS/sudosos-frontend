@@ -5,7 +5,7 @@
     :func="undefined"
     :header="t('modules.user.settings.header')"
   >
-    <div class="flex flex-column">
+    <div class="flex flex-col">
       <FormSection
         divider
         :enable-edit="true"

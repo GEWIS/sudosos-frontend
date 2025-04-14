@@ -8,7 +8,7 @@
       :value="displayedBanners"
     >
       <template #header>
-        <div class="align-items-center flex flex-column justify-content-between md:flex-row">
+        <div class="align-items-center flex flex-col justify-content-between md:flex-row">
           <SelectButton v-model="filters" multiple option-label="name" :options="options" />
           <Button
             class="md:mt-0 mt-2"
