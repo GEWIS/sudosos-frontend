@@ -25,7 +25,6 @@ import ScrollPanel from 'primevue/scrollpanel';
 import FileUpload from 'primevue/fileupload';
 import Tooltip from 'primevue/tooltip';
 import SelectButton from 'primevue/selectbutton';
-import 'primeflex/primeflex.css';
 import ToastService from 'primevue/toastservice';
 import Toast from 'primevue/toast';
 import Accordion from 'primevue/accordion';
