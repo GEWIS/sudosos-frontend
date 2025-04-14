@@ -3,6 +3,10 @@ import { useAuthStore } from '@sudosos/sudosos-frontend-common';
 import { usePointOfSaleStore } from '@/stores/pos.store';
 import { useCartStore } from '@/stores/cart.store';
 import { useActivityStore } from '@/stores/activity.store';
+import { ref } from 'vue';
+
+export const rowBackground = ref<string>('bg-red-100'); // Default background color
+export const splashImage = ref<string>(splash);
 
 let originalColor: string = '';
 
@@ -42,8 +46,12 @@ export class PointOfSaleSwitchService {
     if (target.owner?.id === 18214 && !target.useAuthentication) {
       originalColor = document.documentElement.style.getPropertyValue('--accent-color');
       document.documentElement.style.setProperty('--accent-color', '#0f492e');
+      splashImage.value = borrelSplash;
+      rowBackground.value = 'bg-green-100';
     } else {
       document.documentElement.style.setProperty('--accent-color', originalColor);
+      splashImage.value = splash;
+      rowBackground.value = 'bg-red-100';
     }
   }
 }

@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import Toast from 'primevue/toast';
+import { splashImage } from "@/services/PointOfSaleSwitchService";
 </script>
 
 <template>
   <Toast />
-  <RouterView />
-  <img alt="Overlay Image" class="image-underlay" src="@/assets/splash.svg" />
+  <RouterView/>
+  <img class="image-underlay" :src="splashImage" alt="Overlay Image" />
 </template>
 
 <style lang="scss">
