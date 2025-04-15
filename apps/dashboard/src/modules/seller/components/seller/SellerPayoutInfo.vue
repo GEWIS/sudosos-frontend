@@ -41,7 +41,7 @@
             @click="deletePayout"
           />
         </div>
-        <div class="flex flex-row gap-2 justify-content-end w-full">
+        <div class="flex flex-row gap-2 justify-end w-full">
           <ActionButton
             v-if="touched"
             :label="t('modules.seller.payouts.payout.update')"

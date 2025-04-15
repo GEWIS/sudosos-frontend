@@ -4,8 +4,7 @@
     :header="t('components.mutations.modal.header', { id })"
     modal
     :pt="{
-      root: { class: 'w-full max-w-[90vw] md:max-w-[33rem]' }, // responsive width
-      content: { class: 'p-0' }, // remove default padding if needed
+      root: { class: 'w-full max-w-[90vw] md:max-w-[33rem]' },
     }"
     :visible="visible"
     @show="addListenerOnDialogueOverlay(dialog)"

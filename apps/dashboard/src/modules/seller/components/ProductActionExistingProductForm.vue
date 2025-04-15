@@ -1,5 +1,5 @@
 <template>
-  <div class="flex gap-5 justify-content-end">
+  <div class="flex gap-5 justify-end">
     <p class="prop">{{ t('modules.seller.productContainers.products.addExisting') }}</p>
     <Dropdown
       v-model="selectProduct"

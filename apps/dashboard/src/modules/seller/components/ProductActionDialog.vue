@@ -35,7 +35,7 @@
               :vat-groups="vatGroups"
               @submit:success="visible = false"
             />
-            <div class="flex flex-row gap-1 justify-content-end"></div>
+            <div class="flex flex-row gap-1 justify-end"></div>
             <div>
               <!-- Row for Added on -->
               <div v-if="state.displayProduct" class="flex flex-row flex-wrap justify-between">
