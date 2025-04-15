@@ -3,9 +3,12 @@
     <div class="page-title">
       {{ t('modules.user.profile.title') }}
     </div>
-    <div class="flex flex-col-reverse gap-4 justify-between md:flex-row">
-      <UserSettingsComponent :user="current.user as UserResponse" />
-      <UserInfo :user="gewisUser || (current.user as GewisUserResponse)" />
+    <div class="flex flex-col gap-5">
+      <div class="flex flex-col gap-8 justify-between md:flex-row">
+        <!-- Adjusted width -->
+        <UserSettingsComponent :user="current.user as UserResponse" />
+        <UserInfo :user="gewisUser || (current.user as GewisUserResponse)" />
+      </div>
     </div>
   </div>
 </template>

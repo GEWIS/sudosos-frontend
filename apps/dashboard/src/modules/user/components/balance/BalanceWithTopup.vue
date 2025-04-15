@@ -1,9 +1,9 @@
 <template>
   <BalanceTopupModal v-model:visible="visible" :amount="topupAmount!!" />
   <CardComponent class="sm:w-full w-full" :header="t('modules.user.balance.balance')">
-    <div class="flex flex-row justify-center">
-      <div class="flex flex-col justify-center w-6">
-        <Skeleton v-if="loading" class="h-4rem mx-auto w-5" />
+    <div class="flex flex-col flex-row gap-4 justify-between items-center">
+      <div class="flex flex-col items-center w-full sm:w-auto">
+        <Skeleton v-if="loading" class="h-16 mx-auto w-20" />
         <h1 v-else class="font-medium my-0 sm:text-7xl text-5xl text-center">{{ displayBalance }}</h1>
         <p v-if="userBalance && userBalance.fine" class="font-semibold text-base text-center text-red-500">
           {{
@@ -23,12 +23,12 @@
           }}</span>
         </div>
       </div>
-      <Divider layout="vertical" />
+      <Divider class="my-4 mx-auto w-full max-w-md" layout="vertical" />
 
-      <div class="flex flex-col w-6">
-        <div>
-          <p class="font-bold">{{ t('modules.user.balance.increaseAmount') }}</p>
-          <div class="flex-1 w-full">
+      <div class="flex flex-col w-full">
+        <div class="w-full max-w-md">
+          <p class="font-bold text-left">{{ t('modules.user.balance.increaseAmount') }}</p>
+          <div class="w-full mt-2">
             <InputNumber
               v-model="topupAmount"
               currency="EUR"
@@ -53,8 +53,8 @@
           </div>
           <span class="font-bold text-red-500">{{ errors['Top up amount'] }}</span>
         </div>
-        <div class="flex justify-content-end my-2">
-          <Button class="justify-center sm:w-4 w-full" @click="onSubmit">
+        <div class="flex justify-end w-full">
+          <Button class="w-full sm:w-auto px-8" @click="onSubmit">
             {{ t('modules.user.balance.topUp') }}
           </Button>
         </div>

@@ -2,9 +2,8 @@
   <div class="page-container">
     <div class="page-title">{{ t('modules.financial.payout.title') }}</div>
     <div class="content-wrapper flex flex-col">
-      <div class="-mb-5 flex flex-row justify-content-end w-full">
+      <div class="flex flex-row justify-end w-full">
         <Button
-          class="z-5"
           icon="pi pi-plus"
           :label="t('modules.financial.payout.create')"
           severity="primary"
