@@ -1,7 +1,7 @@
 <template>
   <div class="col-12">
     <div class="flex flex-col md:flex-row py-3" :class="{ 'border-top-1 surface-border': index !== 0 }">
-      <div class="md:pr-2 md:w-5 relative w-full">
+      <div class="md:pr-4 md:w-1/2 relative">
         <Image
           v-if="banner.image"
           class="w-full"
@@ -27,7 +27,7 @@
           :value="banner.active ? t('modules.admin.banners.list.active') : t('modules.admin.banners.list.notActive')"
         />
       </div>
-      <div class="flex flex-row justify-between md:w-7 w-full">
+      <div class="flex flex-row justify-between w-1/2">
         <div class="flex flex-col pr-3">
           <span class="text-xl">{{ banner.name }}</span
           ><br />

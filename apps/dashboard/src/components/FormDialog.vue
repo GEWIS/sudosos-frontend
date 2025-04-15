@@ -19,7 +19,7 @@
         type="button"
         @click="emits('delete')"
       />
-      <div class="flex flex-1 flex-row gap-2 justify-content-end">
+      <div class="flex flex-1 flex-row gap-2 justify-end">
         <Button
           v-if="isEditable"
           icon="pi pi-times"

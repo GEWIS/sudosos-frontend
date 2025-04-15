@@ -79,7 +79,7 @@
         type="password"
       />
     </span>
-    <div class="flex justify-content-end">
+    <div class="flex justify-end">
       <ErrorSpan :error="errors" />
     </div>
   </div>

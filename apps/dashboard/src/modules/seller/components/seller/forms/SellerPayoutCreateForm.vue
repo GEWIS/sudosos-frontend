@@ -52,7 +52,7 @@
         />
         <Button
           v-else
-          class="w-6"
+          class="w-1/2"
           :disabled="!datesSelected"
           severity="info"
           type="submit"
@@ -61,11 +61,13 @@
         >
       </span>
     </div>
-    <span v-if="payoutAmount" class="items-center flex flex-row flex-wrap gap-3 justify-between">
-      <p class="my-0 text-red-500">
+    <span v-if="payoutAmount" class="items-center flex">
+      <p class="text-red-500">
         <i class="pi pi-exclamation-triangle red-500" /> {{ t('modules.seller.payouts.payout.check') }}
       </p>
-      <Button v-if="!pdfLoading" class="w-3" type="submit" @click="getReportPdf"> {{ t('common.downloadPdf') }}</Button>
+      <Button v-if="!pdfLoading" class="w-35 h-10" type="submit" @click="getReportPdf">
+        {{ t('common.downloadPdf') }}</Button
+      >
       <ProgressSpinner v-else class="h-1 w-1" />
     </span>
   </div>

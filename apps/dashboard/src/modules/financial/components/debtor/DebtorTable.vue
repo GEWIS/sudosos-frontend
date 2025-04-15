@@ -176,7 +176,7 @@
       <div v-if="isEditable && isAllowed('update', ['all'], 'Fine', ['any'])" class="grid w-20rem">
         <div class="col-6">
           <Button
-            class="flex flex-row h-full items-center justify-center justify-center w-full"
+            class="flex flex-row h-full items-center justify-center w-full"
             :disabled="debtorStore.isDebtorsLoading || debtorStore.isNotifyLoading || selectedUsers.length === 0"
             outlined
             @click="startNotify"
@@ -190,7 +190,7 @@
         </div>
         <div class="col-6">
           <Button
-            class="flex flex-row h-full items-center justify-center justify-center w-full"
+            class="flex flex-row h-full items-center justify-center w-full"
             :disabled="debtorStore.isDebtorsLoading || debtorStore.isHandoutLoading || selectedUsers.length === 0"
             @click="startHandout"
           >
@@ -204,7 +204,7 @@
         <Divider class="col-12 my-0" />
         <div class="col-12">
           <Button
-            class="flex flex-row h-full items-center justify-center justify-center w-full"
+            class="flex flex-row h-full items-center justify-center w-full"
             :disabled="debtorStore.isDebtorsLoading || debtorStore.isLockLoading || selectedUsers.length === 0"
             severity="contrast"
             @click="startCannotInDebt"

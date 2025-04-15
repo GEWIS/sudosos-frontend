@@ -10,10 +10,7 @@
       :value="form.model.amount.value.value"
       @update:value="form.context.setFieldValue('amount', $event)"
     />
-    <div
-      class="cursor-pointer flex font-italic justify-content-end text-color-secondary underline"
-      @click="setToWaiveAll"
-    >
+    <div class="cursor-pointer flex font-italic justify-end text-color-secondary underline" @click="setToWaiveAll">
       {{ t('modules.admin.singleUser.balance.waiveAllFines') }}
     </div>
   </div>

@@ -70,7 +70,7 @@
     <Dialog
       ref="dialog"
       v-model:visible="showModal"
-      class="flex md:w-4 w-9 w-auto"
+      class="flex"
       :draggable="false"
       :header="t('modules.seller.payouts.payout.details')"
       modal

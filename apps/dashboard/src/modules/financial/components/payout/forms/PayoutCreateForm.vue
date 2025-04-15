@@ -57,7 +57,7 @@
       @update:value="form.context.setFieldValue('amount', $event)"
     />
 
-    <div class="flex justify-content-end w-full">
+    <div class="flex justify-end w-full">
       <ErrorSpan :error="balanceError" />
     </div>
   </div>

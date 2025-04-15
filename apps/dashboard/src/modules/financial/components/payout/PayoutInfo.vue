@@ -54,7 +54,7 @@
         }}
       </span>
     </div>
-    <div class="flex flex-row gap-2 justify-content-end mt-3 w-full">
+    <div class="flex flex-row gap-2 justify-end mt-3 w-full">
       <div v-if="isCreated" class="flex flex-row gap-2">
         <Button
           icon="pi pi-check"
