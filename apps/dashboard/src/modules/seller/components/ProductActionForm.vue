@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-2 justify-between">
+  <div class="flex flex-col gap-1">
     <InputSpan
       id="name"
       :attributes="form.model.name.attr.value"
@@ -13,7 +13,7 @@
     />
     <span
       v-if="closeTo && !form.context.errors.value.name"
-      class="block error-text-name w15-rem"
+      class="text-sm text-blue-600 cursor-pointer hover:underline"
       @click="selectCloseTo"
     >
       {{ t('modules.seller.forms.product.closeTo', { name: closeTo.name }) }}</span
@@ -68,6 +68,7 @@
         class="cursor-pointer pi pi-exclamation-circle text-red-500"
       />
       <InputOrganSpan
+        class="input-field flex-grow"
         :disabled="!isOrganEditable || !isEditable"
         :errors="form.context.errors.value.owner"
         :label="t('modules.seller.productContainers.products.owner')"

@@ -38,7 +38,7 @@
       <Column field="image" :header="t('modules.seller.productContainers.products.image')">
         <template v-if="!loading" #body="rowDataImg">
           <Image
-            class="h-4rem image-preview-container w-4rem"
+            class="h-16 w-16 object-contain"
             preview
             :pt="{
               image: {

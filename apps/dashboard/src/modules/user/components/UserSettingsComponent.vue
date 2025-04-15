@@ -1,11 +1,6 @@
 <template>
-  <CardComponent
-    :action="undefined"
-    class="md:w-5 w-full"
-    :func="undefined"
-    :header="t('modules.user.settings.header')"
-  >
-    <div class="flex flex-col">
+  <CardComponent :action="undefined" :func="undefined" :header="t('modules.user.settings.header')">
+    <div class="flex flex-col gap-2 justify-between">
       <FormSection
         divider
         :enable-edit="true"
@@ -17,7 +12,7 @@
       >
         <ChangePinForm :edit="editPin" :form="pinForm" />
       </FormSection>
-      <div class="items-center flex flex-row w-11">
+      <div class="items-center flex flex-row w-full">
         <p class="flex-grow-1 my-1">{{ t('modules.user.settings.changePassword') }}</p>
         <i
           class="items-center cursor-pointer flex pi pi-arrow-up-right text-gray-500"
@@ -26,27 +21,27 @@
       </div>
       <Divider />
       <h4 class="mt-0">{{ t('modules.user.settings.nfc') }}</h4>
-      <div class="items-center flex flex-row w-11">
-        <p class="flex-grow-1 my-1">{{ t('modules.user.settings.changeNFC') }}</p>
-        <i class="items-center cursor-pointer flex pi pi-arrow-up-right text-gray-500" @click="startScan()" />
+      <div class="items-center flex flex-row w-full">
+        <p class="my-1">{{ t('modules.user.settings.changeNFC') }}</p>
+        <i class="cursor-pointer pi pi-arrow-up-right text-gray-500" @click="startScan()" />
       </div>
-      <div class="items-center flex flex-row w-11">
+      <div class="items-center flex flex-row w-full">
         <p class="flex-grow-1 my-1">{{ t('modules.user.settings.deleteNFC') }}</p>
         <i class="items-center cursor-pointer flex pi pi-arrow-up-right text-gray-500" @click="confirmDeleteNFC()" />
       </div>
       <Divider />
       <h4 class="mt-0">{{ t('modules.user.settings.apiKeys') }}</h4>
-      <div class="items-center flex flex-row w-11">
+      <div class="items-center flex flex-row w-full">
         <p class="flex-grow-1 my-1">{{ t('modules.user.settings.changeApiKey') }}</p>
         <i class="items-center cursor-pointer flex pi pi-arrow-up-right text-gray-500" @click="confirmChangeApiKey()" />
       </div>
-      <div class="items-center flex flex-row w-11">
+      <div class="items-center flex flex-row w-full">
         <p class="flex-grow-1 my-1">{{ t('modules.user.settings.deleteApiKey') }}</p>
         <i class="items-center cursor-pointer flex pi pi-arrow-up-right text-gray-500" @click="confirmDeleteApiKey()" />
       </div>
       <Divider />
       <h4 class="mt-0">{{ t('modules.user.settings.preferences') }}</h4>
-      <div class="items-center flex flex-row w-11">
+      <div class="items-center flex flex-row w-full">
         <p class="flex-grow-1 my-1">{{ t('modules.user.settings.dataAnalysis') }}</p>
         <InputSwitch v-model="dataAnalysis" @update:model-value="handleChangeDataAnalysis" />
       </div>
