@@ -193,7 +193,7 @@ const navItems = computed(() => [
         label: t('common.navigation.writeOffs'),
         route: '/write-offs',
         visible: isAllowed('get', ['all'], 'WriteOff', ['any']),
-      }
+      },
     ],
   },
   {

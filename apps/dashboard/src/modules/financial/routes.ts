@@ -7,7 +7,7 @@ import { isAllowed } from '@/utils/permissionUtils';
 import InvoiceCreateView from '@/modules/financial/views/invoice/InvoiceCreateView.vue';
 import DebtorView from '@/modules/financial/views/debtor/DebtorView.vue';
 import DebtorHandoutView from '@/modules/financial/views/debtor/DebtorHandoutView.vue';
-import WriteOffsView from "@/modules/financial/views/write-offs/WriteOffsView.vue";
+import WriteOffsView from '@/modules/financial/views/write-offs/WriteOffsView.vue';
 
 export function financialRoutes(): RouteRecordRaw[] {
   return [
@@ -83,14 +83,14 @@ export function financialRoutes(): RouteRecordRaw[] {
           },
         },
         {
-            path: '/write-offs',
-            component: WriteOffsView,
-            name: 'writeOffs',
-            meta: {
-                requiresAuth: true,
-                isAllowed: () => isAllowed('get', ['all'], 'WriteOff', ['any'])
-            }
-        }
+          path: '/write-offs',
+          component: WriteOffsView,
+          name: 'writeOffs',
+          meta: {
+            requiresAuth: true,
+            isAllowed: () => isAllowed('get', ['all'], 'WriteOff', ['any']),
+          },
+        },
       ],
     },
   ];

@@ -1,26 +1,26 @@
 import {
-    AuthenticateApi,
-    BalanceApi,
-    BannersApi,
-    VouchergroupsApi,
-    Configuration,
-    ContainersApi,
-    FilesApi,
-    InvoicesApi,
-    PayoutRequestsApi,
-    PointofsaleApi,
-    ProductCategoriesApi,
-    ProductsApi,
-    RbacApi,
-    RootApi,
-    StripeApi,
-    TransactionsApi,
-    TransfersApi,
-    UsersApi,
-    VatGroupsApi,
-    DebtorsApi,
-    SellerPayoutsApi,
-    WriteoffsApi,
+  AuthenticateApi,
+  BalanceApi,
+  BannersApi,
+  VouchergroupsApi,
+  Configuration,
+  ContainersApi,
+  FilesApi,
+  InvoicesApi,
+  PayoutRequestsApi,
+  PointofsaleApi,
+  ProductCategoriesApi,
+  ProductsApi,
+  RbacApi,
+  RootApi,
+  StripeApi,
+  TransactionsApi,
+  TransfersApi,
+  UsersApi,
+  VatGroupsApi,
+  DebtorsApi,
+  SellerPayoutsApi,
+  WriteoffsApi,
 } from '@sudosos/sudosos-client';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { getTokenFromStorage, updateTokenIfNecessary } from '../helpers/TokenHelper';
@@ -83,7 +83,7 @@ export class ApiService {
     const withKeyConfiguration = new Configuration({
       accessToken: () => getTokenFromStorage().token,
     });
-    
+
     this._authenticateApi = new AuthenticateApi(withKeyConfiguration, basePath, axiosInstance);
     this._balanceApi = new BalanceApi(withKeyConfiguration, basePath, axiosInstance);
     this._debtorsApi = new DebtorsApi(withKeyConfiguration, basePath, axiosInstance);
