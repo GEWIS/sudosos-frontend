@@ -1,8 +1,8 @@
 <template>
   <div class="page-container">
     <div class="page-title">{{ t('modules.user.profile.title') }}</div>
-    <div class="flex flex-col gap-5">
-      <div class="flex flex-col gap-8 justify-between md:flex-row">
+    <div class="flex flex-col">
+      <div class="flex flex-col justify-between md:flex-row">
         <!-- Adjusted width -->
         <UserSettingsComponent class="flex-grow-1" :user="current.user as UserResponse" />
         <UserInfo :user="gewisUser || (current.user as GewisUserResponse)" />

@@ -62,7 +62,7 @@
       <InputText
         v-if="type === 'pin'"
         v-model="internalValue as string"
-        class="w-3"
+        class="w-20"
         v-bind="attributes"
         :disabled="disabled"
         :placeholder="placeholder"
