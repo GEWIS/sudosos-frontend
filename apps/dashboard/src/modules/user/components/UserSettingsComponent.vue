@@ -1,6 +1,6 @@
 <template>
   <CardComponent :action="undefined" :func="undefined" :header="t('modules.user.settings.header')">
-    <div class="flex flex-col gap-2 justify-between">
+    <div class="flex flex-col gap-2 justify-between w-90">
       <FormSection
         divider
         :enable-edit="true"
