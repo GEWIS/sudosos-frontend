@@ -105,7 +105,21 @@ export const useInvoiceStore = defineStore('invoice', {
     async fetchAllNegativeInvoiceUsers(): Promise<Record<number, BalanceResponse>> {
       return fetchAllPages<BalanceResponse>((take, skip) =>
         // @ts-expect-error PaginatedBalanceResponse is the same as PaginatedResult<BalanceResponse>
-        ApiService.balance.getAllBalance(null, null, -1, null, null, null, 'INVOICE', null, null, false, take, skip),
+        ApiService.balance.getAllBalance(
+          null,
+          null,
+          -1,
+          null,
+          null,
+          null,
+          'INVOICE',
+          null,
+          null,
+          false,
+          undefined,
+          take,
+          skip,
+        ),
       ).then((users) => {
         users.forEach((user: BalanceResponse) => {
           this.negativeInvoiceUsers[user.id] = user;

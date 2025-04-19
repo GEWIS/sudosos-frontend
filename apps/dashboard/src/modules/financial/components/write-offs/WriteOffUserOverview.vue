@@ -137,8 +137,13 @@ const loadUsers = async (): Promise<void> => {
 };
 
 onMounted(async () => {
-  isLoading.value = true;
-  await loadUsers();
+  if (writeOffStore.getShouldRefresh) {
+    isLoading.value = true;
+    await loadUsers();
+  } else {
+    isLoading.value = false;
+    records.value = writeOffStore.inactiveUsers;
+  }
 });
 
 const rows = ref<number>(10);

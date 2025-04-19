@@ -85,6 +85,7 @@ import apiService from '@/services/ApiService';
 import { useOpenInvoiceAccounts } from '@/mixins/openInvoiceAccountsMixin';
 import { isAllowed } from '@/utils/permissionUtils';
 import { isBetaEnabled } from '@/utils/betaUitl';
+import { useInactiveDebtors } from '@/mixins/inactiveDebtorsMixin';
 const userStore = useUserStore();
 const authStore = useAuthStore();
 const router = useRouter();
@@ -103,8 +104,10 @@ const isBeta = isBetaEnabled();
 
 const { pendingPayouts } = usePendingPayouts();
 const { openInvoiceAccounts } = useOpenInvoiceAccounts();
+const { inactiveDebtors } = useInactiveDebtors();
 const getFinancialNotifications = () =>
-  isAllowed('update', ['all'], 'SellerPayout', ['any']) && pendingPayouts?.value + openInvoiceAccounts?.value;
+  isAllowed('update', ['all'], 'SellerPayout', ['any']) &&
+  pendingPayouts?.value + openInvoiceAccounts?.value + inactiveDebtors?.value;
 
 const organs: Ref<
   {
@@ -193,6 +196,7 @@ const navItems = computed(() => [
         label: t('common.navigation.writeOffs'),
         route: '/write-offs',
         visible: isAllowed('get', ['all'], 'WriteOff', ['any']),
+        notifications: inactiveDebtors?.value,
       },
     ],
   },

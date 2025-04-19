@@ -13,6 +13,7 @@ export const useWriteOffStore = defineStore('writeoff', {
     updatedAt: 0,
     inactiveUsers: [] as BalanceResponse[],
     count: 0,
+    usersFetchedAt: 0,
   }),
   getters: {
     getWriteOff:
@@ -25,6 +26,9 @@ export const useWriteOffStore = defineStore('writeoff', {
     },
     getAllWriteOffs(): Record<number, WriteOffResponse> {
       return this.writeOffs;
+    },
+    getShouldRefresh(): boolean {
+      return this.usersFetchedAt === 0 || Date.now() - this.usersFetchedAt > 1000 * 60 * 15;
     },
   },
   actions: {
@@ -65,6 +69,7 @@ export const useWriteOffStore = defineStore('writeoff', {
         take,
         skip,
       );
+      this.usersFetchedAt = Date.now();
       this.inactiveUsers = users.data.records;
       this.count = users.data._pagination.count;
       return this.inactiveUsers;
