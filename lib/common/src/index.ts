@@ -15,3 +15,5 @@ export {
 export { fetchAllPages } from './helpers/PaginationHelper';
 export { addListenerOnDialogueOverlay } from './utils/dialogUtil';
 export { setupWebSocket } from './services/webSocketService';
+export { useWebSocketStore } from './stores/websocket.store';
+export { useWebSocketConnectionWatcher } from './mixins/useWebSocketConnectionWatcher';
