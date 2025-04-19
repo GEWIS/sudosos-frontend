@@ -106,15 +106,16 @@ export const useInvoiceStore = defineStore('invoice', {
       return fetchAllPages<BalanceResponse>((take, skip) =>
         // @ts-expect-error PaginatedBalanceResponse is the same as PaginatedResult<BalanceResponse>
         ApiService.balance.getAllBalance(
-          null,
-          null,
+          undefined,
+          undefined,
           -1,
-          null,
-          null,
-          null,
+          undefined,
+          undefined,
+          undefined,
+          // @ts-expect-error not sure why typescript thinks this is wrong
           'INVOICE',
-          null,
-          null,
+          undefined,
+          undefined,
           false,
           undefined,
           take,

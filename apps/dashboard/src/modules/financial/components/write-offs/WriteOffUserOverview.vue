@@ -109,16 +109,17 @@ async function onSort(event: DataTableSortEvent) {
   await loadUsers();
 }
 
-const getSortField = (): (() => string) => {
+const getSortField = (): string | undefined => {
   switch (sortField.value) {
     case 'amount.amount':
       return 'amount';
     case 'fine.amount':
       return 'fine';
   }
+  return undefined;
 };
 
-const getSortOrder = () => {
+const getSortOrder = (): string => {
   if (sortOrder.value === 1) return 'ASC';
   return 'DESC';
 };
@@ -158,8 +159,9 @@ async function onPage(event: DataTablePageEvent) {
 
 const showDialog: Ref<boolean> = ref(false);
 const form = schemaToForm(createWriteOffSchema);
+type WithFullName = BalanceResponse & { fullName?: string };
 const openDialog = (user: BalanceResponse) => {
-  const u = { ...user };
+  const u: WithFullName = { ...user } as WithFullName;
   u.fullName = `${user.firstName} ${user.lastName}`;
   form.context.setFieldValue('user', u);
   form.context.setFieldValue('balance', u.amount.amount);

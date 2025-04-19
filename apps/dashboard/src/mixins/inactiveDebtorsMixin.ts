@@ -14,7 +14,7 @@ export function useInactiveDebtors() {
   function updateInactiveDebtors() {
     if (userStore.current.rolesWithPermissions.findIndex((r) => (r.name as UserRole) == UserRole.BAC_PM) != -1) {
       const writeOffStore = useWriteOffStore();
-      void writeOffStore.fetchInactiveUsers();
+      void writeOffStore.fetchInactiveUsers(10, 0);
     }
   }
 

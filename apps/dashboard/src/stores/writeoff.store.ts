@@ -61,6 +61,7 @@ export const useWriteOffStore = defineStore('writeoff', {
         undefined,
         undefined,
         undefined,
+        // @ts-expect-error not sure why typescript thinks this is wrong
         ['MEMBER', 'LOCAL_USER'],
         orderBy,
         orderDirection,
@@ -70,8 +71,8 @@ export const useWriteOffStore = defineStore('writeoff', {
         skip,
       );
       this.usersFetchedAt = Date.now();
-      this.inactiveUsers = users.data.records;
-      this.count = users.data._pagination.count;
+      this.inactiveUsers = users.data.records as BalanceResponse[];
+      this.count = users.data._pagination?.count || 0;
       return this.inactiveUsers;
     },
   },
