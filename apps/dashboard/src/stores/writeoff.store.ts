@@ -1,4 +1,9 @@
-import type { PaginatedWriteOffResponse, WriteOffResponse, WriteOffRequest } from '@sudosos/sudosos-client';
+import type {
+  PaginatedWriteOffResponse,
+  WriteOffResponse,
+  WriteOffRequest,
+  BalanceResponse,
+} from '@sudosos/sudosos-client';
 import { defineStore } from 'pinia';
 import apiService from '@/services/ApiService';
 
@@ -6,6 +11,8 @@ export const useWriteOffStore = defineStore('writeoff', {
   state: () => ({
     writeOffs: {} as Record<number, WriteOffResponse>,
     updatedAt: 0,
+    inactiveUsers: [] as BalanceResponse[],
+    count: 0,
   }),
   getters: {
     getWriteOff:
@@ -41,6 +48,26 @@ export const useWriteOffStore = defineStore('writeoff', {
         this.updatedAt = Date.now();
         return res.data;
       });
+    },
+    async fetchInactiveUsers(take: number, skip: number, orderBy = 'amount', orderDirection = 'ASC') {
+      const users = await apiService.balance.getAllBalance(
+        undefined,
+        undefined,
+        -1,
+        undefined,
+        undefined,
+        undefined,
+        ['MEMBER', 'LOCAL_USER'],
+        orderBy,
+        orderDirection,
+        true,
+        true,
+        take,
+        skip,
+      );
+      this.inactiveUsers = users.data.records;
+      this.count = users.data._pagination.count;
+      return this.inactiveUsers;
     },
   },
 });

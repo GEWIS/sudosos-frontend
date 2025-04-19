@@ -82,8 +82,12 @@
       },
       "write-offs": {
         "title": "Afschrijvingen",
+        "fine": "Boeten",
         "table": {
           "header": "Afschrijvingen overzicht"
+        },
+        "overview": {
+          "header": "Inactieve debiteuren overzicht"
         },
         "delete": {
           "delete": "Afschrijving verwijderen",

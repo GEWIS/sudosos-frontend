@@ -2,6 +2,8 @@
   <div class="flex flex-column justify-content-between gap-2">
     <InputUserSpan
       id="name"
+      :default="form.model.user.value.value"
+      :disabled="disabled"
       :errors="form.context.errors.value.user"
       :label="t('modules.financial.forms.payout.for')"
       placeholder="John Doe"
@@ -56,6 +58,11 @@ const props = defineProps({
     type: Object as PropType<Form<yup.InferType<typeof createWriteOffSchema>>>,
     required: true,
   },
+  disabled: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 });
 
 const userBalance: Ref<BalanceResponse | null | undefined> = ref(null);
@@ -63,6 +70,7 @@ const balanceError = ref<string>('');
 watch(
   () => props.form.model.user.value.value,
   () => {
+    console.info('updated:', props.form.model.user.value.value);
     if (props.form.model.user.value.value.id) {
       apiService.balance
         .getBalanceId(props.form.model.user.value.value.id)

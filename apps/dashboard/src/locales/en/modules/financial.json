@@ -106,8 +106,12 @@
       },
       "write-offs": {
         "title": "Write-offs",
+        "fine": "Fine",
         "table": {
           "header": "Write-offs overview"
+        },
+        "overview": {
+          "header": "Inactive debtors overview"
         },
         "delete": {
           "delete": "Delete write-off",
