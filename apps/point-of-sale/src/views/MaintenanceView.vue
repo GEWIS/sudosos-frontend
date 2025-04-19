@@ -19,7 +19,7 @@ const webSocketStore = useWebSocketStore();
 
 const socket = io(webSocketStore.url);
 
-await HandleWebSocket(socket);
+HandleWebSocket(socket);
 
 const init = ref(true);
 onMounted(() => {
@@ -31,8 +31,8 @@ const shouldShow = computed(() => {
   return webSocketStore.maintenanceMode;
 });
 
-async function HandleWebSocket(ws: Socket) {
-  await webSocketStore.ping();
+function HandleWebSocket(ws: Socket) {
+  void webSocketStore.ping();
 
   ws.emit('subscribe', 'maintenance');
 
@@ -68,5 +68,3 @@ async function HandleWebSocket(ws: Socket) {
   height: 100%;
 }
 </style>
-
-<style scoped lang="scss"></style>
