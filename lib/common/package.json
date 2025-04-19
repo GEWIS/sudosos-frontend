@@ -40,5 +40,8 @@
   "homepage": "https://gitlab.com/sudosos/sudosos-frontend-common#readme",
   "devDependencies": {
     "eslint": "^9.24.0"
+  },
+  "dependencies": {
+    "socket.io-client": "^4.8.1"
   }
 }
