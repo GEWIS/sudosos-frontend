@@ -14,3 +14,4 @@ export {
 } from './helpers/TokenHelper';
 export { fetchAllPages } from './helpers/PaginationHelper';
 export { addListenerOnDialogueOverlay } from './utils/dialogUtil';
+export { setupWebSocket } from './services/webSocketService';
