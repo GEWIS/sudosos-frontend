@@ -99,7 +99,7 @@ import FormSection from '@/components/FormSection.vue';
 import ChangePasswordForm from '@/modules/user/components/forms/ChangePasswordForm.vue';
 import apiService from '@/services/ApiService';
 import { handleError } from '@/utils/errorUtils';
-import { isBetaEnabled } from '@/utils/betaUitl';
+import { isBetaEnabled } from '@/utils/betaUtil';
 
 async function startScan() {
   const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
