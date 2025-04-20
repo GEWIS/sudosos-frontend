@@ -1,6 +1,6 @@
 <template>
-  <nav class="flex justify-around w-full bg-red-500 h-22 px-60">
-    <Menubar class="hidden mb:flex" :model="navItems">
+  <nav class="flex justify-around w-full" :class="isBeta ? 'bg-green-500' : 'bg-primary'">
+    <Menubar class="hidden! lg:flex!" :model="navItems">
       <template #start>
         <router-link class="items-center flex flex-row font-bold no-underline py-1 text-white" to="/">
           {{ t('common.sudosos') }}
@@ -25,7 +25,7 @@
         </a>
       </template>
     </Menubar>
-    <Menubar class="hidden mb:flex" :model="profileItems">
+    <Menubar class="hidden! lg:flex!" :model="profileItems">
       <template #start>
         <img alt="beer" class="h-4" src="../assets/img/bier.png" />
       </template>
@@ -43,7 +43,7 @@
       </template>
     </Menubar>
     <Menubar
-      class="flex flex-row flex-wrap justify-between mb:hidden mx-2 my-2 transition-all w-full"
+      class="flex! flex-row flex-wrap justify-between lg:hidden! mx-2 my-4 transition-all w-full"
       :model="mobileItems"
     >
       <template #start>
@@ -79,7 +79,7 @@ import apiService from '@/services/ApiService';
 
 import { useOpenInvoiceAccounts } from '@/mixins/openInvoiceAccountsMixin';
 import { isAllowed } from '@/utils/permissionUtils';
-// import { isBetaEnabled } from '@/utils/betaUitl';
+import { isBetaEnabled } from '@/utils/betaUitl';
 const userStore = useUserStore();
 const authStore = useAuthStore();
 const router = useRouter();
@@ -94,7 +94,7 @@ const handleLogout = () => {
   void router.push('/');
 };
 
-// const isBeta = isBetaEnabled();
+const isBeta = isBetaEnabled();
 
 const { pendingPayouts } = usePendingPayouts();
 const { openInvoiceAccounts } = useOpenInvoiceAccounts();
@@ -255,5 +255,9 @@ const mobileItems = computed(() => [...navItems.value, ...profileItems.value]);
   .mb\:flex {
     display: flex !important;
   }
+}
+
+.bg-primary {
+  background-color: #d40000;
 }
 </style>
