@@ -67,8 +67,7 @@ const hasShownTopUpWarning = ref(false);
 
 const shouldShowTopUpWarning = computed(() => {
   const inDebt = cartStore.checkBuyerInDebt();
-  const notShown = !hasShownTopUpWarning.value;
-  return inDebt && notShown;
+  return inDebt && !hasShownTopUpWarning.value;
 });
 
 const handleTopUpWarningUpdate = (value: boolean) => {
