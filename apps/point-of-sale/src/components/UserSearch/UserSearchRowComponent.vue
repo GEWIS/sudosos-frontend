@@ -12,6 +12,7 @@
 <script setup lang="ts">
 import { GewisUserResponse, UserResponse } from '@sudosos/sudosos-client';
 import { useCartStore } from '@/stores/cart.store';
+import { rowBackground } from '@/services/PointOfSaleSwitchService';
 
 const props = defineProps({
   user: {

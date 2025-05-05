@@ -45,6 +45,10 @@
         <p class="flex-grow-1 my-0">{{ t('modules.user.settings.dataAnalysis') }}</p>
         <InputSwitch v-model="dataAnalysis" @update:model-value="handleChangeDataAnalysis" />
       </div>
+      <div class="align-items-center flex flex-row w-11">
+        <p class="flex-grow-1 my-1">{{ t('modules.user.settings.enableBeta') }}</p>
+        <InputSwitch v-model="betaEnabled" @update:model-value="handleChangeEnableBeta" />
+      </div>
     </div>
   </CardComponent>
   <!-- @vue-generic {yup.InferType<typeof editPasswordSchema>} -->
@@ -79,6 +83,7 @@ import FormSection from '@/components/FormSection.vue';
 import ChangePasswordForm from '@/modules/user/components/forms/ChangePasswordForm.vue';
 import apiService from '@/services/ApiService';
 import { handleError } from '@/utils/errorUtils';
+import { isBetaEnabled } from '@/utils/betaUtil';
 
 async function startScan() {
   const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -145,6 +150,7 @@ const editPin = ref(true);
 const confirm = useConfirm();
 const toast = useToast();
 const dataAnalysis = ref(props.user.extensiveDataProcessing);
+const betaEnabled = ref(isBetaEnabled());
 const userStore = useUserStore();
 
 const handleChangeDataAnalysis = (value: boolean) => {
@@ -162,6 +168,11 @@ const handleChangeDataAnalysis = (value: boolean) => {
     .catch((err) => {
       handleError(err, toast);
     });
+};
+
+const handleChangeEnableBeta = (value: boolean) => {
+  document.cookie = 'X-Beta-Enabled=' + value;
+  location.reload();
 };
 
 const confirmChangeApiKey = () => {

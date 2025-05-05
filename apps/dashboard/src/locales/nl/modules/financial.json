@@ -68,7 +68,8 @@
           "header": "Facturen Account Overzicht",
           "balance": "Saldo",
           "type": "INVOICE"
-        }
+        },
+        "backDate": "Factuur transactie is in andere financiële jaar."
       },
       "payout": {
         "title": "Uitbetalingsoverzicht",
@@ -78,6 +79,24 @@
         "approvedBy": "Goedgekeurd door {approvedBy}",
         "approve": "Goedkeuren",
         "deny": "Afwijzen"
+      },
+      "write-offs": {
+        "title": "Afschrijvingen",
+        "fine": "Boeten",
+        "table": {
+          "header": "Afschrijvingen overzicht"
+        },
+        "overview": {
+          "header": "Inactieve debiteuren overzicht"
+        },
+        "delete": {
+          "delete": "Afschrijving verwijderen",
+          "not-possible": "Afschrijvingen kunnen niet worden verwijderd."
+        },
+        "create": "Afschrijving aanmaken",
+        "downloadPdf": {
+          "not-possible": "Dit is nog niet mogelijk."
+        }
       },
       "forms": {
         "payout": {
@@ -97,6 +116,10 @@
           "postalCode": "Postcode",
           "city": "Stad",
           "country": "Land"
+        },
+        "write-offs": {
+          "negative": "Kan alleen een negatieve afschrijving maken.",
+          "warning": "Het maken van een afschrijving zal ook de gebruiker verwijderen."
         }
       }
     }
