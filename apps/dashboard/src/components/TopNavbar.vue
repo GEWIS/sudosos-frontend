@@ -176,11 +176,7 @@ const navItems = computed(() => [
         visible: isAllowed('update', ['all'], 'User', ['any']),
       },
       {
-        label: t('common.rbac'),
-        route: '/rbac',
-      },
-      {
-        label: t('common.rbac'),
+        label: t('common.navigation.rbac'),
         route: '/rbac',
       },
       {

@@ -150,7 +150,16 @@
           "title": "Permissions per Role",
           "entity": "Name",
           "crud": "CRUD",
-          "systemDefault": "This role is a system default you cannot edit the users."
+          "systemDefault": "This role is a system default you cannot edit the users.",
+          "action": "Action",
+          "relation": "Relation",
+          "attribute": "Attribute",
+          "deletePermission": "Delete Permission",
+          "addAction": "Add Action",
+          "deletePermissionConfirmation": "Confirm",
+          "deletePermissionCancellation": "Cancel",
+          "actionSubmission": "Submit",
+          "deleteRow": "Are you sure you want to delete the following row?"
         },
         "title": "Maintain roles"
       }

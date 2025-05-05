@@ -1,16 +1,12 @@
 import * as yup from 'yup';
 import { ref } from 'vue';
 import type { Ref } from 'vue';
-import type { BaseUserResponse, BaseVatGroupResponse, ProductCategoryResponse } from '@sudosos/sudosos-client';
+import type { BaseUserResponse, BaseVatGroupResponse, ProductCategoryResponse , PermissionResponse} from '@sudosos/sudosos-client';
 import type { DineroObject } from 'dinero.js';
 import i18n from './i18nUtils';
-import type {
-    BaseUserResponse,
-    BaseVatGroupResponse, PermissionResponse,
-    ProductCategoryResponse
-} from "@sudosos/sudosos-client";
+
 import type { ContainerInStore } from "@/stores/container.store";
-import type { DineroObject } from "dinero.js";
+
 
 const t = i18n.global.t;
 
@@ -179,28 +175,3 @@ export const rbacSchema =
        currentPermission: yup.mixed<PermissionResponse>().required(),
     });
 
-export const createInvoiceObject =
-  yup.object({
-    forId: yup.number().required(),
-    byId: yup.number(),
-    addressee: yup.string().required(),
-    description: yup.string().required(),
-    reference: yup.string().required(),
-    transactionIDs: yup.array().of(yup.number().required()).required(),
-    transactionTotal: yup.mixed<DineroObject>().default({ precision: 2, currency: 'EUR', amount: 0 }).required(),
-    street: yup.string().required(),
-    postalCode: yup.string().required(),
-    city: yup.string().required(),
-    country: yup.string().required(),
-    date: yup.string().required(),
-    attention: yup.string(),
-  });
-
-export const rbacSchema =
-    yup.object({
-       id: yup.number().required(),
-       name: yup.string().required(),
-       systemDefault: yup.boolean().default(false),
-       permissions: yup.array().of(yup.mixed<PermissionResponse>().required()),
-       currentPermission: yup.mixed<PermissionResponse>().required(),
-    });

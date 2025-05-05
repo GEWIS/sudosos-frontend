@@ -11,18 +11,18 @@
           {{ t('modules.financial.rbac.permissions.crud') }}
         </template>
         <template #body="slotProps">
-          <i class="pi pi-check" v-if="slotProps.data.icon == 'all'" />
-          <i class="pi pi-chart-pie" v-else-if="slotProps.data.icon == 'partial'" />
-          <i class="pi pi-times" v-else />
+          <i v-if="slotProps.data.icon == 'all'" class="pi pi-check" />
+          <i v-else-if="slotProps.data.icon == 'partial'" class="pi pi-chart-pie"  />
+          <i v-else class="pi pi-times" />
         </template>
       </Column>
       <Column>
         <template #body="slotProps">
           <Button
-            @click="handleEntityPush(slotProps.data)"
-            type="button"
-            icon="pi pi-angle-double-right"
-            class="p-button-rounded p-button-text p-button-plain"
+              class="p-button-rounded p-button-text p-button-plain"
+              icon="pi pi-angle-double-right"
+              type="button"
+              @click="handleEntityPush(slotProps.data)"
           />
         </template>
       </Column>
@@ -31,15 +31,15 @@
 </template>
 
 <script setup lang="ts">
-import CardComponent from '@/components/CardComponent.vue';
 import { useI18n } from 'vue-i18n';
-import { rbacSchema } from '@/utils/validation-schema';
-import { type Form, getProperty } from '@/utils/formUtils';
 import { computed, type PropType } from 'vue';
 import * as yup from 'yup';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import { type ActionResponse, type PermissionResponse } from '@sudosos/sudosos-client';
+import { type Form, getProperty } from '@/utils/formUtils';
+import { rbacSchema } from '@/utils/validation-schema';
+import CardComponent from '@/components/CardComponent.vue';
 import apiService from '@/services/ApiService';
 
 const props = defineProps({

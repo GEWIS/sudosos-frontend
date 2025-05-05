@@ -238,7 +238,7 @@
         },
         "apiError": "Fout",
         "errorMessage": "Er is iets misgegaan, open een issue op {link} en beschrijf het probleem.",
-        "rbac": "Rollen / Toegang"
+        "rbac": "Rollen / Toegang",
         "topUp": {
           "unable": "Het is niet gelukt om op te waarderen. Probeer het later opnieuw."
         }
@@ -264,7 +264,8 @@
       "debtors": "Schuldigen",
       "invoiceAccounts": "Facturen Account Overzicht",
       "fines": "Boetes",
-      "writeOffs": "Afschrijvingen"
+      "writeOffs": "Afschrijvingen",
+      "rbac": "Permissies / Rollen"
     },
     "validation": {
       "number": {

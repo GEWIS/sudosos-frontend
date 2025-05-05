@@ -239,7 +239,6 @@
         },
         "apiError": "Error",
         "errorMessage": "Something is going wrong, please open an issue on {link} describing the issue.",
-        "rbac": "Roles / Permissions"
         "topUp": {
           "unable": "Unable to complete the top-up. Please try again later."
         }
@@ -265,7 +264,8 @@
       "debtors": "Debtors",
       "invoiceAccounts": "Invoice Account Overview",
       "fines": "Fines",
-      "writeOffs": "Write-Offs"
+      "writeOffs": "Write-Offs",
+      "rbac": "Permissions / Roles"
     },
     "validation": {
       "number": {

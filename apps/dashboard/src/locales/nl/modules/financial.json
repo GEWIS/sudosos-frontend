@@ -134,7 +134,16 @@
           "title": "Permissies per rol",
           "entity": "Naam",
           "crud": "CRUD",
-          "systemDefault": "Deze rol is standaard, daardoor kun je geen gebruikers aanpassen!"
+          "systemDefault": "Deze rol is standaard, daardoor kun je geen gebruikers aanpassen!",
+          "action": "Actie",
+          "relation": "Relatie",
+          "attribute": "Attribuut",
+          "deletePermission": "Verwijder Permissie",
+          "addAction": "Voeg actie toe",
+          "deletePermissionConfirmation": "Verwijder",
+          "deletePermissionCancellation": "Keer terug",
+          "actionSubmission": "Voeg toe",
+          "deleteRow": "Weet je zeker dat je deze rij wil verwijderen?"
         },
         "title": "Rollen onderhouden"
       }
