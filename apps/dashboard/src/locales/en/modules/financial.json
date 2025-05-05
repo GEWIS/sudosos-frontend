@@ -104,6 +104,22 @@
           "warning": "Creating a write-off will also delete the user's account."
         }
       },
+      "rbac": {
+        "selection": {
+          "title": "Role Selection",
+          "label": "Information about"
+        },
+        "users": {
+          "title": "Users per Role"
+        },
+        "permissions": {
+          "title": "Permissions per Role",
+          "entity": "Name",
+          "crud": "CRUD",
+          "systemDefault": "This role is a system default you cannot edit the users."
+        },
+        "title": "Maintain roles"
+      },
       "write-offs": {
         "title": "Write-offs",
         "fine": "Fine",

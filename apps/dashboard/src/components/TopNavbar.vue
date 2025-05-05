@@ -180,6 +180,10 @@ const navItems = computed(() => [
         route: '/rbac',
       },
       {
+        label: t('common.rbac'),
+        route: '/rbac',
+      },
+      {
         label: t('common.navigation.flaggedTransactions'),
       },
       {

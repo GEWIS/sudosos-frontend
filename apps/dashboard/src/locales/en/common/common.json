@@ -130,6 +130,116 @@
           "details": "Payout amount does not match the amount of purchases. {amount} vs. {totalInclVat}",
           "unable": "Unable to verify the payout."
         },
+        "nickname": "Nickname",
+        "email": "Email address",
+        "usertype": "Usertype",
+        "toast": {
+            "info": {
+                "info": "Info",
+                "scanStarted": "NFC Scan started, please hold your NFC card to your phone!"
+            },
+            "success": {
+                "success": "Success",
+                "userUpdated": "Successfully updated user.",
+                "userCreated": "Successfully created user.",
+                "waiveFinesSuccess": "Successfully waived fines.",
+                "resetPasswordSuccess": "Successfully reset password.",
+                "dataAnalysis": "Successfully changed data analysis preference.",
+                "apiKeyChanged": "Successfully changed API key.",
+                "apiKeyDeleted": "Successfully deleted API key.",
+                "passwordUpdated": "Successfully updated password.",
+                "nfcCodeUpdated": "Successfully updated NFC code.",
+                "pinUpdated": "Successfully updated PIN.",
+                "finesNotified": "Successfully notified users.",
+                "finesHandedOut": "Successfully handed out fines.",
+                "payoutCreated": "Successfully created payout.",
+                "invoiceDeleted": "Successfully deleted invoice.",
+                "invoiceCreated": "Successfully created invoice.",
+                "invoiceUpdated": "Successfully updated invoice.",
+                "invoiceAmountUpdated": "Successfully updated invoice amount.",
+                "pointOfSaleDeleted": "Successfully deleted POS.",
+                "pointOfSaleUpdated": "Successfully updated POS.",
+                "pointOfSaleCreated": "Successfully created POS.",
+                "containerUpdated": "Successfully updated container.",
+                "containerCreated": "Successfully created container.",
+                "containerDeleted": "Successfully deleted container.",
+                "fineDeleted": "Successfully deleted fine.",
+                "transactionDeleted": "Successfully deleted transaction.",
+                "productCreated": "Successfully created product.",
+                "productUpdated": "Successfully updated product.",
+                "productContainerDeleted": "Successfully deleted product from container.",
+                "productDeleted": "Successfully deleted product.",
+                "payoutDeleted": "Successfully deleted payout.",
+                "payoutUpdated": "Successfully updated payout.",
+                "payout": {
+                    "verify": "Verification Success",
+                    "details": "Payout is verified."
+                }
+            },
+            "error": {
+                "error": "Error",
+                "scanNotStarted": "NFC scan not started, please check permissions regarding NFC.",
+                "desktopUnsupported": "NFC scans can only be done using a mobile phone.",
+                "androidUnsupported": "Only Chrome browsers support Web NFC.",
+                "iosUnsupported": "iOS does not support Web NFC."
+            },
+            "canceled": "Canceled",
+            "reject": {
+                "waiveFinesRejected": "Canceled waiving fines."
+            },
+            "failed": {
+                "failed": "Failed",
+                "payout": {
+                    "verify": "Verification Failed",
+                    "details": "Payout amount does not match the amount of purchases. {amount} vs. {totalInclVat}",
+                    "unable": "Unable to verify the payout."
+                },
+                "topUp": {
+                    "unable": "Unable to complete the top-up. Please try again later."
+                }
+            }
+        },
+        "navigation": {
+            "transactions": "Transactions",
+            "admin": "Admin",
+            "financial": "Financial",
+            "seller": "Seller",
+            "profile": "Profile",
+            "signOut": "Sign out",
+            "dutch": "Dutch",
+            "english": "English",
+            "userOverview": "User overview",
+            "banners": "Banners",
+            "socialDrinkCards": "Social drink cards",
+            "invoices": "Invoices",
+            "payouts": "Payouts",
+            "manageProducts": "Manage products",
+            "posOverview": "POS overview",
+            "flaggedTransactions": "Flagged transactions",
+            "fineOverview": "Fine overview",
+            "invoiceAccounts": "Invoice Account Overview"
+        },
+        "validation": {
+            "number": {
+                "min": "This field must be greater than {min}"
+            },
+            "password": {
+                "match": "Passwords must match."
+            },
+            "pin": {
+                "match": "PINs must match.",
+                "onlyDigits": "PIN must be only digits."
+            },
+            "required": "This field is required",
+            "string": {
+                "exact": "This field must be exactly {len} characters",
+                "max": "This field can't be greater than {max} characters",
+                "min": "This field must be at least {min} characters"
+            }
+        },
+        "apiError": "Error",
+        "errorMessage": "Something is going wrong, please open an issue on {link} describing the issue.",
+        "rbac": "Roles / Permissions"
         "topUp": {
           "unable": "Unable to complete the top-up. Please try again later."
         }

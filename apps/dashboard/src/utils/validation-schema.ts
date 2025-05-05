@@ -178,3 +178,29 @@ export const rbacSchema =
        permissions: yup.array().of(yup.mixed<PermissionResponse>().required()),
        currentPermission: yup.mixed<PermissionResponse>().required(),
     });
+
+export const createInvoiceObject =
+  yup.object({
+    forId: yup.number().required(),
+    byId: yup.number(),
+    addressee: yup.string().required(),
+    description: yup.string().required(),
+    reference: yup.string().required(),
+    transactionIDs: yup.array().of(yup.number().required()).required(),
+    transactionTotal: yup.mixed<DineroObject>().default({ precision: 2, currency: 'EUR', amount: 0 }).required(),
+    street: yup.string().required(),
+    postalCode: yup.string().required(),
+    city: yup.string().required(),
+    country: yup.string().required(),
+    date: yup.string().required(),
+    attention: yup.string(),
+  });
+
+export const rbacSchema =
+    yup.object({
+       id: yup.number().required(),
+       name: yup.string().required(),
+       systemDefault: yup.boolean().default(false),
+       permissions: yup.array().of(yup.mixed<PermissionResponse>().required()),
+       currentPermission: yup.mixed<PermissionResponse>().required(),
+    });
