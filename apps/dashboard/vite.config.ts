@@ -7,13 +7,11 @@ const PROXY_URL = 'https://sudosos.test.gewis.nl';
 // https://vitejs.dev/config/
 export default defineConfig(() => {
   return {
-    plugins: [
-      vue(),
-    ],
+    plugins: [vue()],
     resolve: {
       alias: {
-        '@': fileURLToPath(new URL('./src', import.meta.url))
-      }
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+      },
     },
     optimizeDeps: {
       exclude: ['ToastService'],
@@ -21,9 +19,9 @@ export default defineConfig(() => {
     css: {
       preprocessorOptions: {
         scss: {
-          api: 'modern-compiler'
-        }
-      }
+          api: 'modern-compiler',
+        },
+      },
     },
     server: {
       port: 5173,
@@ -34,11 +32,11 @@ export default defineConfig(() => {
           rewrite: (path) => path.replace(/^\/api\/v1/, ''),
         },
         '/static': {
-          target:  PROXY_URL + '/static',
+          target: PROXY_URL + '/static',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/static/, ''),
-        }
-      }
-    }
+        },
+      },
+    },
   };
 });

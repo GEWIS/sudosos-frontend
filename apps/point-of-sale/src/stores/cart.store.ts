@@ -4,26 +4,27 @@ import {
   ContainerResponse,
   ProductResponse,
   SubTransactionRequest,
-  TransactionRequest, UserResponse,
+  TransactionRequest,
+  UserResponse,
 } from '@sudosos/sudosos-client';
 import { SubTransactionRowRequest } from '@sudosos/sudosos-client/src/api';
+import { useAuthStore } from '@sudosos/sudosos-frontend-common';
+import { DineroObjectResponse } from '@sudosos/sudosos-client/dist/api';
 import { usePointOfSaleStore } from '@/stores/pos.store';
 import apiService from '@/services/ApiService';
-import { useAuthStore } from "@sudosos/sudosos-frontend-common";
-import { DineroObjectResponse } from "@sudosos/sudosos-client/dist/api";
 
 export interface CartProduct {
-  container: ContainerResponse
-  product: ProductResponse
-  count: number
+  container: ContainerResponse;
+  product: ProductResponse;
+  count: number;
 }
 
 interface CartState {
-  products: CartProduct[]
-  buyer: UserResponse | null
-  buyerBalance: DineroObjectResponse | null
-  createdBy: BaseUserResponse | null
-  lockedIn: UserResponse | null
+  products: CartProduct[];
+  buyer: UserResponse | null;
+  buyerBalance: DineroObjectResponse | null;
+  createdBy: BaseUserResponse | null;
+  lockedIn: UserResponse | null;
 }
 export const useCartStore = defineStore('cart', {
   state: (): CartState => ({
@@ -48,7 +49,7 @@ export const useCartStore = defineStore('cart', {
     },
     getBuyer(): UserResponse | null {
       return this.buyer;
-    }
+    },
   },
   actions: {
     setLockedIn(lockedIn: UserResponse | null) {
@@ -57,7 +58,7 @@ export const useCartStore = defineStore('cart', {
     async setBuyer(buyer: UserResponse | null) {
       this.buyer = buyer;
       if (buyer) {
-        const response = await apiService.balance.getBalanceId(buyer.id).catch(this.buyerBalance = null);
+        const response = await apiService.balance.getBalanceId(buyer.id).catch((this.buyerBalance = null));
         this.buyerBalance = response.data.amount;
       } else {
         this.buyerBalance = null;
@@ -66,12 +67,18 @@ export const useCartStore = defineStore('cart', {
     setCreatedBy(createdBy: BaseUserResponse) {
       this.createdBy = createdBy;
     },
+    async setBuyerFromNfc(nfc: string) {
+      return apiService.user.findUserNfc(nfc).then((res) => {
+        this.buyer = res.data;
+        return this.buyer;
+      });
+    },
     addToCart(cartProduct: CartProduct): void {
       const existingProduct = this.products.find(
         (p) =>
           p.container.id === cartProduct.container.id &&
           p.product.id === cartProduct.product.id &&
-          p.product.revision === cartProduct.product.revision
+          p.product.revision === cartProduct.product.revision,
       );
       if (existingProduct) {
         existingProduct.count += cartProduct.count;
@@ -79,13 +86,22 @@ export const useCartStore = defineStore('cart', {
         this.products.push(cartProduct);
       }
     },
-    checkUnallowedUserInDebt(): boolean{
+    checkBuyerInDebt(): boolean {
+      const buyer = this.buyer;
+      if (buyer) {
+        if (!this.buyerBalance) return false;
+
+        return this.buyerBalance.amount < 0;
+      }
+      return false;
+    },
+    checkUnallowedUserInDebt(): boolean {
       const buyer = this.buyer;
       if (buyer) {
         if (buyer.canGoIntoDebt) return false;
         if (!this.buyerBalance) return false;
 
-        return (this.buyerBalance.amount - this.getTotalPrice) < 0;
+        return this.buyerBalance.amount - this.getTotalPrice < 0;
       }
       return false;
     },
@@ -94,7 +110,7 @@ export const useCartStore = defineStore('cart', {
         (p) =>
           p.container.id === product.container.id &&
           p.product.id === product.product.id &&
-          p.product.revision === product.product.revision
+          p.product.revision === product.product.revision,
       );
       if (index !== -1) {
         const existingProduct = this.products[index];
@@ -109,52 +125,52 @@ export const useCartStore = defineStore('cart', {
     },
     async checkout(): Promise<void> {
       const pos = usePointOfSaleStore().getPos;
-      if (!this.buyer || !pos ) return;
+      if (!this.buyer || !pos) return;
 
       const containerSubTransactionsRows: {
-        [key: string]: { container: ContainerResponse; row: SubTransactionRowRequest[] }
+        [key: string]: { container: ContainerResponse; row: SubTransactionRowRequest[] };
       } = {};
       this.products.map((cartProduct) => {
         const request: SubTransactionRowRequest = {
           amount: cartProduct.count,
           product: {
             id: cartProduct.product.id,
-            revision: cartProduct.product.revision
+            revision: cartProduct.product.revision,
           },
           totalPriceInclVat: {
             currency: 'EUR',
             precision: 2,
-            amount: cartProduct.count * cartProduct.product.priceInclVat.amount
-          }
+            amount: cartProduct.count * cartProduct.product.priceInclVat.amount,
+          },
         };
         if (containerSubTransactionsRows[cartProduct.container.id] === undefined) {
           containerSubTransactionsRows[cartProduct.container.id] = {
             container: cartProduct.container,
-            row: [request]
+            row: [request],
           };
         } else {
           containerSubTransactionsRows[cartProduct.container.id].row.push(request);
         }
       });
 
-      const subTransactions: SubTransactionRequest[] = Object.values(
-        containerSubTransactionsRows
-      ).map((subTransactionRow) => {
-        const { container, row } = subTransactionRow;
-        return {
-          to: container.owner.id,
-          container: {
-            id: container.id,
-            revision: container.revision as number
-          },
-          subTransactionRows: row,
-          totalPriceInclVat: {
-            currency: 'EUR',
-            precision: 2,
-            amount: row.reduce((total, request) => total + request.totalPriceInclVat.amount, 0)
-          }
-        };
-      });
+      const subTransactions: SubTransactionRequest[] = Object.values(containerSubTransactionsRows).map(
+        (subTransactionRow) => {
+          const { container, row } = subTransactionRow;
+          return {
+            to: container.owner.id,
+            container: {
+              id: container.id,
+              revision: container.revision as number,
+            },
+            subTransactionRows: row,
+            totalPriceInclVat: {
+              currency: 'EUR',
+              precision: 2,
+              amount: row.reduce((total, request) => total + request.totalPriceInclVat.amount, 0),
+            },
+          };
+        },
+      );
 
       const authStore = useAuthStore();
 
@@ -163,20 +179,20 @@ export const useCartStore = defineStore('cart', {
         from: this.buyer.id,
         pointOfSale: {
           id: pos.id,
-          revision: pos.revision
+          revision: pos.revision,
         },
         subTransactions,
         totalPriceInclVat: {
           currency: 'EUR',
           precision: 2,
-          amount: this.getTotalPrice
-        }
+          amount: this.getTotalPrice,
+        },
       };
 
       await apiService.transaction.createTransaction(request);
       this.products.length = 0;
       await this.setBuyer(this.lockedIn);
       this.createdBy = null;
-    }
-  }
+    },
+  },
 });

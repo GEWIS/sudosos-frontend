@@ -3,9 +3,7 @@ name: Docker Image CI
 on:
   workflow_dispatch:
   push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -16,20 +14,20 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        app: [ dashboard, point-of-sale ]
+        app: [dashboard, point-of-sale]
         include:
           - app: dashboard
             env_file_main: ${{ vars.ENV_FILE_PRODUCTION }}
             env_file_develop: ${{ vars.ENV_FILE_DEVELOPMENT }}
             docker_tag: ${{ vars.DOCKER_TAG_DASHBOARD }}
-            dockerfile_path: "apps/dashboard/Dockerfile"
-            dir: "dashboard"
+            dockerfile_path: 'apps/dashboard/Dockerfile'
+            dir: 'dashboard'
           - app: point-of-sale
             env_file_main: ${{ vars.ENV_FILE_PRODUCTION }}
             env_file_develop: ${{ vars.ENV_FILE_DEVELOPMENT }}
             docker_tag: ${{ vars.DOCKER_TAG_POS }}
-            dockerfile_path: "apps/point-of-sale/Dockerfile"
-            dir: "point-of-sale"
+            dockerfile_path: 'apps/point-of-sale/Dockerfile'
+            dir: 'point-of-sale'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -54,7 +52,7 @@ jobs:
           ENV_FILE: ${{ matrix.env_file_develop }}
         if: github.ref != 'refs/heads/main'
         run: |
-          echo "${ENV_FILE}" > apps/${{ matrix.dir }}/.env
+          echo "${ENV_FILE}" > ./apps/${{ matrix.dir }}/.env
 
       - name: Get Docker meta (for tags)
         id: meta
@@ -63,7 +61,10 @@ jobs:
           images: |
             ${{ vars.DOCKER_REGISTRY }}/${{ matrix.docker_tag }}
           tags: |
-            type=ref,enable=true,priority=600,prefix=,suffix=,event=branch
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2

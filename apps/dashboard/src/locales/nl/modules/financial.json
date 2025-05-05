@@ -1,26 +1,40 @@
 {
   "modules": {
     "financial": {
-      "fine": {
-        "title": "Boete overzicht",
-        "eligibleUsers": {
-          "header": "In aanmerking komende gebruikers",
-          "firstDate": "Eerste datum",
-          "secondDate": "Tweede datum",
+      "debtor": {
+        "title": "Debiteuren overzicht",
+        "debtorUsers": {
+          "header": "Debiteuren",
+          "currentBalance": "Huidig saldo",
+          "balanceOn": "Saldo op {date}",
+          "target": "doel",
+          "control": "controle",
+          "explanation": "De tabel hieronder selecteert alle gebruikers waarbij de gebruiker op beide data maximaal -€5 heeft. Boetes die uitgedeeld moeten worden, worden berekend op het saldo van de doeldatum.",
           "apply": "Toepassen",
           "notify": "Waarschuwen",
-          "handout": "Uitreiken",
-          "info": "Momenteel hebben in aanmerking komende gebruikers een totale schuld van {debt}. Dit zou resulteren in een totaal van {fines} aan opgelegde boetes.",
-          "pleaseSelect": "Selecteer twee datums om te zien hoeveel schuld gebruikers hebben.",
-          "firstBalance": "Eerste saldo",
-          "lastBalance": "Laatste saldo"
+          "handout": "Uitdelen",
+          "toBeFined": "Te beboeten",
+          "wasFined": "Is beboet",
+          "cannotDebt": "Schakel schuld mogelijkheid uit",
+          "ofWhichFine": "Waarvan boete",
+          "fineSince": "Boete sinds",
+          "sumCurrentBalance": "Totaal van saldi",
+          "sumToBeFined": "Totaal van \"Te beboeten\"",
+          "sumWasFined": "Totaal van \"Is beboet\"",
+          "confirm": {
+            "handoutMessage": "Wilt u boetes uitdelen aan {count} gebruikers?",
+            "notifyMessage": "Wilt u een boetewaarschuwing sturen naar {count} gebruikers?",
+            "cannotGoInDebt": "Wilt u het niet meer mogelijk maken voor {count} gebruikers om verder de schulden in te gaan?"
+          }
         },
         "handoutEvents": {
-          "header": "Boete-uitreikings evenementen",
+          "title": "Boete uitdeel moment",
+          "header": "Boete uitdeel momenten",
+          "handoutDate": "Uitdeel datum",
           "referenceDate": "Referentiedatum",
           "number": "Aantal boetes",
           "total": "Totaal aan boetes",
-          "details": "Details van het boete-uitreikingsevenement"
+          "details": "Details van het boete uitdeel moment"
         }
       },
       "invoice": {
@@ -47,16 +61,42 @@
           "balanceAfter": "Saldo na factuur",
           "pos": "POS's die in de factuur zijn opgenomen:",
           "warning": "Controleer de factuur voordat je deze aanmaakt."
-        }
+        },
+        "account": {
+          "lastTransaction": "Laatste transactie",
+          "title": "Facturen Account Overzicht",
+          "header": "Facturen Account Overzicht",
+          "balance": "Saldo",
+          "type": "INVOICE"
+        },
+        "backDate": "Factuur transactie is in andere financiële jaar."
       },
       "payout": {
         "title": "Uitbetalingsoverzicht",
         "create": "Uitbetaling aanmaken",
         "requestedBy": "Aangevraagd door",
-        "details": "Uitbetalingsdetails",
-        "approvedBy": "Goedgekeurd door",
+        "details": "Uitbetalingsdetails #{payoutId}",
+        "approvedBy": "Goedgekeurd door {approvedBy}",
         "approve": "Goedkeuren",
         "deny": "Afwijzen"
+      },
+      "write-offs": {
+        "title": "Afschrijvingen",
+        "fine": "Boeten",
+        "table": {
+          "header": "Afschrijvingen overzicht"
+        },
+        "overview": {
+          "header": "Inactieve debiteuren overzicht"
+        },
+        "delete": {
+          "delete": "Afschrijving verwijderen",
+          "not-possible": "Afschrijvingen kunnen niet worden verwijderd."
+        },
+        "create": "Afschrijving aanmaken",
+        "downloadPdf": {
+          "not-possible": "Dit is nog niet mogelijk."
+        }
       },
       "forms": {
         "payout": {
@@ -76,6 +116,10 @@
           "postalCode": "Postcode",
           "city": "Stad",
           "country": "Land"
+        },
+        "write-offs": {
+          "negative": "Kan alleen een negatieve afschrijving maken.",
+          "warning": "Het maken van een afschrijving zal ook de gebruiker verwijderen."
         }
       },
       "rbac": {

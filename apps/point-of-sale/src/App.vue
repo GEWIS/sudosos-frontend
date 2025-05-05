@@ -1,22 +1,16 @@
+<script setup lang="ts">
+import Toast from 'primevue/toast';
+import SplashComponent from '@/components/SplashComponent.vue';
+import ConnectionLostOverlay from '@/components/ConnectionLostOverlay.vue';
+import MaintenanceModeOverlay from '@/components/MaintenanceModeOverlay.vue';
+</script>
+
 <template>
-  <RouterView/>
-  <img class="image-underlay" src="@/assets/splash.svg" alt="Overlay Image" />
+  <Toast />
+  <MaintenanceModeOverlay />
+  <ConnectionLostOverlay />
+  <RouterView />
+  <SplashComponent />
 </template>
 
-<style lang="scss">
-.image-underlay {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 1;
-  pointer-events: none;
-  z-index: -10;
-  overflow: hidden;
-
-  position: fixed;
-  top: -25%;
-  right: -7%;
-  height: 175%;
-  width: 45%;
-}
-</style>
+<style lang="scss"></style>
