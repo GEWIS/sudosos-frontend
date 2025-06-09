@@ -1,18 +1,15 @@
 import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import tailwindcss from '@tailwindcss/vite'
+import tailwindcss from '@tailwindcss/vite';
 
-const PROXY_URL = 'https://sudosos.gewis.nl';
+const PROXY_URL = 'https://sudosos.test.gewis.nl';
 
 // https://vitejs.dev/config/
 export default defineConfig(() => {
   return {
     base: './',
-    plugins: [
-      vue(),
-      tailwindcss()
-    ],
+    plugins: [vue(), tailwindcss()],
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),

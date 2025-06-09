@@ -15,12 +15,12 @@
         <div v-show="displayBalanceAfterTopup" class="font-italic text-600 text-center">
           {{ t('modules.user.balance.after') }}
           <span v-if="displayBalanceAfterTopup">{{
-              formatPrice(
-                Dinero(userBalance?.amount!! as Dinero.Options)
-                  .add(Dinero({ amount: Math.round(topupAmount!! * 100), currency: 'EUR' }))
-                  .toObject(),
-              )
-            }}</span>
+            formatPrice(
+              Dinero(userBalance?.amount!! as Dinero.Options)
+                .add(Dinero({ amount: Math.round(topupAmount!! * 100), currency: 'EUR' }))
+                .toObject(),
+            )
+          }}</span>
         </div>
       </div>
       <Divider layout="vertical" />
