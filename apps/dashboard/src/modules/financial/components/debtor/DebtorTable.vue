@@ -173,8 +173,8 @@
           </tr>
         </tbody>
       </table>
-      <div v-if="isEditable && isAllowed('update', ['all'], 'Fine', ['any'])" class="grid w-20rem">
-        <div class="col-6">
+      <div v-if="isEditable && isAllowed('update', ['all'], 'Fine', ['any'])" class="grid w-80">
+        <div class="col-span-6 mr-2">
           <Button
             class="flex flex-row h-full items-center justify-center w-full"
             :disabled="debtorStore.isDebtorsLoading || debtorStore.isNotifyLoading || selectedUsers.length === 0"
@@ -188,7 +188,7 @@
             <ProgressSpinner v-else class="h-1rem w-1rem" stroke-width="10" />
           </Button>
         </div>
-        <div class="col-6">
+        <div class="col-span-6 ml-2">
           <Button
             class="flex flex-row h-full items-center justify-center w-full"
             :disabled="debtorStore.isDebtorsLoading || debtorStore.isHandoutLoading || selectedUsers.length === 0"
@@ -201,8 +201,8 @@
             <ProgressSpinner v-else class="h-1rem w-1rem" stroke-width="10" />
           </Button>
         </div>
-        <Divider class="col-12 my-0" />
-        <div class="col-12">
+        <Divider class="col-span-12 my-0" />
+        <div class="col-span-12">
           <Button
             class="flex flex-row h-full items-center justify-center w-full"
             :disabled="debtorStore.isDebtorsLoading || debtorStore.isLockLoading || selectedUsers.length === 0"
