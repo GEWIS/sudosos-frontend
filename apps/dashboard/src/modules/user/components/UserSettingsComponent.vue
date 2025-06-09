@@ -74,6 +74,8 @@ import InputSwitch from 'primevue/inputswitch';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
 import { useUserStore } from '@sudosos/sudosos-frontend-common';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import * as yup from 'yup';
 import CardComponent from '@/components/CardComponent.vue';
 import ChangePinForm from '@/modules/user/components/forms/ChangePinForm.vue';
 import FormDialog from '@/components/FormDialog.vue';

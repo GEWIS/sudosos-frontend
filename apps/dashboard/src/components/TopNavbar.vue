@@ -95,7 +95,7 @@ const handleLogout = () => {
   void router.push('/');
 };
 
-// const isBeta = isBetaEnabled();
+const isBeta = isBetaEnabled();
 
 const { pendingPayouts } = usePendingPayouts();
 const { openInvoiceAccounts } = useOpenInvoiceAccounts();
