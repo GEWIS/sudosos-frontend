@@ -1,5 +1,5 @@
 <template>
-  <Calendar
+  <DatePicker
     v-if="type === 'date'"
     v-model="internalDate"
     v-bind="attributes"
