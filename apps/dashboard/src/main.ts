@@ -5,7 +5,7 @@ import '@gewis/splash';
 import './assets/tailwind.css';
 import PrimeVue from 'primevue/config';
 import Button from 'primevue/button';
-import './styles/themes/sudosos-light/theme.scss';
+// import './styles/themes/sudosos-light/theme.scss';
 import Image from 'primevue/image';
 import InputText from 'primevue/inputtext';
 import Menubar from 'primevue/menubar';
@@ -38,6 +38,9 @@ import ConfirmationService from 'primevue/confirmationservice';
 import ToggleSwitch from 'primevue/toggleswitch';
 import Divider from 'primevue/divider';
 import Column from 'primevue/column';
+
+import { SudososLight } from '@sudosos/themes';
+
 import App from './App.vue';
 import router from './router';
 import i18n from './utils/i18nUtils';
@@ -47,7 +50,7 @@ const app = createApp(App);
 
 app.use(i18n);
 app.use(createPinia());
-app.use(PrimeVue);
+app.use(PrimeVue, SudososLight);
 
 app.use(ToastService);
 app.use(ConfirmationService);
