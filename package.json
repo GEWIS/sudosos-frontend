@@ -4,10 +4,11 @@
   "workspaces": [
     "apps/point-of-sale",
     "apps/dashboard",
-    "lib/common"
+    "lib/common",
+    "lib/themes"
   ],
   "scripts": {
-    "dev-libraries": "concurrently --kill-others \"yarn common:dev\"",
+    "dev-libraries": "concurrently --kill-others \"yarn common:dev\" \"yarn themes:dev\"",
     "dev-dashboard": "concurrently --kill-others \"yarn dashboard:dev\" \"yarn dev-libraries\"",
     "dev-pos": "concurrently --kill-others \"yarn point-of-sale:dev\" \"yarn dev-libraries\"",
     "build-libraries": "yarn workspace @sudosos/sudosos-frontend-common run build",
@@ -24,6 +25,7 @@
   },
   "dependencies": {
     "@gewis/splash": "^2.4.0",
+    "@primeuix/themes": "^1.1.1",
     "@sudosos/sudosos-client": "github:GEWIS/sudosos-client#d434de83b43a13603e6fa1a129546d4321e3562c",
     "@tailwindcss/vite": "^4.1.3",
     "axios": "^1.7.7",

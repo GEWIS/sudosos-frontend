@@ -848,6 +848,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@primeuix/themes@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "@primeuix/themes@npm:1.1.1"
+  dependencies:
+    "@primeuix/styled": "npm:^0.6.1"
+  checksum: 10c0/7ed7019a28cf3544fa8c0212a554ecb3d732e8ee58f08ddd77d284050b28579eb375823289fec6383bfd780cf62727476d84e11d17ad8e6c9435d2439719986e
+  languageName: node
+  linkType: hard
+
 "@primeuix/utils@npm:^0.5.3":
   version: 0.5.4
   resolution: "@primeuix/utils@npm:0.5.4"
@@ -1132,6 +1141,14 @@ __metadata:
 "@sudosos/sudosos-frontend-common@workspace:^, @sudosos/sudosos-frontend-common@workspace:lib/common":
   version: 0.0.0-use.local
   resolution: "@sudosos/sudosos-frontend-common@workspace:lib/common"
+  dependencies:
+    eslint: "npm:^9.24.0"
+  languageName: unknown
+  linkType: soft
+
+"@sudosos/themes@workspace:^, @sudosos/themes@workspace:lib/themes":
+  version: 0.0.0-use.local
+  resolution: "@sudosos/themes@workspace:lib/themes"
   dependencies:
     eslint: "npm:^9.24.0"
   languageName: unknown
@@ -6466,6 +6483,7 @@ __metadata:
     "@gewis/prettier-config": "npm:^2.2.2"
     "@gewis/splash": "npm:^2.4.0"
     "@intlify/eslint-plugin-vue-i18n": "npm:^4.0.1"
+    "@primeuix/themes": "npm:^1.1.1"
     "@rushstack/eslint-patch": "npm:^1.2.0"
     "@sudosos/sudosos-client": "github:GEWIS/sudosos-client#d434de83b43a13603e6fa1a129546d4321e3562c"
     "@tailwindcss/vite": "npm:^4.1.3"
@@ -6512,6 +6530,7 @@ __metadata:
   dependencies:
     "@stripe/stripe-js": "npm:^5.2.0"
     "@sudosos/sudosos-frontend-common": "workspace:^"
+    "@sudosos/themes": "workspace:^"
     "@tailwindcss/vite": "npm:^4.1.4"
     "@vee-validate/rules": "npm:^4.14.1"
     "@vee-validate/yup": "npm:^4.14.1"
