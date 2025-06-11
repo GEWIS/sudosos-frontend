@@ -5,7 +5,6 @@ import '@gewis/splash';
 import './assets/tailwind.css';
 import PrimeVue from 'primevue/config';
 import Button from 'primevue/button';
-// import './styles/themes/sudosos-light/theme.scss';
 import Image from 'primevue/image';
 import InputText from 'primevue/inputtext';
 import Menubar from 'primevue/menubar';
