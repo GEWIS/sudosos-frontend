@@ -90,13 +90,12 @@ import { ref, watch, onMounted } from 'vue';
 import type { Ref } from 'vue';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
-import type { HintedString } from 'primevue/ts-helpers';
+import type { HintedString } from '@primevue/core';
 import InputNumber from 'primevue/inputnumber';
 import type { BaseFieldProps, GenericObject } from 'vee-validate';
 import ErrorSpan from '@/components/ErrorSpan.vue';
 import DatePickerString from '@/components/DatePickerString.vue';
 import { userTypes } from '@/utils/validation-schema';
-
 type InputType = HintedString<'text' | 'textarea' | 'date' | 'currency' | 'percentage'>;
 
 const props = withDefaults(
