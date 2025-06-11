@@ -7,7 +7,8 @@ export function formatDateFromString(date: string | undefined) {
 
 export function formatTimeFromString(date: string | undefined) {
   if (!date) return '';
-  return date.split('T')[1].slice(0, 5);
+  const convertedDate = convertTimezone(date, Intl.DateTimeFormat().resolvedOptions().timeZone);
+  return convertedDate.getHours() + ":" + convertedDate.getMinutes();
 }
 
 export function formatPrice(number: number) {
@@ -18,4 +19,8 @@ export function formatDineroObjectToString(dinero: DineroObjectResponse, include
   const base = (dinero.amount / 10 ** dinero.precision).toFixed(2).replace('.', ',');
   if (includeCurrency) return `€${base}`;
   return base;
+}
+
+function convertTimezone(date : string, timezone : string) {
+  return new Date((new Date(date)).toLocaleString(undefined, {timeZone: timezone}));
 }
