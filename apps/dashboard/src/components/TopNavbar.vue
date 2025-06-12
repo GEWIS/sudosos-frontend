@@ -265,8 +265,4 @@ const mobileItems = computed(() => [...navItems.value, ...profileItems.value]);
     display: flex !important;
   }
 }
-
-.bg-primary {
-  background-color: #d40000;
-}
 </style>
