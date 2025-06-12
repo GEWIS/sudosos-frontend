@@ -43,7 +43,7 @@
         </Column>
         <Column field="type" :header="t('common.type')" :show-filter-match-modes="false">
           <template #filter="{ filterModel, filterCallback }">
-            <Dropdown
+            <Select
               v-model="filterModel.value"
               option-label="name"
               option-value="name"
@@ -112,9 +112,8 @@ import { computed, onMounted, ref, type Ref, watch } from 'vue';
 import type { GewisUserResponse, UserResponse } from '@sudosos/sudosos-client';
 import DataTable, { type DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
-import { FilterMatchMode } from 'primevue/api';
+import { FilterMatchMode } from '@primevue/core/api';
 import Checkbox from 'primevue/checkbox';
-import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
 import Fuse from 'fuse.js';
 import Skeleton from 'primevue/skeleton';

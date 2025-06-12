@@ -1,16 +1,17 @@
 <template>
   <div>
-    <span :class="['flex flex-wrap justify-between', column ? 'flex-col gap-1' : 'flex-row items-center gap-3']">
+    <span :class="['flex justify-between', column ? 'flex-col gap-1' : 'flex-row items-center gap-3']">
       <span class="my-0">{{ label }}</span>
       <Select
-        v-model="container"
+        v-model="selectedOption"
         class="md:w-15rem w-full"
-        option-label="name"
-        :options="containers"
+        :disabled="disabled"
+        :option-label="optionLabel"
+        :options="options"
         :placeholder="placeholder"
       >
         <template #option="slotProps">
-          {{ slotProps.option.name }}
+          {{ slotProps.option[optionLabel] }}
         </template>
       </Select>
     </span>
@@ -20,20 +21,8 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { computed, onBeforeMount } from 'vue';
+<script setup lang="ts" generic="T">
 import ErrorSpan from '@/components/ErrorSpan.vue';
-import { type ContainerInStore, useContainerStore } from '@/stores/container.store';
-
-const containerStore = useContainerStore();
-
-onBeforeMount(() => {
-  void containerStore.fetchAllIfEmpty();
-});
-
-const containers = computed(() => {
-  return Object.values(containerStore.getAllContainers);
-});
 
 withDefaults(
   defineProps<{
@@ -42,6 +31,8 @@ withDefaults(
     placeholder?: string;
     disabled?: boolean;
     column?: boolean;
+    options: T[];
+    optionLabel: string;
   }>(),
   {
     placeholder: '',
@@ -51,7 +42,7 @@ withDefaults(
   },
 );
 
-const container = defineModel<ContainerInStore>('container');
+const selectedOption = defineModel<T>('selectedOption');
 </script>
 
 <style scoped lang="scss"></style>
