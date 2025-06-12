@@ -19,7 +19,8 @@ import Steps from 'primevue/steps';
 import 'primeicons/primeicons.css';
 import Select from 'primevue/select';
 import Checkbox from 'primevue/checkbox';
-import TabView from 'primevue/tabview';
+import Tabs from 'primevue/tabs';
+import TabList from 'primevue/tablist';
 import ScrollPanel from 'primevue/scrollpanel';
 import FileUpload from 'primevue/fileupload';
 import Tooltip from 'primevue/tooltip';
@@ -37,6 +38,9 @@ import ConfirmationService from 'primevue/confirmationservice';
 import ToggleSwitch from 'primevue/toggleswitch';
 import Divider from 'primevue/divider';
 import Column from 'primevue/column';
+import Tab from 'primevue/tab';
+import TabPanels from 'primevue/tabpanels';
+import TabPanel from 'primevue/tabpanel';
 
 import { SudososLight } from '@sudosos/themes';
 
@@ -71,7 +75,6 @@ app.component('Dialog', Dialog);
 // eslint-disable-next-line vue/no-reserved-component-names
 app.component('Select', Select);
 app.component('Checkbox', Checkbox);
-app.component('TabView', TabView);
 app.component('ScrollPanel', ScrollPanel);
 app.component('FileUpload', FileUpload);
 app.component('Toast', Toast);
@@ -88,6 +91,11 @@ app.component('DatePicker', DatePicker);
 app.component('ConfirmDialog', ConfirmDialog);
 app.component('Divider', Divider);
 app.component('Column', Column);
+app.component('Tabs', Tabs);
+app.component('Tab', Tab);
+app.component('TabList', TabList);
+app.component('TabPanels', TabPanels);
+app.component('TabPanel', TabPanel);
 
 void beforeLoad().then(() => {
   app.use(router);

@@ -11,11 +11,18 @@
           @click="showDialog = true"
         />
       </div>
-      <TabView class="w-full">
-        <TabPanel v-for="state in states" :key="state" :header="state">
-          <PayoutTable :state="state" />
-        </TabPanel>
-      </TabView>
+      <Tabs class="w-full" :value="states[0]">
+        <TabList>
+          <Tab v-for="state in states" :key="state" :value="state">
+            {{ state }}
+          </Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel v-for="state in states" :key="state" :value="state">
+            <PayoutTable :state="state" />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </div>
     <FormDialog v-model="showDialog" :form="form" :header="t('modules.financial.payout.create')" :is-editable="true">
       <template #form="slotProps">
@@ -28,8 +35,6 @@
 <script setup lang="ts">
 import { PayoutRequestStatusRequestStateEnum } from '@sudosos/sudosos-client';
 import { type Ref, ref } from 'vue';
-import TabView from 'primevue/tabview';
-import TabPanel from 'primevue/tabpanel';
 import Button from 'primevue/button';
 import { useI18n } from 'vue-i18n';
 import PayoutTable from '@/modules/financial/components/payout/PayoutTable.vue';

@@ -13,18 +13,21 @@
           @click="navigateToCreateInvoice"
         />
       </div>
-      <TabView class="w-full">
-        <TabPanel v-for="year in years" :key="year" :header="year.toString()">
-          <InvoiceTableYear :year="year" />
-        </TabPanel>
-      </TabView>
+      <Tabs class="w-full" :value="years[0].toString()">
+        <TabList>
+          <Tab v-for="year in years" :key="year" :value="year.toString()">{{ year.toString() }}</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel v-for="year in years" :key="year" :value="year.toString()">
+            <InvoiceTableYear :year="year" />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import TabPanel from 'primevue/tabpanel';
-import TabView from 'primevue/tabview';
 import { useI18n } from 'vue-i18n';
 import Button from 'primevue/button';
 import InvoiceTableYear from '@/modules/financial/components/invoice/InvoiceTableYear.vue';
