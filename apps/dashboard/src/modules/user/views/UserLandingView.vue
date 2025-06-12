@@ -4,14 +4,14 @@
     <div class="content-wrapper flex flex-col gap-5">
       <UserInfo class="md:hidden" :user="gewisUser || (authStore.user as GewisUserResponse)" />
       <BalanceWithTopupComponent />
-      <MutationsBalanceCard
-        :get-mutations="getUserMutations"
+      <CardComponent
+        :action="t('components.mutations.all')"
+        class="w-full"
         :header="t('components.mutations.recent')"
-        :modal="false"
-        :paginator="false"
-        :rows-amount="6"
-        :simple="false"
-      />
+        router-link="transactions"
+      >
+        <MutationsBalance :get-mutations="getUserMutations" :modal="false" :paginator="false" :rows-amount="6" />
+      </CardComponent>
     </div>
   </div>
 </template>
@@ -23,11 +23,12 @@ import { useToast } from 'primevue/usetoast';
 import { onMounted, ref, type Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import BalanceWithTopupComponent from '@/modules/user/components/balance/BalanceWithTopup.vue';
-import MutationsBalanceCard from '@/components/mutations/MutationsBalance.vue';
 import apiService from '@/services/ApiService';
 import router from '@/router';
 import { handleError } from '@/utils/errorUtils';
 import UserInfo from '@/modules/user/components/UserInfo.vue';
+import CardComponent from '@/components/CardComponent.vue';
+import MutationsBalance from '@/components/mutations/MutationsBalance.vue';
 
 const { t } = useI18n();
 

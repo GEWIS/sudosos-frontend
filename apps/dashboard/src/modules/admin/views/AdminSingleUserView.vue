@@ -8,15 +8,9 @@
         <AdminUserInfoCard v-if="currentUser" class="flex-grow-1" :user="currentUser" />
         <AdminUserBalance v-if="currentUser" :user="currentUser" @update-mutations="() => mutations?.refresh()" />
       </div>
-      <MutationsBalanceCard
-        ref="mutations"
-        class="w-full"
-        :get-mutations="getUserMutations"
-        :header="t('components.mutations.user')"
-        modal
-        paginator
-        :simple="true"
-      />
+      <CardComponent class="w-full" :header="t('components.mutations.user')">
+        <MutationsBalance ref="mutations" :get-mutations="getUserMutations" modal paginator />
+      </CardComponent>
     </div>
   </div>
 </template>
@@ -34,8 +28,9 @@ import AdminUserBalance from '@/modules/admin/components/users/AdminUserBalance.
 import apiService from '@/services/ApiService';
 import router from '@/router';
 import { handleError } from '@/utils/errorUtils';
-import MutationsBalanceCard from '@/components/mutations/MutationsBalance.vue';
+import MutationsBalance from '@/components/mutations/MutationsBalance.vue';
 import AdminUserInfoCard from '@/modules/admin/components/users/AdminUserInfoCard.vue';
+import CardComponent from '@/components/CardComponent.vue';
 
 const { t } = useI18n();
 
@@ -45,7 +40,7 @@ const toast = useToast();
 const currentUser: Ref<UserResponse> = ref<UserResponse>(null!);
 // TODO: Fix this somehow?
 // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
-const mutations: Ref<InstanceType<typeof MutationsBalanceCard> | null> = ref(null);
+const mutations: Ref<InstanceType<typeof MutationsBalance> | null> = ref(null);
 
 const getUser = async () => {
   await apiService.user
