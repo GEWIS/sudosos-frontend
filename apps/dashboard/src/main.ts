@@ -41,6 +41,9 @@ import Column from 'primevue/column';
 import Tab from 'primevue/tab';
 import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
+import Stepper from 'primevue/stepper';
+import Step from 'primevue/step';
+import StepList from 'primevue/steplist';
 
 import { SudososLight } from '@sudosos/themes';
 
@@ -96,6 +99,9 @@ app.component('Tab', Tab);
 app.component('TabList', TabList);
 app.component('TabPanels', TabPanels);
 app.component('TabPanel', TabPanel);
+app.component('Stepper', Stepper);
+app.component('StepList', StepList);
+app.component('Step', Step);
 
 void beforeLoad().then(() => {
   app.use(router);
