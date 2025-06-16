@@ -1,1 +1,1 @@
-export * from './sudosos-light';
+export * from './color-themes/sudosos-red';

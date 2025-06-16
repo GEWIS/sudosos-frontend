@@ -1,0 +1,50 @@
+import { definePreset } from '@primeuix/themes';
+import { SudososPreset } from '../sudosos';
+
+export const SudososRed = definePreset(SudososPreset, {
+  semantic: {
+    primary: {
+      50: '{zinc.50}',
+      100: '{zinc.100}',
+      200: '{zinc.200}',
+      300: '{zinc.300}',
+      400: '{zinc.400}',
+      500: '{zinc.500}',
+      600: '{zinc.600}',
+      700: '{zinc.700}',
+      800: '{zinc.800}',
+      900: '{zinc.900}',
+      950: '{zinc.950}',
+    },
+    colorScheme: {
+      light: {
+        primary: {
+          color: '#D40000',
+          inverseColor: '#ffffff',
+          hoverColor: '#C40000',
+          activeColor: '#D40000',
+        },
+        highlight: {
+          background: 'rgba(0,0,0,0)',
+          focusBackground: 'rgba(0,0,0,0)',
+          color: '#D40000',
+          focusColor: '#C40000',
+        },
+      },
+      // dark: {
+      //   primary: {
+      //     color: '{zinc.50}',
+      //     inverseColor: '{zinc.950}',
+      //     hoverColor: '{zinc.100}',
+      //     activeColor: '{zinc.200}'
+      //   },
+      //   highlight: {
+      //     background: 'rgba(250, 250, 250, .16)',
+      //     focusBackground: 'rgba(250, 250, 250, .24)',
+      //     color: 'rgba(255,255,255,.87)',
+      //     focusColor: 'rgba(255,255,255,.87)'
+      //   }
+      // }
+    },
+  },
+});

@@ -45,7 +45,7 @@ import Stepper from 'primevue/stepper';
 import Step from 'primevue/step';
 import StepList from 'primevue/steplist';
 
-import { SudososLight } from '@sudosos/themes';
+import { SudososRed } from '@sudosos/themes';
 
 import App from './App.vue';
 import router from './router';
@@ -56,7 +56,11 @@ const app = createApp(App);
 
 app.use(i18n);
 app.use(createPinia());
-app.use(PrimeVue, SudososLight);
+app.use(PrimeVue, {
+  theme: {
+    preset: SudososRed,
+  },
+});
 
 app.use(ToastService);
 app.use(ConfirmationService);
