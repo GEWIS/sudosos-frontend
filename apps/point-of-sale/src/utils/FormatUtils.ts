@@ -1,5 +1,8 @@
 import { DineroObjectResponse } from '@sudosos/sudosos-client/dist/api';
 
+const locale : Intl.LocalesArgument = Intl.DateTimeFormat().resolvedOptions().locale;
+const timeFormatOptions : Intl.DateTimeFormatOptions = {hour: '2-digit', minute:'2-digit'};
+
 export function formatDateFromString(date: string | undefined) {
   if (!date) return '';
   return date.split('T')[0];
@@ -7,8 +10,7 @@ export function formatDateFromString(date: string | undefined) {
 
 export function formatTimeFromString(date: string | undefined) {
   if (!date) return '';
-  const convertedDate = convertTimezone(date, Intl.DateTimeFormat().resolvedOptions().timeZone);
-  return convertedDate.getHours() + ":" + convertedDate.getMinutes();
+  return new Date(date).toLocaleTimeString(locale, timeFormatOptions);
 }
 
 export function formatPrice(number: number) {
@@ -19,8 +21,4 @@ export function formatDineroObjectToString(dinero: DineroObjectResponse, include
   const base = (dinero.amount / 10 ** dinero.precision).toFixed(2).replace('.', ',');
   if (includeCurrency) return `€${base}`;
   return base;
-}
-
-function convertTimezone(date : string, timezone : string) {
-  return new Date((new Date(date)).toLocaleString(undefined, {timeZone: timezone}));
 }
