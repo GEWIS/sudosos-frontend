@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col page-container">
-    <div class="page-title">Welcome, Victor</div>
+    <div class="page-title">{{ t('modules.user.landing.welcome') + userFirstName }}</div>
     <div class="content-wrapper flex flex-col gap-5">
       <UserInfo class="md:hidden" :user="gewisUser || (authStore.user as GewisUserResponse)" />
       <BalanceWithTopupComponent />
@@ -20,7 +20,7 @@
 import { useAuthStore, useUserStore } from '@sudosos/sudosos-frontend-common';
 import type { GewisUserResponse, PaginatedFinancialMutationResponse } from '@sudosos/sudosos-client';
 import { useToast } from 'primevue/usetoast';
-import { onMounted, ref, type Ref } from 'vue';
+import { computed, onMounted, ref, type Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import BalanceWithTopupComponent from '@/modules/user/components/balance/BalanceWithTopup.vue';
 import apiService from '@/services/ApiService';
@@ -35,6 +35,10 @@ const { t } = useI18n();
 const authStore = useAuthStore();
 const userStore = useUserStore();
 const toast = useToast();
+
+const userFirstName = computed(() => {
+  return authStore.getUser?.firstName;
+});
 
 const getUserMutations = async (
   take: number,
