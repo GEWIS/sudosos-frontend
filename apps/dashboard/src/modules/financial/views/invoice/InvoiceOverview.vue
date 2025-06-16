@@ -1,28 +1,26 @@
 <template>
   <div class="flex flex-col page-container">
-    <div class="page-title">{{ t('modules.financial.invoice.title') }}</div>
     <div class="content-wrapper flex flex-col">
       <InvoiceAccountOverview />
-      <div class="-mb-5 flex flex-row justify-end w-full">
-        <Button
-          class="z-5"
-          icon="pi pi-plus"
-          :label="t('modules.financial.invoice.create.create')"
-          severity="primary"
-          type="button"
-          @click="navigateToCreateInvoice"
-        />
-      </div>
-      <Tabs class="w-full" :value="years[0].toString()">
-        <TabList>
-          <Tab v-for="year in years" :key="year" :value="year.toString()">{{ year.toString() }}</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel v-for="year in years" :key="year" :value="year.toString()">
-            <InvoiceTableYear :year="year" />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+      <CardComponent class="w-full" :header="t('modules.financial.invoice.header')">
+        <template #topAction>
+          <Button
+            icon="pi pi-plus"
+            :label="t('modules.financial.invoice.create.create')"
+            @click="navigateToCreateInvoice"
+          />
+        </template>
+        <Tabs class="w-full" :value="years[0].toString()">
+          <TabList>
+            <Tab v-for="year in years" :key="year" :value="year.toString()">{{ year.toString() }}</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel v-for="year in years" :key="year" :value="year.toString()">
+              <InvoiceTableYear :year="year" />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </CardComponent>
     </div>
   </div>
 </template>
@@ -33,6 +31,7 @@ import Button from 'primevue/button';
 import InvoiceTableYear from '@/modules/financial/components/invoice/InvoiceTableYear.vue';
 import router from '@/router';
 import InvoiceAccountOverview from '@/modules/financial/views/invoice/InvoiceAccountOverview.vue';
+import CardComponent from '@/components/CardComponent.vue';
 
 const { t } = useI18n();
 

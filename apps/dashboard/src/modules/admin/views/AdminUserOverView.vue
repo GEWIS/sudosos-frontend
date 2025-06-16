@@ -1,6 +1,5 @@
 <template>
   <div class="page-container">
-    <div class="page-title">{{ t('modules.admin.userOverview.title') }}</div>
     <CardComponent class="full-width" :header="t('modules.admin.userOverview.list.header')">
       <DataTable
         v-model:filters="filters"

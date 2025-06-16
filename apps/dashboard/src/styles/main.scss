@@ -1,0 +1,8 @@
+:root {
+  --surface-ground: var(--p-surface-100);
+  --surface-hover: var(--p-surface-100);
+}
+
+body {
+  background-color: var(--surface-ground);
+}

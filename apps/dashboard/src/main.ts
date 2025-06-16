@@ -3,6 +3,7 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import '@gewis/splash';
 import './assets/tailwind.css';
+import './styles/main.scss';
 import PrimeVue from 'primevue/config';
 import Button from 'primevue/button';
 import Image from 'primevue/image';
@@ -44,6 +45,7 @@ import TabPanel from 'primevue/tabpanel';
 import Stepper from 'primevue/stepper';
 import Step from 'primevue/step';
 import StepList from 'primevue/steplist';
+import Card from 'primevue/card';
 
 import { SudososRed } from '@sudosos/themes';
 
@@ -106,6 +108,7 @@ app.component('TabPanel', TabPanel);
 app.component('Stepper', Stepper);
 app.component('StepList', StepList);
 app.component('Step', Step);
+app.component('Card', Card);
 
 void beforeLoad().then(() => {
   app.use(router);
