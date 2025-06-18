@@ -31,20 +31,20 @@ export const SudososRed = definePreset(SudososPreset, {
           focusColor: '#C40000',
         },
       },
-      // dark: {
-      //   primary: {
-      //     color: '{zinc.50}',
-      //     inverseColor: '{zinc.950}',
-      //     hoverColor: '{zinc.100}',
-      //     activeColor: '{zinc.200}'
-      //   },
-      //   highlight: {
-      //     background: 'rgba(250, 250, 250, .16)',
-      //     focusBackground: 'rgba(250, 250, 250, .24)',
-      //     color: 'rgba(255,255,255,.87)',
-      //     focusColor: 'rgba(255,255,255,.87)'
-      //   }
-      // }
+      dark: {
+        primary: {
+          color: '#D40000',
+          inverseColor: '#ffffff',
+          hoverColor: '#C40000',
+          activeColor: '#D40000',
+        },
+        highlight: {
+          background: 'rgba(0,0,0,0)',
+          focusBackground: 'rgba(0,0,0,0)',
+          color: '#D40000',
+          focusColor: '#C40000',
+        },
+      },
     },
   },
 });

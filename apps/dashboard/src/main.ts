@@ -61,6 +61,9 @@ app.use(createPinia());
 app.use(PrimeVue, {
   theme: {
     preset: SudososRed,
+    options: {
+      darkModeSelect: 'dark-mode',
+    },
   },
 });
 
