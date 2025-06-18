@@ -1,6 +1,5 @@
 <template>
   <div class="page-container">
-    <div class="page-title">{{ t('modules.seller.posOverview.title') }}</div>
     <div class="content-wrapper">
       <POSOverviewTable class="pos-overview-table" :get-points-of-sale="getPointsOfSale" />
     </div>
@@ -11,14 +10,11 @@
 import { useUserStore } from '@sudosos/sudosos-frontend-common';
 import type { PaginatedPointOfSaleResponse } from '@sudosos/sudosos-client';
 import { useToast } from 'primevue/usetoast';
-import { useI18n } from 'vue-i18n';
 import POSOverviewTable from '@/modules/seller/components/POSOverviewTable.vue';
 import { usePointOfSaleStore } from '@/stores/pos.store';
 import router from '@/router';
 import { handleError } from '@/utils/errorUtils';
 import { isAllowed } from '@/utils/permissionUtils';
-
-const { t } = useI18n();
 
 const pointOfSaleStore = usePointOfSaleStore();
 const userStore = useUserStore();

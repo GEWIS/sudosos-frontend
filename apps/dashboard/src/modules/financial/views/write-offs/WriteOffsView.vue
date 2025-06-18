@@ -1,6 +1,5 @@
 <template>
   <div class="page-container">
-    <div class="page-title">{{ t('modules.financial.write-offs.title') }}</div>
     <div class="content-wrapper flex flex-col">
       <CardComponent class="full-width mb-5" :header="t('modules.financial.write-offs.overview.header')">
         <WriteOffUserOverview />
