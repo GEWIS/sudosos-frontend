@@ -1,5 +1,5 @@
 <template>
-  <nav class="flex justify-around w-full" :class="isBeta ? 'bg-green-500' : 'bg-primary'">
+  <nav class="flex justify-around w-full" :class="isBeta ? 'bg-green-500' : 'navbar-background'">
     <Menubar class="hidden! lg:flex!" :model="navItems">
       <template #start>
         <router-link class="items-center flex flex-row font-bold no-underline py-1 text-white" to="/">
@@ -264,5 +264,9 @@ const mobileItems = computed(() => [...navItems.value, ...profileItems.value]);
   .mb\:flex {
     display: flex !important;
   }
+}
+
+.navbar-background {
+  background-color: var(--p-menubar-background);
 }
 </style>

@@ -32,14 +32,6 @@ export const SudososPreset = definePreset(Aura, {
       mobileButton: {
         color: '{primary.inverseColor}',
       },
-      colorScheme: {
-        light: {
-          root: {
-            borderColor: 'none',
-            background: '{primary.color}',
-          },
-        },
-      },
     },
   },
 });

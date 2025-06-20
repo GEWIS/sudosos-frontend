@@ -39,6 +39,7 @@ export const SudososRed = definePreset(SudososPreset, {
         primary: {
           color: '#D40000',
           inverseColor: '#ffffff',
+          contrastColor: '#ffffff',
           hoverColor: '#C40000',
           activeColor: '#D40000',
         },
@@ -47,6 +48,17 @@ export const SudososRed = definePreset(SudososPreset, {
           focusBackground: 'rgba(0,0,0,0)',
           color: '#D40000',
           focusColor: '#C40000',
+        },
+      },
+    },
+  },
+  components: {
+    menubar: {
+      colorScheme: {
+        dark: {
+          root: {
+            background: '#B40000',
+          },
         },
       },
     },

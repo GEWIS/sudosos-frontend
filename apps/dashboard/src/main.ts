@@ -62,7 +62,7 @@ app.use(PrimeVue, {
   theme: {
     preset: SudososRed,
     options: {
-      darkModeSelect: 'dark-mode',
+      darkModeSelect: '.dark-mode',
     },
   },
 });
