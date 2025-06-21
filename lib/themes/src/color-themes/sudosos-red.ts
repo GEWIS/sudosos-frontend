@@ -11,6 +11,10 @@ export const SudososRed = definePreset(SudososPreset, {
           hoverColor: '#C40000',
           activeColor: '#D40000',
         },
+        highlight: {
+          background: 'rgba(0,0,0,0)',
+          color: '#D40000',
+        },
       },
       dark: {
         primary: {
@@ -19,6 +23,10 @@ export const SudososRed = definePreset(SudososPreset, {
           contrastColor: '#ffffff',
           hoverColor: '#C40000',
           activeColor: '#D40000',
+        },
+        highlight: {
+          background: 'rgba(0,0,0,0)',
+          color: '#D40000',
         },
       },
     },

@@ -18,10 +18,6 @@ export const SudososPreset = definePreset(Aura, {
     },
     colorScheme: {
       light: {
-        highlight: {
-          background: 'rgba(0,0,0,0)',
-          color: '{color.primary}',
-        },
         content: {
           background: '{zinc.50}',
           color: '#000000',
@@ -33,10 +29,6 @@ export const SudososPreset = definePreset(Aura, {
         },
       },
       dark: {
-        highlight: {
-          background: 'rgba(0,0,0,0)',
-          color: '{color.primary}',
-        },
         extend: {
           body: {
             background: '{surface.950}',
