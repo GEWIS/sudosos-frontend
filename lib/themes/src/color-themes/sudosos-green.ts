@@ -1,24 +1,24 @@
 import { definePreset } from '@primeuix/themes';
 import { SudososPreset } from '../sudosos';
 
-export const SudososRed = definePreset(SudososPreset, {
+export const SudososGreen = definePreset(SudososPreset, {
   semantic: {
     colorScheme: {
       light: {
         primary: {
-          color: '#D40000',
+          color: '#409d1f',
           inverseColor: '#ffffff',
-          hoverColor: '#C40000',
-          activeColor: '#D40000',
+          hoverColor: '#35831a',
+          activeColor: '#409d1f',
         },
       },
       dark: {
         primary: {
-          color: '#D40000',
+          color: '#409d1f',
           inverseColor: '#ffffff',
           contrastColor: '#ffffff',
-          hoverColor: '#C40000',
-          activeColor: '#D40000',
+          hoverColor: '#35831a',
+          activeColor: '#409d1f',
         },
       },
     },
@@ -28,7 +28,7 @@ export const SudososRed = definePreset(SudososPreset, {
       colorScheme: {
         dark: {
           root: {
-            background: '#B40000',
+            background: '#35831a',
           },
         },
       },
