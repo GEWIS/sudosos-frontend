@@ -63,6 +63,12 @@ app.use(PrimeVue, {
     preset: SudososRed,
     options: {
       darkModeSelector: '.dark-mode',
+      cssLayer: {
+        name: 'primevue',
+        // First "basic" tailwind stuff, then overwrite that with primevue, then overwrite that with utility classes
+        // See: https://tailwindcss.com/docs/preflight & https://primevue.org/theming/styled/#csslayer
+        order: 'theme, base, component, primevue, utilities',
+      },
     },
   },
 });

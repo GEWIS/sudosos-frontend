@@ -2,7 +2,7 @@
   <PageContainer>
     <div class="text-4xl mb-4">{{ t('modules.user.landing.welcome') + userFirstName }}</div>
     <div class="flex flex-col gap-5">
-      <UserInfo class="md:hidden!" :user="gewisUser || (authStore.user as GewisUserResponse)" />
+      <UserInfo class="md:hidden" :user="gewisUser || (authStore.user as GewisUserResponse)" />
       <BalanceWithTopupComponent />
       <CardComponent
         :action="t('components.mutations.all')"
