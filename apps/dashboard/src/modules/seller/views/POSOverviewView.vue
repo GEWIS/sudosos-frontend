@@ -1,9 +1,9 @@
 <template>
-  <div class="page-container">
-    <div class="content-wrapper">
+  <PageContainer>
+    <div class="flex flex-col">
       <POSOverviewTable class="pos-overview-table" :get-points-of-sale="getPointsOfSale" />
     </div>
-  </div>
+  </PageContainer>
 </template>
 
 <script setup lang="ts">
@@ -15,6 +15,7 @@ import { usePointOfSaleStore } from '@/stores/pos.store';
 import router from '@/router';
 import { handleError } from '@/utils/errorUtils';
 import { isAllowed } from '@/utils/permissionUtils';
+import PageContainer from '@/layout/PageContainer.vue';
 
 const pointOfSaleStore = usePointOfSaleStore();
 const userStore = useUserStore();

@@ -1,7 +1,7 @@
 <template>
   <Card>
     <template #header>
-      <div class="flex flex-row w-full justify-between p-5">
+      <div class="flex flex-row w-full justify-between p-5 pb-0">
         <div class="font-bold">{{ header.toUpperCase() }}</div>
         <div><slot name="topAction" /></div>
       </div>
@@ -10,7 +10,7 @@
       <slot />
     </template>
     <template v-if="action" #footer>
-      <Button id="bottom-left-button" outlined class="w-full" @click="handleClick">
+      <Button id="bottom-left-button" class="w-full" outlined @click="handleClick">
         {{ action.toUpperCase() }}
       </Button>
     </template>

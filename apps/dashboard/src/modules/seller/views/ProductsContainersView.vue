@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container">
+  <PageContainer>
     <div class="flex flex-col gap-5">
       <ContainersCard
         v-if="containers"
@@ -10,7 +10,7 @@
       />
       <ProductsCard />
     </div>
-  </div>
+  </PageContainer>
 </template>
 
 <script setup lang="ts">
@@ -19,6 +19,7 @@ import { useI18n } from 'vue-i18n';
 import ContainersCard from '@/components/container/ContainersCard.vue';
 import { type ContainerInStore, useContainerStore } from '@/stores/container.store';
 import ProductsCard from '@/modules/seller/components/ProductsCard.vue';
+import PageContainer from '@/layout/PageContainer.vue';
 
 const { t } = useI18n();
 

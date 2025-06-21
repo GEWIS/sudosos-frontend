@@ -1,7 +1,6 @@
 <template>
-  <div class="page-container">
-    <!--    <div class="page-title">{{  }}</div>-->
-    <div class="content-wrapper flex flex-col gap-5 md:flex-col">
+  <PageContainer>
+    <div class="flex flex-col gap-5 md:flex-col">
       <Card class="w-full">
         <template #title> {{ t('modules.user.transactions.title') }} </template>
         <template #content>
@@ -14,7 +13,7 @@
         </template>
       </Card>
     </div>
-  </div>
+  </PageContainer>
 </template>
 
 <script setup lang="ts">
@@ -26,6 +25,7 @@ import MutationsUserTabs from '@/components/mutations/MutationsUserTabs.vue';
 import apiService from '@/services/ApiService';
 import { handleError } from '@/utils/errorUtils';
 import router from '@/router';
+import PageContainer from '@/layout/PageContainer.vue';
 
 const { t } = useI18n();
 

@@ -1,6 +1,6 @@
 <template>
-  <div class="page-container">
-    <div class="page-title">
+  <PageContainer>
+    <div class="text-4xl mb-4">
       {{ t('modules.admin.singleUser.profile', { user: currentUser ? currentUser.firstName : '' }) }}
     </div>
     <div class="flex flex-col gap-5">
@@ -12,7 +12,7 @@
         <MutationsBalance ref="mutations" :get-mutations="getUserMutations" modal paginator />
       </CardComponent>
     </div>
-  </div>
+  </PageContainer>
 </template>
 
 <script setup lang="ts">
@@ -31,6 +31,7 @@ import { handleError } from '@/utils/errorUtils';
 import MutationsBalance from '@/components/mutations/MutationsBalance.vue';
 import AdminUserInfoCard from '@/modules/admin/components/users/AdminUserInfoCard.vue';
 import CardComponent from '@/components/CardComponent.vue';
+import PageContainer from '@/layout/PageContainer.vue';
 
 const { t } = useI18n();
 

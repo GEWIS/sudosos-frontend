@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col page-container">
-    <div class="content-wrapper flex flex-col">
+  <PageContainer>
+    <div class="flex flex-col">
       <InvoiceAccountOverview />
       <CardComponent class="w-full" :header="t('modules.financial.invoice.header')">
         <template #topAction>
@@ -22,7 +22,7 @@
         </Tabs>
       </CardComponent>
     </div>
-  </div>
+  </PageContainer>
 </template>
 
 <script setup lang="ts">
@@ -32,6 +32,7 @@ import InvoiceTableYear from '@/modules/financial/components/invoice/InvoiceTabl
 import router from '@/router';
 import InvoiceAccountOverview from '@/modules/financial/views/invoice/InvoiceAccountOverview.vue';
 import CardComponent from '@/components/CardComponent.vue';
+import PageContainer from '@/layout/PageContainer.vue';
 
 const { t } = useI18n();
 

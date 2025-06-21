@@ -1,35 +1,36 @@
 <template>
-  <div class="page-container">
-    <div class="page-title">{{ t('modules.financial.payout.title') }}</div>
-    <div class="content-wrapper flex flex-col">
-      <div class="flex flex-row justify-end w-full">
-        <Button
-          icon="pi pi-plus"
-          :label="t('modules.financial.payout.create')"
-          severity="primary"
-          type="button"
-          @click="showDialog = true"
-        />
-      </div>
-      <Tabs class="w-full" :value="states[0]">
-        <TabList>
-          <Tab v-for="state in states" :key="state" :value="state">
-            {{ state }}
-          </Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel v-for="state in states" :key="state" :value="state">
-            <PayoutTable :state="state" />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+  <PageContainer>
+    <div class="flex flex-col">
+      <CardComponent class="w-full" :header="t('modules.financial.payout.title')">
+        <template #topAction>
+          <Button
+            icon="pi pi-plus"
+            :label="t('modules.financial.payout.create')"
+            severity="primary"
+            type="button"
+            @click="showDialog = true"
+          />
+        </template>
+        <Tabs class="w-full" :value="states[0]">
+          <TabList>
+            <Tab v-for="state in states" :key="state" :value="state">
+              {{ state }}
+            </Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel v-for="state in states" :key="state" :value="state">
+              <PayoutTable :state="state" />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </CardComponent>
     </div>
     <FormDialog v-model="showDialog" :form="form" :header="t('modules.financial.payout.create')" :is-editable="true">
       <template #form="slotProps">
         <PayoutCreateForm :form="slotProps.form" @submit:success="showDialog = false" />
       </template>
     </FormDialog>
-  </div>
+  </PageContainer>
 </template>
 
 <script setup lang="ts">
@@ -42,6 +43,8 @@ import { schemaToForm } from '@/utils/formUtils';
 import { createPayoutSchema } from '@/utils/validation-schema';
 import FormDialog from '@/components/FormDialog.vue';
 import PayoutCreateForm from '@/modules/financial/components/payout/forms/PayoutCreateForm.vue';
+import CardComponent from '@/components/CardComponent.vue';
+import PageContainer from '@/layout/PageContainer.vue';
 
 const { t } = useI18n();
 

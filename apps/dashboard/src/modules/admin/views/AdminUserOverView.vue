@@ -1,6 +1,6 @@
 <template>
-  <div class="page-container">
-    <CardComponent class="full-width" :header="t('modules.admin.userOverview.list.header')">
+  <PageContainer>
+    <CardComponent class="w-full" :header="t('modules.admin.userOverview.list.header')">
       <DataTable
         v-model:filters="filters"
         filter-display="menu"
@@ -103,7 +103,7 @@
         />
       </template>
     </FormDialog>
-  </div>
+  </PageContainer>
 </template>
 
 <script setup lang="ts">
@@ -127,6 +127,7 @@ import CardComponent from '@/components/CardComponent.vue';
 import { createUserSchema, userTypes } from '@/utils/validation-schema';
 import apiService, { DEFAULT_PAGINATION_MAX } from '@/services/ApiService';
 import router from '@/router';
+import PageContainer from '@/layout/PageContainer.vue';
 
 const { t } = useI18n();
 const userStore = useUserStore();
