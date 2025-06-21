@@ -2,8 +2,7 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import '@gewis/splash';
-import './assets/tailwind.css';
-import './styles/main.scss';
+import './assets/main.css';
 import PrimeVue from 'primevue/config';
 import Button from 'primevue/button';
 import Image from 'primevue/image';

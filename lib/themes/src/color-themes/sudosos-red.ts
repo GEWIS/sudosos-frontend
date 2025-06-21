@@ -30,10 +30,15 @@ export const SudososRed = definePreset(SudososPreset, {
           color: '#D40000',
           focusColor: '#C40000',
         },
-        // content: {
-        //   background: '{zinc.50}',
-        //   color: '#000000'
-        // }
+        content: {
+          background: '{zinc.50}',
+          color: '#000000',
+        },
+        extend: {
+          body: {
+            background: '{surface.0}',
+          },
+        },
       },
       dark: {
         primary: {
@@ -48,6 +53,11 @@ export const SudososRed = definePreset(SudososPreset, {
           focusBackground: 'rgba(0,0,0,0)',
           color: '#D40000',
           focusColor: '#C40000',
+        },
+        extend: {
+          body: {
+            background: '{surface.950}',
+          },
         },
       },
     },
