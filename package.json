@@ -11,7 +11,7 @@
     "dev-libraries": "concurrently --kill-others \"yarn common:dev\" \"yarn themes:dev\"",
     "dev-dashboard": "concurrently --kill-others \"yarn dashboard:dev\" \"yarn dev-libraries\"",
     "dev-pos": "concurrently --kill-others \"yarn point-of-sale:dev\" \"yarn dev-libraries\"",
-    "build-libraries": "yarn workspace @sudosos/sudosos-frontend-common run build",
+    "build-libraries": "concurrently \"yarn common:build\" \"yarn themes:build\"",
     "build-dashboard": "yarn workspaces foreach -Rpt --from 'sudosos-dashboard' run build",
     "build-pos": "yarn workspaces foreach -Rpt --from 'sudosos-point-of-sale' run build",
     "build": "yarn workspaces foreach -Rpt --from '{sudosos-point-of-sale,sudosos-dashboard}' run build",
