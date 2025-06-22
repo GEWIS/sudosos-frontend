@@ -11,15 +11,13 @@
         <router-link v-if="item.route" v-slot="{ href, navigate }" custom :to="item.route">
           <a v-bind="props.action" class="items-center flex justify-between" :href="href" @click="navigate">
             <span class="p-menuitem-text">{{ item.label }}</span>
-            <span v-if="item.notifications" class="p-badge p-badge-danger">{{ item.notifications }}</span>
+            <Badge v-if="item.notifications" class="ml-2" severity="secondary" :value="item.notifications" />
           </a>
         </router-link>
         <a v-else :href="item.url" :target="item.target" v-bind="props.action">
           <div class="items-center flex justify-between">
             <span class="p-menuitem-text">{{ item.label }}</span>
-            <span v-if="item.notifications" class="ml-2 p-badge p-badge-danger-inverse p-badge-no-gutter">
-              {{ item.notifications }}
-            </span>
+            <Badge v-if="item.notifications" class="ml-2" severity="secondary" :value="item.notifications" />
             <span v-else-if="hasSubmenu" class="ml-2 pi pi-angle-down pi-fw" />
           </div>
         </a>
