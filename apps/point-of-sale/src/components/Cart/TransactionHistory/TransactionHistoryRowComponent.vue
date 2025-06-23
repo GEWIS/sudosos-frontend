@@ -123,7 +123,7 @@ const isCreatedByDifferent = props.transaction.createdBy?.id !== props.transacti
 
   > hr {
     margin: 5px 0;
-    border-top: 1px solid $accent-color;
+    //border-top: 1px solid $accent-color;
   }
 
   > .created-by {

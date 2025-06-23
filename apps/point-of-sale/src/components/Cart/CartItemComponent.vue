@@ -56,6 +56,6 @@ const totalPrice = computed(() => {
 
 <style scoped lang="scss">
 button {
-  font-size: $font-size-lg;
+  //font-size: $font-size-lg;
 }
 </style>

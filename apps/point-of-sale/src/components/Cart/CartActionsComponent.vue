@@ -131,8 +131,8 @@ const checkout = () => {
 .clear {
   color: white;
   background-color: red;
-  height: $cart-logout-size;
-  width: $cart-logout-size;
+  //height: $cart-logout-size;
+  //width: $cart-logout-size;
 }
 
 .checkout {
