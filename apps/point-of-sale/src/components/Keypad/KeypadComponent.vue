@@ -1,7 +1,7 @@
 <template>
   <div class="flex-col keypad">
     <div v-for="row in keypadLayout" :key="row[0]" class="flex justify-center key-row">
-      <div
+      <Button
         v-for="key in row"
         :key="key"
         :class="['key c-btn active square shadow-md', { outlined: key === keypadBackspace || key === keypadExternal }]"
@@ -9,7 +9,7 @@
       >
         <i v-if="key === keypadBackspace" class="pi pi-delete-left" style="font-size: 3rem" />
         {{ key !== keypadBackspace ? key : '' }}
-      </div>
+      </Button>
     </div>
   </div>
 </template>
@@ -39,20 +39,20 @@ const handleKeyClick = (key: string) => {
 
 <style scoped lang="scss">
 .keypad {
-  gap: var(--key-gap-size);
-  border-radius: $border-radius;
+  gap: 8px;
+  //border-radius: $border-radius;
   user-select: none;
 }
 
 .key {
   color: rgba(255, 255, 255, 0.8) !important;
-  width: var(--key-size);
-  height: var(--key-size);
+  width: 95px;
+  height: 95px;
   font-weight: bold;
-  font-size: $font-size-larger;
+  font-size: 45px;
 
   &-row {
-    gap: var(--key-gap-size);
+    gap: 8px;
   }
 }
 

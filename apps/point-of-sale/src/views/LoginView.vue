@@ -1,13 +1,13 @@
 <template>
-  <div class="main-content">
+  <div class="m-5">
     <div v-if="loggingIn" class="items-center flex h-full justify-center">
       <div>
         <ProgressSpinner aria-label="Loading" />
       </div>
     </div>
-    <div v-else>
-      <div class="keypad-container m-auto pt-6">
-        <div class="display-container" :class="displayContainerClasses">
+    <div v-else class="flex justify-center">
+      <div class="flex flex-col items-start w-[20rem]">
+        <div class="flex flex-row space-between transition-all duration-500 ease-in-out mb-5"  :class="displayContainerClasses">
           <KeypadDisplayComponent
             :external="external"
             :is-active="enteringUserId"
@@ -112,10 +112,7 @@ const handleExternal = () => {
 };
 
 const displayContainerClasses = computed(() => ({
-  to: enteringUserId.value,
-  from: !enteringUserId.value,
-  animating: animateSwitch.value,
-  switched: !enteringUserId.value && !animateSwitch.value,
+  "ml-[-23rem]": !enteringUserId.value,
 }));
 
 const loginSucces = async () => {
@@ -200,36 +197,5 @@ const shouldShowBanner = computed(() => {
 });
 </script>
 
-<style scoped lang="scss">
-.keypad-container {
-  width: calc(3 * var(--key-size) + 2 * var(--key-gap-size));
-  padding-top: 45px;
-  margin: auto;
-}
-
-.display-container {
-  display: flex;
-  margin-bottom: 40px;
-  justify-content: space-between;
-}
-
-.display-container.from.animating {
-  transform: translateX(-126.5%);
-  transition: transform 0.5s ease;
-}
-
-.display-container.to.animating {
-  transform: translateX(126.5%);
-  justify-content: flex-end;
-  transition: transform 0.5s ease;
-}
-
-.display-container.switched {
-  justify-content: flex-end;
-}
-
-.keypad-container,
-.display-container {
-  align-items: flex-start;
-}
+<style scoped>
 </style>
