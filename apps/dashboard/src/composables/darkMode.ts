@@ -16,10 +16,21 @@ export function useDarkMode() {
     localStorage.setItem(DARK_MODE_KEY, value ? 'true' : 'false');
   };
 
+  const applyFromSystem = () => {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    isDark.value = prefersDark;
+    document.documentElement.classList.toggle('dark-mode', prefersDark);
+  };
+
   const toggle = () => apply(!isDark.value);
 
   onMounted(() => {
-    apply(localStorage.getItem(DARK_MODE_KEY) === 'true');
+    const stored = localStorage.getItem(DARK_MODE_KEY);
+    if (stored === null) {
+      applyFromSystem();
+    } else {
+      apply(stored === 'true');
+    }
   });
 
   return {
