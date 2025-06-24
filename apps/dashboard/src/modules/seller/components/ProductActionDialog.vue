@@ -17,7 +17,7 @@
           v-model:select-product="selectExistingProduct"
           :products="dropdownProducts"
         />
-        <hr v-if="state.addToContainer" class="opacity-50 w-full" />
+        <Divider v-if="state.addToContainer" />
         <div class="flex flex-col gap-5 md:flex-row justify-center items-center">
           <ProductActionImageForm
             class="flex-grow"

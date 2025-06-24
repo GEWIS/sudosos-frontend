@@ -1,11 +1,14 @@
 <template>
-  <div class="flex justify-center cursor-pointer items-center bg-white w-[21rem] h-[21rem] p-3 relative group">
+  <div
+    class="flex justify-center items-center bg-white w-[21rem] h-[21rem] p-3 relative group"
+    :class="isEditable ? 'cursor-pointer' : ''"
+  >
     <img v-if="imageSrc" alt="Product" class="max-w-full max-h-full w-auto h-full object-cover" :src="imageSrc" />
     <img
       v-else
       alt="Default product"
       class="max-w-full max-h-full w-auto h-full object-cover"
-      src="../../../assets/img/bier.png"
+      src="@/assets/img/bier.png"
     />
     <button
       v-if="isEditable"
