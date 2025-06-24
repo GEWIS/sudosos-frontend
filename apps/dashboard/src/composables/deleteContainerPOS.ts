@@ -1,9 +1,10 @@
 import { useConfirm } from 'primevue/useconfirm';
-import type { ContainerWithProductsResponse, PointOfSaleWithContainersResponse } from '@sudosos/sudosos-client';
+import type { PointOfSaleWithContainersResponse } from '@sudosos/sudosos-client';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'primevue/usetoast';
 import { handleError } from '@/utils/errorUtils';
 import { usePointOfSaleStore } from '@/stores/pos.store';
+import type { ContainerInStore } from '@/stores/container.store';
 
 export function useDeleteContainerPOS(group = 'containerDeletePos') {
   const confirm = useConfirm();
@@ -11,7 +12,7 @@ export function useDeleteContainerPOS(group = 'containerDeletePos') {
   const toast = useToast();
   const posStore = usePointOfSaleStore();
 
-  return function deleteContainerPOS(p: PointOfSaleWithContainersResponse, c: ContainerWithProductsResponse) {
+  return function deleteContainerPOS(p: PointOfSaleWithContainersResponse, c: ContainerInStore) {
     confirm.require({
       header: t('common.remove'),
       message: t('modules.seller.singlePos.confirmRemoveContainer'),
