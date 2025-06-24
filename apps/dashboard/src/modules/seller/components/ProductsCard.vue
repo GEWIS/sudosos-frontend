@@ -21,13 +21,12 @@
       :global-filter-fields="['name']"
       paginator
       :pt="{
-        table: {
-          style: 'table-layout: fixed; width: 100%;',
+        tableContainer: {
+          class: `md:min-h-[35rem]`,
         },
       }"
       :rows="5"
       :rows-per-page-options="[5, 10, 25, 50, 100]"
-      table-style="min-width: 50rem"
       :value="products"
     >
       <template #header>
@@ -41,7 +40,7 @@
       <Column field="image" :header="t('modules.seller.productContainers.products.image')">
         <template v-if="!loading" #body="rowDataImg">
           <Image
-            class="h-16 w-16 object-contain"
+            class="h-16 w-16 object-contain justify-center"
             preview
             :pt="{
               image: {
