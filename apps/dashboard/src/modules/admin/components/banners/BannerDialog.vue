@@ -31,14 +31,16 @@ const visible: Ref<boolean> = defineModel<boolean>('visible', { required: true, 
 
 const banner = defineModel<BannerResponse | undefined>('banner');
 
+const DAY = 24 * 60 * 60 * 1000;
+
 const updateFieldValues = (b: BannerResponse | undefined) => {
   if (!b) {
     form.context.resetForm({
       values: {
         name: undefined,
-        duration: 1000,
-        startDate: new Date().toISOString(),
-        endDate: new Date().toISOString(),
+        duration: 10,
+        startDate: new Date(Date.now() - DAY).toISOString(),
+        endDate: new Date(Date.now() + DAY).toISOString(),
         active: true,
         image: undefined,
         id: undefined,

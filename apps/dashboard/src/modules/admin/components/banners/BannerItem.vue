@@ -5,10 +5,10 @@
         <Image
           v-if="banner.image"
           :key="banner.image"
-          class="w-full"
+          class="w-full max-h-[6.25rem]"
           preview
           :pt="{
-            image: 'w-full',
+            image: 'w-full object-cover',
           }"
           :pt:image:alt="banner.name"
           :src="getBannerImageSrc(banner)"

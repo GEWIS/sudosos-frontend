@@ -170,13 +170,7 @@ export const bannerSchema = yup.object({
   startDate: yup
     .string()
     .required()
-    .test('is-valid-date', 'Start date must be a valid date', (value) => !isNaN(Date.parse(value || '')))
-    .test('not-in-past', 'Start date cannot be in the past', (value) => {
-      if (!value) return true;
-      const now = new Date();
-      const start = new Date(value);
-      return start >= now;
-    }),
+    .test('is-valid-date', 'Start date must be a valid date', (value) => !isNaN(Date.parse(value || ''))),
   endDate: yup
     .string()
     .required()
