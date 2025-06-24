@@ -42,7 +42,7 @@ import type {
 // eslint-disable-next-line import/no-named-as-default
 import Dinero from 'dinero.js';
 import { useI18n } from 'vue-i18n';
-import { type ContainerWithProductsResponse } from '@sudosos/sudosos-client/src/api';
+import { type ContainerWithProductsResponse, ReportResponse } from '@sudosos/sudosos-client/src/api';
 import { usePointOfSaleStore } from '@/stores/pos.store';
 import ContainerCard from '@/components/container/ContainersCard.vue';
 import router from '@/router';
@@ -107,22 +107,19 @@ const formattedTotalSales = computed(() => {
 watch(
   () => canLoadTransactions.value,
   async (canLoad) => {
-    if (!canLoad) return;
-    const transactionStore = useTransactionStore();
-    const transactionsInLastWeek = (
-      await transactionStore.fetchTransactionsFromPointOfSale(
-        apiService,
-        id.value!,
+    if (!canLoad || !p.value?.owner) return;
+    await apiService.user
+      .getUsersSalesReport(
+        p.value.owner.id,
         new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
         new Date().toISOString(),
-        DEFAULT_PAGINATION_MAX,
-        0,
       )
-    ).data.records;
-
-    for (const transaction of transactionsInLastWeek) {
-      totalSales.value = totalSales.value.add(Dinero(transaction.value as Dinero.Options));
-    }
+      .then((res) => {
+        const data: ReportResponse = res.data;
+        const posReport = data.data.pos.find((r) => r.pos.id === p.value.id);
+        if (!posReport) return;
+        totalSales.value = Dinero(posReport.totalInclVat);
+      });
   },
 );
 
