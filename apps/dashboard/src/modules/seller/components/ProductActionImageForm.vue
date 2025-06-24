@@ -1,23 +1,21 @@
 <template>
-  <div class="flex flex-col items-center gap-3">
-    <div class="flex justify-center items-center bg-white w-[21rem] h-[21rem] p-3 relative group">
-      <img v-if="imageSrc" alt="Product" class="max-w-full max-h-full w-auto h-full object-cover" :src="imageSrc" />
-      <img
-        v-else
-        alt="Default product"
-        class="max-w-full max-h-full w-auto h-full object-cover"
-        src="../../../assets/img/bier.png"
-      />
-      <button
-        v-if="isEditable"
-        class="absolute inset-0 w-full h-full flex items-center justify-center bg-black/0 opacity-0 group-hover:opacity-100 group-hover:bg-black/50 transition duration-200 cursor-pointer"
-        type="button"
-        @click="fileInput?.click()"
-      >
-        <i class="pi pi-upload text-white text-3xl"></i>
-        <input ref="fileInput" accept="image/*" class="hidden" type="file" @change="onImgUpload" />
-      </button>
-    </div>
+  <div class="flex justify-center cursor-pointer items-center bg-white w-[21rem] h-[21rem] p-3 relative group">
+    <img v-if="imageSrc" alt="Product" class="max-w-full max-h-full w-auto h-full object-cover" :src="imageSrc" />
+    <img
+      v-else
+      alt="Default product"
+      class="max-w-full max-h-full w-auto h-full object-cover"
+      src="../../../assets/img/bier.png"
+    />
+    <button
+      v-if="isEditable"
+      class="absolute inset-0 w-full h-full flex items-center justify-center bg-black/0 opacity-0 group-hover:opacity-100 group-hover:bg-black/50 transition duration-200 cursor-pointer"
+      type="button"
+      @click="fileInput?.click()"
+    >
+      <i class="pi pi-upload text-white text-3xl"></i>
+      <input ref="fileInput" accept="image/*" class="hidden" type="file" @change="onImgUpload" />
+    </button>
   </div>
 </template>
 
