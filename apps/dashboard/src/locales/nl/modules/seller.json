@@ -17,6 +17,7 @@
           "header": "Containers",
           "addExisting": "Bestaande container toevoegen",
           "public": "Openbaar",
+          "private": "Privé",
           "container": "Container",
           "create": "Container aanmaken",
           "edit": "Container bewerken",

@@ -1,8 +1,21 @@
 <template>
   <div class="flex flex-col gap-2 justify-between">
     <InputSpan
+      id="public"
+      v-bind="form.model.public.attr.value"
+      :disabled="!isEditable"
+      :errors="form.context.errors.value.public"
+      :label="t('modules.seller.productContainers.containers.public')"
+      :placeholder="t('modules.seller.productContainers.containers.public')"
+      type="boolean"
+      :value="form.model.public.value.value"
+      @update:value="form.context.setFieldValue('public', $event)"
+    />
+
+    <InputSpan
       id="name"
       v-bind="form.model.name.attr.value"
+      class="md:min-w-[15rem]"
       :disabled="!isEditable"
       :errors="form.context.errors.value.name"
       :label="t('common.name')"
@@ -21,18 +34,6 @@
       :organs="!isOrganEditable ? [form.model.owner.value.value] : undefined"
       :placeholder="t('modules.seller.forms.common.selectOwner')"
       @update:organ="form.context.setFieldValue('owner', $event!)"
-    />
-
-    <InputSpan
-      id="public"
-      v-bind="form.model.public.attr.value"
-      :disabled="!isEditable"
-      :errors="form.context.errors.value.public"
-      :label="t('modules.seller.productContainers.containers.public')"
-      :placeholder="t('modules.seller.productContainers.containers.public')"
-      type="boolean"
-      :value="form.model.public.value.value"
-      @update:value="form.context.setFieldValue('public', $event)"
     />
   </div>
 </template>
