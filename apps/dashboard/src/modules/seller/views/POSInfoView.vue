@@ -46,12 +46,11 @@ import { type ContainerWithProductsResponse, ReportResponse } from '@sudosos/sud
 import { usePointOfSaleStore } from '@/stores/pos.store';
 import ContainerCard from '@/components/container/ContainersCard.vue';
 import router from '@/router';
-import apiService, { DEFAULT_PAGINATION_MAX } from '@/services/ApiService';
+import apiService from '@/services/ApiService';
 import { useContainerStore } from '@/stores/container.store';
 import MutationPOSCard from '@/components/mutations/MutationsPOS.vue';
 import CardComponent from '@/components/CardComponent.vue';
 import POSSettingsCard from '@/modules/seller/components/POSSettingsCard.vue';
-import { useTransactionStore } from '@/stores/transaction.store';
 import { formatPrice } from 'sudosos-dashboard/src/utils/formatterUtils';
 import { getRelation, isAllowed } from '@/utils/permissionUtils';
 import PageContainer from '@/layout/PageContainer.vue';
