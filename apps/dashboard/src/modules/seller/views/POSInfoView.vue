@@ -42,7 +42,7 @@ import type {
 // eslint-disable-next-line import/no-named-as-default
 import Dinero from 'dinero.js';
 import { useI18n } from 'vue-i18n';
-import { type ContainerWithProductsResponse, ReportResponse } from '@sudosos/sudosos-client/src/api';
+import { type ContainerWithProductsResponse, type ReportResponse } from '@sudosos/sudosos-client/src/api';
 import { usePointOfSaleStore } from '@/stores/pos.store';
 import ContainerCard from '@/components/container/ContainersCard.vue';
 import router from '@/router';
@@ -115,9 +115,10 @@ watch(
       )
       .then((res) => {
         const data: ReportResponse = res.data;
-        const posReport = data.data.pos.find((r) => r.pos.id === p.value.id);
+        if (!data.data.pos) return;
+        const posReport = data.data.pos.find((r) => r.pos.id === p.value?.id);
         if (!posReport) return;
-        totalSales.value = Dinero(posReport.totalInclVat);
+        totalSales.value = Dinero(posReport.totalInclVat as Dinero.Options);
       });
   },
 );
