@@ -122,25 +122,31 @@ const userBalance: Ref<BalanceResponse | null> = ref(null);
 const router = useRouter();
 const updateUserBalance = async () => {
   // Force refresh balance, since people tend to refresh pages like this to ensure an up to date balance.
-  loading.value = true;
+
   const auth = useAuthStore();
   if (!auth.getUser) {
     await router.replace({ path: '/error' });
     return;
   }
-  await userStore.fetchCurrentUserBalance(auth.getUser.id, apiService);
-  userBalance.value = userStore.getCurrentUser.balance;
-  loading.value = false;
+
+  loading.value = true;
+  await userStore
+    .fetchCurrentUserBalance(auth.getUser.id, apiService)
+    .then((b: BalanceResponse) => {
+      userBalance.value = b;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 
 onMounted(() => {
+  userBalance.value = userStore.getCurrentUser.balance;
   setTimeout(updateUserBalance, 1000);
 });
 
 watch(userStore, () => {
-  loading.value = true;
   userBalance.value = userStore.getCurrentUser.balance;
-  loading.value = false;
 });
 
 const isAllFine = computed(() => {

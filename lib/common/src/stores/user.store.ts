@@ -98,8 +98,11 @@ export const useUserStore = defineStore('user', {
         void this.fetchUserBalances(users, service);
       });
     },
-    async fetchCurrentUserBalance(id: number, service: ApiService) {
-      this.current.balance = (await service.balance.getBalanceId(id)).data;
+    async fetchCurrentUserBalance(id: number, service: ApiService): Promise<BalanceResponse> {
+      return service.balance.getBalanceId(id).then((res) => {
+        this.current.balance = res.data;
+        return res.data;
+      });
     },
     async fetchUserBalances(users: UserResponse[], service: ApiService) {
       for (const user of users) {
