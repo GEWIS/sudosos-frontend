@@ -18,10 +18,18 @@
       </template>
     </Card>
   </div>
-  <div class="accent-text w-[20rem]" :class="{ inactive: isActive }">
+  <div class="w-[20rem]" :class="{ inactive: isActive }">
     <i class="pi pi-key text-center w-full" style="font-size: 3rem" />
-    <div class="passcode-wrapper" :class="{ wrong: wrongPin }">
-      <div v-if="wrongPin" class="text-5xl">WRONG PIN</div>
+    <div>
+      <Message
+        v-if="wrongPin"
+        class="h-24 w-full"
+        :pt="{
+          text: {
+            class: 'text-4xl! text-center w-full'
+          }
+        }"
+        severity="error">WRONG PIN</Message>
       <div
         v-else
         class="items-center flex h-full justify-between w-full"
@@ -75,20 +83,4 @@ const displayCode = computed<string[]>(() => {
 });
 </script>
 
-<style scoped lang="scss">
-.wrong {
-  background-color: #ff6e99;
-  //color: $body-overlay-color;
-  text-align: center;
-  //border-radius: $border-radius;
-
-  > div {
-    width: 100%;
-    margin: auto;
-  }
-}
-
-.wrapper.inactive {
-  opacity: 0.7;
-}
-</style>
+<style scoped lang="scss"></style>
