@@ -15,7 +15,7 @@
     <InputSpan
       id="name"
       v-bind="form.model.name.attr.value"
-      class="md:min-w-[15rem]"
+      class="max-w-[15rem]"
       :disabled="!isEditable"
       :errors="form.context.errors.value.name"
       :label="t('common.name')"
@@ -27,6 +27,7 @@
     <InputOrganSpan
       id="owner"
       v-bind="form.model.owner.attr.value"
+      class="max-w-[15rem]"
       :disabled="!isEditable || !isOrganEditable"
       :errors="form.context.errors.value.owner"
       :label="t('common.owner')"
