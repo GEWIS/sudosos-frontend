@@ -2,8 +2,10 @@
   <BalanceTopupModal v-model:visible="visible" :amount="topupAmount!!" />
   <CardComponent class="sm:w-full w-full" :header="t('modules.user.balance.balance')">
     <div class="flex flex-col sm:flex-row justify-center">
-      <div class="flex flex-col justify-center w-full sm:w-1/2">
-        <Skeleton v-if="loading" class="h-16 mx-auto w-5/12" />
+      <div class="flex flex-col justify-center w-27 sm:w-1/2">
+        <div v-if="loading" class="flex justify-center">
+          <Skeleton height="5rem" width="15rem" />
+        </div>
         <h1 v-else class="font-medium my-0 sm:text-7xl text-5xl text-center">{{ displayBalance }}</h1>
         <p v-if="userBalance && userBalance.fine" class="font-semibold text-base text-center text-red-500">
           {{
