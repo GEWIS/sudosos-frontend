@@ -1,6 +1,11 @@
+import { useRouter } from 'vue-router';
+
 export function useNavigateUser() {
+  const router = useRouter();
+
   const navigateUser = (userId: number, blank = true) => {
-    void window.open(`/user/${userId}`, blank ? '_blank' : '_self');
+    if (!blank) void router.push({ name: 'user', params: { userId } });
+    else void window.open(`/user/${userId}`, '_blank');
   };
 
   return { navigateUser };
