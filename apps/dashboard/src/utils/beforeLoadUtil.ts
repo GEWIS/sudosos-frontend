@@ -7,6 +7,11 @@ import { useConditionalPreset } from '@/composables/conditionalPreset';
 import { useOrganMember } from '@/composables/organMember';
 import { isBetaEnabled } from '@/utils/betaUtil';
 
+const ORGANS = {
+  BAC: 'BAC',
+  ATHENA: 'ATHENA',
+};
+
 export default async function beforeLoad() {
   const settingsStore = useSettingsStore();
 
@@ -27,8 +32,8 @@ export default async function beforeLoad() {
   });
 
   useConditionalPreset([
-    { condition: useOrganMember(18214), preset: GrolschGreen },
-    { condition: useOrganMember(18214), preset: AthenaPinkBlue },
+    { condition: useOrganMember(ORGANS.BAC), preset: GrolschGreen },
+    { condition: useOrganMember(ORGANS.ATHENA), preset: AthenaPinkBlue },
     { condition: computed(() => isBetaEnabled()), preset: BetaBlue },
   ]);
 }
