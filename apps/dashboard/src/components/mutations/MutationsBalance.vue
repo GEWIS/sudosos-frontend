@@ -131,11 +131,13 @@ async function refresh() {
   mutations.value = parseFinancialMutations(newTransactions);
   totalRecords.value = newTransactions._pagination.count || 0;
   isLoading.value = false;
-
-  if (props.preload) void pl(mutations.value);
 }
 
-onMounted(refresh);
+onMounted(async () => {
+  await refresh().then(() => {
+    if (props.preload) void pl(mutations.value);
+  });
+});
 
 async function onPage(event: DataTablePageEvent) {
   const newTransactions = await props.getMutations(event.rows, event.first);

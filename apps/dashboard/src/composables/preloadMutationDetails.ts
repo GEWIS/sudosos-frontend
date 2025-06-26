@@ -16,7 +16,7 @@ export function usePrefetchMutationDetails() {
     for (const mutation of mutations) {
       if (!mutation) continue;
       // useMutationDetails expects Refs (type, id)
-      const { fetchMutation } = useMutationDetails(ref(mutation.type), ref(mutation.id));
+      const { fetchMutation } = useMutationDetails(ref(mutation.type), ref(mutation.id), false);
       promises.push(fetchMutation());
     }
     await Promise.all(promises);
