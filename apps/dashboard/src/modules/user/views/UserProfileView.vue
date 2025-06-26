@@ -1,13 +1,13 @@
 <template>
   <PageContainer>
     <div class="text-4xl mb-4">{{ t('modules.user.profile.title') }}</div>
+    <div class="block md:hidden mb-4">
+      <UserInfo :user="gewisUser || (current.user as GewisUserResponse)" />
+    </div>
     <div class="flex flex-col md:flex-row gap-8">
       <div class="flex flex-col gap-4 flex-1">
         <UserPinComponent />
         <UserSettingsComponent :user="current.user as UserResponse" />
-        <div class="block md:hidden pt-2">
-          <UserInfo :user="gewisUser || (current.user as GewisUserResponse)" />
-        </div>
       </div>
       <div class="hidden md:flex justify-center md:justify-start items-start flex-1">
         <UserInfo class="self-start shrink-0" :user="gewisUser || (current.user as GewisUserResponse)" />

@@ -1,6 +1,6 @@
 <template>
   <CardComponent :action="undefined" :func="undefined" :header="t('modules.user.settings.header')">
-    <div class="flex flex-col gap-2 justify-between w-90">
+    <div class="flex flex-col gap-2 justify-between">
       <div class="items-center flex flex-row w-full">
         <p class="flex-grow-1 my-1">{{ t('modules.user.settings.changePassword') }}</p>
         <i
