@@ -11,7 +11,7 @@
         </div>
         <AdminUserBalance
           v-if="currentUser"
-          class="flex-grow-0 self-start"
+          class="flex-grow flex-grow-1 md:flex-grow-0 md:self-start"
           :user="currentUser"
           @update-mutations="() => mutations?.refresh()"
         />

@@ -172,6 +172,10 @@ export const useUserStore = defineStore('user', {
     deleteUser(id: number) {
       delete this.users[id];
     },
+    async removeUser(id: number, service: ApiService) {
+      await service.user.deleteUser(id);
+      this.deleteUser(id);
+    },
     async createUser(user: CreateUserRequest, service: ApiService): Promise<UserResponse> {
       const createdUser: UserResponse = (await service.user.createUser(user)).data;
       this.addUser(createdUser);

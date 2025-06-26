@@ -59,11 +59,12 @@
       :errors="form.context.errors.value.userType"
       :label="t('common.usertype')"
       :placeholder="t('common.usertype')"
-      type="usertype"
+      :type="isCreate ? 'usertypecreate' : 'usertype'"
       :value="form.model.userType?.value.value"
       @update:value="form.context.setFieldValue('userType', $event)"
     />
     <InputSpan
+      v-if="!isCreate"
       id="isActive"
       v-bind="form.model.isActive?.attr.value"
       :disabled="disabled"
@@ -128,11 +129,16 @@ const props = defineProps({
     required: false,
     default: false,
   },
+  preTyped: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 });
 
 const isCreate = computed(() => props.form.model.id?.value.value === undefined);
 
-const { show, managed } = useUserFieldVisibility(props.form.model.userType.value, isCreate);
+const { show, managed } = useUserFieldVisibility(props.form.model.userType.value, isCreate, props.preTyped);
 
 setSubmit(
   props.form,
@@ -143,7 +149,6 @@ setSubmit(
       lastName: values.lastName,
       email: values.email || '',
       nickname: values.nickname || '',
-      active: values.isActive,
       ofAge: values.ofAge,
       canGoIntoDebt: values.canGoIntoDebt,
     };
@@ -156,14 +161,14 @@ setSubmit(
           },
           apiService,
         )
-        .then((u) => {
+        .then((user) => {
           toast.add({
             severity: 'success',
             summary: t('common.toast.success.success'),
             detail: t('common.toast.success.userCreated'),
             life: 3000,
           });
-          emit('submit:success', u);
+          emit('submit:success', user);
         })
         .catch((err) => {
           handleError(err, toast);
@@ -172,7 +177,7 @@ setSubmit(
       const id = props.form.model.id?.value.value;
       if (!id) return;
       userStore
-        .updateUser(id, u, apiService)
+        .updateUser(id, { ...u, active: values.isActive }, apiService)
         .then((u) => {
           toast.add({
             severity: 'success',

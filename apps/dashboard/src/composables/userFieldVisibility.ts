@@ -1,9 +1,9 @@
 import { computed, type Ref } from 'vue';
 import { USER_TYPES } from '@/utils/validation-schema';
 
-export function useUserFieldVisibility(userType: Ref<USER_TYPES, string>, isCreate: Ref<boolean>) {
+export function useUserFieldVisibility(userType: Ref<USER_TYPES, string>, isCreate: Ref<boolean>, preTyped = false) {
   const show = computed(() => {
-    if (isCreate.value)
+    if (isCreate.value && !preTyped)
       return {
         nickname: true,
         lastName: true,
