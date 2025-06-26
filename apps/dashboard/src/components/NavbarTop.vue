@@ -1,47 +1,21 @@
 <template>
   <nav class="flex justify-around w-full navbar-background">
-    <Menubar class="hidden lg:flex" :model="navItems">
+    <NavbarMenu menu-class="hidden lg:flex" :model="navItems">
       <template #start>
         <router-link class="items-center flex flex-row font-bold no-underline py-1 text-white" to="/">
           {{ t('common.sudosos') }}
-          <img alt="SudoSOS" class="h-16 py-2" src="../assets/img/gewis-branding.svg" />
+          <img alt="SudoSOS" class="h-16 py-2" src="@/assets/img/gewis-branding.svg" />
         </router-link>
       </template>
-      <template #item="{ item, props, hasSubmenu }">
-        <router-link v-if="item.route" v-slot="{ href, navigate }" custom :to="item.route">
-          <a v-bind="props.action" class="items-center flex justify-between" :href="href" @click="navigate">
-            <span class="p-menuitem-text">{{ item.label }}</span>
-            <Badge v-if="item.notifications" class="ml-2" severity="secondary" :value="item.notifications" />
-          </a>
-        </router-link>
-        <a v-else :href="item.url" :target="item.target" v-bind="props.action">
-          <div class="items-center flex justify-between">
-            <span class="p-menuitem-text">{{ item.label }}</span>
-            <Badge v-if="item.notifications" class="ml-2" severity="secondary" :value="item.notifications" />
-            <span v-else-if="hasSubmenu" class="ml-2 pi pi-angle-down pi-fw" />
-          </div>
-        </a>
-      </template>
-    </Menubar>
-    <Menubar class="hidden lg:flex" :model="profileItems">
+      <!-- You can override #item slot here if needed -->
+    </NavbarMenu>
+    <NavbarMenu menu-class="hidden lg:flex" :model="profileItems">
       <template #start>
         <img v-if="isAdmin" alt="beer" class="h-4" src="@/assets/img/bier.png" />
       </template>
-      <template #item="{ item, props, hasSubmenu }">
-        <router-link v-if="item.route" v-slot="{ href, navigate }" custom :to="item.route">
-          <a :href="href" v-bind="props.action" @click="navigate">
-            <span class="p-menuitem-text">{{ item.label }}</span>
-          </a>
-        </router-link>
-        <a v-else :href="item.url" :target="item.target" v-bind="props.action">
-          <span v-if="item.label" :aria-label="item.aria || item.label" class="p-menuitem-text">{{ item.label }}</span>
-          <span v-if="item.icon" :aria-label="item.aria || item.label || 'icon'" :class="item.icon" />
-          <span v-if="hasSubmenu" class="ml-2 pi pi-angle-down pi-fw" />
-        </a>
-      </template>
-    </Menubar>
-    <Menubar
-      class="flex flex-row flex-wrap justify-between lg:hidden mx-2 my-4 transition-all w-full"
+    </NavbarMenu>
+    <NavbarMenu
+      menu-class="flex flex-row flex-wrap justify-between lg:hidden mx-2 my-4 transition-all w-full"
       :model="mobileItems"
     >
       <template #start>
@@ -50,20 +24,7 @@
           <img alt="SudoSOS" class="h-4 py-2" src="@/assets/img/gewis-branding.svg" />
         </router-link>
       </template>
-      <template #item="{ item, props, hasSubmenu }">
-        <router-link v-if="item.route" v-slot="{ href, navigate }" custom :to="item.route">
-          <a :href="href" v-bind="props.action" @click="navigate">
-            <span class="p-menuitem-text">{{ item.label }}</span>
-            <span v-if="item.icon" :class="item.icon" />
-          </a>
-        </router-link>
-        <a v-else :href="item.url" :target="item.target" v-bind="props.action">
-          <span class="p-menuitem-text">{{ item.label }}</span>
-          <span v-if="item.icon" :class="item.icon" />
-          <span v-if="hasSubmenu" class="ml-2 pi pi-angle-down pi-fw" />
-        </a>
-      </template>
-    </Menubar>
+    </NavbarMenu>
   </nav>
 </template>
 
@@ -77,6 +38,7 @@ import { useDarkMode } from '@/composables/darkMode';
 import { useAdminNav } from '@/modules/admin/navbar';
 import { useFinancialNav } from '@/modules/financial/navbar';
 import { useSellerNav } from '@/modules/seller/navbar';
+import NavbarMenu from '@/components/NavbarMenu.vue';
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
