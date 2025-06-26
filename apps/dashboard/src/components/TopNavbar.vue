@@ -81,6 +81,7 @@ import { useInactiveDebtors } from '@/composables/inactiveDebtors';
 import { useDarkMode } from '@/composables/darkMode';
 
 import { useAdminNav } from '@/modules/admin/navbar';
+import { useFinancialNav } from '@/modules/financial/navbar';
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
@@ -138,6 +139,7 @@ onBeforeMount(async () => {
 });
 
 const adminNav = useAdminNav();
+const financialNav = useFinancialNav();
 
 const navItems = computed(() => [
   {
@@ -145,46 +147,7 @@ const navItems = computed(() => [
     route: '/transaction',
   },
   ...adminNav.value,
-  {
-    label: t('common.navigation.financial'),
-    notifications: getFinancialNotifications(),
-    visible:
-      isAllowed('update', ['all'], 'User', ['any']) ||
-      isAllowed('get', ['all'], 'Invoice', ['any']) ||
-      isAllowed('get', ['all'], 'Fine', ['any']) ||
-      isAllowed('get', ['all'], 'SellerPayout', ['any']),
-    items: [
-      {
-        label: t('common.navigation.users'),
-        route: '/user',
-        // TODO: Change to `action: get` after https://github.com/GEWIS/sudosos-backend/issues/62 is fully finished
-        visible: isAllowed('update', ['all'], 'User', ['any']),
-      },
-      {
-        label: t('common.navigation.invoices'),
-        route: '/invoice',
-        notifications: openInvoiceAccounts?.value,
-        visible: isAllowed('get', ['all'], 'Invoice', ['any']),
-      },
-      {
-        label: t('common.navigation.debtors'),
-        route: '/debtor',
-        visible: isAllowed('get', ['all'], 'Fine', ['any']),
-      },
-      {
-        label: t('common.navigation.payouts'),
-        route: '/payout',
-        visible: isAllowed('get', ['all'], 'SellerPayout', ['any']),
-        notifications: pendingPayouts?.value,
-      },
-      {
-        label: t('common.navigation.writeOffs'),
-        route: '/write-offs',
-        visible: isAllowed('get', ['all'], 'WriteOff', ['any']),
-        notifications: inactiveDebtors?.value,
-      },
-    ],
-  },
+  ...financialNav.value,
   {
     label: t('common.navigation.seller'),
     items: [
