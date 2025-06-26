@@ -39,7 +39,7 @@
               <div class="flex items-center">
                 <span v-if="item.icon" :class="item.icon + (item.label ? ' ml-2' : '')" />
                 <Badge v-if="item.notifications" class="ml-2" severity="secondary" :value="item.notifications" />
-                <span v-if="hasSubmenu" class="ml-2 pi pi-angle-down pi-fw" />
+                <span v-else-if="hasSubmenu" class="ml-2 pi pi-angle-down pi-fw" />
               </div>
             </template>
           </div>
@@ -54,12 +54,13 @@ import Menubar from 'primevue/menubar';
 import Badge from 'primevue/badge';
 
 type Item = {
-  label: string;
+  label?: string;
   route?: string;
   url?: string;
   target?: string;
   icon?: string;
   notifications?: number;
+  visible?: boolean;
 };
 
 defineProps<{

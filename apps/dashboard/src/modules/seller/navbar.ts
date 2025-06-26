@@ -35,19 +35,22 @@ export function useSellerNav() {
         {
           label: t('common.navigation.productsContainers'),
           route: '/product',
+          // TODO: Change to `action: get` after https://github.com/GEWIS/sudosos-backend/issues/62 is fully finished
           visible: isAllowed('get', ['own', 'organ'], 'Product', ['any']),
         },
         {
           label: t('common.navigation.pos'),
           route: '/point-of-sale',
+          // TODO: Change to `action: get` after https://github.com/GEWIS/sudosos-backend/issues/62 is fully finished
           visible: isAllowed('update', ['own', 'organ'], 'PointOfSale', ['any']),
         },
         ...authStore.organs.map((organ) => ({
           label: `${organ.firstName} ${organ.lastName}`,
           route: '/user/' + organ.id,
           notifications: organNotifications.value[organ.id] || undefined,
+          visible: true,
         })),
-      ].filter((item) => item.visible !== false),
+      ].filter((item: { visible: boolean }) => item.visible),
     },
   ]);
 }
