@@ -11,9 +11,9 @@
     :total-records="totalRecords"
     :value="users"
     @filter="emit('filter', $event)"
-    @update:filters="(v) => emit('update:filters', v)"
     @page="emit('page', $event)"
     @sort="emit('sort', $event)"
+    @update:filters="(v) => emit('update:filters', v)"
   >
     <template #header>
       <div class="items-center flex flex-row justify-between">
@@ -103,7 +103,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue';
+import { defineEmits } from 'vue';
 import { useI18n } from 'vue-i18n';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
@@ -114,15 +114,16 @@ import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import Button from 'primevue/button';
 import Select from 'primevue/select';
+import type { BaseUserResponse } from '@sudosos/sudosos-client';
 
 const { t } = useI18n();
 
 defineProps<{
-  users: any[];
+  users: (BaseUserResponse & { fullName: string })[];
   isLoading: boolean;
-  filters: any;
+  filters: Record<string, { value: string | null; matchMode: string }>;
   searchQuery: string;
-  userTypes: any[];
+  userTypes: { name: string; value: string }[];
   totalRecords: number;
   rows?: number;
   rowsPerPageOptions?: number[];
