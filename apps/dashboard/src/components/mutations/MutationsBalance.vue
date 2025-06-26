@@ -91,7 +91,7 @@
 <script lang="ts" setup>
 import DataTable, { type DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
-import { computed, onMounted, type Ref, ref } from 'vue';
+import { computed, nextTick, onMounted, type Ref, ref } from 'vue';
 import { useUserStore } from '@sudosos/sudosos-frontend-common';
 import type { PaginatedFinancialMutationResponse } from '@sudosos/sudosos-client';
 import { useI18n } from 'vue-i18n';
@@ -100,15 +100,19 @@ import { type FinancialMutation, FinancialMutationType, parseFinancialMutations 
 import ModalMutation from '@/components/mutations/mutationmodal/ModalMutation.vue';
 import { isIncreasingTransfer, isFine } from '@/utils/mutationUtils';
 import { useSizeBreakpoints } from '@/composables/sizeBreakpoints';
+import { useMutationDetails } from '@/composables/mutationDetails';
+import { usePrefetchMutationDetails } from '@/composables/preloadMutationDetails';
 
 const { t, locale } = useI18n();
 const userStore = useUserStore();
 const { isMd } = useSizeBreakpoints();
+const { preload } = usePrefetchMutationDetails();
 
 const props = defineProps<{
   getMutations: (take: number, skip: number) => Promise<PaginatedFinancialMutationResponse | undefined>;
   paginator?: boolean;
   rowsAmount?: number;
+  preload?: boolean;
 }>();
 const mutations = ref<FinancialMutation[]>(new Array(10));
 const totalRecords = ref<number>(0);
@@ -128,6 +132,8 @@ async function refresh() {
   mutations.value = parseFinancialMutations(newTransactions);
   totalRecords.value = newTransactions._pagination.count || 0;
   isLoading.value = false;
+
+  if (props.preload) void preload(mutations.value);
 }
 
 onMounted(refresh);
