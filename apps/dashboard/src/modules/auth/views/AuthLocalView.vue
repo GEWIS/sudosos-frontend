@@ -1,9 +1,6 @@
 <template>
   <AuthLocalCard :header="t('modules.auth.login.sudosos')">
     <AuthLocalForm :form="form" />
-    <Button id="login-button" class="items-center flex justify-center mx-auto w-full" type="submit" @click="formSubmit">
-      {{ t('modules.auth.login.login') }}
-    </Button>
     <Button class="items-center flex justify-center mx-auto my-3 w-full" :outlined="true" @click="toHomeView">
       {{ t('common.back') }}
     </Button>
@@ -30,10 +27,6 @@ const authStore = useAuthStore();
 const form = schemaToForm(localAuthForm);
 
 const route = useRoute();
-
-const formSubmit = async () => {
-  await form.submit();
-};
 
 onBeforeMount(() => {
   if (route.query.token !== undefined) {

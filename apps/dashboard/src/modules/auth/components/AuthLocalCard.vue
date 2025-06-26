@@ -1,10 +1,10 @@
 <template>
   <div>
-    <img alt="logo" class="block max-h-[14rem] mx-auto my-0" src="@/assets/img/bier.png" />
-    <div v-if="header" class="my-6 mx-auto text-5xl text-900 w-full">
+    <img alt="logo" class="block max-h-[9rem] mx-auto my-0" src="@/assets/img/bier.png" />
+    <div class="text-900 text-5xl mt-2 mx-auto mb-2 w-full">
       {{ header }}
     </div>
-    <Card>
+    <Card class="w-[22rem]">
       <template #content>
         <slot />
       </template>
