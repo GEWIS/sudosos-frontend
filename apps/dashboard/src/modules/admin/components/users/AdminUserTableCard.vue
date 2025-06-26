@@ -16,10 +16,10 @@
       @page="onPage"
       @show-create="showDialog = true"
       @sort="onSort"
-      @update:filters="(v) => (filters.value = v)"
-      @update:is-active-filter="(v) => (isActiveFilter.value = v)"
-      @update:of-age-filter="(v) => (ofAgeFilter.value = v)"
-      @update:search-query="(v) => (searchQuery.value = v)"
+      @update:filters="(v) => (filters = v)"
+      @update:is-active-filter="(v) => (isActiveFilter = v)"
+      @update:of-age-filter="(v) => (ofAgeFilter = v)"
+      @update:search-query="(v) => (searchQuery = v)"
     />
 
     <FormDialog
