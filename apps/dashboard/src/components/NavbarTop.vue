@@ -9,7 +9,7 @@
       </template>
       <!-- You can override #item slot here if needed -->
     </NavbarMenu>
-    <NavbarMenu menu-class="hidden lg:flex" :model="profileItems">
+    <NavbarMenu menu-class="hidden lg:flex" :model="profileNav">
       <template #start>
         <img v-if="isAdmin" alt="beer" class="h-4" src="@/assets/img/bier.png" />
       </template>
@@ -30,30 +30,15 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useAuthStore, useUserStore } from '@sudosos/sudosos-frontend-common';
-import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { isAllowed } from '@/utils/permissionUtils';
-import { useDarkMode } from '@/composables/darkMode';
 import { useAdminNav } from '@/modules/admin/navbar';
 import { useFinancialNav } from '@/modules/financial/navbar';
 import { useSellerNav } from '@/modules/seller/navbar';
 import NavbarMenu from '@/components/NavbarMenu.vue';
+import { useProfileNav } from '@/composables/profileNavbar';
 
-const userStore = useUserStore();
-const authStore = useAuthStore();
-const router = useRouter();
-const { t, locale } = useI18n();
-const { isDark, toggle } = useDarkMode();
-
-const firstName = computed((): string | undefined => {
-  return userStore.getCurrentUser.user ? userStore.getCurrentUser.user.firstName : undefined;
-});
-
-const handleLogout = () => {
-  authStore.logout();
-  void router.push('/');
-};
+const { t } = useI18n();
 
 // If you can override maintenance mode, you are an admin
 const isAdmin = computed(() => isAllowed('override', ['all'], 'Maintenance', ['any']));
@@ -61,6 +46,7 @@ const isAdmin = computed(() => isAllowed('override', ['all'], 'Maintenance', ['a
 const adminNav = useAdminNav();
 const financialNav = useFinancialNav();
 const sellerNav = useSellerNav();
+const profileNav = useProfileNav();
 
 const navItems = computed(() => [
   {
@@ -72,51 +58,7 @@ const navItems = computed(() => [
   ...sellerNav.value,
 ]);
 
-const profileItems = computed(() => [
-  {
-    label: firstName.value,
-    items: [
-      {
-        label: t('common.navigation.profile'),
-        route: '/profile',
-      },
-      {
-        label: t('common.navigation.signOut'),
-        command: handleLogout,
-      },
-    ],
-  },
-  {
-    label: '',
-    icon: 'pi pi-globe',
-    items: [
-      {
-        label: t('common.navigation.dutch'),
-        disabled: () => locale.value == 'nl',
-        command: () => {
-          locale.value = 'nl';
-          localStorage.setItem('locale', 'nl');
-        },
-      },
-      {
-        label: t('common.navigation.english'),
-        disabled: () => locale.value == 'en',
-        command: () => {
-          locale.value = 'en';
-          localStorage.setItem('locale', 'en');
-        },
-      },
-    ],
-  },
-  {
-    label: '',
-    aria: 'toggle dark mode',
-    command: toggle,
-    icon: isDark.value ? 'pi pi-sun' : 'pi pi-moon',
-  },
-]);
-
-const mobileItems = computed(() => [...navItems.value, ...profileItems.value]);
+const mobileItems = computed(() => [...navItems.value, ...profileNav.value]);
 </script>
 
 <style scoped lang="scss">
