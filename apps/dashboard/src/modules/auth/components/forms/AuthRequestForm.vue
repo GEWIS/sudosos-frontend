@@ -1,5 +1,5 @@
 <template>
-  <form class="flex flex-col" @submit.prevent="() => form.submit()" autocomplete="off">
+  <form autocomplete="off" class="flex flex-col" @submit.prevent="() => form.submit()">
     <InputSpan
       id="email"
       v-bind="form.model.email.attr.value"
