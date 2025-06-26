@@ -1,6 +1,6 @@
 <template>
   <CardComponent class="sm:w-full w-full" :header="t('modules.user.balance.balance')">
-    <div class="flex flex-col sm:flex-row justify-center align-items-center">
+    <div class="flex flex-col sm:flex-row justify-center items-center">
       <div class="flex flex-col justify-center sm:w-1/2 w-full">
         <div v-if="loading" class="flex justify-center">
           <Skeleton height="5rem" width="15rem" />

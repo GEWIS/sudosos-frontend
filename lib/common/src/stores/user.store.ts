@@ -99,10 +99,9 @@ export const useUserStore = defineStore('user', {
       });
     },
     async fetchCurrentUserBalance(id: number, service: ApiService): Promise<BalanceResponse> {
-      return service.balance.getBalanceId(id).then((res) => {
-        this.current.balance = res.data;
-        return res.data;
-      });
+      const res = await service.balance.getBalanceId(id);
+      this.current.balance = res.data;
+      return res.data;
     },
     async fetchUserBalances(users: UserResponse[], service: ApiService) {
       for (const user of users) {
