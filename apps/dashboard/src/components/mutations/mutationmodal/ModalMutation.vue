@@ -17,12 +17,18 @@
       <Skeleton class="h-2rem my-1 surface-300 w-11" />
     </div>
 
-    <TransactionDetailModal v-else-if="transaction" :products-info="products" :transaction-info="transaction" />
-    <InvoiceDetailModal v-else-if="isType('invoice')" :invoice-info="transfer" />
-    <DepositDetailModal v-else-if="isType('deposit')" :deposit-info="transfer" />
-    <FineDetailModal v-else-if="isType('fine')" :fine="transfer" />
-    <PayoutRequestDetailModal v-else-if="isType('payoutRequest')" :payout-request="transfer" />
-    <WaivedFineDetailModal v-else-if="isType('waivedFine')" :waived-fines="transfer" />
+    <TransactionDetailModal
+      v-else-if="transaction && products"
+      :products-info="products"
+      :transaction-info="transaction"
+    />
+    <template v-else-if="transfer">
+      <InvoiceDetailModal v-if="isType('invoice').value" :invoice-info="transfer" />
+      <DepositDetailModal v-else-if="isType('deposit').value" :deposit-info="transfer" />
+      <FineDetailModal v-else-if="isType('fine').value" :fine="transfer" />
+      <PayoutRequestDetailModal v-else-if="isType('payoutRequest').value" :payout-request="transfer" />
+      <WaivedFineDetailModal v-else-if="isType('waivedFine').value" :waived-fines="transfer" />
+    </template>
 
     <template v-if="canDelete" #footer>
       <div class="items-end flex flex-col">
@@ -52,7 +58,6 @@ import InvoiceDetailModal from '@/components/mutations/mutationmodal/ModalDetail
 import FineDetailModal from '@/components/mutations/mutationmodal/ModalDetailFine.vue';
 import WaivedFineDetailModal from '@/components/mutations/mutationmodal/ModalDetailWaivedFine.vue';
 import router from '@/router';
-import { handleError } from '@/utils/errorUtils';
 import { FinancialMutationType } from '@/utils/mutationUtils';
 import ConfirmButton from '@/components/ConfirmButton.vue';
 import { useMutationDetails } from '@/composables/mutationDetails';
@@ -66,7 +71,6 @@ const { isLoading, transaction, transfer, products, canDelete } = useMutationDet
 
 const { t } = useI18n();
 
-const emit = defineEmits(['update:visible']);
 const visible = ref<boolean>(false);
 const dialog = ref();
 const toast = useToast();
@@ -98,14 +102,14 @@ const deleteMutation = async () => {
 
   try {
     if (props.type === FinancialMutationType.FINE && transfer.value?.fine) {
-      // await apiService.debtor.deleteFine(transfer.value.fine.id);
+      await apiService.debtor.deleteFine(transfer.value.fine.id);
       toast.add({
         summary: t('common.toast.success.success'),
         detail: t('common.toast.success.fineDeleted'),
         severity: 'success',
         life: 3000,
       });
-      emit('update:visible', false);
+      dialog.value.close();
     } else if (props.type === FinancialMutationType.TRANSACTION && transaction.value) {
       await apiService.transaction.deleteTransaction(transaction.value.id);
       toast.add({
@@ -118,9 +122,9 @@ const deleteMutation = async () => {
       await router.replace({ path: '/error' });
       return;
     }
-    emit('update:visible', false);
+    dialog.value.close();
   } catch (err) {
-    handleError(err, toast);
+    console.error(err);
   }
 };
 </script>

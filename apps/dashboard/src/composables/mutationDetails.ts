@@ -1,12 +1,12 @@
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, type Ref } from 'vue';
+import { useUserStore } from '@sudosos/sudosos-frontend-common';
+import { storeToRefs } from 'pinia';
 import { useTransactionStore } from '@/stores/transaction.store';
 import { useTransferStore } from '@/stores/transfer.store';
 import apiService from '@/services/ApiService';
 import { FinancialMutationType } from '@/utils/mutationUtils';
 import { getProductsOfTransaction } from '@/utils/transactionUtil';
 import { UserRole } from '@/utils/rbacUtils';
-import { useUserStore } from '@sudosos/sudosos-frontend-common';
-import { storeToRefs } from 'pinia';
 
 export function useMutationDetails(type: Ref<FinancialMutationType>, id: Ref<number>) {
   const transactionStore = useTransactionStore();
@@ -19,7 +19,10 @@ export function useMutationDetails(type: Ref<FinancialMutationType>, id: Ref<num
   const transfer = computed(() => transferStore.getTransfer(id.value));
 
   // Computed products for transaction
-  const products = computed(() => getProductsOfTransaction(transaction.value));
+  const products = computed(() => {
+    if (transaction.value) return getProductsOfTransaction(transaction.value);
+    return [];
+  });
 
   // Generic fetch, depending on type
   async function fetchMutation() {
@@ -43,6 +46,7 @@ export function useMutationDetails(type: Ref<FinancialMutationType>, id: Ref<num
       (type.value !== FinancialMutationType.TRANSACTION && transfer.value);
 
     const hasPermission = current.value.rolesWithPermissions.some(
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
       (r) => r.name === UserRole.BAC_PM || r.name === UserRole.BOARD,
     );
 
