@@ -1,17 +1,6 @@
 <template>
   <CardComponent :action="undefined" :func="undefined" :header="t('modules.user.settings.header')">
     <div class="flex flex-col gap-2 justify-between w-90">
-      <FormSection
-        divider
-        :enable-edit="true"
-        :header="t('modules.user.settings.changePin')"
-        :simple-save="true"
-        @cancel="pinForm.context.resetForm"
-        @save="() => pinForm.submit()"
-        @update:model-value="editPin = $event"
-      >
-        <ChangePinForm :edit="editPin" :form="pinForm" />
-      </FormSection>
       <div class="items-center flex flex-row w-full">
         <p class="flex-grow-1 my-1">{{ t('modules.user.settings.changePassword') }}</p>
         <i
