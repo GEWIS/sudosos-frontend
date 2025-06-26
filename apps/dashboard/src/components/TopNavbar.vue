@@ -25,7 +25,7 @@
     </Menubar>
     <Menubar class="hidden lg:flex" :model="profileItems">
       <template #start>
-        <img alt="beer" class="h-4" src="@/assets/img/bier.png" />
+        <img v-if="isAdmin" alt="beer" class="h-4" src="@/assets/img/bier.png" />
       </template>
       <template #item="{ item, props, hasSubmenu }">
         <router-link v-if="item.route" v-slot="{ href, navigate }" custom :to="item.route">
@@ -100,6 +100,9 @@ const { inactiveDebtors } = useInactiveDebtors();
 const getFinancialNotifications = () =>
   isAllowed('update', ['all'], 'SellerPayout', ['any']) &&
   pendingPayouts?.value + openInvoiceAccounts?.value + inactiveDebtors?.value;
+
+// If you can override maintenance mode, you are an admin
+const isAdmin = computed(() => isAllowed('override', ['all'], 'Maintenance', ['any']));
 
 const organs: Ref<
   {
