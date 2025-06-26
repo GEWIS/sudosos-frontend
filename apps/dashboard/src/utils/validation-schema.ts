@@ -240,3 +240,7 @@ export const topupSchema = yup.object({
       return balance + value * 100 <= 15000;
     }),
 });
+
+export const authRequestSchema = yup.object({
+  email: yup.string().email().required(),
+});

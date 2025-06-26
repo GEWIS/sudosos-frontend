@@ -3,24 +3,7 @@
     <img alt="logo" class="block max-h-[9rem] mx-auto my-0" src="../../../assets/img/bier.png" />
     <div class="mb-2 mt-0 mx-auto text-5xl text-900 w-full">{{ t('modules.auth.reset.reset') }}</div>
     <form v-if="passwordResetMode === 0" class="flex flex-col" @submit="resetPasswordRequest">
-      <span class="p-float-label with-error">
-        <InputText
-          v-bind="email"
-          id="email"
-          class="input-field"
-          :class="{ 'p-invalid': emailForm.errors.value.email }"
-          name="email"
-          size="large"
-        />
-        <label :class="{ 'contains-text': email.modelValue }" for="email">
-          {{ t('modules.auth.reset.enterEmail') }}
-        </label>
-      </span>
-      <small v-if="emailForm.errors.value.email" class="p-error">
-        <i class="pi pi-exclamation-circle" />
-        {{ emailForm.errors.value.email }}
-      </small>
-      <Button id="reset-button" type="submit">{{ t('modules.auth.reset.reset') }}</Button>
+      <AuthRequestForm :form="requestForm" @success="passwordResetMode = 1" />
       <div class="cursor-pointer text-900 underline" @click="backToLogin">
         {{ t('modules.auth.reset.backToLogin') }}
       </div>
@@ -88,15 +71,14 @@ import { useI18n } from 'vue-i18n';
 import { handleError } from '@/utils/errorUtils';
 import router from '@/router';
 import apiService from '@/services/ApiService';
+import AuthRequestForm from '@/modules/auth/components/forms/AuthRequestForm.vue';
+import { authRequestSchema } from '@/utils/validation-schema';
+import { schemaToForm } from '@/utils/formUtils';
 
 const { t } = useI18n();
 const toast = useToast();
 
-const emailSchema = toTypedSchema(
-  yup.object({
-    email: yup.string().email().required(),
-  }),
-);
+const requestForm = schemaToForm(authRequestSchema);
 
 const atLeastOneUppercase = /^(?=.*[A-Z])/;
 const atLeastOneLowercase = /^(?=.*[a-z])/;
@@ -121,16 +103,11 @@ const passwordSchema = toTypedSchema(
   }),
 );
 
-const emailForm = useForm({
-  validationSchema: emailSchema,
-});
-
 const passwordForm = useForm({
   validationSchema: passwordSchema,
 });
 
 const passwordResetMode = ref(0);
-const email = emailForm.defineComponentBinds('email');
 const password = passwordForm.defineComponentBinds('password');
 const passwordConfirm = passwordForm.defineComponentBinds('passwordConfirm');
 
@@ -140,12 +117,6 @@ onBeforeMount(() => {
   if (route.query.token !== undefined && route.query.email !== undefined) {
     passwordResetMode.value = 2;
   }
-});
-
-const resetPasswordRequest = emailForm.handleSubmit(async (values) => {
-  await apiService.authenticate.resetLocal({ accountMail: values.email }).then(() => {
-    passwordResetMode.value = 1;
-  });
 });
 
 const setNewPassword = passwordForm.handleSubmit(async (values) => {
