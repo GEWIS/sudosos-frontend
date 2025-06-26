@@ -6,18 +6,26 @@
     <template #item="{ item, props, hasSubmenu }">
       <slot :has-submenu="hasSubmenu" :item="item" name="item" :props="props">
         <router-link v-if="item.route" v-slot="{ href, navigate }" custom :to="item.route">
-          <a v-bind="props.action" :href="href" @click="navigate">
-            <span class="p-menuitem-text">{{ item.label }}</span>
-            <Badge v-if="item.notifications" class="ml-2" severity="secondary" :value="item.notifications" />
-            <span v-if="item.icon" :class="item.icon" />
-            <span v-if="hasSubmenu" class="ml-2 pi pi-angle-down pi-fw" />
+          <a v-bind="props.action" class="w-full" :href="href" @click="navigate">
+            <div class="flex justify-between items-center w-full">
+              <span class="p-menuitem-text flex-shrink-0">{{ item.label }}</span>
+              <div class="flex items-center">
+                <span v-if="item.icon" :class="item.icon + ' ml-2'" />
+                <span v-if="hasSubmenu" class="ml-2 pi pi-angle-down pi-fw" />
+                <Badge v-if="item.notifications" class="ml-2" severity="secondary" :value="item.notifications" />
+              </div>
+            </div>
           </a>
         </router-link>
-        <a v-else :href="item.url" :target="item.target" v-bind="props.action">
-          <span class="p-menuitem-text">{{ item.label }}</span>
-          <Badge v-if="item.notifications" class="ml-2" severity="secondary" :value="item.notifications" />
-          <span v-if="item.icon" :class="item.icon" />
-          <span v-if="hasSubmenu" class="ml-2 pi pi-angle-down pi-fw" />
+        <a v-else v-bind="props.action" class="w-full" :href="item.url" :target="item.target">
+          <div class="flex justify-between items-center w-full">
+            <span class="p-menuitem-text flex-shrink-0">{{ item.label }}</span>
+            <div class="flex items-center">
+              <span v-if="item.icon" :class="item.icon + ' ml-2'" />
+              <span v-if="hasSubmenu" class="ml-2 pi pi-angle-down pi-fw" />
+              <Badge v-if="item.notifications" class="ml-2" severity="secondary" :value="item.notifications" />
+            </div>
+          </div>
         </a>
       </slot>
     </template>
