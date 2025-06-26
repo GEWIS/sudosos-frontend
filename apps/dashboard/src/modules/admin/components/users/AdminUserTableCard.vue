@@ -14,6 +14,7 @@
       @filter="onFilter"
       @info="handleInfoPush"
       @page="onPage"
+      @show-create="showDialog = true"
       @sort="onSort"
       @update:filters="(v) => (filters = v)"
       @update:is-active-filter="(v) => (isActiveFilter = v)"
