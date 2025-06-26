@@ -68,20 +68,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, ref, type Ref } from 'vue';
+import { computed } from 'vue';
 import { useAuthStore, useUserStore } from '@sudosos/sudosos-frontend-common';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { usePendingPayouts } from '@/composables/pendingPayouts';
-import apiService from '@/services/ApiService';
-
-import { useOpenInvoiceAccounts } from '@/composables/openInvoiceAccounts';
 import { isAllowed } from '@/utils/permissionUtils';
-import { useInactiveDebtors } from '@/composables/inactiveDebtors';
 import { useDarkMode } from '@/composables/darkMode';
-
 import { useAdminNav } from '@/modules/admin/navbar';
 import { useFinancialNav } from '@/modules/financial/navbar';
+import { useSellerNav } from '@/modules/seller/navbar';
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
@@ -98,48 +93,12 @@ const handleLogout = () => {
   void router.push('/');
 };
 
-const { pendingPayouts } = usePendingPayouts();
-const { openInvoiceAccounts } = useOpenInvoiceAccounts();
-const { inactiveDebtors } = useInactiveDebtors();
-const getFinancialNotifications = () =>
-  isAllowed('update', ['all'], 'SellerPayout', ['any']) &&
-  pendingPayouts?.value + openInvoiceAccounts?.value + inactiveDebtors?.value;
-
 // If you can override maintenance mode, you are an admin
 const isAdmin = computed(() => isAllowed('override', ['all'], 'Maintenance', ['any']));
 
-const organs: Ref<
-  {
-    label: string;
-    route: string;
-    notifications: string;
-  }[]
-> = ref([]);
-
-const getOrgans = async () => {
-  organs.value = [];
-  const promises = [];
-  for (const organ of authStore.organs) {
-    promises.push(
-      apiService.balance.getBalanceId(organ.id).then((res) => {
-        organs.value.push({
-          label: `${organ.firstName} ${organ.lastName}`,
-          route: '/user/' + organ.id,
-          notifications: res.data.amount.amount > 0 ? ' ' : '',
-        });
-      }),
-    );
-  }
-  await Promise.all(promises);
-  organs.value = organs.value.sort((a, b) => a.label.localeCompare(b.label));
-};
-
-onBeforeMount(async () => {
-  await getOrgans();
-});
-
 const adminNav = useAdminNav();
 const financialNav = useFinancialNav();
+const sellerNav = useSellerNav();
 
 const navItems = computed(() => [
   {
@@ -148,24 +107,7 @@ const navItems = computed(() => [
   },
   ...adminNav.value,
   ...financialNav.value,
-  {
-    label: t('common.navigation.seller'),
-    items: [
-      {
-        label: t('common.navigation.productsContainers'),
-        route: '/product',
-        // TODO: Change to `action: get` after https://github.com/GEWIS/sudosos-backend/issues/62 is fully finished
-        visible: isAllowed('get', ['own', 'organ'], 'Product', ['any']),
-      },
-      {
-        label: t('common.navigation.pos'),
-        route: '/point-of-sale',
-        // TODO: Change to `action: get` after https://github.com/GEWIS/sudosos-backend/issues/62 is fully finished
-        visible: isAllowed('update', ['own', 'organ'], 'PointOfSale', ['any']),
-      },
-      ...organs.value,
-    ],
-  },
+  ...sellerNav.value,
 ]);
 
 const profileItems = computed(() => [
