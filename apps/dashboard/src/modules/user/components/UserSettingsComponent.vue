@@ -65,11 +65,9 @@ import { useUserStore } from '@sudosos/sudosos-frontend-common';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as yup from 'yup';
 import CardComponent from '@/components/CardComponent.vue';
-import ChangePinForm from '@/modules/user/components/forms/ChangePinForm.vue';
 import FormDialog from '@/components/FormDialog.vue';
-import { editPasswordSchema, editPinSchema } from '@/utils/validation-schema';
+import { editPasswordSchema } from '@/utils/validation-schema';
 import { schemaToForm } from '@/utils/formUtils';
-import FormSection from '@/components/FormSection.vue';
 import ChangePasswordForm from '@/modules/user/components/forms/ChangePasswordForm.vue';
 import apiService from '@/services/ApiService';
 import { handleError } from '@/utils/errorUtils';
@@ -134,9 +132,7 @@ const props = defineProps<{
 
 const { t } = useI18n();
 const showPasswordDialog = ref(false);
-const pinForm = schemaToForm(editPinSchema);
 const passwordForm = schemaToForm(editPasswordSchema);
-const editPin = ref(true);
 const confirm = useConfirm();
 const toast = useToast();
 const dataAnalysis = ref(props.user.extensiveDataProcessing);
