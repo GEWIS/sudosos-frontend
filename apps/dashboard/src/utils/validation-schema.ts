@@ -9,12 +9,45 @@ import { formatPrice } from '@/utils/formatterUtils';
 
 const t = i18n.global.t;
 
+export enum USER_TYPES {
+  MEMBER = 'MEMBER',
+  ORGAN = 'ORGAN',
+  VOUCHER = 'VOUCHER',
+  LOCAL_USER = 'LOCAL_USER',
+  LOCAL_ADMIN = 'LOCAL_ADMIN',
+  INVOICE = 'INVOICE',
+  AUTOMATIC_INVOICE = 'AUTOMATIC_INVOICE',
+}
+
+export const userUpsertSchema = yup.object({
+  firstName: yup.string().required(),
+  lastName: yup.string(),
+  email: yup.string().email(),
+  nickname: yup.string().nullable(),
+  userType: yup.string().required().default(USER_TYPES.LOCAL_USER),
+  isActive: yup.boolean().required().default(true),
+  ofAge: yup.boolean().required().default(true),
+  canGoIntoDebt: yup.boolean().required().default(false),
+  id: yup.number().nullable().optional(),
+});
+
 export const createUserSchema = yup.object({
   firstName: yup.string().required(),
   lastName: yup.string().required(),
   email: yup.string().email(),
   nickname: yup.string(),
   userType: yup.string().required().default('LOCAL_USER'),
+  ofAge: yup.boolean().required().default(false),
+  canGoIntoDebt: yup.boolean().required().default(false),
+});
+
+export const updateUserDetailsObject = yup.object({
+  firstName: yup.string().required(),
+  lastName: yup.string(),
+  email: yup.string().email(),
+  nickname: yup.string().nullable(),
+  userType: yup.string().required(),
+  isActive: yup.boolean().required().default(true),
   ofAge: yup.boolean().required().default(false),
   canGoIntoDebt: yup.boolean().required().default(false),
 });
@@ -61,17 +94,6 @@ export const updateInvoiceAmountObject = yup.object({
   amount: yup.number().required().default(0),
 });
 
-export const updateUserDetailsObject = yup.object({
-  firstName: yup.string().required(),
-  lastName: yup.string(),
-  email: yup.string().email(),
-  nickname: yup.string().nullable(),
-  userType: yup.string().required(),
-  isActive: yup.boolean().required().default(true),
-  ofAge: yup.boolean().required().default(false),
-  canGoIntoDebt: yup.boolean().required().default(false),
-});
-
 export const editPinSchema = yup.object({
   pin: yup
     .string()
@@ -86,13 +108,13 @@ export const editPinSchema = yup.object({
 });
 
 export const userTypes: Ref<Array<{ name: string; value: string }>> = ref([
-  { name: 'MEMBER', value: 'MEMBER' },
-  { name: 'ORGAN', value: 'ORGAN' },
-  { name: 'VOUCHER', value: 'VOUCHER' },
-  { name: 'LOCAL_USER', value: 'LOCAL_USER' },
-  { name: 'LOCAL_ADMIN', value: 'LOCAL_ADMIN' },
-  { name: 'INVOICE', value: 'INVOICE' },
-  { name: 'AUTOMATIC_INVOICE', value: 'AUTOMATIC_INVOICE' },
+  { name: 'MEMBER', value: USER_TYPES.MEMBER },
+  { name: 'ORGAN', value: USER_TYPES.ORGAN },
+  { name: 'VOUCHER', value: USER_TYPES.VOUCHER },
+  { name: 'LOCAL_USER', value: USER_TYPES.LOCAL_USER },
+  { name: 'LOCAL_ADMIN', value: USER_TYPES.LOCAL_ADMIN },
+  { name: 'INVOICE', value: USER_TYPES.INVOICE },
+  { name: 'AUTOMATIC_INVOICE', value: USER_TYPES.AUTOMATIC_INVOICE },
 ]);
 
 export const createPayoutSchema = yup.object({
