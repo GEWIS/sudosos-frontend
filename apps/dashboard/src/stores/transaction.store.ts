@@ -9,15 +9,22 @@ interface TransactionModuleState {
 export const useTransactionStore = defineStore('transaction', {
   state: (): TransactionModuleState => ({
     transaction: null,
+    transactions: {} as Record<number, TransactionResponse>,
   }),
   getters: {
-    getTransaction(): TransactionModuleState {
-      return this;
-    },
+    getTransaction:
+      (state) =>
+      (id: number): TransactionResponse | null => {
+        return state.transactions[id] || null;
+      },
   },
   actions: {
     async fetchIndividualTransaction(id: number, service: ApiService) {
-      this.transaction = (await service.transaction.getSingleTransaction(id)).data;
+      if (this.transactions[id]) return this.transactions[id];
+      return service.transaction.getSingleTransaction(id).then((res) => {
+        this.transactions[id] = res.data;
+        return res.data;
+      });
     },
     async fetchTransactionsFromPointOfSale(
       service: ApiService,
