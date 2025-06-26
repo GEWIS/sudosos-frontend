@@ -1,5 +1,5 @@
 <template>
-  <nav class="flex justify-around w-full navbar-background">
+  <nav class="flex justify-around w-full navbar-background" role="navigation">
     <NavbarMenu v-if="isLg" :model="navItems">
       <template #start>
         <router-link class="items-center flex flex-row font-bold no-underline py-1 text-white" to="/">
@@ -7,7 +7,6 @@
           <img alt="SudoSOS" class="h-16 py-2" src="@/assets/img/gewis-branding.svg" />
         </router-link>
       </template>
-      <!-- You can override #item slot here if needed -->
     </NavbarMenu>
     <NavbarMenu v-if="isLg" :model="profileNav">
       <template #start>
@@ -67,5 +66,7 @@ const mobileItems = computed(() => [...navItems.value, ...profileNav.value]);
 <style scoped lang="scss">
 .navbar-background {
   background-color: var(--p-menubar-background);
+  z-index: 9999;
+  position: relative;
 }
 </style>
