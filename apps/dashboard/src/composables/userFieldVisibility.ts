@@ -1,8 +1,7 @@
 import { computed, type Ref } from 'vue';
 import { USER_TYPES } from '@/utils/validation-schema';
 
-export function useUserFieldVisibility(userType: Ref<USER_TYPES>, isCreate: Ref<boolean>) {
-  // Show/hide rules
+export function useUserFieldVisibility(userType: Ref<USER_TYPES, string>, isCreate: Ref<boolean>) {
   const show = computed(() => {
     if (isCreate.value)
       return {
@@ -16,8 +15,14 @@ export function useUserFieldVisibility(userType: Ref<USER_TYPES>, isCreate: Ref<
     const type = userType.value;
     return {
       nickname: [USER_TYPES.LOCAL_USER, USER_TYPES.MEMBER].includes(type),
-      lastName: type !== USER_TYPES.ORGAN,
-      debt: ![USER_TYPES.INVOICE, USER_TYPES.AUTOMATIC_INVOICE, USER_TYPES.ORGAN].includes(type),
+      lastName: ![USER_TYPES.ORGAN, USER_TYPES.INTEGRATION].includes(type),
+      debt: ![
+        USER_TYPES.INVOICE,
+        USER_TYPES.AUTOMATIC_INVOICE,
+        USER_TYPES.ORGAN,
+        USER_TYPES.ORGAN,
+        USER_TYPES.INTEGRATION,
+      ].includes(type),
       ofAge: [USER_TYPES.MEMBER, USER_TYPES.LOCAL_USER, USER_TYPES.LOCAL_ADMIN].includes(type),
       email: [
         USER_TYPES.LOCAL_USER,

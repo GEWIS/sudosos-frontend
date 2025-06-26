@@ -17,6 +17,7 @@ export enum USER_TYPES {
   LOCAL_ADMIN = 'LOCAL_ADMIN',
   INVOICE = 'INVOICE',
   AUTOMATIC_INVOICE = 'AUTOMATIC_INVOICE',
+  INTEGRATION = 'INTEGRATION',
 }
 
 export const userUpsertSchema = yup.object({
@@ -24,7 +25,7 @@ export const userUpsertSchema = yup.object({
   lastName: yup.string(),
   email: yup.string().email(),
   nickname: yup.string().nullable(),
-  userType: yup.string().required().default(USER_TYPES.LOCAL_USER),
+  userType: yup.mixed<USER_TYPES>().required().default(USER_TYPES.LOCAL_USER),
   isActive: yup.boolean().required().default(true),
   ofAge: yup.boolean().required().default(true),
   canGoIntoDebt: yup.boolean().required().default(false),
@@ -115,6 +116,7 @@ export const userTypes: Ref<Array<{ name: string; value: string }>> = ref([
   { name: 'LOCAL_ADMIN', value: USER_TYPES.LOCAL_ADMIN },
   { name: 'INVOICE', value: USER_TYPES.INVOICE },
   { name: 'AUTOMATIC_INVOICE', value: USER_TYPES.AUTOMATIC_INVOICE },
+  { name: 'INTEGRATION', value: USER_TYPES.INTEGRATION },
 ]);
 
 export const createPayoutSchema = yup.object({

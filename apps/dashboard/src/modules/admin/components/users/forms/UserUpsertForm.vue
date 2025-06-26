@@ -132,7 +132,7 @@ const props = defineProps({
 
 const isCreate = computed(() => props.form.model.id?.value.value === undefined);
 
-const { show, managed } = useUserFieldVisibility(props.form.model.userType, isCreate);
+const { show, managed } = useUserFieldVisibility(props.form.model.userType.value, isCreate);
 
 setSubmit(
   props.form,
