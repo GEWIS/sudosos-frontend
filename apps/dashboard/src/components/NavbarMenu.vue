@@ -18,13 +18,30 @@
           </a>
         </router-link>
         <a v-else v-bind="props.action" class="w-full" :href="item.url" :target="item.target">
-          <div class="flex justify-between items-center w-full">
-            <span class="p-menuitem-text flex-shrink-0">{{ item.label }}</span>
-            <div class="flex items-center">
-              <span v-if="item.icon" :class="item.icon + ' ml-2'" />
-              <Badge v-if="item.notifications" class="ml-2" severity="secondary" :value="item.notifications" />
-              <span v-else-if="hasSubmenu" class="ml-2 pi pi-angle-down pi-fw" />
-            </div>
+          <div
+            :class="[
+              'flex items-center w-full',
+              hasSubmenu
+                ? !item.label && item.icon
+                  ? 'justify-between'
+                  : 'justify-between'
+                : !item.label && item.icon
+                  ? 'justify-start'
+                  : 'justify-between',
+            ]"
+          >
+            <span v-if="item.label" class="p-menuitem-text flex-shrink-0">{{ item.label }}</span>
+            <template v-if="!item.label && item.icon && hasSubmenu">
+              <span :class="item.icon" />
+              <span class="ml-2 pi pi-angle-down pi-fw" />
+            </template>
+            <template v-else>
+              <div class="flex items-center">
+                <span v-if="item.icon" :class="item.icon + (item.label ? ' ml-2' : '')" />
+                <Badge v-if="item.notifications" class="ml-2" severity="secondary" :value="item.notifications" />
+                <span v-if="hasSubmenu" class="ml-2 pi pi-angle-down pi-fw" />
+              </div>
+            </template>
           </div>
         </a>
       </slot>
