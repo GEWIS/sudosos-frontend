@@ -79,6 +79,9 @@ import { useOpenInvoiceAccounts } from '@/composables/openInvoiceAccounts';
 import { isAllowed } from '@/utils/permissionUtils';
 import { useInactiveDebtors } from '@/composables/inactiveDebtors';
 import { useDarkMode } from '@/composables/darkMode';
+
+import { useAdminNav } from '@/modules/admin/navbar';
+
 const userStore = useUserStore();
 const authStore = useAuthStore();
 const router = useRouter();
@@ -134,27 +137,14 @@ onBeforeMount(async () => {
   await getOrgans();
 });
 
+const adminNav = useAdminNav();
+
 const navItems = computed(() => [
   {
     label: t('common.navigation.transactions'),
     route: '/transaction',
   },
-  {
-    label: t('common.navigation.admin'),
-    visible: isAllowed('update', ['all'], 'User', ['any']) || isAllowed('get', ['all'], 'Banner', ['any']),
-    items: [
-      {
-        label: t('common.navigation.users'),
-        route: '/user',
-        visible: isAllowed('update', ['all'], 'User', ['any']),
-      },
-      {
-        label: t('common.navigation.banners'),
-        route: '/banner',
-        visible: isAllowed('get', ['own'], 'Banner', ['any']),
-      },
-    ],
-  },
+  ...adminNav.value,
   {
     label: t('common.navigation.financial'),
     notifications: getFinancialNotifications(),
