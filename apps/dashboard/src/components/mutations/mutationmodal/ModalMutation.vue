@@ -17,21 +17,21 @@
       <Skeleton class="h-2rem my-1 surface-300 w-11" />
     </div>
 
-    <TransactionDetailModal
-      v-else-if="shouldShowTransaction"
-      :products-info="transactionProducts[props.id]"
-      :transaction-info="transactionsDetails[props.id]"
-    />
-    <InvoiceDetailModal v-else-if="shouldShowInvoice" :invoice-info="transferDetails[props.id]" />
-    <DepositDetailModal v-else-if="shouldShowDeposit" :deposit-info="transferDetails[props.id]" />
-    <FineDetailModal v-else-if="shouldShowFine" :fine="transferDetails[props.id]" />
-    <PayoutRequestDetailModal v-else-if="shouldShowPayoutRequest" :payout-request="transferDetails[props.id]" />
-    <WaivedFineDetailModal v-else-if="shouldShowWaivedFine" :waived-fines="transferDetails[props.id]" />
+    <TransactionDetailModal v-else-if="transaction" :products-info="products" :transaction-info="transaction" />
+    <InvoiceDetailModal v-else-if="shouldShowInvoice" :invoice-info="transfer" />
+    <DepositDetailModal v-else-if="shouldShowDeposit" :deposit-info="transfer" />
+    <FineDetailModal v-else-if="shouldShowFine" :fine="transfer" />
+    <PayoutRequestDetailModal v-else-if="shouldShowPayoutRequest" :payout-request="transfer" />
+    <WaivedFineDetailModal v-else-if="shouldShowWaivedFine" :waived-fines="transfer" />
     <template v-if="!shouldShowDeposit && !shouldShowInvoice && shouldShowDeleteButton" #footer>
       <div class="items-end flex flex-col">
-        <Button severity="danger" @click="deleteMutation">
-          {{ t('common.delete').toUpperCase() }}
-        </Button>
+        <ConfirmButton
+          :initial-label="t('common.delete')"
+          icon="pi pi-trash"
+          :disabled="false"
+          type="submit"
+          @confirm="deleteMutation"
+        />
       </div>
     </template>
   </Dialog>
@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import { onMounted, type Ref } from 'vue';
 import { computed, ref, watch } from 'vue';
-import type { TransactionResponse, TransferResponse } from '@sudosos/sudosos-client';
+import type { TransactionResponse } from '@sudosos/sudosos-client';
 import type { SubTransactionResponse, SubTransactionRowResponse } from '@sudosos/sudosos-client/src/api';
 import { addListenerOnDialogueOverlay, useUserStore } from '@sudosos/sudosos-frontend-common';
 import { useI18n } from 'vue-i18n';
@@ -60,6 +60,7 @@ import router from '@/router';
 import { handleError } from '@/utils/errorUtils';
 import { FinancialMutationType } from '@/utils/mutationUtils';
 import { UserRole } from '@/utils/rbacUtils';
+import ConfirmButton from '@/components/ConfirmButton.vue';
 
 const props = defineProps<{
   type: FinancialMutationType;
@@ -70,85 +71,73 @@ const { t } = useI18n();
 
 const visible = ref<boolean>(false);
 const transactionStore = useTransactionStore();
-const transactionsDetails: Ref<{ [id: number]: TransactionResponse }> = ref({});
-const transactionProducts: Ref<{ [id: number]: Array<SubTransactionRowResponse> }> = ref({});
 const transferStore = useTransferStore();
-const transferDetails: Ref<{ [id: number]: TransferResponse }> = ref({});
+
 const dialog = ref();
 const toast = useToast();
 const userStore = useUserStore();
 const isLoading: Ref<boolean> = ref(false);
 
+const transfer = computed(() => transferStore.getTransfer(props.id));
+
+const transaction = computed(() => transactionStore.getTransaction(props.id));
+const products = computed(() => getProductsOfTransaction(transaction.value));
+
 const shouldShowDeleteButton = computed(() => {
   // If the transfer is not loaded yet, do not show the delete button.
-  if (!transferDetails.value[props.id]) return false;
+  if (!transfer.value) return false;
   return userStore.current.rolesWithPermissions.findIndex(
     (r) => (r.name as UserRole) == UserRole.BAC_PM || (r.name as UserRole) == UserRole.BOARD,
   );
 });
 
 const shouldShowInvoice = computed(() => {
-  if (!transferDetails.value[props.id]) return false;
+  if (!transfer.value) return false;
   return props.type === FinancialMutationType.INVOICE;
 });
 
-const shouldShowTransaction = computed(() => {
-  if (!transactionsDetails.value[props.id]) return false;
-  return props.type === FinancialMutationType.TRANSACTION;
-});
-
 const shouldShowDeposit = computed(() => {
-  if (!transferDetails.value[props.id]) return false;
+  if (!transfer.value) return false;
   return props.type === FinancialMutationType.DEPOSIT;
 });
 
 const shouldShowFine = computed(() => {
-  if (!transferDetails.value[props.id]) return false;
+  if (!transfer.value) return false;
   return props.type === FinancialMutationType.FINE;
 });
 
 const shouldShowWaivedFine = computed(() => {
-  if (!transferDetails.value[props.id]) return false;
+  if (!transfer.value) return false;
   return props.type === FinancialMutationType.WAIVED_FINE;
 });
 
 const shouldShowPayoutRequest = computed(() => {
-  if (!transferDetails.value[props.id]) return false;
+  if (!transfer.value) return false;
   return props.type === FinancialMutationType.PAYOUT_REQUEST;
 });
+
 async function fetchTransferInfo() {
-  if (transferDetails.value[props.id]) return; // We already have content!
-  await transferStore.fetchIndividualTransfer(props.id, apiService).then(() => {
-    transferDetails.value[props.id] = transferStore.transfer as TransferResponse;
+  if (transfer.value) return; // We already have content!
+  await transferStore.fetchIndividualTransfer(props.id, apiService).catch((err) => {
+    handleError(err, toast);
   });
 }
 
 function fetchTransactionInfo() {
-  if (transactionsDetails.value[props.id]) return; // We already have content!
-  transactionStore
-    .fetchIndividualTransaction(props.id, apiService)
-    .then(() => {
-      if (!transactionStore.transaction) {
-        void router.replace({ path: '/error' });
-        return;
-      }
-      transactionsDetails.value[props.id] = transactionStore.transaction;
-      getProductsOfTransaction(transactionStore.transaction); // Process subtransactions
-    })
-    .catch((err) => {
-      handleError(err, toast);
-    });
+  if (transaction.value) return; // We already have content!
+  transactionStore.fetchIndividualTransaction(props.id, apiService).catch((err) => {
+    handleError(err, toast);
+  });
 }
 
 function getProductsOfTransaction(transactionResponse: TransactionResponse): void {
-  if (transactionProducts.value[transactionResponse.id]) return; // We already have content!
   const result: Array<SubTransactionRowResponse> = [];
   transactionResponse.subTransactions.forEach((subTransaction: SubTransactionResponse) => {
     subTransaction.subTransactionRows.forEach((subTransactionRow: SubTransactionRowResponse) => {
       result.push(subTransactionRow);
     });
   });
-  transactionProducts.value[transactionResponse.id] = result;
+  return result;
 }
 
 async function fetchMutation(): Promise<void> {
@@ -197,15 +186,13 @@ const deleteMutation = async () => {
         handleError(err, toast);
       });
   } else {
-    const transactionsDetail = transactionsDetails.value[props.id];
-
-    if (!transactionsDetail) {
+    if (!transaction.value) {
       await router.replace({ path: '/error' });
       return;
     }
 
     await apiService.transaction
-      .deleteTransaction(transactionsDetail.id)
+      .deleteTransaction(transaction.value.id)
       .then(() => {
         toast.add({
           summary: t('common.toast.success.success'),
