@@ -1,6 +1,6 @@
 <template>
   <AuthLocalCard :header="t('modules.auth.reset.reset')">
-    <template v-if="passwordResetMode === 0">
+    <template v-if="passwordResetMode === ResetMode.Request">
       <AuthRequestForm :form="requestForm" @success="passwordResetMode = ResetMode.EmailSent" />
     </template>
     <template v-else-if="passwordResetMode === ResetMode.EmailSent">
@@ -32,13 +32,13 @@ const route = useRoute();
 const requestForm = schemaToForm(authRequestSchema);
 const resetForm = schemaToForm(authResetSchema);
 
-const ResetMode = {
-  Request: 0,
-  EmailSent: 1,
-  SetNew: 2,
-} as const;
+enum ResetMode {
+  Request,
+  EmailSent,
+  SetNew,
+}
 
-const passwordResetMode = ref<(typeof ResetMode)[keyof typeof ResetMode]>(ResetMode.Request);
+const passwordResetMode = ref<ResetMode>(ResetMode.Request);
 
 onBeforeMount(() => {
   const token = Array.isArray(route.query.token) ? route.query.token[0] : route.query.token;
