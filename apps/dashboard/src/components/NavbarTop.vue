@@ -38,7 +38,7 @@ import { useSellerNav } from '@/modules/seller/navbar';
 import NavbarMenu from '@/components/NavbarMenu.vue';
 import { useProfileNav } from '@/composables/profileNavbar';
 import { useSizeBreakpoints } from '@/composables/sizeBreakpoints';
-import Logo from '@/components/Logo.vue';
+import Logo from '@/components/GewisLogo.vue';
 
 const { t } = useI18n();
 const { isLg } = useSizeBreakpoints();
