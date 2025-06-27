@@ -16,6 +16,7 @@ export const SudososPreset = definePreset(Aura, {
       900: '{zinc.900}',
       950: '{zinc.950}',
     },
+    secondary: { color: '{primary.color}' },
     colorScheme: {
       light: {
         content: {
