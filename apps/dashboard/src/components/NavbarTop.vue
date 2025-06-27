@@ -4,7 +4,7 @@
       <template #start>
         <router-link class="items-center flex flex-row font-bold no-underline py-1" to="/">
           {{ t('common.sudosos') }}
-          <GewisLogo />
+          <GewisLogo class="h-16 py-2 ml-2" />
         </router-link>
       </template>
     </NavbarMenu>
@@ -21,7 +21,7 @@
       <template #start>
         <router-link class="items-center flex flex-row font-bold no-underline py-1" to="/">
           {{ t('common.sudosos') }}
-          <img alt="SudoSOS" class="h-4 py-2" src="@/assets/img/gewis-branding.svg" />
+          <GewisLogo class="h-4 py-2" />
         </router-link>
       </template>
     </NavbarMenu>
