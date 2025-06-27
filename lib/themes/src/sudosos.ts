@@ -41,6 +41,7 @@ export const SudososPreset = definePreset(Aura, {
   components: {
     menubar: {
       root: {
+        color: '{primary.inverseColor}',
         borderColor: 'none',
         background: '{primary.color}',
       },
