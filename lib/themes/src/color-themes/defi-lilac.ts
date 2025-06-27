@@ -1,7 +1,7 @@
 import { definePreset } from '@primeuix/themes';
 import { SudososPreset } from '../sudosos';
 
-export const DefiMagenta = definePreset(SudososPreset, {
+export const DefiLilac = definePreset(SudososPreset, {
   semantic: {
     colorScheme: {
       light: {
@@ -13,7 +13,7 @@ export const DefiMagenta = definePreset(SudososPreset, {
           activeColor: '#674fa0',
         },
         secondary: {
-          color: '#3FC7FA',
+          color: '#a987ed',
           inverseColor: '#ffffff',
         },
         highlight: {
@@ -30,7 +30,7 @@ export const DefiMagenta = definePreset(SudososPreset, {
           activeColor: '#d4c2f3',
         },
         secondary: {
-          color: '#3FC7FA',
+          color: '#a987ed',
           inverseColor: '#1a102a',
         },
         highlight: {
@@ -45,7 +45,7 @@ export const DefiMagenta = definePreset(SudososPreset, {
       colorScheme: {
         dark: {
           root: {
-            background: '#674fa0',
+            background: '#9678d3',
           },
         },
         light: {

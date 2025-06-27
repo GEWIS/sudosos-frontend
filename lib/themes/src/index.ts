@@ -4,4 +4,4 @@ export * from './color-themes/beta-blue';
 export * from './color-themes/athena-pink-blue';
 export * from './color-themes/ivv-navy';
 export * from './color-themes/boom-mango';
-export * from './color-themes/defi-magenta';
+export * from './color-themes/defi-lilac';
