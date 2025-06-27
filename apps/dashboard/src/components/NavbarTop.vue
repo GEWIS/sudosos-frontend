@@ -4,7 +4,7 @@
       <template #start>
         <router-link class="items-center flex flex-row font-bold no-underline py-1" to="/">
           {{ t('common.sudosos') }}
-          <Logo />
+          <GewisLogo />
         </router-link>
       </template>
     </NavbarMenu>
@@ -38,7 +38,7 @@ import { useSellerNav } from '@/modules/seller/navbar';
 import NavbarMenu from '@/components/NavbarMenu.vue';
 import { useProfileNav } from '@/composables/profileNavbar';
 import { useSizeBreakpoints } from '@/composables/sizeBreakpoints';
-import Logo from '@/components/GewisLogo.vue';
+import GewisLogo from '@/components/GewisLogo.vue';
 
 const { t } = useI18n();
 const { isLg } = useSizeBreakpoints();
