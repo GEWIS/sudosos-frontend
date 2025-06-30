@@ -3,6 +3,7 @@ import type {
   WriteOffResponse,
   WriteOffRequest,
   BalanceResponse,
+  PdfUrlResponse,
 } from '@sudosos/sudosos-client';
 import { defineStore } from 'pinia';
 import apiService from '@/services/ApiService';
@@ -44,6 +45,13 @@ export const useWriteOffStore = defineStore('writeoff', {
       return apiService.writeOffs.getSingleWriteOff(id).then((res) => {
         this.writeOffs[id] = res.data;
         return res.data;
+      });
+    },
+    async fetchPdf(id: number): Promise<string> {
+      return apiService.writeOffs.getWriteOffPdf(id).then((res) => {
+        const pdf = (res.data as PdfUrlResponse).pdf;
+        this.writeOffs[id].pdf = pdf;
+        return pdf;
       });
     },
     async createWriteOff(values: WriteOffRequest): Promise<WriteOffResponse> {
