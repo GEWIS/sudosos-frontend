@@ -17,6 +17,7 @@
       :reload="reload"
       :rows="rows"
       :total-records="totalRecords"
+      @single="onSingle"
       @state-filter-change="setFilter"
     />
   </div>
@@ -34,6 +35,7 @@ const props = defineProps<{
     rows: number;
     filters: F;
   }) => Promise<DataTableFetchResult<T>>;
+  fetchSingleRecord?: (id: number) => Promise<T>;
   initialFilters?: F;
   defaultRows?: number;
 }>();
@@ -65,7 +67,6 @@ const reload = async () => {
 };
 
 function onPage(event) {
-  console.error(event);
   page.value = event.first;
   rows.value = event.rows;
   void reload();
@@ -77,10 +78,21 @@ function setFilter<K extends keyof F>(key: K, value: F[K]) {
   void reload();
 }
 
+async function onSingle(id?: number) {
+  if (!id || isNaN(id)) return reload();
+  page.value = 0;
+  records.value = [await props.fetchSingleRecord(id)];
+}
+
 watch([year, () => filters.value], () => {
   page.value = 0;
   void reload();
 });
 
 onMounted(reload);
+
+defineExpose({
+  onSingle,
+  reload,
+});
 </script>

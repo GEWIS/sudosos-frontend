@@ -128,7 +128,7 @@ withDefaults(
   },
 );
 
-const emit = defineEmits(['page', 'search-id']);
+const emit = defineEmits(['page', 'single']);
 
 const { t } = useI18n();
 const writeOffStore = useWriteOffStore();
@@ -151,12 +151,7 @@ function onPage(event: DataTablePageEvent) {
 }
 
 function searchId() {
-  const queryNumber = parseInt(idQuery.value);
-  if (isNaN(queryNumber)) {
-    emit('search-id', null);
-    return;
-  }
-  emit('search-id', queryNumber);
+  emit('single', parseInt(idQuery.value));
 }
 
 const getName = (writeOff: WriteOffResponse) => {
