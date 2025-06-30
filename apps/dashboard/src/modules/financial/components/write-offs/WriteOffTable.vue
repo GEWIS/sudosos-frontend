@@ -195,7 +195,7 @@ const downloadPdf = (id: number) => {
   writeOffStore
     .fetchPdf(id)
     .then((url) => {
-      window.location.href = getWriteOffPdfSrc(url);
+      if (url) window.location.href = getWriteOffPdfSrc(url);
     })
     .catch(() => {
       toast.add({
