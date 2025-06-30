@@ -61,7 +61,7 @@
             option-value="value"
             :options="states"
             :placeholder="t('common.placeholders.selectType')"
-            @change="stateFilterChange"
+            @change="(e) => stateFilterChange('state', e)"
           />
         </template>
         <template #body="slotProps">
@@ -138,6 +138,7 @@ import { type Ref, ref } from 'vue';
 import type { InvoiceResponse } from '@sudosos/sudosos-client';
 import { formatPrice, formatDateFromString } from '@/utils/formatterUtils';
 import router from '@/router';
+import { useFiscalYear } from '@/composables/fiscalYear';
 
 defineProps({
   invoices: {
@@ -166,8 +167,8 @@ function onPage(event: DataTablePageEvent) {
   emit('page', event);
 }
 
-function stateFilterChange(e: SelectChangeEvent) {
-  emit('stateFilterChange', e);
+function stateFilterChange(key: string, e: SelectChangeEvent) {
+  emit('stateFilterChange', key, e.value);
 }
 
 const states: Ref<Array<{ name: string; value: string | null }>> = ref([
@@ -188,18 +189,16 @@ const filters = ref({
 });
 
 // isBackDate should check if the createdAt date is in the same 202Y-07-01 202(Y+1)-07-01 range
+const { getFiscalYear } = useFiscalYear();
+
 function isBackDate(invoice: InvoiceResponse): boolean {
   if (!invoice.createdAt || !invoice.date) return false;
 
-  const fiscalYear = (d: Date) => {
-    const year = d.getFullYear();
-    return d >= new Date(year, 6, 1) ? year : year - 1;
-  };
+  // Use getFiscalYear from your composable
+  const fyCreatedAt = getFiscalYear(invoice.createdAt);
+  const fyDate = getFiscalYear(invoice.date);
 
-  const createdAt = new Date(invoice.createdAt);
-  const date = new Date(invoice.date);
-
-  return fiscalYear(createdAt) !== fiscalYear(date);
+  return fyCreatedAt !== fyDate;
 }
 </script>
 
