@@ -1,5 +1,5 @@
 export interface DataTableFetchParams<F> {
-  year: number | string;
+  year: number;
   page: number;
   rows: number;
   filters: F;
