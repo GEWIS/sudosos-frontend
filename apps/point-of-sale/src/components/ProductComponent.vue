@@ -109,25 +109,25 @@ const startFlyingAnimation = async () => {
 
 <style scoped lang="scss">
 .product-card-image {
-  width: $product-card-size;
-  height: $product-card-size;
-  background-color: $gewis-grey-light;
-  border-top-left-radius: $border-radius;
-  border-top-right-radius: $border-radius;
+  //width: $product-card-size;
+  //height: $product-card-size;
+  //background-color: $gewis-grey-light;
+  //border-top-left-radius: $border-radius;
+  //border-top-right-radius: $border-radius;
   object-fit: contain;
   box-sizing: border-box;
 }
 
 .image-container {
   position: relative; /* Establish this div as the positioning context for absolute elements within */
-  width: $product-card-size; /* Adjust to match the image size */
-  height: $product-card-size; /* Adjust to match the image size */
+  //width: $product-card-size; /* Adjust to match the image size */
+  //height: $product-card-size; /* Adjust to match the image size */
   margin: auto; /* Center the container */
 }
 
 .product-card {
   padding: 0 0 8px 0;
-  border-radius: $border-radius;
+  //border-radius: $border-radius;
   width: var(--product-card-width);
 
   &.pulsing {
@@ -148,7 +148,7 @@ const startFlyingAnimation = async () => {
   right: 0;
   color: #fff;
   font-weight: bolder;
-  background-color: $gewis-red-shadow;
+  //background-color: $gewis-red-shadow;
   text-align: center;
   font-size: 1.2em;
   padding: 5px 0;
@@ -174,7 +174,7 @@ const startFlyingAnimation = async () => {
 }
 
 .product-price {
-  height: $product-price-height;
+  //height: $product-price-height;
 }
 
 @keyframes pulse {
