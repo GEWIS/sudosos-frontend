@@ -68,7 +68,7 @@ function searchById() {
     toast.add({
       severity: 'warn',
       summary: t('common.toast.info.info'),
-      detail: t('modules.financial.invoice.searchId.not-possible'),
+      detail: t('common.toast.info.notFound'),
       life: 3000,
     });
   });

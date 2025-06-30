@@ -23,8 +23,9 @@
   </div>
 </template>
 
-<script setup lang="ts" generic="T = unknown, F = Record<string, unknown>">
+<script setup lang="ts" generic="T = unknown, F extends Record<string, unknown>">
 import { ref, watch, onMounted } from 'vue';
+import type { DataTableFetchResult } from '@/utils/pagination';
 
 const props = defineProps<{
   yearList: number[];
@@ -39,11 +40,6 @@ const props = defineProps<{
   initialFilters?: F;
   defaultRows?: number;
 }>();
-
-interface DataTableFetchResult<T> {
-  records: T[];
-  _pagination: { count: number; skip: number; take: number };
-}
 
 const year = ref(props.defaultYear.toString());
 const page = ref(0);
