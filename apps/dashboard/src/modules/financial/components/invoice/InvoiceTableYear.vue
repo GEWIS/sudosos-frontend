@@ -9,46 +9,52 @@
       @submit="searchById"
     />
   </IconField>
-  <DataTableYear
-    ref="dataTableYearRef"
-    :default-year="years[0]"
-    :fetch-records="fetchInvoices"
-    :fetch-single-record="fetchSingleInvoice"
-    :initial-filters="{ state: filterState }"
-    :year-list="years"
-  >
-    <template #default="{ isLoading, records, rows, totalRecords, onPage, onStateFilterChange }">
-      <InvoiceTable
-        :invoices="records"
-        :is-loading="isLoading"
-        :rows="rows"
-        :total-records="totalRecords"
-        @page="onPage"
-        @state-filter-change="onStateFilterChange"
-      />
-    </template>
-  </DataTableYear>
+  <Tabs v-model:value="year" class="w-full">
+    <TabList>
+      <Tab v-for="y in years" :key="y" :value="y.toString()">{{ y }}</Tab>
+    </TabList>
+  </Tabs>
+  <InvoiceTable
+    :invoices="records"
+    :is-loading="isLoading"
+    :rows="rows"
+    :total-records="totalRecords"
+    @page="onPage"
+    @state-filter-change="setFilter"
+  />
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'primevue/usetoast';
-import DataTableYear from '@/components/DataTableYear.vue';
+import type { InvoiceStatusResponseStateEnum } from '@sudosos/sudosos-client';
+import { type InvoiceResponseTypes } from '@sudosos/sudosos-client/src/api';
 import InvoiceTable from '@/modules/financial/components/invoice/InvoiceTable.vue';
 import { useFiscalYear } from '@/composables/fiscalYear';
 import { useInvoiceStore } from '@/stores/invoice.store';
+import { useDataTableYear } from '@/composables/dataTableYear';
 
 const { getFiscalYearList, getFiscalYearRange } = useFiscalYear();
 const years = getFiscalYearList();
 const invoiceStore = useInvoiceStore();
-const filterState = ref(null);
-const searchId = ref(null);
+const filterState = ref<InvoiceStatusResponseStateEnum | undefined>(undefined);
+const searchId = ref<string | null>(null);
 
 const { t } = useI18n();
 const toast = useToast();
 
-async function fetchInvoices({ year, page, rows, filters }) {
+async function fetchInvoices({
+  year,
+  page,
+  rows,
+  filters,
+}: {
+  year: number;
+  page: number;
+  rows: number;
+  filters: { state?: InvoiceStatusResponseStateEnum };
+}) {
   const { start, end } = getFiscalYearRange(year);
   const queryParams = {
     fromDate: start,
@@ -62,9 +68,20 @@ async function fetchSingleInvoice(id: number) {
   return await invoiceStore.fetchInvoice(id);
 }
 
-const dataTableYearRef = ref<InstanceType<typeof DataTableYear>>();
+const { year, rows, isLoading, records, totalRecords, onPage, setFilter, onSingle } = useDataTableYear<
+  InvoiceResponseTypes,
+  { state?: InvoiceStatusResponseStateEnum }
+>(fetchInvoices, fetchSingleInvoice, {
+  yearList: years,
+  defaultYear: years[0],
+  initialFilters: { state: filterState.value },
+  defaultRows: 10,
+});
+
 function searchById() {
-  dataTableYearRef.value?.onSingle(searchId.value).catch(() => {
+  const id = Number(searchId.value);
+  if (isNaN(id)) return;
+  onSingle(id).catch(() => {
     toast.add({
       severity: 'warn',
       summary: t('common.toast.info.info'),

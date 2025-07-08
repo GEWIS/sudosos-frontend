@@ -14,10 +14,10 @@
       :value="invoices"
       @page="onPage"
     >
-      <Column field="id" :header="t('common.id')">
+      <Column field="id" :header="t('common.id')" class="max-w-[2rem]">
         <template #body="slotProps">
           <div class="cell-content">
-            <Skeleton v-if="isLoading" class="skeleton-fixed surface-300 w-6" />
+            <Skeleton v-if="isLoading" class="skeleton-fixed surface-300 max-w-[2rem]" />
             <span v-else>
               {{ slotProps.data.id }}
             </span>
@@ -74,7 +74,7 @@
         </template>
       </Column>
 
-      <Column field="to.firstName" :header="t('common.for')" style="max-width: 10rem">
+      <Column field="to.firstName" :header="t('common.for')" style="max-width: 15rem">
         <template #body="slotProps">
           <div class="cell-content">
             <Skeleton v-if="isLoading" class="skeleton-fixed surface-300 w-6" />
@@ -85,7 +85,7 @@
         </template>
       </Column>
 
-      <Column field="description" :header="t('common.description')" style="max-width: 15rem">
+      <Column field="description" :header="t('common.description')" style="max-width: 10rem">
         <template #body="slotProps">
           <div class="cell-content">
             <Skeleton v-if="isLoading" class="skeleton-fixed surface-300 w-6" />
@@ -208,14 +208,6 @@ function isBackDate(invoice: InvoiceResponse): boolean {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.cell-content {
-  height: 2rem;
-  display: flex;
-  align-items: center;
-  padding: 0 0.5rem;
-  box-sizing: border-box;
 }
 
 .skeleton-fixed {
