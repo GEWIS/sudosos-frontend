@@ -2,7 +2,6 @@ import { computed, type Ref } from 'vue';
 import type { InvoiceEntryResponse, InvoiceResponse } from '@sudosos/sudosos-client';
 import type { DineroObject } from 'dinero.js';
 import { isDirty } from '@/utils/invoiceUtil';
-import { useI18n } from 'vue-i18n';
 import i18n from '@/utils/i18nUtils';
 
 export interface VatEntry {
