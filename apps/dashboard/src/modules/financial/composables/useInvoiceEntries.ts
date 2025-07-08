@@ -1,24 +1,23 @@
 import { computed, type Ref } from 'vue';
-import type { InvoiceEntryResponse, InvoiceResponse } from '@sudosos/sudosos-client';
-import type { DineroObject } from 'dinero.js';
+import type { DineroObjectResponse, InvoiceEntryResponse, InvoiceResponse } from '@sudosos/sudosos-client';
 import { isDirty } from '@/utils/invoiceUtil';
 import i18n from '@/utils/i18nUtils';
 
 export interface VatEntry {
   vatPercentage: number;
-  baseAmount: DineroObject;
-  amountInclVat: DineroObject;
-  vatAmount: DineroObject;
+  baseAmount: DineroObjectResponse;
+  amountInclVat: DineroObjectResponse;
+  vatAmount: DineroObjectResponse;
 }
 
-export interface RowEntry extends InvoiceEntryResponse {
+export type RowEntry = InvoiceEntryResponse & {
   class?: object;
   description: string;
   amount: number;
-  priceInclVat: DineroObject;
+  priceInclVat: DineroObjectResponse;
   vatPercentage: number;
   custom?: boolean;
-}
+};
 
 const t = i18n.global.t;
 export function useInvoiceEntries(invoice: Ref<InvoiceResponse>) {
@@ -55,12 +54,12 @@ export function useInvoiceEntries(invoice: Ref<InvoiceResponse>) {
   });
 
   // Total calculation
-  const exclVat = computed<DineroObject>(() => ({
+  const exclVat = computed<DineroObjectResponse>(() => ({
     amount: vatEntries.value.reduce((sum, v) => sum + v.baseAmount.amount, 0),
     precision: 2,
     currency: 'EUR',
   }));
-  const inclVat = computed<DineroObject>(() => ({
+  const inclVat = computed<DineroObjectResponse>(() => ({
     amount: vatEntries.value.reduce((sum, v) => sum + v.amountInclVat.amount, 0),
     precision: 2,
     currency: 'EUR',
@@ -107,11 +106,11 @@ export function useInvoiceEntries(invoice: Ref<InvoiceResponse>) {
   const totalRowCutoff = computed(() => productEntries.value.length);
 
   // rowTotal helper
-  function rowTotal(row: RowEntry): DineroObject {
+  function rowTotal(row: RowEntry): DineroObjectResponse {
     return {
       ...row.priceInclVat,
       amount: row.amount * row.priceInclVat.amount,
-    } as DineroObject;
+    } as DineroObjectResponse;
   }
 
   return {

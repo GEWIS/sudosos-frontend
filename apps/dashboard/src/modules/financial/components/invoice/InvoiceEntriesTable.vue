@@ -57,7 +57,7 @@ const { t } = useI18n();
 const props = defineProps<{ invoice: InvoiceResponse }>();
 const invoiceRef = computed(() => props.invoice);
 
-const { allRows, totalRowCutoff, rowTotal } = useInvoiceEntries(invoiceRef, t);
+const { allRows, totalRowCutoff, rowTotal } = useInvoiceEntries(invoiceRef);
 </script>
 
 <style scoped lang="scss"></style>
