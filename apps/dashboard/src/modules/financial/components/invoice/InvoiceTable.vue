@@ -14,7 +14,7 @@
       :value="invoices"
       @page="onPage"
     >
-      <Column field="id" :header="t('common.id')" class="max-w-[2rem]">
+      <Column class="max-w-[2rem]" field="id" :header="t('common.id')">
         <template #body="slotProps">
           <div class="cell-content">
             <Skeleton v-if="isLoading" class="skeleton-fixed surface-300 max-w-[2rem]" />
