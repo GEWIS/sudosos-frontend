@@ -26,7 +26,7 @@
     </div>
   </div>
   <SettingsIconComponent />
-  <ScannersUpdateComponent :handle-nfc-update="nfcUpdate" />
+  <ScannersUpdateComponent :handle-nfc-delete="nfcDelete" :handle-nfc-update="nfcUpdate" />
   <NfcSearchComponent :handle-nfc-search="cartStore.setBuyerFromNfc" />
 </template>
 <script setup lang="ts">
@@ -133,6 +133,13 @@ const nfcUpdate = async (nfcCode: string) => {
   } catch (error) {
     console.error(error);
   }
+};
+
+const nfcDelete = async () => {
+  const userId = authStore.user?.id;
+  if (!userId) return;
+
+  await apiService.user.deleteUserNfc(userId).then(async () => {});
 };
 </script>
 <style scoped lang="scss">
