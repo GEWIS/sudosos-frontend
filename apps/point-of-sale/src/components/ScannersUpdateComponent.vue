@@ -5,7 +5,7 @@
   <Dialog
     ref="nfcModal"
     v-model:visible="nfcModalVisible"
-    header="Link NFC"
+    header="Manage NFC"
     modal
     :pt="{
       header: () => ({ class: ['dialog-header'] }),
@@ -103,15 +103,16 @@ const onInput = (event: KeyboardEvent): void => {
 };
 
 const deleteNfc = async () => {
-  await props.handleNfcDelete()
+  await props
+    .handleNfcDelete()
     .then(() => {
       nfcModalVisible.value = false;
 
       toast.add({
         severity: 'success',
         summary: 'NFC code removed!',
-        detail: 'The linked NFC code has  been removed.',
-        life: 5000
+        detail: 'The linked NFC code has been removed.',
+        life: 5000,
       });
     })
     .catch((err) => {
@@ -120,12 +121,12 @@ const deleteNfc = async () => {
       console.error(err);
       toast.add({
         severity: 'error',
-        summary: 'No NFC code added.',
+        summary: 'No linked NFC code.',
         detail: 'There is no NFC code linked to your account.',
-        life: 5000
+        life: 5000,
       });
     });
-}
+};
 </script>
 
 <style scoped lang="scss">
