@@ -106,8 +106,6 @@ const deleteNfc = async () => {
   await props
     .handleNfcDelete()
     .then(() => {
-      nfcModalVisible.value = false;
-
       toast.add({
         severity: 'success',
         summary: 'NFC code removed!',
@@ -116,15 +114,16 @@ const deleteNfc = async () => {
       });
     })
     .catch((err) => {
-      nfcModalVisible.value = false;
-
       console.error(err);
       toast.add({
         severity: 'error',
-        summary: 'No linked NFC code.',
-        detail: 'There is no NFC code linked to your account.',
+        summary: 'API error',
+        detail: err.message,
         life: 5000,
       });
+    })
+    .finally(() => {
+      nfcModalVisible.value = false;
     });
 };
 </script>

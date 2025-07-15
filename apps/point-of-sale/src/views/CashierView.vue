@@ -129,7 +129,7 @@ const nfcUpdate = async (nfcCode: string) => {
     const userId = authStore.user?.id;
     if (!userId) return;
 
-    await apiService.user.updateUserNfc(userId, { nfcCode: nfcCode }).then(async () => {});
+    await apiService.user.updateUserNfc(userId, { nfcCode: nfcCode });
   } catch (error) {
     console.error(error);
   }
@@ -137,9 +137,15 @@ const nfcUpdate = async (nfcCode: string) => {
 
 const nfcDelete = async () => {
   const userId = authStore.user?.id;
-  if (!userId) return;
+  if (!userId) {
+    throw new Error('No user logged in.');
+  }
 
-  await apiService.user.deleteUserNfc(userId).then(async () => {});
+  try {
+    await apiService.user.deleteUserNfc(userId);
+  } catch {
+    throw new Error('There is no NFC code linked to your account.');
+  }
 };
 </script>
 <style scoped lang="scss">
