@@ -164,7 +164,8 @@
       "invoiceAccounts": "Invoice Account Overview",
       "fines": "Fines",
       "writeOffs": "Write-Offs",
-      "maintainer": "Maintainer"
+      "maintainer": "Maintainer",
+      "rbac": "RBAC"
     },
     "validation": {
       "number": {
