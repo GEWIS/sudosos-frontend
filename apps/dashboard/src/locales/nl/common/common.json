@@ -159,7 +159,8 @@
       "invoiceAccounts": "Facturen Account Overzicht",
       "fines": "Boetes",
       "writeOffs": "Afschrijvingen",
-      "maintainer": "Maintainer"
+      "maintainer": "Maintainer",
+      "rbac": "RBAC"
     },
     "validation": {
       "number": {
