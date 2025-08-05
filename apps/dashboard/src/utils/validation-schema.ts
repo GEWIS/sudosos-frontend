@@ -1,7 +1,12 @@
 import * as yup from 'yup';
 import { ref } from 'vue';
 import type { Ref } from 'vue';
-import type { BaseUserResponse, BaseVatGroupResponse, ProductCategoryResponse } from '@sudosos/sudosos-client';
+import type {
+  BaseUserResponse,
+  BaseVatGroupResponse,
+  ProductCategoryResponse,
+  PermissionResponse,
+} from '@sudosos/sudosos-client';
 import type { DineroObject } from 'dinero.js';
 import i18n from './i18nUtils';
 import type { ContainerInStore } from '@/stores/container.store';
@@ -315,4 +320,12 @@ export const authResetSchema = yup.object({
     .oneOf([yup.ref('password')], t('common.validation.password.match')),
   token: yup.string().required(),
   email: yup.string().email().required(),
+});
+
+export const rbacSchema = yup.object({
+  id: yup.number().required(),
+  name: yup.string().required(),
+  systemDefault: yup.boolean().default(false),
+  permissions: yup.array().of(yup.mixed<PermissionResponse>().required()),
+  currentPermission: yup.mixed<PermissionResponse>().required(),
 });
