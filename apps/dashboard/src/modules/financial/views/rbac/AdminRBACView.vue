@@ -1,12 +1,12 @@
 <template>
-  <div class="page-container-large align-items-center flex flex-column gap-5">
-    <div class="w-full">
-      <div class="grid grid-cols-[500px_500px] gap-5">
-        <div class="w-full grid grid-cols-1 gap-5">
-          <SelectRolesCard :form="form" />
+  <PageContainer>
+    <div class="flex flex-wrap gap-3">
+      <div class="flex flex-col md:flex-row gap-3 flex-grow">
+        <div class="flex flex-col gap-3 flex-grow">
+          <SelectRolesCard class="h-35" :form="form" />
           <PermissionPerRoleCard :form="form" />
         </div>
-        <div class="w-full">
+        <div class="flex flex-col gap-3 flex-grow">
           <TabView>
             <TabPanel v-for="state in states" :key="state" :header="state" :value="state">
               <RBACTable :form="form" :state="state" />
@@ -15,7 +15,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </PageContainer>
 </template>
 
 <script setup lang="ts">
@@ -26,6 +26,7 @@ import PermissionPerRoleCard from '@/modules/financial/components/rbac/Permissio
 import { schemaToForm } from '@/utils/formUtils';
 import { rbacSchema } from '@/utils/validation-schema';
 import RBACTable from '@/modules/financial/components/rbac/RBACTable.vue';
+import PageContainer from '@/layout/PageContainer.vue';
 
 const states: string[] = ['User', 'Permission'];
 
