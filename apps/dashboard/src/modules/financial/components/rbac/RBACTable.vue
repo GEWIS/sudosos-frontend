@@ -2,10 +2,47 @@
   <div v-if="props.state == 'User'">
     <div v-if="props.form.context.values.systemDefault" class="w-30rem">
       <span>
-        {{ t('modules.financial.rbac.permissions.systemDefault') }}
+        {{ t('modules.admin.rbac.permissions.systemDefault') }}
       </span>
     </div>
-    <div v-else class="w-30rem">{{ t('modules.financial.rbac.permissions.title') }}</div>
+    <div v-else class="w-30rem">
+      <DataTable class="w-full" table-style="min-width: 27.5rem" :value="users ? users : []">
+        <Column field="id">
+          <template #header>
+            {{ t('modules.admin.rbac.permissions.id') }}
+          </template>
+          <template #body="slotProps">
+            {{ slotProps.data.id }}
+          </template>
+        </Column>
+        <Column field="firstName">
+          <template #header>
+            {{ t('modules.admin.rbac.permissions.firstName') }}
+          </template>
+          <template #body="slotProps">
+            {{ slotProps.data.firstName }}
+          </template>
+        </Column>
+        <Column field="lastName">
+          <template #header>
+            {{ t('modules.admin.rbac.permissions.lastName') }}
+          </template>
+          <template #body="slotProps">
+            {{ slotProps.data.lastName }}
+          </template>
+        </Column>
+        <Column>
+          <template #body="slotProps">
+            <Button
+              class="p-button-rounded p-button-text p-button-plain hover:backdrop-brightness-75"
+              icon="pi pi-trash"
+              type="button"
+              @click="handleUserPush(slotProps.data)"
+            />
+          </template>
+        </Column>
+      </DataTable>
+    </div>
   </div>
   <div v-else-if="props.state == 'Permission'" class="flex flex-column justify-content-between gap-3">
     <CardComponent
@@ -14,20 +51,16 @@
       <div class="flex flex-row-reverse flex-wrap gap-3 pb-4">
         <Button
           icon="pi pi-trash"
-          :label="t('modules.financial.rbac.permissions.deletePermission')"
+          :label="t('modules.admin.rbac.permissions.deletePermission')"
           @click="permissionVision = true"
         />
-        <Button
-          icon="pi pi-plus"
-          :label="t('modules.financial.rbac.permissions.addAction')"
-          @click="actionVision = true"
-        />
+        <Button icon="pi pi-plus" :label="t('modules.admin.rbac.permissions.addAction')" @click="actionVision = true" />
       </div>
 
       <DataTable class="w-full" table-style="min-width: 27.5rem" :value="actionRelations ? actionRelations : []">
         <Column field="action">
           <template #header>
-            {{ t('modules.financial.rbac.permissions.action') }}
+            {{ t('modules.admin.rbac.permissions.action') }}
           </template>
           <template #body="slotProps">
             {{ slotProps.data.action }}
@@ -35,7 +68,7 @@
         </Column>
         <Column field="relation">
           <template #header>
-            {{ t('modules.financial.rbac.permissions.relation') }}
+            {{ t('modules.admin.rbac.permissions.relation') }}
           </template>
           <template #body="slotProps">
             {{ slotProps.data.relation }}
@@ -43,7 +76,7 @@
         </Column>
         <Column field="attribute">
           <template #header>
-            {{ t('modules.financial.rbac.permissions.attribute') }}
+            {{ t('modules.admin.rbac.permissions.attribute') }}
           </template>
           <template #body="slotProps">
             {{ slotProps.data.attribute }}
@@ -72,19 +105,19 @@
   </div>
   <Dialog
     v-model:visible="permissionVision"
-    :header="t('modules.financial.rbac.permissions.deletePermission')"
+    :header="t('modules.admin.rbac.permissions.deletePermission')"
     modal
     :style="{ width: '25rem' }"
   >
     <span>{{ 'Are you sure you want to delete ' + form.context.values.currentPermission.entity + '?' }}</span>
     <div class="flex flex-row-reverse flex-wrap gap-3 pt-3">
       <Button
-        :label="t('modules.financial.rbac.permissions.deletePermissionConfirmation')"
+        :label="t('modules.admin.rbac.permissions.deletePermissionConfirmation')"
         type="button"
         @click="handleDeletePermissionPush(form.context.values.id, form.context.values.currentPermission)"
       />
       <Button
-        :label="t('modules.financial.rbac.permissions.deletePermissionCancellation')"
+        :label="t('modules.admin.rbac.permissions.deletePermissionCancellation')"
         type="button"
         @click="permissionVision = false"
       />
@@ -92,7 +125,7 @@
   </Dialog>
   <Dialog
     v-model:visible="actionVision"
-    :header="t('modules.financial.rbac.permissions.addAction')"
+    :header="t('modules.admin.rbac.permissions.addAction')"
     modal
     :style="{ width: '25rem' }"
   >
@@ -128,18 +161,18 @@
     <div v-if="props.form.context.values.systemDefault" class="flex flex-row-reverse flex-wrap gap-3 pt-3">
       <Button
         v-if="props.form.context.values.systemDefault"
-        :label="t('modules.financial.rbac.permissions.actionSubmission')"
+        :label="t('modules.admin.rbac.permissions.actionSubmission')"
         type="button"
         @click="handleAddActionPush()"
       />
       <Button
-        :label="t('modules.financial.rbac.permissions.deletePermissionCancellation')"
+        :label="t('modules.admin.rbac.permissions.deletePermissionCancellation')"
         type="button"
         @click="actionVision = false"
       />
     </div>
   </Dialog>
-  <DynamicDialog :header="t('modules.financial.rbac.permissions.deleteRow')" />
+  <DynamicDialog :header="t('modules.admin.rbac.permissions.deleteRow')" />
 </template>
 
 <script setup lang="ts">
@@ -148,14 +181,13 @@ import * as yup from 'yup';
 import { useI18n } from 'vue-i18n';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import type { ActionResponse, PermissionResponse, RelationResponse } from '@sudosos/sudosos-client';
+import type { ActionResponse, PermissionResponse, RelationResponse, UserResponse } from '@sudosos/sudosos-client';
 import DynamicDialog from 'primevue/dynamicdialog';
 import Dropdown from 'primevue/dropdown';
 import DeleteLine from './DeleteLine.vue';
 import CardComponent from '@/components/CardComponent.vue';
 import { rbacSchema } from '@/utils/validation-schema';
 import { type Form } from '@/utils/formUtils';
-import apiService from '@/services/ApiService';
 
 const { t } = useI18n();
 
@@ -172,6 +204,7 @@ const props = defineProps({
 const permissionVision = ref(false);
 const actionVision = ref(false);
 const actionRelations = ref<any[]>();
+const users = ref<UserResponse[]>();
 const selectedAction = ref();
 const selectedRelation = ref();
 const selectedAttribute = ref();
@@ -189,6 +222,14 @@ watch(
       });
     });
     actionRelations.value = allRelations;
+  },
+);
+
+watch(
+  () => props.form.context.values.users,
+  () => {
+    users.value = props.form.context.values.users;
+    console.error(props.form.context.values.users);
   },
 );
 
@@ -216,6 +257,10 @@ const handleDeletePermissionPush = (id: number, permission: PermissionResponse) 
       console.error(relation.relation);
     });
   });
+};
+
+const handleUserPush = (user: UserResponse) => {
+  console.error(user.firstName);
 };
 </script>
 

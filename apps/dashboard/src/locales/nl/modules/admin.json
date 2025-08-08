@@ -123,6 +123,26 @@
         "selectProduct": "Selecteer een product om toe te voegen",
         "newProductsAdded": "Nieuwe producten toegevoegd",
         "newProduct": "NIEUW"
+      },
+      "rbac": {
+        "title": "RBAC Beheer",
+        "selection": {
+          "title": "Kies een rol"
+        },
+        "permissions": {
+          "title": "Permissies",
+          "entity": "Entity",
+          "crud": "CRUD",
+          "systemDefault": "Deze rol is een systeem standaard, je kan de gebruikers niet zien!",
+          "action": "Action",
+          "relation": "Relation",
+          "attribute": "Attribute",
+          "addAction": "Voeg action toe",
+          "deletePermission": "Verwijder Permissie",
+          "firstName": "First Name",
+          "lastName": "Last Name",
+          "id": "ID"
+        }
       }
     }
   }

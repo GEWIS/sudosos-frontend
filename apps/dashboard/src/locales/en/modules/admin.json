@@ -123,6 +123,26 @@
         "selectProduct": "Select a product to add",
         "newProductsAdded": "New Products Added",
         "newProduct": "NEW"
+      },
+      "rbac": {
+        "title": "RBAC Management",
+        "selection": {
+          "title": "Choose a role"
+        },
+        "permissions": {
+          "title": "Permissions",
+          "entity": "Entity",
+          "crud": "CRUD",
+          "systemDefault": "This role is a system default, you cannot see its users!",
+          "action": "Action",
+          "relation": "Relation",
+          "attribute": "Attribute",
+          "addAction": "Add Action",
+          "deletePermission": "Delete Permission",
+          "firstName": "First Name",
+          "lastName": "Last Name",
+          "id": "ID"
+        }
       }
     }
   }
