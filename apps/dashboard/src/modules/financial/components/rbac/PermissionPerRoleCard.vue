@@ -1,14 +1,14 @@
 <template>
-  <CardComponent :header="t('modules.financial.rbac.permissions.title')">
+  <CardComponent class="w-full" :header="t('modules.admin.rbac.permissions.title')">
     <DataTable :value="input ? input : null">
       <Column field="entity">
         <template #header>
-          {{ t('modules.financial.rbac.permissions.entity') }}
+          {{ t('modules.admin.rbac.permissions.entity') }}
         </template>
       </Column>
       <Column field="icon">
         <template #header>
-          {{ t('modules.financial.rbac.permissions.crud') }}
+          {{ t('modules.admin.rbac.permissions.crud') }}
         </template>
         <template #body="slotProps">
           <i v-if="slotProps.data.icon == 'all'" class="pi pi-check" />
@@ -40,7 +40,6 @@ import { type ActionResponse, type PermissionResponse } from '@sudosos/sudosos-c
 import { type Form, getProperty } from '@/utils/formUtils';
 import { rbacSchema } from '@/utils/validation-schema';
 import CardComponent from '@/components/CardComponent.vue';
-import apiService from '@/services/ApiService';
 
 const props = defineProps({
   form: {
