@@ -88,7 +88,8 @@
       "rbac": {
         "title": "RBAC Beheer",
         "selection": {
-          "title": "Kies een rol"
+          "title": "Kies een rol",
+          "label": ""
         },
         "permissions": {
           "title": "Permissies",
@@ -102,7 +103,10 @@
           "deletePermission": "Verwijder Permissie",
           "firstName": "First Name",
           "lastName": "Last Name",
-          "id": "ID"
+          "id": "ID",
+          "deletePermissionCancellation": "Annuleer",
+          "deletePermissionConfirmation": "Ga door",
+          "deleteRow": "Verwijder rij"
         }
       }
     }

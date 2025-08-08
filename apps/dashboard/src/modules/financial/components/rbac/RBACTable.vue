@@ -85,7 +85,7 @@
         <Column field="delete">
           <template #body="slotProps">
             <Button
-              class="p-button-rounded p-button-text p-button-plain"
+              class="p-button-rounded p-button-text p-button-plain hover:backdrop-brightness-75"
               icon="pi pi-trash"
               type="button"
               @click="
@@ -129,8 +129,8 @@
     modal
     :style="{ width: '25rem' }"
   >
-    <div class="flex flex-column justify-content-center align-items-center gap-3">
-      <Dropdown
+    <div class="grid grid-cols-1 gap-3">
+      <Select
         v-model="selectedAction"
         checkmark
         editable
@@ -139,7 +139,7 @@
         placeholder="Select an Action"
       />
 
-      <Dropdown
+      <Select
         v-model="selectedRelation"
         checkmark
         editable
@@ -148,7 +148,7 @@
         placeholder="Select an Relation"
       />
 
-      <Dropdown
+      <Select
         v-model="selectedAttribute"
         checkmark
         editable
@@ -183,7 +183,6 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import type { ActionResponse, PermissionResponse, RelationResponse, UserResponse } from '@sudosos/sudosos-client';
 import DynamicDialog from 'primevue/dynamicdialog';
-import Dropdown from 'primevue/dropdown';
 import DeleteLine from './DeleteLine.vue';
 import CardComponent from '@/components/CardComponent.vue';
 import { rbacSchema } from '@/utils/validation-schema';
@@ -243,7 +242,7 @@ const handleDeletePush = (entity: string, id: number, action: string, relation: 
       id: id,
     },
     props: {
-      header: t('modules.financial.rbac.permissions.deleteRow'),
+      header: t('modules.admin.rbac.permissions.deleteRow'),
     },
   });
 };
@@ -254,7 +253,7 @@ const handleDeletePermissionPush = (id: number, permission: PermissionResponse) 
   permission.actions.forEach((action: ActionResponse) => {
     action.relations.forEach((relation: RelationResponse) => {
       //apiService.rbac.deletePermission(id, permission.entity, action.action, relation.relation);
-      console.error(relation.relation);
+      console.error(action.action);
     });
   });
 };
