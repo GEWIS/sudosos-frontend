@@ -127,7 +127,8 @@
       "rbac": {
         "title": "RBAC Management",
         "selection": {
-          "title": "Choose a role"
+          "title": "Choose a role",
+          "label": ""
         },
         "permissions": {
           "title": "Permissions",
@@ -141,7 +142,10 @@
           "deletePermission": "Delete Permission",
           "firstName": "First Name",
           "lastName": "Last Name",
-          "id": "ID"
+          "id": "ID",
+          "deletePermissionCancellation": "Cancel",
+          "deletePermissionConfirmation": "Confirm",
+          "deleteRow": "Delete Row"
         }
       }
     }
