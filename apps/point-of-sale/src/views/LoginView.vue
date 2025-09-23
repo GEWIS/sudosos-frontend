@@ -7,7 +7,10 @@
     </div>
     <div v-else class="flex justify-center">
       <div class="flex flex-col items-start w-[20rem]">
-        <div class="flex flex-row space-between transition-all duration-500 ease-in-out mb-5"  :class="displayContainerClasses">
+        <div
+          class="flex flex-row space-between transition-all duration-500 ease-in-out mb-5"
+          :class="displayContainerClasses"
+        >
           <KeypadDisplayComponent
             :external="external"
             :is-active="enteringUserId"
@@ -112,7 +115,7 @@ const handleExternal = () => {
 };
 
 const displayContainerClasses = computed(() => ({
-  "ml-[-23rem]": !enteringUserId.value,
+  'ml-[-23rem]': !enteringUserId.value,
 }));
 
 const loginSucces = async () => {
@@ -197,5 +200,4 @@ const shouldShowBanner = computed(() => {
 });
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

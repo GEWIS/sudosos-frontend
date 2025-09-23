@@ -26,10 +26,12 @@
         class="h-24 w-full"
         :pt="{
           text: {
-            class: 'text-4xl! text-center w-full'
-          }
+            class: 'text-4xl! text-center w-full',
+          },
         }"
-        severity="error">WRONG PIN</Message>
+        severity="error"
+        >WRONG PIN</Message
+      >
       <div
         v-else
         class="items-center flex h-full justify-between w-full"
