@@ -145,7 +145,12 @@
           "id": "ID",
           "deletePermissionCancellation": "Cancel",
           "deletePermissionConfirmation": "Confirm",
-          "deleteRow": "Delete Row"
+          "deleteRow": "Delete Row",
+          "actionSubmission": "Submit"
+        },
+        "users": {
+          "addUser": "Add User",
+          "deleteUser": "Delete User"
         }
       }
     }

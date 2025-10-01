@@ -6,6 +6,14 @@
       </span>
     </div>
     <div v-else class="w-30rem">
+      <div class="flex flex-row-reverse flex-wrap">
+        <Button
+          class=""
+          icon="pi pi-plus"
+          :label="t('modules.admin.rbac.users.addUser')"
+          @click="actionVision = true"
+        />
+      </div>
       <DataTable class="w-full" table-style="min-width: 27.5rem" :value="users ? users : []">
         <Column field="id">
           <template #header>
@@ -37,7 +45,7 @@
               class="p-button-rounded p-button-text p-button-plain hover:backdrop-brightness-75"
               icon="pi pi-trash"
               type="button"
-              @click="handleUserPush(slotProps.data)"
+              @click="handleDeleteUserPush(slotProps.data)"
             />
           </template>
         </Column>
@@ -172,7 +180,52 @@
       />
     </div>
   </Dialog>
-  <DynamicDialog :header="t('modules.admin.rbac.permissions.deleteRow')" />
+  <Dialog
+    v-model:visible="deleteUserVision"
+    :header="t('modules.admin.rbac.users.deleteUser')"
+    modal
+    :style="{ width: '25rem' }"
+  >
+    <span>{{
+      'Are you sure you want to delete ' +
+      props.form.context.values.currentUser.firstName +
+      ' from ' +
+      props.form.context.values.name +
+      ' ?'
+    }}</span>
+    <div class="flex flex-row-reverse flex-wrap gap-3 pt-3">
+      <Button
+        :label="t('modules.admin.rbac.permissions.deletePermissionConfirmation')"
+        type="button"
+        @click="handleDeleteUserConfirmation(props.form.context.values.currentUser.id, props.form.context.values.id)"
+      />
+      <Button
+        :label="t('modules.admin.rbac.permissions.deletePermissionCancellation')"
+        type="button"
+        @click="deleteUserVision = false"
+      />
+    </div>
+  </Dialog>
+  <Dialog
+    v-model:visible="addUserVision"
+    :header="t('modules.admin.rbac.users.deleteUser')"
+    modal
+    :style="{ width: '25rem' }"
+  >
+    <!--TODO Implement search for user-->
+    <div class="flex flex-row-reverse flex-wrap gap-3 pt-3">
+      <Button
+        :label="t('modules.admin.rbac.permissions.deletePermissionConfirmation')"
+        type="button"
+        @click="handleAddUserPush()"
+      />
+      <Button
+        :label="t('modules.admin.rbac.permissions.deletePermissionCancellation')"
+        type="button"
+        @click="addUserVision = false"
+      />
+    </div>
+  </Dialog>
 </template>
 
 <script setup lang="ts">
@@ -182,11 +235,12 @@ import { useI18n } from 'vue-i18n';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import type { ActionResponse, PermissionResponse, RelationResponse, UserResponse } from '@sudosos/sudosos-client';
-import DynamicDialog from 'primevue/dynamicdialog';
-import DeleteLine from './DeleteLine.vue';
+import { useToast } from 'primevue/usetoast';
 import CardComponent from '@/components/CardComponent.vue';
 import { rbacSchema } from '@/utils/validation-schema';
 import { type Form } from '@/utils/formUtils';
+import apiService from '@/services/ApiService';
+import { handleError } from '@/utils/errorUtils';
 
 const { t } = useI18n();
 
@@ -202,6 +256,8 @@ const props = defineProps({
 
 const permissionVision = ref(false);
 const actionVision = ref(false);
+const deleteUserVision = ref(false);
+const addUserVision = ref(false);
 const actionRelations = ref<any[]>();
 const users = ref<UserResponse[]>();
 const selectedAction = ref();
@@ -210,6 +266,7 @@ const selectedAttribute = ref();
 const testsActions = ['action1', 'action2', 'action3'];
 const testsRelations = ['relation1', 'relation2', 'relation3'];
 const testsAttributes = ['attribute1', 'attribute2', 'attribute3'];
+const toast = useToast();
 
 watch(
   () => props.form.context.values.currentPermission,
@@ -228,23 +285,11 @@ watch(
   () => props.form.context.values.users,
   () => {
     users.value = props.form.context.values.users;
-    console.error(props.form.context.values.users);
   },
 );
 
 const handleDeletePush = (entity: string, id: number, action: string, relation: string, attribute: string) => {
-  dialog.open(DeleteLine, {
-    data: {
-      action: action,
-      relation: relation,
-      attribute: attribute,
-      entity: entity,
-      id: id,
-    },
-    props: {
-      header: t('modules.admin.rbac.permissions.deleteRow'),
-    },
-  });
+  //TODO: Implement method
 };
 
 const handleAddActionPush = () => {};
@@ -258,9 +303,16 @@ const handleDeletePermissionPush = (id: number, permission: PermissionResponse) 
   });
 };
 
-const handleUserPush = (user: UserResponse) => {
-  console.error(user.firstName);
+const handleDeleteUserPush = (user: UserResponse) => {
+  deleteUserVision.value = true;
+  props.form.context.setFieldValue('currentUser', user);
 };
+
+const handleDeleteUserConfirmation = (userId: number, roleId: number) => {
+  apiService.user.deleteUserRole(userId, roleId).catch((err) => handleError(err, toast));
+};
+
+const handleAddUserPush = () => {};
 </script>
 
 <style scoped lang="scss"></style>
