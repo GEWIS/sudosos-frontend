@@ -145,7 +145,12 @@
           "id": "ID",
           "deletePermissionCancellation": "Annuleer",
           "deletePermissionConfirmation": "Ga door",
-          "deleteRow": "Verwijder rij"
+          "deleteRow": "Verwijder rij",
+          "actionSubmission": "Voeg toe"
+        },
+        "users": {
+          "addUser": "Voeg gebruiker toe",
+          "deleteUser": "Verwijder gebruiker"
         }
       }
     }
