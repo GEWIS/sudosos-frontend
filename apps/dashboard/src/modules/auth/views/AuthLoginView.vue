@@ -9,6 +9,9 @@
     <Button id="login-gewis-button" class="items-center flex justify-center mx-auto my-3 w-64" @click="navigateToLocal">
       {{ t('modules.auth.login.localAccount') }}
     </Button>
+    <Button id="login-qr-button" class="items-center flex justify-center mx-auto my-3 w-64" @click="navigateToQr">
+      📱 {{ t('modules.auth.qr.title') }}
+    </Button>
   </div>
 </template>
 
@@ -30,6 +33,10 @@ const returning = ref();
 
 const navigateToLocal = () => {
   void router.push('/local');
+};
+
+const navigateToQr = () => {
+  void router.push('/qr?redirect=/transaction');
 };
 
 const hasToken = () => {
