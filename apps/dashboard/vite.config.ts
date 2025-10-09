@@ -28,7 +28,7 @@ export default defineConfig(() => {
       port: 5173,
       proxy: {
         '/api/v1': {
-          target: PROXY_URL + '/api/v1',
+          target: 'http://localhost:3000/v1',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api\/v1/, ''),
         },
@@ -38,7 +38,7 @@ export default defineConfig(() => {
           rewrite: (path) => path.replace(/^\/static/, ''),
         },
         '/ws': {
-          target: PROXY_URL + '/ws',
+          target: 'http://localhost:8080',
           changeOrigin: true,
           ws: true,
           rewrite: (path) => path.replace(/^\/ws/, ''),
