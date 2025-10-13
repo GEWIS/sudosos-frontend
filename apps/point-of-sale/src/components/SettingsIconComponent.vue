@@ -1,5 +1,5 @@
 <template>
-  <div class="settings-icon" @click="openSettings">
+  <div class="m-5 cursor-pointer" @click="openSettings">
     <div class="pi pi-cog" style="font-size: 3rem" />
   </div>
   <Dialog
@@ -94,14 +94,5 @@ const openSettings = async () => {
 
 .dialog-close {
   color: white !important;
-}
-.settings-icon {
-  height: 100px;
-  position: fixed;
-  left: 60px;
-  font-size: 70px;
-  cursor: pointer;
-  bottom: 0;
-  color: var(--accent-color);
 }
 </style>

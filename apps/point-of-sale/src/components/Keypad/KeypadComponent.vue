@@ -1,6 +1,6 @@
 <template>
-  <div class="flex-col keypad">
-    <div v-for="row in keypadLayout" :key="row[0]" class="flex justify-center key-row">
+  <div class="flex flex-col w-full gap-3">
+    <div v-for="row in keypadLayout" :key="row[0]" class="flex justify-center gap-3">
       <Button
         v-for="key in row"
         :key="key"
@@ -38,11 +38,6 @@ const handleKeyClick = (key: string) => {
 </script>
 
 <style scoped lang="scss">
-.keypad {
-  gap: 8px;
-  //border-radius: $border-radius;
-  user-select: none;
-}
 
 .key {
   color: rgba(255, 255, 255, 0.8) !important;

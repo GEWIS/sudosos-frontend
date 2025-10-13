@@ -1,39 +1,41 @@
 <template>
-  <div class="m-5">
-    <div v-if="loggingIn" class="items-center flex h-full justify-center">
-      <div>
-        <ProgressSpinner aria-label="Loading" />
+  <div class="flex flex-col h-dvh">
+    <div class="m-5 p-5 bg-[#ffffffEE] shadow-lg rounded-lg flex-grow">
+      <div v-if="loggingIn" class="items-center flex h-full justify-center">
+        <div>
+          <ProgressSpinner aria-label="Loading" />
+        </div>
       </div>
-    </div>
-    <div v-else class="flex justify-center">
-      <div class="flex flex-col items-start w-[20rem]">
-        <div
-          class="flex flex-row space-between transition-all duration-500 ease-in-out mb-5"
-          :class="displayContainerClasses"
-        >
-          <KeypadDisplayComponent
-            :external="external"
-            :is-active="enteringUserId"
-            :pin-code="pinCode"
-            :user-id="userId"
-            :wrong-pin="wrongPin"
-            @focus:passcode="focusPasscode"
-            @focus:userid="focusUserId"
+      <div v-else class="flex justify-center">
+        <div class="flex flex-col items-start w-[20rem]">
+          <div
+            class="flex flex-row space-between transition-all duration-500 ease-in-out mb-5"
+            :class="displayContainerClasses"
+          >
+            <KeypadDisplayComponent
+              :external="external"
+              :is-active="enteringUserId"
+              :pin-code="pinCode"
+              :user-id="userId"
+              :wrong-pin="wrongPin"
+              @focus:passcode="focusPasscode"
+              @focus:userid="focusUserId"
+            />
+          </div>
+          <KeypadComponent
+            @backspace="handleBackspace"
+            @continue="handleContinue"
+            @external="handleExternal"
+            @input="handleInput"
           />
         </div>
-        <KeypadComponent
-          @backspace="handleBackspace"
-          @continue="handleContinue"
-          @external="handleExternal"
-          @input="handleInput"
-        />
+        <BannerComponent v-if="shouldShowBanner" />
       </div>
-      <BannerComponent v-if="shouldShowBanner" />
     </div>
+    <SettingsIconComponent />
+    <GitInfo />
+    <ScannersLoginComponent :handle-ean-login="eanLogin" :handle-nfc-login="nfcLogin" />
   </div>
-  <SettingsIconComponent />
-  <GitInfo />
-  <ScannersLoginComponent :handle-ean-login="eanLogin" :handle-nfc-login="nfcLogin" />
 </template>
 
 <script setup lang="ts">
