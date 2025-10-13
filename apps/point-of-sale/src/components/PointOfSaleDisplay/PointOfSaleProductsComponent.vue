@@ -110,6 +110,7 @@ const sortedProducts = computed(() => {
 
   > .container {
     //grid-template-columns: repeat(auto-fill, minmax($product-column-width, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
     display: grid;
   }
 }

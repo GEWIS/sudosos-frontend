@@ -1,21 +1,24 @@
 <template>
-  <div class="text-center product-card shadow-lg mb-2 py-2">
-    <div class="image-container">
+  <div class="relative text-center h-40 shadow-lg bg-white p-2 m-2 flex flex-col rounded-lg">
+    <div class="flex-1 min-h-0 flex items-center justify-center">
       <img
         ref="productImage"
         :alt="product.name"
-        class="product-card-image"
-        :class="{ pulsing, featured: product.featured }"
         :src="image"
         @click="addToCart"
+        class="h-full w-auto max-w-full object-contain"
+        :class="{ pulsing, featured: product.featured }"
       />
-      <div v-if="product.featured" class="promo-tag">PROMO</div>
+      <div v-if="product.featured" class="promo-tag absolute top-2 left-2">PROMO</div>
     </div>
-    <div class="product-name-wrapper">
-      <p class="product-name font-size-md font-bold m-0 px-2">{{ product.name }}</p>
+
+    <!-- TEXT AREA: fixed height including both name + price -->
+    <div class="h-14 flex flex-col justify-center px-2">
+      <p class="text-sm font-bold leading-tight truncate m-0">{{ product.name }}</p>
+      <p class="text-xs m-0">€{{ productPrice }}</p>
     </div>
-    <p class="product-price font-size-sm m-0">€{{ productPrice }}</p>
   </div>
+
 </template>
 
 <script setup lang="ts">
