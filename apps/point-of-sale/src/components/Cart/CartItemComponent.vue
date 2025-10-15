@@ -9,8 +9,8 @@
       />
   
       <div class>
-        <h4 class="font-bold m-0 text-base text-overflow w-5rem" style="max-width: 100px">{{ product.name }}</h4>
-        <p class="font-size-sm m-0">{{ product.category.name }}</p>
+        <h4 class="font-bold m-0 truncate w-5rem" style="max-width: 100px">{{ product.name }}</h4>
+        <p class="text-sm m-0">{{ product.category.name }}</p>
       </div>
       <div class="flex gap-2">
         <Button class="bg-red w-5 h-6 shadow-sm" @click="decreaseQuantity">-</Button>
