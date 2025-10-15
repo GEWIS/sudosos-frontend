@@ -2,11 +2,12 @@
   <div class="point-of-sale">
     <div class="header">
       <div v-show="isSearchViewVisible">
-        <div class="header-row">
-          <div class="active c-btn icon-large search-close square" @click="closeSearchView">
+        <div class="flex flex-row">
+          <Button class="icon-large search-close square mr-5" @click="closeSearchView">
             <i class="pi pi-times text-4xl" />
-          </div>
+          </Button>
           <input
+            class="rounded p-2"
             id="searchInput"
             ref="searchInput"
             v-model="searchQuery"
@@ -19,18 +20,18 @@
       <div v-show="!isSearchViewVisible">
         <div class="flex justify-between w-full">
           <div class="flex flex-wrap gap-2">
-            <label class="c-btn icon-md search-close" for="searchInput" @click="openSearchView">
+            <Button outlined class="icon-md search-close border-0" for="searchInput" @click="openSearchView">
               <i class="pi pi-search" style="font-size: 2rem" />
-            </label>
-            <div
+            </Button>
+            <Button
               v-for="category in computedCategories"
               :key="category.id"
-              class="c-btn font-size-lg px-5 shadow-sm square"
-              :class="{ active: category.id === selectedCategoryId }"
+              class="text-lg px-5 shadow-sm square"
+              :outlined="category.id !== selectedCategoryId"
               @click="selectCategory(category.id)"
             >
               {{ category.name }}
-            </div>
+            </Button>
           </div>
         </div>
       </div>
