@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col h-dvh">
+  <div class="flex flex-col h-screen">
     <div class="m-5 p-5 bg-[#ffffffEE] shadow-lg rounded-lg flex-grow">
       <div v-if="loggingIn" class="items-center flex h-full justify-center">
         <div>
