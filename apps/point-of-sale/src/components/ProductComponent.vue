@@ -80,7 +80,7 @@ const startFlyingAnimation = async () => {
 
   // $product-column-width - $product-card-size
   const offset = 36;
-
+  console.log(rect.left, rect.top)
   flyElement.style.position = 'fixed';
   flyElement.style.top = `${rect.top}px`;
   flyElement.style.left = `${rect.left + offset}px`;
@@ -95,8 +95,8 @@ const startFlyingAnimation = async () => {
 
   // Move the flying element to the destination element's position using the delta values
   flyElement.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
-  flyElement.style.width = '52px';
-  flyElement.style.height = '52px';
+  flyElement.style.width = '3rem';
+  flyElement.style.height = '3rem';
 
   // Cleanup the temporary element after the animation is complete
   const removeFlyElement = () => {

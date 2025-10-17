@@ -1,6 +1,6 @@
 <template>
   <div class="mt-1">
-    <div class="flex flex-row items-center justify-between mb-2 h-15 min-h-0 max-w-full">
+    <div class="flex-1 flex flex-row items-center justify-start mb-2 h-15 min-h-0 max-w-full"> 
       <img
         :id="product.name"
         :alt="product.name"
@@ -8,16 +8,17 @@
         :src="getProductImageSrc(product)"
       />
   
-      <div class>
-        <h4 class="font-bold m-0 truncate w-5rem" style="max-width: 100px">{{ product.name }}</h4>
-        <p class="text-sm m-0">{{ product.category.name }}</p>
+      <div class="flex-1 ml-2 min-w-0">
+        <h4 class="font-bold truncate">{{ product.name }}</h4>
+        <p class="text-sm">{{ product.category.name }}</p>
       </div>
-      <div class="flex gap-2">
-        <Button class="bg-red w-5 h-6 shadow-sm" @click="decreaseQuantity">-</Button>
+      <div class="flex">
+        <Button class="bg-red w-5 h-6 shadow-sm text-3xl" @click="decreaseQuantity">-</Button>
         <span class="font-bold w-5 text-center">{{ cartProduct.count }}</span>
-        <Button class="w-5 h-6 shadow-sm" @click="increaseQuantity">+</Button>
+        <Button class="w-5 h-6 shadow-sm text-2xl" @click="increaseQuantity">+</Button>
       </div>
-      <p class="font-bold text-right">€{{ totalPrice }}</p>
+
+      <p class="font-bold text-right basis-1/5">€{{ totalPrice }}</p>
     </div>
   </div>
 </template>
