@@ -4,10 +4,10 @@
       <img
         ref="productImage"
         :alt="product.name"
-        :src="image"
-        @click="addToCart"
         class="h-full w-auto max-w-full object-contain"
         :class="{ pulsing, featured: product.featured }"
+        :src="image"
+        @click="addToCart"
       />
       <div v-if="product.featured" class="promo-tag absolute top-2 left-2">PROMO</div>
     </div>
@@ -80,7 +80,6 @@ const startFlyingAnimation = async () => {
 
   // $product-column-width - $product-card-size
   const offset = 36;
-  console.log(rect.left, rect.top)
   flyElement.style.position = 'fixed';
   flyElement.style.top = `${rect.top}px`;
   flyElement.style.left = `${rect.left + offset}px`;

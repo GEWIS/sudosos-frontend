@@ -18,11 +18,11 @@
       <div id="scanners" class="scanners" />
       <ProgressSpinner
         animation-duration="1s"
+        class="mb-4"
         fill="transparent"
         stroke-width="6"
         style="width: 75px; height: 75px"
         :style="{ display: 'flex' }"
-        class="mb-4"
       />
       <b class="bold">Scan your NFC card now!</b><br />
       <span class="text-sm text-center">Note: Banking cards, ID cards and phones will not work</span><br />

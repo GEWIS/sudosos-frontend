@@ -7,11 +7,11 @@
             <i class="pi pi-times text-4xl" />
           </Button>
           <input
-            class="rounded p-2"
             id="searchInput"
             ref="searchInput"
             v-model="searchQuery"
             autocomplete="off"
+            class="rounded p-2"
             placeholder="Search..."
             type="text"
           />
@@ -20,7 +20,7 @@
       <div v-show="!isSearchViewVisible">
         <div class="flex justify-between w-full">
           <div class="flex flex-wrap gap-2">
-            <Button outlined class="icon-md search-close border-0" for="searchInput" @click="openSearchView">
+            <Button class="icon-md search-close border-0" for="searchInput" outlined @click="openSearchView">
               <i class="pi pi-search" style="font-size: 2rem" />
             </Button>
             <Button

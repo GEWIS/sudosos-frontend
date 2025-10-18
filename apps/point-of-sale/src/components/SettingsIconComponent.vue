@@ -43,6 +43,8 @@ import { computed, Ref, ref, watch } from 'vue';
 import { addListenerOnDialogueOverlay, useAuthStore } from '@sudosos/sudosos-frontend-common';
 import { StoreGeneric, storeToRefs } from 'pinia';
 import { PointOfSaleResponse } from '@sudosos/sudosos-client';
+import { SudososRed } from '@sudosos/themes';
+import { usePreset } from '@primeuix/themes';
 import { usePointOfSaleStore } from '@/stores/pos.store';
 import { PointOfSaleSwitchService } from '@/services/PointOfSaleSwitchService';
 import { logoutService } from '@/services/logoutService';
@@ -66,6 +68,8 @@ watch(selectedPos, () => {
 });
 
 const forceExit = async () => {
+  // This is pretty dirty, but this will be fixed with POS Authentication (I think/hope)
+  usePreset(SudososRed);
   usePointOfSaleStore().$reset();
   await logoutService();
 };
