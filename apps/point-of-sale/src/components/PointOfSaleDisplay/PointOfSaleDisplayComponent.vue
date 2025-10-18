@@ -1,5 +1,5 @@
 <template>
-  <div class="point-of-sale">
+  <div class="flex flex-col h-full">
     <div class="header">
       <div v-show="isSearchViewVisible">
         <div class="flex flex-row">
@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    <div class="mr-6">
+    <div class="m-2 mr-6">
       <Message v-if="isCategoryAlcoholic && !useSettingStore().isAlcoholTime" severity="warn">
         Please note that today, alcoholic drinks are only allowed to be served after
         {{

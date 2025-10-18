@@ -5,7 +5,7 @@
         <ProgressSpinner aria-label="Loading" />
       </div>
     </div>
-    <div v-else class="m-5 p-5 bg-[#ffffffEE] shadow-lg rounded-lg flex-grow">
+    <div v-else class="m-5 p-5 bg-[#ffffffEE] shadow-lg flex-grow rounded-lg min-h-0">
       <div class="wrapper">
         <div class="pos-wrapper">
           <TopUpWarningComponent
@@ -26,8 +26,10 @@
         </div>
       </div>
     </div>
-    <SettingsIconComponent />
-    <ScannersUpdateComponent :handle-nfc-delete="nfcDelete" :handle-nfc-update="nfcUpdate" />
+    <div class="flex flex-row">
+      <SettingsIconComponent />
+      <ScannersUpdateComponent :handle-nfc-delete="nfcDelete" :handle-nfc-update="nfcUpdate" />
+    </div>
     <NfcSearchComponent :handle-nfc-search="cartStore.setBuyerFromNfc" />
   </div>
 </template>

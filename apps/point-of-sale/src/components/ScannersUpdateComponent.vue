@@ -1,5 +1,5 @@
 <template>
-  <div class="nfc-icon" @click="() => (nfcModalVisible = true)">
+  <div class="m-5 cursor-pointer" @click="() => (nfcModalVisible = true)">
     <div class="pi pi-id-card" style="font-size: 3rem" />
   </div>
   <Dialog
