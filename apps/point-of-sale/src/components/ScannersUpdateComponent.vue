@@ -20,14 +20,15 @@
         animation-duration="1s"
         fill="transparent"
         stroke-width="6"
-        style="width: 50px; height: 50px"
+        style="width: 75px; height: 75px"
         :style="{ display: 'flex' }"
+        class="mb-4"
       />
-      <b style="font-weight: bold !important">Scan your NFC card now!</b><br />
-      <b>Note: Banking cards, ID cards and phones will not work</b><br />
-      <button class="active rounded-md c-btn font-medium px-2 py-1 mt-1 text-base" @click="deleteNfc">
+      <b class="bold">Scan your NFC card now!</b><br />
+      <span class="text-sm text-center">Note: Banking cards, ID cards and phones will not work</span><br />
+      <Button class="font-medium px-2 py-1 mt-1 text-base" @click="deleteNfc">
         Remove linked NFC
-      </button>
+      </Button>
     </div>
   </Dialog>
 </template>
