@@ -6,10 +6,10 @@
           <ProgressSpinner aria-label="Loading" />
         </div>
       </div>
-      <div v-else class="flex justify-center mt-14">
+      <div v-else class="flex justify-center mt-8">
         <div class="flex flex-col items-start w-[20rem]">
           <div
-            class="flex flex-row space-between transition-all duration-500 ease-in-out mb-10"
+            class="flex flex-row space-between transition-all duration-500 ease-in-out mb-5"
             :class="displayContainerClasses"
           >
             <KeypadDisplayComponent
@@ -29,7 +29,7 @@
             @input="handleInput"
           />
         </div>
-        <BannerComponent v-if="shouldShowBanner" />
+        <BannerComponent v-if="shouldShowBanner"/>
       </div>
     </div>
     <SettingsIconComponent />

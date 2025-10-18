@@ -27,7 +27,7 @@
     <div class="flex justify-center items-center">
       <Button
         v-if="!borrelMode"
-        class="p-3 text-2xl bg-red-500 text-white flex items-center justify-center w-16 h-16"
+        class="p-3 text-2xl text-white flex items-center justify-center w-16 h-16"
         @click="logout"
       >
         <i class="pi pi-times" style="font-size: 2rem" />

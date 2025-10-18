@@ -52,7 +52,7 @@ const handleKeyClick = (key: string) => {
 }
 
 .backspace {
-  background-color: #d40000 !important;
+  background-color: var(--p-primary-color);
   color: rgba(255, 255, 255, 1);
 }
 
@@ -60,11 +60,11 @@ const handleKeyClick = (key: string) => {
   background-color: transparent !important;
   border-style: solid;
   border-width: 3px;
-  border-color: #d40000;
-  color: #d40000 !important;
+  border-color: var(--p-primary-color);
+  color: var(--p-primary-color) !important;
 
   > * {
-    color: #d40000 !important;
+    color: var(--p-primary-color) !important;
   }
 }
 </style>
