@@ -7,17 +7,13 @@
     v-model:visible="visible"
     header="Settings"
     modal
-    :pt="{
-      header: () => ({ class: ['dialog-header'] }),
-      closeButton: () => ({ class: ['dialog-close'] }),
-    }"
     :style="{ width: '50vw' }"
     @show="addListenerOnDialogueOverlay(settings!)"
   >
     <div>
       <div v-if="pointOfSale">
         Switch POS to
-        <Dropdown
+        <Select
           v-model="selectedPos"
           class="md:w-14rem w-full"
           :loading="loadingPos"
@@ -31,11 +27,11 @@
           <template #option="slotProps">
             {{ slotProps.option.name }}
           </template>
-        </Dropdown>
+        </Select>
         <div class="mt-2">
-          <button class="active rounded-md c-btn font-medium p-2 text-base" @click="forceExit">
+          <Button class="active rounded-md font-md p-2 text-base" @click="forceExit">
             Force logout and exit POS
-          </button>
+          </Button>
         </div>
       </div>
     </div>
@@ -87,12 +83,4 @@ const openSettings = async () => {
 </script>
 
 <style lang="scss">
-.dialog-header {
-  background: var(--accent-color) !important;
-  color: white !important;
-}
-
-.dialog-close {
-  color: white !important;
-}
 </style>
