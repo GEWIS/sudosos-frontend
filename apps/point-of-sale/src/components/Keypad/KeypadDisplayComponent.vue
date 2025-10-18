@@ -1,7 +1,7 @@
 <template>
   <LoginInfoComponent />
   <div class="w-[20rem] mr-12" :class="{ inactive: !isActive }">
-    <i class="pi pi-user text-center w-full" style="font-size: 3rem" />
+    <i class="pi pi-user text-center w-full mb-4 text-primary" style="font-size: 3rem" />
     <Card
       class="h-24 text-5xl font-bold pl-3 text-primary"
       @click="
@@ -19,7 +19,7 @@
     </Card>
   </div>
   <div class="w-[20rem]" :class="{ inactive: isActive }">
-    <i class="pi pi-key text-center w-full" style="font-size: 3rem" />
+    <i class="pi pi-key text-center w-full mb-4 text-primary" style="font-size: 3rem" />
     <div>
       <Message
         v-if="wrongPin"
