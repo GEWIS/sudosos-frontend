@@ -15,12 +15,6 @@ import { isBetaEnabled } from '@/utils/betaUtil';
 
 const CONDITIONAL_PRESET_KEY = 'conditional-preset';
 
-const FALLBACK_PRESET = {
-  label: 'Sudosos',
-  condition: ref(true),
-  preset: SudososRed,
-};
-
 type Preset = typeof SudososRed;
 
 type PresetEntry = {
@@ -40,20 +34,27 @@ const ORGANS = {
 
 /**
  * Composable for managing preset
- * @returns {Object} Object containing the currentPreset, availablePreset, applyPreset and applyInitialPreset functions
+ * @returns {Object} Object containing the currentPreset, availablePresets, applyPreset and applyInitialPreset functions
  */
 export function useConditionalPreset() {
   const conditionalPresets = [
-    FALLBACK_PRESET,
+    { label: 'SudoSOS', condition: computed(() => true), preset: SudososRed },
     { label: ORGANS.BAC, condition: useOrganMember(ORGANS.BAC), preset: GrolschGreen },
     { label: ORGANS.ATHENA, condition: useOrganMember(ORGANS.ATHENA), preset: AthenaPinkBlue },
     { label: ORGANS.IVV, condition: useOrganMember(ORGANS.IVV), preset: IvvNavy },
     { label: ORGANS.BOOM, condition: useOrganMember(ORGANS.BOOM), preset: BoomMango },
     { label: ORGANS.DEFI, condition: useOrganMember(ORGANS.DEFI), preset: DefiLilac },
     { label: ORGANS.GEPWNAGE, condition: useOrganMember(ORGANS.GEPWNAGE), preset: GepwnageYellow },
-    { label: 'Beta', condition: computed(() => isBetaEnabled()), preset: BetaBlue },
   ];
-  const availablePresets = computed(() => conditionalPresets.filter((entry: PresetEntry) => entry.condition.value));
+
+  const availablePresets = computed(() => {
+    if (isBetaEnabled()) {
+      // Enforce beta theme if beta is enabled.
+      return [{ label: 'Beta', condition: computed(() => true), preset: BetaBlue }];
+    } else {
+      return conditionalPresets.filter((entry: PresetEntry) => entry.condition.value);
+    }
+  });
 
   const getInitialPreset = () => {
     const stored = localStorage.getItem(CONDITIONAL_PRESET_KEY);
