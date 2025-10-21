@@ -18,7 +18,6 @@
       <p class="text-xs m-0">€{{ productPrice }}</p>
     </div>
   </div>
-
 </template>
 
 <script setup lang="ts">

@@ -14,12 +14,8 @@
           type="text"
           @input="updateSearchQuery($event as InputEvent)"
         />
-        <Button v-if="!settings.isBorrelmode" class="text-xl" @click="selectSelf()">
-          Charge yourself
-        </Button>
-        <Button v-else-if="settings.isBorrelmode" class="text-xl" @click="selectNone()">
-          Select no one
-        </Button>
+        <Button v-if="!settings.isBorrelmode" class="text-xl" @click="selectSelf()"> Charge yourself </Button>
+        <Button v-else-if="settings.isBorrelmode" class="text-xl" @click="selectNone()"> Select no one </Button>
       </div>
     </div>
     <div>

@@ -26,9 +26,7 @@
       />
       <b class="bold">Scan your NFC card now!</b><br />
       <span class="text-sm text-center">Note: Banking cards, ID cards and phones will not work</span><br />
-      <Button class="font-medium px-2 py-1 mt-1 text-base" @click="deleteNfc">
-        Remove linked NFC
-      </Button>
+      <Button class="font-medium px-2 py-1 mt-1 text-base" @click="deleteNfc"> Remove linked NFC </Button>
     </div>
   </Dialog>
 </template>

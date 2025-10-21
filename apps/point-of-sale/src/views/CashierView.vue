@@ -14,7 +14,10 @@
             @update:show="handleTopUpWarningUpdate"
           />
           <UserSearchComponent v-if="currentState === PointOfSaleState.SEARCH_USER" @cancel-search="cancelSearch()" />
-          <PointOfSaleDisplayComponent v-if="currentState === PointOfSaleState.DISPLAY_POS" :point-of-sale="currentPos" />
+          <PointOfSaleDisplayComponent
+            v-if="currentState === PointOfSaleState.DISPLAY_POS"
+            :point-of-sale="currentPos"
+          />
           <BuyerSelectionComponent
             v-if="currentState === PointOfSaleState.SELECT_CREATOR"
             @cancel-select-creator="cancelSelectCreator()"

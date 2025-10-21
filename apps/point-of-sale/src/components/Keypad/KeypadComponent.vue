@@ -38,7 +38,6 @@ const handleKeyClick = (key: string) => {
 </script>
 
 <style scoped lang="scss">
-
 .key {
   color: rgba(255, 255, 255, 0.8) !important;
   width: 95px;

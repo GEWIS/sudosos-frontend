@@ -1,13 +1,13 @@
 <template>
   <div class="mt-1">
-    <div class="flex-1 flex flex-row items-center justify-start mb-2 h-15 min-h-0 max-w-full"> 
+    <div class="flex-1 flex flex-row items-center justify-start mb-2 h-15 min-h-0 max-w-full">
       <img
         :id="product.name"
         :alt="product.name"
         class="size-12 object-contain rounded bg-white"
         :src="getProductImageSrc(product)"
       />
-  
+
       <div class="flex-1 ml-2 min-w-0">
         <h4 class="font-bold truncate">{{ product.name }}</h4>
         <p class="text-sm">{{ product.category.name }}</p>
@@ -54,5 +54,4 @@ const totalPrice = computed(() => {
 });
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

@@ -29,7 +29,7 @@
             @input="handleInput"
           />
         </div>
-        <BannerComponent v-if="shouldShowBanner"/>
+        <BannerComponent v-if="shouldShowBanner" />
       </div>
     </div>
     <SettingsIconComponent />
