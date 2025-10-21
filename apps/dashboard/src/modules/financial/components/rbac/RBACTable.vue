@@ -11,7 +11,7 @@
           class=""
           icon="pi pi-plus"
           :label="t('modules.admin.rbac.users.addUser')"
-          @click="actionVision = true"
+          @click="addUserVision = true"
         />
       </div>
       <DataTable class="w-full" table-style="min-width: 27.5rem" :value="users ? users : []">
@@ -208,11 +208,20 @@
   </Dialog>
   <Dialog
     v-model:visible="addUserVision"
-    :header="t('modules.admin.rbac.users.deleteUser')"
+    :header="t('modules.admin.rbac.users.addUser')"
     modal
     :style="{ width: '25rem' }"
   >
-    <!--TODO Implement search for user-->
+    <InputUserSpan
+      id="name"
+      column
+      :errors="t('modules.admin.rbac.users.addUser')"
+      label=""
+      placeholder="John Doe"
+      :show-positive="true"
+      :value="props.form.context.values.currentUser"
+      @update:value="form.context.setFieldValue('currentUser', $event)"
+    />
     <div class="flex flex-row-reverse flex-wrap gap-3 pt-3">
       <Button
         :label="t('modules.admin.rbac.permissions.deletePermissionConfirmation')"
@@ -226,6 +235,32 @@
       />
     </div>
   </Dialog>
+  <Dialog
+    v-model:visible="addUserConfirmationVision"
+    :header="t('modules.admin.rbac.users.addUser')"
+    modal
+    :style="{ width: '25rem' }"
+  >
+    <span>{{
+      'Are you sure you want to add ' +
+      props.form.context.values.currentUser.firstName +
+      ' to ' +
+      props.form.context.values.name +
+      ' ?'
+    }}</span>
+    <div class="flex flex-row-reverse flex-wrap gap-3 pt-3">
+      <Button
+        :label="t('modules.admin.rbac.permissions.deletePermissionConfirmation')"
+        type="button"
+        @click="handleAddUserConfirmationPush(props.form.context.values.currentUser.id, props.form.context.values.id)"
+      />
+      <Button
+        :label="t('modules.admin.rbac.permissions.deletePermissionCancellation')"
+        type="button"
+        @click="addUserConfirmationVision = false"
+      />
+    </div>
+  </Dialog>
 </template>
 
 <script setup lang="ts">
@@ -234,13 +269,20 @@ import * as yup from 'yup';
 import { useI18n } from 'vue-i18n';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import type { ActionResponse, PermissionResponse, RelationResponse, UserResponse } from '@sudosos/sudosos-client';
+import type {
+  ActionResponse,
+  PermissionResponse,
+  RelationResponse,
+  UserResponse,
+  AddRoleRequest,
+} from '@sudosos/sudosos-client';
 import { useToast } from 'primevue/usetoast';
 import CardComponent from '@/components/CardComponent.vue';
 import { rbacSchema } from '@/utils/validation-schema';
 import { type Form } from '@/utils/formUtils';
 import apiService from '@/services/ApiService';
 import { handleError } from '@/utils/errorUtils';
+import InputUserSpan from '@/components/InputUserSpan.vue';
 
 const { t } = useI18n();
 
@@ -258,6 +300,7 @@ const permissionVision = ref(false);
 const actionVision = ref(false);
 const deleteUserVision = ref(false);
 const addUserVision = ref(false);
+const addUserConfirmationVision = ref(false);
 const actionRelations = ref<any[]>();
 const users = ref<UserResponse[]>();
 const selectedAction = ref();
@@ -326,7 +369,31 @@ const handleDeleteUserConfirmation = (userId: number, roleId: number) => {
     .catch((err) => handleError(err, toast));
 };
 
-const handleAddUserPush = () => {};
+const handleAddUserPush = () => {
+  addUserVision.value = false;
+  addUserConfirmationVision.value = true;
+};
+
+const handleAddUserConfirmationPush = (id: number) => {
+  const roleRequest: AddRoleRequest = { roleId: props.form.context.values.id };
+  apiService.user
+    .addUserRole(id, roleRequest)
+    .then(() => {
+      addUserConfirmationVision.value = false;
+      apiService.rbac
+        .getRoleUsers(props.form.context.values.id)
+        .then((res) => {
+          users.value = res.data.records;
+          props.form.context.setFieldValue('users', users.value);
+        })
+        .catch((err) => {
+          handleError(err, useToast());
+        });
+    })
+    .catch((err) => {
+      handleError(err, useToast());
+    });
+};
 </script>
 
 <style scoped lang="scss"></style>
