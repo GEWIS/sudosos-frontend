@@ -1,15 +1,8 @@
 <template>
   <CardComponent class="w-full" :header="t('modules.admin.rbac.permissions.title')">
     <DataTable :value="input ? input : null">
-      <Column field="entity">
-        <template #header>
-          {{ t('modules.admin.rbac.permissions.entity') }}
-        </template>
-      </Column>
-      <Column field="icon">
-        <template #header>
-          {{ t('modules.admin.rbac.permissions.crud') }}
-        </template>
+      <Column field="entity" :header="t('modules.admin.rbac.permissions.title')"> </Column>
+      <Column field="icon" :header="t('modules.admin.rbac.permissions.crud')">
         <template #body="slotProps">
           <i v-if="slotProps.data.icon == 'all'" class="pi pi-check" />
           <i v-else-if="slotProps.data.icon == 'partial'" class="pi pi-chart-pie" />

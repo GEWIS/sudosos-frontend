@@ -309,7 +309,21 @@ const handleDeleteUserPush = (user: UserResponse) => {
 };
 
 const handleDeleteUserConfirmation = (userId: number, roleId: number) => {
-  apiService.user.deleteUserRole(userId, roleId).catch((err) => handleError(err, toast));
+  apiService.user
+    .deleteUserRole(userId, roleId)
+    .then(() => {
+      deleteUserVision.value = false;
+      apiService.rbac
+        .getRoleUsers(props.form.context.values.id)
+        .then((res) => {
+          users.value = res.data.records;
+          props.form.context.setFieldValue('users', users.value);
+        })
+        .catch((err) => {
+          handleError(err, useToast());
+        });
+    })
+    .catch((err) => handleError(err, toast));
 };
 
 const handleAddUserPush = () => {};
