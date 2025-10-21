@@ -6,14 +6,14 @@
         <i class="pi pi-user pr-2" style="font-size: 1.5rem" />
         {{ displayName() }}
       </Button>
-      <button
+      <Button
         v-if="showLock()"
-        class="active c-btn lock min-w-70 px-3 py-2 square text-4xl"
+        class="border-0 checkout font-medium rounder text-3xl"
         :class="{ disabled: disabledLock, active: lockedIn }"
         @click="lockUser"
       >
         <i class="text-4xl" :class="lockIcon" />
-      </button>
+      </Button>
     </div>
     <div v-if="!shouldShowTransactions || !showHistory" class="flex-col flex-grow-1 gap-2 mt-4 overflow-y-auto">
       <div v-for="item in cartItems" :key="item.product.id">
@@ -190,11 +190,22 @@ const formattedBalanceAfter = computed(() => {
 </script>
 
 <style scoped lang="scss">
-.lock {
+.checkout {
   &.disabled {
-    background-color: grey;
-    opacity: 0.5;
-    color: white;
+    background-color: #6b7280 !important; /* grey-500 */
+    opacity: 0.6 !important;
+    color: #9ca3af !important; /* grey-400 */
+    cursor: not-allowed !important;
+    
+    &:hover {
+      background-color: #6b7280 !important; /* Keep grey on hover */
+      opacity: 0.6 !important;
+    }
+  }
+ 
+  &.active {
+    background-color: var(--p-primary-color) !important;
+    color: white !important;
   }
 }
 </style>

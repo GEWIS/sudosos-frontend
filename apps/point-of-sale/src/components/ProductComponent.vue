@@ -154,7 +154,7 @@ const startFlyingAnimation = async () => {
   right: 0;
   color: #fff;
   font-weight: bolder;
-  //background-color: $gewis-red-shadow;
+  background-color: var(--p-primary-color);
   text-align: center;
   font-size: 1.2em;
   padding: 5px 0;
