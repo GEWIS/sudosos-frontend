@@ -82,6 +82,8 @@ export class ApiService {
 
   private readonly _serverSettingsApi: ServerSettingsApi;
 
+  private readonly _qrAuthApi: QrAuthApi;
+
   constructor(basePath: string) {
     const withKeyConfiguration = new Configuration({
       accessToken: () => getTokenFromStorage().token,
