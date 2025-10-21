@@ -25,12 +25,10 @@ class AuthEventEmitter {
   private listeners: Array<(user: UserResponse) => void> = [];
 
   onAuthenticated(callback: (user: UserResponse) => void) {
-    console.error('authEventEmitter.onAuthenticated', callback);
     this.listeners.push(callback);
   }
 
   offAuthenticated(callback: (user: UserResponse) => void) {
-    console.error('authEventEmitter.offAuthenticated', callback);
     const index = this.listeners.indexOf(callback);
     if (index > -1) {
       this.listeners.splice(index, 1);
@@ -38,9 +36,7 @@ class AuthEventEmitter {
   }
 
   emitAuthenticated(user: UserResponse) {
-    console.error('authEventEmitter.emitAuthenticated', user);
     this.listeners.forEach((callback) => {
-      console.error('authEventEmitter.emitAuthenticated', callback);
       callback(user);
     });
   }
@@ -223,7 +219,7 @@ export const useAuthStore = defineStore('auth', {
       this.token = token.token;
       this.organs = decoded.organs;
       this.acceptedToS = decoded.acceptedToS;
-      authEventEmitter.emitAuthenticated(this.user);
+      if (this.user) authEventEmitter.emitAuthenticated(this.user);
     },
     logout() {
       this.user = null;
