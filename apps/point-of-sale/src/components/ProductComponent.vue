@@ -77,24 +77,29 @@ const startFlyingAnimation = async () => {
   const rect = productImage.value.getBoundingClientRect();
   flyElement.classList.add('product-image');
 
-  // $product-column-width - $product-card-size
-  const offset = 36;
   flyElement.style.position = 'fixed';
   flyElement.style.top = `${rect.top}px`;
-  flyElement.style.left = `${rect.left + offset}px`;
+  flyElement.style.left = `${rect.left}px`;
   flyElement.style.width = `${rect.width}px`;
   flyElement.style.height = `${rect.height}px`;
   flyElement.style.pointerEvents = 'none';
-  flyElement.style.transition = 'all 0.5s ease-in-out';
+  flyElement.style.transition = 'transform 0.5s ease-in-out, opacity 0.5s ease-in-out';
+  flyElement.style.transformOrigin = 'center center';
+  flyElement.style.opacity = '1';
 
   const destinationRect = destinationElement.getBoundingClientRect();
-  const deltaX = destinationRect.left - (rect.left + offset);
-  const deltaY = destinationRect.top - rect.top;
+  // Fine-tune the destination position to account for cart item styling
+  const deltaX = destinationRect.left - rect.left - 20; // Small horizontal adjustment
+  const deltaY = destinationRect.top - rect.top - 20; // Small vertical adjustment
+
+  // Calculate scale factor to shrink to 3rem
+  const targetSize = 48; // 3rem = 48px
+  const scaleX = targetSize / rect.width;
+  const scaleY = targetSize / rect.height;
 
   // Move the flying element to the destination element's position using the delta values
-  flyElement.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
-  flyElement.style.width = '3rem';
-  flyElement.style.height = '3rem';
+  flyElement.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`;
+  flyElement.style.opacity = '0.3';
 
   // Cleanup the temporary element after the animation is complete
   const removeFlyElement = () => {
