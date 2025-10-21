@@ -26,7 +26,7 @@
         class="h-24 w-full"
         :pt="{
           text: {
-            class: 'text-4xl! text-center w-full',
+            class: 'text-4xl text-center w-full',
           },
         }"
         severity="error"
@@ -41,7 +41,7 @@
           }
         "
       >
-        <Card v-for="char in displayCode" :key="char" class="h-24 w-16 text-6xl font-bold text-primary">
+        <Card v-for="char in displayCode" :key="char" class="h-24 w-16 text-6xl font-bold text-primary pin-card">
           <template #content>{{ char }}</template>
         </Card>
       </div>
@@ -85,4 +85,20 @@ const displayCode = computed<string[]>(() => {
 });
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.pin-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  :deep(.p-card-content) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0;
+    line-height: 1;
+    transform: translateY(-6px);
+  }
+}
+</style>

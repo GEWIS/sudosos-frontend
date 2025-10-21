@@ -196,13 +196,13 @@ const formattedBalanceAfter = computed(() => {
     opacity: 0.6 !important;
     color: #9ca3af !important; /* grey-400 */
     cursor: not-allowed !important;
-    
+
     &:hover {
       background-color: #6b7280 !important; /* Keep grey on hover */
       opacity: 0.6 !important;
     }
   }
- 
+
   &.active {
     background-color: var(--p-primary-color) !important;
     color: white !important;
