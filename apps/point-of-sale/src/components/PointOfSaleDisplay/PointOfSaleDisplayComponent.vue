@@ -123,7 +123,7 @@ function getDefaultCategoryId(): string | undefined {
 
 const isCategoryAlcoholic = computed(() => {
   const category = computedCategories.value.find((c) => c.id == selectedCategoryId.value);
-  return category?.name == 'Alcoholic';
+  return category?.name === 'Alcoholic';
 });
 
 const selectCategory = (categoryId: string) => {
