@@ -3,13 +3,15 @@ import Toast from 'primevue/toast';
 import SplashComponent from '@/components/SplashComponent.vue';
 // import ConnectionLostOverlay from '@/components/ConnectionLostOverlay.vue';
 import MaintenanceModeOverlay from '@/components/MaintenanceModeOverlay.vue';
+import NoPosTokenView from '@/components/NoPosTokenView.vue';
 </script>
 
 <template>
   <Toast />
   <MaintenanceModeOverlay />
+  <NoPosTokenView />
   <!--  TODO fix when WS works again -->
-  <!--  <ConnectionLostOverlay />-->
+   <ConnectionLostOverlay />
   <RouterView />
   <SplashComponent />
 </template>

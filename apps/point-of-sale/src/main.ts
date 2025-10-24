@@ -57,9 +57,10 @@ app.component('Toast', Toast);
 // eslint-disable-next-line
 app.component('Card', Card);
 app.use(createPinia());
+setupWebSocket();
+
 app.mount('#app');
 
-setupWebSocket();
 
 // Refresh alcohol time every hour.
 setInterval(
