@@ -104,8 +104,9 @@ const fetchPointOfSale = async () => {
     }
 
     // Refresh in background to ensure data is up-to-date
-    void pointOfSaleStore.fetchPointOfSale(target).catch(() => {
-      // Silently fail - we already have cached data
+    void pointOfSaleStore.fetchPointOfSale(target).catch((err) => {
+      // Log the error for debugging purposes while still continuing with cached data
+      console.debug('Background POS refresh failed:', err);
     });
 
     return;
