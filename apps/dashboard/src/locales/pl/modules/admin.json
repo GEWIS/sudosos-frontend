@@ -103,7 +103,8 @@
         "confirmAmountsMessage": "Czy na pewno chcesz zmienić ilości dla tej transakcji?",
         "amountChanges": "Zmiany ilości",
         "costChange": "Zmiana kosztu",
-        "amountsUpdated": "Ilości transakcji zostały pomyślnie zaktualizowane"
+        "amountsUpdated": "Ilości transakcji zostały pomyślnie zaktualizowane",
+        "willBeRemoved": "zostanie usunięty"
       }
     }
   }

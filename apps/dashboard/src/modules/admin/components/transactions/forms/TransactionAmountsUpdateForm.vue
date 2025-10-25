@@ -84,6 +84,21 @@ setSubmit(props.form, async () => {
       }
     });
 
+    // Remove items with amount 0 from sub-transactions
+    fullTransactionRequest.subTransactions.forEach((subTransaction) => {
+      subTransaction.subTransactionRows = subTransaction.subTransactionRows.filter((row) => (row.amount ?? 0) > 0);
+    });
+
+    // Remove empty sub-transactions
+    fullTransactionRequest.subTransactions = fullTransactionRequest.subTransactions.filter(
+      (subTransaction) => subTransaction.subTransactionRows.length > 0,
+    );
+
+    // Check if transaction would be empty after removing items
+    if (fullTransactionRequest.subTransactions.length === 0) {
+      throw new Error('Cannot remove all items from a transaction. At least one item must remain.');
+    }
+
     // Recalculate sub-transaction totals
     fullTransactionRequest.subTransactions.forEach((subTransaction) => {
       let subTotalAmount = 0;

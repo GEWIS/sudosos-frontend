@@ -69,18 +69,22 @@ setSubmit(props.form, async () => {
     fullTransactionRequest.from = newUser.id;
 
     // Submit the complete transaction
-    await transactionStore.updateTransaction(props.transaction.id, fullTransactionRequest, apiService);
-
-    toast.add({
-      severity: 'success',
-      summary: t('common.toast.success.success'),
-      detail: t('modules.admin.transactions.userUpdated'),
-      life: 3000,
-    });
-
-    emit('update:edit', false);
+    await transactionStore
+      .updateTransaction(props.transaction.id, fullTransactionRequest, apiService)
+      .then(() => {
+        toast.add({
+          severity: 'success',
+          summary: t('common.toast.success.success'),
+          detail: t('modules.admin.transactions.userUpdated'),
+          life: 3000,
+        });
+        emit('update:edit', false);
+      })
+      .catch((err) => {
+        handleError(err, toast);
+      });
   } catch (err) {
-    handleError(err as Error, toast);
+    console.error(err);
   }
 });
 </script>
