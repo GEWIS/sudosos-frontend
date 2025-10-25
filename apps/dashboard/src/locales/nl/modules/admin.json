@@ -84,6 +84,12 @@
       },
       "websocket": {
         "title": "Websocket logs"
+      },
+      "transactions": {
+        "title": "Transactie zoeken",
+        "search": "Zoek transactie op ID",
+        "notFound": "Transactie niet gevonden",
+        "enterValid": "Voer een geldig transactie-ID in"
       }
     }
   }

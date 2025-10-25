@@ -84,6 +84,12 @@
       },
       "websocket": {
         "title": "Logi WebSocket"
+      },
+      "transactions": {
+        "title": "Wyszukiwanie transakcji",
+        "search": "Wyszukaj transakcję po ID",
+        "notFound": "Transakcja nie znaleziona",
+        "enterValid": "Proszę podać prawidłowy ID transakcji"
       }
     }
   }
