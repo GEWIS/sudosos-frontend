@@ -21,7 +21,8 @@ export function transactionResponseToRequest(transaction: TransactionResponse): 
     to: subTransaction.to.id,
     container: {
       id: subTransaction.container.id,
-      revision: subTransaction.container.revision,
+      // The -1 will always fail, but  this "hack" is needed since the typing of revision here is not correct.
+      revision: subTransaction.container.revision || -1,
     },
     subTransactionRows: subTransaction.subTransactionRows.map(
       (row): SubTransactionRowRequest => ({
@@ -38,7 +39,8 @@ export function transactionResponseToRequest(transaction: TransactionResponse): 
 
   return {
     from: transaction.from.id,
-    createdBy: transaction.createdBy.id,
+    // Same hack as above
+    createdBy: transaction.createdBy?.id || -1,
     pointOfSale: {
       id: transaction.pointOfSale.id,
       revision: transaction.pointOfSale.revision,

@@ -53,7 +53,7 @@ useTransactionForm(transaction, form, () => ({
 }));
 
 const showConfirmDialog = ref(false);
-const selectedNewUser = ref<UserResponse | null>(null);
+const selectedNewUser = ref<UserResponse>(transaction.value.from as UserResponse);
 
 function handleUserSelected(user: UserResponse) {
   selectedNewUser.value = user;

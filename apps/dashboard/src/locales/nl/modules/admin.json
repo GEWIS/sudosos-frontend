@@ -103,7 +103,8 @@
         "confirmAmountsMessage": "Weet je zeker dat je de aantallen voor deze transactie wilt wijzigen?",
         "amountChanges": "Aantalwijzigingen",
         "costChange": "Kostenwijziging",
-        "amountsUpdated": "Transactie aantallen succesvol bijgewerkt"
+        "amountsUpdated": "Transactie aantallen succesvol bijgewerkt",
+        "willBeRemoved": "wordt verwijderd"
       }
     }
   }

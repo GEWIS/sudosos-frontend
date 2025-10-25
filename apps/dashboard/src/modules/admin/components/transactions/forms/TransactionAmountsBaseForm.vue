@@ -32,7 +32,12 @@
             suffix="x"
             @update:model-value="updateAmount(product.subTransactionIndex, product.rowIndex, $event)"
           />
-          <div class="flex-1">{{ product.product.name }}</div>
+          <div class="flex-1">
+            {{ product.product.name }}
+            <span v-if="product.amount === 0" class="text-red-500 text-sm ml-2"
+              >({{ t('modules.admin.transactions.willBeRemoved') }})</span
+            >
+          </div>
           <span class="font-semibold">{{ formatPrice(product.totalPriceInclVat) }}</span>
         </div>
       </div>
@@ -44,8 +49,9 @@
 import { computed, type PropType } from 'vue';
 import { useI18n } from 'vue-i18n';
 import InputNumber from 'primevue/inputnumber';
-import type { TransactionResponse } from '@sudosos/sudosos-client';
+import type { BaseProductResponse, TransactionResponse } from '@sudosos/sudosos-client';
 import * as yup from 'yup';
+import type { DineroObjectResponse } from '@sudosos/sudosos-client/src/api';
 import type { Form } from '@/utils/formUtils';
 import { formatPrice } from '@/utils/formatterUtils';
 import { type UpdateAmountItem, updateTransactionAmountsObject } from '@/utils/validation-schema';
@@ -71,7 +77,13 @@ const products = computed(() => {
   if (!props.transaction) return [];
 
   const updatedAmounts = props.form.context.values.updatedAmounts || [];
-  const result: { subTransactionIndex: number; rowIndex: number; amount: number }[] = [];
+  const result: {
+    subTransactionIndex: number;
+    rowIndex: number;
+    amount: number;
+    totalPriceInclVat: DineroObjectResponse;
+    product: BaseProductResponse;
+  }[] = [];
 
   // Iterate through sub-transactions and their rows directly
   props.transaction.subTransactions.forEach((subTransaction, subTransactionIndex) => {

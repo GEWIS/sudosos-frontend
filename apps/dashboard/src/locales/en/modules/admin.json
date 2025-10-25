@@ -103,7 +103,8 @@
         "confirmAmountsMessage": "Are you sure you want to change the amounts for this transaction?",
         "amountChanges": "Amount Changes",
         "costChange": "Cost Change",
-        "amountsUpdated": "Transaction amounts updated successfully"
+        "amountsUpdated": "Transaction amounts updated successfully",
+        "willBeRemoved": "will be removed"
       }
     }
   }
