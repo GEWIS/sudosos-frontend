@@ -80,7 +80,7 @@ setSubmit(props.form, async () => {
 
     emit('update:edit', false);
   } catch (err) {
-    handleError(err as any, toast);
+    handleError(err as Error, toast);
   }
 });
 </script>

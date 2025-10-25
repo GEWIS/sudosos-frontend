@@ -181,6 +181,11 @@ export const updateTransactionUserObject = yup.object({
   newUser: yup.object().optional(),
 });
 
+export type UpdateAmountItem = {
+  subTransactionIndex: number;
+  rowIndex: number;
+  amount: number;
+};
 export const updateTransactionAmountsObject = yup.object({
   updatedAmounts: yup
     .array()

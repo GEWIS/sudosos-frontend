@@ -3,28 +3,21 @@
     v-if="transaction"
     :enable-edit="canEdit"
     :form="form"
-    :header="t('modules.admin.transactions.editUser')"
+    :header="t('modules.admin.transactions.editAmounts')"
     @cancel="handleCancel"
     @save="handleSave"
     @update:model-value="edit = $event"
   >
     <div class="flex flex-col gap-2 justify-between">
-      <TransactionUserUpdateForm
-        :edit="edit"
-        :form="form"
-        :transaction="transaction"
-        @update:edit="edit = $event"
-        @user-selected="handleUserSelected"
-      />
+      <TransactionAmountsUpdateForm :edit="edit" :form="form" :transaction="transaction" @update:edit="edit = $event" />
     </div>
   </FormCard>
 
-  <TransactionEditConfirmDialog
-    :new-user="selectedNewUser"
-    :old-user="transaction?.from as UserResponse"
-    :transaction-id="transaction?.id || 0"
+  <TransactionAmountsConfirmDialog
+    :transaction="transaction"
+    :updated-amounts="selectedUpdatedAmounts"
     :visible="showConfirmDialog"
-    @close="handleCancelConfirm"
+    @cancel="handleCancelConfirm"
     @confirm="handleConfirm"
     @update:visible="showConfirmDialog = $event"
   />
@@ -33,11 +26,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import type { UserResponse } from '@sudosos/sudosos-client';
-import TransactionUserUpdateForm from './forms/TransactionUserUpdateForm.vue';
-import TransactionEditConfirmDialog from './TransactionEditConfirmDialog.vue';
+import TransactionAmountsUpdateForm from './forms/TransactionAmountsUpdateForm.vue';
+import TransactionAmountsConfirmDialog from './TransactionAmountsConfirmDialog.vue';
 import FormCard from '@/components/FormCard.vue';
-import { updateTransactionUserObject } from '@/utils/validation-schema';
+import { updateTransactionAmountsObject } from '@/utils/validation-schema';
 import { schemaToForm, getProperty } from '@/utils/formUtils';
 import { useTransactionCard } from '@/composables/transactionCard';
 import { useTransactionForm } from '@/composables/transactionForm';
@@ -45,21 +37,21 @@ import { useTransactionForm } from '@/composables/transactionForm';
 const { t } = useI18n();
 const props = defineProps<{ transactionId: number }>();
 
-const form = schemaToForm(updateTransactionUserObject);
+const form = schemaToForm(updateTransactionAmountsObject);
 const { transaction, canEdit, edit } = useTransactionCard(props.transactionId);
 
 useTransactionForm(transaction, form, () => ({
-  newUser: undefined,
+  updatedAmounts: [],
 }));
 
 const showConfirmDialog = ref(false);
-const selectedNewUser = ref<UserResponse | null>(null);
-
-function handleUserSelected(user: UserResponse) {
-  selectedNewUser.value = user;
-  // Update the form with the new user
-  form.context.setFieldValue('newUser', user);
-}
+const selectedUpdatedAmounts = ref<
+  Array<{
+    subTransactionIndex: number;
+    rowIndex: number;
+    amount: number;
+  }>
+>([]);
 
 function handleSave() {
   const dirty = form.context.meta.value.dirty;
@@ -68,12 +60,19 @@ function handleSave() {
     return;
   }
 
-  // Get the new user from the form
-  const newUser = getProperty(form, 'newUser') as UserResponse | undefined;
-  if (!newUser || !transaction.value) return;
+  // Get the updated amounts from the form
+  const updatedAmounts = getProperty(form, 'updatedAmounts') as
+    | Array<{
+        subTransactionIndex: number;
+        rowIndex: number;
+        amount: number;
+      }>
+    | undefined;
+
+  if (!updatedAmounts || updatedAmounts.length === 0 || !transaction.value) return;
 
   // Show confirmation dialog
-  selectedNewUser.value = newUser;
+  selectedUpdatedAmounts.value = updatedAmounts;
   showConfirmDialog.value = true;
 }
 
