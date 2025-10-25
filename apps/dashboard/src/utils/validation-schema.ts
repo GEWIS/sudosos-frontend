@@ -177,6 +177,23 @@ export const waiveUserFineSchema = yup.object({
   amount: yup.number().required().default(0),
 });
 
+export const updateTransactionUserObject = yup.object({
+  newUser: yup.object().optional(),
+});
+
+export const updateTransactionAmountsObject = yup.object({
+  updatedAmounts: yup
+    .array()
+    .of(
+      yup.object({
+        subTransactionIndex: yup.number().required(),
+        rowIndex: yup.number().required(),
+        amount: yup.number().required().min(0),
+      }),
+    )
+    .optional(),
+});
+
 export const createInvoiceObject = yup.object({
   forId: yup.number().required(),
   byId: yup.number(),

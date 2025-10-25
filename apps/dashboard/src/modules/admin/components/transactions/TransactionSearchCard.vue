@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import InputNumber from 'primevue/inputnumber';
 import IconField from 'primevue/iconfield';
@@ -34,6 +34,16 @@ const transactionId = ref<number | null>(props.initialValue || null);
 const emit = defineEmits<{
   search: [id: number];
 }>();
+
+// Watch for changes to initialValue prop
+watch(
+  () => props.initialValue,
+  (newValue) => {
+    if (newValue !== undefined) {
+      transactionId.value = newValue;
+    }
+  },
+);
 
 function handleSearch() {
   if (transactionId.value !== null && transactionId.value > 0) {
