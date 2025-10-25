@@ -89,7 +89,21 @@
         "title": "Transaction Search",
         "search": "Search Transaction by ID",
         "notFound": "Transaction not found",
-        "enterValid": "Please enter a valid transaction ID"
+        "enterValid": "Please enter a valid transaction ID",
+        "editUser": "Edit User",
+        "currentUser": "Current User",
+        "newUser": "New User",
+        "selectUser": "Select a user",
+        "confirmEdit": "Confirm Transaction Edit",
+        "confirmEditMessage": "Are you sure you want to change the user for this transaction?",
+        "userUpdated": "Transaction user updated successfully",
+        "editAmounts": "Edit Amounts",
+        "currentAmounts": "Current Amounts",
+        "confirmAmountsEdit": "Confirm Amount Changes",
+        "confirmAmountsMessage": "Are you sure you want to change the amounts for this transaction?",
+        "amountChanges": "Amount Changes",
+        "costChange": "Cost Change",
+        "amountsUpdated": "Transaction amounts updated successfully"
       }
     }
   }

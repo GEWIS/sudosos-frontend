@@ -89,7 +89,21 @@
         "title": "Wyszukiwanie transakcji",
         "search": "Wyszukaj transakcję po ID",
         "notFound": "Transakcja nie znaleziona",
-        "enterValid": "Proszę podać prawidłowy ID transakcji"
+        "enterValid": "Proszę podać prawidłowy ID transakcji",
+        "editUser": "Edytuj użytkownika",
+        "currentUser": "Aktualny użytkownik",
+        "newUser": "Nowy użytkownik",
+        "selectUser": "Wybierz użytkownika",
+        "confirmEdit": "Potwierdź edycję transakcji",
+        "confirmEditMessage": "Czy na pewno chcesz zmienić użytkownika dla tej transakcji?",
+        "userUpdated": "Użytkownik transakcji został pomyślnie zaktualizowany",
+        "editAmounts": "Edytuj ilości",
+        "currentAmounts": "Aktualne ilości",
+        "confirmAmountsEdit": "Potwierdź zmiany ilości",
+        "confirmAmountsMessage": "Czy na pewno chcesz zmienić ilości dla tej transakcji?",
+        "amountChanges": "Zmiany ilości",
+        "costChange": "Zmiana kosztu",
+        "amountsUpdated": "Ilości transakcji zostały pomyślnie zaktualizowane"
       }
     }
   }
