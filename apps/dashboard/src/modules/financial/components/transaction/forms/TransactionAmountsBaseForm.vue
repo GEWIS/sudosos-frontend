@@ -51,15 +51,15 @@
         <div class="flex flex-row gap-2 items-center">
           <Select
             v-model="selectedProduct"
-            :options="productOptions"
-            :placeholder="t('modules.admin.transactions.selectProduct')"
-            option-label="name"
             class="flex-1"
+            option-label="name"
+            :options="pOptions"
+            :placeholder="t('modules.admin.transactions.selectProduct')"
             @change="handleProductSelection"
           />
           <Button
-            :label="t('modules.admin.transactions.addProduct')"
             :disabled="!selectedProduct"
+            :label="t('modules.admin.transactions.addProduct')"
             @click="addNewProduct"
           />
         </div>
@@ -118,15 +118,15 @@ const props = defineProps({
 const selectedProduct = ref<{ name: string; value: ProductResponse } | null>(null);
 
 // Use computed properties to reactively access props data
-const options = computed(() => props.productOptions);
+const productOptionsData = computed(() => props.productOptions);
 const containers = computed(() => props.containers);
 const productToContainerMap = computed(() => props.productToContainerMap);
 
-const productOptions = computed(() => {
-  if (!options.value || options.value.length === 0) {
+const pOptions = computed(() => {
+  if (!productOptionsData.value || productOptionsData.value.length === 0) {
     return [];
   }
-  return options.value.map((product) => ({
+  return productOptionsData.value.map((product) => ({
     name: product.name,
     value: product,
   }));
@@ -178,7 +178,7 @@ const products = computed(() => {
   // Add new products that don't exist in the original transaction
   updatedAmounts.forEach((updatedAmount: UpdateAmountItem) => {
     if (updatedAmount.isNewProduct) {
-      const product = options.value.find((p) => p.id === updatedAmount.productId);
+      const product = productOptionsData.value.find((p) => p.id === updatedAmount.productId);
       if (product) {
         const container = containers.value.find((c) => c.id === updatedAmount.containerId);
         if (container) {

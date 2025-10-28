@@ -1,11 +1,11 @@
 <template>
   <TransactionAmountsBaseForm
+    :containers="containers"
     :edit="edit"
     :form="form"
-    :transaction="transaction"
     :product-options="productOptions"
-    :containers="containers"
     :product-to-container-map="productToContainerMap"
+    :transaction="transaction"
   />
 </template>
 

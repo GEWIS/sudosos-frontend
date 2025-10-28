@@ -33,6 +33,22 @@
             </div>
           </div>
 
+          <!-- New Products Added -->
+          <div v-if="newProductsAdded.length > 0" class="flex flex-col gap-2 mt-3">
+            <span class="font-semibold">{{ t('modules.admin.transactions.newProductsAdded') }}:</span>
+            <div class="flex flex-col gap-1">
+              <div
+                v-for="newProduct in newProductsAdded"
+                :key="`new-${newProduct.productId}`"
+                class="flex flex-row gap-2 items-center p-2"
+              >
+                <span class="flex-1">{{ newProduct.productName }}</span>
+                <span class="font-semibold">{{ newProduct.amount }}x</span>
+                <span class="text-sm font-semibold">({{ t('modules.admin.transactions.newProduct') }})</span>
+              </div>
+            </div>
+          </div>
+
           <!-- Cost Change Highlight -->
           <div class="flex flex-col gap-2 mt-3 p-3">
             <span class="font-semibold">{{ t('modules.admin.transactions.costChange') }}:</span>
@@ -61,7 +77,7 @@ import { computed } from 'vue';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import { useI18n } from 'vue-i18n';
-import type { TransactionResponse } from '@sudosos/sudosos-client';
+import type { TransactionResponse, ProductResponse } from '@sudosos/sudosos-client';
 import { formatPrice } from '@/utils/formatterUtils';
 
 const { t } = useI18n();
@@ -73,7 +89,14 @@ const props = defineProps<{
     subTransactionIndex: number;
     rowIndex: number;
     amount: number;
+    isNewProduct?: boolean;
+    productId?: number;
+    productRevision?: number;
+    containerId?: number;
+    containerRevision?: number;
+    toUserId?: number;
   }>;
+  productOptions: ProductResponse[];
 }>();
 
 const emit = defineEmits<{
@@ -92,7 +115,10 @@ const amountChanges = computed(() => {
     newAmount: number;
   }> = [];
 
-  props.updatedAmounts.forEach(({ subTransactionIndex, rowIndex, amount }) => {
+  props.updatedAmounts.forEach(({ subTransactionIndex, rowIndex, amount, isNewProduct }) => {
+    // Skip new products - they don't have existing rows to compare
+    if (isNewProduct) return;
+
     const subTransaction = props.transaction.subTransactions[subTransactionIndex];
     const row = subTransaction.subTransactionRows[rowIndex];
     const oldAmount = row.amount;
@@ -111,6 +137,29 @@ const amountChanges = computed(() => {
   return changes;
 });
 
+const newProductsAdded = computed(() => {
+  const newProducts: Array<{
+    productId: number;
+    productName: string;
+    amount: number;
+  }> = [];
+
+  props.updatedAmounts.forEach(({ isNewProduct, productId, amount }) => {
+    if (isNewProduct && productId) {
+      // Find the product name from the transaction's sub-transactions
+      // Since we don't have direct access to product names for new products,
+      // we'll use a placeholder that will be filled by the parent component
+      newProducts.push({
+        productId,
+        productName: `Product ${productId}`, // This should be improved with actual product data
+        amount,
+      });
+    }
+  });
+
+  return newProducts;
+});
+
 const oldTotalCost = computed(() => {
   const cost = props.transaction.totalPriceInclVat.amount;
   return isNaN(cost) ? 0 : cost;
@@ -119,6 +168,7 @@ const oldTotalCost = computed(() => {
 const newTotalCost = computed(() => {
   let total = 0;
 
+  // Calculate cost for existing sub-transactions
   props.transaction.subTransactions.forEach((subTransaction, stIndex) => {
     subTransaction.subTransactionRows.forEach((row, rIndex) => {
       const updatedAmount = props.updatedAmounts.find(
@@ -135,6 +185,18 @@ const newTotalCost = computed(() => {
         total += isNaN(row.totalPriceInclVat.amount) ? 0 : row.totalPriceInclVat.amount;
       }
     });
+  });
+
+  // Add cost for new products
+  props.updatedAmounts.forEach(({ isNewProduct, productId, amount }) => {
+    if (isNewProduct && productId && amount) {
+      const product = props.productOptions.find((p) => p.id === productId);
+      if (product) {
+        const pricePerUnit = product.priceInclVat.amount;
+        const productTotal = amount * pricePerUnit;
+        total += isNaN(productTotal) ? 0 : productTotal;
+      }
+    }
   });
 
   return isNaN(total) ? 0 : total;
