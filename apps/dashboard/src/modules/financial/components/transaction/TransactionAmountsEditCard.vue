@@ -10,18 +10,19 @@
   >
     <div class="flex flex-col gap-2 justify-between">
       <TransactionAmountsUpdateForm
+        :containers="containers"
         :edit="edit"
         :form="form"
-        :transaction="transaction"
         :product-options="productOptions"
-        :containers="containers"
         :product-to-container-map="productToContainerMap"
+        :transaction="transaction"
         @update:edit="edit = $event"
       />
     </div>
   </FormCard>
 
   <TransactionAmountsConfirmDialog
+    :product-options="productOptions"
     :transaction="transaction"
     :updated-amounts="selectedUpdatedAmounts"
     :visible="showConfirmDialog"
@@ -34,14 +35,14 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
+import type { ProductResponse, ContainerResponse } from '@sudosos/sudosos-client';
+import { useTransactionCard } from '../../composables/useTransactionCard';
+import { useTransactionForm } from '../../composables/useTransactionForm';
 import TransactionAmountsUpdateForm from './forms/TransactionAmountsUpdateForm.vue';
 import TransactionAmountsConfirmDialog from './TransactionAmountsConfirmDialog.vue';
 import FormCard from '@/components/FormCard.vue';
 import { updateTransactionAmountsObject } from '@/utils/validation-schema';
 import { schemaToForm, getProperty } from '@/utils/formUtils';
-import { useTransactionCard } from '../../composables/useTransactionCard';
-import { useTransactionForm } from '../../composables/useTransactionForm';
-import type { ProductResponse, ContainerResponse } from '@sudosos/sudosos-client';
 import apiService from '@/services/ApiService';
 
 const { t } = useI18n();
@@ -88,6 +89,12 @@ const selectedUpdatedAmounts = ref<
     subTransactionIndex: number;
     rowIndex: number;
     amount: number;
+    isNewProduct?: boolean;
+    productId?: number;
+    productRevision?: number;
+    containerId?: number;
+    containerRevision?: number;
+    toUserId?: number;
   }>
 >([]);
 
@@ -104,6 +111,12 @@ function handleSave() {
         subTransactionIndex: number;
         rowIndex: number;
         amount: number;
+        isNewProduct?: boolean;
+        productId?: number;
+        productRevision?: number;
+        containerId?: number;
+        containerRevision?: number;
+        toUserId?: number;
       }>
     | undefined;
 

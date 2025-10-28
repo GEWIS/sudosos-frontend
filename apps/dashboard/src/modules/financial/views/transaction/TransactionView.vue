@@ -53,7 +53,7 @@ async function handleSearch(id: number) {
     if (axiosError.response?.status === 404) {
       errorMessage.value = t('modules.admin.transactions.notFound');
     } else {
-      errorMessage.value = t('common.error.generic');
+      errorMessage.value = t('common.toast.error.error');
     }
     currentTransactionId.value = null;
   }
@@ -62,7 +62,7 @@ async function handleSearch(id: number) {
 onMounted(() => {
   // If there's an initial transaction ID from the route, search for it
   if (initialTransactionId.value) {
-    handleSearch(initialTransactionId.value);
+    void handleSearch(initialTransactionId.value);
   }
 });
 </script>

@@ -34,13 +34,13 @@
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { UserResponse } from '@sudosos/sudosos-client';
+import { useTransactionCard } from '../../composables/useTransactionCard';
+import { useTransactionForm } from '../../composables/useTransactionForm';
 import TransactionUserUpdateForm from './forms/TransactionUserUpdateForm.vue';
 import TransactionEditConfirmDialog from './TransactionEditConfirmDialog.vue';
 import FormCard from '@/components/FormCard.vue';
 import { updateTransactionUserObject } from '@/utils/validation-schema';
 import { schemaToForm, getProperty } from '@/utils/formUtils';
-import { useTransactionCard } from '../../composables/useTransactionCard';
-import { useTransactionForm } from '../../composables/useTransactionForm';
 
 const { t } = useI18n();
 const props = defineProps<{ transactionId: number }>();
