@@ -31,8 +31,8 @@ import TransactionAmountsConfirmDialog from './TransactionAmountsConfirmDialog.v
 import FormCard from '@/components/FormCard.vue';
 import { updateTransactionAmountsObject } from '@/utils/validation-schema';
 import { schemaToForm, getProperty } from '@/utils/formUtils';
-import { useTransactionCard } from '@/composables/transactionCard';
-import { useTransactionForm } from '@/composables/transactionForm';
+import { useTransactionCard } from '../../composables/useTransactionCard';
+import { useTransactionForm } from '../../composables/useTransactionForm';
 
 const { t } = useI18n();
 const props = defineProps<{ transactionId: number }>();

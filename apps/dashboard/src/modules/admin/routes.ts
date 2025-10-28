@@ -4,7 +4,6 @@ import AdminUserOverView from '@/modules/admin/views/AdminUserOverView.vue';
 import AdminBannersView from '@/modules/admin/views/AdminBannersView.vue';
 import AdminSingleUserView from '@/modules/admin/views/AdminSingleUserView.vue';
 import AdminMaintainerView from '@/modules/admin/views/AdminMaintainerView.vue';
-import AdminTransactionsView from '@/modules/admin/views/AdminTransactionsView.vue';
 import { isAllowed } from '@/utils/permissionUtils';
 
 export function adminRoutes(): RouteRecordRaw[] {
@@ -50,15 +49,6 @@ export function adminRoutes(): RouteRecordRaw[] {
           meta: {
             requiresAuth: true,
             isAllowed: () => isAllowed('update', ['all'], 'Maintenance', ['*']),
-          },
-        },
-        {
-          path: '/admin/transactions',
-          component: AdminTransactionsView,
-          name: 'admin-transactions',
-          meta: {
-            requiresAuth: true,
-            isAllowed: () => isAllowed('get', ['all'], 'Transaction', ['any']),
           },
         },
       ],

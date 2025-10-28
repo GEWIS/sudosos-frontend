@@ -109,7 +109,7 @@ const detailType = computed(() => {
 const editTransaction = () => {
   if (transaction.value) {
     dialog.value.close();
-    void router.push({ name: 'admin-transactions', query: { id: transaction.value.id.toString() } });
+    void router.push({ name: 'financial-transactions', query: { id: transaction.value.id.toString() } });
   }
 };
 

@@ -21,7 +21,7 @@ export function transactionResponseToRequest(transaction: TransactionResponse): 
     to: subTransaction.to.id,
     container: {
       id: subTransaction.container.id,
-      // The -1 will always fail, but  this "hack" is needed since the typing of revision here is not correct.
+      // The -1 will always fail, but this "hack" is needed since the typing of revision here is not correct.
       revision: subTransaction.container.revision || -1,
     },
     subTransactionRows: subTransaction.subTransactionRows.map(
