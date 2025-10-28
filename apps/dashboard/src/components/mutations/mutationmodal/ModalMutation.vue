@@ -79,7 +79,7 @@ const { isLoading, transaction, transfer, products, canDelete } = useMutationDet
 const { t } = useI18n();
 
 // Check if user can edit transactions
-const canEdit = computed(() => isTransaction(props.type) && isAllowed('get', ['all'], 'Transaction', ['any']));
+const canEdit = computed(() => isTransaction(props.type) && isAllowed('update', ['all'], 'Transaction', ['any']));
 
 const visible = ref<boolean>(false);
 const dialog = ref();

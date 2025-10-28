@@ -145,13 +145,11 @@ const newProductsAdded = computed(() => {
   }> = [];
 
   props.updatedAmounts.forEach(({ isNewProduct, productId, amount }) => {
+    const product = props.productOptions.find((p) => p.id === productId);
     if (isNewProduct && productId) {
-      // Find the product name from the transaction's sub-transactions
-      // Since we don't have direct access to product names for new products,
-      // we'll use a placeholder that will be filled by the parent component
       newProducts.push({
         productId,
-        productName: `Product ${productId}`, // This should be improved with actual product data
+        productName: product ? product.name : `Product ${productId}`,
         amount,
       });
     }
