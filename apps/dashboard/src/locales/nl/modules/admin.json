@@ -104,7 +104,10 @@
         "amountChanges": "Aantalwijzigingen",
         "costChange": "Kostenwijziging",
         "amountsUpdated": "Transactie aantallen succesvol bijgewerkt",
-        "willBeRemoved": "wordt verwijderd"
+        "willBeRemoved": "wordt verwijderd",
+        "missingUserData": "Ontbrekende nieuwe gebruikersgegevens",
+        "missingAmountsData": "Ontbrekende bijgewerkte hoeveelheidsgegevens",
+        "cannotRemoveAllItems": "Kan niet alle items uit een transactie verwijderen. Minimaal één item moet blijven."
       }
     }
   }

@@ -59,7 +59,7 @@ setSubmit(props.form, async () => {
     const newUser = values.newUser as UserResponse;
 
     if (!newUser) {
-      throw new Error('Missing new user data');
+      throw new Error(t('modules.admin.transactions.missingUserData'));
     }
 
     // Reconstruct the full transaction request
