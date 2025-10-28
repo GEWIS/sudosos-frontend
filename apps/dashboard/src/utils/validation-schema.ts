@@ -185,6 +185,12 @@ export type UpdateAmountItem = {
   subTransactionIndex: number;
   rowIndex: number;
   amount: number;
+  isNewProduct?: boolean;
+  productId?: number;
+  productRevision?: number;
+  containerId?: number;
+  containerRevision?: number;
+  toUserId?: number;
 };
 export const updateTransactionAmountsObject = yup.object({
   updatedAmounts: yup
@@ -194,6 +200,12 @@ export const updateTransactionAmountsObject = yup.object({
         subTransactionIndex: yup.number().required(),
         rowIndex: yup.number().required(),
         amount: yup.number().required().min(0),
+        isNewProduct: yup.boolean().optional(),
+        productId: yup.number().optional(),
+        productRevision: yup.number().optional(),
+        containerId: yup.number().optional(),
+        containerRevision: yup.number().optional(),
+        toUserId: yup.number().optional(),
       }),
     )
     .optional(),

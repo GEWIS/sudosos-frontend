@@ -107,7 +107,11 @@
         "willBeRemoved": "wordt verwijderd",
         "missingUserData": "Ontbrekende nieuwe gebruikersgegevens",
         "missingAmountsData": "Ontbrekende bijgewerkte hoeveelheidsgegevens",
-        "cannotRemoveAllItems": "Kan niet alle items uit een transactie verwijderen. Minimaal één item moet blijven."
+        "cannotRemoveAllItems": "Kan niet alle items uit een transactie verwijderen. Minimaal één item moet blijven.",
+        "addProduct": "Product toevoegen",
+        "selectProduct": "Selecteer een product om toe te voegen",
+        "newProductsAdded": "Nieuwe producten toegevoegd",
+        "newProduct": "NIEUW"
       }
     }
   }

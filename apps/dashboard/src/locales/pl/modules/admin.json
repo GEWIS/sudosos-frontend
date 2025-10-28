@@ -107,7 +107,11 @@
         "willBeRemoved": "zostanie usunięty",
         "missingUserData": "Brakujące dane nowego użytkownika",
         "missingAmountsData": "Brakujące zaktualizowane dane ilości",
-        "cannotRemoveAllItems": "Nie można usunąć wszystkich elementów z transakcji. Co najmniej jeden element musi pozostać."
+        "cannotRemoveAllItems": "Nie można usunąć wszystkich elementów z transakcji. Co najmniej jeden element musi pozostać.",
+        "addProduct": "Dodaj produkt",
+        "selectProduct": "Wybierz produkt do dodania",
+        "newProductsAdded": "Dodano nowe produkty",
+        "newProduct": "NOWY"
       }
     }
   }

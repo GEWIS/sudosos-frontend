@@ -1,10 +1,17 @@
 <template>
-  <TransactionAmountsBaseForm :edit="edit" :form="form" :transaction="transaction" />
+  <TransactionAmountsBaseForm
+    :edit="edit"
+    :form="form"
+    :transaction="transaction"
+    :product-options="productOptions"
+    :containers="containers"
+    :product-to-container-map="productToContainerMap"
+  />
 </template>
 
 <script setup lang="ts">
 import { type PropType } from 'vue';
-import type { TransactionResponse } from '@sudosos/sudosos-client';
+import type { TransactionResponse, ProductResponse, ContainerResponse } from '@sudosos/sudosos-client';
 import { useToast } from 'primevue/usetoast';
 import { useI18n } from 'vue-i18n';
 import * as yup from 'yup';
@@ -35,6 +42,18 @@ const props = defineProps({
     required: false,
     default: false,
   },
+  productOptions: {
+    type: Array as PropType<ProductResponse[]>,
+    required: true,
+  },
+  containers: {
+    type: Array as PropType<ContainerResponse[]>,
+    required: true,
+  },
+  productToContainerMap: {
+    type: Object as PropType<Map<number, ContainerResponse>>,
+    required: true,
+  },
 });
 
 const emit = defineEmits<{
@@ -55,6 +74,12 @@ setSubmit(props.form, async () => {
       subTransactionIndex: number;
       rowIndex: number;
       amount: number;
+      isNewProduct?: boolean;
+      productId?: number;
+      productRevision?: number;
+      containerId?: number;
+      containerRevision?: number;
+      toUserId?: number;
     }>;
 
     if (!updatedAmounts || updatedAmounts.length === 0) {
@@ -64,8 +89,12 @@ setSubmit(props.form, async () => {
     // Reconstruct the full transaction request
     const fullTransactionRequest = transactionResponseToRequest(props.transaction);
 
-    // Apply the amount changes and recalculate prices
-    updatedAmounts.forEach(({ subTransactionIndex, rowIndex, amount }) => {
+    // Separate existing product updates from new products
+    const existingProductUpdates = updatedAmounts.filter((item) => !item.isNewProduct);
+    const newProducts = updatedAmounts.filter((item) => item.isNewProduct);
+
+    // Apply the amount changes to existing products and recalculate prices
+    existingProductUpdates.forEach(({ subTransactionIndex, rowIndex, amount }) => {
       if (fullTransactionRequest.subTransactions[subTransactionIndex]?.subTransactionRows[rowIndex]) {
         const row = fullTransactionRequest.subTransactions[subTransactionIndex].subTransactionRows[rowIndex];
         const originalRow = props.transaction.subTransactions[subTransactionIndex].subTransactionRows[rowIndex];
@@ -81,6 +110,86 @@ setSubmit(props.form, async () => {
           currency: originalRow.totalPriceInclVat.currency,
           precision: originalRow.totalPriceInclVat.precision,
         };
+      }
+    });
+
+    // Handle new products - group by container/owner (similar to cart.store.ts logic)
+    const newProductsByContainer: { [key: string]: Array<(typeof newProducts)[0]> } = {};
+    newProducts.forEach((newProduct) => {
+      const containerKey = `${newProduct.containerId}-${newProduct.toUserId}`;
+      if (!newProductsByContainer[containerKey]) {
+        newProductsByContainer[containerKey] = [];
+      }
+      newProductsByContainer[containerKey].push(newProduct);
+    });
+
+    // Get POS revision data to fetch product prices
+    const allProducts = props.productOptions;
+
+    // Add new products to appropriate sub-transactions
+    Object.values(newProductsByContainer).forEach((containerProducts) => {
+      const firstProduct = containerProducts[0];
+      const containerId = firstProduct.containerId!;
+      const toUserId = firstProduct.toUserId!;
+      const containerRevision = firstProduct.containerRevision!;
+
+      // Check if a sub-transaction for this container already exists
+      const existingSubTransaction = fullTransactionRequest.subTransactions.find(
+        (st) => st.to === toUserId && st.container.id === containerId,
+      );
+
+      if (existingSubTransaction) {
+        // Add new rows to existing sub-transaction
+        containerProducts.forEach((newProduct) => {
+          const product = allProducts.find((p) => p.id === newProduct.productId);
+          const pricePerUnit = product?.priceInclVat.amount || 0;
+
+          existingSubTransaction.subTransactionRows.push({
+            amount: newProduct.amount,
+            product: {
+              id: newProduct.productId!,
+              revision: newProduct.productRevision!,
+            },
+            totalPriceInclVat: {
+              currency: product?.priceInclVat.currency || 'EUR',
+              precision: product?.priceInclVat.precision || 2,
+              amount: Math.round(newProduct.amount * pricePerUnit),
+            },
+          });
+        });
+      } else {
+        // Create new sub-transaction
+        const newSubTransactionRows = containerProducts.map((newProduct) => {
+          const product = allProducts.find((p) => p.id === newProduct.productId);
+          const pricePerUnit = product?.priceInclVat.amount || 0;
+
+          return {
+            amount: newProduct.amount,
+            product: {
+              id: newProduct.productId!,
+              revision: newProduct.productRevision!,
+            },
+            totalPriceInclVat: {
+              currency: product?.priceInclVat.currency || 'EUR',
+              precision: product?.priceInclVat.precision || 2,
+              amount: Math.round(newProduct.amount * pricePerUnit),
+            },
+          };
+        });
+
+        fullTransactionRequest.subTransactions.push({
+          to: toUserId,
+          container: {
+            id: containerId,
+            revision: containerRevision,
+          },
+          subTransactionRows: newSubTransactionRows,
+          totalPriceInclVat: {
+            currency: 'EUR',
+            precision: 2,
+            amount: 0, // This will be recalculated below
+          },
+        });
       }
     });
 
