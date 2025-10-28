@@ -104,7 +104,10 @@
         "amountChanges": "Zmiany ilości",
         "costChange": "Zmiana kosztu",
         "amountsUpdated": "Ilości transakcji zostały pomyślnie zaktualizowane",
-        "willBeRemoved": "zostanie usunięty"
+        "willBeRemoved": "zostanie usunięty",
+        "missingUserData": "Brakujące dane nowego użytkownika",
+        "missingAmountsData": "Brakujące zaktualizowane dane ilości",
+        "cannotRemoveAllItems": "Nie można usunąć wszystkich elementów z transakcji. Co najmniej jeden element musi pozostać."
       }
     }
   }

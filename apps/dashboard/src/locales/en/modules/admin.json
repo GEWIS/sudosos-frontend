@@ -104,7 +104,10 @@
         "amountChanges": "Amount Changes",
         "costChange": "Cost Change",
         "amountsUpdated": "Transaction amounts updated successfully",
-        "willBeRemoved": "will be removed"
+        "willBeRemoved": "will be removed",
+        "missingUserData": "Missing new user data",
+        "missingAmountsData": "Missing updated amounts data",
+        "cannotRemoveAllItems": "Cannot remove all items from a transaction. At least one item must remain."
       }
     }
   }

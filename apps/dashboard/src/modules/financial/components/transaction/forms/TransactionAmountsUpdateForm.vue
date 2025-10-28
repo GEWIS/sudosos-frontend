@@ -58,7 +58,7 @@ setSubmit(props.form, async () => {
     }>;
 
     if (!updatedAmounts || updatedAmounts.length === 0) {
-      throw new Error('Missing updated amounts data');
+      throw new Error(t('modules.admin.transactions.missingAmountsData'));
     }
 
     // Reconstruct the full transaction request
@@ -96,7 +96,7 @@ setSubmit(props.form, async () => {
 
     // Check if transaction would be empty after removing items
     if (fullTransactionRequest.subTransactions.length === 0) {
-      throw new Error('Cannot remove all items from a transaction. At least one item must remain.');
+      throw new Error(t('modules.admin.transactions.cannotRemoveAllItems'));
     }
 
     // Recalculate sub-transaction totals
