@@ -104,7 +104,6 @@ const finalizeCheckout = async () => {
     return;
   }
 
-
   stopCheckout();
   if (sound.value) {
     sound.value = new Audio('sounds/rct-cash.wav');
@@ -123,7 +122,6 @@ const checkout = () => {
     showDebtWarning.value = true;
     return;
   }
-
 
   if (borrelMode.value) {
     emit('selectCreator');
