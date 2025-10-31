@@ -43,19 +43,16 @@
           </div>
           <span class="font-semibold">{{ formatPrice(product.totalPriceInclVat) }}</span>
         </div>
-      </div>
-
-      <!-- Add Product Section -->
-      <div class="flex flex-col gap-2 mt-4 p-3 border border-gray-300 rounded">
-        <span class="font-semibold">{{ t('modules.admin.transactions.addProduct') }}:</span>
-        <div class="flex flex-row gap-2 items-center">
+        <div class="flex flex-row gap-2 items-center mt-2">
           <Select
             v-model="selectedProduct"
+            auto-filter-focus
             class="flex-1"
+            :filter="true"
+            :filter-fields="['name']"
             option-label="name"
             :options="pOptions"
             :placeholder="t('modules.admin.transactions.selectProduct')"
-            @change="handleProductSelection"
           />
           <Button
             :disabled="!selectedProduct"
@@ -218,10 +215,6 @@ function updateAmount(subTransactionIndex: number, rowIndex: number, amount: num
   }
 
   props.form.context.setFieldValue('updatedAmounts', currentAmounts);
-}
-
-function handleProductSelection() {
-  // This will be called when the select value changes
 }
 
 function addNewProduct() {

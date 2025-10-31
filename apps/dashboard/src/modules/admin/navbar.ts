@@ -26,7 +26,7 @@ export function useAdminNav() {
           },
           {
             label: t('common.navigation.transactions'),
-            route: '/admin/transactions',
+            route: '/financial/transactions',
             visible: isAllowed('get', ['all'], 'Transaction', ['any']),
           },
         ].filter((item) => item.visible),
