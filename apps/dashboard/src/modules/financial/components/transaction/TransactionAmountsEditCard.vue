@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { ProductResponse, ContainerResponse } from '@sudosos/sudosos-client';
 import { useTransactionCard } from '../../composables/useTransactionCard';
@@ -60,28 +60,32 @@ const productOptions = ref<ProductResponse[]>([]);
 const containers = ref<ContainerResponse[]>([]);
 const productToContainerMap = ref<Map<number, ContainerResponse>>(new Map());
 
-onMounted(async () => {
-  if (transaction.value) {
-    try {
-      const posRevision = await apiService.pos.getSinglePointOfSaleRevision(
-        transaction.value.pointOfSale.id,
-        transaction.value.pointOfSale.revision,
-      );
+watch(
+  transaction,
+  async (newTransaction) => {
+    if (newTransaction) {
+      try {
+        const posResponse = await apiService.pos.getSinglePointOfSale(newTransaction.pointOfSale.id);
+        const posWithContainers = posResponse.data;
 
-      productOptions.value = posRevision.data.containers.flatMap((container) => container.products);
-      containers.value = posRevision.data.containers;
+        productOptions.value = posWithContainers.containers.flatMap((container) => container.products);
+        containers.value = posWithContainers.containers;
 
-      // Create a map of product ID to container for easy lookup
-      posRevision.data.containers.forEach((container) => {
-        container.products.forEach((product) => {
-          productToContainerMap.value.set(product.id, container);
+        // Create a map of product ID to container for easy lookup
+        const newMap = new Map<number, ContainerResponse>();
+        posWithContainers.containers.forEach((container) => {
+          container.products.forEach((product) => {
+            newMap.set(product.id, container);
+          });
         });
-      });
-    } catch (error) {
-      console.error('Failed to fetch POS revision data:', error);
+        productToContainerMap.value = newMap;
+      } catch (error) {
+        console.error('Failed to fetch POS revision data:', error);
+      }
     }
-  }
-});
+  },
+  { immediate: true },
+);
 
 const showConfirmDialog = ref(false);
 const selectedUpdatedAmounts = ref<
