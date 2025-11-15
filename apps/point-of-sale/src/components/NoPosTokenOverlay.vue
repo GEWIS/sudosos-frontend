@@ -6,7 +6,9 @@
     <main>
       <div class="block mx-auto mb-5 max-h-[25rem] w-64 h-64 flex items-center justify-center">
         <div v-if="session" class="w-full h-full flex items-center justify-center">
-          <img v-if="qrCodeDataUrl" alt="QR Code" class="w-full h-full object-contain" :src="qrCodeDataUrl" />
+          <a v-if="qrCodeDataUrl" :href="session.qrCodeUrl" target="_blank" rel="noopener noreferrer">
+            <img alt="QR Code" class="w-full h-full object-contain" :src="qrCodeDataUrl" />
+          </a>
           <div
             v-else
             class="w-full h-full border-2 border-dashed flex flex-col items-center justify-center text-center p-4 qr-error"
