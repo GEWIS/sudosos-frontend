@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col h-screen">
-    <div class="m-5 p-5 bg-[#ffffffEE] shadow-lg rounded-lg flex-grow">
+    <div class="m-5 mb-0 p-5 bg-[#ffffffEE] shadow-lg rounded-lg flex-grow">
       <div v-if="loggingIn" class="items-center flex h-full justify-center">
         <div>
           <ProgressSpinner aria-label="Loading" />
@@ -32,21 +32,23 @@
         <BannerComponent v-if="shouldShowBanner" />
       </div>
     </div>
-    <SettingsIconComponent />
-    <GitInfo />
+    <div class="m-2 flex justify-between">
+      <PosInfo />
+      <GitInfo />
+    </div>
     <ScannersLoginComponent :handle-ean-login="eanLogin" :handle-nfc-login="nfcLogin" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useAuthStore } from '@sudosos/sudosos-frontend-common';
-import SettingsIconComponent from '@/components/SettingsIconComponent.vue';
 import KeypadComponent from '@/components/Keypad/KeypadComponent.vue';
 import KeypadDisplayComponent from '@/components/Keypad/KeypadDisplayComponent.vue';
 import apiService from '@/services/ApiService';
 import BannerComponent from '@/components/Banner/BannerComponent.vue';
 import ScannersLoginComponent from '@/components/ScannersLoginComponent.vue';
 import GitInfo from '@/components/GitInfo.vue';
+import PosInfo from '@/components/PosInfo.vue';
 import { useLoginForm } from '@/composables/useLoginForm';
 
 const authStore = useAuthStore();
