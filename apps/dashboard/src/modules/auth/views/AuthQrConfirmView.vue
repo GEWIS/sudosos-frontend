@@ -1,18 +1,13 @@
 <template>
-  <div class="flex flex-col items-center gap-6 p-6">
-    <div class="text-center">
-      <h1 class="text-2xl font-bold mb-2">{{ t('modules.auth.qr.confirmTitle') }}</h1>
-      <p class="text-gray-600">{{ t('modules.auth.qr.confirmDescription') }}</p>
-    </div>
-
+  <AuthLocalCard :header="t('modules.auth.qr.confirmTitle')">
     <div v-if="isCheckingStatus" class="flex flex-col items-center gap-4">
       <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      <p>{{ t('modules.auth.qr.checkingStatus') }}</p>
+      <p class="text-900">{{ t('modules.auth.qr.checkingStatus') }}</p>
     </div>
 
     <div v-else-if="isLoading" class="flex flex-col items-center gap-4">
       <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      <p>{{ t('modules.auth.qr.confirming') }}</p>
+      <p class="text-900">{{ t('modules.auth.qr.confirming') }}</p>
     </div>
 
     <div v-else-if="error" class="flex flex-col items-center gap-4">
@@ -20,12 +15,6 @@
         <p class="font-semibold">{{ t('modules.auth.qr.confirmError') }}</p>
         <p class="text-sm">{{ error }}</p>
       </div>
-      <button
-        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-        @click="confirmLogin"
-      >
-        {{ t('modules.auth.qr.retry') }}
-      </button>
     </div>
 
     <div v-else-if="success" class="flex flex-col items-center gap-4">
@@ -38,31 +27,27 @@
 
     <div v-else-if="isQrValid" class="flex flex-col items-center gap-4">
       <div class="text-center">
-        <p class="text-gray-600 mb-4">{{ t('modules.auth.qr.confirmInstructions') }}</p>
+        <p class="text-900 mb-4">{{ t('modules.auth.qr.confirmInstructions') }}</p>
         <p class="text-sm text-gray-500 font-mono">{{ sessionId }}</p>
       </div>
-
-      <button
-        class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
-        @click="confirmLogin"
-      >
+      <Button class="w-full" @click="confirmLogin">
         {{ t('modules.auth.qr.confirmLogin') }}
-      </button>
+      </Button>
     </div>
 
     <div v-else class="flex flex-col items-center gap-4">
       <div class="text-center">
-        <p class="text-gray-600 mb-4">{{ t('modules.auth.qr.waitingForQr') }}</p>
+        <p class="text-900 mb-4">{{ t('modules.auth.qr.waitingForQr') }}</p>
         <p class="text-sm text-gray-500 font-mono">{{ sessionId }}</p>
       </div>
     </div>
 
     <div class="mt-4 text-center">
-      <router-link class="text-blue-600 hover:text-blue-800 underline" to="/home">
+      <router-link class="cursor-pointer text-900 underline" to="/">
         {{ t('modules.auth.qr.backToHome') }}
       </router-link>
     </div>
-  </div>
+  </AuthLocalCard>
 </template>
 
 <script setup lang="ts">
@@ -71,6 +56,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { QRStatusResponseStatusEnum } from '@sudosos/sudosos-client';
 import apiService from '@/services/ApiService';
+import AuthLocalCard from '@/modules/auth/components/AuthLocalCard.vue';
 
 const { t } = useI18n();
 const route = useRoute();
