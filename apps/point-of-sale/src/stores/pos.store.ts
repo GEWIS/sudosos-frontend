@@ -38,10 +38,13 @@ export const usePointOfSaleStore = defineStore('pointOfSale', {
     getPointOfSaleAssociates(): PointOfSaleAssociate[] | null {
       if (this.pointOfSaleAssociates == null) return null;
 
-      const owners: PointOfSaleAssociate[] = this.pointOfSaleAssociates.ownerMembers.map((u: UserWithIndex): PointOfSaleAssociate => ({
-        ...u,
-        type: 'owner',
-      } as PointOfSaleAssociate));
+      const owners: PointOfSaleAssociate[] = this.pointOfSaleAssociates.ownerMembers.map(
+        (u: UserWithIndex): PointOfSaleAssociate =>
+          ({
+            ...u,
+            type: 'owner',
+          }) as PointOfSaleAssociate,
+      );
       const cashiers: PointOfSaleAssociate[] = this.pointOfSaleAssociates.cashiers
         // Owner overrides cashier (so we avoid duplicates)
         .filter((u1) => !owners.some((u2) => u1.id === u2.id))

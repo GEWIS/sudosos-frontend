@@ -65,9 +65,8 @@ const sortedAssociatesWithGaps = computed<AssociateItem[]>(() => {
   });
 
   if (withIndex.length > 0) {
-    const indices = withIndex.map((a) => a.index);
-    const minIndex = Math.min(...indices);
-    const maxIndex = Math.max(...indices);
+    const minIndex = withIndex[0].index;
+    const maxIndex = withIndex[withIndex.length - 1].index;
 
     for (let i = minIndex; i <= maxIndex; i++) {
       const associate = indexMap.get(i);
