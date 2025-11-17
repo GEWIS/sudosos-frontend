@@ -97,7 +97,7 @@ export function useCartTransactions(pointOfSale?: Ref<PointOfSaleWithContainersR
     return current.value && settings.isBorrelmode;
   };
 
-  let refreshRecentPosTransactions: number | null = null;
+  let refreshRecentPosTransactions: ReturnType<typeof setInterval> | null = null;
   const refreshInterval = 1000 * 60 * 5;
 
   const getRefreshInterval = () => setInterval(() => void getPointOfSaleRecentTransactions(), refreshInterval);

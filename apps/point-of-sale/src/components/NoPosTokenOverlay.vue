@@ -6,7 +6,7 @@
     <main>
       <div class="block mx-auto mb-5 max-h-[25rem] w-64 h-64 flex items-center justify-center">
         <div v-if="session" class="w-full h-full flex items-center justify-center">
-          <a v-if="qrCodeDataUrl" :href="session.qrCodeUrl" target="_blank" rel="noopener noreferrer">
+          <a v-if="qrCodeDataUrl" :href="session.qrCodeUrl" rel="noopener noreferrer" target="_blank">
             <img alt="QR Code" class="w-full h-full object-contain" :src="qrCodeDataUrl" />
           </a>
           <div
@@ -72,8 +72,12 @@ const authStore = useAuthStore();
 
 const userIsAuthenticated = computed(() => authStore.getUser !== null);
 
-const handleConfigure = () => {
-  void generateQrCode();
+const handleConfigure = async () => {
+  try {
+    await generateQrCode();
+  } catch (err) {
+    console.error('Failed to generate QR code:', err);
+  }
 };
 
 // POS Selection methods

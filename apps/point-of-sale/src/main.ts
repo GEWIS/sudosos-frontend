@@ -57,10 +57,14 @@ app.component('Toast', Toast);
 app.component('Card', Card);
 app.use(createPinia());
 
-void beforeLoad().then(() => {
-  app.use(router);
-  app.mount('#app');
-});
+void beforeLoad()
+  .then(() => {
+    app.use(router);
+    app.mount('#app');
+  })
+  .catch((err) => {
+    console.error('Failed to initialize application:', err);
+  });
 
 // Refresh alcohol time every hour.
 setInterval(

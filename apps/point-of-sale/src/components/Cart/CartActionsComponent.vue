@@ -33,12 +33,11 @@
         <i class="pi pi-times" style="font-size: 2rem" />
       </Button>
     </div>
-    <audio ref="sound" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { logoutService } from '@/services/logoutService';
 import { useCartStore } from '@/stores/cart.store';
 import { useSettingStore } from '@/stores/settings.store';
@@ -50,7 +49,6 @@ const settings = useSettingStore();
 const cartStore = useCartStore();
 const cartItems = cartStore.getProducts;
 const borrelMode = computed(() => settings.isBorrelmode);
-const sound = ref<HTMLAudioElement | null>(null);
 const buyer = computed(() => cartStore.getBuyer);
 
 const playSound = () => {

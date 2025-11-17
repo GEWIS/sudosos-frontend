@@ -6,16 +6,18 @@ export function useCheckoutTimer(onFinalize?: () => void) {
   const cartStore = useCartStore();
   const duration = ref(3);
   const checkingOut = ref(false);
-  let intervalId: number | undefined;
+  let intervalId: ReturnType<typeof setInterval> | undefined;
+
+  const handleIntervalTick = async () => {
+    duration.value -= 1;
+    if (duration.value <= 0 && checkingOut.value) {
+      await finalizeCheckout();
+    }
+  };
 
   const checkoutTimer = () =>
     setInterval(() => {
-      void (async () => {
-        duration.value -= 1;
-        if (duration.value <= 0 && checkingOut.value) {
-          await finalizeCheckout();
-        }
-      })();
+      void handleIntervalTick();
     }, 1000);
 
   const stopCheckout = () => {

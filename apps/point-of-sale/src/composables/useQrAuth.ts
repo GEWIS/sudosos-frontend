@@ -8,7 +8,7 @@ export function useQrAuth() {
   const session = ref<QRCodeResponse | null>(null);
   const qrCodeDataUrl = ref<string>('');
   const webSocketStore = useWebSocketStore();
-  let expirationTimeout: NodeJS.Timeout | null = null;
+  let expirationTimeout: ReturnType<typeof setTimeout> | null = null;
 
   const isExpired = computed(() => {
     if (!session.value) return false;

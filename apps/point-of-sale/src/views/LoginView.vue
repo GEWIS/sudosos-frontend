@@ -68,7 +68,7 @@ const {
   focusUserId,
   handleExternal,
   displayContainerClasses,
-  loginSucces,
+  loginSuccess,
   login,
   shouldShowBanner,
 } = useLoginForm();
@@ -106,7 +106,7 @@ const handleBackspace = () => {
 const nfcLogin = async (nfcCode: string) => {
   try {
     await authStore.nfcLogin(nfcCode, apiService).then(async () => {
-      await loginSucces();
+      await loginSuccess();
     });
   } catch (error) {
     console.error(error);
@@ -116,7 +116,7 @@ const nfcLogin = async (nfcCode: string) => {
 const eanLogin = async (eanCode: string) => {
   try {
     await authStore.eanLogin(eanCode, apiService).then(async () => {
-      await loginSucces();
+      await loginSuccess();
     });
   } catch (error) {
     console.error(error);

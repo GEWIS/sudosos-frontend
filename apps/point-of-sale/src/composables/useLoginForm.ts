@@ -13,7 +13,6 @@ export function useLoginForm() {
   const userId = ref('');
   const pinCode = ref('');
   const enteringUserId = ref(true);
-  const animateSwitch = ref(false);
   const loggingIn = ref(false);
   const wrongPin = ref(false);
   const maxUserIdLength = 5;
@@ -23,10 +22,6 @@ export function useLoginForm() {
 
   const switchInput = () => {
     enteringUserId.value = !enteringUserId.value;
-    animateSwitch.value = true;
-    setTimeout(() => {
-      animateSwitch.value = false;
-    }, 500);
   };
 
   const focusPasscode = () => {
@@ -45,7 +40,7 @@ export function useLoginForm() {
     'ml-[-23rem]': !enteringUserId.value,
   }));
 
-  const loginSucces = async () => {
+  const loginSuccess = async () => {
     const user = authStore.getUser;
     if (user === null) return;
 
@@ -71,28 +66,35 @@ export function useLoginForm() {
       authStore
         .externalPinLogin(Number(userId.value), pinCode.value, apiService)
         .then(async () => {
-          await loginSucces();
+          await loginSuccess();
         })
         .catch((error) => {
           console.error(error);
           loginFail();
+        })
+        .finally(() => {
+          loggingIn.value = false;
         });
     } else {
       const pos = posStore.getPos;
-      if (!pos) return;
+      if (!pos) {
+        loggingIn.value = false;
+        return;
+      }
 
       authStore
         .secureGewisPinlogin(userId.value, pinCode.value, pos.id, posApiService, userApiService)
         .then(async () => {
-          await loginSucces();
+          await loginSuccess();
         })
         .catch((error) => {
           console.error(error);
           loginFail();
+        })
+        .finally(() => {
+          loggingIn.value = false;
         });
     }
-
-    loggingIn.value = false;
   };
 
   const shouldShowBanner = computed(() => {
@@ -109,7 +111,6 @@ export function useLoginForm() {
     userId,
     pinCode,
     enteringUserId,
-    animateSwitch,
     loggingIn,
     wrongPin,
     maxUserIdLength,
@@ -121,7 +122,7 @@ export function useLoginForm() {
     focusUserId,
     handleExternal,
     displayContainerClasses,
-    loginSucces,
+    loginSuccess,
     loginFail,
     login,
     shouldShowBanner,
