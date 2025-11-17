@@ -5,6 +5,7 @@
   <Dialog
     ref="settings"
     v-model:visible="visible"
+    :draggable="false"
     header="Switch Point of Sale"
     modal
     :style="{ width: '70vw', maxWidth: '900px' }"
@@ -19,7 +20,7 @@
         @select="handleSwitchToPos"
       />
 
-      <div class="flex gap-3 pt-4 justify-end">
+      <div v-if="usersPointOfSales && usersPointOfSales.length > 0" class="flex gap-3 pt-4 justify-end">
         <Button class="px-3 py-2" outlined @click="visible = false">
           <i class="pi pi-times mr-2" />
           Close
@@ -36,7 +37,7 @@
 <script setup lang="ts">
 import { Ref, ref } from 'vue';
 import { addListenerOnDialogueOverlay, useAuthStore } from '@sudosos/sudosos-frontend-common';
-import { StoreGeneric, storeToRefs } from 'pinia';
+import { storeToRefs } from 'pinia';
 import { PointOfSaleResponse } from '@sudosos/sudosos-client';
 import PosSwitchDisplay from './PosSwitchDisplay.vue';
 import { usePointOfSaleStore } from '@/stores/pos.store';
@@ -49,7 +50,7 @@ const settings: Ref<{ mask: HTMLElement; close: () => void } | null> = ref(null)
 const posStore = usePointOfSaleStore();
 const authStore = useAuthStore();
 
-const { pointOfSale } = storeToRefs(posStore as StoreGeneric);
+const { pointOfSale, usersPointOfSales } = storeToRefs(posStore);
 const { groupedPos, loadingPos, loadPosOptions } = usePointOfSaleOptions();
 const { switchToPos } = usePointOfSaleSwitch();
 
