@@ -1,6 +1,5 @@
 <template>
   <DataTable
-    class="w-full"
     data-key="id"
     lazy
     :loading="isLoading"
@@ -27,7 +26,7 @@
     <Column v-if="hasPercentage" field="percentage" :header="t('modules.financial.invoice.vat.percentage')">
       <template #body="slotProps">
         <Skeleton v-if="isLoading" class="h-1rem my-1 surface-300 w-6" />
-        <span v-else>{{ slotProps.data.percentage }}%</span>
+        <span v-else>{{ slotProps.data.percentage + '%' }}</span>
       </template>
     </Column>
   </DataTable>
@@ -40,7 +39,10 @@ import DataTable, { type DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import Skeleton from 'primevue/skeleton';
 import { useI18n } from 'vue-i18n';
+import { useToast } from 'primevue/usetoast';
 import ApiService from '@/services/ApiService';
+import { handleError } from '@/utils/errorUtils';
+import { AxiosError } from 'axios';
 
 const { t } = useI18n();
 
@@ -80,7 +82,9 @@ async function loadVatGroups(skip = 0) {
       totalRecords.value = response.data._pagination?.count || 0;
     }
   } catch (error) {
-    console.error('Failed to load VAT groups:', error);
+    const toast = useToast();
+    if (error instanceof AxiosError) handleError(error, toast);
+    else console.error('Failed to load VAT groups:', error);
   } finally {
     isLoading.value = false;
   }
