@@ -10,7 +10,7 @@
       :rows-per-page-options="rowsPerPageOptions"
       :total-records="totalRecords"
       :value="banners"
-      @page="(e) => emit('page', e)"
+      @page="onPage"
     >
       <template #header>
         <div class="items-center flex flex-col justify-between md:flex-row">
@@ -48,7 +48,6 @@
 import DataView from 'primevue/dataview';
 import SelectButton from 'primevue/selectbutton';
 import type { BannerResponse } from '@sudosos/sudosos-client';
-import type { DataTablePageEvent } from 'primevue/datatable';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import BannerItem from '@/modules/admin/components/banners/BannerItem.vue';
@@ -70,11 +69,16 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  page: [event: DataTablePageEvent];
-  sort: [order: string];
-  'update:activeFilter': [value: boolean | undefined];
-  'update:expiredFilter': [value: boolean | undefined];
+  (e: 'page', event: unknown): void;
+  (e: 'sort', order: string): void;
+  (e: 'update:activeFilter', value: boolean | undefined): void;
+  (e: 'update:expiredFilter', value: boolean | undefined): void;
 }>();
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const onPage = (event: any) => {
+  emit('page', event);
+};
 
 const dialogVisible = ref<boolean>(false);
 const banner = ref<BannerResponse | undefined>();

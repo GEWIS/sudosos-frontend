@@ -1,10 +1,11 @@
 import { ref, watch, onMounted } from 'vue';
 import type { BannerResponse } from '@sudosos/sudosos-client';
-import type { DataTablePageEvent } from 'primevue/datatable';
 import apiService from '@/services/ApiService';
 import { debounce } from '@/utils/debounceUtil';
+import { useBannersStore } from '@/stores/banner.store';
 
 export function usePaginatedBanners() {
+  const bannersStore = useBannersStore();
   const activeFilter = ref<boolean | undefined>(undefined);
   const expiredFilter = ref<boolean | undefined>(undefined);
   const order = ref<string>('DESC');
@@ -34,7 +35,8 @@ export function usePaginatedBanners() {
 
   const delayedAPICall = debounce(apiCall, 250);
 
-  function onPage(event: DataTablePageEvent) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function onPage(event: any) {
     rows.value = event.rows;
     skip.value = event.first;
     delayedAPICall();
@@ -50,6 +52,13 @@ export function usePaginatedBanners() {
     skip.value = 0;
     delayedAPICall();
   });
+
+  watch(
+    () => bannersStore.getLastUpdated,
+    () => {
+      delayedAPICall();
+    },
+  );
 
   onMounted(() => {
     void apiCall();
