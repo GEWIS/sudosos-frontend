@@ -10,7 +10,6 @@ import NoPosTokenOverlay from '@/components/NoPosTokenOverlay.vue';
   <Toast />
   <MaintenanceModeOverlay />
   <NoPosTokenOverlay />
-  <!--  TODO fix when WS works again -->
   <ConnectionLostOverlay />
   <RouterView />
   <SplashComponent />
