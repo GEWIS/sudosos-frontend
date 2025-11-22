@@ -1,5 +1,5 @@
 import { computed, onMounted, ref } from 'vue';
-import { useAuthStore , isAllowed } from '@sudosos/sudosos-frontend-common';
+import { useAuthStore, isAllowed } from '@sudosos/sudosos-frontend-common';
 import { useI18n } from 'vue-i18n';
 import apiService from '@/services/ApiService';
 

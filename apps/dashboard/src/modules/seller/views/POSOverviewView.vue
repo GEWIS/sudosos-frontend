@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore , isAllowed } from '@sudosos/sudosos-frontend-common';
+import { useUserStore, isAllowed } from '@sudosos/sudosos-frontend-common';
 import type { PaginatedPointOfSaleResponse } from '@sudosos/sudosos-client';
 import { useToast } from 'primevue/usetoast';
 import POSOverviewTable from '@/modules/seller/components/POSOverviewTable.vue';

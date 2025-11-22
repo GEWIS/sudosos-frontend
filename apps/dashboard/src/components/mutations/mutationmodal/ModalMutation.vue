@@ -51,7 +51,7 @@
 
 <script setup lang="ts">
 import { computed, ref, toRef } from 'vue';
-import { addListenerOnDialogueOverlay , isAllowed } from '@sudosos/sudosos-frontend-common';
+import { addListenerOnDialogueOverlay, isAllowed } from '@sudosos/sudosos-frontend-common';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'primevue/usetoast';
 import Skeleton from 'primevue/skeleton';

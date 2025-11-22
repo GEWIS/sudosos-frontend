@@ -23,7 +23,7 @@
 import { useI18n } from 'vue-i18n';
 import type { UserResponse } from '@sudosos/sudosos-client';
 import { computed, ref, watch } from 'vue';
-import { useUserStore , isAllowed } from '@sudosos/sudosos-frontend-common';
+import { useUserStore, isAllowed } from '@sudosos/sudosos-frontend-common';
 import { useRouter } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
 import { schemaToForm } from '@/utils/formUtils';
