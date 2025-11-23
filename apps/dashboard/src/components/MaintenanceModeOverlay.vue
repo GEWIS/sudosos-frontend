@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="isMaintenance && !canOverride"
-    class="absolute top-0 left-0 w-full h-full flex text-white justify-center items-center z-10 bg-red-700"
+    class="fixed top-0 left-0 w-full h-full flex text-white justify-center items-center z-10 bg-red-700"
   >
     <main>
       <img alt="logo" class="block mx-auto mb-5 max-h-[25rem]" src="@/assets/img/bier_grayscale.png" />
