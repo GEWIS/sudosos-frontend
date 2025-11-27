@@ -38,7 +38,7 @@ const displayName = () => {
   }
   name += ' ' + props.user.lastName;
 
-  if ('gewisId' in props.user && props.user.memberId) {
+  if (props.user.memberId) {
     name += ` - ${props.user?.memberId}`;
   } else {
     switch (props.user?.type) {
