@@ -15,13 +15,13 @@
   "main": "./dist/sudosos-frontend-themes.umd.cjs",
   "module": "./dist/sudosos-frontend-themes.js",
   "type": "module",
-  "types": "./dist/index.d.ts",
-  "typings": "./dist/index.d.ts",
+  "types": "./dist/src/index.d.ts",
+  "typings": "./dist/src/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/sudosos-frontend-themes.js",
       "require": "./dist/sudosos-frontend-themes.umd.cjs",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/src/index.d.ts"
     }
   },
   "repository": {
