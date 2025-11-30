@@ -57,6 +57,14 @@ import WelcomeCard0 from '@/components/wrapped/0_WelcomeCard.vue';
 import TransactionsCard1 from '@/components/wrapped/1_TransactionsCard.vue';
 import CalendarHeatmapCard2 from '@/components/wrapped/2_CalendarHeatmapCard.vue';
 import WrappedControls from '@/components/wrapped/Controls/WrappedControls.vue';
+import { useWrappedEnabled } from '@/composables/wrappedEnabled';
+import router from '@/router';
+
+const { wrappedEnabled, canOverride } = useWrappedEnabled();
+
+if (!wrappedEnabled.value && !canOverride.value) {
+  void router.push({ name: 'home' });
+}
 
 const authStore = useAuthStore();
 
