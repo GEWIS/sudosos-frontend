@@ -54,6 +54,7 @@
 import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
 import { useAuthStore } from '@sudosos/sudosos-frontend-common';
 import WelcomeCard0 from '@/components/wrapped/0_WelcomeCard.vue';
+import TransactionsCard1 from '@/components/wrapped/1_TransactionsCard.vue';
 import WrappedControls from '@/components/wrapped/Controls/WrappedControls.vue';
 
 const authStore = useAuthStore();
@@ -72,9 +73,12 @@ const userFirstName = computed(() => {
 type CardProps = Record<string, unknown>;
 
 // TODO: replace with real data
-const testCardProps: CardProps[] = [{ firstName: userFirstName, showArrows: showArrows }];
+const testCardProps: CardProps[] = [
+  { firstName: userFirstName, showArrows: showArrows },
+  { transactionCount: 321, previousTransactionCount: 275, percentile: 5 },
+];
 
-const cardComponents = [WelcomeCard0];
+const cardComponents = [WelcomeCard0, TransactionsCard1];
 const currentIndex = ref(0);
 
 const cardBackgrounds = ['#b40000', '#feffff', '#0d1117'];
