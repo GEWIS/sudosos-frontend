@@ -55,6 +55,7 @@ import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
 import { useAuthStore } from '@sudosos/sudosos-frontend-common';
 import WelcomeCard0 from '@/components/wrapped/0_WelcomeCard.vue';
 import TransactionsCard1 from '@/components/wrapped/1_TransactionsCard.vue';
+import CalendarHeatmapCard2 from '@/components/wrapped/2_CalendarHeatmapCard.vue';
 import WrappedControls from '@/components/wrapped/Controls/WrappedControls.vue';
 
 const authStore = useAuthStore();
@@ -76,9 +77,15 @@ type CardProps = Record<string, unknown>;
 const testCardProps: CardProps[] = [
   { firstName: userFirstName, showArrows: showArrows },
   { transactionCount: 321, previousTransactionCount: 275, percentile: 5 },
+  {
+    heatmap: Array.from({ length: 365 }, () => Math.floor(Math.random() * 10)),
+    year: new Date().getFullYear(),
+    maxDate: new Date(2025, 8, 11),
+    maxValue: 67,
+  },
 ];
 
-const cardComponents = [WelcomeCard0, TransactionsCard1];
+const cardComponents = [WelcomeCard0, TransactionsCard1, CalendarHeatmapCard2];
 const currentIndex = ref(0);
 
 const cardBackgrounds = ['#b40000', '#feffff', '#0d1117'];
