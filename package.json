@@ -13,6 +13,7 @@
     "dev-dashboard:prod": "concurrently --kill-others \"yarn dashboard:dev:prod\" \"yarn dev-libraries\"",
     "dev-dashboard:test": "concurrently --kill-others \"yarn dashboard:dev:test\" \"yarn dev-libraries\"",
     "dev-dashboard:local": "concurrently --kill-others \"yarn dashboard:dev:local\" \"yarn dev-libraries\"",
+    "dev-dashboard-host": "concurrently --kill-others \"yarn dashboard:dev --host\" \"yarn dev-libraries\"",
     "dev-pos": "concurrently --kill-others \"yarn point-of-sale:dev\" \"yarn dev-libraries\"",
     "dev-pos:prod": "concurrently --kill-others \"yarn point-of-sale:dev:prod\" \"yarn dev-libraries\"",
     "dev-pos:test": "concurrently --kill-others \"yarn point-of-sale:dev:test\" \"yarn dev-libraries\"",
