@@ -39,6 +39,6 @@ const fileInput = ref<HTMLInputElement | null>(null);
 const onImgUpload = (e: Event) => {
   const el = e.target as HTMLInputElement;
   if (!(el?.files?.length && el.files[0])) return;
-  emit('upload', el.files[0]!);
+  emit('upload', el.files[0]);
 };
 </script>

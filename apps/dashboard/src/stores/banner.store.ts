@@ -58,7 +58,7 @@ export const useBannersStore = defineStore('banners', {
       const updated = await apiService.banner.update(bannerId, banner);
       if (!this.banners[bannerId]) return updated;
 
-      this.banners[bannerId] = { ...this.banners[bannerId]!, ...banner };
+      this.banners[bannerId] = { ...this.banners[bannerId], ...banner };
       this.lastUpdated = Date.now();
       return updated;
     },

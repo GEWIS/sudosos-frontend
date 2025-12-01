@@ -406,7 +406,7 @@ const debtorRows: ComputedRef<DebtorRow[]> = computed(() => {
       gewisId: debtor.user.gewisId,
       user: debtor.user,
       referenceBalance: formatPrice(debtor.fine.balances[0]!.amount),
-      controlBalance: debtor.fine.balances[1]! && formatPrice(debtor.fine.balances[1]!.amount),
+      controlBalance: debtor.fine.balances[1]! && formatPrice(debtor.fine.balances[1].amount),
       referenceBalanceFine: debtor.fine.balances[0]!.fine && formatPrice(debtor.fine.balances[0]!.fine),
       fine: fine,
       fineSince: debtor.fine.balances[0]!.fineSince,
