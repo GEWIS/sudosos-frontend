@@ -473,7 +473,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@intlify/eslint-plugin-vue-i18n@npm:^4.0.1":
+"@intlify/eslint-plugin-vue-i18n@npm:^4.1.0":
   version: 4.1.0
   resolution: "@intlify/eslint-plugin-vue-i18n@npm:4.1.0"
   dependencies:
@@ -909,7 +909,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@primeuix/styled@npm:^0.7.3, @primeuix/styled@npm:^0.7.4":
+"@primeuix/styled@npm:^0.7.4":
   version: 0.7.4
   resolution: "@primeuix/styled@npm:0.7.4"
   dependencies:
@@ -927,12 +927,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@primeuix/themes@npm:^1.1.1":
-  version: 1.2.5
-  resolution: "@primeuix/themes@npm:1.2.5"
+"@primeuix/themes@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@primeuix/themes@npm:2.0.1"
   dependencies:
-    "@primeuix/styled": "npm:^0.7.3"
-  checksum: 10c0/695c78e179b2c1d453ca18e3ddcbc3821231b151c5d3c7f6e491738a821b59baa539a5dfa5a8c88919bc16184a4ceaec429f4143657c2a49cf1c1389e8855ede
+    "@primeuix/styled": "npm:^0.7.4"
+  checksum: 10c0/7ee77b4718512d21165c92f1fa581d8a1e72ef336de593c2e4ffaf6b7bb6748bd68ba0853682a507037ad36f120f24e05c12de64d64311ad0c90e6b42dae7f2b
   languageName: node
   linkType: hard
 
@@ -1149,7 +1149,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rushstack/eslint-patch@npm:^1.2.0":
+"@rushstack/eslint-patch@npm:^1.15.0":
   version: 1.15.0
   resolution: "@rushstack/eslint-patch@npm:1.15.0"
   checksum: 10c0/b2aeae0c6228981c40eff7a3cf9fc1c4342f8fc7a0102d8b2b3d3f66137461b1cd2e3c22d9aa6bcde43f227c5e4e698be33ac145d356797774f212da496c0e9c
@@ -2157,10 +2157,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/tsconfig@npm:^0.5.1":
-  version: 0.5.1
-  resolution: "@vue/tsconfig@npm:0.5.1"
-  checksum: 10c0/cf4049c0daf26579e42803eca661809f95f9196323b4a6aec1714ac3c80df37b44d3878468f56e2f3d1fe64640fe9cb42f20db42509ef858ab059fe05e0dd862
+"@vue/tsconfig@npm:^0.8.1":
+  version: 0.8.1
+  resolution: "@vue/tsconfig@npm:0.8.1"
+  peerDependencies:
+    typescript: 5.x
+    vue: ^3.4.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+    vue:
+      optional: true
+  checksum: 10c0/f4e37182dc2560ce2c78e66fbf837000dba5460c12913ef37f5d54b6c0da518df1118fcc1968ff51d9541287a9d9d105fb17072b0dbb095919cfb50d1fe67a78
   languageName: node
   linkType: hard
 
@@ -6798,9 +6806,9 @@ __metadata:
     "@gewis/eslint-config-vue": "npm:^2.4.0"
     "@gewis/prettier-config": "npm:^2.2.2"
     "@gewis/splash": "npm:^2.4.0"
-    "@intlify/eslint-plugin-vue-i18n": "npm:^4.0.1"
-    "@primeuix/themes": "npm:^1.1.1"
-    "@rushstack/eslint-patch": "npm:^1.2.0"
+    "@intlify/eslint-plugin-vue-i18n": "npm:^4.1.0"
+    "@primeuix/themes": "npm:^2.0.1"
+    "@rushstack/eslint-patch": "npm:^1.15.0"
     "@sudosos/sudosos-client": "github:GEWIS/sudosos-client#5e4759c1f0ba9279d530cd95e5c57b1791d622a2"
     "@tailwindcss/vite": "npm:^4.1.3"
     "@tsconfig/node-lts": "npm:^20.1.3"
@@ -6809,7 +6817,7 @@ __metadata:
     "@types/node": "npm:^22.7.7"
     "@typescript-eslint/parser": "npm:^8.29.1"
     "@vitejs/plugin-vue": "npm:^6.0.2"
-    "@vue/tsconfig": "npm:^0.5.1"
+    "@vue/tsconfig": "npm:^0.8.1"
     axios: "npm:^1.7.7"
     concurrently: "npm:^8.2.2"
     dinero.js: "npm:^1.9.1"

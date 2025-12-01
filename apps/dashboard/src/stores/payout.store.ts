@@ -71,7 +71,9 @@ export const usePayoutStore = defineStore('payout', {
     async fetchPdf(id: number): Promise<string> {
       return apiService.payouts.getPayoutRequestPdf(id).then((res) => {
         const pdf = (res.data as unknown as { pdf: string }).pdf;
-        this.payouts[id].pdf = pdf;
+        if (!this.payouts[id]) throw new Error('Payout not fetched before loading PDF');
+
+        this.payouts[id]!.pdf = pdf;
         return pdf;
       });
     },
