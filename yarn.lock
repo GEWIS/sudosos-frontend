@@ -1228,10 +1228,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stripe/stripe-js@npm:^5.2.0":
-  version: 5.10.0
-  resolution: "@stripe/stripe-js@npm:5.10.0"
-  checksum: 10c0/0309007baaf939931de0e18ec8230bdfa41b1644cd5f65d72168ef0a05ea4d14da9a95ff628c94f9f1e222577296369b7490534803ce1ce18d08a557ae562644
+"@stripe/stripe-js@npm:^8.5.3":
+  version: 8.5.3
+  resolution: "@stripe/stripe-js@npm:8.5.3"
+  checksum: 10c0/4601a85c77b562329706df92d93644ccecd31bec2e96ddd5c3ce207b305a9b733a110697e322070f3d40d5466972a84ebe9413d7b503cf7f903fdf026ed6d276
   languageName: node
   linkType: hard
 
@@ -6736,7 +6736,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "sudosos-dashboard@workspace:apps/dashboard"
   dependencies:
-    "@stripe/stripe-js": "npm:^5.2.0"
+    "@stripe/stripe-js": "npm:^8.5.3"
     "@sudosos/sudosos-frontend-common": "workspace:^"
     "@sudosos/themes": "workspace:^"
     "@tailwindcss/typography": "npm:^0.5.19"
