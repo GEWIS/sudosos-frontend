@@ -102,7 +102,6 @@
                   props.form.context.values.id,
                   slotProps.data.action,
                   slotProps.data.relation,
-                  slotProps.data.attribute,
                 )
               "
             />
@@ -143,7 +142,7 @@
         checkmark
         editable
         :highlight-on-select="false"
-        :options="testsActions"
+        :options="ownActions"
         placeholder="Select an Action"
       />
 
@@ -152,7 +151,7 @@
         checkmark
         editable
         :highlight-on-select="false"
-        :options="testsRelations"
+        :options="ownRelations"
         placeholder="Select an Relation"
       />
 
@@ -161,17 +160,23 @@
         checkmark
         editable
         :highlight-on-select="false"
-        :options="testsAttributes"
+        :options="ownAttributes"
         placeholder="Select an Attribute"
       />
     </div>
 
-    <div v-if="props.form.context.values.systemDefault" class="flex flex-row-reverse flex-wrap gap-3 pt-3">
+    <div class="flex flex-row-reverse flex-wrap gap-3 pt-3">
       <Button
-        v-if="props.form.context.values.systemDefault"
         :label="t('modules.admin.rbac.permissions.actionSubmission')"
         type="button"
-        @click="handleAddActionPush()"
+        @click="
+          handleAddActionPush(
+            props.form.context.values.currentPermission.entity,
+            selectedAction,
+            selectedRelation,
+            selectedAttribute,
+          )
+        "
       />
       <Button
         :label="t('modules.admin.rbac.permissions.deletePermissionCancellation')"
@@ -275,6 +280,7 @@ import type {
   RelationResponse,
   UserResponse,
   AddRoleRequest,
+  CreatePermissionParams,
 } from '@sudosos/sudosos-client';
 import { useToast } from 'primevue/usetoast';
 import CardComponent from '@/components/CardComponent.vue';
@@ -306,9 +312,9 @@ const users = ref<UserResponse[]>();
 const selectedAction = ref();
 const selectedRelation = ref();
 const selectedAttribute = ref();
-const testsActions = ['action1', 'action2', 'action3'];
-const testsRelations = ['relation1', 'relation2', 'relation3'];
-const testsAttributes = ['attribute1', 'attribute2', 'attribute3'];
+const ownActions = ref<string[]>();
+const ownRelations = ref<string[]>();
+const ownAttributes = ref<string[]>();
 const toast = useToast();
 
 watch(
@@ -317,7 +323,9 @@ watch(
     const allRelations: any[] = [];
     props.form.context.values.currentPermission.actions.forEach((action) => {
       action.relations.forEach((relation) => {
-        allRelations.push({ action: action.action, relation: relation.relation, attribute: relation.attributes[0] });
+        relation.attributes.forEach((attribute) => {
+          allRelations.push({ action: action.action, relation: relation.relation, attribute: attribute });
+        });
       });
     });
     actionRelations.value = allRelations;
@@ -331,11 +339,68 @@ watch(
   },
 );
 
-const handleDeletePush = (entity: string, id: number, action: string, relation: string, attribute: string) => {
-  //TODO: Implement method
+watch(
+  () => props.form.context.values.permissions,
+  () => {
+    const tempActions: Set<string> = new Set();
+    const tempRelations: Set<string> = new Set();
+    const tempAttributes: Set<string> = new Set();
+    if (props.form.context.values.permissions) {
+      props.form.context.values.permissions.forEach((permission) => {
+        permission.actions.forEach((action) => {
+          tempActions.add(action.action);
+          action.relations.forEach((relation) => {
+            tempRelations.add(relation.relation);
+            relation.attributes.forEach((attribute) => {
+              tempAttributes.add(attribute);
+            });
+          });
+        });
+      });
+    }
+    ownActions.value = Array.from(tempActions);
+    ownRelations.value = Array.from(tempRelations);
+    ownAttributes.value = Array.from(tempAttributes);
+  },
+);
+
+const handleDeletePush = (entity: string, id: number, action: string, relation: string) => {
+  apiService.rbac
+    .deletePermission(id, entity, action, relation)
+    .then(() => {
+      const allRelations: any[] = [];
+      props.form.context.values.currentPermission.actions.forEach((action) => {
+        action.relations.forEach((relation) => {
+          relation.attributes.forEach((attribute) => {
+            allRelations.push({ action: action.action, relation: relation.relation, attribute: attribute });
+          });
+        });
+      });
+      actionRelations.value = allRelations;
+    })
+    .catch((error) => {
+      handleError(error, toast);
+    });
 };
 
-const handleAddActionPush = () => {};
+const handleAddActionPush = (entity: string, action: string, relation: string, attribute: string) => {
+  console.error(entity, action, relation, attribute);
+  const addPermissionReq: CreatePermissionParams = {
+    entity: entity,
+    action: action,
+    relation: relation,
+    attributes: [attribute],
+  };
+  apiService.rbac.addPermissions(props.form.context.values.id, [addPermissionReq]).catch((error) => {
+    handleError(error, toast);
+  });
+  actionVision.value = false;
+  if (actionRelations.value) {
+    const allRelations = actionRelations.value;
+    allRelations.push({ action: action, relation: relation, attribute: attribute });
+    actionRelations.value = allRelations;
+  }
+};
 
 const handleDeletePermissionPush = (id: number, permission: PermissionResponse) => {
   permission.actions.forEach((action: ActionResponse) => {
@@ -363,7 +428,7 @@ const handleDeleteUserConfirmation = (userId: number, roleId: number) => {
           props.form.context.setFieldValue('users', users.value);
         })
         .catch((err) => {
-          handleError(err, useToast());
+          handleError(err, toast);
         });
     })
     .catch((err) => handleError(err, toast));
@@ -387,11 +452,11 @@ const handleAddUserConfirmationPush = (id: number) => {
           props.form.context.setFieldValue('users', users.value);
         })
         .catch((err) => {
-          handleError(err, useToast());
+          handleError(err, toast);
         });
     })
     .catch((err) => {
-      handleError(err, useToast());
+      handleError(err, toast);
     });
 };
 </script>
