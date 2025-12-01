@@ -40,6 +40,6 @@
   },
   "homepage": "https://gitlab.com/sudosos/sudosos-frontend-common#readme",
   "devDependencies": {
-    "eslint": "^9.24.0"
+    "eslint": "^9.39.1"
   }
 }

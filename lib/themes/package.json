@@ -29,6 +29,6 @@
     "url": "https://github.com/GEWIS/sudosos-frontend.git"
   },
   "devDependencies": {
-    "eslint": "^9.24.0"
+    "eslint": "^9.39.1"
   }
 }
