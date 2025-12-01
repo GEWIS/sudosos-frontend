@@ -16,13 +16,11 @@
   "main": "./dist/sudosos-frontend-common.umd.cjs",
   "module": "./dist/sudosos-frontend-common.js",
   "type": "module",
-  "types": "./dist/src/index.d.ts",
-  "typings": "./dist/src/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/src/index.d.ts",
       "import": "./dist/sudosos-frontend-common.js",
-      "require": "./dist/sudosos-frontend-common.umd.cjs",
-      "types": "./dist/src/index.d.ts"
+      "require": "./dist/sudosos-frontend-common.umd.cjs"
     }
   },
   "files": [
