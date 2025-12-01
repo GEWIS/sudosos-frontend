@@ -2571,7 +2571,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.6.0, axios@npm:^1.6.3, axios@npm:^1.7.7":
+"axios@npm:^1.13.2, axios@npm:^1.6.0, axios@npm:^1.6.3":
   version: 1.13.2
   resolution: "axios@npm:1.13.2"
   dependencies:
@@ -6902,7 +6902,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^8.48.0"
     "@vitejs/plugin-vue": "npm:^6.0.2"
     "@vue/tsconfig": "npm:^0.8.1"
-    axios: "npm:^1.7.7"
+    axios: "npm:^1.13.2"
     concurrently: "npm:^8.2.2"
     dinero.js: "npm:^1.9.1"
     eslint: "npm:^9.24.0"
