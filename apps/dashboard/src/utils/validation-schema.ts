@@ -8,6 +8,7 @@ import type {
   PermissionResponse,
   UserResponse,
   RoleResponse,
+  ActionResponse,
 } from '@sudosos/sudosos-client';
 import type { DineroObject } from 'dinero.js';
 import i18n from './i18nUtils';
@@ -332,4 +333,5 @@ export const rbacSchema = yup.object({
   users: yup.array().of(yup.mixed<UserResponse>().required()),
   currentPermission: yup.mixed<PermissionResponse>().required(),
   currentUser: yup.mixed<UserResponse>().required(),
+  currentAction: yup.mixed<ActionResponse>().required(),
 });
