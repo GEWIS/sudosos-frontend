@@ -146,11 +146,13 @@
           "deletePermissionCancellation": "Annuleer",
           "deletePermissionConfirmation": "Ga door",
           "deleteRow": "Verwijder rij",
-          "actionSubmission": "Voeg toe"
+          "actionSubmission": "Voeg toe",
+          "deleteAction": "Verwijder Actie"
         },
         "users": {
           "addUser": "Voeg gebruiker toe",
-          "deleteUser": "Verwijder gebruiker"
+          "deleteUser": "Verwijder gebruiker",
+          "userTitle": "Gebruikers"
         }
       }
     }
