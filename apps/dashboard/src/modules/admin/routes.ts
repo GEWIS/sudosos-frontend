@@ -5,7 +5,7 @@ import AdminUserOverView from '@/modules/admin/views/AdminUserOverView.vue';
 import AdminBannersView from '@/modules/admin/views/AdminBannersView.vue';
 import AdminSingleUserView from '@/modules/admin/views/AdminSingleUserView.vue';
 import AdminMaintainerView from '@/modules/admin/views/AdminMaintainerView.vue';
-import AdminRBACView from '@/modules/financial/views/rbac/AdminRBACView.vue';
+import AdminRBACView from '@/modules/admin/views/rbac/AdminRBACView.vue';
 
 export function adminRoutes(): RouteRecordRaw[] {
   return [
