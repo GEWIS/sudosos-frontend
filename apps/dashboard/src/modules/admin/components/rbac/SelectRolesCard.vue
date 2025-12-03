@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import type { RoleResponse } from '@sudosos/sudosos-client';
+import type { RoleResponse, UserResponse, PermissionResponse } from '@sudosos/sudosos-client';
 import { ref, type PropType } from 'vue';
 import { useI18n } from 'vue-i18n';
 import * as yup from 'yup';
@@ -33,8 +33,8 @@ const props = defineProps({
 
 const { t } = useI18n();
 
-const currentPermissions = ref<any>([]);
-const currentUsers = ref<any>([]);
+const currentPermissions = ref<PermissionResponse[]>();
+const currentUsers = ref<UserResponse[]>();
 const selectedRole = ref<RoleResponse | undefined>(undefined);
 
 const updateRole = (event: RoleResponse) => {
