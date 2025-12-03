@@ -7,7 +7,6 @@ import type {
   ProductCategoryResponse,
   PermissionResponse,
   UserResponse,
-  RoleResponse,
   ActionResponse,
 } from '@sudosos/sudosos-client';
 import type { DineroObject } from 'dinero.js';
