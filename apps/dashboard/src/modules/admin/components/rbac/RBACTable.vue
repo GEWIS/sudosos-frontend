@@ -67,12 +67,12 @@
       </Column>
       <Column field="relation" :header="t('modules.admin.rbac.permissions.relation')">
         <template #body="slotProps">
-          {{ slotProps.data.relation }}
+          {{ slotProps.data.relations[0].relation }}
         </template>
       </Column>
       <Column field="attribute" :header="t('modules.admin.rbac.permissions.attribute')">
         <template #body="slotProps">
-          {{ slotProps.data.attribute }}
+          {{ slotProps.data.relations[0].attributes[0] }}
         </template>
       </Column>
       <Column field="delete">
@@ -274,7 +274,7 @@ const permissionVision = ref(false);
 const actionVision = ref(false);
 const deleteUserVision = ref(false);
 const addUserVision = ref(false);
-const actionRelations = ref<any[]>();
+const actionRelations = ref<ActionResponse[]>();
 const users = ref<UserResponse[]>();
 const selectedAction = ref();
 const selectedRelation = ref();
@@ -287,11 +287,12 @@ const toast = useToast();
 watch(
   () => props.form.context.values.currentPermission,
   () => {
-    const allRelations: any[] = [];
+    const allRelations: ActionResponse[] = [];
     props.form.context.values.currentPermission.actions.forEach((action) => {
       action.relations.forEach((relation) => {
         relation.attributes.forEach((attribute) => {
-          allRelations.push({ action: action.action, relation: relation.relation, attribute: attribute });
+          const rel = { relation: relation.relation, attributes: [attribute] };
+          allRelations.push({ action: action.action, relations: [rel] });
         });
       });
     });
@@ -348,11 +349,12 @@ const handleDeletePermissionConfirmation = (entity: string, id: number, action: 
   apiService.rbac
     .deletePermission(id, entity, action, relation)
     .then(() => {
-      const allRelations: any[] = [];
+      const allRelations: ActionResponse[] = [];
       props.form.context.values.currentPermission.actions.forEach((action) => {
         action.relations.forEach((relation) => {
           relation.attributes.forEach((attribute) => {
-            allRelations.push({ action: action.action, relation: relation.relation, attribute: attribute });
+            const rel = { relation: relation.relation, attributes: [attribute] };
+            allRelations.push({ action: action.action, relations: [rel] });
           });
         });
       });
@@ -378,7 +380,8 @@ const handleAddActionPush = (entity: string, action: string, relation: string, a
   actionVision.value = false;
   if (actionRelations.value) {
     const allRelations = actionRelations.value;
-    allRelations.push({ action: action, relation: relation, attribute: attribute });
+    const rel = { relation: relation, attributes: [attribute] };
+    allRelations.push({ action: action, relations: [rel] });
     actionRelations.value = allRelations;
   }
 };

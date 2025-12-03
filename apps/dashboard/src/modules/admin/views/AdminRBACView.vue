@@ -21,11 +21,11 @@
 <script setup lang="ts">
 import TabPanel from 'primevue/tabpanel';
 import TabView from 'primevue/tabview';
-import SelectRolesCard from '@/modules/financial/components/rbac/SelectRolesCard.vue';
-import PermissionPerRoleCard from '@/modules/financial/components/rbac/PermissionPerRoleCard.vue';
+import SelectRolesCard from '@/modules/admin/components/rbac/SelectRolesCard.vue';
+import PermissionPerRoleCard from '@/modules/admin/components/rbac/PermissionPerRoleCard.vue';
 import { schemaToForm } from '@/utils/formUtils';
 import { rbacSchema } from '@/utils/validation-schema';
-import RBACTable from '@/modules/financial/components/rbac/RBACTable.vue';
+import RBACTable from '@/modules/admin/components/rbac/RBACTable.vue';
 import PageContainer from '@/layout/PageContainer.vue';
 
 const states: string[] = ['User', 'Permission'];
