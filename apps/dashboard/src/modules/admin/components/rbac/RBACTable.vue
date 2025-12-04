@@ -15,11 +15,7 @@
           @click="addUserVision = true"
         />
       </div>
-      <DataTable
-        class="w-full border-collapse border border-gray-300"
-        table-style="min-width: 27.5rem"
-        :value="users ? users : []"
-      >
+      <DataTable class="w-full" table-style="min-width: 27.5rem" :value="users ? users : []">
         <Column field="id" :header="t('modules.admin.rbac.permissions.id')">
           <template #body="slotProps">
             {{ slotProps.data.id }}
@@ -50,16 +46,12 @@
   </div>
   <div v-else-if="props.state == 'Permission'" class="w-120">
     <div class="flex justify-between items-center mb-4">
-      <span class="text-gray-700 font-bold">{{
+      <span class="text-primary font-bold">{{
         props.form.context.values.currentPermission ? props.form.context.values.currentPermission.entity : ''
       }}</span>
       <Button icon="pi pi-plus" :label="t('modules.admin.rbac.permissions.addAction')" @click="actionVision = true" />
     </div>
-    <DataTable
-      class="w-full border-collapse border border-gray-300"
-      table-style="min-width: 27.5rem"
-      :value="actionRelations ? actionRelations : []"
-    >
+    <DataTable class="w-full" table-style="min-width: 27.5rem" :value="actionRelations ? actionRelations : []">
       <Column field="action" :header="t('modules.admin.rbac.permissions.action')">
         <template #body="slotProps">
           {{ slotProps.data.action }}

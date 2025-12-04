@@ -1,22 +1,12 @@
 <template>
   <CardComponent class="w-full" :header="t('modules.admin.rbac.permissions.title')">
-    <DataTable :value="input ? input : null">
+    <DataTable :row-class="rowClass" :value="input ? input : null" @row-click="onRowClick">
       <Column field="entity" :header="t('modules.admin.rbac.permissions.title')"> </Column>
       <Column field="icon" :header="t('modules.admin.rbac.permissions.crud')">
         <template #body="slotProps">
           <i v-if="slotProps.data.icon == 'all'" class="pi pi-check" />
           <i v-else-if="slotProps.data.icon == 'partial'" class="pi pi-chart-pie" />
           <i v-else class="pi pi-times" />
-        </template>
-      </Column>
-      <Column>
-        <template #body="slotProps">
-          <Button
-            class="p-button-rounded p-button-text p-button-plain"
-            icon="pi pi-angle-double-right"
-            type="button"
-            @click="handleEntityPush(slotProps.data)"
-          />
         </template>
       </Column>
     </DataTable>
@@ -27,7 +17,7 @@
 import { useI18n } from 'vue-i18n';
 import { computed, type PropType } from 'vue';
 import * as yup from 'yup';
-import DataTable from 'primevue/datatable';
+import DataTable, { type DataTableRowClickEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import { type ActionResponse, type PermissionResponse } from '@sudosos/sudosos-client';
 import { type Form, getProperty } from '@/utils/formUtils';
@@ -72,9 +62,17 @@ const input = computed(() => {
 
 const { t } = useI18n();
 
-function handleEntityPush(permission: PermissionResponse) {
+const onRowClick = (data: DataTableRowClickEvent<PermissionResponse>) => {
+  const permission: PermissionResponse = {
+    entity: data.data.entity,
+    actions: data.data.actions,
+  };
   props.form.context.setFieldValue('currentPermission', permission);
-}
+};
+
+const rowClass = () => {
+  return ['cursor-pointer', 'hover:bg-black/20'];
+};
 
 function isCrud(action: ActionResponse) {
   return (
