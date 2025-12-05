@@ -53,9 +53,10 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
 import { useAuthStore } from '@sudosos/sudosos-frontend-common';
-import WelcomeCard0 from '@/components/wrapped/0_WelcomeCard.vue';
-import TransactionsCard1 from '@/components/wrapped/1_TransactionsCard.vue';
-import CalendarHeatmapCard2 from '@/components/wrapped/2_CalendarHeatmapCard.vue';
+import WelcomeCard from '@/components/wrapped/0_WelcomeCard.vue';
+import TransactionsCard from '@/components/wrapped/1_TransactionsCard.vue';
+import CalendarHeatmapCard from '@/components/wrapped/2_CalendarHeatmapCard.vue';
+import TopProductCard from '@/components/wrapped/3_TopProductCard.vue';
 import WrappedControls from '@/components/wrapped/Controls/WrappedControls.vue';
 import { useWrappedEnabled } from '@/composables/wrappedEnabled';
 import router from '@/router';
@@ -87,16 +88,35 @@ const testCardProps: CardProps[] = [
   { transactionCount: 321, previousTransactionCount: 275, percentile: 5 },
   {
     heatmap: Array.from({ length: 365 }, () => Math.floor(Math.random() * 10)),
-    year: new Date().getFullYear(),
     maxDate: new Date(2025, 8, 11),
     maxValue: 67,
   },
+  {
+    product: {
+      id: 1,
+      createdAt: '2001-09-11-00:00:00Z',
+      updatedAt: '2001-09-11-00:00:00Z',
+      version: 1,
+      name: 'Test Product',
+      revision: 1,
+      priceInclVat: { amount: 250, currency: 'EUR' },
+      vat: { id: 1, name: 'Standard', percentage: 21 },
+      owner: { id: 1, firstName: 'John', lastName: 'Doe', email: 'test@test.com' },
+      category: { id: 1, name: 'Beverages', revision: 1 },
+      featured: true,
+    },
+  },
 ];
 
-const cardComponents = [WelcomeCard0, TransactionsCard1, CalendarHeatmapCard2];
+const cardComponents = [WelcomeCard, TransactionsCard, CalendarHeatmapCard, TopProductCard];
 const currentIndex = ref(0);
 
-const cardBackgrounds = ['#b40000', '#feffff', '#0d1117'];
+const cardBackgrounds = [
+  '#b40000',
+  '#ffffff',
+  'linear-gradient(90deg, #0d1117 0%, #1f2937 100%)',
+  'linear-gradient(135deg, #004b31 0%, #00474b 100%)',
+];
 
 const currentBackground = computed(() => cardBackgrounds[currentIndex.value]);
 
