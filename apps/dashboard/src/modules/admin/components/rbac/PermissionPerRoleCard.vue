@@ -4,9 +4,17 @@
       <Column field="entity" :header="t('modules.admin.rbac.permissions.title')"> </Column>
       <Column field="icon" :header="t('modules.admin.rbac.permissions.crud')">
         <template #body="slotProps">
-          <i v-if="slotProps.data.icon == 'all'" class="pi pi-check" />
-          <i v-else-if="slotProps.data.icon == 'partial'" class="pi pi-chart-pie" />
-          <i v-else class="pi pi-times" />
+          <i
+            v-if="slotProps.data.icon == 'all'"
+            v-tooltip="t('modules.admin.rbac.permissions.all')"
+            class="pi pi-check"
+          />
+          <i
+            v-else-if="slotProps.data.icon == 'partial'"
+            v-tooltip="t('modules.admin.rbac.permissions.partial')"
+            class="pi pi-chart-pie"
+          />
+          <i v-else v-tooltip="t('modules.admin.rbac.permissions.none')" class="pi pi-times" />
         </template>
       </Column>
     </DataTable>
@@ -37,7 +45,7 @@ const permissions = computed(() => {
 
 const input = computed(() => {
   if (permissions.value) {
-    const permissionsResponse = permissions.value as unknown as PermissionResponse[];
+    const permissionsResponse: PermissionResponse[] = permissions.value;
     const icons: { [id: string]: string } = {};
     permissionsResponse.forEach((permission) => {
       const filteredData = permission.actions.filter(isCrud);
@@ -46,7 +54,7 @@ const input = computed(() => {
       } else if (filteredData.length > 0) {
         icons[permission.entity] = 'partial';
       } else {
-        icons[permission.entity] = 'None';
+        icons[permission.entity] = 'none';
       }
     });
     return permissionsResponse.map((permission) => {

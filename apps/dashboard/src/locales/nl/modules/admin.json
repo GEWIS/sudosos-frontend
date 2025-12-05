@@ -147,12 +147,17 @@
           "deletePermissionConfirmation": "Ga door",
           "deleteRow": "Verwijder rij",
           "actionSubmission": "Voeg toe",
-          "deleteAction": "Verwijder Actie"
+          "deleteAction": "Verwijder Actie",
+          "all": "Alle CRUD operaties mogelijk",
+          "partial": "Sommige CRUD operaties mogelijk",
+          "none": "Geen CRUD operaties mogelijk",
+          "deletePermissionConfirmationMessage": "Weet je zeker dat je {action}, {relation}, {attribute} wilt verwijderen van {entity}?"
         },
         "users": {
           "addUser": "Voeg gebruiker toe",
           "deleteUser": "Verwijder gebruiker",
-          "userTitle": "Gebruikers"
+          "userTitle": "Gebruikers",
+          "deleteUserConfirmationMessage": "Weet je zeker dat je {firstName} uit rol {role} wilt verwijderen?"
         }
       }
     }

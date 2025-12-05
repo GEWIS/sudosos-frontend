@@ -16,7 +16,6 @@
 
 <script setup lang="ts">
 import { onMounted, type PropType, ref, watch, type Ref } from 'vue';
-import { debounce } from 'lodash';
 import { type RoleResponse } from '@sudosos/sudosos-client';
 import type { SelectFilterEvent } from 'primevue/select';
 import { useToast } from 'primevue/usetoast';
@@ -51,7 +50,7 @@ const selectedRole: Ref<RoleResponse | undefined> = ref(undefined);
 const loading = ref(false);
 const roles: Ref<RoleResponse[]> = ref([]);
 
-const debouncedSearch = debounce((e: SelectFilterEvent) => {
+const getAllRoles = () => {
   loading.value = true;
   apiService.rbac
     .getAllRoles()
@@ -64,13 +63,12 @@ const debouncedSearch = debounce((e: SelectFilterEvent) => {
     .catch((err) => {
       handleError(err, useToast());
     });
-  lastQuery.value = e.value;
-}, 500);
+};
 
 const filterRoles = (e: SelectFilterEvent) => {
   if (e.value.split(' ')[0] !== lastQuery.value) {
     if (e.value.length < 3) return;
-    debouncedSearch(e);
+    getAllRoles();
   }
 };
 
