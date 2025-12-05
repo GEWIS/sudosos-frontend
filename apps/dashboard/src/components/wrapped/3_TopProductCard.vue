@@ -27,6 +27,7 @@ import { getProductImageSrcFromString } from '@/utils/urlUtils';
 const props = defineProps<{
   active?: boolean;
   product: ComputedRef<ReportProductEntryResponse> | ReportProductEntryResponse;
+  image: ComputedRef<string>;
 }>();
 const active = toRef(props, 'active');
 const product = computed<ReportProductEntryResponse>(() => {
