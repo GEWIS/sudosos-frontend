@@ -1,6 +1,5 @@
 <template>
   <CardComponent class="w-full" :header="t('modules.admin.rbac.selection.title')">
-    <!-- TODO: Improve two way binding such that resetting the form will also reset the user selection -->
     <InputRoleSpan
       v-model:value="selectedRole"
       class="mb-3"
@@ -38,15 +37,14 @@ const currentUsers = ref<UserResponse[]>();
 const selectedRole = ref<RoleResponse | undefined>(undefined);
 
 const updateRole = (event: RoleResponse) => {
-  console.error('Role changed', event);
   props.form.context.setFieldValue('id', event.id);
   props.form.context.setFieldValue('name', event.name);
   props.form.context.setFieldValue('systemDefault', event.systemDefault);
-  updatePermissions(event.id);
+  fetchPermissions(event.id);
   updateUsers(event.id);
 };
 
-function updatePermissions(id: number) {
+function fetchPermissions(id: number) {
   apiService.rbac
     .getSingleRole(id)
     .then((response) => {

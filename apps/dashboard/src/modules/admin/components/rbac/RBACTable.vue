@@ -74,7 +74,11 @@
             icon="pi pi-trash"
             type="button"
             @click="
-              handleDeletePermissionPush(slotProps.data.action, slotProps.data.relation, slotProps.data.attribute)
+              handleDeletePermissionPush(
+                slotProps.data.action,
+                slotProps.data.relations[0].relation,
+                slotProps.data.relations[0].attributes[0],
+              )
             "
           />
         </template>
@@ -143,11 +147,10 @@
     :style="{ width: '25rem' }"
   >
     <span>{{
-      'Are you sure you want to delete ' +
-      props.form.context.values.currentUser.firstName +
-      ' from ' +
-      props.form.context.values.name +
-      ' ?'
+      t('modules.admin.rbac.users.deleteUserConfirmationMessage', {
+        firstName: props.form.context.values.currentUser.firstName,
+        role: props.form.context.values.name,
+      })
     }}</span>
     <div class="flex flex-row-reverse flex-wrap gap-3 pt-3">
       <Button
@@ -198,15 +201,12 @@
     :style="{ width: '25rem' }"
   >
     <span>{{
-      'Are you sure you want to delete ' +
-      props.form.context.values.currentAction.action +
-      ', ' +
-      props.form.context.values.currentAction.relations[0].relation +
-      ', ' +
-      props.form.context.values.currentAction.relations[0].attributes[0] +
-      ' from ' +
-      props.form.context.values.currentPermission.entity +
-      '?'
+      t('modules.admin.rbac.permissions.deletePermissionConfirmationMessage', {
+        action: props.form.context.values.currentAction.action,
+        relation: props.form.context.values.currentAction.relations[0].relation,
+        attribute: props.form.context.values.currentAction.relations[0].attributes[0],
+        entity: props.form.context.values.currentPermission.entity,
+      })
     }}</span>
     <div class="flex flex-row-reverse flex-wrap gap-3 pt-3">
       <Button
@@ -359,7 +359,6 @@ const handleDeletePermissionConfirmation = (entity: string, id: number, action: 
 };
 
 const handleAddActionPush = (entity: string, action: string, relation: string, attribute: string) => {
-  console.error(entity, action, relation, attribute);
   const addPermissionReq: CreatePermissionParams = {
     entity: entity,
     action: action,

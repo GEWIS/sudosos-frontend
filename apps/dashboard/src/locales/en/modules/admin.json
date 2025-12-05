@@ -147,12 +147,17 @@
           "deletePermissionConfirmation": "Confirm",
           "deleteRow": "Delete Row",
           "actionSubmission": "Submit",
-          "deleteAction": "Delete Action"
+          "deleteAction": "Delete Action",
+          "all": "All CRUD operations allowed",
+          "partial": "Some CRUD operations allowed",
+          "none": "No CRUD operations allowed",
+          "deletePermissionConfirmationMessage": "Are you sure you want to delete {action}, {relation}, {attribute} from {entity}?"
         },
         "users": {
           "addUser": "Add User",
           "deleteUser": "Delete User",
-          "userTitle": "Users"
+          "userTitle": "Users",
+          "deleteUserConfirmationMessage": "Are you sure you want to remove {firstName} from role {role}?"
         }
       }
     }
