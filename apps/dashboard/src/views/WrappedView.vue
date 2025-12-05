@@ -57,6 +57,7 @@ import WelcomeCard from '@/components/wrapped/0_WelcomeCard.vue';
 import TransactionsCard from '@/components/wrapped/1_TransactionsCard.vue';
 import CalendarHeatmapCard from '@/components/wrapped/2_CalendarHeatmapCard.vue';
 import TopProductCard from '@/components/wrapped/3_TopProductCard.vue';
+import ProductsCard from '@/components/wrapped/4_ProductsCard.vue';
 import WrappedControls from '@/components/wrapped/Controls/WrappedControls.vue';
 import { useWrappedEnabled } from '@/composables/wrappedEnabled';
 import router from '@/router';
@@ -93,22 +94,43 @@ const testCardProps: CardProps[] = [
   },
   {
     product: {
-      id: 1,
-      createdAt: '2001-09-11-00:00:00Z',
-      updatedAt: '2001-09-11-00:00:00Z',
-      version: 1,
       name: 'Test Product',
-      revision: 1,
       priceInclVat: { amount: 250, currency: 'EUR' },
-      vat: { id: 1, name: 'Standard', percentage: 21 },
-      owner: { id: 1, firstName: 'John', lastName: 'Doe', email: 'test@test.com' },
-      category: { id: 1, name: 'Beverages', revision: 1 },
-      featured: true,
+      boughtTimes: 21,
     },
+  },
+  {
+    topFiveProducts: [
+      {
+        name: 'Test Product',
+        priceInclVat: { amount: 250, currency: 'EUR' },
+        boughtTimes: 21,
+      },
+      {
+        name: 'Test Product 2',
+        priceInclVat: { amount: 250, currency: 'EUR' },
+        boughtTimes: 20,
+      },
+      {
+        name: 'Test Product 3',
+        priceInclVat: { amount: 250, currency: 'EUR' },
+        boughtTimes: 19,
+      },
+      {
+        name: 'Test Product 4',
+        priceInclVat: { amount: 250, currency: 'EUR' },
+        boughtTimes: 6,
+      },
+      {
+        name: 'Test Product 5',
+        priceInclVat: { amount: 250, currency: 'EUR' },
+        boughtTimes: 7,
+      },
+    ],
   },
 ];
 
-const cardComponents = [WelcomeCard, TransactionsCard, CalendarHeatmapCard, TopProductCard];
+const cardComponents = [WelcomeCard, TransactionsCard, CalendarHeatmapCard, TopProductCard, ProductsCard];
 const currentIndex = ref(0);
 
 const cardBackgrounds = [
@@ -116,6 +138,7 @@ const cardBackgrounds = [
   '#ffffff',
   'linear-gradient(90deg, #0d1117 0%, #1f2937 100%)',
   'linear-gradient(135deg, #004b31 0%, #00474b 100%)',
+  'linear-gradient(135deg, #7c3aed 0%, #ec4899 100%)',
 ];
 
 const currentBackground = computed(() => cardBackgrounds[currentIndex.value]);
