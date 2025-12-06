@@ -58,6 +58,7 @@ import TransactionsCard from '@/components/wrapped/1_TransactionsCard.vue';
 import CalendarHeatmapCard from '@/components/wrapped/2_CalendarHeatmapCard.vue';
 import TopProductCard from '@/components/wrapped/3_TopProductCard.vue';
 import ProductsCard from '@/components/wrapped/4_ProductsCard.vue';
+import TotalSpentCard from '@/components/wrapped/5_TotalSpentCard.vue';
 import WrappedControls from '@/components/wrapped/Controls/WrappedControls.vue';
 import { useWrappedEnabled } from '@/composables/wrappedEnabled';
 import router from '@/router';
@@ -128,17 +129,30 @@ const testCardProps: CardProps[] = [
       },
     ],
   },
+  {
+    totalSpent: 100,
+    previousTotalSpent: 123456,
+    totalSpentPercentile: 2,
+  },
 ];
 
-const cardComponents = [WelcomeCard, TransactionsCard, CalendarHeatmapCard, TopProductCard, ProductsCard];
+const cardComponents = [
+  WelcomeCard,
+  TransactionsCard,
+  CalendarHeatmapCard,
+  TopProductCard,
+  ProductsCard,
+  TotalSpentCard,
+];
 const currentIndex = ref(0);
 
 const cardBackgrounds = [
   '#b40000',
   '#ffffff',
   'linear-gradient(90deg, #0d1117 0%, #1f2937 100%)',
-  'linear-gradient(135deg, #004b31 0%, #00474b 100%)',
-  'linear-gradient(135deg, #7c3aed 0%, #ec4899 100%)',
+  'linear-gradient(135deg, #004ff9 0%, #000000 100%)',
+  'linear-gradient(135deg, #662d8c 0%, #ed1e79 100%)',
+  'linear-gradient(45deg, #233329 0%, #63d471 100%)',
 ];
 
 const currentBackground = computed(() => cardBackgrounds[currentIndex.value]);
