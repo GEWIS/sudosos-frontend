@@ -59,6 +59,7 @@ import CalendarHeatmapCard from '@/components/wrapped/2_CalendarHeatmapCard.vue'
 import TopProductCard from '@/components/wrapped/3_TopProductCard.vue';
 import ProductsCard from '@/components/wrapped/4_ProductsCard.vue';
 import TotalSpentCard from '@/components/wrapped/5_TotalSpentCard.vue';
+import SpendingDistributionCard from '@/components/wrapped/6_SpendingDistributionCard.vue';
 import WrappedControls from '@/components/wrapped/Controls/WrappedControls.vue';
 import { useWrappedEnabled } from '@/composables/wrappedEnabled';
 import router from '@/router';
@@ -130,9 +131,16 @@ const testCardProps: CardProps[] = [
     ],
   },
   {
-    totalSpent: 100,
+    totalSpent: 234567,
     previousTotalSpent: 123456,
     totalSpentPercentile: 2,
+  },
+  {
+    totalSpent: 234567,
+    totalSpentBorrel: 180000,
+    totalSpentAlcohol: 150000,
+    totalSpentSoda: 50000,
+    totalSpentSnacks: 34567,
   },
 ];
 
@@ -143,6 +151,7 @@ const cardComponents = [
   TopProductCard,
   ProductsCard,
   TotalSpentCard,
+  SpendingDistributionCard,
 ];
 const currentIndex = ref(0);
 
@@ -153,6 +162,7 @@ const cardBackgrounds = [
   'linear-gradient(135deg, #004ff9 0%, #000000 100%)',
   'linear-gradient(135deg, #662d8c 0%, #ed1e79 100%)',
   'linear-gradient(45deg, #233329 0%, #63d471 100%)',
+  'linear-gradient(135deg, #ff8800 0%, #ff3300 100%)',
 ];
 
 const currentBackground = computed(() => cardBackgrounds[currentIndex.value]);
