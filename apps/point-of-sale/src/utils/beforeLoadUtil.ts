@@ -33,15 +33,16 @@ async function populatePosStoreFromToken(): Promise<boolean> {
 
 export default async function beforeLoad() {
   const urlParams = new URLSearchParams(window.location.search);
-  const posId = urlParams.get('posId');
   const apiKey = urlParams.get('apiKey');
   const userId = urlParams.get('userId');
-  if (posId && apiKey && userId) {
+  if (apiKey && userId) {
     const authStore = useAuthStore();
     const { switchToPos } = usePointOfSaleSwitch();
 
     await authStore.apiKeyLogin(apiKey, Number(userId), userApiService);
    
+    const decoded = jwtDecode<{ user: { pointOfSale: BasePointOfSaleInfoResponse } }>(authStore.getToken!);
+    const posId = decoded.user.pointOfSale.id;
     const pos = await userApiService.pos.getSinglePointOfSale(Number(posId));
 
     await switchToPos(pos.data);
