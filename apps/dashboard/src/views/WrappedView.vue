@@ -64,6 +64,7 @@ import TopProductCard from '@/components/wrapped/3_TopProductCard.vue';
 import ProductsCard from '@/components/wrapped/4_ProductsCard.vue';
 import TotalSpentCard from '@/components/wrapped/5_TotalSpentCard.vue';
 import SpendingDistributionCard from '@/components/wrapped/6_SpendingDistributionCard.vue';
+import FinalCard from '@/components/wrapped/7_FinalCard.vue';
 import WrappedControls from '@/components/wrapped/Controls/WrappedControls.vue';
 import { useWrappedEnabled } from '@/composables/wrappedEnabled';
 import router from '@/router';
@@ -207,7 +208,8 @@ const testCardProps = computed<CardProps[]>(() => [
     totalSpentSoda: unref(totalSoda),
     totalSpentSnacks: unref(totalSnacks),
   },
-];
+  { showArrows: unref(showArrows) },
+]);
 
 const cardComponents = [
   WelcomeCard,
@@ -217,6 +219,7 @@ const cardComponents = [
   ProductsCard,
   TotalSpentCard,
   SpendingDistributionCard,
+  FinalCard,
 ];
 
 const currentIndex = ref(0);
@@ -229,6 +232,7 @@ const cardBackgrounds = [
   'linear-gradient(135deg, #662d8c 0%, #ed1e79 100%)',
   'linear-gradient(45deg, #233329 0%, #63d471 100%)',
   'linear-gradient(135deg, #ff8800 0%, #ff3300 100%)',
+  'linear-gradient(135deg, #b40000 0%, #004b31 100%)',
 ];
 
 const currentBackground = computed(() => cardBackgrounds[currentIndex.value]);
