@@ -51,8 +51,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick, onBeforeMount, unref } from 'vue';
 import { useAuthStore } from '@sudosos/sudosos-frontend-common';
+import type { ReportResponse } from '@sudosos/sudosos-client/src/api';
+// eslint-disable-next-line import/no-named-as-default
+import Dinero from 'dinero.js';
+import type { WrappedResponse } from '@sudosos/sudosos-client';
 import WelcomeCard from '@/components/wrapped/0_WelcomeCard.vue';
 import TransactionsCard from '@/components/wrapped/1_TransactionsCard.vue';
 import CalendarHeatmapCard from '@/components/wrapped/2_CalendarHeatmapCard.vue';
@@ -63,6 +67,7 @@ import SpendingDistributionCard from '@/components/wrapped/6_SpendingDistributio
 import WrappedControls from '@/components/wrapped/Controls/WrappedControls.vue';
 import { useWrappedEnabled } from '@/composables/wrappedEnabled';
 import router from '@/router';
+import apiService from '@/services/ApiService';
 
 const { wrappedEnabled, canOverride } = useWrappedEnabled();
 
@@ -71,6 +76,93 @@ if (!wrappedEnabled.value && !canOverride.value) {
 }
 
 const authStore = useAuthStore();
+
+const report = ref<ReportResponse>();
+const report2024 = ref<ReportResponse>();
+const wrapped = ref<WrappedResponse>();
+
+const transactionCount = computed(() => {
+  return report.value?.transactionCount || 0;
+});
+
+const transactionCount2024 = computed(() => {
+  return report2024.value?.transactionCount || 0;
+});
+
+const transactionPercentile = computed(() => {
+  return wrapped.value?.transactions.transactionPercentile || 100;
+});
+
+const transactionHeatmap = computed(() => {
+  return wrapped.value?.transactions.transactionHeatmap || [];
+});
+
+const transactionMaxDate = computed(() => {
+  const maxDate = wrapped.value?.transactions.transactionMaxDate;
+  return maxDate ? new Date(maxDate) : null;
+});
+
+const transactionMaxAmount = computed(() => {
+  return wrapped.value?.transactions.transactionMaxAmount || 0;
+});
+
+const spentPercentile = computed(() => {
+  return wrapped.value?.spentPercentile || 100;
+});
+
+const total = computed(() => {
+  return report.value?.totalInclVat || { amount: 0, currency: 'EUR', precision: 2 };
+});
+
+const total2024 = computed(() => {
+  return report2024.value?.totalInclVat || { amount: 0, currency: 'EUR', precision: 2 };
+});
+
+const totalBorrels = computed(() => {
+  if (report.value == undefined) {
+    return 0;
+  }
+
+  return Dinero(report.value.totalInclVat as Dinero.Options)
+    .subtract(Dinero(report.value.data.pos!.find((p) => p.pos.id == 1)!.totalInclVat as Dinero.Options))
+    .toObject();
+});
+
+const totalAlc = computed(() => {
+  if (report.value == undefined) {
+    return 0;
+  }
+
+  return report.value.data.categories!.find((p) => p.category.id == 1)?.totalInclVat.amount || 0;
+});
+
+const totalSoda = computed(() => {
+  if (report.value == undefined) {
+    return 0;
+  }
+
+  return report.value.data.categories!.find((p) => p.category.id == 2)?.totalInclVat.amount || 0;
+});
+
+const totalSnacks = computed(() => {
+  if (report.value == undefined) {
+    return 0;
+  }
+
+  return report.value.data.categories!.find((p) => p.category.id == 3)?.totalInclVat.amount || 0;
+});
+
+const favoriteProducts = computed(() => {
+  if (report.value == undefined) {
+    return [];
+  }
+
+  return report.value?.data.products!.sort((a, b) => b.count - a.count);
+});
+
+const favoriteProduct = computed(() => {
+  return favoriteProducts.value[0];
+});
 
 const width = ref<number>(window.innerWidth);
 const showArrows = computed(() => width.value >= 640);
@@ -85,62 +177,35 @@ const userFirstName = computed(() => {
 
 type CardProps = Record<string, unknown>;
 
-// TODO: replace with real data
-const testCardProps: CardProps[] = [
-  { firstName: userFirstName, showArrows: showArrows },
-  { transactionCount: 321, previousTransactionCount: 275, percentile: 5 },
+const testCardProps = computed<CardProps[]>(() => [
+  { firstName: unref(userFirstName), showArrows: unref(showArrows) },
   {
-    heatmap: Array.from({ length: 365 }, () => Math.floor(Math.random() * 10)),
-    maxDate: new Date(2025, 8, 11),
-    maxValue: 67,
+    transactionCount: unref(transactionCount),
+    previousTransactionCount: unref(transactionCount2024),
+    transactionPercentile: unref(transactionPercentile),
   },
   {
-    product: {
-      name: 'Test Product',
-      priceInclVat: { amount: 250, currency: 'EUR' },
-      boughtTimes: 21,
-    },
+    heatmap: unref(transactionHeatmap),
+    maxDate: unref(transactionMaxDate),
+    maxAmount: unref(transactionMaxAmount),
   },
   {
-    topFiveProducts: [
-      {
-        name: 'Test Product',
-        priceInclVat: { amount: 250, currency: 'EUR' },
-        boughtTimes: 21,
-      },
-      {
-        name: 'Test Product 2',
-        priceInclVat: { amount: 250, currency: 'EUR' },
-        boughtTimes: 20,
-      },
-      {
-        name: 'Test Product 3',
-        priceInclVat: { amount: 250, currency: 'EUR' },
-        boughtTimes: 19,
-      },
-      {
-        name: 'Test Product 4',
-        priceInclVat: { amount: 250, currency: 'EUR' },
-        boughtTimes: 6,
-      },
-      {
-        name: 'Test Product 5',
-        priceInclVat: { amount: 250, currency: 'EUR' },
-        boughtTimes: 7,
-      },
-    ],
+    product: unref(favoriteProduct),
   },
   {
-    totalSpent: 234567,
-    previousTotalSpent: 123456,
-    totalSpentPercentile: 2,
+    topFiveProducts: unref(favoriteProducts).slice(0, 5),
   },
   {
-    totalSpent: 234567,
-    totalSpentBorrel: 180000,
-    totalSpentAlcohol: 150000,
-    totalSpentSoda: 50000,
-    totalSpentSnacks: 34567,
+    totalSpent: unref(total),
+    previousTotalSpent: unref(total2024),
+    totalSpentPercentile: unref(spentPercentile),
+  },
+  {
+    totalSpent: unref(total),
+    totalSpentBorrel: unref(totalBorrels),
+    totalSpentAlcohol: unref(totalAlc),
+    totalSpentSoda: unref(totalSoda),
+    totalSpentSnacks: unref(totalSnacks),
   },
 ];
 
@@ -153,6 +218,7 @@ const cardComponents = [
   TotalSpentCard,
   SpendingDistributionCard,
 ];
+
 const currentIndex = ref(0);
 
 const cardBackgrounds = [
@@ -272,6 +338,17 @@ function onPointerUp(e: PointerEvent) {
   deltaX = 0;
   dragging = false;
 }
+
+onBeforeMount(async () => {
+  const authStore = useAuthStore();
+  const userId = authStore.getUser!.id;
+
+  report.value = (await apiService.user.getUsersPurchasesReport(userId, '2025-01-01', '2025-12-31')).data;
+
+  report2024.value = (await apiService.user.getUsersPurchasesReport(userId, '2024-01-01', '2024-12-31')).data;
+
+  wrapped.value = (await apiService.user.getWrapped(userId)).data;
+});
 
 onMounted(() => {
   window.addEventListener('resize', updateWindowWidth);
