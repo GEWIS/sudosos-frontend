@@ -83,14 +83,14 @@
         }
       },
       "wrapped": {
-        "wrappedMode": "Wrapped modus",
+        "wrappedMode": "Wrapped beschikbaar",
         "confirm": {
           "initial": "Wrapped is {enabled}",
           "confirm": "Schakel {enabled}?",
           "on": "aan",
           "off": "uit",
-          "enabled": "ingeschakeld",
-          "disabled": "uitgeschakeld"
+          "enabled": "beschikbaar",
+          "disabled": "niet beschikbaar"
         }
       },
       "websocket": {

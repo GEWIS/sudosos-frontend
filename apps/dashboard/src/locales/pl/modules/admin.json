@@ -83,14 +83,14 @@
         }
       },
       "wrapped": {
-        "wrappedMode": "Tryb wrapped",
+        "wrappedMode": "Dostępny wrapped",
         "confirm": {
           "initial": "Wrapped jest {enabled}",
           "confirm": "Przełączyć na {enabled}?",
           "on": "włączony",
           "off": "wyłączony",
-          "enabled": "włączony",
-          "disabled": "wyłączony"
+          "enabled": "dostępny",
+          "disabled": "niedostępny"
         }
       },
       "websocket": {
