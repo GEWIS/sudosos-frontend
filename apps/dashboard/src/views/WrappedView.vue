@@ -1,8 +1,9 @@
 <template>
   <div
-    class="fixed inset-0 z-50 w-screen h-screen flex items-start justify-center sm:static sm:inset-auto sm:w-auto sm:h-auto sm:items-center sm:justify-center"
+    class="fixed inset-0 z-50 w-screen h-screen flex items-center justify-center sm:static sm:inset-auto sm:w-auto sm:h-auto sm:items-center sm:justify-center"
   >
     <div
+      v-if="!isLoading"
       class="w-full rounded-none sm:rounded-4xl sm:shadow-2xl h-full p-4 flex flex-col sm:h-160 sm:w-96 overflow-hidden relative"
     >
       <div class="bg-container absolute inset-0 pointer-events-none">
@@ -47,6 +48,18 @@
         />
       </div>
     </div>
+    <div
+      v-else
+      class="absolute inset-0 z-50 flex items-center justify-center p-4 sm:static sm:inset-auto sm:flex-1 bg-white"
+    >
+      <div class="flex flex-col items-center gap-3 text-center">
+        <ProgressSpinner aria-label="Loading wrapped" stroke-width="6" style="width: 64px; height: 64px" />
+        <!-- eslint-disable-next-line @intlify/vue-i18n/no-missing-keys -->
+        <div class="mt-4 text-lg font-medium">
+          {{ t('views.wrapped.gettingReady', 'Getting your wrapped ready...') }}
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -57,6 +70,7 @@ import type { ReportResponse } from '@sudosos/sudosos-client/src/api';
 // eslint-disable-next-line import/no-named-as-default
 import Dinero from 'dinero.js';
 import type { WrappedResponse } from '@sudosos/sudosos-client';
+import { useI18n } from 'vue-i18n';
 import WelcomeCard from '@/components/wrapped/0_WelcomeCard.vue';
 import TransactionsCard from '@/components/wrapped/1_TransactionsCard.vue';
 import CalendarHeatmapCard from '@/components/wrapped/2_CalendarHeatmapCard.vue';
@@ -81,6 +95,7 @@ const authStore = useAuthStore();
 const report = ref<ReportResponse>();
 const report2024 = ref<ReportResponse>();
 const wrapped = ref<WrappedResponse>();
+const isLoading = ref(true);
 
 const transactionCount = computed(() => {
   return report.value?.transactionCount || 0;
@@ -344,14 +359,21 @@ function onPointerUp(e: PointerEvent) {
 }
 
 onBeforeMount(async () => {
-  const authStore = useAuthStore();
-  const userId = authStore.getUser!.id;
+  isLoading.value = true;
+  try {
+    const authStore = useAuthStore();
+    const userId = authStore.getUser!.id;
 
-  report.value = (await apiService.user.getUsersPurchasesReport(userId, '2025-01-01', '2025-12-31')).data;
+    report.value = (await apiService.user.getUsersPurchasesReport(userId, '2025-01-01', '2025-12-31')).data;
 
-  report2024.value = (await apiService.user.getUsersPurchasesReport(userId, '2024-01-01', '2024-12-31')).data;
+    report2024.value = (await apiService.user.getUsersPurchasesReport(userId, '2024-01-01', '2024-12-31')).data;
 
-  wrapped.value = (await apiService.user.getWrapped(userId)).data;
+    wrapped.value = (await apiService.user.getWrapped(userId)).data;
+  } catch (e) {
+    console.error('Failed to load wrapped data', e);
+  } finally {
+    isLoading.value = false;
+  }
 });
 
 onMounted(() => {
@@ -361,6 +383,8 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updateWindowWidth);
 });
+
+const { t } = useI18n();
 </script>
 
 <style>
