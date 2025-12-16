@@ -1,3 +1,5 @@
+<!-- eslint-disable @intlify/vue-i18n/no-raw-text -->
+<!-- eslint-disable @intlify/vue-i18n/no-missing-keys -->
 <template>
   <div
     class="fixed inset-0 z-50 w-screen h-screen flex items-center justify-center sm:static sm:inset-auto sm:w-auto sm:h-auto sm:items-center sm:justify-center"
@@ -33,7 +35,7 @@
               :key="index"
               class="card min-h-0 min-w-full p-4 flex flex-col justify-center items-start h-full rounded-none sm:rounded-4xl overflow-hidden"
             >
-              <component :is="card" v-bind="testCardProps[index]" :active="currentIndex === index" />
+              <component :is="card" v-bind="cardProps[index]" :active="currentIndex === index" />
             </div>
           </div>
         </div>
@@ -54,23 +56,56 @@
     >
       <div class="flex flex-col items-center gap-3 text-center">
         <ProgressSpinner aria-label="Loading wrapped" stroke-width="6" style="width: 64px; height: 64px" />
-        <!-- eslint-disable-next-line @intlify/vue-i18n/no-missing-keys -->
         <div class="mt-4 text-lg font-medium">
           {{ t('views.wrapped.gettingReady', 'Getting your wrapped ready...') }}
         </div>
       </div>
     </div>
+    <Dialog
+      :closable="false"
+      :draggable="false"
+      :header="t('views.wrapped.dataAnalysisRequired', 'Data Analysis Required')"
+      modal
+      :style="{ width: '25rem' }"
+      :visible="showDataAnalysisDialog"
+    >
+      <div class="flex flex-col gap-4">
+        <p>
+          {{
+            t('views.wrapped.dataAnalysisMessage', 'You need to enable extensive data analysis to view your wrapped.')
+          }}
+        </p>
+        <p class="text-sm text-gray-600">
+          {{ t('views.wrapped.dataAnalysisSubtext', 'You can always disable this later in your settings.') }}
+        </p>
+      </div>
+      <template #footer>
+        <div class="flex justify-end gap-2">
+          <Button :label="t('common.cancel')" severity="secondary" @click="handleCancelDataAnalysis" />
+          <Button
+            :label="t('views.wrapped.enable', 'Enable')"
+            :loading="isEnablingDataAnalysis"
+            @click="handleEnableDataAnalysis"
+          />
+        </div>
+      </template>
+    </Dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick, onBeforeMount, unref } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick, onBeforeMount } from 'vue';
 import { useAuthStore } from '@sudosos/sudosos-frontend-common';
 import type { ReportResponse } from '@sudosos/sudosos-client/src/api';
 // eslint-disable-next-line import/no-named-as-default
 import Dinero from 'dinero.js';
-import type { WrappedResponse } from '@sudosos/sudosos-client';
+import type { WrappedResponse, UserResponse } from '@sudosos/sudosos-client';
 import { useI18n } from 'vue-i18n';
+import Dialog from 'primevue/dialog';
+import Button from 'primevue/button';
+import { useToast } from 'primevue/usetoast';
+import { useRouter } from 'vue-router';
+import type { AxiosError } from 'axios';
 import WelcomeCard from '@/components/wrapped/0_WelcomeCard.vue';
 import TransactionsCard from '@/components/wrapped/1_TransactionsCard.vue';
 import CalendarHeatmapCard from '@/components/wrapped/2_CalendarHeatmapCard.vue';
@@ -79,23 +114,23 @@ import ProductsCard from '@/components/wrapped/4_ProductsCard.vue';
 import TotalSpentCard from '@/components/wrapped/5_TotalSpentCard.vue';
 import SpendingDistributionCard from '@/components/wrapped/6_SpendingDistributionCard.vue';
 import FinalCard from '@/components/wrapped/7_FinalCard.vue';
+import OrgansCard from '@/components/wrapped/8_OrgansCard.vue';
+import OrgansOverviewCard from '@/components/wrapped/9_OrgansOverviewCard.vue';
 import WrappedControls from '@/components/wrapped/Controls/WrappedControls.vue';
-import { useWrappedEnabled } from '@/composables/wrappedEnabled';
-import router from '@/router';
 import apiService from '@/services/ApiService';
-
-const { wrappedEnabled, canOverride } = useWrappedEnabled();
-
-if (!wrappedEnabled.value && !canOverride.value) {
-  void router.push({ name: 'home' });
-}
+import { handleError } from '@/utils/errorUtils';
 
 const authStore = useAuthStore();
+const toast = useToast();
+const router = useRouter();
 
 const report = ref<ReportResponse>();
 const report2024 = ref<ReportResponse>();
 const wrapped = ref<WrappedResponse>();
+const organDetails = ref<Record<number, UserResponse>>({});
 const isLoading = ref(true);
+const showDataAnalysisDialog = ref(false);
+const isEnablingDataAnalysis = ref(false);
 
 const transactionCount = computed(() => {
   return report.value?.transactionCount || 0;
@@ -180,6 +215,18 @@ const favoriteProduct = computed(() => {
   return favoriteProducts.value[0];
 });
 
+const organs = computed(() => {
+  return wrapped.value?.organs || [];
+});
+
+const hasOrgans = computed(() => {
+  return organs.value.length > 0;
+});
+
+const hasMultipleOrgans = computed(() => {
+  return organs.value.length > 1;
+});
+
 const width = ref<number>(window.innerWidth);
 const showArrows = computed(() => width.value >= 640);
 
@@ -193,66 +240,102 @@ const userFirstName = computed(() => {
 
 type CardProps = Record<string, unknown>;
 
-const testCardProps = computed<CardProps[]>(() => [
-  { firstName: unref(userFirstName), showArrows: unref(showArrows) },
-  {
-    transactionCount: unref(transactionCount),
-    previousTransactionCount: unref(transactionCount2024),
-    transactionPercentile: unref(transactionPercentile),
-  },
-  {
-    heatmap: unref(transactionHeatmap),
-    maxDate: unref(transactionMaxDate),
-    maxAmount: unref(transactionMaxAmount),
-  },
-  {
-    product: unref(favoriteProduct),
-  },
-  {
-    topFiveProducts: unref(favoriteProducts).slice(0, 5),
-  },
-  {
-    totalSpent: unref(total),
-    previousTotalSpent: unref(total2024),
-    totalSpentPercentile: unref(spentPercentile),
-  },
-  {
-    totalSpent: unref(total),
-    totalSpentBorrel: unref(totalBorrels),
-    totalSpentAlcohol: unref(totalAlc),
-    totalSpentSoda: unref(totalSoda),
-    totalSpentSnacks: unref(totalSnacks),
-  },
-  { showArrows: unref(showArrows) },
-]);
+const cardProps = computed<CardProps[]>(() => {
+  const props: CardProps[] = [
+    { firstName: userFirstName.value, showArrows: showArrows.value },
+    {
+      transactionCount: transactionCount.value,
+      previousTransactionCount: transactionCount2024.value,
+      transactionPercentile: transactionPercentile.value,
+    },
+    {
+      heatmap: transactionHeatmap.value,
+      maxDate: transactionMaxDate.value,
+      maxAmount: transactionMaxAmount.value,
+    },
+    {
+      product: favoriteProduct.value,
+    },
+    {
+      topFiveProducts: favoriteProducts.value.slice(0, 5),
+    },
+    {
+      totalSpent: total.value,
+      previousTotalSpent: total2024.value,
+      totalSpentPercentile: spentPercentile.value,
+    },
+    {
+      totalSpent: total.value,
+      totalSpentBorrel: totalBorrels.value,
+      totalSpentAlcohol: totalAlc.value,
+      totalSpentSoda: totalSoda.value,
+      totalSpentSnacks: totalSnacks.value,
+    },
+  ];
 
-const cardComponents = [
-  WelcomeCard,
-  TransactionsCard,
-  CalendarHeatmapCard,
-  TopProductCard,
-  ProductsCard,
-  TotalSpentCard,
-  SpendingDistributionCard,
-  FinalCard,
-];
+  if (hasOrgans.value) {
+    props.push({
+      organs: organs.value,
+      organDetails: organDetails.value,
+    } as CardProps);
+  }
+
+  if (hasMultipleOrgans.value) {
+    props.push({
+      organs: organs.value,
+      organDetails: organDetails.value,
+    } as CardProps);
+  }
+
+  props.push({ showArrows: showArrows.value });
+  return props;
+});
+
+const cardComponents = computed(() => {
+  const base: unknown[] = [WelcomeCard, TransactionsCard, CalendarHeatmapCard, TopProductCard, ProductsCard];
+
+  base.push(TotalSpentCard, SpendingDistributionCard);
+
+  if (hasOrgans.value) {
+    base.push(OrgansCard);
+  }
+
+  if (hasMultipleOrgans.value) {
+    base.push(OrgansOverviewCard);
+  }
+
+  base.push(FinalCard);
+  return base;
+});
 
 const currentIndex = ref(0);
 
-const cardBackgrounds = [
-  '#b40000',
-  '#ffffff',
-  'linear-gradient(90deg, #0d1117 0%, #1f2937 100%)',
-  'linear-gradient(135deg, #004ff9 0%, #000000 100%)',
-  'linear-gradient(135deg, #662d8c 0%, #ed1e79 100%)',
-  'linear-gradient(45deg, #233329 0%, #63d471 100%)',
-  'linear-gradient(135deg, #ff8800 0%, #ff3300 100%)',
-  'linear-gradient(135deg, #b40000 0%, #004b31 100%)',
-];
+const cardBackgrounds = computed(() => {
+  const base = [
+    '#b40000',
+    '#ffffff',
+    'linear-gradient(90deg, #0d1117 0%, #1f2937 100%)',
+    'linear-gradient(135deg, #004ff9 0%, #000000 100%)',
+    'linear-gradient(135deg, #662d8c 0%, #ed1e79 100%)',
+  ];
 
-const currentBackground = computed(() => cardBackgrounds[currentIndex.value]);
+  base.push('linear-gradient(45deg, #233329 0%, #63d471 100%)', 'linear-gradient(135deg, #ff8800 0%, #ff3300 100%)');
 
-const totalCards = computed(() => cardComponents.length);
+  if (hasOrgans.value) {
+    base.push('linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)');
+  }
+
+  if (hasMultipleOrgans.value) {
+    base.push('linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)');
+  }
+
+  base.push('linear-gradient(135deg, #b40000 0%, #004b31 100%)');
+  return base;
+});
+
+const currentBackground = computed(() => cardBackgrounds.value[currentIndex.value] || '#b40000');
+
+const totalCards = computed(() => cardComponents.value.length);
 
 const prevBackground = ref<string | null>(null);
 const prevFading = ref(false);
@@ -260,7 +343,7 @@ const bgFadeDuration = 420;
 
 watch(currentIndex, async (newIndex, oldIndex) => {
   if (oldIndex === undefined || oldIndex === newIndex) return;
-  prevBackground.value = cardBackgrounds[oldIndex];
+  prevBackground.value = cardBackgrounds.value[oldIndex];
   prevFading.value = false;
 
   await nextTick();
@@ -358,23 +441,81 @@ function onPointerUp(e: PointerEvent) {
   dragging = false;
 }
 
+async function loadWrappedData() {
+  const userId = authStore.getUser!.id;
+
+  report.value = (await apiService.user.getUsersPurchasesReport(userId, '2025-01-01', '2025-12-31')).data;
+
+  report2024.value = (await apiService.user.getUsersPurchasesReport(userId, '2024-01-01', '2024-12-31')).data;
+
+  wrapped.value = (await apiService.user.getWrapped(userId)).data;
+
+  // Fetch organ details
+  if (wrapped.value?.organs && wrapped.value.organs.length > 0) {
+    const organDetailsMap: Record<number, UserResponse> = {};
+    await Promise.all(
+      wrapped.value.organs.map(async (organ) => {
+        try {
+          const response = await apiService.user.getIndividualUser(organ.organId);
+          organDetailsMap[organ.organId] = response.data;
+        } catch (e) {
+          console.error(`Failed to fetch organ ${organ.organId}`, e);
+        }
+      }),
+    );
+    organDetails.value = organDetailsMap;
+  }
+}
+
 onBeforeMount(async () => {
   isLoading.value = true;
   try {
-    const authStore = useAuthStore();
-    const userId = authStore.getUser!.id;
+    const user = authStore.getUser;
+    if (!user?.extensiveDataProcessing) {
+      showDataAnalysisDialog.value = true;
+      isLoading.value = false;
+      return;
+    }
 
-    report.value = (await apiService.user.getUsersPurchasesReport(userId, '2025-01-01', '2025-12-31')).data;
-
-    report2024.value = (await apiService.user.getUsersPurchasesReport(userId, '2024-01-01', '2024-12-31')).data;
-
-    wrapped.value = (await apiService.user.getWrapped(userId)).data;
+    await loadWrappedData();
   } catch (e) {
     console.error('Failed to load wrapped data', e);
   } finally {
     isLoading.value = false;
   }
 });
+
+function handleCancelDataAnalysis() {
+  showDataAnalysisDialog.value = false;
+  void router.push({ name: 'home' });
+}
+
+async function handleEnableDataAnalysis() {
+  isEnablingDataAnalysis.value = true;
+  try {
+    const userId = authStore.getUser!.id;
+
+    // Update user preference
+    await apiService.user.updateUser(userId, { extensiveDataProcessing: true });
+
+    isLoading.value = true;
+    showDataAnalysisDialog.value = false;
+    await apiService.user.updateWrapped(userId);
+    await loadWrappedData();
+
+    toast.add({
+      severity: 'success',
+      summary: t('common.toast.success.success'),
+      detail: t('common.toast.success.dataAnalysis'),
+      life: 5000,
+    });
+  } catch (err: unknown) {
+    handleError(err as AxiosError, toast);
+  } finally {
+    isEnablingDataAnalysis.value = false;
+    isLoading.value = false;
+  }
+}
 
 onMounted(() => {
   window.addEventListener('resize', updateWindowWidth);

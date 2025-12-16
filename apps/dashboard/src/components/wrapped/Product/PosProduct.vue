@@ -7,6 +7,7 @@
       <div class="h-[2.76em] flex items-center justify-center">
         <p class="text-base font-bold leading-none m-0 line-clamp-3 pb-[0.1em]">{{ props.name }}</p>
       </div>
+      <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
       <p class="text-xs m-0">€{{ props.price }}</p>
     </div>
   </div>
