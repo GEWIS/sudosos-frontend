@@ -53,6 +53,12 @@
     "paid": "Betaald",
     "created": "Gemaakt",
     "deleted": "Verwijderd",
+    "view": "Bekijken",
+    "clear": "Wissen",
+    "clearSelection": "Selectie wissen",
+    "selectAll": "Alles selecteren",
+    "refresh": "Vernieuwen",
+    "userId": "Gebruikers-ID",
     "placeholders": {
       "selectType": "Selecteer Type",
       "email": "voorbeeld(at)voorbeeld.com",
@@ -171,6 +177,7 @@
       "fines": "Boetes",
       "writeOffs": "Afschrijvingen",
       "vat": "BTW",
+      "administrativeCosts": "Administratiekosten",
       "maintainer": "Maintainer",
       "sellers": "Verkopers",
       "rbac": "RBAC"

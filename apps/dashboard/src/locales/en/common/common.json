@@ -53,6 +53,12 @@
     "paid": "Paid",
     "created": "Created",
     "deleted": "Deleted",
+    "view": "View",
+    "clear": "Clear",
+    "clearSelection": "Clear Selection",
+    "selectAll": "Select All",
+    "refresh": "Refresh",
+    "userId": "User ID",
     "placeholders": {
       "selectType": "Select Type",
       "email": "example(at)example.com",
@@ -171,6 +177,7 @@
       "fines": "Fines",
       "writeOffs": "Write-Offs",
       "vat": "VAT",
+      "administrativeCosts": "Administrative Costs",
       "maintainer": "Maintainer",
       "sellers": "Sellers",
       "rbac": "RBAC"

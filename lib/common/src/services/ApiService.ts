@@ -7,6 +7,7 @@ import {
   ContainersApi,
   FilesApi,
   InvoicesApi,
+  InactiveAdministrativeCostsApi,
   PayoutRequestsApi,
   PointofsaleApi,
   ProductCategoriesApi,
@@ -78,6 +79,8 @@ export class ApiService {
 
   private readonly _userNotificationsApi: UserNotificationPreferencesApi;
 
+  private readonly _inactiveAdministrativeCostsApi: InactiveAdministrativeCostsApi;
+
   private readonly _tokenKey: string;
 
   constructor(basePath: string, tokenKey: string = 'jwt_token') {
@@ -123,6 +126,11 @@ export class ApiService {
       withKeyConfiguration,
       basePath,
       this._axiosInstance,
+    );
+    this._inactiveAdministrativeCostsApi = new InactiveAdministrativeCostsApi(
+        withKeyConfiguration,
+        basePath,
+        this._axiosInstance,
     );
   }
 
@@ -220,6 +228,10 @@ export class ApiService {
 
   get userNotifications(): UserNotificationPreferencesApi {
     return this._userNotificationsApi;
+  }
+
+  get inactiveAdministrativeCosts(): InactiveAdministrativeCostsApi {
+    return this._inactiveAdministrativeCostsApi;
   }
 
   get tokenKey(): string {
