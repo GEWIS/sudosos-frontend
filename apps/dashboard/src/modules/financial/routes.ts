@@ -11,6 +11,7 @@ import WriteOffsView from '@/modules/financial/views/write-offs/WriteOffsView.vu
 import TransactionView from '@/modules/financial/views/transaction/TransactionView.vue';
 import SellerView from '@/modules/financial/views/seller/SellerView.vue';
 import VatView from '@/modules/financial/views/vat/VatView.vue';
+import AdministrativeView from '@/modules/financial/views/administrative/AdministrativeView.vue';
 
 export function financialRoutes(): RouteRecordRaw[] {
   return [
@@ -119,6 +120,15 @@ export function financialRoutes(): RouteRecordRaw[] {
           meta: {
             requiresAuth: true,
             isAllowed: () => isAllowed('get', ['all'], 'VatGroup', ['any']),
+          },
+        },
+        {
+          path: '/financial/administrative',
+          component: AdministrativeView,
+          name: 'administrativeCosts',
+          meta: {
+            requiresAuth: true,
+            isAllowed: () => isAllowed('get', ['all'], 'InactiveAdministrativeCost', ['any']),
           },
         },
       ],
