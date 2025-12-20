@@ -7,6 +7,7 @@ import {
   ContainersApi,
   FilesApi,
   InvoicesApi,
+  InactiveAdministrativeCostsApi,
   PayoutRequestsApi,
   PointofsaleApi,
   ProductCategoriesApi,
@@ -75,6 +76,8 @@ export class ApiService {
 
   private readonly _serverSettingsApi: ServerSettingsApi;
 
+  private readonly _inactiveAdministrativeCostsApi: InactiveAdministrativeCostsApi;
+
   private readonly _tokenKey: string;
 
   constructor(basePath: string, tokenKey: string = 'jwt_token') {
@@ -116,6 +119,11 @@ export class ApiService {
     this._sellerPayoutsApi = new SellerPayoutsApi(withKeyConfiguration, basePath, this._axiosInstance);
     this._writeOffsApi = new WriteoffsApi(withKeyConfiguration, basePath, this._axiosInstance);
     this._serverSettingsApi = new ServerSettingsApi(withKeyConfiguration, basePath, this._axiosInstance);
+    this._inactiveAdministrativeCostsApi = new InactiveAdministrativeCostsApi(
+        withKeyConfiguration,
+        basePath,
+        this._axiosInstance,
+    );
   }
 
   get authenticate(): AuthenticateApi {
@@ -208,6 +216,10 @@ export class ApiService {
 
   get serverSettings(): ServerSettingsApi {
     return this._serverSettingsApi;
+  }
+
+  get inactiveAdministrativeCosts(): InactiveAdministrativeCostsApi {
+    return this._inactiveAdministrativeCostsApi;
   }
 
   get tokenKey(): string {
