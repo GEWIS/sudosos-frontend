@@ -35,7 +35,7 @@
             v-for="(item, index) in slotProps.items"
             :key="index"
             :banner="item"
-            :index="index"
+            :index="Number(index)"
             @select:banner="selectBanner"
           />
         </div>
