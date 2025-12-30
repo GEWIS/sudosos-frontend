@@ -28,7 +28,7 @@ export function usePointOfSaleSwitch() {
       // then we are already authenticated for POS access.
       // Ideally this checks if POS_JWT_TOKEN exists AND is for the right POS or not, but that
       // state is not directly accessible here.
-      if (authStore.user?.type !== "POINT_OF_SALE") {
+      if (authStore.user?.type !== 'POINT_OF_SALE') {
         const response = await userApiService.authenticate.authenticatePointOfSale(pos.id);
         setPosToken(response.data.token);
       }
