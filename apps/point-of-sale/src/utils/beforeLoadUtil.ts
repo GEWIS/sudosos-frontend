@@ -31,7 +31,6 @@ async function populatePosStoreFromToken(): Promise<boolean> {
 }
 
 export default async function beforeLoad() {
-
   try {
     setupWebSocket();
   } catch (e) {
@@ -49,13 +48,14 @@ export default async function beforeLoad() {
     const { switchToPos } = usePointOfSaleSwitch();
 
     await authStore.apiKeyLogin(apiKey, Number(userId), posApiService);
-   
+
     const decoded = jwtDecode<{ user: { pointOfSale: BasePointOfSaleInfoResponse } }>(authStore.getToken!);
     const posId = decoded.user.pointOfSale.id;
     const pos = await posApiService.pos.getSinglePointOfSale(Number(posId));
 
     await switchToPos(pos.data);
-  } else { // Otherwise load POS from stored token, or clear invalid token
+  } else {
+    // Otherwise load POS from stored token, or clear invalid token
     await populatePosStoreFromToken()
       .then((res) => {
         if (!res) clearTokenInStorage(POS_TOKEN_KEY);
@@ -64,5 +64,4 @@ export default async function beforeLoad() {
         clearTokenInStorage(POS_TOKEN_KEY);
       });
   }
-
 }
