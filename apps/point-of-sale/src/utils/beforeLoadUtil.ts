@@ -32,6 +32,13 @@ async function populatePosStoreFromToken(): Promise<boolean> {
 
 export default async function beforeLoad() {
 
+  try {
+    setupWebSocket();
+  } catch (e) {
+    console.error(e);
+    return;
+  }
+
   // Load POS via apiKey and userId from URL parameters
   const urlParams = new URLSearchParams(window.location.search);
   const apiKey = urlParams.get('apiKey');
@@ -49,12 +56,6 @@ export default async function beforeLoad() {
 
     await switchToPos(pos.data);
   } else { // Otherwise load POS from stored token, or clear invalid token
-    try {
-      setupWebSocket();
-    } catch (e) {
-      console.error(e);
-      return;
-    }
     await populatePosStoreFromToken()
       .then((res) => {
         if (!res) clearTokenInStorage(POS_TOKEN_KEY);
