@@ -9,7 +9,7 @@ import { userApiService } from '@/services/ApiService';
  * Handles both authenticated and unauthenticated scenarios.
  */
 export function usePointOfSaleSwitch() {
-  const { setPosToken } = usePosToken();
+  const { setPosToken, hasPosToken } = usePosToken();
   const switching = ref(false);
 
   /**
@@ -22,8 +22,10 @@ export function usePointOfSaleSwitch() {
 
     switching.value = true;
     try {
-      const response = await userApiService.authenticate.authenticatePointOfSale(pos.id);
-      setPosToken(response.data.token);
+      if (!hasPosToken.value) {
+        const response = await userApiService.authenticate.authenticatePointOfSale(pos.id);
+        setPosToken(response.data.token);
+      }
 
       PointOfSaleSwitchService.switchTo(pos);
     } catch (error) {

@@ -4,7 +4,6 @@ import { BasePointOfSaleInfoResponse } from '@sudosos/sudosos-client';
 import { usePointOfSaleStore } from '@/stores/pos.store';
 import { POS_TOKEN_KEY, usePosToken } from '@/composables/usePosToken';
 import posApiService from '@/services/PosApiService';
-import { userApiService } from '@/services/ApiService';
 import { usePointOfSaleSwitch } from '@/composables/usePointOfSaleSwitch';
 
 /**
@@ -32,33 +31,37 @@ async function populatePosStoreFromToken(): Promise<boolean> {
 }
 
 export default async function beforeLoad() {
+
+  // Load POS via apiKey and userId from URL parameters
   const urlParams = new URLSearchParams(window.location.search);
   const apiKey = urlParams.get('apiKey');
   const userId = urlParams.get('userId');
+  // Authenticate from url if present
   if (apiKey && userId) {
     const authStore = useAuthStore();
     const { switchToPos } = usePointOfSaleSwitch();
 
-    await authStore.apiKeyLogin(apiKey, Number(userId), userApiService);
+    await authStore.apiKeyLogin(apiKey, Number(userId), posApiService);
    
     const decoded = jwtDecode<{ user: { pointOfSale: BasePointOfSaleInfoResponse } }>(authStore.getToken!);
     const posId = decoded.user.pointOfSale.id;
-    const pos = await userApiService.pos.getSinglePointOfSale(Number(posId));
+    const pos = await posApiService.pos.getSinglePointOfSale(Number(posId));
 
     await switchToPos(pos.data);
+  } else { // Otherwise load POS from stored token, or clear invalid token
+    try {
+      setupWebSocket();
+    } catch (e) {
+      console.error(e);
+      return;
+    }
+    await populatePosStoreFromToken()
+      .then((res) => {
+        if (!res) clearTokenInStorage(POS_TOKEN_KEY);
+      })
+      .catch(() => {
+        clearTokenInStorage(POS_TOKEN_KEY);
+      });
   }
 
-  try {
-    setupWebSocket();
-  } catch (e) {
-    console.error(e);
-    return;
-  }
-  await populatePosStoreFromToken()
-    .then((res) => {
-      if (!res) clearTokenInStorage(POS_TOKEN_KEY);
-    })
-    .catch(() => {
-      clearTokenInStorage(POS_TOKEN_KEY);
-    });
 }
