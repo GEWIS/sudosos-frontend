@@ -72,6 +72,7 @@ export function usePermissionsUpdating(
       .addPermissions(form.context.values.role.id, [newPermission])
       .then(() => {
         addPermissionVision.value = false;
+        location.reload();
       })
       .catch((error) => {
         handleError(error, toast);
