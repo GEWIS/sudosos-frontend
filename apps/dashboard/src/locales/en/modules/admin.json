@@ -139,6 +139,7 @@
           "relation": "Relation",
           "attribute": "Attribute",
           "addAction": "Add Action",
+          "addPermission": "Add Permission",
           "deletePermission": "Delete Permission",
           "firstName": "First Name",
           "lastName": "Last Name",

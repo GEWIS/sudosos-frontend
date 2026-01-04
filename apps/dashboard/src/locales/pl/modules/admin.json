@@ -111,6 +111,7 @@
           "relation": "Relation",
           "attribute": "Attribute",
           "addAction": "Dodaj Action",
+          "addPermission": "Dodaj uprawnienie",
           "deletePermission": "Usuń uprawnienie",
           "firstName": "Imię",
           "lastName": "Nazwisko",

@@ -8,6 +8,7 @@ import type {
   PermissionResponse,
   UserResponse,
   ActionResponse,
+  RoleResponse,
 } from '@sudosos/sudosos-client';
 import type { DineroObject } from 'dinero.js';
 import i18n from './i18nUtils';
@@ -325,9 +326,7 @@ export const authResetSchema = yup.object({
 });
 
 export const rbacSchema = yup.object({
-  id: yup.number().required(),
-  name: yup.string().required(),
-  systemDefault: yup.boolean().default(false),
+  role: yup.mixed<RoleResponse>().default({ id: 0, name: '', systemDefault: false, userTypes: [] }).required(),
   permissions: yup.array().of(yup.mixed<PermissionResponse>().required()),
   users: yup.array().of(yup.mixed<UserResponse>().required()),
   currentPermission: yup.mixed<PermissionResponse>().required(),

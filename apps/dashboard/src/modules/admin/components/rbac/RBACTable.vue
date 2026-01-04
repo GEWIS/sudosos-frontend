@@ -1,6 +1,6 @@
 <template>
   <div v-if="props.state == 'User'" class="w-120">
-    <div v-if="props.form.context.values.systemDefault" class="w-30rem">
+    <div v-if="props.form.context.values.role.systemDefault" class="w-30rem">
       <span>
         {{ t('modules.admin.rbac.permissions.systemDefault') }}
       </span>
@@ -149,14 +149,16 @@
     <span>{{
       t('modules.admin.rbac.users.deleteUserConfirmationMessage', {
         firstName: props.form.context.values.currentUser.firstName,
-        role: props.form.context.values.name,
+        role: props.form.context.values.role.name,
       })
     }}</span>
     <div class="flex flex-row-reverse flex-wrap gap-3 pt-3">
       <Button
         :label="t('modules.admin.rbac.permissions.deletePermissionConfirmation')"
         type="button"
-        @click="handleDeleteUserConfirmation(props.form.context.values.currentUser.id, props.form.context.values.id)"
+        @click="
+          handleDeleteUserConfirmation(props.form.context.values.currentUser.id, props.form.context.values.role.id)
+        "
       />
       <Button
         :label="t('modules.admin.rbac.permissions.deletePermissionCancellation')"
@@ -203,8 +205,12 @@
     <span>{{
       t('modules.admin.rbac.permissions.deletePermissionConfirmationMessage', {
         action: props.form.context.values.currentAction.action,
-        relation: props.form.context.values.currentAction.relations[0].relation,
-        attribute: props.form.context.values.currentAction.relations[0].attributes[0],
+        relation: props.form.context.values.currentAction.relations[0]
+          ? props.form.context.values.currentAction.relations[0].relation
+          : '',
+        attribute: props.form.context.values.currentAction.relations[0]
+          ? props.form.context.values.currentAction.relations[0].attributes[0]
+          : '',
         entity: props.form.context.values.currentPermission.entity,
       })
     }}</span>
@@ -215,9 +221,11 @@
         @click="
           handleDeletePermissionConfirmation(
             props.form.context.values.currentPermission.entity,
-            form.context.values.id,
+            form.context.values.role.id,
             props.form.context.values.currentAction.action,
-            props.form.context.values.currentAction.relations[0].relation,
+            props.form.context.values.currentAction.relations[0]
+              ? props.form.context.values.currentAction.relations[0].relation
+              : '',
           )
         "
       />
@@ -231,24 +239,16 @@
 </template>
 
 <script setup lang="ts">
-import { type PropType, ref, watch } from 'vue';
+import { type PropType, ref } from 'vue';
 import * as yup from 'yup';
 import { useI18n } from 'vue-i18n';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import type {
-  ActionResponse,
-  RelationResponse,
-  UserResponse,
-  AddRoleRequest,
-  CreatePermissionParams,
-} from '@sudosos/sudosos-client';
-import { useToast } from 'primevue/usetoast';
+import type { ActionResponse, UserResponse } from '@sudosos/sudosos-client';
 import { rbacSchema } from '@/utils/validation-schema';
 import { type Form } from '@/utils/formUtils';
-import apiService from '@/services/ApiService';
-import { handleError } from '@/utils/errorUtils';
 import InputUserSpan from '@/components/InputUserSpan.vue';
+import { useRBACUpdating } from '@/composables/useRBACUpdating';
 
 const { t } = useI18n();
 
@@ -274,152 +274,24 @@ const selectedAttribute = ref();
 const ownActions = ref<string[]>();
 const ownRelations = ref<string[]>();
 const ownAttributes = ref<string[]>();
-const toast = useToast();
-
-watch(
-  () => props.form.context.values.currentPermission,
-  () => {
-    const allRelations: ActionResponse[] = [];
-    props.form.context.values.currentPermission.actions.forEach((action) => {
-      action.relations.forEach((relation) => {
-        relation.attributes.forEach((attribute) => {
-          const rel = { relation: relation.relation, attributes: [attribute] };
-          allRelations.push({ action: action.action, relations: [rel] });
-        });
-      });
-    });
-    actionRelations.value = allRelations;
-  },
+const RBACUpdating = useRBACUpdating(
+  props.form,
+  permissionVision,
+  actionVision,
+  deleteUserVision,
+  addUserVision,
+  actionRelations,
+  users,
+  ownActions,
+  ownRelations,
+  ownAttributes,
 );
-
-watch(
-  () => props.form.context.values.users,
-  () => {
-    users.value = props.form.context.values.users;
-  },
-);
-
-watch(
-  () => props.form.context.values.permissions,
-  () => {
-    const tempActions: Set<string> = new Set();
-    const tempRelations: Set<string> = new Set();
-    const tempAttributes: Set<string> = new Set();
-    if (props.form.context.values.permissions) {
-      props.form.context.values.permissions.forEach((permission) => {
-        permission.actions.forEach((action) => {
-          tempActions.add(action.action);
-          action.relations.forEach((relation) => {
-            tempRelations.add(relation.relation);
-            relation.attributes.forEach((attribute) => {
-              tempAttributes.add(attribute);
-            });
-          });
-        });
-      });
-    }
-    ownActions.value = Array.from(tempActions);
-    ownRelations.value = Array.from(tempRelations);
-    ownAttributes.value = Array.from(tempAttributes);
-  },
-);
-
-const handleDeletePermissionPush = (action: string, relation: string, attribute: string) => {
-  permissionVision.value = true;
-  const relRes: RelationResponse = {
-    relation: relation,
-    attributes: [attribute],
-  };
-  const actionRes: ActionResponse = {
-    action: action,
-    relations: [relRes],
-  };
-  props.form.context.setFieldValue('currentAction', actionRes);
-};
-
-const handleDeletePermissionConfirmation = (entity: string, id: number, action: string, relation: string) => {
-  apiService.rbac
-    .deletePermission(id, entity, action, relation)
-    .then(() => {
-      const allRelations: ActionResponse[] = [];
-      props.form.context.values.currentPermission.actions.forEach((action) => {
-        action.relations.forEach((relation) => {
-          relation.attributes.forEach((attribute) => {
-            const rel = { relation: relation.relation, attributes: [attribute] };
-            allRelations.push({ action: action.action, relations: [rel] });
-          });
-        });
-      });
-      actionRelations.value = allRelations;
-      permissionVision.value = false;
-    })
-    .catch((error) => {
-      handleError(error, toast);
-    });
-};
-
-const handleAddActionPush = (entity: string, action: string, relation: string, attribute: string) => {
-  const addPermissionReq: CreatePermissionParams = {
-    entity: entity,
-    action: action,
-    relation: relation,
-    attributes: [attribute],
-  };
-  apiService.rbac.addPermissions(props.form.context.values.id, [addPermissionReq]).catch((error) => {
-    handleError(error, toast);
-  });
-  actionVision.value = false;
-  if (actionRelations.value) {
-    const allRelations = actionRelations.value;
-    const rel = { relation: relation, attributes: [attribute] };
-    allRelations.push({ action: action, relations: [rel] });
-    actionRelations.value = allRelations;
-  }
-};
-
-const handleDeleteUserPush = (user: UserResponse) => {
-  deleteUserVision.value = true;
-  props.form.context.setFieldValue('currentUser', user);
-};
-
-const handleDeleteUserConfirmation = (userId: number, roleId: number) => {
-  apiService.user
-    .deleteUserRole(userId, roleId)
-    .then(() => {
-      deleteUserVision.value = false;
-      apiService.rbac
-        .getRoleUsers(props.form.context.values.id)
-        .then((res) => {
-          users.value = res.data.records;
-          props.form.context.setFieldValue('users', users.value);
-        })
-        .catch((err) => {
-          handleError(err, toast);
-        });
-    })
-    .catch((err) => handleError(err, toast));
-};
-
-const handleAddUserPush = (id: number) => {
-  const roleRequest: AddRoleRequest = { roleId: props.form.context.values.id };
-  apiService.user
-    .addUserRole(id, roleRequest)
-    .then(() => {
-      addUserVision.value = false;
-      apiService.rbac
-        .getRoleUsers(props.form.context.values.id)
-        .then((res) => {
-          users.value = res.data.records;
-          props.form.context.setFieldValue('users', users.value);
-        })
-        .catch((err) => {
-          handleError(err, toast);
-        });
-    })
-    .catch((err) => {
-      handleError(err, toast);
-    });
-};
+const handleDeletePermissionConfirmation = RBACUpdating.handleDeletePermissionConfirmation;
+const handleAddActionPush = RBACUpdating.handleAddActionPush;
+const handleDeletePermissionPush = RBACUpdating.handleDeletePermissionPush;
+const handleAddUserPush = RBACUpdating.handleAddUserPush;
+const handleDeleteUserPush = RBACUpdating.handleDeleteUserPush;
+const handleDeleteUserConfirmation = RBACUpdating.handleDeleteUserConfirmation;
 </script>
 
 <style scoped lang="scss"></style>

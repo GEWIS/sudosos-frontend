@@ -1,5 +1,13 @@
 <template>
   <CardComponent class="w-full" :header="t('modules.admin.rbac.permissions.title')">
+    <template #topAction>
+      <Button
+        icon="pi pi-plus"
+        :label="t('modules.admin.rbac.permissions.addPermission')"
+        @click="addPermissionVision = true"
+      />
+    </template>
+
     <DataTable :row-class="rowClass" :value="input ? input : null" @row-click="onRowClick">
       <Column field="entity" :header="t('modules.admin.rbac.permissions.title')"> </Column>
       <Column field="icon" :header="t('modules.admin.rbac.permissions.crud')">
@@ -19,18 +27,43 @@
       </Column>
     </DataTable>
   </CardComponent>
+  <Dialog
+    v-model:visible="addPermissionVision"
+    :header="t('modules.admin.rbac.permissions.addPermission')"
+    modal
+    :style="{ width: '25rem' }"
+  >
+    <div class="flex flex-col gap-2">
+      <InputText v-model="entityToAdd" :placeholder="t('modules.admin.rbac.permissions.entity')"> </InputText>
+      <InputText v-model="actionToAdd" :placeholder="t('modules.admin.rbac.permissions.action')"> </InputText>
+      <InputText v-model="relationToAdd" :placeholder="t('modules.admin.rbac.permissions.relation')"> </InputText>
+      <InputText v-model="attributeToAdd" :placeholder="t('modules.admin.rbac.permissions.attribute')"> </InputText>
+    </div>
+    <div class="flex flex-row-reverse flex-wrap gap-3 pt-3">
+      <Button
+        :label="t('modules.admin.rbac.permissions.deletePermissionConfirmation')"
+        type="button"
+        @click="handleAddPermissionPush()"
+      />
+      <Button
+        :label="t('modules.admin.rbac.permissions.deletePermissionCancellation')"
+        type="button"
+        @click="addPermissionVision = false"
+      />
+    </div>
+  </Dialog>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { computed, type PropType } from 'vue';
+import { type PropType, ref } from 'vue';
 import * as yup from 'yup';
-import DataTable, { type DataTableRowClickEvent } from 'primevue/datatable';
+import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import { type ActionResponse, type PermissionResponse } from '@sudosos/sudosos-client';
-import { type Form, getProperty } from '@/utils/formUtils';
+import { type Form } from '@/utils/formUtils';
 import { rbacSchema } from '@/utils/validation-schema';
 import CardComponent from '@/components/CardComponent.vue';
+import { usePermissionsUpdating } from '@/composables/usePermissionUpdating';
 
 const props = defineProps({
   form: {
@@ -39,54 +72,28 @@ const props = defineProps({
   },
 });
 
-const permissions = computed(() => {
-  return getProperty(props.form, 'permissions');
-});
-
-const input = computed(() => {
-  if (permissions.value) {
-    const permissionsResponse: PermissionResponse[] = permissions.value;
-    const icons: { [id: string]: string } = {};
-    permissionsResponse.forEach((permission) => {
-      const filteredData = permission.actions.filter(isCrud);
-      if (filteredData.length === 4) {
-        icons[permission.entity] = 'all';
-      } else if (filteredData.length > 0) {
-        icons[permission.entity] = 'partial';
-      } else {
-        icons[permission.entity] = 'none';
-      }
-    });
-    return permissionsResponse.map((permission) => {
-      return {
-        ...permission,
-        icon: icons[permission.entity],
-      };
-    });
-  } else {
-    return [];
-  }
-});
+const addPermissionVision = ref(false);
+const entityToAdd = ref('');
+const actionToAdd = ref('');
+const relationToAdd = ref('');
+const attributeToAdd = ref('');
+const permissionUpdate = usePermissionsUpdating(
+  props.form,
+  addPermissionVision,
+  entityToAdd,
+  actionToAdd,
+  relationToAdd,
+  attributeToAdd,
+);
+const input = permissionUpdate.input;
+const handleAddPermissionPush = permissionUpdate.handleAddPermissionPush;
+const onRowClick = permissionUpdate.onRowClick;
 
 const { t } = useI18n();
-
-const onRowClick = (data: DataTableRowClickEvent<PermissionResponse>) => {
-  const permission: PermissionResponse = {
-    entity: data.data.entity,
-    actions: data.data.actions,
-  };
-  props.form.context.setFieldValue('currentPermission', permission);
-};
 
 const rowClass = () => {
   return ['cursor-pointer', 'hover:bg-black/20'];
 };
-
-function isCrud(action: ActionResponse) {
-  return (
-    action.action === 'create' || action.action === 'delete' || action.action === 'get' || action.action === 'update'
-  );
-}
 </script>
 
 <style scoped lang="scss"></style>

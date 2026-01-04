@@ -139,6 +139,7 @@
           "relation": "Relation",
           "attribute": "Attribute",
           "addAction": "Voeg action toe",
+          "addPermission": "Voeg permissie toe",
           "deletePermission": "Verwijder Permissie",
           "firstName": "First Name",
           "lastName": "Last Name",
