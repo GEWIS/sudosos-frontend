@@ -120,9 +120,9 @@ export class ApiService {
     this._writeOffsApi = new WriteoffsApi(withKeyConfiguration, basePath, this._axiosInstance);
     this._serverSettingsApi = new ServerSettingsApi(withKeyConfiguration, basePath, this._axiosInstance);
     this._inactiveAdministrativeCostsApi = new InactiveAdministrativeCostsApi(
-        withKeyConfiguration,
-        basePath,
-        this._axiosInstance,
+      withKeyConfiguration,
+      basePath,
+      this._axiosInstance,
     );
   }
 
