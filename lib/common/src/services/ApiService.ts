@@ -128,9 +128,9 @@ export class ApiService {
       this._axiosInstance,
     );
     this._inactiveAdministrativeCostsApi = new InactiveAdministrativeCostsApi(
-        withKeyConfiguration,
-        basePath,
-        this._axiosInstance,
+      withKeyConfiguration,
+      basePath,
+      this._axiosInstance,
     );
   }
 
