@@ -58,7 +58,9 @@ const handleSwitchToPos = async (pos: PointOfSaleResponse) => {
   if (pointOfSale.value?.id === pos.id) return;
   visible.value = false;
   await switchToPos(pos);
-  await logoutService();
+  if (pos.useAuthentication) {
+    await logoutService();
+  }
 };
 
 const forceExit = async () => {

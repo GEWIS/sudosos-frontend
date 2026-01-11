@@ -26,6 +26,7 @@ export class PointOfSaleSwitchService {
 
       const cartStore = useCartStore();
       cartStore.setLockedIn(null);
+      void cartStore.setBuyer(null);
 
       if (target.useAuthentication) {
         activityStore.resetTimer();
