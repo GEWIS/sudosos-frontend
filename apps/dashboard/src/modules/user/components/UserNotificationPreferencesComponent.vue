@@ -4,14 +4,18 @@
       <i class="pi pi-spin pi-spinner text-2xl" />
     </div>
     <div v-else class="flex flex-col gap-4">
-      <div class="items-center flex flex-row w-full">
-        <span class="flex-grow-1 my-1">{{ t('modules.user.notifications.transactionsMadeByMyself') }}</span>
-        <ToggleSwitch v-model="selfEnabled" @update:model-value="handleSelfChange" />
-      </div>
-      <div class="items-center flex flex-row w-full">
-        <span class="flex-grow-1 my-1">{{ t('modules.user.notifications.transactionsMadeByOthers') }}</span>
-        <ToggleSwitch v-model="otherEnabled" @update:model-value="handleOtherChange" />
-      </div>
+      <InputSpan
+        :label="t('modules.user.notifications.transactionsMadeByMyself')"
+        type="boolean"
+        :value="selfEnabled"
+        @update:value="handleSelfChange"
+      />
+      <InputSpan
+        :label="t('modules.user.notifications.transactionsMadeByOthers')"
+        type="boolean"
+        :value="otherEnabled"
+        @update:value="handleOtherChange"
+      />
     </div>
   </CardComponent>
 </template>
@@ -27,6 +31,7 @@ import type {
 } from '@sudosos/sudosos-client';
 import type { AxiosError } from 'axios';
 import CardComponent from '@/components/CardComponent.vue';
+import InputSpan from '@/components/InputSpan.vue';
 import apiService from '@/services/ApiService';
 import { handleError } from '@/utils/errorUtils';
 
