@@ -49,6 +49,8 @@
         "header": "Notification preferences",
         "transactionNotifications": "Transactions",
         "transactionNotificationMode": "Notification mode",
+        "transactionsMadeByMyself": "Transactions made by myself",
+        "transactionsMadeByOthers": "Transactions made by others",
         "disabled": "Disabled",
         "own": "Own transactions only",
         "other": "Other transactions only",

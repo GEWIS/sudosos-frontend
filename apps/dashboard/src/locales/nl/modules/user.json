@@ -49,6 +49,8 @@
         "header": "Notificatievoorkeuren",
         "transactionNotifications": "Transacties",
         "transactionNotificationMode": "Notificatiemodus",
+        "transactionsMadeByMyself": "Transacties die ik zelf maak",
+        "transactionsMadeByOthers": "Transacties gemaakt door anderen",
         "disabled": "Uitgeschakeld",
         "own": "Alleen eigen transacties",
         "other": "Alleen andere transacties",
