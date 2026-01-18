@@ -70,7 +70,9 @@
       "city": "Zwolle",
       "country": "Nederland",
       "product": "IJs",
-      "pos": "GELIMBO"
+      "pos": "GELIMBO",
+      "selectFromDate": "Selecteer startdatum",
+      "selectToDate": "Selecteer einddatum"
     },
     "tooltip": {
       "productOwner": "Opmerking: De eigenaar van de container krijgt de opbrengst, niet de producteigenaar. Eigenaar kan na aanmaak niet meer worden bewerkt."

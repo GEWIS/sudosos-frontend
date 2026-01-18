@@ -3,7 +3,6 @@ import type {
   BaseInactiveAdministrativeCostResponse,
   CreateInactiveAdministrativeCostRequest,
   HandoutInactiveAdministrativeCostsRequest,
-  PaginatedInactiveAdministrativeCostResponse,
   UserToInactiveAdministrativeCostResponse,
 } from '@sudosos/sudosos-client';
 import ApiService from '@/services/ApiService';
@@ -54,7 +53,7 @@ export const useAdministrativeCostsStore = defineStore('administrativeCosts', {
           filters?.fromId,
           filters?.inactiveAdministrativeCostId,
         );
-        const data = response.data as PaginatedInactiveAdministrativeCostResponse;
+        const data = response.data;
         this.costs = data.records || [];
         this.pagination = {
           take: data._pagination?.take || filters?.take || 10,

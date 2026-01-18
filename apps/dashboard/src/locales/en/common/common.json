@@ -70,7 +70,9 @@
       "city": "Zwolle",
       "country": "Netherlands",
       "product": "Ice cream",
-      "pos": "GELIMBO"
+      "pos": "GELIMBO",
+      "selectFromDate": "Select from date",
+      "selectToDate": "Select to date"
     },
     "tooltip": {
       "productOwner": "Note: Container owner gets the revenue, not the product owner. Owner cannot be edited after creation."
