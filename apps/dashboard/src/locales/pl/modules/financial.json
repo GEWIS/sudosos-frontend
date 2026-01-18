@@ -170,6 +170,7 @@
           "bulkDelete": "Czy na pewno chcesz usunąć {count} kosztów administracyjnych? Spowoduje to utworzenie przelewów kredytowych dla każdego."
         },
         "deleteSuccess": "Koszty administracyjne zostały pomyślnie usunięte.",
+        "deleteError": "Nie udało się usunąć kosztów administracyjnych. Spróbuj ponownie.",
         "bulkDeleteSuccess": "Pomyślnie usunięto {count} kosztów administracyjnych.",
         "createSuccess": "Koszty administracyjne zostały pomyślnie utworzone.",
         "eligibleUsers": {
@@ -178,7 +179,7 @@
           "handoutMode": "Krok 2: Przydział",
           "count": "{count} uprawnionych użytkowników",
           "notify": "Powiadom wybranych użytkowników",
-          "handout": "Przydziel wybranym użytkownikom",
+          "handoutButton": "Przydziel wybranym użytkownikom",
           "notifySuccess": "Użytkownicy zostali pomyślnie powiadomieni.",
           "handoutSuccess": "Pomyślnie przydzielono koszty {count} użytkownikom.",
           "step1": {
@@ -201,6 +202,14 @@
             "notify": "Czy chcesz powiadomić {count} użytkowników o nadchodzących kosztach administracyjnych?",
             "handout": "Czy chcesz przydzielić koszty administracyjne {count} użytkownikom? Spowoduje to utworzenie kosztów dla wszystkich wybranych użytkowników."
           }
+        },
+        "report": {
+          "title": "Pobierz Raport Kosztów Administracyjnych",
+          "button": "Raport",
+          "fromDate": "Data Od (włącznie)",
+          "toDate": "Data Do (wyłącznie)",
+          "downloadSuccess": "Raport został pomyślnie pobrany.",
+          "downloadError": "Nie udało się pobrać raportu. Spróbuj ponownie."
         }
       }
     }

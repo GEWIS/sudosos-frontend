@@ -1,4 +1,4 @@
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import type { DataTablePageEvent } from 'primevue/datatable';
 import { debounce } from '@/utils/debounceUtil';
 import { useAdministrativeCostsStore } from '@/stores/administrativeCosts.store';
@@ -42,15 +42,6 @@ export function useAdministrativeCosts() {
     skip.value = 0;
     void fetchCosts();
   }
-
-  watch(
-    () => filters.value,
-    () => {
-      skip.value = 0;
-      delayedFetch();
-    },
-    { deep: true },
-  );
 
   onMounted(() => {
     void fetchCosts();

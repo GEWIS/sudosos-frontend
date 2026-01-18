@@ -70,7 +70,9 @@
       "city": "Gdańsk",
       "country": "Polska",
       "product": "Lody",
-      "pos": "GELIMBO"
+      "pos": "GELIMBO",
+      "selectFromDate": "Wybierz datę początkową",
+      "selectToDate": "Wybierz datę końcową"
     },
     "tooltip": {
       "productOwner": "Uwaga: Właściciel kontenera otrzymuje przychód, a nie właściciel produktu. Właściciela nie można edytować po utworzeniu."

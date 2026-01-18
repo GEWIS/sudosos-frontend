@@ -7,6 +7,7 @@
     paginator
     :rows="rows"
     :rows-per-page-options="rowsPerPageOptions"
+    selection-mode="multiple"
     table-style="min-width: 50rem"
     :total-records="pagination.count"
     :value="costs"
@@ -65,12 +66,11 @@
     </Column>
   </DataTable>
 
-  <div
-    v-if="showSelection && selectedCosts.length > 0"
-    class="mt-3 flex flex-row justify-content-between align-items-center"
-  >
-    <span>{{ t('modules.financial.administrative.selectedCount', { count: selectedCosts.length }) }}</span>
-    <div class="flex flex-row gap-2">
+  <div v-if="showSelection && selectedCosts.length > 0" class="mt-3 flex flex-row justify-between items-center">
+    <span class="flex items-center">{{
+      t('modules.financial.administrative.selectedCount', { count: selectedCosts.length })
+    }}</span>
+    <div class="flex flex-row gap-2 items-center">
       <Button :label="t('common.clearSelection')" outlined @click="selectedCosts = []" />
       <Button
         :label="t('common.delete')"
@@ -111,7 +111,7 @@ interface Props {
   showSelection?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   rowsPerPageOptions: () => [10, 25, 50, 100],
   showSelection: false,
 });

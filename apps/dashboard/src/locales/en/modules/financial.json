@@ -170,6 +170,7 @@
           "bulkDelete": "Are you sure you want to delete {count} administrative costs? This will create credit transfers for each."
         },
         "deleteSuccess": "Administrative cost successfully deleted.",
+        "deleteError": "Failed to delete administrative cost. Please try again.",
         "bulkDeleteSuccess": "Successfully deleted {count} administrative costs.",
         "createSuccess": "Administrative cost successfully created.",
         "eligibleUsers": {
@@ -178,7 +179,7 @@
           "handoutMode": "Step 2: Handout",
           "count": "{count} eligible users",
           "notify": "Notify Selected Users",
-          "handout": "Handout to Selected Users",
+          "handoutButton": "Handout to Selected Users",
           "notifySuccess": "Users successfully notified.",
           "handoutSuccess": "Successfully handed out costs to {count} users.",
           "step1": {
@@ -201,6 +202,14 @@
             "notify": "Do you want to notify {count} users about upcoming administrative costs?",
             "handout": "Do you want to handout administrative costs to {count} users? This will create costs for all selected users."
           }
+        },
+        "report": {
+          "title": "Download Administrative Cost Report",
+          "button": "Report",
+          "fromDate": "From Date (inclusive)",
+          "toDate": "To Date (exclusive)",
+          "downloadSuccess": "Report successfully downloaded.",
+          "downloadError": "Failed to download report. Please try again."
         }
       }
     }

@@ -170,6 +170,7 @@
           "bulkDelete": "Weet u zeker dat u {count} administratiekosten wilt verwijderen? Dit zal voor elk een creditoverboeking aanmaken."
         },
         "deleteSuccess": "Administratiekosten succesvol verwijderd.",
+        "deleteError": "Kon administratiekosten niet verwijderen. Probeer het opnieuw.",
         "bulkDeleteSuccess": "Succesvol {count} administratiekosten verwijderd.",
         "createSuccess": "Administratiekosten succesvol aangemaakt.",
         "eligibleUsers": {
@@ -178,7 +179,7 @@
           "handoutMode": "Stap 2: Uitdelen",
           "count": "{count} in aanmerking komende gebruikers",
           "notify": "Geselecteerde gebruikers melden",
-          "handout": "Uitdelen aan geselecteerde gebruikers",
+          "handoutButton": "Uitdelen aan geselecteerde gebruikers",
           "notifySuccess": "Gebruikers succesvol gemeld.",
           "handoutSuccess": "Succesvol kosten uitgedeeld aan {count} gebruikers.",
           "step1": {
@@ -201,6 +202,14 @@
             "notify": "Wilt u {count} gebruikers melden over aankomende administratiekosten?",
             "handout": "Wilt u administratiekosten uitdelen aan {count} gebruikers? Dit zal kosten aanmaken voor alle geselecteerde gebruikers."
           }
+        },
+        "report": {
+          "title": "Administratiekosten Rapport Downloaden",
+          "button": "Rapport",
+          "fromDate": "Vanaf Datum (inclusief)",
+          "toDate": "Tot Datum (exclusief)",
+          "downloadSuccess": "Rapport succesvol gedownload.",
+          "downloadError": "Rapport downloaden mislukt. Probeer het opnieuw."
         }
       }
     }
