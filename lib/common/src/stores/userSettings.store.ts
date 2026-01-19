@@ -2,14 +2,14 @@ import { defineStore } from 'pinia';
 import type { UserSettingsResponse, PatchUserSettingsRequest } from '@sudosos/sudosos-client';
 import { ApiService } from '../services/ApiService';
 
-interface SettingsStoreState {
+interface UserSettingsStoreState {
   settings: UserSettingsResponse | null;
   isLoading: boolean;
   isUpdating: boolean;
 }
 
-export const useSettingsStore = defineStore('settings', {
-  state: (): SettingsStoreState => ({
+export const useUserSettingsStore = defineStore('userSettings', {
+  state: (): UserSettingsStoreState => ({
     settings: null,
     isLoading: false,
     isUpdating: false,
