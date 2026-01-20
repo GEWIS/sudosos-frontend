@@ -32,7 +32,7 @@ export function sellerRoutes(): RouteRecordRaw[] {
           meta: {
             requiresAuth: true,
             isAllowed: () => isAllowed('get', ['own', 'organ'], 'Product', ['any']),
-            title: 'Products',
+            title: 'common.titles.productsContainers',
           },
         },
         {
@@ -42,7 +42,7 @@ export function sellerRoutes(): RouteRecordRaw[] {
           meta: {
             requiresAuth: true,
             isAllowed: () => isAllowed('get', ['own', 'organ'], 'PointOfSale', ['any']),
-            title: 'Points of Sale',
+            title: 'common.titles.posses',
           },
         },
         {

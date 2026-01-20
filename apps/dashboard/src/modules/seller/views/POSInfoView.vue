@@ -81,7 +81,7 @@ const canLoadTransactions = computed(() => {
 
 watchEffect(() => {
   if (p.value) {
-    document.title = `${p.value.name} - Points of Sale | SudoSOS`;
+    document.title = `${p.value.name} - ${t('common.titles.pos')} | ${t('common.sudosos')}`;
   }
 });
 

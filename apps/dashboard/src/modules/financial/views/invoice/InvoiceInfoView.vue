@@ -66,7 +66,7 @@ const dirty = computed(() => isDirty(invoice.value as InvoiceResponse));
 
 watchEffect(() => {
   if (invoice.value) {
-    document.title = `Invoice #${invoice.value.id} - Invoices | SudoSOS`;
+    document.title = `${t('common.titles.invoice')} #${invoice.value.id} - ${t('common.titles.invoices')} | ${t('common.sudosos')}`;
   }
 });
 

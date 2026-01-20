@@ -28,7 +28,7 @@ export function userRoutes(): RouteRecordRaw[] {
           meta: {
             requiresAuth: true,
             isAllowed: () => isAllowed('get', ['own'], 'Transaction', ['any']),
-            title: 'Transactions',
+            title: 'common.titles.transactions',
           },
         },
         {
@@ -38,7 +38,7 @@ export function userRoutes(): RouteRecordRaw[] {
           meta: {
             requiresAuth: true,
             isAllowed: () => isAllowed('get', ['own'], 'User', ['any']),
-            title: 'Profile',
+            title: 'common.titles.profile',
           },
         },
       ],

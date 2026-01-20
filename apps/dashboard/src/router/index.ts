@@ -10,6 +10,7 @@ import { sellerRoutes } from '@/modules/seller/routes';
 import { userRoutes } from '@/modules/user/routes';
 import WrappedView from '@/views/WrappedView.vue';
 import apiService from '@/services/ApiService';
+import i18n from '@/utils/i18nUtils';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -61,7 +62,7 @@ const router = createRouter({
           name: 'error',
           meta: {
             requiresAuth: false,
-            title: 'Error',
+            title: 'common.titles.error',
           },
         },
       ],
@@ -77,7 +78,7 @@ const router = createRouter({
           name: 'error',
           meta: {
             requiresAuth: true,
-            title: 'Error',
+            title: 'common.titles.error',
           },
         },
         {
@@ -87,7 +88,7 @@ const router = createRouter({
           beforeEnter: wrappedGuard,
           meta: {
             requiresAuth: true,
-            title: 'Wrapped',
+            title: 'common.titles.wrapped',
           },
         },
       ],
@@ -111,7 +112,10 @@ router.beforeEach((to, from, next) => {
 
   // Update page title
   const title = to.meta?.title;
-  document.title = title ? `${title} | SudoSOS` : 'SudoSOS';
+  const translatedTitle = title ? i18n.global.t(title) : '';
+  document.title = translatedTitle
+    ? `${translatedTitle} | ${i18n.global.t('common.sudosos')}`
+    : i18n.global.t('common.sudosos');
 
   if (to.meta?.requiresAuth && !isAuth) {
     // If the route requires authentication and the user is not authenticated, redirect to login

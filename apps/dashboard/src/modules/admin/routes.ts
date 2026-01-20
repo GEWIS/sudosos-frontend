@@ -22,7 +22,7 @@ export function adminRoutes(): RouteRecordRaw[] {
             requiresAuth: true,
             // TODO: Change to `action: get` after https://github.com/GEWIS/sudosos-backend/issues/62 is fully finished
             isAllowed: () => isAllowed('update', ['all'], 'User', ['any']),
-            title: 'Users',
+            title: 'common.titles.users',
           },
         },
         {
@@ -32,7 +32,7 @@ export function adminRoutes(): RouteRecordRaw[] {
           meta: {
             requiresAuth: true,
             isAllowed: () => isAllowed('get', ['own', 'organ'], 'Banner', ['any']),
-            title: 'Banners',
+            title: 'common.titles.banners',
           },
         },
         {
@@ -52,7 +52,7 @@ export function adminRoutes(): RouteRecordRaw[] {
           meta: {
             requiresAuth: true,
             isAllowed: () => isAllowed('update', ['all'], 'Maintenance', ['*']),
-            title: 'Maintainer',
+            title: 'common.titles.maintainer',
           },
         },
         {
@@ -62,7 +62,7 @@ export function adminRoutes(): RouteRecordRaw[] {
           meta: {
             requiresAuth: true,
             isAllowed: () => isAllowed('get', ['all'], 'Role', ['*']),
-            title: 'RBAC',
+            title: 'common.titles.rbac',
           },
         },
       ],

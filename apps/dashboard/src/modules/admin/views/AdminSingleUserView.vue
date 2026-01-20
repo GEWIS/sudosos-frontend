@@ -72,7 +72,7 @@ const memberId = computed(() => (memberUser.value?.memberId ? `(m${memberUser.va
 watchEffect(() => {
   if (currentUser.value) {
     const userName = `${currentUser.value.firstName} ${currentUser.value.lastName}`;
-    document.title = `${userName} - Users | SudoSOS`;
+    document.title = `${userName} - ${t('common.titles.users')} | ${t('common.sudosos')}`;
   }
 });
 

@@ -53,7 +53,7 @@ const form = schemaToForm(createSellerPayoutObject);
 watchEffect(() => {
   if (user.value) {
     const sellerName = `${user.value.firstName} ${user.value.lastName}`;
-    document.title = `${sellerName} - Seller Payouts | SudoSOS`;
+    document.title = `${sellerName} - ${t('common.titles.payouts')} | ${t('common.sudosos')}`;
   }
 });
 

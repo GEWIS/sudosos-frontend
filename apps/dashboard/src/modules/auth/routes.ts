@@ -24,7 +24,7 @@ export function authRoutes(): RouteRecordRaw[] {
               alias: ['/login'],
               meta: {
                 requiresAuth: false,
-                title: 'Login',
+                title: 'common.titles.login',
               },
             },
             {
@@ -34,7 +34,7 @@ export function authRoutes(): RouteRecordRaw[] {
               alias: ['/local'],
               meta: {
                 requiresAuth: false,
-                title: 'Local Login',
+                title: 'common.titles.localLogin',
               },
             },
             {
@@ -43,7 +43,7 @@ export function authRoutes(): RouteRecordRaw[] {
               name: 'passwordreset',
               meta: {
                 requiresAuth: false,
-                title: 'Password Reset',
+                title: 'common.titles.passwordReset',
               },
             },
           ],
@@ -77,7 +77,7 @@ export function authRoutes(): RouteRecordRaw[] {
               name: 'qr-confirm',
               meta: {
                 requiresAuth: true,
-                title: 'QR Confirmation',
+                title: 'common.titles.qrConfirm',
               },
             },
           ],
