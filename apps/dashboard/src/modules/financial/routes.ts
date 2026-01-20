@@ -26,6 +26,7 @@ export function financialRoutes(): RouteRecordRaw[] {
           meta: {
             requiresAuth: true,
             isAllowed: () => isAllowed('get', ['own', 'organ'], 'Fine', ['any']),
+            title: 'Debtors',
           },
         },
         {
@@ -35,6 +36,7 @@ export function financialRoutes(): RouteRecordRaw[] {
           meta: {
             requiresAuth: true,
             isAllowed: () => isAllowed('get', ['own', 'organ'], 'Fine', ['any']),
+            title: 'Debtor Handout',
           },
         },
         {
@@ -44,6 +46,7 @@ export function financialRoutes(): RouteRecordRaw[] {
           meta: {
             requiresAuth: true,
             isAllowed: () => isAllowed('get', ['own', 'organ'], 'Invoice', ['any']),
+            title: 'Invoices',
           },
         },
         {
@@ -53,6 +56,7 @@ export function financialRoutes(): RouteRecordRaw[] {
           meta: {
             requiresAuth: true,
             isAllowed: () => isAllowed('create', ['own', 'organ'], 'Invoice', ['any']),
+            title: 'Create Invoice',
           },
         },
         {
@@ -83,6 +87,7 @@ export function financialRoutes(): RouteRecordRaw[] {
           meta: {
             requiresAuth: true,
             isAllowed: () => isAllowed('get', ['own', 'organ'], 'SellerPayout', ['any']),
+            title: 'Payouts',
           },
         },
         {
@@ -92,6 +97,7 @@ export function financialRoutes(): RouteRecordRaw[] {
           meta: {
             requiresAuth: true,
             isAllowed: () => isAllowed('get', ['all'], 'WriteOff', ['any']),
+            title: 'Write-offs',
           },
         },
         {
@@ -101,6 +107,7 @@ export function financialRoutes(): RouteRecordRaw[] {
           meta: {
             requiresAuth: true,
             isAllowed: () => isAllowed('update', ['all'], 'Transaction', ['any']),
+            title: 'Transactions',
           },
         },
         {
@@ -110,6 +117,7 @@ export function financialRoutes(): RouteRecordRaw[] {
           meta: {
             requiresAuth: true,
             isAllowed: () => isAllowed('get', ['all'], 'User', ['any']),
+            title: 'Sellers',
           },
         },
         {
@@ -119,6 +127,7 @@ export function financialRoutes(): RouteRecordRaw[] {
           meta: {
             requiresAuth: true,
             isAllowed: () => isAllowed('get', ['all'], 'VatGroup', ['any']),
+            title: 'VAT Groups',
           },
         },
       ],

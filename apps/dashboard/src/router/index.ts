@@ -16,6 +16,7 @@ declare module 'vue-router' {
     // must be declared by every route
     requiresAuth: boolean;
     isAllowed?: () => boolean;
+    title?: string;
   }
 }
 
@@ -58,6 +59,10 @@ const router = createRouter({
           path: '/error',
           component: ErrorView,
           name: 'error',
+          meta: {
+            requiresAuth: false,
+            title: 'Error',
+          },
         },
       ],
     },
@@ -70,12 +75,20 @@ const router = createRouter({
           path: '/error',
           component: ErrorView,
           name: 'error',
+          meta: {
+            requiresAuth: true,
+            title: 'Error',
+          },
         },
         {
           path: 'wrapped',
           component: WrappedView,
           name: 'wrapped',
           beforeEnter: wrappedGuard,
+          meta: {
+            requiresAuth: true,
+            title: 'Wrapped',
+          },
         },
       ],
     },
@@ -95,6 +108,10 @@ router.beforeEach((to, from, next) => {
   };
 
   const isAuth = isAuthenticated();
+
+  // Update page title
+  const title = to.meta?.title;
+  document.title = title ? `${title} | SudoSOS` : 'SudoSOS';
 
   if (to.meta?.requiresAuth && !isAuth) {
     // If the route requires authentication and the user is not authenticated, redirect to login

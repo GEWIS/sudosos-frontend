@@ -22,17 +22,29 @@ export function authRoutes(): RouteRecordRaw[] {
               component: AuthLoginView,
               name: 'login',
               alias: ['/login'],
+              meta: {
+                requiresAuth: false,
+                title: 'Login',
+              },
             },
             {
               path: '/local',
               component: AuthLocalView,
               name: 'local',
               alias: ['/local'],
+              meta: {
+                requiresAuth: false,
+                title: 'Local Login',
+              },
             },
             {
               path: '/passwordreset',
               component: AuthResetView,
               name: 'passwordreset',
+              meta: {
+                requiresAuth: false,
+                title: 'Password Reset',
+              },
             },
           ],
         },
@@ -63,6 +75,10 @@ export function authRoutes(): RouteRecordRaw[] {
               path: '/auth/qr/confirm',
               component: AuthQrConfirmView,
               name: 'qr-confirm',
+              meta: {
+                requiresAuth: true,
+                title: 'QR Confirmation',
+              },
             },
           ],
         },
