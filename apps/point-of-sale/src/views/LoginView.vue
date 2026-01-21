@@ -56,6 +56,8 @@ import { usePointOfSaleStore } from '@/stores/pos.store';
 const authStore = useAuthStore();
 const posStore = usePointOfSaleStore();
 
+let escaped = false;
+
 const {
   userId,
   pinCode,
@@ -136,9 +138,15 @@ const handleContinue = () => {
 };
 
 const handleKeyboard = (event: KeyboardEvent) => {
-  if (loggingIn.value) return;
-
   const key = event.key;
+
+  if (key === 'Escape') {
+    escaped = !escaped;
+    return;
+  }
+
+  if (!escaped || loggingIn.value) return;
+
   // Check if the key pressed is a digit (0-9)
   if (/^\d$/.test(key)) {
     handleInput(key);
