@@ -52,6 +52,7 @@ import GitInfo from '@/components/GitInfo.vue';
 import PosInfo from '@/components/PosInfo.vue';
 import { useLoginForm } from '@/composables/useLoginForm';
 import { usePointOfSaleStore } from '@/stores/pos.store';
+import { useToast } from 'primevue/usetoast';
 
 const authStore = useAuthStore();
 const posStore = usePointOfSaleStore();
@@ -77,6 +78,8 @@ const {
   login,
   shouldShowBanner,
 } = useLoginForm();
+
+const toast = useToast();
 
 const handleInput = (value: string) => {
   if (wrongPin.value) wrongPin.value = false;
@@ -142,6 +145,11 @@ const handleKeyboard = (event: KeyboardEvent) => {
 
   if (key === 'Escape') {
     escaped = !escaped;
+    toast.add({
+      severity: 'info',
+      summary: `Keyboard PIN login ${escaped ? 'enabled' : 'disabled'}`,
+      life: 3000,
+    });
     return;
   }
 
