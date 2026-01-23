@@ -36,7 +36,7 @@ export const useSettingStore = defineStore('setting', {
     },
     showTimers(): boolean {
       // Only show timers in production mode
-      return import.meta.env.PROD && this.isAuthenticatedPos;
+      return import.meta.env.DEV && this.isAuthenticatedPos;
     },
   },
   actions: {
