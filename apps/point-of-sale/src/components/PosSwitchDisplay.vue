@@ -34,12 +34,15 @@
       </div>
     </div>
   </div>
+  <PosTokenInfoModal v-model="showModal" />
 </template>
 
 <script setup lang="ts">
 import { PointOfSaleResponse } from '@sudosos/sudosos-client';
 import Button from 'primevue/button';
 import ProgressSpinner from 'primevue/progressspinner';
+import { ref } from 'vue';
+import PosTokenInfoModal from '@/components/PosTokenInfoModal.vue';
 
 interface Props {
   groupedPos: Record<string, PointOfSaleResponse[]>;
@@ -66,9 +69,15 @@ const emit = defineEmits<{
 }>();
 
 const handlePosClick = (pos: PointOfSaleResponse) => {
-  if (props.currentPosId === pos.id || props.switching) return;
+  if (props.switching) return;
+  if (props.currentPosId === pos.id) {
+    showModal.value = true;
+    return;
+  }
   emit('select', pos);
 };
+
+const showModal = ref(false);
 </script>
 
 <style scoped lang="scss">
