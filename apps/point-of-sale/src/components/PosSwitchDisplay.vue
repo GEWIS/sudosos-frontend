@@ -25,9 +25,12 @@
             :outlined="currentPosId !== pos.id"
             @click="handlePosClick(pos)"
           >
-            <div class="flex flex-col items-start">
-              <span class="font-semibold">{{ pos.name }}</span>
-              <span v-if="currentPosId === pos.id" class="text-sm opacity-75">(Current)</span>
+            <div class="flex items-center justify-between w-full">
+              <div class="flex flex-col items-start">
+                <span class="font-semibold">{{ pos.name }}</span>
+                <span v-if="currentPosId === pos.id" class="text-sm opacity-75">(Current)</span>
+              </div>
+              <i v-if="currentPosId === pos.id" class="pi pi-info-circle text-xl ml-2"></i>
             </div>
           </Button>
         </div>
