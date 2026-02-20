@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import type { FinancialMutationResponse, SellerPayoutResponse, UserResponse } from '@sudosos/sudosos-client';
-import { fetchAllPages } from '@sudosos/sudosos-frontend-common';
+import { fetchAllPages, fetchAllPagesParallel } from '@sudosos/sudosos-frontend-common';
 import ApiService from '@/services/ApiService';
 import { USER_TYPES } from '@/utils/validation-schema';
 
@@ -40,10 +40,15 @@ export const useFinancialOverviewStore = defineStore('financialOverview', {
     async fetchFinancialMutationsForAllSellers(fromDate: string, tillDate: string) {
       this.isLoading = true;
       try {
-        for (const seller of this.sellers) {
-          this.mutations[seller.id] = await fetchAllPages<FinancialMutationResponse>((take, skip) =>
-            ApiService.user.getUsersFinancialMutations(seller.id, fromDate, tillDate, take, skip),
-          );
+        const results = await Promise.all(
+          this.sellers.map((seller) =>
+            fetchAllPagesParallel<FinancialMutationResponse>((take, skip) =>
+              ApiService.user.getUsersFinancialMutations(seller.id, fromDate, tillDate, take, skip),
+            ).then((mutations) => ({ id: seller.id, mutations })),
+          ),
+        );
+        for (const { id, mutations } of results) {
+          this.mutations[id] = mutations;
         }
       } finally {
         this.isLoading = false;
@@ -53,10 +58,15 @@ export const useFinancialOverviewStore = defineStore('financialOverview', {
     async fetchSellerPayoutsForAllSellers(fromDate: string, tillDate: string) {
       this.isLoading = true;
       try {
-        for (const seller of this.sellers) {
-          this.payouts[seller.id] = await fetchAllPages<SellerPayoutResponse>((take, skip) =>
-            ApiService.sellerPayouts.getAllSellerPayouts(seller.id, fromDate, tillDate, take, skip),
-          );
+        const results = await Promise.all(
+          this.sellers.map((seller) =>
+            fetchAllPagesParallel<SellerPayoutResponse>((take, skip) =>
+              ApiService.sellerPayouts.getAllSellerPayouts(seller.id, fromDate, tillDate, take, skip),
+            ).then((payouts) => ({ id: seller.id, payouts })),
+          ),
+        );
+        for (const { id, payouts } of results) {
+          this.payouts[id] = payouts;
         }
       } finally {
         this.isLoading = false;
