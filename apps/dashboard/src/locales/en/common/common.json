@@ -180,6 +180,7 @@
       "writeOffs": "Write-Offs",
       "vat": "VAT",
       "administrativeCosts": "Administrative Costs",
+      "financialOverview": "Overview",
       "maintainer": "Maintainer",
       "sellers": "Sellers",
       "rbac": "RBAC"
@@ -294,7 +295,8 @@
       "productsContainers": "Products & Containers",
       "profile": "Profile",
       "error": "Error",
-      "wrapped": "Wrapped"
+      "wrapped": "Wrapped",
+      "financialOverview": "Financial Overview"
     }
   }
 }

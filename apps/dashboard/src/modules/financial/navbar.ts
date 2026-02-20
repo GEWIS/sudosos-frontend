@@ -29,6 +29,11 @@ export function useFinancialNav() {
           isAllowed('get', ['all'], 'SellerPayout', ['any']),
         items: [
           {
+            label: t('common.navigation.financialOverview'),
+            route: '/financial/overview',
+            visible: isAllowed('get', ['all'], 'FinancialOverview', ['any']),
+          },
+          {
             label: t('common.navigation.users'),
             route: '/user',
             visible: isAllowed('update', ['all'], 'User', ['any']),
