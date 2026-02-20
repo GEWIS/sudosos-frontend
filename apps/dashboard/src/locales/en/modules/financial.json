@@ -147,6 +147,10 @@
       "vat": {
         "title": "VAT Groups"
       },
+      "financialOverview": {
+        "title": "Financial Overview",
+        "subtitle": "Overview of all transfers during a fiscal year. This can be used to verify the BAC bookkeeping with the SudoSOS balance."
+      },
       "administrative": {
         "title": "Administrative Costs",
         "costs": "Administrative Costs",

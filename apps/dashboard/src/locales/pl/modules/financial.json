@@ -147,6 +147,10 @@
       "vat": {
         "title": "Grupy VAT"
       },
+      "financialOverview": {
+        "title": "Przegląd Finansowy",
+        "subtitle": "Przegląd wszystkich transakcji w roku obrachunkowym. Może być użyty do weryfikacji księgowości BAC z saldem SudoSOS."
+      },
       "administrative": {
         "title": "Koszty administracyjne",
         "costs": "Koszty administracyjne",

@@ -147,6 +147,10 @@
       "vat": {
         "title": "BTW Groepen"
       },
+      "financialOverview": {
+        "title": "Financieel Overzicht",
+        "subtitle": "Overzicht van alle transacties tijdens een boekjaar. Dit kan worden gebruikt om de BAC-boekhouding te verifiëren met het SudoSOS-saldo."
+      },
       "administrative": {
         "title": "Administratiekosten",
         "costs": "Administratiekosten",
