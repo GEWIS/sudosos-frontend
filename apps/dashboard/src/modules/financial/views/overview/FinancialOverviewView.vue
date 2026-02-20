@@ -39,7 +39,8 @@ onMounted(async () => {
   const { start, end } = getFiscalYearRange(2026);
   await financialOverviewStore.fetchAllSellerUsers();
   sellers.value = financialOverviewStore.sellers;
-  financialOverviewStore.fetchUserFinancialMutationsForAllSellers(start, end);
+  await financialOverviewStore.fetchFinancialMutationsForAllSellers(start, end);
+  await financialOverviewStore.fetchSellerPayoutsForAllSellers(start, end);
 });
 </script>
 

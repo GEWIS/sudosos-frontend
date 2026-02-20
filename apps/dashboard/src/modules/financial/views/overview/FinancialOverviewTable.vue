@@ -90,22 +90,10 @@ const financialMutations = ref<FinancialOverviewTableRow[]>([
     link: '',
   },
   {
-    transferType: 'Sales',
-    credit: 1250.5,
-    debit: 0.0,
-    link: '/user/18214',
-  },
-  {
     transferType: 'Fines',
     credit: 0.0,
     debit: 25.0,
     link: '',
-  },
-  {
-    transferType: 'Seller Payouts',
-    credit: 0.0,
-    debit: 850.0,
-    link: '/financial/overview/seller-payouts',
   },
   {
     transferType: 'Write-offs',
@@ -121,7 +109,30 @@ const financialMutations = ref<FinancialOverviewTableRow[]>([
   },
 ]);
 
-onMounted(async () => {});
+onMounted(() => {
+  props.sellers.forEach((seller) => {
+    const mutations = financialOverviewStore.mutations[seller.id];
+    const totalMutations =
+      mutations.reduce((acc, r) => acc + ('value' in r.mutation ? r.mutation.value.amount || 0 : 0), 0) || 0;
+    const payouts = financialOverviewStore.payouts[seller.id];
+    const totalPayouts = payouts.reduce((acc, r) => acc + r.amount.amount, 0);
+    if (totalMutations === 0 && totalPayouts === 0) {
+      return;
+    }
+    financialMutations.value.push({
+      transferType: `${seller.firstName} - Transactions`,
+      credit: 0.0,
+      debit: totalMutations,
+      link: '',
+    });
+    financialMutations.value.push({
+      transferType: `${seller.firstName} - Payouts`,
+      credit: totalPayouts,
+      debit: 0.0,
+      link: '',
+    });
+  });
+});
 </script>
 
 <style scoped lang="scss"></style>
