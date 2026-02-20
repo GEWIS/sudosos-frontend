@@ -36,8 +36,10 @@ const sellers = ref([]);
 
 const financialOverviewStore = useFinancialOverviewStore();
 onMounted(async () => {
+  const { start, end } = getFiscalYearRange(2026);
   await financialOverviewStore.fetchAllSellerUsers();
   sellers.value = financialOverviewStore.sellers;
+  financialOverviewStore.fetchUserFinancialMutationsForAllSellers(start, end);
 });
 </script>
 

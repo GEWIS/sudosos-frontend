@@ -66,6 +66,7 @@ import ColumnGroup from 'primevue/columngroup';
 import Row from 'primevue/row';
 import { useI18n } from 'vue-i18n';
 import type { UserResponse } from '@sudosos/sudosos-client';
+import { useFinancialOverviewStore } from '@/stores/financial-overview.store.ts';
 
 const props = defineProps<{
   year: number;
@@ -80,7 +81,7 @@ interface FinancialOverviewTableRow {
 }
 
 const { t } = useI18n();
-
+const financialOverviewStore = useFinancialOverviewStore();
 const financialMutations = ref<FinancialOverviewTableRow[]>([
   {
     transferType: 'Topups',
