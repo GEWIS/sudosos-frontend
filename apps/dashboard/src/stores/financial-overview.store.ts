@@ -1,13 +1,22 @@
 import { defineStore } from 'pinia';
 import type { FinancialMutationResponse, SellerPayoutResponse, UserResponse } from '@sudosos/sudosos-client';
 import { fetchAllPages, fetchAllPagesParallel } from '@sudosos/sudosos-frontend-common';
+import type {
+  FinancialMutationResponse,
+  InvoiceResponse,
+  SellerPayoutResponse,
+  UserResponse,
+} from '@sudosos/sudosos-client';
+import { fetchAllPages } from '@sudosos/sudosos-frontend-common';
 import ApiService from '@/services/ApiService';
 import { USER_TYPES } from '@/utils/validation-schema';
+import type { InvoiceResponseTypes } from '@sudosos/sudosos-client/src/api';
 
 interface FinancialOverviewState {
   sellers: UserResponse[];
   mutations: Record<number, FinancialMutationResponse[]>;
   payouts: Record<number, SellerPayoutResponse[]>;
+  invoices: InvoiceResponseTypes[];
   isLoading: boolean;
 }
 
@@ -16,6 +25,7 @@ export const useFinancialOverviewStore = defineStore('financialOverview', {
     sellers: [],
     mutations: {} as Record<number, FinancialMutationResponse[]>,
     payouts: {} as Record<number, SellerPayoutResponse[]>,
+    invoices: [],
     isLoading: false,
   }),
   getters: {
@@ -68,6 +78,25 @@ export const useFinancialOverviewStore = defineStore('financialOverview', {
         for (const { id, payouts } of results) {
           this.payouts[id] = payouts;
         }
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    async fetchInvoices(fromDate: string, tillDate: string) {
+      this.isLoading = true;
+      try {
+        this.invoices = await fetchAllPages<InvoiceResponseTypes>((take, skip) =>
+          ApiService.invoices.getAllInvoices(
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            fromDate,
+            tillDate,
+            take,
+            skip,
+          ),
+        );
       } finally {
         this.isLoading = false;
       }
