@@ -114,7 +114,7 @@ Users may be offered the option to have individual data analysed. In this case, 
 
 ### 6.1 Misuse
 
-When misuse of SudoSOS is observed, this can lead to exclusion from SudoSOS and a summation of all incurred costs. Moreover, users can be hold responsible for their actions.
+When misuse of SudoSOS is observed, this can lead to exclusion from SudoSOS and a summation of all incurred costs. Moreover, users can be held responsible for their actions.
 
 ### 6.2 Disputes
 
