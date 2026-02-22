@@ -1,5 +1,5 @@
 <template>
-  <AppLink :text="name" :to="userRoute" :allowed="allowed" :new-tab="newTab" />
+  <AppLink :allowed="allowed" :new-tab="newTab" :text="name" :to="userRoute" />
 </template>
 
 <script setup lang="ts">

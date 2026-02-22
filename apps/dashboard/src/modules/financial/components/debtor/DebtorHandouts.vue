@@ -48,7 +48,6 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
 import Column from 'primevue/column';
 import Skeleton from 'primevue/skeleton';
 import DataTable from 'primevue/datatable';
@@ -61,7 +60,6 @@ import AppLink from '@/components/AppLink.vue';
 const { t } = useI18n();
 
 const debtorStore = useDebtorStore();
-const router = useRouter();
 
 const take = ref(10);
 const skip = ref(0);
@@ -70,10 +68,6 @@ watch([take, skip], () => updateFineHandoutEvents);
 const updateFineHandoutEvents = () => {
   void debtorStore.fetchFineHandoutEvents(take.value, skip.value);
 };
-
-function navigateToHandoutEvent(handoutId: number) {
-  void router.push({ name: 'debtorSingleHandout', params: { id: handoutId } });
-}
 
 onMounted(() => {
   updateFineHandoutEvents();

@@ -140,14 +140,12 @@
 import DataTable, { type DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import Skeleton from 'primevue/skeleton';
-import Button from 'primevue/button';
 import { type SelectChangeEvent } from 'primevue/select';
 import { useI18n } from 'vue-i18n';
 import { InvoiceStatusResponseStateEnum } from '@sudosos/sudosos-client/src/api';
 import { type Ref, ref } from 'vue';
 import type { InvoiceResponse } from '@sudosos/sudosos-client';
 import { formatPrice, formatDateFromString } from '@/utils/formatterUtils';
-import router from '@/router';
 import { useFiscalYear } from '@/composables/fiscalYear';
 import AppLink from '@/components/AppLink.vue';
 
