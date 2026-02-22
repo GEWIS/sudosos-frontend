@@ -33,15 +33,25 @@
       <template v-if="isLoading" #body>
         <Skeleton class="h-1rem my-1 surface-300 w-6" />
       </template>
+      <template v-else #body="slotProps">
+        <a
+          v-if="slotProps.data.gewisId"
+          :href="`https://gewis.nl/member/${slotProps.data.gewisId}`"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center gap-2 cursor-pointer hover:opacity-80 text-primary"
+        >
+          {{ slotProps.data.gewisId }}
+          <i class="pi pi-external-link text-sm" />
+        </a>
+      </template>
     </Column>
-    <Column field="firstName" :header="t('common.firstName')">
+    <Column field="fullName" :header="t('common.name')">
       <template v-if="isLoading" #body>
         <Skeleton class="h-1rem my-1 surface-300 w-8" />
       </template>
-    </Column>
-    <Column field="lastName" :header="t('common.lastName')">
-      <template v-if="isLoading" #body>
-        <Skeleton class="h-1rem my-1 surface-300 w-8" />
+      <template v-else #body="slotProps">
+        <UserLink :user="slotProps.data" />
       </template>
     </Column>
     <Column field="type" :header="t('common.type')" :show-filter-match-modes="false">
@@ -91,14 +101,6 @@
         <Skeleton class="h-1rem my-1 surface-300 w-3" />
       </template>
     </Column>
-    <Column body-style="text-align: center; overflow: visible" header-style="width: 3rem; text-align: center">
-      <template v-if="isLoading" #body>
-        <Skeleton class="h-1rem my-1 surface-300 w-4" />
-      </template>
-      <template v-else #body="slotProps">
-        <Button icon="pi pi-window-maximize" outlined type="button" @click="emit('info', slotProps.data)" />
-      </template>
-    </Column>
   </DataTable>
 </template>
 
@@ -114,6 +116,7 @@ import InputIcon from 'primevue/inputicon';
 import Button from 'primevue/button';
 import Select from 'primevue/select';
 import type { BaseUserResponse } from '@sudosos/sudosos-client';
+import UserLink from '@/components/UserLink.vue';
 
 const { t } = useI18n();
 
