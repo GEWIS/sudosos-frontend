@@ -36,10 +36,10 @@
       <template v-else #body="slotProps">
         <a
           v-if="slotProps.data.gewisId"
-          :href="`https://gewis.nl/member/${slotProps.data.gewisId}`"
-          target="_blank"
-          rel="noopener noreferrer"
           class="flex items-center gap-2 cursor-pointer hover:opacity-80 text-primary"
+          :href="`https://gewis.nl/member/${slotProps.data.gewisId}`"
+          rel="noopener noreferrer"
+          target="_blank"
         >
           {{ slotProps.data.gewisId }}
           <i class="pi pi-external-link text-sm" />

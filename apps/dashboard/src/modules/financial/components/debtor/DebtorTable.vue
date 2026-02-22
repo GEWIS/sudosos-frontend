@@ -22,6 +22,18 @@
         <template v-if="debtorStore.isDebtorsLoading" #body>
           <Skeleton class="h-2rem mr-8 my-1 surface-300 w-6" />
         </template>
+        <template v-else #body="slotProps">
+          <a
+            v-if="slotProps.data.gewisId"
+            class="flex items-center gap-2 cursor-pointer hover:opacity-80 text-primary"
+            :href="`https://gewis.nl/member/${slotProps.data.gewisId}`"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            {{ slotProps.data.gewisId }}
+            <i class="pi pi-external-link text-sm" />
+          </a>
+        </template>
       </Column>
 
       <Column field="name" :header="t('common.name')" :sortable="true" style="width: 10%">
