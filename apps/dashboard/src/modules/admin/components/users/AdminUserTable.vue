@@ -33,16 +33,11 @@
         <Skeleton class="h-1rem my-1 surface-300 w-6" />
       </template>
       <template v-else #body="slotProps">
-        <a
+        <ExternalLink
           v-if="slotProps.data.gewisId"
-          class="flex items-center gap-2 cursor-pointer hover:opacity-80 text-primary"
-          :href="`https://gewis.nl/member/${slotProps.data.gewisId}`"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          {{ slotProps.data.gewisId }}
-          <i class="pi pi-external-link text-sm" />
-        </a>
+          :text="slotProps.data.gewisId"
+          :url="`https://gewis.nl/member/${slotProps.data.gewisId}`"
+        />
       </template>
     </Column>
     <Column field="fullName" :header="t('common.name')">
@@ -118,6 +113,7 @@
 import { useI18n } from 'vue-i18n';
 import type { BaseUserResponse } from '@sudosos/sudosos-client';
 import UserLink from '@/components/UserLink.vue';
+import ExternalLink from '@/components/ExternalLink.vue';
 
 const { t } = useI18n();
 

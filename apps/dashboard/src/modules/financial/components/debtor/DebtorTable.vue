@@ -23,16 +23,11 @@
           <Skeleton class="h-2rem mr-8 my-1 surface-300 w-6" />
         </template>
         <template v-else #body="slotProps">
-          <a
+          <ExternalLink
             v-if="slotProps.data.gewisId"
-            class="flex items-center gap-2 cursor-pointer hover:opacity-80 text-primary"
-            :href="`https://gewis.nl/member/${slotProps.data.gewisId}`"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            {{ slotProps.data.gewisId }}
-            <i class="pi pi-external-link text-sm" />
-          </a>
+            :text="slotProps.data.gewisId"
+            :url="`https://gewis.nl/member/${slotProps.data.gewisId}`"
+          />
         </template>
       </Column>
 
@@ -247,6 +242,7 @@ import { formatPrice, formatFineTimeSince } from '@/utils/formatterUtils';
 import { useDebtorStore, SortField, type Debtor } from '@/stores/debtor.store';
 import CardComponent from '@/components/CardComponent.vue';
 import UserLink from '@/components/UserLink.vue';
+import ExternalLink from '@/components/ExternalLink.vue';
 import { handleError } from '@/utils/errorUtils';
 
 const props = defineProps<{
