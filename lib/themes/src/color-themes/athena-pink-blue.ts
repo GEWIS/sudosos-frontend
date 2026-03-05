@@ -47,4 +47,18 @@ export const AthenaPinkBlue = definePreset(SudososPreset, {
       },
     },
   },
+  pointofsale: {
+    colorScheme: {
+      dark: {
+        root: {
+          background: '#ee4a9b',
+        },
+      },
+      light: {
+        root: {
+          background: '#ee4a9b',
+        },
+      },
+    },
+  },
 });

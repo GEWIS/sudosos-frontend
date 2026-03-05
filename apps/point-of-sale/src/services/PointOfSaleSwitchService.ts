@@ -1,12 +1,9 @@
-import { ref } from 'vue';
 import { PointOfSaleResponse } from '@sudosos/sudosos-client';
-import { GrolschGreen, SudososRed } from '@sudosos/themes';
+import { AthenaPinkBlue, BoomMango, DefiLilac, GrolschGreen, IvvNavy, SudososRed } from '@sudosos/themes';
 import { usePreset } from '@primeuix/themes';
 import { usePointOfSaleStore } from '@/stores/pos.store';
 import { useCartStore } from '@/stores/cart.store';
 import { useActivityStore } from '@/stores/activity.store';
-
-export const rowBackground = ref('bg-red-100');
 
 /**
  * Class to keep all logic regarding switching of the Point of Sale in one place.
@@ -38,11 +35,35 @@ export class PointOfSaleSwitchService {
   }
 
   private static switchColor(target: PointOfSaleResponse) {
-    // In the future, this should be stored and retrieved from the backend.
-    if (target.owner?.id === 18214 && !target.useAuthentication) {
-      usePreset(GrolschGreen);
-    } else {
+    // TODO In the future, this should be stored and retrieved from the backend.
+    if (target.useAuthentication) {
       usePreset(SudososRed);
+      return;
+    }
+
+    switch (target.owner?.id) {
+      case 18214:
+        usePreset(GrolschGreen);
+        break;
+      //B.O.O.M.
+      case 18427:
+        usePreset(BoomMango);
+        break;
+      //Défi
+      case 19130:
+        usePreset(DefiLilac);
+        break;
+      //ATHENA
+      case 18471:
+        usePreset(AthenaPinkBlue);
+        break;
+      case 18337:
+        usePreset(IvvNavy);
+        break;
+
+      default:
+        usePreset(SudososRed);
+        break;
     }
   }
 }

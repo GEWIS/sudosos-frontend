@@ -42,7 +42,7 @@ export const IvvNavy = definePreset(SudososPreset, {
       colorScheme: {
         dark: {
           root: {
-            background: '#800020', // navy blue for menubar
+            background: '#800020', // bordeaux red for menubar
           },
         },
         light: {
