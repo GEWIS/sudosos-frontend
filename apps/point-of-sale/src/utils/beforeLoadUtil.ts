@@ -64,16 +64,12 @@ export default async function beforeLoad() {
       });
   }
 
-  const posToken = usePosToken();
   const authStore = useAuthStore();
 
   try {
-    // Supply a getToken callback so that socket.io uses the latest credential
-    // on every reconnect attempt, even if the POS token has been refreshed
-    // since the initial connection was established.
-    setupWebSocket({
-      getToken: () => posToken.getPosToken() ?? authStore.getToken,
-    });
+    // Supply a getToken callback so that socket.io fetches the latest credential
+    // on every reconnect attempt instead of reusing a potentially stale token.
+    setupWebSocket({ getToken: () => getTokenFromStorage(POS_TOKEN_KEY).token ?? authStore.getToken });
   } catch (e) {
     console.error(e);
     return;
