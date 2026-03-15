@@ -280,19 +280,19 @@ const filteredUserTypeBalances = computed<UserTypeTotalBalanceResponse[]>(() => 
 });
 
 const filteredTotalPositive = computed<DineroObjectResponse | null>(() => {
-  if (!filteredUserTypeBalances.value.length) return null;
-  const base = filteredUserTypeBalances.value[0].totalPositive;
+  const first = filteredUserTypeBalances.value[0];
+  if (!first) return null;
   return {
-    ...base,
+    ...first.totalPositive,
     amount: filteredUserTypeBalances.value.reduce((sum, b) => sum + b.totalPositive.amount, 0),
   };
 });
 
 const filteredTotalNegative = computed<DineroObjectResponse | null>(() => {
-  if (!filteredUserTypeBalances.value.length) return null;
-  const base = filteredUserTypeBalances.value[0].totalNegative;
+  const first = filteredUserTypeBalances.value[0];
+  if (!first) return null;
   return {
-    ...base,
+    ...first.totalNegative,
     amount: filteredUserTypeBalances.value.reduce((sum, b) => sum + b.totalNegative.amount, 0),
   };
 });
@@ -321,7 +321,7 @@ onMounted(async () => {
   const now = new Date();
   await Promise.allSettled([
     apiService.balance
-      .calculateTotalBalances(now.toISOString().split('T')[0])
+      .calculateTotalBalances(now.toISOString().split('T')[0] ?? '')
       .then((res) => {
         totalBalanceData.value = res.data;
       })
