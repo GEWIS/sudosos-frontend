@@ -21,7 +21,7 @@
             <div v-if="loadingBalance" class="flex flex-row gap-8">
               <Skeleton v-for="i in 2" :key="i" height="3rem" width="12rem" />
             </div>
-            <div v-else-if="totalBalanceData" class="flex flex-row gap-12 py-2">
+            <div v-else-if="filteredTotalPositive && filteredTotalNegative" class="flex flex-row gap-12 py-2">
               <div class="flex flex-col gap-1">
                 <span class="text-sm text-muted-color">{{
                   t('modules.admin.dashboard.balanceSummary.totalPositive')
@@ -122,9 +122,11 @@
           <DataTable v-else size="small" :value="pendingInvoices">
             <Column :header="t('common.description')">
               <template #body="{ data }">
-                <span class="cursor-pointer text-primary hover:underline" @click="navigateToInvoiceInfo(data.id)">{{
-                  data.description
-                }}</span>
+                <router-link
+                  class="text-primary hover:underline"
+                  :to="{ name: 'invoiceInfo', params: { id: data.id } }"
+                  >{{ data.description }}</router-link
+                >
               </template>
             </Column>
             <Column :header="t('common.date')">
@@ -274,10 +276,7 @@ const BALANCE_USER_TYPES = ['MEMBER', 'LOCAL_USER'];
 const filteredUserTypeBalances = computed<UserTypeTotalBalanceResponse[]>(() => {
   if (!totalBalanceData.value) return [];
   const all = (totalBalanceData.value.userTypeBalances as unknown as UserTypeTotalBalanceResponse[]) ?? [];
-  console.log('[AdminDashboard] userTypeBalances raw:', all);
-  const filtered = all.filter((b) => BALANCE_USER_TYPES.includes(b.userType));
-  console.log('[AdminDashboard] filtered (MEMBER + LOCAL_USER):', filtered);
-  return filtered;
+  return all.filter((b) => BALANCE_USER_TYPES.includes(b.userType));
 });
 
 const filteredTotalPositive = computed<DineroObjectResponse | null>(() => {
@@ -314,10 +313,6 @@ const negativeAccounts = computed<BalanceResponse[]>(() => Object.values(invoice
 const negativeAccountCount = computed(() => negativeAccounts.value.length);
 const negativeAccountsPreview = computed(() => negativeAccounts.value.slice(0, 5));
 
-const navigateToInvoiceInfo = (invoiceId: number) => {
-  void router.push({ name: 'invoiceInfo', params: { id: invoiceId } });
-};
-
 const navigateToInvoiceCreate = (userId: number) => {
   void router.push({ name: 'invoiceCreate', query: { userId } });
 };
@@ -328,7 +323,6 @@ onMounted(async () => {
     apiService.balance
       .calculateTotalBalances(now.toISOString().split('T')[0])
       .then((res) => {
-        console.log('[AdminDashboard] calculateTotalBalances response:', res.data);
         totalBalanceData.value = res.data;
       })
       .catch((err) => {

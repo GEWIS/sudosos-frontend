@@ -123,7 +123,7 @@
           "title": "Users Eligible for Fines",
           "totalDebt": "Total negative balance",
           "totalFine": "Total fine to be issued",
-          "handoutFines": "Handout fines"
+          "handoutFines": "Hand out fines"
         }
       },
       "transactions": {
