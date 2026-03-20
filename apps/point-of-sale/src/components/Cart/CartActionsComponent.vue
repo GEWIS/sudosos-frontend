@@ -16,7 +16,12 @@
       Please remove items or top up before you can continue.
     </Message>
   </Dialog>
-  <AprilFoolsComponent :show="showAprilFools" @closed="onAprilFoolsClosed" @update:show="showAprilFools = $event" />
+  <AprilFoolsComponent
+    :show="showAprilFools"
+    @closed="onAprilFoolsClosed"
+    @logout="logout"
+    @update:show="showAprilFools = $event"
+  />
   <div class="flex justify-between w-full">
     <Button
       class="border-0 checkout font-medium rounder text-3xl"
