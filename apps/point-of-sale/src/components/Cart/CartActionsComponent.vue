@@ -103,7 +103,7 @@ const checkout = () => {
     return;
   }
 
-  if (Math.random() < STEEKPROEF_CHANCE) {
+  if (settings.showAprilFools && Math.random() < STEEKPROEF_CHANCE) {
     pendingCheckoutArgs = { onSelectCreator, isBorrelMode };
     showAprilFools.value = true;
   } else {
