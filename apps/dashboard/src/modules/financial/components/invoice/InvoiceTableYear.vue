@@ -2,7 +2,7 @@
   <IconField icon-position="left">
     <InputIcon class="pi pi-search" />
     <InputText
-      v-model="searchId"
+      v-model="searchInput"
       :placeholder="t('common.id')"
       @focusout="searchById"
       @keyup.enter="searchById"
@@ -25,68 +25,37 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useToast } from 'primevue/usetoast';
 import { type InvoiceResponseTypes, type InvoiceStatusResponseStateEnum } from '@gewis/sudosos-client';
 import InvoiceTable from '@/modules/financial/components/invoice/InvoiceTable.vue';
-import { useFiscalYear } from '@/composables/fiscalYear';
 import { useInvoiceStore } from '@/stores/invoice.store';
-import { useDataTableYear } from '@/composables/dataTableYear';
-
-const { getFiscalYearList, getFiscalYearRange } = useFiscalYear();
-const years = getFiscalYearList();
-const invoiceStore = useInvoiceStore();
-const filterState = ref<InvoiceStatusResponseStateEnum | undefined>(undefined);
-const searchId = ref<string | null>(null);
+import { useTransferTableYear, type TransferTableFetchParams } from '@/composables/transferTableYear';
 
 const { t } = useI18n();
-const toast = useToast();
+const invoiceStore = useInvoiceStore();
 
 async function fetchInvoices({
-  year,
   page,
   rows,
   filters,
-}: {
-  year: number;
-  page: number;
-  rows: number;
-  filters: { state?: InvoiceStatusResponseStateEnum };
-}) {
-  const { start, end } = getFiscalYearRange(year);
-  const queryParams = {
-    fromDate: start,
-    tillDate: end,
+  fiscalStart,
+  fiscalEnd,
+}: TransferTableFetchParams<{ state?: InvoiceStatusResponseStateEnum }>) {
+  return await invoiceStore.fetchInvoices(rows, page, {
+    fromDate: fiscalStart,
+    tillDate: fiscalEnd,
     ...(filters?.state ? { state: filters.state } : {}),
-  };
-  return await invoiceStore.fetchInvoices(rows, page, queryParams);
+  });
 }
 
 async function fetchSingleInvoice(id: number) {
   return await invoiceStore.fetchInvoice(id);
 }
 
-const { year, rows, isLoading, records, totalRecords, onPage, setFilter, onSingle } = useDataTableYear<
-  InvoiceResponseTypes,
-  { state?: InvoiceStatusResponseStateEnum }
->(fetchInvoices, fetchSingleInvoice, {
-  yearList: years,
-  defaultYear: years[0]!,
-  initialFilters: { state: filterState.value },
-  defaultRows: 10,
-});
-
-function searchById() {
-  const id = Number(searchId.value);
-  if (isNaN(id)) return;
-  onSingle(id).catch(() => {
-    toast.add({
-      severity: 'warn',
-      summary: t('common.toast.info.info'),
-      detail: t('common.toast.info.notFound'),
-      life: 3000,
-    });
-  });
-}
+const { year, years, rows, isLoading, records, totalRecords, onPage, setFilter, searchInput, searchById } =
+  useTransferTableYear<InvoiceResponseTypes, { state?: InvoiceStatusResponseStateEnum }>(
+    fetchInvoices,
+    fetchSingleInvoice,
+    { initialFilters: { state: undefined }, syncQueryParams: true },
+  );
 </script>

@@ -14,6 +14,7 @@ export function useDataTableYear<T, F extends Record<string, unknown>>(
     defaultYear: number;
     initialFilters?: F;
     defaultRows?: number;
+    initialSearch?: number;
   },
 ) {
   const yearnumber = options?.defaultYear ?? options?.yearList[0];
@@ -21,6 +22,7 @@ export function useDataTableYear<T, F extends Record<string, unknown>>(
   const page = ref(0);
   const rows = ref(options?.defaultRows ?? 10);
   const filters = ref({ ...(options?.initialFilters || {}) } as F);
+  const searchId = ref<number | undefined>(options?.initialSearch);
   const isLoading = ref(false);
   const records = ref<T[]>([]);
   const totalRecords = ref(0);
@@ -52,8 +54,12 @@ export function useDataTableYear<T, F extends Record<string, unknown>>(
   }
 
   async function onSingle(id?: number) {
-    if (!id || isNaN(id)) return reload();
+    if (!id || isNaN(id)) {
+      searchId.value = undefined;
+      return reload();
+    }
     page.value = 0;
+    searchId.value = id;
     if (fetchSingleRecord) {
       records.value = [await fetchSingleRecord(id)];
     }
@@ -71,6 +77,7 @@ export function useDataTableYear<T, F extends Record<string, unknown>>(
     page,
     rows,
     filters,
+    searchId,
     isLoading,
     records,
     totalRecords,
