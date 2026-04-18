@@ -2,7 +2,7 @@
   <IconField icon-position="left">
     <InputIcon class="pi pi-search" />
     <InputText
-      v-model="searchId"
+      v-model="search"
       :placeholder="t('common.id')"
       @focusout="searchById"
       @keyup.enter="searchById"
@@ -25,68 +25,53 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useToast } from 'primevue/usetoast';
-import { type InvoiceResponseTypes, type InvoiceStatusResponseStateEnum } from '@gewis/sudosos-client';
+import { type InvoiceResponseTypes, InvoiceStatusResponseStateEnum } from '@gewis/sudosos-client';
 import InvoiceTable from '@/modules/financial/components/invoice/InvoiceTable.vue';
-import { useFiscalYear } from '@/composables/fiscalYear';
 import { useInvoiceStore } from '@/stores/invoice.store';
-import { useDataTableYear } from '@/composables/dataTableYear';
+import { useTransferTableYear } from '@/composables/transferTableYear';
 
-const { getFiscalYearList, getFiscalYearRange } = useFiscalYear();
-const years = getFiscalYearList();
 const invoiceStore = useInvoiceStore();
-const filterState = ref<InvoiceStatusResponseStateEnum | undefined>(undefined);
-const searchId = ref<string | null>(null);
-
 const { t } = useI18n();
-const toast = useToast();
 
 async function fetchInvoices({
-  year,
   page,
   rows,
   filters,
+  fiscalStart,
+  fiscalEnd,
 }: {
   year: number;
   page: number;
   rows: number;
   filters: { state?: InvoiceStatusResponseStateEnum };
+  fiscalStart: string;
+  fiscalEnd: string;
 }) {
-  const { start, end } = getFiscalYearRange(year);
-  const queryParams = {
-    fromDate: start,
-    tillDate: end,
-    ...(filters?.state ? { state: filters.state } : {}),
-  };
-  return await invoiceStore.fetchInvoices(rows, page, queryParams);
+  return await invoiceStore.fetchInvoices(rows, page, {
+    fromDate: fiscalStart,
+    tillDate: fiscalEnd,
+    state: filters.state,
+  });
 }
 
 async function fetchSingleInvoice(id: number) {
   return await invoiceStore.fetchInvoice(id);
 }
 
-const { year, rows, isLoading, records, totalRecords, onPage, setFilter, onSingle } = useDataTableYear<
-  InvoiceResponseTypes,
-  { state?: InvoiceStatusResponseStateEnum }
->(fetchInvoices, fetchSingleInvoice, {
-  yearList: years,
-  defaultYear: years[0]!,
-  initialFilters: { state: filterState.value },
-  defaultRows: 10,
-});
-
-function searchById() {
-  const id = Number(searchId.value);
-  if (isNaN(id)) return;
-  onSingle(id).catch(() => {
-    toast.add({
-      severity: 'warn',
-      summary: t('common.toast.info.info'),
-      detail: t('common.toast.info.notFound'),
-      life: 3000,
-    });
-  });
-}
+const { year, years, search, rows, isLoading, records, totalRecords, onPage, setFilter, searchById } =
+  useTransferTableYear<InvoiceResponseTypes, { state?: InvoiceStatusResponseStateEnum }>(
+    fetchInvoices,
+    fetchSingleInvoice,
+    {
+      initialFilters: { state: undefined },
+      defaultRows: 10,
+      syncQueryParams: {
+        serializeFilters: (f) => ({ state: f.state }),
+        deserializeFilters: (q) => ({
+          state: typeof q.state === 'string' ? (q.state as InvoiceStatusResponseStateEnum) : undefined,
+        }),
+      },
+    },
+  );
 </script>
