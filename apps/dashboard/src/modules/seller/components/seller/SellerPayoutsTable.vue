@@ -150,8 +150,12 @@ async function fetchSellerPayouts({
   return sellerPayoutStore.fetchPayoutsBy(props.seller.id, rows, page);
 }
 
+async function fetchSinglePayout(id: number) {
+  return sellerPayoutStore.fetchPayout(id);
+}
+
 const { search, rows, isLoading, records, totalRecords, onPage, searchById } = useEntityTable<
   SellerPayoutResponse,
   Record<string, unknown>
->(fetchSellerPayouts, undefined, { defaultRows: 12, useYears: false });
+>(fetchSellerPayouts, fetchSinglePayout, { defaultRows: 12, useYears: false });
 </script>
