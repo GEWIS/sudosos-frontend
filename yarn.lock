@@ -617,12 +617,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gewis/sudosos-client@npm:0.0.0-develop.580cc09":
-  version: 0.0.0-develop.580cc09
-  resolution: "@gewis/sudosos-client@npm:0.0.0-develop.580cc09"
+"@gewis/sudosos-client@npm:1.30.0":
+  version: 1.30.0
+  resolution: "@gewis/sudosos-client@npm:1.30.0"
   dependencies:
-    axios: "npm:1.14.0"
-  checksum: 10c0/63956d48ac1086f41f8f9297104598eeb181775f2046a0f6eb9414c05511800eb16aea1727ea18f0b98e7b83a86c1ce9a788807184abb50e9f721655bc610261
+    axios: "npm:1.16.0"
+  checksum: 10c0/b4ca1bd8667a5be35e5866450aae5c65f37f95e139c000130305d05e06b7d2cb4d2a784c6b498df011a1724fae45ad35792e9a3ff6ba75c6eb7f9827086c163d
   languageName: node
   linkType: hard
 
@@ -2592,25 +2592,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:1.14.0":
-  version: 1.14.0
-  resolution: "axios@npm:1.14.0"
+"axios@npm:1.16.0":
+  version: 1.16.0
+  resolution: "axios@npm:1.16.0"
   dependencies:
-    follow-redirects: "npm:^1.15.11"
+    follow-redirects: "npm:^1.16.0"
     form-data: "npm:^4.0.5"
     proxy-from-env: "npm:^2.1.0"
-  checksum: 10c0/2541f4aa215a7d1842429dad006fc682d82bc0e74bd14500823f7d8cce3bbae0e0a8c328c8538946718f366ab8ce5a4c12e9ad40e5a0f3482ff8bff0cd115d45
-  languageName: node
-  linkType: hard
-
-"axios@npm:^1.13.2":
-  version: 1.13.2
-  resolution: "axios@npm:1.13.2"
-  dependencies:
-    follow-redirects: "npm:^1.15.6"
-    form-data: "npm:^4.0.4"
-    proxy-from-env: "npm:^1.1.0"
-  checksum: 10c0/e8a42e37e5568ae9c7a28c348db0e8cf3e43d06fcbef73f0048669edfe4f71219664da7b6cc991b0c0f01c28a48f037c515263cb79be1f1ae8ff034cd813867b
+  checksum: 10c0/1c91a5221b77b76072026b4cc95ecdf38f7c3e33e63423abec09a85e6e9a12279637dcc9ac2ba1fc333e0c447fb3b0f46d7965acb5d7cea02d188e9c6d425c0b
   languageName: node
   linkType: hard
 
@@ -3985,13 +3974,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.15.11, follow-redirects@npm:^1.15.6":
-  version: 1.15.11
-  resolution: "follow-redirects@npm:1.15.11"
+"follow-redirects@npm:^1.16.0":
+  version: 1.16.0
+  resolution: "follow-redirects@npm:1.16.0"
   peerDependenciesMeta:
     debug:
       optional: true
-  checksum: 10c0/d301f430542520a54058d4aeeb453233c564aaccac835d29d15e050beb33f339ad67d9bddbce01739c5dc46a6716dbe3d9d0d5134b1ca203effa11a7ef092343
+  checksum: 10c0/a1e2900163e6f1b4d1ed5c221b607f41decbab65534c63fe7e287e40a5d552a6496e7d9d7d976fa4ba77b4c51c11e5e9f683f10b43011ea11e442ff128d0e181
   languageName: node
   linkType: hard
 
@@ -4014,7 +4003,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"form-data@npm:^4.0.4, form-data@npm:^4.0.5":
+"form-data@npm:^4.0.5":
   version: 4.0.5
   resolution: "form-data@npm:4.0.5"
   dependencies:
@@ -6181,13 +6170,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"proxy-from-env@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "proxy-from-env@npm:1.1.0"
-  checksum: 10c0/fe7dd8b1bdbbbea18d1459107729c3e4a2243ca870d26d34c2c1bcd3e4425b7bcc5112362df2d93cc7fb9746f6142b5e272fd1cc5c86ddf8580175186f6ad42b
-  languageName: node
-  linkType: hard
-
 "proxy-from-env@npm:^2.1.0":
   version: 2.1.0
   resolution: "proxy-from-env@npm:2.1.0"
@@ -7006,7 +6988,7 @@ __metadata:
     "@gewis/eslint-config-vue": "npm:^2.4.0"
     "@gewis/prettier-config": "npm:^2.2.2"
     "@gewis/splash": "npm:^2.4.0"
-    "@gewis/sudosos-client": "npm:0.0.0-develop.580cc09"
+    "@gewis/sudosos-client": "npm:1.30.0"
     "@intlify/eslint-plugin-vue-i18n": "npm:^4.1.0"
     "@primeuix/themes": "npm:^2.0.2"
     "@rushstack/eslint-patch": "npm:^1.15.0"
@@ -7018,7 +7000,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^8.49.0"
     "@vitejs/plugin-vue": "npm:^6.0.2"
     "@vue/tsconfig": "npm:^0.8.1"
-    axios: "npm:^1.13.2"
+    axios: "npm:1.16.0"
     concurrently: "npm:^9.2.1"
     dinero.js: "npm:^1.9.1"
     eslint: "npm:^9.39.1"
