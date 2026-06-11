@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import { marked } from 'marked';
 import { useAuthStore, useUserStore } from '@sudosos/sudosos-frontend-common';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'primevue/usetoast';
 import router from '@/router';
@@ -42,7 +42,7 @@ const authStore = useAuthStore();
 const userStore = useUserStore();
 const tosStore = useTermsOfServiceStore();
 
-const tos = marked(tosStore.getTermsOfService);
+const tos = computed(() => marked(tosStore.getTermsOfService));
 
 const acceptsExtensiveDataProcessing = ref(false);
 

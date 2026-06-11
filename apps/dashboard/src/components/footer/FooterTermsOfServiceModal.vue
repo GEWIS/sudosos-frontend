@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import Dialog from 'primevue/dialog';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { marked } from 'marked';
 import { useI18n } from 'vue-i18n';
 import { useTermsOfServiceStore } from '@/stores/termsOfService.store';
@@ -24,7 +24,7 @@ import { useTermsOfServiceStore } from '@/stores/termsOfService.store';
 const tosStore = useTermsOfServiceStore();
 
 const { t } = useI18n();
-const tos = marked(tosStore.getTermsOfService);
+const tos = computed(() => marked(tosStore.getTermsOfService));
 const visible = ref(false);
 </script>
 <style>
