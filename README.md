@@ -1,19 +1,12 @@
-<div align="center">
+> [!IMPORTANT]
+> **This repository is archived.** Development continues at
+> [GEWIS/sudosos](https://github.com/GEWIS/sudosos) -- this repo's full history is preserved there,
+> under [`frontend/`](https://github.com/GEWIS/sudosos/tree/develop/frontend). Please open new issues
+> and pull requests there, not here.
+>
+> Everything below reflects this repository's state before the migration, kept for historical reference.
 
-<!-- Centered Logo Image -->
-<img src="https://github.com/GEWIS/sudosos-frontend/blob/develop/apps/dashboard/src/assets/img/bier.png?raw=true" alt="Logo" style="width:200px;height:auto;">
-
-<!-- Centered Name Beneath Logo -->
-<h1>SudoSOS Frontend Monorepo</h1>
-
-[![Uptime](https://uptime.gewis.nl/api/badge/2/uptime)](https://sudosos.gewis.nl/api/v1/ping)
-[![Build](https://img.shields.io/github/actions/workflow/status/GEWIS/sudosos-frontend/semver.yml?branch=main&label=Build)](https://github.com/GEWIS/sudosos-frontend/actions/workflows/semver.yml)
-[![Latest Release](https://img.shields.io/github/v/tag/GEWIS/sudosos-frontend?label=Latest)](https://github.com/GEWIS/sudosos-frontend/releases)
-[![Issues](https://img.shields.io/github/issues/GEWIS/sudosos-frontend)](https://github.com/GEWIS/sudosos-frontend/issues)
-[![Commit Activity](https://img.shields.io/github/commit-activity/m/GEWIS/sudosos-frontend)](https://github.com/GEWIS/sudosos-frontend/commits/main)
-[![Code Size](https://img.shields.io/github/languages/code-size/GEWIS/sudosos-frontend)](https://github.com/GEWIS/sudosos-frontend)
-
-</div>
+# SudoSOS Frontend Monorepo
 
 This monorepo contains all the frontend projects and common code for the SudoSOS.
 
