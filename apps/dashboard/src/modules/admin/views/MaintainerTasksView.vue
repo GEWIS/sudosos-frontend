@@ -1,7 +1,19 @@
 <template>
   <PageContainer>
     <div class="flex flex-col gap-6">
-      <CardComponent :header="t('modules.admin.tasks.title')">
+      <CardComponent :header="t('modules.admin.tasks.overview.header')">
+        <template #topAction>
+          <span
+            class="flex items-center gap-2 text-xs uppercase font-semibold"
+            :class="socketLive ? 'text-emerald-600' : 'text-amber-600'"
+          >
+            <span
+              aria-hidden="true"
+              :class="['inline-block w-2 h-2 rounded-full', socketLive ? 'bg-emerald-500' : 'bg-amber-500']"
+            />
+            {{ socketLive ? t('modules.admin.tasks.live.live') : t('modules.admin.tasks.live.offline') }}
+          </span>
+        </template>
         <div class="flex flex-wrap items-end gap-4">
           <div
             v-for="metric in metrics"
@@ -13,14 +25,7 @@
             </span>
             <span class="text-2xl font-semibold" :class="metric.colour">{{ metric.value }}</span>
           </div>
-          <div class="flex items-end gap-3 ml-auto">
-            <span class="flex items-center gap-2 text-xs uppercase">
-              <span
-                aria-hidden="true"
-                :class="['inline-block w-2 h-2 rounded-full', socketLive ? 'bg-emerald-500' : 'bg-amber-500']"
-              />
-              {{ socketLive ? t('modules.admin.tasks.live.live') : t('modules.admin.tasks.live.offline') }}
-            </span>
+          <div class="flex items-end ml-auto">
             <Button icon="pi pi-refresh" :label="t('modules.admin.tasks.stats.refresh')" outlined @click="refresh" />
           </div>
         </div>

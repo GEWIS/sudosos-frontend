@@ -98,8 +98,11 @@
       },
       "tasks": {
         "title": "Background tasks",
+        "overview": {
+          "header": "Background tasks overview"
+        },
         "list": {
-          "header": "Background tasks",
+          "header": "Recent tasks",
           "empty": "No tasks yet."
         },
         "stats": {

@@ -98,8 +98,11 @@
       },
       "tasks": {
         "title": "Zadania w tle",
+        "overview": {
+          "header": "Przeglad zadan w tle"
+        },
         "list": {
-          "header": "Zadania w tle",
+          "header": "Ostatnie zadania",
           "empty": "Brak zadan."
         },
         "stats": {

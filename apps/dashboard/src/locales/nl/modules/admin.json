@@ -98,8 +98,11 @@
       },
       "tasks": {
         "title": "Achtergrondtaken",
+        "overview": {
+          "header": "Overzicht achtergrondtaken"
+        },
         "list": {
-          "header": "Achtergrondtaken",
+          "header": "Recente taken",
           "empty": "Nog geen taken."
         },
         "stats": {
